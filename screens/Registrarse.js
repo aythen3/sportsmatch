@@ -9,6 +9,11 @@ const Registrarse = () => {
 
   return (
     <ScrollView style={styles.registrarse}>
+      <Image
+        style={styles.fondoIcon}
+        contentFit="cover"
+        source={require("../assets/fondo2.png")}
+      />
       <View style={styles.contenido}>
         <View style={styles.botonAtrasFrame}>
           <Image
@@ -99,24 +104,19 @@ const Registrarse = () => {
           </View>
           <View style={styles.textoLegal}>
             <View style={styles.textoLegalFrame}>
-              <Text
-                style={[styles.texto1, styles.textoTypo]}
-              >{`Estoy de acuerdo en recibir información promocional 
-y publicitaria a través del correo electrónico`}</Text>
+              <Text style={[styles.texto1, styles.textoTypo]}>
+                Estoy de acuerdo en recibir información promocional y
+                publicitaria a través del correo electrónico
+              </Text>
               <View style={[styles.rectangulo, styles.capacityPosition]} />
             </View>
-            <Text
-              style={[styles.textoInferior, styles.textoTypo]}
-            >{`Al contínuar, aceptas automátícamente nuestras Condiciones, 
-Polítíca de privacidad y Polítíca de cookies`}</Text>
+            <Text style={[styles.textoInferior, styles.textoTypo]}>
+              Al contínuar, aceptas automátícamente nuestras Condiciones,
+              Polítíca de privacidad y Polítíca de cookies
+            </Text>
           </View>
         </View>
       </View>
-      <Image
-        style={styles.fondoIcon}
-        contentFit="cover"
-        source={require("../assets/fondo2.png")}
-      />
     </ScrollView>
   );
 };
@@ -364,8 +364,10 @@ const styles = StyleSheet.create({
     left: 0,
   },
   fondoIcon: {
-    width: 1105,
-    height: 424,
+    width: "100%",
+    height: "50%",
+    position: "absolute",
+    zIndex: 0,
   },
   uxIphoneChild: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
