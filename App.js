@@ -1,9 +1,9 @@
 const Stack = createNativeStackNavigator();
-import * as React from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import LoginSwitch from "./screens/LoginSwitch";
-import Paso1Activadosr from "./screens/Paso1Activadosr";
+import Paso2Jugador from "./screens/Paso2Jugador";
 import EscogerDeporte from "./screens/EscogerDeporte";
 import Paso from "./screens/Paso";
 import Paso4Jugador from "./screens/Paso4Jugador";
@@ -114,8 +114,8 @@ const App = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Paso1Activadosr"
-              component={Paso1Activadosr}
+              name="Paso2Jugador"
+              component={Paso2Jugador}
               options={{ headerShown: false }}
             />
             <Stack.Screen

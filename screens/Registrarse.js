@@ -1,12 +1,25 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, Pressable, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, Padding, Border, FontFamily } from "../GlobalStyles";
+import CheckBox from "react-native-check-box";
 
 const Registrarse = () => {
   const navigation = useNavigation();
 
+  const [isChecked, setChecked] = useState(false);
+
+  const handleCheckboxToggle = () => {
+    setChecked(!isChecked);
+  };
   return (
     <ScrollView style={styles.registrarse}>
       <Image
@@ -26,94 +39,98 @@ const Registrarse = () => {
           </Pressable>
         </View>
         <View style={styles.formulariotextoLegal}>
-          <View>
-            <View style={styles.formularioFrame}>
-              <View style={styles.camposFormulario}>
-                <View style={styles.titularcampos}>
-                  <Text style={[styles.titular, styles.titularLayout]}>
-                    Regístrate
-                  </Text>
-                  <View style={styles.campos}>
-                    <View style={styles.campo1}>
-                      <View style={styles.campo1Frame}>
-                        <Image
-                          style={styles.simboloIcon1}
-                          contentFit="cover"
-                          source={require("../assets/simbolo4.png")}
-                        />
-                        <Text style={[styles.nombre, styles.eMailSpaceBlock]}>
-                          nombre
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.campo2}>
-                      <View style={[styles.campo2Frame, styles.framePosition]}>
-                        <Image
-                          style={styles.vectorIcon}
-                          contentFit="cover"
-                          source={require("../assets/vector4.png")}
-                        />
-                        <Text style={[styles.eMail, styles.eMailTypo]}>
-                          E-mail
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.campo3}>
-                      <View style={[styles.campo3Frame, styles.framePosition]}>
-                        <View style={styles.contraseaFrame}>
-                          <Image
-                            style={styles.simboloIcon2}
-                            contentFit="cover"
-                            source={require("../assets/simbolo3.png")}
-                          />
-                          <Text style={[styles.texto, styles.eMailTypo]}>
-                            Contraseña
-                          </Text>
-                        </View>
-                        <Image
-                          style={styles.ojoIcon}
-                          contentFit="cover"
-                          source={require("../assets/ojo2.png")}
-                        />
-                      </View>
+          <View style={styles.formularioFrame}>
+            <View style={styles.camposFormulario}>
+              <View style={styles.titularcampos}>
+                <Text style={[styles.titular, styles.titularLayout]}>
+                  Regístrate
+                </Text>
+                <View style={styles.campos}>
+                  <View style={styles.campo1}>
+                    <View style={styles.campo1Frame}>
+                      <Image
+                        style={styles.simboloIcon1}
+                        contentFit="cover"
+                        source={require("../assets/simbolo4.png")}
+                      />
+                      <TextInput
+                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        placeholder="Nombre"
+                        placeholderTextColor="#999"
+                      />
                     </View>
                   </View>
-                </View>
-                <Text style={styles.debeContenerAl}>
-                  Debe contener al menos 9 carácteres
-                </Text>
-              </View>
-              <View style={styles.botonRegistrate}>
-                <View style={styles.loremPosition}>
-                  <View style={[styles.loremIpsum, styles.loremPosition]}>
-                    <View style={styles.loremIpsum1}>
-                      <Text style={styles.aceptar}>Regístrate</Text>
+                  <View style={styles.campo2}>
+                    <View style={[styles.campo2Frame, styles.framePosition]}>
+                      <Image
+                        style={styles.vectorIcon}
+                        contentFit="cover"
+                        source={require("../assets/vector4.png")}
+                      />
+                      <TextInput
+                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        placeholder="E-mail"
+                        placeholderTextColor="#999"
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.campo3}>
+                    <View style={[styles.campo3Frame, styles.framePosition]}>
+                      <View style={styles.contraseaFrame}>
+                        <Image
+                          style={styles.simboloIcon2}
+                          contentFit="cover"
+                          source={require("../assets/simbolo3.png")}
+                        />
+                        <TextInput
+                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          placeholder="Contraseña"
+                          placeholderTextColor="#999"
+                          secureTextEntry={true}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
             </View>
-            <Pressable
-              style={styles.yaTenesUnaContainer}
-              onPress={() => navigation.navigate("IniciarSesin")}
-            >
-              <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
-                ¿Ya tíenes una cuenta? Inicia sesión
-              </Text>
-            </Pressable>
+            <View style={styles.botonRegistrate}>
+              <View style={styles.loremPosition}>
+                <View style={[styles.loremIpsum, styles.loremPosition]}>
+                  <View style={styles.loremIpsum1}>
+                    <Text style={styles.aceptar}>Regístrate</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
           </View>
+          <Pressable
+            style={styles.yaTenesUnaContainer}
+            onPress={() => navigation.navigate("IniciarSesin")}
+          >
+            <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
+              ¿Ya tíenes una cuenta? Inicia sesión
+            </Text>
+          </Pressable>
+
           <View style={styles.textoLegal}>
             <View style={styles.textoLegalFrame}>
+              <CheckBox
+                isChecked={isChecked}
+                onClick={handleCheckboxToggle}
+                checkBoxColor="#999"
+              />
               <Text style={[styles.texto1, styles.textoTypo]}>
                 Estoy de acuerdo en recibir información promocional y
                 publicitaria a través del correo electrónico
               </Text>
-              <View style={[styles.rectangulo, styles.capacityPosition]} />
             </View>
-            <Text style={[styles.textoInferior, styles.textoTypo]}>
-              Al contínuar, aceptas automátícamente nuestras Condiciones,
-              Polítíca de privacidad y Polítíca de cookies
-            </Text>
+            <View style={styles.textoLegalFrame}>
+              <Text style={[styles.textoInferior, styles.textoTypo]}>
+                Al contínuar, aceptas automátícamente nuestras Condiciones,
+                Polítíca de privacidad y Polítíca de cookies
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -132,7 +149,6 @@ const styles = StyleSheet.create({
   },
   eMailSpaceBlock: {
     marginLeft: 10,
-    width: 313,
     textAlign: "left",
   },
   framePosition: {
@@ -162,22 +178,7 @@ const styles = StyleSheet.create({
     color: Color.gREY2SPORTSMATCH,
     textAlign: "center",
     fontFamily: FontFamily.t4TEXTMICRO,
-    width: 393,
-  },
-  capacityPosition: {
-    top: 2,
-  },
-  iphonePosition: {
-    height: 34,
-    top: 0,
-    width: 390,
-    left: 0,
-  },
-  batteryPosition: {
-    right: 0,
-  },
-  timeLayout: {
-    width: 61,
+    width: "80%",
   },
   simboloIcon: {
     width: 9,
@@ -207,8 +208,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
   },
   simboloIcon1: {
-    width: 20,
-    height: 21,
+    width: 22,
+    height: 22,
   },
   nombre: {
     height: 19,
@@ -225,9 +226,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderRadius: Border.br_81xl,
-    top: 0,
     flexDirection: "row",
-    left: 0,
     overflow: "hidden",
   },
   campo1: {
@@ -237,11 +236,6 @@ const styles = StyleSheet.create({
   vectorIcon: {
     width: 21,
     height: 16,
-  },
-  eMail: {
-    marginLeft: 10,
-    width: 313,
-    textAlign: "left",
   },
   campo2Frame: {
     paddingRight: Padding.p_12xs,
@@ -255,18 +249,9 @@ const styles = StyleSheet.create({
     width: 14,
     height: 18,
   },
-  texto: {
-    marginLeft: 14,
-    textAlign: "left",
-    color: Color.gREY2SPORTSMATCH,
-  },
   contraseaFrame: {
     alignItems: "center",
     flexDirection: "row",
-  },
-  ojoIcon: {
-    width: 24,
-    height: 18,
   },
   campo3Frame: {
     height: 39,
@@ -286,15 +271,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  debeContenerAl: {
-    fontSize: FontSize.t1TextSMALL_size,
-    lineHeight: 17,
-    color: Color.colorDimgray_100,
-    marginTop: 18,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
-    width: 393,
-  },
   camposFormulario: {
     height: 259,
   },
@@ -307,8 +283,6 @@ const styles = StyleSheet.create({
   },
   loremIpsum1: {
     justifyContent: "center",
-    paddingHorizontal: Padding.p_81xl,
-    paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     width: 360,
     borderRadius: Border.br_81xl,
@@ -337,100 +311,31 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     zIndex: 0,
   },
-  rectangulo: {
-    left: 40,
-    borderColor: "#717171",
-    width: 10,
-    height: 10,
-    zIndex: 1,
-    borderWidth: 1,
-    top: 2,
-    borderStyle: "solid",
-  },
   textoLegalFrame: {
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   textoInferior: {
     marginTop: 9,
   },
   textoLegal: {
-    marginTop: 92,
+    marginTop: 42,
   },
   formulariotextoLegal: {
     marginTop: 45,
   },
   contenido: {
-    height: 597,
-    left: 0,
+    top: "25%",
+    height: "130%",
   },
   fondoIcon: {
-    width: "100%",
-    height: "50%",
+    width: "160%",
+    height: "70%",
+    bottom: "60%",
+    right: "0%",
     position: "absolute",
     zIndex: 0,
-  },
-  uxIphoneChild: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    height: 34,
-  },
-  border: {
-    right: 2,
-    borderRadius: 3,
-    borderColor: Color.colorGhostwhite,
-    borderWidth: 1.1,
-    width: 22,
-    opacity: 0.35,
-    height: 12,
-    borderStyle: "solid",
-    top: 0,
-  },
-  capIcon: {
-    top: 4,
-    width: 1,
-    height: 4,
-    opacity: 0.4,
-  },
-  capacity: {
-    right: 4,
-    borderRadius: 2,
-    width: 18,
-    height: 7,
-    backgroundColor: Color.wHITESPORTSMATCH,
-  },
-  battery: {
-    width: 25,
-    height: 12,
-    top: 0,
-    right: 0,
-  },
-  wifiIcon: {
-    width: 16,
-    height: 11,
-  },
-  cellularConnectionIcon: {
-    width: 17,
-    height: 11,
-  },
-  group: {
-    top: 17,
-    right: 15,
-    width: 68,
-    height: 12,
-  },
-  time: {
-    left: 4,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: FontFamily.openSansSemiBold,
-    textAlign: "center",
-    color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.t2TextSTANDARD_size,
-  },
-  starus: {
-    top: 10,
-    left: 15,
-    height: 24,
   },
   registrarse: {
     height: 844,

@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   icon: {
-    height: "36%",
-    width: "57%",
+    height: "34%",
+    width: "60%",
     left: "2%",
   },
   wrapper: {
@@ -319,6 +319,7 @@ const styles = StyleSheet.create({
   frameParent: {
     alignItems: "center",
     left: 0,
+    height: "130%",
   },
   group: {
     top: 17,
@@ -343,7 +344,6 @@ const styles = StyleSheet.create({
   },
   loginSwitch: {
     flex: 1,
-    height: 844,
     overflow: "hidden",
     width: "100%",
     backgroundColor: Color.bLACK1SPORTSMATCH,

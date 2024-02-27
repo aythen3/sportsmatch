@@ -1,14 +1,14 @@
-import * as React from "react";
+import React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 
-const Paso1Activadosr = () => {
+const Paso2Jugador = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.paso1Activadosr}>
+    <ScrollView style={styles.paso1Activadosr}>
       <Image
         style={styles.paso1ActivadosrChild}
         contentFit="cover"
@@ -95,7 +95,7 @@ const Paso1Activadosr = () => {
         </View>
       </View>
       <View style={styles.paso1Parent}>
-        <Text style={[styles.paso1, styles.atrsTypo]}>Paso 1</Text>
+        <Text style={[styles.paso1, styles.atrsTypo]}>Paso 2</Text>
         <Text style={styles.escogeTuDeporte}>Escoge tu deporte</Text>
       </View>
       <View style={styles.lineParent}>
@@ -104,39 +104,7 @@ const Paso1Activadosr = () => {
         <View style={[styles.frameChild3, styles.frameChildLayout]} />
         <View style={styles.frameChild4} />
       </View>
-      <Image
-        style={[styles.paso1ActivadosrItem, styles.loremIpsumPosition]}
-        contentFit="cover"
-        source={require("../assets/line-9.png")}
-      />
-      <View style={styles.groupChildPosition}>
-        <View style={[styles.groupChild, styles.groupChildPosition]} />
-        <View style={styles.group1}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={styles.border} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require("../assets/cap.png")}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection.png")}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -155,7 +123,6 @@ const styles = StyleSheet.create({
   },
   groupPosition: {
     left: "0%",
-    position: "absolute",
   },
   atrsTypo: {
     textAlign: "center",
@@ -163,7 +130,6 @@ const styles = StyleSheet.create({
   },
   loremIpsumPosition: {
     left: "50%",
-    position: "absolute",
   },
   frameChildLayout: {
     width: 81,
@@ -172,22 +138,18 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderStyle: "solid",
     top: -1,
-    position: "absolute",
   },
   groupChildPosition: {
     height: 34,
     width: 390,
     left: 0,
     top: 0,
-    position: "absolute",
   },
   batteryPosition: {
     right: 0,
-    position: "absolute",
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
   },
   paso1ActivadosrChild: {
     top: -78,
@@ -195,7 +157,6 @@ const styles = StyleSheet.create({
     width: 3822,
     height: 996,
     opacity: 0.2,
-    position: "absolute",
   },
   frameChild: {
     height: 131,
@@ -230,7 +191,6 @@ const styles = StyleSheet.create({
     right: "0%",
     maxWidth: "100%",
     top: "0%",
-    position: "absolute",
   },
   vectorIcon: {
     bottom: "0%",
@@ -251,7 +211,6 @@ const styles = StyleSheet.create({
     bottom: "56.77%",
     left: "9.23%",
     maxHeight: "100%",
-    position: "absolute",
   },
   group: {
     width: "99.62%",
@@ -278,7 +237,6 @@ const styles = StyleSheet.create({
     width: 287,
     flexWrap: "wrap",
     flexDirection: "row",
-    position: "absolute",
   },
   atrs: {
     left: 14,
@@ -287,7 +245,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: FontSize.t2TextSTANDARD_size,
     fontFamily: FontFamily.t4TEXTMICRO,
-    position: "absolute",
   },
   coolicon: {
     height: "83.33%",
@@ -304,7 +261,6 @@ const styles = StyleSheet.create({
     left: 323,
     width: 52,
     height: 18,
-    position: "absolute",
   },
   aceptar: {
     fontSize: FontSize.button_size,
@@ -346,7 +302,6 @@ const styles = StyleSheet.create({
   paso1Parent: {
     top: 98,
     left: 0,
-    position: "absolute",
   },
   lineView: {
     left: -1,
@@ -357,7 +312,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     top: -1,
     borderStyle: "solid",
-    position: "absolute",
   },
   frameChild2: {
     left: 93,
@@ -376,14 +330,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderStyle: "solid",
     top: -1,
-    position: "absolute",
   },
   lineParent: {
     top: 167,
     padding: Padding.p_3xs,
     left: 15,
     flexDirection: "row",
-    position: "absolute",
   },
   paso1ActivadosrItem: {
     marginLeft: -74,
@@ -405,7 +357,6 @@ const styles = StyleSheet.create({
     height: 12,
     borderStyle: "solid",
     top: 0,
-    position: "absolute",
   },
   capIcon: {
     top: 4,
@@ -420,7 +371,6 @@ const styles = StyleSheet.create({
     width: 18,
     height: 7,
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
   },
   battery: {
     width: 25,
@@ -440,7 +390,6 @@ const styles = StyleSheet.create({
     right: 15,
     width: 68,
     height: 12,
-    position: "absolute",
   },
   time: {
     marginTop: -9.55,
@@ -461,7 +410,6 @@ const styles = StyleSheet.create({
     left: 15,
   },
   paso1Activadosr: {
-    borderRadius: Border.br_21xl,
     flex: 1,
     height: 844,
     overflow: "hidden",
@@ -470,4 +418,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Paso1Activadosr;
+export default Paso2Jugador;

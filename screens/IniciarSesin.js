@@ -1,6 +1,13 @@
-import * as React from "react";
+import React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, Pressable, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Padding, Color, Border, FontFamily } from "../GlobalStyles";
 
@@ -8,8 +15,13 @@ const IniciarSesin = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.iniciarSesin}>
+    <ScrollView style={styles.iniciarSesin}>
       <View style={styles.contenido}>
+        <Image
+          style={styles.fondoIcon}
+          contentFit="cover"
+          source={require("../assets/fondo1.png")}
+        />
         <View style={styles.botonAtrasFrame}>
           <Image
             style={styles.simboloIcon}
@@ -34,9 +46,11 @@ const IniciarSesin = () => {
                           contentFit="cover"
                           source={require("../assets/vector4.png")}
                         />
-                        <Text style={[styles.eMail, styles.eMailTypo]}>
-                          oriol@b-bruce.com
-                        </Text>
+                        <TextInput
+                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          placeholder="E-mail"
+                          placeholderTextColor="#999"
+                        />
                       </View>
                     </View>
                     <View style={[styles.campo2, styles.campoLayout]}>
@@ -46,15 +60,13 @@ const IniciarSesin = () => {
                           contentFit="cover"
                           source={require("../assets/simbolo3.png")}
                         />
-                        <Text style={[styles.contrasea, styles.contraseaClr]}>
-                          Contraseña
-                        </Text>
+                        <TextInput
+                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          placeholder="Contraseña"
+                          placeholderTextColor="#999"
+                          secureTextEntry={true}
+                        />
                       </View>
-                      <Image
-                        style={styles.ojoIcon}
-                        contentFit="cover"
-                        source={require("../assets/ojo1.png")}
-                      />
                     </View>
                   </View>
                 </View>
@@ -62,17 +74,13 @@ const IniciarSesin = () => {
                   ¿Has olvidado tu contraseña? Clica aquí
                 </Text>
               </View>
-              <View style={styles.botonIniciaSesin}>
-                <View style={[styles.botonGrupo, styles.botonPosition]}>
-                  <View
-                    style={[styles.botonIniciaSesin1, styles.botonPosition]}
-                  >
-                    <View style={styles.botonIniciaSesin2}>
-                      <Text style={styles.aceptar}>Inicia sesión</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
+
+              <Pressable
+                style={styles.botonIniciaSesin2}
+                onPress={() => navigation.navigate("Paso1")}
+              >
+                <Text style={styles.aceptar}>Inicia sesión</Text>
+              </Pressable>
             </View>
             <Pressable
               style={styles.noTenesUnaContainer}
@@ -85,45 +93,15 @@ const IniciarSesin = () => {
               </Text>
             </Pressable>
           </View>
-          <Text
-            style={[styles.alContnuarAceptas, styles.contraseaClr]}
-          >{`Al contínuar, aceptas automátícamente nuestras Condiciones, 
-Polítíca de privacidad y Polítíca de cookies`}</Text>
-        </View>
-      </View>
-      <Image
-        style={styles.fondoIcon}
-        contentFit="cover"
-        source={require("../assets/fondo1.png")}
-      />
-      <View style={styles.iphonePosition}>
-        <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={styles.border} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require("../assets/cap.png")}
-            />
-            <View style={styles.capacity} />
+          <View>
+            <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
+              Al contínuar, aceptas automátícamente nuestras Condiciones,
+              Polítíca de privacidad y Polítíca de cookies
+            </Text>
           </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection.png")}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -146,13 +124,7 @@ const styles = StyleSheet.create({
     width: 360,
     flexDirection: "row",
     left: 0,
-    position: "absolute",
     overflow: "hidden",
-  },
-  eMailTypo: {
-    width: 313,
-    textAlign: "left",
-    fontSize: FontSize.t2TextSTANDARD_size,
   },
   campoLayout: {
     height: 38,
@@ -161,27 +133,6 @@ const styles = StyleSheet.create({
   contraseaClr: {
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-  },
-  botonPosition: {
-    bottom: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-  },
-  iphonePosition: {
-    height: 34,
-    top: 0,
-    width: 390,
-    left: 0,
-    position: "absolute",
-  },
-  batteryPosition: {
-    right: 0,
-    position: "absolute",
-  },
-  timeLayout: {
-    width: 61,
-    position: "absolute",
   },
   simboloIcon: {
     width: 9,
@@ -214,35 +165,12 @@ const styles = StyleSheet.create({
     width: 21,
     height: 16,
   },
-  eMail: {
-    marginLeft: 10,
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-  },
   campo1Frame: {
     alignItems: "flex-end",
   },
   simboloIcon1: {
     width: 14,
     height: 18,
-  },
-  contrasea: {
-    marginLeft: 14,
-    width: 313,
-    textAlign: "left",
-    fontSize: FontSize.t2TextSTANDARD_size,
-  },
-  ojoIcon: {
-    height: "47.37%",
-    width: "6.72%",
-    top: "28.95%",
-    right: "3.11%",
-    bottom: "23.68%",
-    left: "90.17%",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    position: "absolute",
-    overflow: "hidden",
   },
   campo2: {
     marginTop: 15,
@@ -275,22 +203,7 @@ const styles = StyleSheet.create({
     width: 360,
     alignItems: "center",
     flexDirection: "row",
-  },
-  botonIniciaSesin1: {
-    right: "0%",
-    left: "0%",
-    flexDirection: "row",
-    width: "100%",
-  },
-  botonGrupo: {
-    width: "92.31%",
-    right: "3.85%",
-    left: "3.85%",
-  },
-  botonIniciaSesin: {
-    marginTop: 37,
-    alignSelf: "stretch",
-    flex: 1,
+    top: "5%",
   },
   formularioFrame: {
     alignItems: "center",
@@ -314,97 +227,34 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   formulariotextoLegal: {
-    marginTop: 73,
+    marginTop: 45,
     flex: 1,
   },
   contenido: {
-    top: 207,
-    height: 593,
-    left: 0,
-    position: "absolute",
+    top: "30%",
+    height: "100%",
   },
   fondoIcon: {
-    top: -180,
-    left: -451,
-    width: 1105,
-    height: 415,
+    width: "150%",
+    height: "70%",
+    bottom: "95%",
+    right: "0%",
     position: "absolute",
-  },
-  uxIphoneChild: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-  border: {
-    right: 2,
-    borderRadius: 3,
-    borderColor: Color.colorGhostwhite,
-    borderWidth: 1.1,
-    width: 22,
-    opacity: 0.35,
-    height: 12,
-    borderStyle: "solid",
-    top: 0,
-    position: "absolute",
-  },
-  capIcon: {
-    top: 4,
-    width: 1,
-    height: 4,
-    opacity: 0.4,
-  },
-  capacity: {
-    top: 2,
-    right: 4,
-    borderRadius: 2,
-    width: 18,
-    height: 7,
-    backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
-  },
-  battery: {
-    width: 25,
-    height: 12,
-    top: 0,
-    right: 0,
-  },
-  wifiIcon: {
-    width: 16,
-    height: 11,
-  },
-  cellularConnectionIcon: {
-    width: 17,
-    height: 11,
-  },
-  group: {
-    top: 17,
-    right: 15,
-    width: 68,
-    height: 12,
-    position: "absolute",
-  },
-  time: {
-    marginTop: -9.55,
-    top: "50%",
-    left: 4,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: FontFamily.openSansSemiBold,
-    textAlign: "center",
-    color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.t2TextSTANDARD_size,
-  },
-  starus: {
-    top: 10,
-    left: 15,
-    height: 24,
+    zIndex: 0,
   },
   iniciarSesin: {
-    borderRadius: Border.br_21xl,
-    height: 844,
-    overflow: "hidden",
-    width: "100%",
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH,
+  },
+  nombre: {
+    height: 19,
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t2TextSTANDARD_size,
+  },
+  eMailSpaceBlock: {
+    marginLeft: 10,
+    textAlign: "left",
   },
 });
 
