@@ -1,0 +1,1044 @@
+import * as React from "react";
+import { StyleSheet, View, Text, Pressable } from "react-native";
+import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
+import { FontFamily, FontSize, Color, Border, Padding } from "../GlobalStyles";
+
+const OfertasEmitidas = () => {
+  const navigation = useNavigation();
+
+  return (
+    <View style={styles.ofertasEmitidas}>
+      <View style={styles.gridOfertas}>
+        <View style={styles.ofertasSuperior}>
+          <View style={styles.ofertaIzquierda}>
+            <View style={styles.fondoGrupo}>
+              <View style={styles.fondo} />
+            </View>
+            <View style={[styles.contenido, styles.contenidoPosition]}>
+              <View style={styles.titularcamposboton}>
+                <View style={styles.titularcamposboton}>
+                  <View style={styles.ofertasSuperior}>
+                    <View style={styles.oferta1Wrapper}>
+                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                        Oferta 1
+                      </Text>
+                    </View>
+                    <Image
+                      style={styles.titularChild}
+                      contentFit="cover"
+                      source={require("../assets/frame-957.png")}
+                    />
+                  </View>
+                  <View style={styles.ofertaIzquierda}>
+                    <View style={styles.columnaIzquierda}>
+                      <View>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Sexo
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Masculino
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Categoría
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Sénior
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Posición
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Escolta
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={[styles.linia1, styles.childLayout]} />
+                      <View style={styles.urgencia}>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Urgencia
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          7/10
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={[styles.columnaDerecha, styles.contenidoPosition]}
+                    >
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Retribución
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        No
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.botonPausar}>
+                  <View style={[styles.pausar, styles.pausarFlexBox]}>
+                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                      Pausar
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.inscritos}>
+                <Text
+                  style={[styles.inscritos1, styles.pausar1Typo]}
+                >{`6 inscritos `}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.ofertaIzquierda1}>
+            <View style={styles.fondoGrupo}>
+              <View style={styles.fondo} />
+            </View>
+            <View style={[styles.contenido, styles.contenidoPosition]}>
+              <View style={styles.titularcamposboton}>
+                <View style={styles.titularcamposboton}>
+                  <View style={styles.ofertasSuperior}>
+                    <View style={styles.oferta1Wrapper}>
+                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                        Oferta 1
+                      </Text>
+                    </View>
+                    <Image
+                      style={styles.titularChild}
+                      contentFit="cover"
+                      source={require("../assets/frame-957.png")}
+                    />
+                  </View>
+                  <View style={styles.ofertaIzquierda}>
+                    <View style={styles.columnaIzquierda}>
+                      <View>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Sexo
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Masculino
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Categoría
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Sénior
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Posición
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Escolta
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={[styles.linia1, styles.childLayout]} />
+                      <View style={styles.urgencia}>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Urgencia
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          7/10
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={[styles.columnaDerecha, styles.contenidoPosition]}
+                    >
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Retribución
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        No
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.botonPausar}>
+                  <View style={[styles.pausar, styles.pausarFlexBox]}>
+                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                      Pausar
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.inscritos}>
+                <Text
+                  style={[styles.inscritos1, styles.pausar1Typo]}
+                >{`6 inscritos `}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.ofertasInferior}>
+          <View style={styles.ofertaIzquierda}>
+            <View style={styles.fondoGrupo}>
+              <View style={styles.fondo} />
+            </View>
+            <View style={[styles.contenido, styles.contenidoPosition]}>
+              <View style={styles.titularcamposboton}>
+                <View style={styles.titularcamposboton}>
+                  <View style={styles.ofertasSuperior}>
+                    <View style={styles.oferta1Wrapper}>
+                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                        Oferta 1
+                      </Text>
+                    </View>
+                    <Image
+                      style={styles.titularChild}
+                      contentFit="cover"
+                      source={require("../assets/frame-957.png")}
+                    />
+                  </View>
+                  <View style={styles.ofertaIzquierda}>
+                    <View style={styles.columnaIzquierda}>
+                      <View>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Sexo
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Masculino
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Categoría
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Sénior
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Posición
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Escolta
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={[styles.linia1, styles.childLayout]} />
+                      <View style={styles.urgencia}>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Urgencia
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          7/10
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={[styles.columnaDerecha, styles.contenidoPosition]}
+                    >
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Retribución
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        No
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.botonPausar}>
+                  <View style={[styles.pausar, styles.pausarFlexBox]}>
+                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                      Pausar
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.inscritos}>
+                <Text
+                  style={[styles.inscritos1, styles.pausar1Typo]}
+                >{`6 inscritos `}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.ofertaIzquierda1}>
+            <View style={styles.fondoGrupo}>
+              <View style={styles.fondo} />
+            </View>
+            <View style={[styles.contenido, styles.contenidoPosition]}>
+              <View style={styles.titularcamposboton}>
+                <View style={styles.titularcamposboton}>
+                  <View style={styles.ofertasSuperior}>
+                    <View style={styles.oferta1Wrapper}>
+                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                        Oferta 1
+                      </Text>
+                    </View>
+                    <Image
+                      style={styles.titularChild}
+                      contentFit="cover"
+                      source={require("../assets/frame-957.png")}
+                    />
+                  </View>
+                  <View style={styles.ofertaIzquierda}>
+                    <View style={styles.columnaIzquierda}>
+                      <View>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Sexo
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Masculino
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Categoría
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Sénior
+                          </Text>
+                        </View>
+                        <View
+                          style={[styles.camposChild, styles.childLayout]}
+                        />
+                        <View style={styles.categoria}>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Posición
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            Escolta
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={[styles.linia1, styles.childLayout]} />
+                      <View style={styles.urgencia}>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Urgencia
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          7/10
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={[styles.columnaDerecha, styles.contenidoPosition]}
+                    >
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Retribución
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        No
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.botonPausar}>
+                  <View style={[styles.pausar, styles.pausarFlexBox]}>
+                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                      Pausar
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.inscritos}>
+                <Text
+                  style={[styles.inscritos1, styles.pausar1Typo]}
+                >{`6 inscritos `}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
+        <View style={styles.eliminarWrapperLayout}>
+          <View style={[styles.editarWrapper, styles.childPosition]}>
+            <Text style={[styles.editar, styles.editarLayout]}>Editar</Text>
+          </View>
+        </View>
+        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+        <View style={[styles.eliminarWrapper, styles.eliminarWrapperLayout]}>
+          <Text style={[styles.editar, styles.editarLayout]}>Eliminar</Text>
+        </View>
+        <View style={[styles.despliegueOpcionesItem, styles.childLayout]} />
+        <View style={[styles.eliminarWrapper, styles.eliminarWrapperLayout]}>
+          <Text style={[styles.promocionar, styles.editarLayout]}>
+            Promocionar
+          </Text>
+        </View>
+      </View>
+      <View style={styles.atrasOfertas}>
+        <View style={[styles.atrasOfertasFrame, styles.oferta1Position]}>
+          <Pressable
+            style={styles.coolicon}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={require("../assets/coolicon3.png")}
+            />
+          </Pressable>
+          <Pressable style={styles.ofertas} onPress={() => navigation.goBack()}>
+            <Text style={[styles.ofertas1, styles.sexo1Typo]}>Ofertas</Text>
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.menuClub}>
+        <Image
+          style={[styles.maskGroupIcon, styles.iconGroupLayout]}
+          contentFit="cover"
+          source={require("../assets/mask-group7.png")}
+        />
+        <Image
+          style={[styles.maskGroupIcon1, styles.iconGroupLayout]}
+          contentFit="cover"
+          source={require("../assets/mask-group7.png")}
+        />
+        <View style={[styles.menuClubChild, styles.childPosition]} />
+        <View style={[styles.menuClubItem, styles.oferta1Position]} />
+        <View style={[styles.menuClubInner, styles.borderBorder]} />
+        <Pressable
+          style={[styles.ellipseParent, styles.groupIconPosition]}
+          onPress={() => navigation.navigate("PerfilDatosPropioClub")}
+        >
+          <Image
+            style={[styles.groupChild, styles.iconGroupLayout]}
+            contentFit="cover"
+            source={require("../assets/ellipse-765.png")}
+          />
+          <Image
+            style={[
+              styles.logoUem21RemovebgPreview1Icon,
+              styles.iconGroupLayout,
+            ]}
+            contentFit="cover"
+            source={require("../assets/logo-uem21removebgpreview-16.png")}
+          />
+        </Pressable>
+        <Pressable
+          style={styles.wrapper}
+          onPress={() => navigation.navigate("ExplorarClubs")}
+        >
+          <Image
+            style={[styles.icon1, styles.iconGroupLayout]}
+            contentFit="cover"
+            source={require("../assets/group-5351.png")}
+          />
+        </Pressable>
+        <Image
+          style={[styles.lineIcon, styles.lineIconLayout]}
+          contentFit="cover"
+          source={require("../assets/line-5.png")}
+        />
+        <Image
+          style={[styles.menuClubChild1, styles.lineIconLayout]}
+          contentFit="cover"
+          source={require("../assets/line-5.png")}
+        />
+        <View style={styles.groupParent}>
+          <Pressable
+            style={[styles.container, styles.childPosition]}
+            onPress={() => navigation.navigate("OfertasEmitidas")}
+          >
+            <Image
+              style={[styles.icon1, styles.iconGroupLayout]}
+              contentFit="cover"
+              source={require("../assets/group-5404.png")}
+            />
+          </Pressable>
+          <Pressable
+            style={styles.frame}
+            onPress={() => navigation.navigate("TusMensajes1")}
+          >
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={require("../assets/group-5391.png")}
+            />
+          </Pressable>
+        </View>
+        <Image
+          style={[styles.groupIcon, styles.groupIconPosition]}
+          contentFit="cover"
+          source={require("../assets/group-593.png")}
+        />
+      </View>
+      <View style={styles.iphonePosition}>
+        <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
+        <View style={styles.group}>
+          <View style={[styles.battery, styles.batteryPosition]}>
+            <View style={[styles.border, styles.borderBorder]} />
+            <Image
+              style={[styles.capIcon, styles.batteryPosition]}
+              contentFit="cover"
+              source={require("../assets/cap.png")}
+            />
+            <View style={styles.capacity} />
+          </View>
+          <Image
+            style={styles.wifiIcon}
+            contentFit="cover"
+            source={require("../assets/wifi1.png")}
+          />
+          <Image
+            style={styles.cellularConnectionIcon}
+            contentFit="cover"
+            source={require("../assets/cellular-connection2.png")}
+          />
+        </View>
+        <View style={[styles.starus, styles.timeLayout]}>
+          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  contenidoPosition: {
+    zIndex: 1,
+    position: "absolute",
+  },
+  sexo1Typo: {
+    textAlign: "left",
+    fontFamily: FontFamily.t4TEXTMICRO,
+  },
+  timeTypo: {
+    fontSize: FontSize.t2TextSTANDARD_size,
+    color: Color.wHITESPORTSMATCH,
+  },
+  childLayout: {
+    height: 1,
+    borderTopWidth: 1,
+    borderStyle: "solid",
+  },
+  pausarFlexBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+  },
+  pausar1Typo: {
+    fontWeight: "700",
+    textAlign: "center",
+    fontFamily: FontFamily.t4TEXTMICRO,
+  },
+  childPosition: {
+    left: "0%",
+    bottom: "0%",
+    top: "0%",
+    height: "100%",
+    position: "absolute",
+  },
+  editarLayout: {
+    lineHeight: 17,
+    fontSize: FontSize.t1TextSMALL_size,
+  },
+  eliminarWrapperLayout: {
+    height: 17,
+    width: 114,
+  },
+  oferta1Position: {
+    left: 0,
+    position: "absolute",
+  },
+  iconGroupLayout: {
+    maxHeight: "100%",
+    maxWidth: "100%",
+    overflow: "hidden",
+  },
+  borderBorder: {
+    borderStyle: "solid",
+    position: "absolute",
+  },
+  groupIconPosition: {
+    bottom: "38.46%",
+    top: "16.67%",
+    width: "8.97%",
+    height: "44.87%",
+    position: "absolute",
+  },
+  lineIconLayout: {
+    width: 0,
+    maxHeight: "100%",
+    bottom: "0%",
+    top: "0%",
+    height: "100%",
+    position: "absolute",
+  },
+  iphonePosition: {
+    height: 34,
+    width: 390,
+    left: 0,
+    top: 0,
+    position: "absolute",
+  },
+  batteryPosition: {
+    right: 0,
+    position: "absolute",
+  },
+  timeLayout: {
+    width: 61,
+    position: "absolute",
+  },
+  fondo: {
+    borderWidth: 1,
+    opacity: 0.5,
+    borderColor: Color.colorDimgray_100,
+    borderStyle: "solid",
+    backgroundColor: Color.bLACK3SPORTSMATCH,
+    borderRadius: Border.br_8xs,
+    left: "0%",
+    bottom: "0%",
+    right: "0%",
+    top: "0%",
+    height: "100%",
+    position: "absolute",
+    width: "100%",
+  },
+  fondoGrupo: {
+    width: 173,
+    height: 286,
+    zIndex: 0,
+  },
+  oferta1: {
+    color: Color.bALONCESTO,
+    lineHeight: 14,
+    fontSize: FontSize.t4TEXTMICRO_size,
+    textAlign: "left",
+    left: 0,
+    position: "absolute",
+    top: 0,
+    width: 48,
+  },
+  oferta1Wrapper: {
+    height: 14,
+    width: 48,
+  },
+  titularChild: {
+    width: 5,
+    height: 21,
+    marginLeft: 102,
+  },
+  ofertasSuperior: {
+    flexDirection: "row",
+  },
+  sexo1: {
+    color: Color.gREY2SPORTSMATCH,
+    lineHeight: 14,
+    fontSize: FontSize.t4TEXTMICRO_size,
+    textAlign: "left",
+  },
+  masculino: {
+    color: Color.wHITESPORTSMATCH,
+    textAlign: "left",
+    fontFamily: FontFamily.t4TEXTMICRO,
+  },
+  camposChild: {
+    marginTop: 6,
+    width: 155,
+    borderColor: Color.bLACK3SPORTSMATCH,
+    height: 1,
+    borderTopWidth: 1,
+  },
+  categoria: {
+    marginTop: 6,
+  },
+  linia1: {
+    marginTop: 7,
+    width: 155,
+    borderColor: Color.bLACK3SPORTSMATCH,
+    height: 1,
+    borderTopWidth: 1,
+  },
+  urgencia: {
+    marginTop: 7,
+  },
+  columnaIzquierda: {
+    zIndex: 0,
+  },
+  columnaDerecha: {
+    top: 134,
+    left: 90,
+  },
+  ofertaIzquierda: {
+    flexDirection: "row",
+  },
+  titularcamposboton: {
+    alignItems: "flex-end",
+  },
+  pausar1: {
+    color: Color.bLACK1SPORTSMATCH,
+    textAlign: "center",
+    lineHeight: 17,
+    fontSize: FontSize.t1TextSMALL_size,
+  },
+  pausar: {
+    marginLeft: -78,
+    borderRadius: Border.br_81xl,
+    paddingHorizontal: Padding.p_mini,
+    paddingVertical: Padding.p_8xs,
+    backgroundColor: Color.wHITESPORTSMATCH,
+    left: "50%",
+    justifyContent: "center",
+    width: 156,
+    bottom: "0%",
+    top: "0%",
+    height: "100%",
+    flexDirection: "row",
+  },
+  botonPausar: {
+    height: 27,
+    marginTop: 14,
+    width: 156,
+  },
+  inscritos1: {
+    fontSize: FontSize.button_size,
+    lineHeight: 20,
+    width: 172,
+    textAlign: "center",
+    color: Color.wHITESPORTSMATCH,
+    left: 0,
+    position: "absolute",
+    top: 0,
+  },
+  inscritos: {
+    height: 20,
+    marginTop: 16,
+    width: 172,
+  },
+  contenido: {
+    top: 6,
+    left: 1,
+    alignItems: "center",
+  },
+  ofertaIzquierda1: {
+    marginLeft: 14,
+    flexDirection: "row",
+  },
+  ofertasInferior: {
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  gridOfertas: {
+    top: 109,
+    left: 15,
+    position: "absolute",
+  },
+  editar: {
+    textAlign: "center",
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t1TextSMALL_size,
+    left: "0%",
+    top: "0%",
+    position: "absolute",
+    width: "100%",
+  },
+  editarWrapper: {
+    right: "0%",
+    bottom: "0%",
+    top: "0%",
+    width: "100%",
+  },
+  despliegueOpcionesChild: {
+    alignSelf: "stretch",
+    marginTop: 8,
+    borderTopWidth: 1,
+    height: 1,
+    borderColor: Color.colorDimgray_100,
+  },
+  eliminarWrapper: {
+    marginTop: 8,
+  },
+  despliegueOpcionesItem: {
+    width: 115,
+    marginTop: 8,
+    borderTopWidth: 1,
+    height: 1,
+    borderColor: Color.colorDimgray_100,
+  },
+  promocionar: {
+    textAlign: "center",
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t1TextSMALL_size,
+    left: "0%",
+    top: "0%",
+    position: "absolute",
+    width: "100%",
+  },
+  despliegueOpciones: {
+    height: "12.2%",
+    width: "34.36%",
+    top: "16.94%",
+    bottom: "70.85%",
+    left: "60.26%",
+    backgroundColor: "#292929",
+    paddingHorizontal: Padding.p_3xs,
+    paddingVertical: 0,
+    right: "5.38%",
+    justifyContent: "center",
+    borderRadius: Border.br_8xs,
+  },
+  iconLayout: {
+    height: "100%",
+    width: "100%",
+  },
+  coolicon: {
+    width: 9,
+    height: 15,
+  },
+  ofertas1: {
+    fontSize: FontSize.h3TitleMEDIUM_size,
+    lineHeight: 22,
+    fontWeight: "500",
+    color: Color.wHITESPORTSMATCH,
+  },
+  ofertas: {
+    marginLeft: 9,
+  },
+  atrasOfertasFrame: {
+    top: 0,
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  atrasOfertas: {
+    top: 60,
+    left: 16,
+    width: 92,
+    height: 22,
+    position: "absolute",
+  },
+  maskGroupIcon: {
+    top: "20.51%",
+    bottom: "34.62%",
+    left: "85.64%",
+    width: "8.97%",
+    height: "44.87%",
+    maxWidth: "100%",
+    position: "absolute",
+    right: "5.38%",
+  },
+  maskGroupIcon1: {
+    top: "21.79%",
+    right: "9.74%",
+    bottom: "33.33%",
+    left: "81.28%",
+    width: "8.97%",
+    height: "44.87%",
+    maxWidth: "100%",
+    position: "absolute",
+  },
+  menuClubChild: {
+    backgroundColor: Color.bLACK2SPORTMATCH,
+    right: "0%",
+    bottom: "0%",
+    top: "0%",
+    width: "100%",
+  },
+  menuClubItem: {
+    width: 81,
+    backgroundColor: Color.bLACK3SPORTSMATCH,
+    left: 0,
+    bottom: "0%",
+    top: "0%",
+    height: "100%",
+  },
+  menuClubInner: {
+    height: "3.85%",
+    width: "21.54%",
+    top: "1.92%",
+    right: "78.85%",
+    bottom: "94.23%",
+    left: "-0.38%",
+    borderColor: Color.bALONCESTO,
+    borderTopWidth: 3,
+  },
+  groupChild: {
+    left: "0%",
+    bottom: "0%",
+    top: "0%",
+    height: "100%",
+    position: "absolute",
+    right: "0%",
+    width: "100%",
+  },
+  logoUem21RemovebgPreview1Icon: {
+    height: "72.57%",
+    width: "77.43%",
+    top: "13.71%",
+    right: "10.86%",
+    bottom: "13.71%",
+    left: "11.71%",
+    position: "absolute",
+  },
+  ellipseParent: {
+    right: "6.15%",
+    left: "84.87%",
+  },
+  icon1: {
+    height: "100%",
+    width: "100%",
+  },
+  wrapper: {
+    left: "25.9%",
+    top: "14.1%",
+    right: "66.41%",
+    bottom: "47.95%",
+    width: "7.69%",
+    height: "37.95%",
+    position: "absolute",
+  },
+  lineIcon: {
+    left: "20.77%",
+  },
+  menuClubChild1: {
+    left: "40.51%",
+  },
+  container: {
+    right: "88.06%",
+    width: "11.94%",
+    bottom: "0%",
+    top: "0%",
+  },
+  frame: {
+    left: 234,
+    top: 3,
+    width: 34,
+    height: 23,
+    position: "absolute",
+  },
+  groupParent: {
+    height: "39.23%",
+    width: "68.69%",
+    top: "19.74%",
+    right: "25.41%",
+    bottom: "41.03%",
+    left: "5.9%",
+    position: "absolute",
+  },
+  groupIcon: {
+    right: "44.87%",
+    left: "46.15%",
+    maxHeight: "100%",
+    maxWidth: "100%",
+    overflow: "hidden",
+  },
+  menuClub: {
+    marginLeft: -195,
+    top: 766,
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowRadius: 4,
+    elevation: 4,
+    shadowOpacity: 1,
+    height: 78,
+    width: 390,
+    left: "50%",
+    position: "absolute",
+  },
+  uxIphoneChild: {
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+    height: 34,
+  },
+  border: {
+    right: 2,
+    borderRadius: 3,
+    borderColor: Color.colorGhostwhite,
+    borderWidth: 1.1,
+    width: 22,
+    opacity: 0.35,
+    height: 12,
+    top: 0,
+  },
+  capIcon: {
+    top: 4,
+    width: 1,
+    height: 4,
+    opacity: 0.4,
+  },
+  capacity: {
+    top: 2,
+    right: 4,
+    borderRadius: 2,
+    width: 18,
+    height: 7,
+    backgroundColor: Color.wHITESPORTSMATCH,
+    position: "absolute",
+  },
+  battery: {
+    width: 25,
+    height: 12,
+    top: 0,
+  },
+  wifiIcon: {
+    width: 16,
+    height: 11,
+  },
+  cellularConnectionIcon: {
+    width: 17,
+    height: 11,
+  },
+  group: {
+    top: 17,
+    right: 15,
+    width: 68,
+    height: 12,
+    position: "absolute",
+  },
+  time: {
+    marginTop: -9.55,
+    top: "50%",
+    left: 4,
+    letterSpacing: 0,
+    lineHeight: 18,
+    fontWeight: "600",
+    fontFamily: FontFamily.openSansSemiBold,
+    textAlign: "center",
+    color: Color.wHITESPORTSMATCH,
+    fontSize: FontSize.t2TextSTANDARD_size,
+  },
+  starus: {
+    top: 10,
+    height: 24,
+    left: 15,
+  },
+  ofertasEmitidas: {
+    borderRadius: Border.br_21xl,
+    flex: 1,
+    height: 844,
+    overflow: "hidden",
+    width: "100%",
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+  },
+});
+
+export default OfertasEmitidas;
