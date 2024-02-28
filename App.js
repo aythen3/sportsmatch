@@ -1,106 +1,105 @@
-const Stack = createNativeStackNavigator();
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import LoginSwitch from "./screens/LoginSwitch";
-import Paso2Jugador from "./screens/Paso2Jugador";
-import EscogerDeporte from "./screens/EscogerDeporte";
-import Paso from "./screens/Paso";
-import Paso4Jugador from "./screens/Paso4Jugador";
-import Paso3Profesional from "./screens/Paso3Profesional";
-import Paso4Profesional from "./screens/Paso4Profesional";
-import EscogerDeporte1 from "./screens/EscogerDeporte1";
-import EscogerDeporte2 from "./screens/EscogerDeporte2";
-import ExplorarPersonaClubsFiltr from "./screens/ExplorarPersonaClubsFiltr";
-import ExplorarPersonasClubs from "./screens/ExplorarPersonasClubs";
-import ExplorarBuscar from "./screens/ExplorarBuscar";
-import MonetizarOfertaPRO from "./screens/MonetizarOfertaPRO";
-import BuscarOfertasDeportvas from "./screens/BuscarOfertasDeportvas";
-import TodasLasOfertas from "./screens/TodasLasOfertas";
-import MisOfertas from "./screens/MisOfertas";
-import TusMatchs from "./screens/TusMatchs";
-import TusMatchsDetalle from "./screens/TusMatchsDetalle";
-import TusMensajes from "./screens/TusMensajes";
-import TusNotificaciones from "./screens/TusNotificaciones";
-import NotificacinMatch from "./screens/NotificacinMatch";
-import EditarPerfil from "./screens/EditarPerfil";
-import CerrarSesin from "./screens/CerrarSesin";
-import EliminarCuenta from "./screens/EliminarCuenta";
-import MiSuscripcin from "./screens/MiSuscripcin";
-import MiSuscripcin1 from "./screens/MiSuscripcin1";
-import SILVER from "./screens/SILVER";
-import GOLD from "./screens/GOLD";
-import STAR from "./screens/STAR";
-import PerfilDatosPropioClub from "./screens/PerfilDatosPropioClub";
-import PerfilVisualizacinJugador from "./screens/PerfilVisualizacinJugador";
-import PerfilVisualizacinClubs from "./screens/PerfilVisualizacinClubs";
-import PerfilDatosVisualitzaciMa from "./screens/PerfilDatosVisualitzaciMa";
-import PerfilDatosVisualitzaciMa1 from "./screens/PerfilDatosVisualitzaciMa1";
-import PerfilFeedVisualitzaciJug from "./screens/PerfilFeedVisualitzaciJug";
-import PN0213202410517AM from "./screens/PN0213202410517AM";
-import ChatAbierto from "./screens/ChatAbierto";
-import SiguiendoUsuarios from "./screens/SiguiendoUsuarios";
-import SiguiendoUsuarios1 from "./screens/SiguiendoUsuarios1";
-import SiguiendoJugadores from "./screens/SiguiendoJugadores";
-import OfertasEmitidas from "./screens/OfertasEmitidas";
-import InscritosAMisOfertas from "./screens/InscritosAMisOfertas";
-import ExplorarClubs from "./screens/ExplorarClubs";
-import ExplorarClubsConFiltroPrem from "./screens/ExplorarClubsConFiltroPrem";
-import LoginSwitch1 from "./screens/LoginSwitch1";
-import PantallaInicio from "./screens/PantallaInicio";
-import IniciarSesin from "./screens/IniciarSesin";
-import Registrarse from "./screens/Registrarse";
-import TusMatchs1 from "./screens/TusMatchs1";
-import TusMatchsDetalle1 from "./screens/TusMatchsDetalle1";
-import TusMensajes1 from "./screens/TusMensajes1";
-import TusNotificaciones1 from "./screens/TusNotificaciones1";
-import EliminarOferta from "./screens/EliminarOferta";
-import EliminarOferta1 from "./screens/EliminarOferta1";
-import ChatAbierto1 from "./screens/ChatAbierto1";
-import CrearHighlight from "./screens/CrearHighlight";
-import PerfilFeedVisualitzaciClu from "./screens/PerfilFeedVisualitzaciClu";
-import PerfilFeedVisualitzaciClu1 from "./screens/PerfilFeedVisualitzaciClu1";
-import PerfilFeedVisualitzaciClu2 from "./screens/PerfilFeedVisualitzaciClu2";
-import Group from "./screens/Group";
-import Group1 from "./screens/Group1";
-import ConfigurarAnuncio from "./screens/ConfigurarAnuncio";
-import Premium from "./screens/Premium";
-import Paso3Jugador from "./screens/Paso3Jugador";
-import Paso1 from "./screens/Paso1";
-import Vector from "./screens/Vector";
-import PuntoConflictvoEl from "./screens/PuntoConflictvoEl";
-import CuandoElJugador from "./screens/CuandoElJugador";
-import LineVector from "./screens/LineVector";
-import Group2 from "./screens/Group2";
-import Group3 from "./screens/Group3";
-import Group4 from "./screens/Group4";
-import Group5 from "./screens/Group5";
-import AquSeMonetza from "./screens/AquSeMonetza";
-import AquSeMonetza1 from "./screens/AquSeMonetza1";
-import AquSeMonetza2 from "./screens/AquSeMonetza2";
-import AquSeHace from "./screens/AquSeHace";
-import AquSeHace1 from "./screens/AquSeHace1";
-import AquSeMonetza3 from "./screens/AquSeMonetza3";
-import DetallesDelUsuario from "./screens/DetallesDelUsuario";
-import DefineTusSkills from "./screens/DefineTusSkills";
-import CorreoElectrnico from "./screens/CorreoElectrnico";
-import Contrasea from "./screens/Contrasea";
-import MENUCLUB from "./screens/MENUCLUB";
+const Stack = createNativeStackNavigator()
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
+import LoginSwitch from './screens/LoginSwitch'
+import Paso2Jugador from './screens/Paso2Jugador'
+import Paso from './screens/Paso'
+import Paso4Jugador from './screens/Paso4Jugador'
+import Paso3Profesional from './screens/Paso3Profesional'
+import Paso4Profesional from './screens/Paso4Profesional'
+import EscogerDeporte1 from './screens/EscogerDeporte1'
+import EscogerDeporte2 from './screens/EscogerDeporte2'
+import ExplorarPersonaClubsFiltr from './screens/ExplorarPersonaClubsFiltr'
+import ExplorarPersonasClubs from './screens/ExplorarPersonasClubs'
+import ExplorarBuscar from './screens/ExplorarBuscar'
+import MonetizarOfertaPRO from './screens/MonetizarOfertaPRO'
+import BuscarOfertasDeportvas from './screens/BuscarOfertasDeportvas'
+import TodasLasOfertas from './screens/TodasLasOfertas'
+import MisOfertas from './screens/MisOfertas'
+import TusMatchs from './screens/TusMatchs'
+import TusMatchsDetalle from './screens/TusMatchsDetalle'
+import TusMensajes from './screens/TusMensajes'
+import TusNotificaciones from './screens/TusNotificaciones'
+import NotificacinMatch from './screens/NotificacinMatch'
+import EditarPerfil from './screens/EditarPerfil'
+import CerrarSesin from './screens/CerrarSesin'
+import EliminarCuenta from './screens/EliminarCuenta'
+import MiSuscripcin from './screens/MiSuscripcin'
+import MiSuscripcin1 from './screens/MiSuscripcin1'
+import SILVER from './screens/SILVER'
+import GOLD from './screens/GOLD'
+import STAR from './screens/STAR'
+import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
+import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
+import PerfilVisualizacinClubs from './screens/PerfilVisualizacinClubs'
+import PerfilDatosVisualitzaciMa from './screens/PerfilDatosVisualitzaciMa'
+import PerfilDatosVisualitzaciMa1 from './screens/PerfilDatosVisualitzaciMa1'
+import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
+import PN0213202410517AM from './screens/PN0213202410517AM'
+import ChatAbierto from './screens/ChatAbierto'
+import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
+import SiguiendoUsuarios1 from './screens/SiguiendoUsuarios1'
+import SiguiendoJugadores from './screens/SiguiendoJugadores'
+import OfertasEmitidas from './screens/OfertasEmitidas'
+import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
+import ExplorarClubs from './screens/ExplorarClubs'
+import ExplorarClubsConFiltroPrem from './screens/ExplorarClubsConFiltroPrem'
+import LoginSwitch1 from './screens/LoginSwitch1'
+import PantallaInicio from './screens/PantallaInicio'
+import IniciarSesin from './screens/IniciarSesin'
+import Registrarse from './screens/Registrarse'
+import TusMatchs1 from './screens/TusMatchs1'
+import TusMatchsDetalle1 from './screens/TusMatchsDetalle1'
+import TusMensajes1 from './screens/TusMensajes1'
+import TusNotificaciones1 from './screens/TusNotificaciones1'
+import EliminarOferta from './screens/EliminarOferta'
+import EliminarOferta1 from './screens/EliminarOferta1'
+import ChatAbierto1 from './screens/ChatAbierto1'
+import CrearHighlight from './screens/CrearHighlight'
+import PerfilFeedVisualitzaciClu from './screens/PerfilFeedVisualitzaciClu'
+import PerfilFeedVisualitzaciClu1 from './screens/PerfilFeedVisualitzaciClu1'
+import PerfilFeedVisualitzaciClu2 from './screens/PerfilFeedVisualitzaciClu2'
+import Group from './screens/Group'
+import Group1 from './screens/Group1'
+import ConfigurarAnuncio from './screens/ConfigurarAnuncio'
+import Premium from './screens/Premium'
+import Paso3Jugador from './screens/Paso3Jugador'
+import Paso1 from './screens/Paso1'
+import Vector from './screens/Vector'
+import PuntoConflictvoEl from './screens/PuntoConflictvoEl'
+import CuandoElJugador from './screens/CuandoElJugador'
+import LineVector from './screens/LineVector'
+import Group2 from './screens/Group2'
+import Group3 from './screens/Group3'
+import Group4 from './screens/Group4'
+import Group5 from './screens/Group5'
+import AquSeMonetza from './screens/AquSeMonetza'
+import AquSeMonetza1 from './screens/AquSeMonetza1'
+import AquSeMonetza2 from './screens/AquSeMonetza2'
+import AquSeHace from './screens/AquSeHace'
+import AquSeHace1 from './screens/AquSeHace1'
+import AquSeMonetza3 from './screens/AquSeMonetza3'
+import DetallesDelUsuario from './screens/DetallesDelUsuario'
+import DefineTusSkills from './screens/DefineTusSkills'
+import CorreoElectrnico from './screens/CorreoElectrnico'
+import Contrasea from './screens/Contrasea'
+import MENUCLUB from './screens/MENUCLUB'
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+// import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
+  const [hideSplashScreen, setHideSplashScreen] = React.useState(true)
 
   const [fontsLoaded, error] = useFonts({
-    "OpenSans-SemiBold": require("./assets/fonts/OpenSans-SemiBold.ttf"),
-    "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
-    "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
-  });
+    'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
+    'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
+    'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
+  })
 
   if (!fontsLoaded && !error) {
-    return null;
+    return null
   }
 
   return (
@@ -116,11 +115,6 @@ const App = () => {
             <Stack.Screen
               name="Paso2Jugador"
               component={Paso2Jugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EscogerDeporte"
-              component={EscogerDeporte}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -532,6 +526,6 @@ const App = () => {
         ) : null}
       </NavigationContainer>
     </>
-  );
-};
-export default App;
+  )
+}
+export default App
