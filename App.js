@@ -33,8 +33,7 @@ import STAR from './screens/STAR'
 import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
 import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
 import PerfilVisualizacinClubs from './screens/PerfilVisualizacinClubs'
-import PerfilDatosVisualitzaciMa from './screens/PerfilDatosVisualitzaciMa'
-import PerfilDatosVisualitzaciMa1 from './screens/PerfilDatosVisualitzaciMa1'
+import MiPerfil from './screens/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import PN0213202410517AM from './screens/PN0213202410517AM'
 import ChatAbierto from './screens/ChatAbierto'
@@ -263,13 +262,8 @@ const App = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="PerfilDatosVisualitzaciMa"
-              component={PerfilDatosVisualitzaciMa}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilDatosVisualitzaciMa1"
-              component={PerfilDatosVisualitzaciMa1}
+              name="MiPerfil"
+              component={MiPerfil}
               options={{ headerShown: false }}
             />
             <Stack.Screen

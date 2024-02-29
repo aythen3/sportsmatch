@@ -20,6 +20,14 @@ const Paso1 = () => {
     setSelectedRole(role)
   }
 
+  const handleNext = () => {
+    if (selectedRole === 'Profesional del deporte') {
+      navigation.navigate('Paso3Profesional')
+    } else {
+      navigation.navigate('Paso2Jugador')
+    }
+  }
+
   return (
     <ScrollView style={styles.paso6}>
       <Image
@@ -107,10 +115,7 @@ const Paso1 = () => {
             </TouchableOpacity>
           </View>
 
-          <Pressable
-            style={styles.siguiente}
-            onPress={() => navigation.navigate('Paso2Jugador')}
-          >
+          <Pressable style={styles.siguiente} onPress={handleNext}>
             <Text style={styles.siguiente1}>Siguiente</Text>
           </Pressable>
         </View>

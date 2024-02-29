@@ -1,17 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native'
-import { Color, FontFamily, FontSize } from '../../GlobalStyles'
+import { Color } from '../../GlobalStyles'
 
-const LugarDeResidenciaModal = ({ visible, closeModal, onSelectCiudad }) => {
-  const ciudades = [
-    'Barcelona',
-    'Madrid',
-    'Sevilla',
-    'Valencia',
-    'Murcia',
-    'Toledo'
-  ]
-
+const CustomModal = ({ visible, closeModal, onSelectItem, title, options }) => {
   return (
     <Modal
       animationType="slide"
@@ -21,17 +12,17 @@ const LugarDeResidenciaModal = ({ visible, closeModal, onSelectCiudad }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Selecciona tu género</Text>
-          {ciudades.map((ciudad, index) => (
+          <Text style={styles.modalTitle}>{title}</Text>
+          {options.map((item, index) => (
             <Pressable
               key={index}
               style={styles.optionButton}
               onPress={() => {
-                onSelectCiudad(ciudad)
+                onSelectItem(item)
                 closeModal()
               }}
             >
-              <Text style={styles.optionText}>{ciudad}</Text>
+              <Text style={styles.optionText}>{item}</Text>
             </Pressable>
           ))}
           <Pressable style={styles.cancelButton} onPress={closeModal}>
@@ -85,4 +76,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LugarDeResidenciaModal
+export default CustomModal
