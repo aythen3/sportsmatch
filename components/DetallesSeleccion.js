@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
-import GeneroModal from './modals/GeneroModal'
+import CustomModal from './modals/CustomModal'
 import AñoNacimientoModal from './modals/AñoNacimientoModal'
-import LugarDeResidenciaModal from './modals/LugarDeResidenciaModal'
 
 const SkillSeleccion = () => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -11,10 +10,18 @@ const SkillSeleccion = () => {
   const [añoNacimientoModalVisible, setAñoNacimientoModalVisible] =
     useState(false)
   const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState(null)
-  const [lugarDeResidenciaModalVisible, setLugarDeResidenciaModalVisible] =
-    useState(false)
-  const [selectedLugarDeResidencia, setSelectedLugarDeResidencia] =
-    useState(null)
+  const [cityModal, setCityModal] = useState(false)
+  const [selectedCity, setSelectedCity] = useState(null)
+
+  const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
+  const opcionesResidencia = [
+    'Barcelona',
+    'Madrid',
+    'Sevilla',
+    'Valencia',
+    'Murcia',
+    'Toledo'
+  ]
 
   const openAñoNacimientoModal = () => {
     setAñoNacimientoModalVisible(true)
@@ -34,22 +41,18 @@ const SkillSeleccion = () => {
 
   const closeModal = () => {
     setModalVisible(false)
+    setCityModal(false)
   }
 
   const handleSelectGenero = (genero) => {
     setSelectedGenero(genero)
   }
 
-  const openLugarDeResidenciaModal = () => {
-    setLugarDeResidenciaModalVisible(true)
+  const openCityModal = () => {
+    setCityModal(true)
   }
-
-  const closeLugarDeResidenciaModal = () => {
-    setLugarDeResidenciaModalVisible(false)
-  }
-
-  const handleSelectLugarDeResidencia = (lugar) => {
-    setSelectedLugarDeResidencia(lugar)
+  const handleSelectCity = (city) => {
+    setSelectedCity(city)
   }
 
   return (
@@ -57,10 +60,12 @@ const SkillSeleccion = () => {
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Sexo</Text>
         <Pressable onPress={openModal} style={styles.rectanguloBorder}>
-          <GeneroModal
+          <CustomModal
             visible={modalVisible}
             closeModal={closeModal}
-            onSelectGenero={handleSelectGenero}
+            onSelectItem={handleSelectGenero}
+            title="Selecciona tu opción"
+            options={opcionesGenero}
           />
           {selectedGenero && (
             <Text style={styles.atributoInner}>{selectedGenero}</Text>
@@ -84,20 +89,17 @@ const SkillSeleccion = () => {
         </Pressable>
       </View>
       <View style={styles.formularioCategoria}>
-        <Text style={styles.atributo}>Lugar de residencia</Text>
-        <Pressable
-          onPress={openLugarDeResidenciaModal}
-          style={styles.rectanguloBorder}
-        >
-          <LugarDeResidenciaModal
-            visible={lugarDeResidenciaModalVisible}
-            closeModal={closeLugarDeResidenciaModal}
-            onSelectCiudad={handleSelectLugarDeResidencia}
+        <Text style={styles.atributo}>Lugar de Residencia</Text>
+        <Pressable onPress={openCityModal} style={styles.rectanguloBorder}>
+          <CustomModal
+            visible={cityModal}
+            closeModal={closeModal}
+            onSelectItem={handleSelectCity}
+            title="Selecciona tu opción"
+            options={opcionesResidencia}
           />
-          {selectedLugarDeResidencia && (
-            <Text style={styles.atributoInner}>
-              {selectedLugarDeResidencia}
-            </Text>
+          {selectedCity && (
+            <Text style={styles.atributoInner}>{selectedCity}</Text>
           )}
         </Pressable>
       </View>

@@ -1,14 +1,26 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
-import CategoriaModal from './modals/CategoriaModal'
-import PosicionModal from './modals/PosicionModal'
+import CustomModal from './modals/CustomModal'
 
 const SkillSeleccion = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedEdad, setSelectedEdad] = useState(null)
+  const [selectedCategoria, setSelectedCategoria] = useState(null)
   const [positionModalVisible, setPositionModalVisible] = useState(false)
   const [selectedPosition, setSelectedPosition] = useState(null)
+
+  const opcionesCategoria = [
+    'Escuela (4-6 años)',
+    'Prebenjamín (6-8 años)',
+    'Benjamín (8-10 años)',
+    'Alevín (10-12 años)',
+    'Infantil (12-14 años)',
+    'Cadete (14-16 años)',
+    'Juvenil (16-18 años)',
+    'Senior (+18 años)',
+    'Veteranos (+30 años)'
+  ]
+  const opcionesPosicion = ['Pase', 'Resistencia', 'Disparo', 'Regate']
 
   const openModal = () => {
     setModalVisible(true)
@@ -23,8 +35,8 @@ const SkillSeleccion = () => {
     setPositionModalVisible(false)
   }
 
-  const handleSelectEdad = (edad) => {
-    setSelectedEdad(edad)
+  const handleSelectCategoria = (edad) => {
+    setSelectedCategoria(edad)
   }
 
   const handleSelectPosition = (posicion) => {
@@ -72,13 +84,15 @@ const SkillSeleccion = () => {
         <View style={styles.formularioCategoria}>
           <Text style={styles.atributo}>Categoría</Text>
           <Pressable onPress={openModal} style={styles.rectanguloBorder}>
-            <CategoriaModal
+            <CustomModal
               visible={modalVisible}
               closeModal={closeModal}
-              onSelectEdad={handleSelectEdad}
+              onSelectItem={handleSelectCategoria}
+              title="Selecciona tu opción"
+              options={opcionesCategoria}
             />
-            {selectedEdad && (
-              <Text style={styles.atributoInner}>{selectedEdad}</Text>
+            {selectedCategoria && (
+              <Text style={styles.atributoInner}>{selectedCategoria}</Text>
             )}
           </Pressable>
         </View>
@@ -88,10 +102,12 @@ const SkillSeleccion = () => {
             onPress={openPositionModal}
             style={styles.rectanguloBorder}
           >
-            <PosicionModal
+            <CustomModal
               visible={positionModalVisible}
               closeModal={closeModal}
-              onSelectPosition={handleSelectPosition}
+              onSelectItem={handleSelectPosition}
+              title="Selecciona tu opción"
+              options={opcionesPosicion}
             />
             {selectedPosition && (
               <Text style={styles.atributoInner}>{selectedPosition}</Text>

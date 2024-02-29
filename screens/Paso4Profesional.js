@@ -1,380 +1,239 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Text, View } from "react-native";
-import { FontSize, Color, FontFamily, Border, Padding } from "../GlobalStyles";
+import React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
+import DetallesSeleccion from '../components/DetallesSeleccion'
 
 const Paso4Profesional = () => {
+  const navigation = useNavigation()
+
   return (
-    <View style={styles.paso4Profesional}>
+    <ScrollView style={styles.paso6}>
       <Image
-        style={styles.paso4ProfesionalChild}
+        style={styles.imagenDeFondo}
         contentFit="cover"
-        source={require("../assets/group-2411.png")}
+        source={require('../assets/imagen-de-fondo1.png')}
       />
-      <View style={styles.atrsParent}>
-        <Text style={styles.atrs}>Atrás</Text>
-        <Image
-          style={styles.coolicon}
-          contentFit="cover"
-          source={require("../assets/coolicon.png")}
-        />
-      </View>
-      <Text style={styles.unosDetallesSobre}>Unos detalles sobre tí</Text>
-      <Text style={[styles.paso4, styles.subirLayout]}>Paso 4</Text>
-      <View style={[styles.paso4ProfesionalItem, styles.paso4Layout]} />
-      <View style={[styles.paso4ProfesionalInner, styles.lineViewLayout]} />
-      <View style={[styles.lineView, styles.lineViewLayout]} />
-      <View style={[styles.paso4ProfesionalChild1, styles.paso4Layout]} />
-      <View style={styles.loremIpsum}>
-        <View style={styles.loremIpsum1}>
-          <Text style={[styles.aceptar, styles.subirTypo]}>Siguiente</Text>
-        </View>
-      </View>
-      <Image
-        style={styles.ellipseIcon}
-        contentFit="cover"
-        source={require("../assets/circulo.png")}
-      />
-      <View style={[styles.rectangleView, styles.rectangleViewLayout]} />
-      <View
-        style={[styles.paso4ProfesionalChild2, styles.rectangleViewLayout]}
-      />
-      <Text style={[styles.subirFotoDe, styles.subirTypo]}>
-        Subir foto de portada
-      </Text>
-      <Text style={[styles.subirFotoDe1, styles.subirTypo]}>
-        Subir foto de perfil
-      </Text>
-      <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
-      <Text style={[styles.max1mbJpeg1, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
-      <View style={styles.paso4ProfesionalChild3} />
-      <Image
-        style={styles.lineIcon}
-        contentFit="cover"
-        source={require("../assets/line-9.png")}
-      />
-      <View style={styles.groupChildPosition}>
-        <View style={[styles.groupChild, styles.groupChildPosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={styles.border} />
+      <View style={styles.contenido}>
+        <View style={styles.headerSteps}>
+          <Pressable
+            style={styles.botonAtras}
+            onPress={() => navigation.goBack()}
+          >
             <Image
-              style={[styles.capIcon, styles.batteryPosition]}
+              style={styles.coolicon}
               contentFit="cover"
-              source={require("../assets/cap.png")}
+              source={require('../assets/coolicon1.png')}
             />
-            <View style={styles.capacity} />
+            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+          </Pressable>
+          <View style={styles.stepseccion}>
+            <View>
+              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 4</Text>
+              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
+                Unos detalles sobre ti
+              </Text>
+            </View>
+            <View style={styles.linias}>
+              <View style={styles.liniaLayout1} />
+              <View style={styles.liniaLayout1} />
+              <View style={styles.liniaLayout1} />
+              <View style={styles.liniaLayout2} />
+            </View>
           </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection3.png")}
-          />
         </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
+
+        <View>
+          <View style={styles.headersubirImagenesPerfil}>
+            <Image
+              style={styles.circuloIcon}
+              contentFit="cover"
+              source={require('../assets/circulo.png')}
+            />
+            <View style={styles.botonSubirImagen}>
+              <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
+                Subir foto de perfil
+              </Text>
+            </View>
+
+            <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
+              Max 1mb, jpeg
+            </Text>
+          </View>
+          <View style={styles.rectangulobotonpesoMaximo}>
+            <View style={styles.rectangulo} />
+            <View style={styles.botonSubirImagen}>
+              <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
+                Subir foto de portada
+              </Text>
+            </View>
+            <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
+              Max 1mb, jpeg
+            </Text>
+          </View>
         </View>
+
+        <Pressable
+          style={styles.siguiente}
+          onPress={() => navigation.navigate('SiguiendoUsuarios')}
+        >
+          <Text style={styles.siguiente1}>Siguiente</Text>
+        </Pressable>
       </View>
-    </View>
-  );
-};
+    </ScrollView>
+  )
+}
 
 const styles = StyleSheet.create({
-  subirLayout: {
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    position: "absolute",
+  atrsTypo: {
+    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'center'
   },
-  paso4Layout: {
-    height: 3,
-    width: 80,
-    borderTopWidth: 3,
-    top: 166,
-    borderStyle: "solid",
-    position: "absolute",
+  jugadorTypo1: {
+    fontWeight: '500',
+    color: Color.wHITESPORTSMATCH
   },
-  lineViewLayout: {
-    width: 81,
+  liniaLayout1: {
     height: 3,
+    width: '20%',
     borderTopWidth: 3,
+    top: -1,
     borderColor: Color.colorDimgray_100,
-    borderStyle: "solid",
-    top: 166,
-    position: "absolute",
+    borderStyle: 'solid'
   },
-  subirTypo: {
-    color: Color.bLACK1SPORTSMATCH,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+  liniaLayout2: {
+    height: 3,
+    width: '20%',
+    borderTopWidth: 3,
+    top: -1,
+    borderColor: Color.bALONCESTO,
+    borderStyle: 'solid'
   },
-  rectangleViewLayout: {
-    height: 26,
-    backgroundColor: Color.bALONCESTO,
-    borderRadius: Border.br_81xl,
-    position: "absolute",
+  imagenDeFondo: {
+    position: 'absolute',
+    height: '110%',
+    width: '100%',
+    zIndex: 0
   },
-  max1mbTypo: {
-    lineHeight: 14,
-    fontSize: FontSize.t4TEXTMICRO_size,
-    left: 156,
-    color: Color.wHITESPORTSMATCH,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
-    position: "absolute",
-  },
-  groupChildPosition: {
-    height: 34,
-    width: 390,
-    left: 0,
-    top: 0,
-    position: "absolute",
-  },
-  batteryPosition: {
-    right: 0,
-    position: "absolute",
-  },
-  timeLayout: {
-    width: 61,
-    position: "absolute",
-  },
-  paso4ProfesionalChild: {
-    top: -78,
-    left: -1821,
-    width: 3822,
-    height: 996,
-    opacity: 0.2,
-    position: "absolute",
+  coolicon: {
+    width: 9,
+    height: 15
   },
   atrs: {
     color: Color.gREY2SPORTSMATCH,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size,
-    left: 14,
-    top: 0,
-    position: "absolute",
+    marginLeft: 5,
+    textAlign: 'center',
+    fontSize: FontSize.t2TextSTANDARD_size
   },
-  coolicon: {
-    height: "83.33%",
-    width: "16.92%",
-    top: "11.11%",
-    right: "83.08%",
-    bottom: "5.56%",
-    left: "0%",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    position: "absolute",
-    overflow: "hidden",
+  botonAtras: {
+    paddingHorizontal: Padding.p_xl,
+    paddingVertical: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    right: '10%',
+    marginBottom: '5%'
   },
-  atrsParent: {
-    top: 77,
-    left: 323,
-    width: 52,
-    height: 18,
-    position: "absolute",
+  paso1: {
+    fontSize: FontSize.t1TextSMALL_size,
+    lineHeight: 17,
+    color: Color.bALONCESTO,
+    textAlign: 'center'
   },
-  unosDetallesSobre: {
-    top: 113,
+  escogeTuRol: {
+    alignSelf: 'stretch',
     fontSize: FontSize.size_9xl,
     lineHeight: 32,
-    fontWeight: "500",
-    width: 390,
     color: Color.wHITESPORTSMATCH,
-    left: 0,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
-    position: "absolute",
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
-  paso4: {
-    top: 98,
-    color: Color.bALONCESTO,
-    width: 393,
-    left: 0,
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+  linias: {
+    padding: Padding.p_3xs,
+    marginTop: 20,
+    flexDirection: 'row',
+    gap: 20
   },
-  paso4ProfesionalItem: {
-    borderColor: Color.colorDimgray_100,
-    height: 3,
-    width: 80,
-    borderTopWidth: 3,
-    top: 166,
-    left: 14,
+  stepseccion: {
+    marginTop: 3,
+    alignItems: 'center'
   },
-  paso4ProfesionalInner: {
-    left: 108,
+  headerSteps: {
+    alignItems: 'flex-end'
   },
-  lineView: {
-    left: 202,
-  },
-  paso4ProfesionalChild1: {
-    left: 297,
-    borderColor: Color.bALONCESTO,
-    height: 3,
-    width: 80,
-    borderTopWidth: 3,
-    top: 166,
-  },
-  aceptar: {
-    fontSize: FontSize.button_size,
-    fontWeight: "700",
-  },
-  loremIpsum1: {
-    width: 360,
-    alignItems: "center",
-    justifyContent: "center",
+  siguiente: {
+    justifyContent: 'center',
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    flexDirection: "row",
+    top: '4%'
   },
-  loremIpsum: {
-    marginLeft: -180,
-    top: 749,
-    flexDirection: "row",
-    left: "50%",
-    position: "absolute",
+  siguiente1: {
+    fontWeight: '700',
+    color: Color.bLACK1SPORTSMATCH,
+    fontSize: FontSize.button_size,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
-  ellipseIcon: {
-    top: 234,
-    left: 135,
+  contenido: {
+    top: 77,
+    alignItems: 'center',
+    left: 0,
+    height: '150%'
+  },
+  paso6: {
+    flex: 1,
+    overflow: 'hidden',
+    width: '100%',
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  },
+  headersubirImagenesPerfil: {
+    alignItems: 'center',
+    marginTop: '10%'
+  },
+  circuloIcon: {
     width: 117,
-    height: 117,
-    position: "absolute",
+    height: 117
   },
-  rectangleView: {
-    top: 586,
-    left: 113,
-    width: 162,
-  },
-  paso4ProfesionalChild2: {
-    top: 366,
-    left: 119,
-    width: 150,
+  botonSubirImagen: {
+    paddingHorizontal: Padding.p_mid,
+    paddingVertical: Padding.p_9xs,
+    backgroundColor: Color.bALONCESTO,
+    borderRadius: Border.br_81xl,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    marginTop: 15,
+    alignItems: 'center'
   },
   subirFotoDe: {
-    top: 591,
-    left: 127,
+    color: Color.wHITESPORTSMATCH
+  },
+  paso4Typo: {
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size,
-    position: "absolute",
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
-  subirFotoDe1: {
-    top: 371,
-    left: 136,
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    position: "absolute",
+  pesoMaximo: {
+    fontSize: FontSize.t4TEXTMICRO_size,
+    lineHeight: 14,
+    marginTop: 7,
+    color: Color.wHITESPORTSMATCH,
+    textAlign: 'center'
   },
-  max1mbJpeg: {
-    top: 618,
+  rectangulobotonpesoMaximo: {
+    height: 199,
+    marginTop: 21,
+    alignItems: 'center'
   },
-  max1mbJpeg1: {
-    top: 398,
-  },
-  paso4ProfesionalChild3: {
-    top: 433,
+  rectangulo: {
     borderRadius: Border.br_10xs,
     backgroundColor: Color.colorGainsboro,
-    width: 359,
-    height: 138,
-    left: 14,
-    position: "absolute",
-  },
-  lineIcon: {
-    marginLeft: -74,
-    top: 831,
-    width: 148,
-    left: "50%",
-    maxHeight: "100%",
-    position: "absolute",
-  },
-  groupChild: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    height: 34,
-  },
-  border: {
-    right: 2,
-    borderRadius: 3,
-    borderColor: Color.colorGhostwhite,
-    borderWidth: 1.1,
-    width: 22,
-    opacity: 0.35,
-    height: 12,
-    borderStyle: "solid",
-    top: 0,
-    position: "absolute",
-  },
-  capIcon: {
-    top: 4,
-    width: 1,
-    height: 4,
-    opacity: 0.4,
-  },
-  capacity: {
-    top: 2,
-    right: 4,
-    borderRadius: 2,
-    width: 18,
-    height: 7,
-    backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
-  },
-  battery: {
-    width: 25,
-    height: 12,
-    top: 0,
-    right: 0,
-  },
-  wifiIcon: {
-    width: 16,
-    height: 11,
-  },
-  cellularConnectionIcon: {
-    width: 17,
-    height: 11,
-  },
-  group: {
-    top: 17,
-    right: 15,
-    width: 68,
-    height: 12,
-    position: "absolute",
-  },
-  time: {
-    marginTop: -9.55,
-    top: "50%",
-    left: 4,
-    letterSpacing: 0,
-    lineHeight: 18,
-    fontWeight: "600",
-    fontFamily: FontFamily.openSansSemiBold,
-    color: Color.wHITESPORTSMATCH,
-    width: 61,
-    textAlign: "center",
-    fontSize: FontSize.t2TextSTANDARD_size,
-  },
-  starus: {
-    top: 10,
-    left: 15,
-    height: 24,
-  },
-  paso4Profesional: {
-    borderRadius: Border.br_21xl,
-    flex: 1,
-    width: "100%",
-    height: 844,
-    overflow: "hidden",
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    width: '200%',
+    flex: 1
+  }
+})
 
-export default Paso4Profesional;
+export default Paso4Profesional
