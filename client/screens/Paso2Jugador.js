@@ -1,12 +1,31 @@
 import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import DeportesSeleccion from '../components/DeportesSeleccion'
+import { useSelector } from 'react-redux'
 
 const Paso2Jugador = () => {
   const navigation = useNavigation()
+  const { isSportMan } = useSelector((state) => state.users)
+  // const router = useRoute()
+
+  // const { role } = router.params
+
+  // console.log('rolll', role)
+
+  const handleNavigation = () => {
+    if (isSportMan === true) {
+      // if (role === 'Profesional del deporte') {
+      //   navigation.navigate('Paso4Profesional')
+      // } else {
+      navigation.navigate('Paso3Jugador')
+      // }
+    } else {
+      navigation.navigate('EscogerDeporte2')
+    }
+  }
 
   return (
     <ScrollView style={styles.paso6}>
@@ -45,10 +64,7 @@ const Paso2Jugador = () => {
         </View>
         <DeportesSeleccion />
 
-        <Pressable
-          style={styles.siguiente}
-          onPress={() => navigation.navigate('Paso3Jugador')}
-        >
+        <Pressable style={styles.siguiente} onPress={() => handleNavigation()}>
           <Text style={styles.siguiente1}>Siguiente</Text>
         </Pressable>
       </View>
@@ -149,14 +165,17 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   contenido: {
-    top: 77,
+    // top: 77,
+    // justifyContent: 'center',
+    marginTop: 50,
     alignItems: 'center',
-    left: 0,
-    height: '160%'
+    // left: 0
+    height: '100%',
+    marginBottom: 130
   },
   paso6: {
     flex: 1,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

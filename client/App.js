@@ -86,6 +86,8 @@ import Contrasea from './screens/Contrasea'
 import MENUCLUB from './screens/MENUCLUB'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { Provider } from 'react-redux'
+import { store } from './redux/store'
 // import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
@@ -103,422 +105,424 @@ const App = () => {
 
   return (
     <>
-      <NavigationContainer>
-        {hideSplashScreen ? (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="LoginSwitch"
-              component={LoginSwitch}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso2Jugador"
-              component={Paso2Jugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso"
-              component={Paso}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso4Jugador"
-              component={Paso4Jugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso3Profesional"
-              component={Paso3Profesional}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso4Profesional"
-              component={Paso4Profesional}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EscogerDeporte1"
-              component={EscogerDeporte1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EscogerDeporte2"
-              component={EscogerDeporte2}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ExplorarPersonaClubsFiltr"
-              component={ExplorarPersonaClubsFiltr}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ExplorarPersonasClubs"
-              component={ExplorarPersonasClubs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ExplorarBuscar"
-              component={ExplorarBuscar}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MonetizarOfertaPRO"
-              component={MonetizarOfertaPRO}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="BuscarOfertasDeportvas"
-              component={BuscarOfertasDeportvas}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TodasLasOfertas"
-              component={TodasLasOfertas}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MisOfertas"
-              component={MisOfertas}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMatchs"
-              component={TusMatchs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMatchsDetalle"
-              component={TusMatchsDetalle}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMensajes"
-              component={TusMensajes}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusNotificaciones"
-              component={TusNotificaciones}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="NotificacinMatch"
-              component={NotificacinMatch}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EditarPerfil"
-              component={EditarPerfil}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CerrarSesin"
-              component={CerrarSesin}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EliminarCuenta"
-              component={EliminarCuenta}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MiSuscripcin"
-              component={MiSuscripcin}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MiSuscripcin1"
-              component={MiSuscripcin1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SILVER"
-              component={SILVER}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="GOLD"
-              component={GOLD}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="STAR"
-              component={STAR}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilDatosPropioClub"
-              component={PerfilDatosPropioClub}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilVisualizacinJugador"
-              component={PerfilVisualizacinJugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilVisualizacinClubs"
-              component={PerfilVisualizacinClubs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MiPerfil"
-              component={MiPerfil}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilFeedVisualitzaciJug"
-              component={PerfilFeedVisualitzaciJug}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PN0213202410517AM"
-              component={PN0213202410517AM}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ChatAbierto"
-              component={ChatAbierto}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SiguiendoUsuarios"
-              component={SiguiendoUsuarios}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SiguiendoUsuarios1"
-              component={SiguiendoUsuarios1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SiguiendoJugadores"
-              component={SiguiendoJugadores}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="OfertasEmitidas"
-              component={OfertasEmitidas}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="InscritosAMisOfertas"
-              component={InscritosAMisOfertas}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ExplorarClubs"
-              component={ExplorarClubs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ExplorarClubsConFiltroPrem"
-              component={ExplorarClubsConFiltroPrem}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LoginSwitch1"
-              component={LoginSwitch1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PantallaInicio"
-              component={PantallaInicio}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="IniciarSesin"
-              component={IniciarSesin}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Registrarse"
-              component={Registrarse}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMatchs1"
-              component={TusMatchs1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMatchsDetalle1"
-              component={TusMatchsDetalle1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusMensajes1"
-              component={TusMensajes1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TusNotificaciones1"
-              component={TusNotificaciones1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EliminarOferta"
-              component={EliminarOferta}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EliminarOferta1"
-              component={EliminarOferta1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ChatAbierto1"
-              component={ChatAbierto1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CrearHighlight"
-              component={CrearHighlight}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilFeedVisualitzaciClu"
-              component={PerfilFeedVisualitzaciClu}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilFeedVisualitzaciClu1"
-              component={PerfilFeedVisualitzaciClu1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PerfilFeedVisualitzaciClu2"
-              component={PerfilFeedVisualitzaciClu2}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group"
-              component={Group}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group1"
-              component={Group1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ConfigurarAnuncio"
-              component={ConfigurarAnuncio}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Premium"
-              component={Premium}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso3Jugador"
-              component={Paso3Jugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Paso1"
-              component={Paso1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Vector"
-              component={Vector}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PuntoConflictvoEl"
-              component={PuntoConflictvoEl}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CuandoElJugador"
-              component={CuandoElJugador}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LineVector"
-              component={LineVector}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group2"
-              component={Group2}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group3"
-              component={Group3}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group4"
-              component={Group4}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Group5"
-              component={Group5}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeMonetza"
-              component={AquSeMonetza}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeMonetza1"
-              component={AquSeMonetza1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeMonetza2"
-              component={AquSeMonetza2}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeHace"
-              component={AquSeHace}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeHace1"
-              component={AquSeHace1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AquSeMonetza3"
-              component={AquSeMonetza3}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="DetallesDelUsuario"
-              component={DetallesDelUsuario}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="DefineTusSkills"
-              component={DefineTusSkills}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CorreoElectrnico"
-              component={CorreoElectrnico}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Contrasea"
-              component={Contrasea}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MENUCLUB"
-              component={MENUCLUB}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        ) : null}
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          {hideSplashScreen ? (
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen
+                name="LoginSwitch"
+                component={LoginSwitch}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso2Jugador"
+                component={Paso2Jugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso"
+                component={Paso}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso4Jugador"
+                component={Paso4Jugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso3Profesional"
+                component={Paso3Profesional}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso4Profesional"
+                component={Paso4Profesional}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EscogerDeporte1"
+                component={EscogerDeporte1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EscogerDeporte2"
+                component={EscogerDeporte2}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ExplorarPersonaClubsFiltr"
+                component={ExplorarPersonaClubsFiltr}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ExplorarPersonasClubs"
+                component={ExplorarPersonasClubs}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ExplorarBuscar"
+                component={ExplorarBuscar}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MonetizarOfertaPRO"
+                component={MonetizarOfertaPRO}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="BuscarOfertasDeportvas"
+                component={BuscarOfertasDeportvas}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TodasLasOfertas"
+                component={TodasLasOfertas}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MisOfertas"
+                component={MisOfertas}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMatchs"
+                component={TusMatchs}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMatchsDetalle"
+                component={TusMatchsDetalle}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMensajes"
+                component={TusMensajes}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusNotificaciones"
+                component={TusNotificaciones}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="NotificacinMatch"
+                component={NotificacinMatch}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EditarPerfil"
+                component={EditarPerfil}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CerrarSesin"
+                component={CerrarSesin}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EliminarCuenta"
+                component={EliminarCuenta}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MiSuscripcin"
+                component={MiSuscripcin}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MiSuscripcin1"
+                component={MiSuscripcin1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SILVER"
+                component={SILVER}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="GOLD"
+                component={GOLD}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="STAR"
+                component={STAR}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilDatosPropioClub"
+                component={PerfilDatosPropioClub}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilVisualizacinJugador"
+                component={PerfilVisualizacinJugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilVisualizacinClubs"
+                component={PerfilVisualizacinClubs}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MiPerfil"
+                component={MiPerfil}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilFeedVisualitzaciJug"
+                component={PerfilFeedVisualitzaciJug}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PN0213202410517AM"
+                component={PN0213202410517AM}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ChatAbierto"
+                component={ChatAbierto}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SiguiendoUsuarios"
+                component={SiguiendoUsuarios}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SiguiendoUsuarios1"
+                component={SiguiendoUsuarios1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SiguiendoJugadores"
+                component={SiguiendoJugadores}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="OfertasEmitidas"
+                component={OfertasEmitidas}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="InscritosAMisOfertas"
+                component={InscritosAMisOfertas}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ExplorarClubs"
+                component={ExplorarClubs}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ExplorarClubsConFiltroPrem"
+                component={ExplorarClubsConFiltroPrem}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="LoginSwitch1"
+                component={LoginSwitch1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PantallaInicio"
+                component={PantallaInicio}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="IniciarSesin"
+                component={IniciarSesin}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Registrarse"
+                component={Registrarse}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMatchs1"
+                component={TusMatchs1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMatchsDetalle1"
+                component={TusMatchsDetalle1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusMensajes1"
+                component={TusMensajes1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="TusNotificaciones1"
+                component={TusNotificaciones1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EliminarOferta"
+                component={EliminarOferta}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EliminarOferta1"
+                component={EliminarOferta1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ChatAbierto1"
+                component={ChatAbierto1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CrearHighlight"
+                component={CrearHighlight}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilFeedVisualitzaciClu"
+                component={PerfilFeedVisualitzaciClu}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilFeedVisualitzaciClu1"
+                component={PerfilFeedVisualitzaciClu1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PerfilFeedVisualitzaciClu2"
+                component={PerfilFeedVisualitzaciClu2}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group"
+                component={Group}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group1"
+                component={Group1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ConfigurarAnuncio"
+                component={ConfigurarAnuncio}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Premium"
+                component={Premium}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso3Jugador"
+                component={Paso3Jugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Paso1"
+                component={Paso1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Vector"
+                component={Vector}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PuntoConflictvoEl"
+                component={PuntoConflictvoEl}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CuandoElJugador"
+                component={CuandoElJugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="LineVector"
+                component={LineVector}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group2"
+                component={Group2}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group3"
+                component={Group3}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group4"
+                component={Group4}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Group5"
+                component={Group5}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeMonetza"
+                component={AquSeMonetza}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeMonetza1"
+                component={AquSeMonetza1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeMonetza2"
+                component={AquSeMonetza2}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeHace"
+                component={AquSeHace}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeHace1"
+                component={AquSeHace1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AquSeMonetza3"
+                component={AquSeMonetza3}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="DetallesDelUsuario"
+                component={DetallesDelUsuario}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="DefineTusSkills"
+                component={DefineTusSkills}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CorreoElectrnico"
+                component={CorreoElectrnico}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Contrasea"
+                component={Contrasea}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="MENUCLUB"
+                component={MENUCLUB}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          ) : null}
+        </NavigationContainer>
+      </Provider>
     </>
   )
 }

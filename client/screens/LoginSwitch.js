@@ -10,13 +10,22 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
+import { useDispatch } from 'react-redux'
+import { setIsSpotMan } from '../redux/slices/users.slices'
 
 const LoginSwitch = () => {
+  const dispatch = useDispatch()
   const navigation = useNavigation()
 
   const [isEnabled, setIsEnabled] = useState(false)
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
+  const toggleSwitch = () => {
+    setIsEnabled((previousState) => !previousState)
+    dispatch(setIsSpotMan(isEnabled))
+  }
+
+  console.log('Enable?', isEnabled)
+
   return (
     <ScrollView style={styles.loginSwitch}>
       <Image
@@ -207,8 +216,8 @@ const styles = StyleSheet.create({
   icon: {
     height: '34%',
     // backgroundColor: 'red',
-    width: '48%',
-    left: '2%'
+    width: '52%',
+    left: '4%'
   },
   groupChild: {
     borderColor: Color.gREY2SPORTSMATCH,
@@ -311,7 +320,8 @@ const styles = StyleSheet.create({
     marginTop: 21
   },
   frameParent: {
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingBottom: 100
     // left: 0
     // height: '100%'
   },
