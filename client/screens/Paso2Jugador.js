@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import DeportesSeleccion from '../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
+import Lines from '../components/Lines'
 
 const Paso2Jugador = () => {
   const navigation = useNavigation()
@@ -54,12 +55,8 @@ const Paso2Jugador = () => {
                 Escoge tu deporte
               </Text>
             </View>
-            <View style={styles.linias}>
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout2} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-            </View>
+
+            <Lines />
           </View>
         </View>
         <DeportesSeleccion />

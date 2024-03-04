@@ -19,7 +19,7 @@ const EscogerDeporte2 = () => {
         contentFit="cover"
         source={require('../assets/group-2412.png')}
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.atrsParent}>
           <Image
             style={styles.coolicon}
