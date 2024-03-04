@@ -29,43 +29,9 @@ const Paso2Jugador = () => {
   }
 
   return (
-    <ScrollView style={styles.paso6}>
-      <Image
-        style={styles.imagenDeFondo}
-        contentFit="cover"
-        source={require('../assets/imagen-de-fondo3.png')}
-      />
-      <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
-          <Pressable
-            style={styles.botonAtras}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../assets/coolicon1.png')}
-            />
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-          <View style={styles.stepseccion}>
-            <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 2</Text>
-              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
-                Escoge tu deporte
-              </Text>
-            </View>
-
-            <Lines />
-          </View>
-        </View>
-        <DeportesSeleccion />
-
-        <Pressable style={styles.siguiente} onPress={() => handleNavigation()}>
-          <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+    <View style={styles.paso6}>
+      <DeportesSeleccion />
+    </View>
   )
 }
 
@@ -171,10 +137,10 @@ const styles = StyleSheet.create({
     marginBottom: 130
   },
   paso6: {
-    flex: 1,
+    // flex: 1,
     // overflow: 'hidden',
-    width: '100%',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    // width: '100%',
+    // backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 

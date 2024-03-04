@@ -10,59 +10,39 @@ import {
 import { FontFamily, FontSize, Color, Padding, Border } from '../GlobalStyles'
 import Lines from '../components/Lines'
 import Input from '../components/Input'
+import { useNavigation } from '@react-navigation/core'
 
 const EscogerDeporte2 = () => {
-  return (
-    <View style={styles.escogerDeporte}>
-      <Image
-        style={styles.escogerDeporteChild}
-        contentFit="cover"
-        source={require('../assets/group-2412.png')}
-      />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.atrsParent}>
-          <Image
-            style={styles.coolicon}
-            contentFit="cover"
-            source={require('../assets/coolicon.png')}
-          />
-          <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-        </View>
-        <View style={{ marginTop: 100 }}>
-          <Text style={styles.paso2}>Paso 2</Text>
-          <Text style={styles.detallesDelClub}>Detalles del club</Text>
-        </View>
-        <Lines />
-        <View style={{ marginBottom: 60 }}>
-          <View style={{ height: 800 }}>
-            <Input title="Nombre de club" placeholderText="union" />
-            <Input
-              title="Poblacion"
-              placeholderText="union"
-              isAccordeon={true}
-            />
-            <Input title="Pais" placeholderText="España" isAccordeon={true} />
-            <Input
-              title="Nombre del estadio, campo o pavellón"
-              placeholderText="Palau Municipal d’Esports Josep Mora"
-              isAccordeon={true}
-            />
-            <Input
-              title="Año de fundacion"
-              placeholderText="1920"
-              isAccordeon={true}
-            />
-            <Input title="Aforo" placeholderText="300 personas" />
+  const navigation = useNavigation()
 
-            <Input
-              title="Descripbe tu club"
-              placeholderText="lkj lskfj lsdkfj lsdkfj hjk sdfhjksdjhf shdfjksjdhf shdfjks dfsdfkjh df
+  return (
+    <View>
+      <View>
+        <View>
+          <Input title="Nombre de club" placeholderText="union" />
+          <Input title="Poblacion" placeholderText="union" isAccordeon={true} />
+          <Input title="Pais" placeholderText="España" isAccordeon={true} />
+          <Input
+            title="Nombre del estadio, campo o pavellón"
+            placeholderText="Palau Municipal d’Esports Josep Mora"
+            isAccordeon={true}
+          />
+          <Input
+            title="Año de fundacion"
+            placeholderText="1920"
+            isAccordeon={true}
+          />
+          <Input title="Aforo" placeholderText="300 personas" />
+
+          <Input
+            title="Descripbe tu club"
+            placeholderText="lkj lskfj lsdkfj lsdkfj hjk sdfhjksdjhf shdfjksjdhf shdfjks dfsdfkjh df
         sdfjshdfkjsdh fhsjdfkjshd fhsjdkfjhsdf hjsdkf
         sdfkj hdfjksjdhf shdfjksjdhf sdkfjhsd fsjdkh "
-              isMultiLine={true}
-              isLast={true}
-            />
-            <TouchableOpacity
+            isMultiLine={true}
+            isLast={true}
+          />
+          {/* <TouchableOpacity
               style={{
                 marginTop: 30,
                 height: 60,
@@ -71,6 +51,7 @@ const EscogerDeporte2 = () => {
                 backgroundColor: Color.wHITESPORTSMATCH,
                 borderRadius: Border.br_81xl
               }}
+              onPress={() => navigation.navigate('EscogerDeporte1')}
             >
               <Text
                 style={{
@@ -81,161 +62,10 @@ const EscogerDeporte2 = () => {
               >
                 Siguiente
               </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* <View style={styles.loremIpsum}>
-        <View style={styles.loremIpsum1}>
-          <Text style={[styles.aceptar, styles.atrsTypo]}>Siguiente</Text>
-        </View>
-      </View> */}
-
-        {/* <View style={[styles.lineView, styles.lineViewLayout]} /> */}
-        {/* <View style={styles.atrsParent}>
-        <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-        <Image
-          style={styles.coolicon}
-          contentFit="cover"
-          source={require('../assets/coolicon.png')}
-        />
-      </View>
-      <View style={styles.loremIpsum}>
-        <View style={styles.loremIpsum1}>
-          <Text style={[styles.aceptar, styles.atrsTypo]}>Siguiente</Text>
+            </TouchableOpacity> */}
         </View>
       </View>
-      <View style={[styles.nombreDelClubParent, styles.parentLayout]}>
-        <Text style={[styles.nombreDelClub, styles.clubTypo]}>
-          Nombre del club
-        </Text>
-        <View style={[styles.uniEsportvaMatarParent, styles.groupLayout]}>
-          <Text style={[styles.uniEsportvaMatar, styles.matarTypo]}>
-            Unió Esportíva Mataró
-          </Text>
-          <View style={[styles.groupChild, styles.groupChildBorder]} />
-        </View>
-      </View>
-
-      <View style={[styles.groupParent, styles.parentLayout]}>
-        <View style={[styles.poblacinParent, styles.paso2Position]}>
-          <Text style={[styles.nombreDelClub, styles.clubTypo]}>Población</Text>
-          <Text style={[styles.matar, styles.matarTypo]}>Mataró</Text>
-          <View style={[styles.groupItem, styles.groupChildBorder]} />
-        </View>
-        <Image
-          style={[styles.coolicon1, styles.cooliconLayout]}
-          contentFit="cover"
-          source={require('../assets/coolicon2.png')}
-        />
-      </View>
-      <View style={styles.cooliconParent}>
-        <Image
-          style={[styles.coolicon2, styles.cooliconLayout]}
-          contentFit="cover"
-          source={require('../assets/coolicon2.png')}
-        />
-        <View style={[styles.poblacinParent, styles.paso2Position]}>
-          <Text style={[styles.nombreDelClub, styles.clubTypo]}>País</Text>
-          <View style={[styles.uniEsportvaMatarParent, styles.groupLayout]}>
-            <Text style={[styles.uniEsportvaMatar, styles.matarTypo]}>
-              España
-            </Text>
-            <View style={[styles.groupChild, styles.groupChildBorder]} />
-          </View>
-        </View>
-      </View>
-      <View
-        style={[styles.nombreDelEstadioCampoOPaParent, styles.parentLayout]}
-      >
-        <Text style={[styles.nombreDelClub, styles.clubTypo]}>
-          Nombre del estadio, campo o pavellón
-        </Text>
-        <View style={[styles.uniEsportvaMatarParent, styles.groupLayout]}>
-          <Text style={[styles.uniEsportvaMatar, styles.matarTypo]}>
-            Palau Municipal d’Esports Josep Mora
-          </Text>
-          <View style={[styles.groupChild, styles.groupChildBorder]} />
-        </View>
-      </View>
-      <View style={[styles.aoDeFundacinParent, styles.parentLayout]}>
-        <Text style={[styles.nombreDelClub, styles.clubTypo]}>
-          Año de fundación
-        </Text>
-        <Image
-          style={[styles.coolicon1, styles.cooliconLayout]}
-          contentFit="cover"
-          source={require('../assets/coolicon2.png')}
-        />
-        <View style={[styles.uniEsportvaMatarParent, styles.groupLayout]}>
-          <Text style={[styles.uniEsportvaMatar, styles.matarTypo]}>1920</Text>
-          <View style={[styles.groupChild, styles.groupChildBorder]} />
-        </View>
-      </View>
-      <View style={[styles.aforoParent, styles.parentLayout]}>
-        <Text style={[styles.nombreDelClub, styles.clubTypo]}>{`Aforo `}</Text>
-        <View style={[styles.uniEsportvaMatarParent, styles.groupLayout]}>
-          <Text style={[styles.uniEsportvaMatar, styles.matarTypo]}>
-            300 persona
-          </Text>
-          <View style={[styles.groupChild, styles.groupChildBorder]} />
-        </View>
-      </View>
-      <View style={styles.describeTuClubParent}>
-        <Text style={[styles.describeTuClub, styles.clubTypo]}>
-          Describe tu club
-        </Text>
-        <View
-          style={[
-            styles.hablaDeAquelloQueSeaMsRParent,
-            styles.groupChild3Layout
-          ]}
-        >
-          <Text
-            style={[styles.hablaDeAquello, styles.clubTypo]}
-          >{`Habla de aquello que sea más relevante de tu club. Campeonatos ganados, categorías, anécdotas, etc. `}</Text>
-          <View style={[styles.groupChild3, styles.groupChild3Layout]} />
-        </View>
-      </View>
-      <View style={[styles.escogerDeporteItem, styles.escogerLayout]} />
-      <View style={[styles.escogerDeporteInner, styles.lineViewLayout]} />
-      <View style={[styles.lineView, styles.lineViewLayout]} />
-      <View style={[styles.escogerDeporteChild1, styles.escogerLayout]} />
-      <Text style={styles.detallesDelClub}>Detalles del club</Text>
-      <Text style={[styles.paso2, styles.paso2Position]}>Paso 2</Text>
-      <View style={styles.groupChild4Position}>
-        <View style={[styles.groupChild4, styles.groupChild4Position]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={styles.border} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require('../assets/cap.png')}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require('../assets/wifi.png')}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require('../assets/cellular-connection2.png')}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View>
-      <Image
-        style={styles.lineIcon}
-        contentFit="cover"
-        source={require('../assets/line-9.png')}
-      /> */}
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
   )
 }
@@ -627,12 +457,12 @@ const styles = StyleSheet.create({
   },
   escogerDeporte: {
     // borderRadius: Border.br_21xl,
-    flex: 1,
+    // flex: 1,
     // height: '100%',
     // width: '100%',
     // height: 1125,
-    overflow: 'hidden',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    // overflow: 'hidden',
+    // backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 

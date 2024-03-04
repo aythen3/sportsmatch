@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 18,
-    top: '10%'
+    gap: 18
+    // top: '10%'
   },
   frameChild: {
     height: 131,

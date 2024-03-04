@@ -88,6 +88,7 @@ import MENUCLUB from './screens/MENUCLUB'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
+import Steps from './screens/Steps'
 // import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
@@ -117,6 +118,11 @@ const App = () => {
               <Stack.Screen
                 name="Paso2Jugador"
                 component={Paso2Jugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="steps"
+                component={Steps}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
