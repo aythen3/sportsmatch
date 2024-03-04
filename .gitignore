@@ -12,15 +12,18 @@ pids
 *.log
 
 # Directory used by npm for globally installed node modules
-node_modules
-
+client/node_modules
+client/.env
+server/node_modules
+server/.env
+server/dist
 # Yarn Integrity file
 .yarn-integrity
 
 # Environment secrets
-.env
-.env.local
-.env.*.local
+client/.env
+client/.env.local
+client/.env.*.local
 
 # MacOS
 .DS_Store
@@ -36,9 +39,9 @@ Thumbs.db
 *.swn
 
 # Expo OTA update
-.expo/
-.expo-shared/
+client/.expo/
+client/.expo-shared/
 
 # Turtle
-turtle-build/
+client/turtle-build/
   
