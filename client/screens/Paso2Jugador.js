@@ -1,58 +1,37 @@
 import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import DeportesSeleccion from '../components/DeportesSeleccion'
+import { useSelector } from 'react-redux'
+import Lines from '../components/Lines'
 
 const Paso2Jugador = () => {
   const navigation = useNavigation()
+  const { isSportMan } = useSelector((state) => state.users)
+  // const router = useRoute()
+
+  // const { role } = router.params
+
+  // console.log('rolll', role)
+
+  const handleNavigation = () => {
+    if (isSportMan === true) {
+      // if (role === 'Profesional del deporte') {
+      //   navigation.navigate('Paso4Profesional')
+      // } else {
+      navigation.navigate('Paso3Jugador')
+      // }
+    } else {
+      navigation.navigate('EscogerDeporte2')
+    }
+  }
 
   return (
-    <ScrollView style={styles.paso6}>
-      <Image
-        style={styles.imagenDeFondo}
-        contentFit="cover"
-        source={require('../assets/imagen-de-fondo3.png')}
-      />
-      <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
-          <Pressable
-            style={styles.botonAtras}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../assets/coolicon1.png')}
-            />
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-          <View style={styles.stepseccion}>
-            <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 2</Text>
-              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
-                Escoge tu deporte
-              </Text>
-            </View>
-            <View style={styles.linias}>
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout2} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-            </View>
-          </View>
-        </View>
-        <DeportesSeleccion />
-
-        <Pressable
-          style={styles.siguiente}
-          onPress={() => navigation.navigate('Paso3Jugador')}
-        >
-          <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+    <View style={styles.paso6}>
+      <DeportesSeleccion />
+    </View>
   )
 }
 
@@ -149,16 +128,19 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   contenido: {
-    top: 77,
+    // top: 77,
+    // justifyContent: 'center',
+    marginTop: 50,
     alignItems: 'center',
-    left: 0,
-    height: '160%'
+    // left: 0
+    height: '100%',
+    marginBottom: 130
   },
   paso6: {
-    flex: 1,
-    overflow: 'hidden',
-    width: '100%',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    // flex: 1,
+    // overflow: 'hidden',
+    // width: '100%',
+    // backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 

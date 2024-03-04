@@ -121,11 +121,12 @@ const DeportesSeleccion = () => {
 
 const styles = StyleSheet.create({
   frameParent: {
-    width: '80%',
+    width: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    gap: 18,
-    top: '10%'
+    justifyContent: 'center',
+    gap: 18
+    // top: '10%'
   },
   frameChild: {
     height: 131,
