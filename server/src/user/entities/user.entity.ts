@@ -1,5 +1,6 @@
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
+import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity({ name: 'user' })
@@ -22,4 +23,8 @@ export class UserEntity extends BaseEntity {
   @OneToOne(() => ClubEntity, { nullable: true })
   @JoinColumn()
   club: ClubEntity | null;
+
+  @OneToOne(() => SportmanEntity, { nullable: true })
+  @JoinColumn()
+  sportman: SportmanEntity | null;
 }
