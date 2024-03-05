@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -6,63 +6,31 @@ import {
   Text,
   Pressable,
   TextInput,
-  ScrollView
+  ScrollView,
+  Modal,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Border, Color, Padding, FontFamily, FontSize } from '../GlobalStyles'
 import HeaderIcons from '../components/HeaderIcons'
 import { imgagesMuro } from '../utils/imagesMuro'
+import FiltersHome from '../components/FiltersHome'
+import ExplorarClubsConFiltroPrem from './ExplorarClubsConFiltroPrem'
 
 const ExplorarClubs = () => {
   const navigation = useNavigation()
+  const [modalFilters, setModalFilters] = useState(false)
+
+  const onFilters = () => {
+    setModalFilters(true)
+  }
 
   return (
     <View style={styles.explorarClubs}>
       <ScrollView>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            height: 120
-          }}
-        >
-          <Image
-            style={{ width: 180, height: 42, marginLeft: 20 }}
-            contentFit="cover"
-            source={require('../assets/logo3.png')}
-          />
-          <HeaderIcons />
-        </View>
+        <HeaderIcons />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <View
-            style={[styles.groupContainer, styles.groupContainerSpaceBlock]}
-          >
-            <Image
-              style={styles.frameChild1}
-              contentFit="cover"
-              source={require('../assets/group-428.png')}
-            />
-            <TextInput
-              style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
-              placeholderTextColor={Color.gREY2SPORTSMATCH}
-              placeholder="Posicón de juego, población, club..."
-            />
-          </View>
-          <Image
-            style={styles.groupIcon2}
-            contentFit="cover"
-            source={require('../assets/group5.png')}
-          />
-        </View>
+        <FiltersHome modalActive={onFilters} />
 
         <View style={{ marginTop: 15, flexDirection: 'row', gap: 5 }}>
           <View style={{ flexDirection: 'column', width: '30%', gap: 5 }}>
@@ -81,361 +49,42 @@ const ExplorarClubs = () => {
             ))}
           </View>
           <View style={{ width: '70%', gap: 5 }}>
-            <Image
-              style={{ width: '100%', height: 250, borderRadius: 3 }}
-              contentFit="cover"
-              source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-            />
-            <Image
-              style={{ width: '100%', height: 250, borderRadius: 3 }}
-              contentFit="cover"
-              source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-            />
-            <Image
-              style={{ width: '100%', height: 250, borderRadius: 3 }}
-              contentFit="cover"
-              source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-            />
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
+              <Image
+                style={{ width: '100%', height: 250, borderRadius: 3 }}
+                contentFit="cover"
+                source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
+              />
+            </Pressable>
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
+              <Image
+                style={{ width: '100%', height: 250, borderRadius: 3 }}
+                contentFit="cover"
+                source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
+              />
+            </Pressable>
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
+              <Image
+                style={{ width: '100%', height: 250, borderRadius: 3 }}
+                contentFit="cover"
+                source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
+              />
+            </Pressable>
           </View>
         </View>
-
-        {/* <Image
-        style={{ width: 100, height: 100 }}
-        contentFit="cover"
-        source={require('../assets/hannahredingkqyboqrw5wunsplash-1.png')}
-      /> */}
-
-        {/* <View style={[styles.vectorParent, styles.groupParentPosition]}>
-        <Image
-          style={[styles.frameChild, styles.superiorLayout]}
-          contentFit="cover"
-          source={require('../assets/rectangle-176.png')}
-        />
-        <Image
-          style={[styles.groupIcon1, styles.iconGroupLayout]}
-          contentFit="cover"
-          source={require('../assets/group10.png')}
-        />
-        <Image
-          style={[styles.frameItem, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require('../assets/line-211.png')}
-        />
-        <Image
-          style={styles.frameInner}
-          contentFit="cover"
-          source={require('../assets/group-6583.png')}
-        />
-      </View> */}
-
-        {/* <Image
-        style={styles.hannahRedingKqyboqrw5wUnspIcon}
-        contentFit="cover"
-        source={require('../assets/hannahredingkqyboqrw5wunsplash-1.png')}
-      />
-      <Image
-        style={[styles.hannahRedingKqyboqrw5wUnspIcon1, styles.iconPosition]}
-        contentFit="cover"
-        source={require('../assets/hannahredingkqyboqrw5wunsplash-1.png')}
-      />
-      <Image
-        style={[
-          styles.hannahRedingKqyboqrw5wUnspIcon2,
-          styles.hannahIconPosition
-        ]}
-        contentFit="cover"
-        source={require('../assets/hannahredingkqyboqrw5wunsplash-1.png')}
-      />
-      <Image
-        style={[
-          styles.nickFithenBuuGssofvoUnsplaIcon,
-          styles.gridImagenesPosition
-        ]}
-        contentFit="cover"
-        source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-      /> */}
-        {/* <View style={[styles.gridImagenes, styles.gridImagenesPosition]}>
-        <View style={[styles.gridSuperior, styles.gridLayout]}>
-          <View style={styles.hannahRedingKqyboqrw5wUnspParent}>
-            <Image
-              style={[
-                styles.hannahRedingKqyboqrw5wUnspIcon3,
-                styles.iconGroupLayout
-              ]}
-              contentFit="cover"
-              source={require('../assets/hannahredingkqyboqrw5wunsplash-1.png')}
-            />
-            <Image
-              style={[
-                styles.hannahRedingKqyboqrw5wUnspIcon4,
-                styles.iconGroupLayout
-              ]}
-              contentFit="cover"
-              source={require('../assets/hannahredingkqyboqrw5wunsplash-2.png')}
-            />
-          </View>
-          <Image
-            style={[
-              styles.nickFithenBuuGssofvoUnsplaIcon1,
-              styles.iconGroupLayout
-            ]}
-            contentFit="cover"
-            source={require('../assets/nickfithenbuugssofvounsplash-1.png')}
-          />
-        </View>
-        <View style={[styles.gridInferior, styles.gridLayout]}>
-          <View style={styles.hannahRedingKqyboqrw5wUnspParent}>
-            <Image
-              style={[
-                styles.hannahRedingKqyboqrw5wUnspIcon3,
-                styles.iconGroupLayout
-              ]}
-              contentFit="cover"
-              source={require('../assets/hannahredingkqyboqrw5wunsplash-11.png')}
-            />
-            <Image
-              style={[
-                styles.hannahRedingKqyboqrw5wUnspIcon4,
-                styles.iconGroupLayout
-              ]}
-              contentFit="cover"
-              source={require('../assets/hannahredingkqyboqrw5wunsplash-21.png')}
-            />
-          </View>
-          <Image
-            style={[
-              styles.nickFithenBuuGssofvoUnsplaIcon1,
-              styles.iconGroupLayout
-            ]}
-            contentFit="cover"
-            source={require('../assets/nickfithenbuugssofvounsplash-11.png')}
-          />
-        </View>
-      </View> */}
-        {/* <View style={[styles.rectangleParent, styles.menuClubLayout]}>
-        <View style={[styles.groupChild, styles.menuClubLayout]} />
-      </View> */}
-        {/* <Image
-        style={[styles.explorarClubsChild, styles.iconGroupLayout]}
-        contentFit="cover"
-        source={require('../assets/ellipse-83.png')}
-      />
-      <View style={[styles.menuClub, styles.menuClubLayout]}>
-        <Image
-          style={[styles.maskGroupIcon, styles.maskGroupLayout]}
-          contentFit="cover"
-          source={require('../assets/mask-group7.png')}
-        />
-        <Image
-          style={[styles.maskGroupIcon1, styles.maskGroupLayout]}
-          contentFit="cover"
-          source={require('../assets/mask-group7.png')}
-        />
-        <View style={[styles.menuClubChild, styles.groupItemPosition]} />
-        <View style={[styles.menuClubItem, styles.menuClubItemBg]} />
-        <View style={styles.menuClubInner} />
-        <Pressable
-          style={[styles.ellipseParent, styles.groupIconPosition]}
-          onPress={() => navigation.navigate('PerfilDatosPropioClub')}
-        >
-          <Image
-            style={[styles.groupItem, styles.groupItemPosition]}
-            contentFit="cover"
-            source={require('../assets/ellipse-765.png')}
-          />
-          <Image
-            style={[
-              styles.logoUem21RemovebgPreview1Icon,
-              styles.iconGroupLayout
-            ]}
-            contentFit="cover"
-            source={require('../assets/logo-uem21removebgpreview-16.png')}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.wrapper}
-          onPress={() => navigation.navigate('ExplorarClubs')}
-        >
-          <Image
-            style={[styles.icon, styles.iconGroupLayout]}
-            contentFit="cover"
-            source={require('../assets/group-535.png')}
-          />
-        </Pressable>
-        <Image
-          style={[styles.lineIcon, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require('../assets/line-5.png')}
-        />
-        <Image
-          style={[styles.menuClubChild1, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require('../assets/line-5.png')}
-        />
-        <View style={styles.groupParent}>
-          <Pressable
-            style={[styles.container, styles.groupItemPosition]}
-            onPress={() => navigation.navigate('SiguiendoJugadores')}
-          >
-            <Image
-              style={[styles.icon, styles.iconGroupLayout]}
-              contentFit="cover"
-              source={require('../assets/group-5401.png')}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.frame}
-            onPress={() => navigation.navigate('TusMensajes1')}
-          >
-            <Image
-              style={[styles.icon2, styles.iconLayout]}
-              contentFit="cover"
-              source={require('../assets/group-5391.png')}
-            />
-          </Pressable>
-        </View>
-        <Image
-          style={[styles.groupIcon, styles.groupIconPosition]}
-          contentFit="cover"
-          source={require('../assets/group-593.png')}
-        />
-      </View> */}
-        {/* <Image
-        style={styles.explorarClubsItem}
-        contentFit="cover"
-        source={require('../assets/line-9.png')}
-      /> */}
-        {/* <View style={[styles.cabezeraBuscarFiltros, styles.gridImagenesPosition]}>
-        <View style={styles.cabezera}>
-          <Pressable
-            style={styles.logo}
-            onPress={() => navigation.navigate('LoginSwitch')}
-          >
-            <Image
-              style={[styles.icon2, styles.iconLayout]}
-              contentFit="cover"
-              source={require('../assets/logo3.png')}
-            />
-          </Pressable>
-          <View style={[styles.superior, styles.superiorLayout]}> */}
-        {/* <View style={[styles.ellipseGroup, styles.groupLayout]}>
-              <Image
-                style={[styles.groupInner, styles.groupLayout]}
-                contentFit="cover"
-                source={require('../assets/ellipse-81.png')}
-              />
-              <Text style={styles.text}>2</Text>
-            </View> */}
-        {/* <View style={[styles.vectorParent, styles.groupParentPosition]}>
-              <Image
-                style={[styles.frameChild, styles.superiorLayout]}
-                contentFit="cover"
-                source={require('../assets/rectangle-176.png')}
-              />
-              <Image
-                style={[styles.groupIcon1, styles.iconGroupLayout]}
-                contentFit="cover"
-                source={require('../assets/group10.png')}
-              />
-              <Image
-                style={[styles.frameItem, styles.lineIconLayout]}
-                contentFit="cover"
-                source={require('../assets/line-211.png')}
-              />
-              <Image
-                style={styles.frameInner}
-                contentFit="cover"
-                source={require('../assets/group-6583.png')}
-              />
-            </View> */}
-        {/* </View>
-        </View>
-        <View style={styles.buscarFiltroDesplegable}>
-          <View style={styles.buscarFiltrosDespliegue}>
-            <View style={styles.buscarPictograma}>
-              <View style={[styles.frameParent, styles.groupParentPosition]}>
-                <View
-                  style={[
-                    styles.groupContainer,
-                    styles.groupContainerSpaceBlock
-                  ]}
-                >
-                  <Image
-                    style={styles.frameChild1}
-                    contentFit="cover"
-                    source={require('../assets/group-428.png')}
-                  />
-                  <Text
-                    style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
-                  >
-                    Posicón de juego, población, club...
-                  </Text>
-                </View>
-                <Image
-                  style={styles.groupIcon2}
-                  contentFit="cover"
-                  source={require('../assets/group5.png')}
-                />
-              </View>
-            </View>
-            <View style={styles.despliegue}>
-              <View
-                style={[
-                  styles.filtrosSugeridosParent,
-                  styles.groupContainerSpaceBlock
-                ]}
-              >
-                <Text
-                  style={[styles.filtrosSugeridos, styles.posicnDeJuegoTypo]}
-                >
-                  Filtros sugeridos
-                </Text>
-                <View style={[styles.lineView, styles.lineViewBorder]} />
-                <View style={styles.porProximidadPicto}>
-                  <View style={styles.porProximidadPicto1}>
-                    <Image
-                      style={styles.porProximidadPictoChild}
-                      contentFit="cover"
-                      source={require('../assets/vector-161.png')}
-                    />
-                    <View style={styles.porProximidadParent}>
-                      <Text
-                        style={[styles.porProximidad, styles.posicnDeJuegoTypo]}
-                      >
-                        Por proximidad
-                      </Text>
-                      <Image
-                        style={[
-                          styles.pictogramaIcon,
-                          styles.groupIconPosition1
-                        ]}
-                        contentFit="cover"
-                        source={require('../assets/pictograma2.png')}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.frameChild2, styles.lineViewBorder]} />
-                <View style={styles.porProximidadPicto}>
-                  <View style={styles.groupGroup}>
-                    <Image
-                      style={[styles.groupIcon3, styles.groupIconPosition1]}
-                      contentFit="cover"
-                      source={require('../assets/group11.png')}
-                    />
-                    <Text
-                      style={[styles.porProximidad, styles.posicnDeJuegoTypo]}
-                    >
-                      Por relevancia
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View> */}
-        {/* </View> */}
       </ScrollView>
+      <Modal visible={modalFilters} transparent={true} animationType="slide">
+        <TouchableWithoutFeedback onPress={() => setModalFilters(false)}>
+          <View style={{ flex: 1 }} />
+        </TouchableWithoutFeedback>
+        <ExplorarClubsConFiltroPrem onClose={() => setModalFilters(false)} />
+      </Modal>
     </View>
   )
 }
