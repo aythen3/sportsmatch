@@ -36,7 +36,7 @@ export class ClubEntity extends BaseEntity {
   @OneToMany(() => SportmanEntity, (sportman) => sportman.club, {
     nullable: true
   })
-  sportmen?: SportmanEntity[];
+  sportman?: SportmanEntity[];
 
   @OneToMany(() => OfferEntity, (offer) => offer.club, { nullable: true })
   offers?: OfferEntity[];
