@@ -64,21 +64,27 @@ const ExplorarClubs = () => {
             ))}
           </View>
           <View style={{ width: '70%', gap: 5 }}>
-            <Pressable onPress={() => alert('hola')}>
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
                 contentFit="cover"
                 source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
               />
             </Pressable>
-            <Pressable onPress={() => alert('hola')}>
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
                 contentFit="cover"
                 source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
               />
             </Pressable>
-            <Pressable onPress={() => alert('hola')}>
+            <Pressable
+              onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+            >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
                 contentFit="cover"

@@ -89,6 +89,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import Steps from './screens/Steps'
+import NavBarInferior from './components/NavBarInferior'
 // import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
@@ -527,6 +528,7 @@ const App = () => {
               />
             </Stack.Navigator>
           ) : null}
+          <NavBarInferior />
         </NavigationContainer>
       </Provider>
     </>
