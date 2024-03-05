@@ -28,22 +28,7 @@ const ExplorarClubs = () => {
   return (
     <View style={styles.explorarClubs}>
       <ScrollView>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            height: 120
-          }}
-        >
-          <Image
-            style={{ width: 180, height: 42, marginLeft: 20 }}
-            contentFit="cover"
-            source={require('../assets/logo3.png')}
-          />
-          <HeaderIcons />
-        </View>
+        <HeaderIcons />
 
         <FiltersHome modalActive={onFilters} />
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 
-const HeaderPerfil = () => {
+const HeaderPerfil = ({ name, description }) => {
   return (
     <View>
       <Image
@@ -31,13 +31,12 @@ const HeaderPerfil = () => {
         <Pressable onPress={() => navigation.goBack()}>
           <Text
             style={[styles.jordiEspeltPvotBaloncesto, styles.jugandoAlUniTypo]}
-          >{`Jordi Espelt
-Pívot
-Baloncesto`}</Text>
-          <Text
-            style={[styles.jugandoAlUni, styles.seguidoresLayout]}
-          >{`Jugando al Unió Esportíva 
-de Mataró desde el 2021`}</Text>
+          >
+            {name}
+          </Text>
+          <Text style={[styles.jugandoAlUni, styles.seguidoresLayout]}>
+            {description}
+          </Text>
         </Pressable>
       </View>
 

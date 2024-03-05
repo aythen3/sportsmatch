@@ -8,7 +8,10 @@ import ImagesRender from '../components/ImagesRender'
 const PerfilFeedVisualitzaciClu2 = () => {
   return (
     <ScrollView style={styles.perfilFeedVisualitzaciClu}>
-      <HeaderPerfil />
+      <HeaderPerfil
+        name={'Club atletico Boca Juniors'}
+        description={'El mejor de America'}
+      />
 
       <View
         style={{

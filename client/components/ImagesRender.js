@@ -1,9 +1,12 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/core'
 
 const ImagesRender = ({ img }) => {
+  const navigation = useNavigation()
+
   return (
-    <View>
+    <Pressable>
       <Image
         style={{
           width: 125,
@@ -13,7 +16,7 @@ const ImagesRender = ({ img }) => {
         contentFit="cover"
         source={img}
       />
-    </View>
+    </Pressable>
   )
 }
 

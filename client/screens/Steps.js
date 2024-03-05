@@ -24,7 +24,8 @@ const Steps = () => {
       if (stepsIndex <= 2) {
         setstepsIndex((prev) => prev + 1)
       } else {
-        navigation.navigate('ExplorarClubs')
+        navigation.navigate('SiguiendoJugadores')
+        // navigation.navigate('ExplorarClubs')
       }
     } else {
       if (stepsIndex >= 2) {
