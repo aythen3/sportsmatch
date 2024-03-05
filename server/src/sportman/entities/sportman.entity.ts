@@ -6,6 +6,7 @@ import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import {
   Column,
+  Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -13,6 +14,7 @@ import {
   OneToOne
 } from 'typeorm';
 
+@Entity({ name: 'sportman' })
 export class SportmanEntity extends BaseEntity {
   @Column({
     type: 'enum',
@@ -24,7 +26,7 @@ export class SportmanEntity extends BaseEntity {
   @Column('simple-json')
   info: { [key: string]: any };
 
-  @ManyToOne(() => ClubEntity, (club) => club.sportmen, { nullable: true })
+  @ManyToOne(() => ClubEntity, (club) => club.sportman, { nullable: true })
   club?: ClubEntity;
 
   @OneToOne(() => SportEntity, (sport) => sport.sportman)
