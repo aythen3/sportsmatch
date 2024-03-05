@@ -2,8 +2,11 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native'
 import { Color } from '../GlobalStyles'
+import { useNavigation } from '@react-navigation/core'
 
 const HeaderIcons = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.vectorParent}>
       <Image
@@ -24,7 +27,7 @@ const HeaderIcons = () => {
           paddingHorizontal: 10
         }}
       >
-        <Pressable onPress={() => alert('hola')}>
+        <Pressable onPress={() => navigation.navigate('OfertasEmitidas')}>
           <Image
             style={styles.frameInner}
             contentFit="cover"
