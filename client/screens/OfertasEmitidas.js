@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Pressable,
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback
@@ -22,13 +21,10 @@ const OfertasEmitidas = () => {
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
 
   const handleImageClick = (event) => {
-    // Obtener la posición del clic
     const { pageX, pageY } = event.nativeEvent
 
-    // Guardar la posición del clic
     setModalPosition({ x: pageX - 130, y: pageY - 60 })
 
-    // Mostrar el modal
     setModalVisible(true)
   }
 
@@ -161,8 +157,7 @@ const OfertasEmitidas = () => {
         </TouchableWithoutFeedback>
       </Modal>
 
-      <View>
-        {/* <View
+      {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -230,7 +225,7 @@ const OfertasEmitidas = () => {
           </View>
         </View> */}
 
-        {/* <View style={styles.ofertasSuperior}>
+      {/* <View style={styles.ofertasSuperior}>
           <View style={styles.oferta1Wrapper}>
             <Text style={[styles.oferta1, styles.sexo1Typo]}>Oferta 1</Text>
           </View>
@@ -271,7 +266,6 @@ const OfertasEmitidas = () => {
             <Text style={[styles.masculino, styles.timeTypo]}>No</Text>
           </View>
         </View> */}
-      </View>
 
       {/* <View style={styles.gridOfertas}>
         <View style={styles.ofertasSuperior}>
