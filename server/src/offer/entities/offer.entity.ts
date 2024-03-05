@@ -2,8 +2,9 @@ import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
-import { JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
+@Entity({ name: 'offer' })
 export class OfferEntity extends BaseEntity {
   @OneToOne(() => PositionEntity)
   @JoinColumn()
