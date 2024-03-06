@@ -4,24 +4,40 @@ import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubEntity } from './entities/club.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserService } from 'src/user/user.service';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ClubService {
   constructor(
     @InjectRepository(ClubEntity)
-    private readonly clubRepository: Repository<ClubEntity>
+    private readonly clubRepository: Repository<ClubEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+    private readonly userService: UserService
   ) {}
 
   /**
    * Método para crear un nuevo los club
-   * @param {CreateUserDto} createUserDto - Los datos del club a crear
+   * @param {CreateClubDto} createClubDto - Los datos del club a crear
    */
   public async create(createClubDto: CreateClubDto) {
-    const newClub = await this.clubRepository.save(createClubDto);
-    if (!newClub) {
+    const { clubData, userId } = createClubDto;
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new HttpException('the user not found', 404);
+    }
+    const newClub = await this.clubRepository.create(clubData);
+    const saveClub = await this.clubRepository.save(newClub);
+    if (!saveClub) {
       throw new HttpException('the new club is not created', 501);
     }
-    return newClub;
+    await this.userRepository.save({
+      ...user,
+      club: saveClub
+    });
+
+    return saveClub;
   }
   /**
    * Método para obtener todos los clubes
