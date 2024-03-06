@@ -7,10 +7,7 @@ import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ClubEntity } from './entities/club.entity';
-<<<<<<< Updated upstream
-=======
 import { UserService } from 'src/user/user.service';
->>>>>>> Stashed changes
 
 @Module({
   imports: [
@@ -24,10 +21,6 @@ import { UserService } from 'src/user/user.service';
   ],
   exports: [],
   controllers: [ClubController],
-<<<<<<< Updated upstream
-  providers: [ClubService]
-=======
   providers: [ClubService, UserService]
->>>>>>> Stashed changes
 })
 export class ClubModule {}
