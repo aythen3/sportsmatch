@@ -2,7 +2,8 @@ import { BaseEntity } from 'src/config/base.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'club' })
 export class ClubEntity extends BaseEntity {
@@ -32,6 +33,9 @@ export class ClubEntity extends BaseEntity {
 
   @Column({ nullable: true })
   img_front?: string;
+
+  @OneToOne(() => UserEntity)
+  user: UserEntity;
 
   @OneToMany(() => SportmanEntity, (sportman) => sportman.club, {
     nullable: true
