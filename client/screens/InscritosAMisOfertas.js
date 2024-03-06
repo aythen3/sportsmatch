@@ -1,14 +1,23 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Modal,
+  TouchableWithoutFeedback
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import RegisteredOffers from '../components/RegisteredOffers'
 import { useSelector } from 'react-redux'
+import Premium from './Premium'
 
 const InscritosAMisOfertas = () => {
   const { usersRegistered } = useSelector((state) => state.offers)
   const navigation = useNavigation()
+  const [modalPremium, setModalPremium] = useState(false)
 
   return (
     <View style={styles.inscritosAMisOfertas}>
@@ -56,11 +65,26 @@ visualizar todas las inscripciones`}</Text>
             style={[styles.texto2, styles.textoSpaceBlock]}
           >{`¡Sube de nivel en tu cuenta para 
 visualizar todas las inscripciones!`}</Text>
-          <View style={[styles.botonPremium, styles.capacityBg]}>
+          <Pressable
+            style={[styles.botonPremium, styles.capacityBg]}
+            onPress={() => setModalPremium(true)}
+          >
             <Text style={styles.textoBoton}>Hazte premium</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
+
+      <Modal visible={modalPremium} transparent={true} animationType="slide">
+        <TouchableWithoutFeedback onPress={() => setModalPremium(false)}>
+          <View
+            style={{
+              flex: 1
+            }}
+          >
+            <Premium onClose={() => setModalPremium(false)} />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   )
 }
@@ -68,7 +92,6 @@ visualizar todas las inscripciones!`}</Text>
 const styles = StyleSheet.create({
   groupFrameSpaceBlock: {
     marginLeft: 15
-    // width: '100%'
   },
   carlesMirTypo: {
     color: Color.wHITESPORTSMATCH,

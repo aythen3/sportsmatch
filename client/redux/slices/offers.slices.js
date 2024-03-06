@@ -18,7 +18,7 @@ const offersSlices = createSlice({
         category: 'Senior',
         position: 'Escolta',
         urgency: '9',
-        remuneration: 'NO'
+        remuneration: 'SI'
       },
       {
         id: 3,
@@ -26,7 +26,7 @@ const offersSlices = createSlice({
         category: 'Senior',
         position: 'Lateral izquierdo',
         urgency: '8',
-        remuneration: 'NO'
+        remuneration: 'SI'
       },
       {
         id: 4,

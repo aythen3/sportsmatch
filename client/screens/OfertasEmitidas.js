@@ -74,7 +74,7 @@ const OfertasEmitidas = () => {
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
                 <Text style={[styles.masculino, styles.timeTypo]}>
-                  Masculino
+                  {offer.gender}
                 </Text>
               </View>
 
@@ -88,7 +88,9 @@ const OfertasEmitidas = () => {
 
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoria</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Senior</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.category}
+                </Text>
               </View>
 
               <View
@@ -101,7 +103,9 @@ const OfertasEmitidas = () => {
 
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Escolta</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.position}
+                </Text>
               </View>
 
               <View
@@ -120,13 +124,17 @@ const OfertasEmitidas = () => {
               >
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>7/10</Text>
+                  <Text style={[styles.masculino, styles.timeTypo]}>
+                    {offer.urgency}/10
+                  </Text>
                 </View>
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>
                     Retribucion
                   </Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>NO</Text>
+                  <Text style={[styles.masculino, styles.timeTypo]}>
+                    {offer.remuneration}
+                  </Text>
                 </View>
               </View>
             </View>
