@@ -1,12 +1,15 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
 import HomeSVG from './svg/footerSVG/HomeSVG'
 import MessageSVG from './svg/footerSVG/MessageSVG'
 import { Color } from '../GlobalStyles'
+import { useNavigation } from '@react-navigation/core'
 
 const NavBarInferior = () => {
+  const navigation = useNavigation()
+
   return (
     <View
       style={{
@@ -33,14 +36,14 @@ const NavBarInferior = () => {
       <View>
         <MessageSVG />
       </View>
-      <View>
+      <Pressable onPress={() => navigation.navigate('PerfilDatosPropioClub')}>
         <Image
           // style={styles.perfilFeedVisualitzaciCluItem}
           style={{ width: 25, height: 25 }}
           contentFit="cover"
           source={require('../assets/group-5161.png')}
         />
-      </View>
+      </Pressable>
     </View>
   )
 }

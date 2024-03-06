@@ -1,15 +1,51 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Pressable, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Color, Padding, Border, FontFamily, FontSize } from "../GlobalStyles";
+import React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, Pressable, Text, View, ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
+import SilverSuscription from '../components/SilverSuscription'
+import GoldSuscription from '../components/GoldSuscription'
+import StarSuscription from '../components/StarSuscription'
 
 const MiSuscripcin = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View style={styles.miSuscripcin}>
-      <View style={[styles.frameParent, styles.frameParentPosition]}>
+      <ScrollView>
+        <View style={styles.cooliconParent}>
+          <Pressable
+            style={{ width: 9, height: 20 }}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={styles.icon}
+              contentFit="cover"
+              source={require('../assets/coolicon3.png')}
+            />
+          </Pressable>
+          <Pressable
+            style={styles.miSuscripcin1}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.miSuscripcin2}>Mi suscripción</Text>
+          </Pressable>
+        </View>
+
+        <View>
+          <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+            Este es tu plan actual
+          </Text>
+        </View>
+
+        {/* ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA */}
+        <View style={{ marginTop: 30, gap: 30 }}>
+          <SilverSuscription />
+          <GoldSuscription />
+          <StarSuscription />
+        </View>
+
+        {/* <View style={[styles.frameParent, styles.frameParentPosition]}>
         <View style={styles.cabezeraParent}>
           <View style={styles.cabezera}>
             <View style={[styles.cooliconParent, styles.starusPosition]}>
@@ -305,110 +341,110 @@ const MiSuscripcin = () => {
         <View style={[styles.starus, styles.timeLayout]}>
           <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
         </View>
-      </View>
+      </View> */}
+      </ScrollView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   frameParentPosition: {
     marginLeft: -185,
-    left: "50%",
+    left: '50%'
   },
-  starusPosition: {
-    left: 0,
-    top: 0,
-  },
+
   esteEsTuFlexBox: {
-    textAlign: "center",
-    width: 358,
-    color: Color.wHITESPORTSMATCH,
+    textAlign: 'center',
+    marginTop: 20,
+    // width: 358,
+    color: Color.wHITESPORTSMATCH
   },
   freemiumLayout: {
-    height: 397,
-    width: 370,
+    // height: 397
+    // width: 370
   },
   goldSpaceBlock: {
     paddingBottom: Padding.p_11xl,
     borderRadius: Border.br_mini,
     backgroundColor: Color.wHITESPORTSMATCH,
-    alignItems: "center",
-    overflow: "hidden",
+    alignItems: 'center',
+    overflow: 'hidden'
   },
   ofertasTypo: {
-    fontWeight: "700",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontWeight: '700',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   timeTypo: {
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center'
   },
   creacinGratisDelLayout: {
     marginLeft: 5,
-    width: 260,
+    // width: 260,
     lineHeight: 16,
     color: Color.bLACK1SPORTSMATCH,
     fontSize: FontSize.t1TextSMALL_size,
-    textAlign: "left",
+    textAlign: 'left'
   },
   aceptarBorder: {
     borderWidth: 1,
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute'
   },
   aceptarFlexBox: {
     borderRadius: Border.br_81xl,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   aceptar1Typo: {
     color: Color.bLACK1SPORTSMATCH,
-    fontWeight: "700",
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontWeight: '700',
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   groupLayout: {
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   icon: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%'
   },
   coolicon: {
     width: 9,
-    height: 15,
+    height: 15
   },
   miSuscripcin2: {
-    fontWeight: "500",
-    textAlign: "left",
+    fontWeight: '500',
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   miSuscripcin1: {
-    marginLeft: 9,
+    marginLeft: 9
   },
   cooliconParent: {
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
+    // alignItems: 'center',
+    // marginLeft: 15,
+    marginTop: 50,
+    flexDirection: 'row'
   },
   cabezera: {
     width: 163,
-    height: 22,
+    height: 22
   },
   esteEsTu: {
-    lineHeight: 14,
-    width: 358,
+    // lineHeight: 14,
+    // width: 358,
     fontSize: FontSize.button_size,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   freemiumChild: {
     marginLeft: -174,
@@ -418,87 +454,69 @@ const styles = StyleSheet.create({
     width: 346,
     height: 308,
     borderColor: Color.bLACK1SPORTSMATCH,
-    borderStyle: "solid",
-    left: "50%",
-    position: "absolute",
+    borderStyle: 'solid',
+    left: '50%',
+    position: 'absolute'
   },
   freemiumItem: {
     height: 50,
-    zIndex: 0,
-    width: 358,
+
+    width: 358
   },
   freemium2: {
-    top: 16,
-    height: 19,
     zIndex: 1,
-    width: 358,
-    textAlign: "center",
+    textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    lineHeight: 22,
-    left: 0,
-    position: "absolute",
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   gratuito: {
     fontSize: FontSize.size_21xl,
-    width: 358,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    lineHeight: 22,
-    left: 0,
-    position: "absolute",
-    top: 0,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   gratuitoWrapper: {
-    height: 47,
-    width: 358,
+    // height: 47,
+    // width: 358
   },
   frameWrapper: {
-    height: 22,
+    height: 22
   },
   frameChild: {
     width: 10,
-    height: 7,
+    height: 7
   },
   creacinGratisDel: {
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   vectorParent: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 10
   },
   frameItem: {
     borderColor: Color.gREY2SPORTSMATCH,
     borderTopWidth: 1,
-    width: 305,
     height: 1,
     marginTop: 10,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
   vectorGroup: {
     marginTop: 10,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   accesoA: {
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   frameView: {
-    marginTop: 30,
+    marginTop: 30
   },
   frameContainer: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   silverInner: {
     marginTop: 30,
-    alignItems: "center",
-  },
-  silver: {
-    marginLeft: -179,
-    top: 5,
-    left: "50%",
-    position: "absolute",
+    alignItems: 'center'
   },
   marcaPlanActual: {
     borderRadius: Border.br_xl,
@@ -506,81 +524,81 @@ const styles = StyleSheet.create({
     top: 0,
     height: 397,
     width: 370,
-    left: "50%",
-    marginLeft: -185,
+    left: '50%',
+    marginLeft: -185
   },
   freemium: {
-    marginTop: 30,
+    marginTop: 30
   },
   frameGroup: {
-    marginTop: 40,
+    marginTop: 40
   },
   cabezeraParent: {
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   text: {
-    fontSize: FontSize.size_21xl,
+    fontSize: FontSize.size_21xl
   },
   mes: {
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   oTambin12440ao: {
     color: Color.colorDimgray_100,
-    fontSize: FontSize.button_size,
+    fontSize: FontSize.button_size
   },
   mesOTambinContainer: {
     width: 358,
     fontFamily: FontFamily.t4TEXTMICRO,
     lineHeight: 22,
     left: 0,
-    position: "absolute",
-    top: 0,
+    position: 'absolute',
+    top: 0
   },
   verOferta: {
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size,
-    color: Color.bLACK1SPORTSMATCH,
+    color: Color.bLACK1SPORTSMATCH
   },
   aceptar: {
     marginTop: -13.5,
-    right: "0%",
-    left: "0%",
+    right: '0%',
+    left: '0%',
     paddingHorizontal: Padding.p_mini,
     paddingVertical: Padding.p_8xs,
-    top: "50%",
+    top: '50%',
     borderWidth: 1,
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute',
     borderColor: Color.bLACK1SPORTSMATCH,
-    width: "100%",
+    width: '100%'
   },
   boto: {
     width: 328,
     height: 27,
-    marginTop: 30,
+    marginTop: 30
   },
   gold: {
     opacity: 0.5,
-    marginTop: 25,
+    marginTop: 25
   },
   aceptar1: {
-    fontSize: FontSize.button_size,
+    fontSize: FontSize.button_size
   },
   loremIpsum: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     width: 360,
-    backgroundColor: Color.wHITESPORTSMATCH,
+    backgroundColor: Color.wHITESPORTSMATCH
   },
   botoFinal: {
     marginTop: 25,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   frameParent: {
     top: 60,
-    left: "50%",
-    position: "absolute",
+    left: '50%',
+    position: 'absolute'
   },
   border: {
     right: 2,
@@ -590,7 +608,7 @@ const styles = StyleSheet.create({
     opacity: 0.35,
     borderColor: Color.wHITESPORTSMATCH,
     top: 0,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
   capIcon: {
     top: 4,
@@ -598,7 +616,7 @@ const styles = StyleSheet.create({
     height: 4,
     opacity: 0.4,
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   capacity: {
     top: 2,
@@ -607,25 +625,25 @@ const styles = StyleSheet.create({
     width: 18,
     height: 7,
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   battery: {
     width: 25,
     right: 0,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group: {
     top: 7,
     width: 68,
-    right: 0,
+    right: 0
   },
   time: {
     marginTop: -9.55,
@@ -634,32 +652,33 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     lineHeight: 18,
     fontFamily: FontFamily.openSansSemiBold,
-    top: "50%",
-    fontWeight: "600",
-    textAlign: "center",
+    top: '50%',
+    fontWeight: '600',
+    textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    width: 61,
+    width: 61
   },
   starus: {
     height: 24,
     left: 0,
-    top: 0,
+    top: 0
   },
   iphone: {
     top: 10,
     right: 15,
     height: 24,
     width: 360,
-    position: "absolute",
+    position: 'absolute'
   },
   miSuscripcin: {
     borderRadius: Border.br_21xl,
     backgroundColor: Color.bLACK1SPORTSMATCH,
     flex: 1,
-    height: 1293,
-    overflow: "hidden",
-    width: "100%",
-  },
-});
+    paddingHorizontal: 15,
+    // height: 1293,
+    // overflow: 'hidden',
+    width: '100%'
+  }
+})
 
-export default MiSuscripcin;
+export default MiSuscripcin
