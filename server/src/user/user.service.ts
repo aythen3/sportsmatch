@@ -115,7 +115,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new HttpException(`Evento con ID ${email} no encontrado`, 404);
+      throw new HttpException(`Usuario con ID ${email} no encontrado`, 404);
     }
     return user;
   }
