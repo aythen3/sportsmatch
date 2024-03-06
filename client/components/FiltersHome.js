@@ -10,7 +10,7 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 
-const FiltersHome = ({ modalActive }) => {
+const FiltersHome = ({ modalActive, text }) => {
   const navigation = useNavigation()
 
   return (
@@ -30,7 +30,7 @@ const FiltersHome = ({ modalActive }) => {
         <TextInput
           style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
           placeholderTextColor={Color.gREY2SPORTSMATCH}
-          placeholder="Posicón de juego, población, club..."
+          placeholder={text ? text : 'Posicón de juego, población, club...'}
         />
       </View>
       <Pressable onPress={modalActive}>
