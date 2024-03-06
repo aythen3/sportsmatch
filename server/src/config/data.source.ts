@@ -20,7 +20,7 @@ export const DataSourceConfig: DataSourceOptions = {
   synchronize: true,
   migrationsRun: false,
   logging: false,
-  dropSchema: true,
+  //dropSchema: true,
   //autoLoadEntities: true,
   namingStrategy: new SnakeNamingStrategy()
 };
