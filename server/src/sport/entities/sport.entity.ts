@@ -2,16 +2,28 @@ import { BaseEntity } from 'src/config/base.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
-import { Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
-@Entity({ name: 'skill' })
+@Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
-  @OneToOne(() => SportmanEntity, (sportman) => sportman.sport)
-  sportman: SportmanEntity;
+  @Column({ unique: true })
+  name: string;
 
-  @OneToOne(() => SkillEntity, (skillEntity) => skillEntity.sport)
-  skill: SkillEntity;
+  @Column({ nullable: true })
+  img?: string;
 
-  @OneToMany(() => PositionEntity, (position) => position.sport)
-  positions: PositionEntity[];
+  @OneToMany(() => SportmanEntity, (sportman) => sportman.sport, {
+    nullable: true
+  })
+  sportman: SportmanEntity[] | null;
+
+  @OneToOne(() => SkillEntity, (skillEntity) => skillEntity.sport, {
+    nullable: true
+  })
+  skill: SkillEntity | null;
+
+  @OneToMany(() => PositionEntity, (position) => position.sport, {
+    nullable: true
+  })
+  positions: PositionEntity[] | null;
 }
