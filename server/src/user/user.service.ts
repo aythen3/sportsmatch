@@ -109,7 +109,11 @@ export class UserService {
   }
 
   public async getByEmail(email: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({
+      where: { email },
+      relations: ['club', 'sportman']
+    });
+
     if (!user) {
       throw new HttpException(`Evento con ID ${email} no encontrado`, 404);
     }
