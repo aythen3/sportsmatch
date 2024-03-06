@@ -1,6 +1,12 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from 'class-validator';
 
-export class CreateClubDto {
+class ClubData {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -36,4 +42,13 @@ export class CreateClubDto {
   @IsString()
   @IsOptional()
   img_front?: string;
+}
+
+export class CreateClubDto {
+  @ValidateNested() // Validar la propiedad anidada
+  clubData: ClubData;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }
