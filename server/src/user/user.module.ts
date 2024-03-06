@@ -10,6 +10,7 @@ import { SportEntity } from 'src/sport/entities/sport.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, ClubEntity, SportEntity])],
+  exports: [UserService],
   controllers: [UserController],
   providers: [UserService, JwtService, AuthJwtService]
 })
