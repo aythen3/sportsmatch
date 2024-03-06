@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const offersSlices = createSlice({
   name: 'offers',
   initialState: {
+    offer: {},
     offers: [
       {
         id: 1,
@@ -58,9 +59,14 @@ const offersSlices = createSlice({
       }
     ]
   },
-  reducers: {}
+  reducers: {
+    setOffer: (state, action) => {
+      console.log(action.payload)
+      state.offer = action.payload
+    }
+  }
 })
 
-export const {} = offersSlices.actions
+export const { setOffer } = offersSlices.actions
 
 export default offersSlices.reducer

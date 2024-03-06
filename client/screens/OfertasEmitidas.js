@@ -11,12 +11,14 @@ import {
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../components/ModalOptionOffers'
+import { setOffer } from '../redux/slices/offers.slices'
 
 const OfertasEmitidas = () => {
   const { offers } = useSelector((state) => state.offers)
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
@@ -62,7 +64,13 @@ const OfertasEmitidas = () => {
               <Text style={[styles.oferta1, styles.sexo1Typo]}>
                 Oferta {i + 1}
               </Text>
-              <TouchableOpacity onPress={handleImageClick}>
+              <TouchableOpacity
+                style={{ width: 20 }}
+                onPress={(event) => {
+                  // dispatch(setOffer(offer))
+                  handleImageClick(event)
+                }}
+              >
                 <Image
                   style={styles.titularChild}
                   contentFit="cover"
@@ -151,27 +159,29 @@ const OfertasEmitidas = () => {
                 style={[styles.inscritos1, styles.pausar1Typo]}
               >{`6 inscritos `}</Text>
             </Pressable>
+            <Modal visible={modalVisible} transparent={true}>
+              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: modalPosition.y,
+                      left: modalPosition.x,
+                      padding: 20,
+                      borderRadius: 8
+                    }}
+                  >
+                    <ModalOptionOffers
+                      offer={offer}
+                      onClose={() => setModalVisible(false)}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
           </View>
         ))}
       </View>
-
-      <Modal visible={modalVisible} transparent={true}>
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                position: 'absolute',
-                top: modalPosition.y,
-                left: modalPosition.x,
-                padding: 20,
-                borderRadius: 8
-              }}
-            >
-              <ModalOptionOffers onClose={() => setModalVisible(false)} />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
     </View>
   )
 }
