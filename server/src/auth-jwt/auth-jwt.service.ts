@@ -39,6 +39,7 @@ export class AuthJwtService {
       throw new HttpException('La contraseña es inválida', 400);
     } else {
       // Si la contraseña es correcta, inicia sesión
+
       return await this.login(user);
     }
   }
