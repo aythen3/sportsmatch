@@ -8,10 +8,13 @@ import { MatchEntity } from 'src/match/entities/match.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
+import { UserService } from 'src/user/user.service';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      UserEntity,
       SportmanEntity,
       ClubEntity,
       MatchEntity,
@@ -22,6 +25,6 @@ import { SportEntity } from 'src/sport/entities/sport.entity';
   ],
   exports: [],
   controllers: [SportmanController],
-  providers: [SportmanService]
+  providers: [SportmanService, UserService]
 })
 export class SportmanModule {}
