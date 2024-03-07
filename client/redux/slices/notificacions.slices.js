@@ -46,16 +46,51 @@ const notificationsSlices = createSlice({
         read: false,
         confirmation: true
       }
+    ],
+    message: [
+      {
+        id: 1,
+        text: 'hola como estas, soy Cristian Perez, Me gustaria hablar con ustedes ya que hicimos Match',
+        isMy: true,
+        read: true
+      },
+      {
+        id: 2,
+        text: 'Buenos dias Cristian. Claro, estas disponible mañana a las 17hs para una entrevista?',
+        isMy: false,
+        read: true
+      },
+      {
+        id: 3,
+        text: 'Si, manaña estoy disponible, con gusto me acercare al club. Muchas gracias',
+        isMy: true,
+        read: true
+      },
+      {
+        id: 4,
+        text: 'Perfecto, que tengas un gran dia',
+        isMy: false,
+        read: true
+      },
+      {
+        id: 5,
+        text: 'Gracias',
+        isMy: true,
+        read: false
+      }
     ]
   },
   reducers: {
     setOffer: (state, action) => {
       console.log(action.payload)
       state.offer = action.payload
+    },
+    setChat: (state, action) => {
+      state.message = action.payload
     }
   }
 })
 
-export const {} = notificationsSlices.actions
+export const { setChat } = notificationsSlices.actions
 
 export default notificationsSlices.reducer

@@ -4,11 +4,11 @@ const usersSlices = createSlice({
   name: 'users',
   initialState: {
     user: {},
-    isSportMan: true
+    isSportman: true
   },
   reducers: {
     setIsSpotMan: (state, action) => {
-      state.isSportMan = action.payload
+      state.isSportman = action.payload
     }
   }
 })

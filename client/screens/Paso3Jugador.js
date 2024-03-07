@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import SkillSeleccion from '../components/SkillSeleccion'
+import Lines from '../components/Lines'
 
 const Paso3Jugador = () => {
   const navigation = useNavigation()
@@ -35,12 +36,13 @@ const Paso3Jugador = () => {
                 Define tus skills
               </Text>
             </View>
-            <View style={styles.linias}>
+            {/* <View style={styles.linias}>
               <View style={styles.liniaLayout1} />
               <View style={styles.liniaLayout1} />
               <View style={styles.liniaLayout2} />
               <View style={styles.liniaLayout1} />
-            </View>
+            </View> */}
+            <Lines index={3} />
           </View>
         </View>
         <SkillSeleccion />
@@ -139,7 +141,8 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    top: '8%'
+    top: 40,
+    width: '90%'
   },
   siguiente1: {
     fontWeight: '700',

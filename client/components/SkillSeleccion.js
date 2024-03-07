@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
     borderRadius: Border.br_81xl,
-    height: 40,
+    height: 45,
     borderStyle: 'solid',
     justifyContent: 'center',
     width: '96%'
@@ -196,7 +196,8 @@ const styles = StyleSheet.create({
   atributo: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
+    fontSize: FontSize.t2TextSTANDARD_size,
+    marginBottom: 5
   },
   atributoInner: {
     textAlign: 'left',
@@ -205,7 +206,8 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    height: 63
+    height: 63,
+    marginTop: 18
   },
   formulariosInferiores: {
     marginTop: '10%',

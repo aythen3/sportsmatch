@@ -3,9 +3,11 @@ import React from 'react'
 import { Image } from 'react-native'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
+import { useSelector } from 'react-redux'
 
 const HeaderIcons = () => {
   const navigation = useNavigation()
+  const { isSportman } = useSelector((state) => state.users)
 
   return (
     <View style={styles.vectorParent}>
@@ -27,7 +29,13 @@ const HeaderIcons = () => {
           paddingHorizontal: 10
         }}
       >
-        <Pressable onPress={() => navigation.navigate('OfertasEmitidas')}>
+        <Pressable
+          onPress={() =>
+            isSportman
+              ? navigation.navigate('TodasLasOfertas')
+              : navigation.navigate('OfertasEmitidas')
+          }
+        >
           <Image
             style={styles.frameInner}
             contentFit="cover"

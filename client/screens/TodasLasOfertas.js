@@ -1,15 +1,160 @@
-import * as React from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
-import { Image } from "expo-image";
-import { useNavigation } from "@react-navigation/native";
-import { Color, Border, FontSize, FontFamily, Padding } from "../GlobalStyles";
+import React, { useState } from 'react'
+import {
+  Text,
+  StyleSheet,
+  View,
+  Pressable,
+  Modal,
+  TouchableWithoutFeedback
+} from 'react-native'
+import { Image } from 'expo-image'
+import { useNavigation } from '@react-navigation/native'
+import { Color, Border, FontSize, FontFamily, Padding } from '../GlobalStyles'
+import CardInfoOffers from '../components/CardInfoOffers'
+import FiltersHome from '../components/FiltersHome'
+import MonetizarOfertaPRO from './MonetizarOfertaPRO'
 
 const TodasLasOfertas = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
+  const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
+  const [modalVisible, setModalVisible] = useState(false)
 
   return (
     <View style={styles.todasLasOfertas}>
-      <Text style={[styles.misOfertas, styles.ofertasTypo]}>Mis ofertas</Text>
+      <View style={{ marginVertical: 30, marginLeft: 15 }}>
+        <View style={styles.cabezera1}>
+          <Pressable
+            style={styles.coolicon}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={styles.icon}
+              contentFit="cover"
+              source={require('../assets/coolicon3.png')}
+            />
+          </Pressable>
+          <Pressable style={styles.ofertas} onPress={() => navigation.goBack()}>
+            <Text style={[styles.ofertas1, styles.pvotTypo]}>Ofertas</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <FiltersHome />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginTop: 20
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            setSelectOfferComponent('todas')
+            //  navigation.navigate('TusMensajes')
+          }}
+        >
+          <View
+            style={{
+              borderBottomWidth: 3,
+              borderColor:
+                selectOfferComponent === 'todas'
+                  ? Color.bALONCESTO
+                  : 'transparent',
+              width: 150
+            }}
+          >
+            <Text
+              style={[
+                selectOfferComponent === 'todas'
+                  ? styles.todasLaOfertas
+                  : styles.todasLaOfertas2,
+                styles.ofertasTypo
+              ]}
+            >
+              Todas la ofertas
+            </Text>
+          </View>
+        </Pressable>
+
+        <Pressable
+          onPress={() => {
+            setSelectOfferComponent('favoritas')
+            //  navigation.navigate('TusMensajes')
+          }}
+        >
+          <View
+            style={{
+              borderBottomWidth: 3,
+              borderColor:
+                selectOfferComponent === 'favoritas'
+                  ? Color.bALONCESTO
+                  : 'transparent',
+              width: 150
+            }}
+          >
+            <Text
+              style={[
+                selectOfferComponent === 'favoritas'
+                  ? styles.todasLaOfertas
+                  : styles.todasLaOfertas2,
+                ,
+                styles.ofertasTypo
+              ]}
+            >
+              Ofertas favoritas
+            </Text>
+          </View>
+        </Pressable>
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <CardInfoOffers text="Sexo" value="Masculino" />
+        <CardInfoOffers text="Categoria" value="Senior" />
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <CardInfoOffers text="Posicion" value="Pivot" />
+        <CardInfoOffers text="Ubicacion" value="Maresme" />
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <CardInfoOffers text="Urgencia" value={`6${'0%'}`} />
+        <CardInfoOffers text="Retribucion" value="NO" />
+      </View>
+
+      <View
+        style={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 30
+        }}
+      >
+        <Pressable style={[styles.aceptar, styles.aceptarBg]}>
+          <Text
+            onPress={() => setModalVisible(true)}
+            style={[styles.verOferta, styles.verOfertaTypo]}
+          >
+            Inscríbete en la oferta 
+          </Text>
+        </Pressable>
+      </View>
+
+      <Modal visible={modalVisible} transparent={true} animationType="slide">
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <MonetizarOfertaPRO onClose={() => setModalVisible(false)} />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
+      {/* <Text style={[styles.misOfertas, styles.ofertasTypo]}>Mis ofertas</Text>
       <View style={[styles.contenido, styles.menuClubPosition]}>
         <View style={[styles.menuClub, styles.menuClubPosition]}>
           <Image
@@ -286,78 +431,75 @@ const TodasLasOfertas = () => {
         <View style={[styles.starus, styles.timeLayout]}>
           <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
         </View>
-      </View>
+      </View> */}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   ofertasTypo: {
-    fontWeight: "700",
-    textAlign: "center",
+    fontWeight: '700',
+    textAlign: 'center'
   },
   menuClubPosition: {
     marginLeft: -195,
     width: 390,
-    left: "50%",
-    position: "absolute",
+    left: '50%',
+    position: 'absolute'
   },
   groupIconLayout: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    overflow: "hidden",
+    maxWidth: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden'
   },
   iconPosition: {
-    bottom: "33.33%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
+    bottom: '33.33%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    position: 'absolute',
+    overflow: 'hidden'
   },
   groupChildPosition: {
-    bottom: "0%",
-    position: "absolute",
+    bottom: '0%',
+    position: 'absolute'
   },
   itemPosition: {
     backgroundColor: Color.bLACK3SPORTSMATCH,
-    bottom: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
+    bottom: '0%',
+    top: '0%',
+    height: '100%',
+    position: 'absolute'
   },
   borderBorder: {
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute'
   },
   lineIconLayout: {
     width: 0,
-    bottom: "0%",
-    top: "0%",
-    height: "100%",
-    maxHeight: "100%",
-    position: "absolute",
+    bottom: '0%',
+    top: '0%',
+    height: '100%',
+    maxHeight: '100%',
+    position: 'absolute'
   },
   menuClubChild2Layout: {
-    bottom: "38.46%",
-    top: "16.67%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    width: "8.97%",
-    height: "44.87%",
-    position: "absolute",
-    overflow: "hidden",
+    bottom: '38.46%',
+    top: '16.67%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    width: '8.97%',
+    height: '44.87%',
+    position: 'absolute',
+    overflow: 'hidden'
   },
   groupBorder: {
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
-  iphonePosition: {
-    left: 0,
-    position: "absolute",
-  },
+
   pivotLayout: {
     width: 150,
-    height: 80,
+    height: 80
   },
   parentPosition: {
     paddingHorizontal: 0,
@@ -365,229 +507,229 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_8xs,
     top: 0,
     backgroundColor: Color.bLACK3SPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   sexoTypo: {
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   pvotTypo: {
-    fontWeight: "500",
+    fontWeight: '500',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   frameBorder: {
     height: 1,
     borderTopWidth: 1,
     borderColor: Color.colorDimgray_100,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
   aceptarBg: {
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    height: 45
   },
   verOfertaTypo: {
     lineHeight: 17,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t1TextSMALL_size,
+    fontSize: FontSize.t1TextSMALL_size
   },
   groupContainerSpaceBlock: {
     paddingVertical: Padding.p_4xs,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   batteryPosition: {
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   misOfertas: {
-    width: "44.1%",
-    top: "18.96%",
-    left: "51.79%",
-    textAlign: "center",
+    width: '44.1%',
+    top: '18.96%',
+    left: '51.79%',
+    textAlign: 'center',
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     lineHeight: 12,
     fontSize: FontSize.t1TextSMALL_size,
-    fontWeight: "700",
-    position: "absolute",
+    fontWeight: '700',
+    position: 'absolute'
   },
   maskGroupIcon: {
-    top: "20.51%",
-    right: "5.38%",
-    bottom: "34.62%",
-    left: "85.64%",
-    maxHeight: "100%",
-    width: "8.97%",
-    height: "44.87%",
-    position: "absolute",
+    top: '20.51%',
+    right: '5.38%',
+    bottom: '34.62%',
+    left: '85.64%',
+    maxHeight: '100%',
+    width: '8.97%',
+    height: '44.87%',
+    position: 'absolute'
   },
   maskGroupIcon1: {
-    top: "21.79%",
-    right: "9.74%",
-    left: "81.28%",
-    width: "8.97%",
-    height: "44.87%",
+    top: '21.79%',
+    right: '9.74%',
+    left: '81.28%',
+    width: '8.97%',
+    height: '44.87%'
   },
   menuClubChild: {
     backgroundColor: Color.bLACK2SPORTMATCH,
-    left: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    width: "100%",
+    left: '0%',
+    right: '0%',
+    top: '0%',
+    height: '100%',
+    width: '100%'
   },
   menuClubItem: {
-    width: "19.74%",
-    right: "59.49%",
-    left: "20.77%",
+    width: '19.74%',
+    right: '59.49%',
+    left: '20.77%'
   },
   menuClubInner: {
-    height: "3.85%",
-    width: "20.51%",
-    top: "1.92%",
-    right: "59.1%",
-    bottom: "94.23%",
-    left: "20.38%",
+    height: '3.85%',
+    width: '20.51%',
+    top: '1.92%',
+    right: '59.1%',
+    bottom: '94.23%',
+    left: '20.38%',
     borderColor: Color.bALONCESTO,
-    borderTopWidth: 3,
+    borderTopWidth: 3
   },
   groupIcon: {
-    height: "37.95%",
-    width: "7.69%",
-    top: "14.1%",
-    right: "66.41%",
-    bottom: "47.95%",
-    left: "25.9%",
-    maxHeight: "100%",
-    position: "absolute",
+    height: '37.95%',
+    width: '7.69%',
+    top: '14.1%',
+    right: '66.41%',
+    bottom: '47.95%',
+    left: '25.9%',
+    maxHeight: '100%',
+    position: 'absolute'
   },
   lineIcon: {
-    left: "20.77%",
+    left: '20.77%'
   },
   menuClubChild1: {
-    left: "40.51%",
+    left: '40.51%'
   },
   groupChild: {
-    width: "11.94%",
-    right: "88.06%",
-    left: "0%",
-    top: "0%",
-    height: "100%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    width: '11.94%',
+    right: '88.06%',
+    left: '0%',
+    top: '0%',
+    height: '100%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   icon: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%'
   },
   wrapper: {
     left: 234,
     top: 3,
     width: 34,
     height: 23,
-    position: "absolute",
+    position: 'absolute'
   },
   groupParent: {
-    height: "39.23%",
-    width: "68.69%",
-    top: "19.74%",
-    right: "25.41%",
-    bottom: "41.03%",
-    left: "5.9%",
-    position: "absolute",
+    height: '39.23%',
+    width: '68.69%',
+    top: '19.74%',
+    right: '25.41%',
+    bottom: '41.03%',
+    left: '5.9%',
+    position: 'absolute'
   },
   menuClubChild2: {
-    right: "44.87%",
-    left: "46.15%",
+    right: '44.87%',
+    left: '46.15%'
   },
   maskGroupIcon2: {
-    right: "6.15%",
-    left: "84.87%",
+    right: '6.15%',
+    left: '84.87%'
   },
   ellipseIcon: {
-    height: "6.41%",
-    width: "1.28%",
-    top: "60.26%",
-    right: "28.97%",
-    left: "69.74%",
+    height: '6.41%',
+    width: '1.28%',
+    top: '60.26%',
+    right: '28.97%',
+    left: '69.74%'
   },
   menuClub: {
     top: 562,
-    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
-      height: -4,
+      height: -4
     },
     shadowRadius: 4,
     elevation: 4,
     shadowOpacity: 1,
     height: 78,
     width: 390,
-    left: "50%",
+    left: '50%'
   },
   fondoImagenIcon: {
     height: 400,
     width: 360,
-    zIndex: 0,
+    zIndex: 0
   },
   sexo: {
     width: 143,
     height: 17,
-    textAlign: "left",
-    color: Color.wHITESPORTSMATCH,
+    textAlign: 'left',
+    color: Color.wHITESPORTSMATCH
   },
   masculino1: {
     marginTop: 11,
     height: 18,
     lineHeight: 20,
     fontSize: FontSize.button_size,
-    fontWeight: "500",
+    fontWeight: '500',
     width: 150,
-    textAlign: "center",
+    textAlign: 'center'
   },
   sexoParent: {
     paddingVertical: Padding.p_9xs,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     height: 80,
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: Color.colorDimgray_100,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   masculino: {
     height: 80,
-    zIndex: 0,
+    zIndex: 0
   },
   senior: {
     marginLeft: 20,
     height: 80,
-    zIndex: 1,
+    zIndex: 1
   },
   pvot: {
     marginTop: 13,
     height: 18,
     lineHeight: 20,
     fontSize: FontSize.button_size,
-    fontWeight: "500",
+    fontWeight: '500',
     width: 150,
-    textAlign: "center",
+    textAlign: 'center'
   },
   pivot: {
     zIndex: 2,
     marginLeft: 20,
-    height: 80,
+    height: 80
   },
   comarca: {
     zIndex: 3,
     marginLeft: 20,
-    height: 80,
+    height: 80
   },
   groupItem: {
     opacity: 0.5,
@@ -595,27 +737,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: Border.br_8xs,
     backgroundColor: Color.bLACK3SPORTSMATCH,
-    bottom: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    left: "0%",
-    right: "0%",
-    width: "100%",
+    bottom: '0%',
+    top: '0%',
+    height: '100%',
+    position: 'absolute',
+    left: '0%',
+    right: '0%',
+    width: '100%'
   },
   urgencia1: {
-    height: "21.25%",
-    width: "95.33%",
-    top: "5%",
-    left: "4.67%",
-    textAlign: "left",
+    height: '21.25%',
+    width: '95.33%',
+    top: '5%',
+    left: '4.67%',
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   rectangleParent: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     zIndex: 0,
-    flex: 1,
+    flex: 1
   },
   urgenciaChild: {
     top: 36,
@@ -623,217 +765,205 @@ const styles = StyleSheet.create({
     width: 122,
     height: 18,
     zIndex: 1,
-    position: "absolute",
+    position: 'absolute'
   },
   urgencia: {
     zIndex: 4,
     marginLeft: 20,
-    height: 80,
+    height: 80
   },
   retribucion: {
     zIndex: 5,
     marginLeft: 20,
-    height: 80,
+    height: 80
   },
   modulosChild: {
     top: 310,
     left: -20,
     zIndex: 6,
     width: 361,
-    position: "absolute",
+    position: 'absolute'
   },
   modulos: {
     width: 320,
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row'
   },
   contenidoChild: {
     height: 70,
     marginTop: 30,
     opacity: 0.5,
-    width: 360,
+    width: 360
   },
   contenido1: {
     top: 20,
     zIndex: 1,
-    alignItems: "center",
+    alignItems: 'center'
   },
   targeta: {
     zIndex: 0,
-    alignItems: "center",
+    alignItems: 'center',
     width: 361,
     borderColor: Color.colorDimgray_100,
     borderWidth: 1,
     borderRadius: Border.br_8xs,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   verOferta: {
     color: Color.bLACK1SPORTSMATCH,
-    textAlign: "center",
-    fontWeight: "700",
+    textAlign: 'center',
+    fontWeight: '700'
   },
   aceptar: {
-    marginTop: -13.5,
-    marginLeft: -86.5,
+    width: '70%',
     paddingHorizontal: Padding.p_mini,
     paddingVertical: Padding.p_8xs,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: Border.br_81xl,
-    flexDirection: "row",
-    top: "50%",
-    alignItems: "center",
-    left: "50%",
-  },
-  boton: {
-    marginTop: 153,
-    marginLeft: -85.5,
-    width: 173,
-    height: 27,
-    top: "50%",
-    zIndex: 1,
-    left: "50%",
-    position: "absolute",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   targetaContenido: {
-    flexDirection: "row",
+    flexDirection: 'row',
     left: 15,
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   contenido: {
     top: 205,
     height: 640,
     width: 390,
-    left: "50%",
+    left: '50%'
   },
   todasLaOfertas: {
     color: Color.bALONCESTO,
-    width: 175,
-    textAlign: "center",
+    textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    lineHeight: 12,
     fontSize: FontSize.t1TextSMALL_size,
-    fontWeight: "700",
+    fontWeight: '700',
+    marginBottom: 5
+  },
+  todasLaOfertas2: {
+    color: Color.colorWhitesmoke,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t1TextSMALL_size,
+    fontWeight: '700',
+    marginBottom: 5
   },
   menuChild: {
     width: 188,
     marginTop: 8,
-    maxHeight: "100%",
+    maxHeight: '100%'
   },
   menuContenido: {
-    top: 160,
+    top: 160
   },
   coolicon: {
     width: 9,
-    height: 15,
+    height: 15
   },
   ofertas1: {
-    fontSize: FontSize.h3TitleMEDIUM_size,
-    lineHeight: 22,
-    textAlign: "left",
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   ofertas: {
-    marginLeft: 9,
+    marginLeft: 9
   },
   cabezera1: {
-    alignItems: "center",
-    flexDirection: "row",
-    top: 0,
+    alignItems: 'center',
+    flexDirection: 'row'
   },
-  cabezeraBuscarFiltros: {
-    width: 92,
-    height: 22,
-  },
+
   frameChild: {
     width: 13,
-    height: 15,
+    height: 15
   },
   posicnDeJuego: {
     width: 265,
     height: 16,
     marginLeft: 6,
     fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.gREY2SPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   groupContainer: {
     borderColor: Color.wHITESPORTSMATCH,
     paddingHorizontal: Padding.p_2xs,
     borderRadius: Border.br_81xl,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
   groupIcon1: {
     width: 22,
     marginLeft: 20,
-    height: 17,
+    height: 17
   },
   buscarPictograma: {
     width: 348,
-    height: 34,
+    height: 34
   },
   filtrosSugeridos: {
-    textAlign: "left",
-    color: Color.gREY2SPORTSMATCH,
+    textAlign: 'left',
+    color: Color.gREY2SPORTSMATCH
   },
   frameItem: {
     marginTop: 10,
-    width: 175,
+    width: 175
   },
   porProximidadPictoChild: {
     width: 10,
-    height: 7,
+    height: 7
   },
   porProximidad: {
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    left: "0%",
-    top: "0%",
-    position: "absolute",
+    left: '0%',
+    top: '0%',
+    position: 'absolute'
   },
   pictogramaIcon: {
-    width: "10.49%",
-    left: "89.51%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    width: '10.49%',
+    left: '89.51%',
+    right: '0%',
+    top: '0%',
+    height: '100%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   porProximidadParent: {
     width: 130,
     marginLeft: 6,
-    height: 17,
+    height: 17
   },
   porProximidadPicto1: {
     width: 146,
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   porProximidadPicto: {
     marginTop: 10,
-    alignItems: "center",
+    alignItems: 'center'
   },
   frameInner: {
     width: 176,
-    marginTop: 10,
+    marginTop: 10
   },
   groupIcon2: {
-    height: "84.21%",
-    width: "12.03%",
-    top: "15.79%",
-    left: "87.97%",
-    right: "0%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    height: '84.21%',
+    width: '12.03%',
+    top: '15.79%',
+    left: '87.97%',
+    right: '0%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   groupGroup: {
     width: 133,
-    height: 19,
+    height: 19
   },
   filtrosSugeridosParent: {
     paddingHorizontal: 0,
@@ -841,30 +971,30 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_8xs,
     top: 0,
     backgroundColor: Color.bLACK3SPORTSMATCH,
-    position: "absolute",
-    alignItems: "center",
+    position: 'absolute',
+    alignItems: 'center'
   },
   despliegue: {
     height: 108,
     marginTop: 9,
-    width: 175,
+    width: 175
   },
   buscarFiltrosDespliegue: {
     marginTop: 21,
-    justifyContent: "center",
-    alignItems: "flex-end",
+    justifyContent: 'center',
+    alignItems: 'flex-end'
   },
   cabezera: {
     top: 60,
     height: 146,
     left: 15,
-    position: "absolute",
+    position: 'absolute'
   },
   uxIphoneChild: {
     height: 34,
     top: 0,
     width: 390,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
+    backgroundColor: Color.bLACK1SPORTSMATCH
   },
   border: {
     right: 2,
@@ -874,71 +1004,68 @@ const styles = StyleSheet.create({
     opacity: 0.35,
     height: 12,
     width: 22,
-    top: 0,
+    top: 0
   },
   capIcon: {
     top: 4,
     width: 1,
     height: 4,
-    opacity: 0.4,
+    opacity: 0.4
   },
   capacity: {
     top: 2,
     right: 4,
     borderRadius: 2,
     width: 18,
-    height: 7,
+    height: 7
   },
   battery: {
     width: 25,
     height: 12,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group: {
     top: 17,
     right: 15,
     width: 68,
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   time: {
     marginTop: -9.55,
     left: 4,
     letterSpacing: 0,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: FontFamily.openSansSemiBold,
     fontSize: FontSize.t2TextSTANDARD_size,
-    top: "50%",
+    top: '50%',
     color: Color.wHITESPORTSMATCH,
-    textAlign: "center",
+    textAlign: 'center'
   },
   starus: {
     top: 10,
     height: 24,
-    left: 15,
+    left: 15
   },
   uxIphone: {
     height: 34,
     top: 0,
-    width: 390,
+    width: 390
   },
   todasLasOfertas: {
-    borderRadius: Border.br_21xl,
-    height: 844,
-    overflow: "hidden",
-    width: "100%",
+    width: '100%',
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  }
+})
 
-export default TodasLasOfertas;
+export default TodasLasOfertas

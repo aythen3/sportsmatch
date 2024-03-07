@@ -6,9 +6,11 @@ import HomeSVG from './svg/footerSVG/HomeSVG'
 import MessageSVG from './svg/footerSVG/MessageSVG'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
+import { useSelector } from 'react-redux'
 
 const NavBarInferior = () => {
   const navigation = useNavigation()
+  const { isSportman } = useSelector((state) => state.users)
 
   return (
     <View
@@ -16,8 +18,6 @@ const NavBarInferior = () => {
         backgroundColor: Color.bLACK2SPORTMATCH,
         width: '100%',
         height: 60,
-        position: 'absolute',
-        bottom: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -27,19 +27,24 @@ const NavBarInferior = () => {
       <View>
         <DiarySVG />
       </View>
-      <View>
+      <Pressable onPress={() => navigation.navigate('ExplorarClubs')}>
         <LensSVG />
-      </View>
-      <View>
+      </Pressable>
+      <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
         <HomeSVG />
-      </View>
+      </Pressable>
       <View>
         <MessageSVG />
       </View>
-      <Pressable onPress={() => navigation.navigate('PerfilDatosPropioClub')}>
+      <Pressable
+        onPress={() =>
+          // ? navigation.navigate('MiPerfil')
+          // :
+          navigation.navigate('PerfilDatosPropioClub')
+        }
+      >
         <Image
-          // style={styles.perfilFeedVisualitzaciCluItem}
-          style={{ width: 25, height: 25 }}
+          style={{ width: 35, height: 35 }}
           contentFit="cover"
           source={require('../assets/group-5161.png')}
         />

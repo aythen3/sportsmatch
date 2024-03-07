@@ -10,13 +10,13 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setIsSpotMan } from '../redux/slices/users.slices'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-
+  const { isSportman } = useSelector((state) => state.users)
   const [isEnabled, setIsEnabled] = useState(false)
 
   const toggleSwitch = () => {
@@ -25,6 +25,7 @@ const LoginSwitch = () => {
   }
 
   console.log('Enable?', isEnabled)
+  console.log('isSportman?', isSportman)
 
   return (
     <ScrollView style={styles.loginSwitch}>

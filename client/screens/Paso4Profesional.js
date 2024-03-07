@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import DetallesSeleccion from '../components/DetallesSeleccion'
+import Lines from '../components/Lines'
 
 const Paso4Profesional = () => {
   const navigation = useNavigation()
@@ -35,12 +36,13 @@ const Paso4Profesional = () => {
                 Unos detalles sobre ti
               </Text>
             </View>
-            <View style={styles.linias}>
+            {/* <View style={styles.linias}>
               <View style={styles.liniaLayout1} />
               <View style={styles.liniaLayout1} />
               <View style={styles.liniaLayout1} />
               <View style={styles.liniaLayout2} />
-            </View>
+            </View> */}
+            <Lines index={3} />
           </View>
         </View>
 
@@ -76,7 +78,7 @@ const Paso4Profesional = () => {
 
         <Pressable
           style={styles.siguiente}
-          onPress={() => navigation.navigate('SiguiendoUsuarios')}
+          onPress={() => navigation.navigate('SiguiendoJugadores')}
         >
           <Text style={styles.siguiente1}>Siguiente</Text>
         </Pressable>
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     top: 77,
     alignItems: 'center',
     left: 0,
-    height: '150%'
+    height: '120%'
   },
   paso6: {
     flex: 1,

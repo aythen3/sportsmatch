@@ -1,20 +1,33 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
+import { useDispatch, useSelector } from 'react-redux'
+import { setChat } from '../redux/slices/notificacions.slices'
+import { useNavigation } from '@react-navigation/core'
 
 const MessagesChat = ({ name, message, read, send, confirmation }) => {
+  const dispatch = useDispatch()
+  const { message: messageRedux } = useSelector((state) => state.notifications)
+  const navigation = useNavigation()
+
+  console.log('mensajes', messageRedux)
+
   const cuteMessage =
     message.length >= 35 ? message.slice(0, 35).concat('...') : message
 
   return (
     <>
-      <View
+      <Pressable
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
           gap: 5
+        }}
+        onPress={() => {
+          navigation.navigate('ChatAbierto1')
+          // dispatch(setChat({ message, name, send }))notifications
         }}
       >
         <View style={{ flexDirection: 'row', gap: 15, width: '80%' }}>
@@ -76,7 +89,7 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
             </View>
           )}
         </View>
-      </View>
+      </Pressable>
       <View
         style={{
           borderWidth: 0.5,
