@@ -16,8 +16,6 @@ const NavBarInferior = () => {
         backgroundColor: Color.bLACK2SPORTMATCH,
         width: '100%',
         height: 60,
-        position: 'absolute',
-        bottom: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -38,7 +36,6 @@ const NavBarInferior = () => {
       </View>
       <Pressable onPress={() => navigation.navigate('PerfilDatosPropioClub')}>
         <Image
-          // style={styles.perfilFeedVisualitzaciCluItem}
           style={{ width: 25, height: 25 }}
           contentFit="cover"
           source={require('../assets/group-5161.png')}

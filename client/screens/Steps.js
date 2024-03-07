@@ -14,27 +14,53 @@ import EscogerDeporte2 from './EscogerDeporte2'
 import EscogerDeporte1 from './EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
+import { useSelector } from 'react-redux'
 
 const Steps = () => {
   const navigation = useNavigation()
+  const { isSportman } = useSelector((state) => state.users)
   const [stepsIndex, setstepsIndex] = useState(1)
 
   const hadleIndex = (value) => {
-    if (value === 'add') {
-      if (stepsIndex <= 2) {
-        setstepsIndex((prev) => prev + 1)
-      } else {
-        // navigation.navigate('SiguiendoJugadores')
-        navigation.navigate('ExplorarClubs')
-      }
+    // if (isClub === false) {
+    //   navigation.navigate('Paso1')
+    // } else {
+    //   if (value === 'add') {
+    //     if (stepsIndex <= 2) {
+    //       setstepsIndex((prev) => prev + 1)
+    //     } else {
+    //       navigation.navigate('SiguiendoJugadores')
+    //       // navigation.navigate('ExplorarClubs')
+    //     }
+    //   } else {
+    //     if (stepsIndex >= 2) {
+    //       setstepsIndex((prev) => prev - 1)
+    //     } else {
+    //       navigation.goBack()
+    //     }
+    //   }
+    // }
+    if (isSportman) {
+      navigation.navigate('Paso1')
     } else {
-      if (stepsIndex >= 2) {
-        setstepsIndex((prev) => prev - 1)
+      if (value === 'add') {
+        if (stepsIndex <= 2) {
+          setstepsIndex((prev) => prev + 1)
+        } else {
+          navigation.navigate('SiguiendoJugadores')
+          // navigation.navigate('ExplorarClubs')
+        }
       } else {
-        navigation.goBack()
+        if (stepsIndex >= 2) {
+          setstepsIndex((prev) => prev - 1)
+        } else {
+          navigation.goBack()
+        }
       }
     }
   }
+
+  console.log('isSportman', isSportman)
 
   const ViewComponent = (index) => {
     switch (index) {

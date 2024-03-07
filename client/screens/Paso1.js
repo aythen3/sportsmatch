@@ -21,11 +21,11 @@ const Paso1 = () => {
   }
 
   const handleNext = () => {
-    // if (selectedRole === 'Profesional del deporte') {
-    //   navigation.navigate('Paso3Profesional')
-    // } else {
-    navigation.navigate('Paso2Jugador', { role: selectedRole })
-    // }
+    if (selectedRole === 'Profesional del deporte') {
+      navigation.navigate('Paso3Profesional')
+    } else {
+      navigation.navigate('Paso3Jugador', { role: selectedRole })
+    }
   }
 
   return (

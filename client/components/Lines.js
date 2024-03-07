@@ -40,7 +40,7 @@ const Lines = ({ index }) => {
       <View
         style={{
           borderWidth: 2,
-          borderColor: Color.colorDimgray_100,
+          borderColor: index === 4 ? Color.bALONCESTO : Color.colorDimgray_100,
           width: 80,
           marginTop: 10
         }}

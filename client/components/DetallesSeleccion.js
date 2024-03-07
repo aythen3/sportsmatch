@@ -136,16 +136,16 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl,
     height: 40,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    width: '96%'
+    justifyContent: 'center'
+    // width: '96%'
   },
   rectanguloBorder2: {
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
     borderRadius: Border.br_3xs,
     height: 100,
-    borderStyle: 'solid',
-    width: '96%'
+    borderStyle: 'solid'
+    // width: '100%'
   },
   defensa: {
     textAlign: 'left',
@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     height: 63
   },
   formulariosInferiores: {
+    paddingHorizontal: 15,
     marginTop: '10%',
-    left: 5,
     width: '100%',
     gap: 20
   },

@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import SeleccionProfesional from '../components/SeleccionProfesional'
+import Lines from '../components/Lines'
+import Input from '../components/Input'
 
 const Paso3Jugador = () => {
   const navigation = useNavigation()
@@ -35,15 +37,30 @@ const Paso3Jugador = () => {
                 Define tus skills
               </Text>
             </View>
-            <View style={styles.linias}>
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout2} />
-              <View style={styles.liniaLayout1} />
-            </View>
+            <Lines index={3} />
           </View>
         </View>
-        <SeleccionProfesional />
+        {/* <SeleccionProfesional /> */}
+        <Input
+          title="Tipo de profesional"
+          placeholderText="Entrenador"
+          isAccordeon={true}
+        />
+        <Input title="Años en activo" placeholderText="2000" />
+        <Input
+          title="Lugar de residencia"
+          placeholderText="Barcelona"
+          isAccordeon={true}
+        />
+        <Input
+          title="Club actual"
+          placeholderText="Rellena solo si estas en algun club"
+        />
+        <Input
+          title="Como te defines como profesional"
+          placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
+          isMultiLine={true}
+        />
 
         <Pressable
           style={styles.siguiente}
@@ -139,7 +156,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    top: '8%'
+    top: 30
   },
   siguiente1: {
     fontWeight: '700',
@@ -151,8 +168,8 @@ const styles = StyleSheet.create({
   contenido: {
     top: 77,
     alignItems: 'center',
-    left: 0,
-    height: '150%'
+    height: '120%'
+    // height: '150%'
   },
   paso6: {
     flex: 1,
