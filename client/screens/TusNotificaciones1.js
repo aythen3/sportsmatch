@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native'
 import { FontSize, FontFamily, Color, Border } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import Notifications from '../components/Notifications'
-import TusMensajes1 from './TusMensajes1'
-import TusMensajes from './TusMensajes'
 import MessagesChat from '../components/MessagesChat'
 
 const TusNotificaciones1 = () => {
@@ -42,12 +40,6 @@ const TusNotificaciones1 = () => {
             <Text style={styles.tuBuzn1}>Tu Buzón</Text>
           </View>
         </Pressable>
-
-        {/* <Image
-          style={styles.tusNotificacionesChild}
-          contentFit="cover"
-          source={require('../assets/line-6.png')}
-        /> */}
         <View
           style={{
             flexDirection: 'row',
@@ -56,14 +48,7 @@ const TusNotificaciones1 = () => {
             marginTop: 30
           }}
         >
-          <Pressable
-            onPress={
-              () =>
-                setSelectedComponent(
-                  'messages'
-                ) /* navigation.navigate('TusMensajes1') */
-            }
-          >
+          <Pressable onPress={() => setSelectedComponent('messages')}>
             <Text
               style={[
                 selectedComponent === 'messages'
@@ -76,15 +61,7 @@ const TusNotificaciones1 = () => {
               Mensajes
             </Text>
           </Pressable>
-          <Pressable
-            o
-            onPress={
-              () =>
-                setSelectedComponent(
-                  'notifications'
-                ) /* navigation.navigate('TusMensajes1') */
-            }
-          >
+          <Pressable o onPress={() => setSelectedComponent('notifications')}>
             <Text
               style={[
                 selectedComponent === 'notifications'
@@ -113,22 +90,20 @@ const TusNotificaciones1 = () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginTop: 30,
-              position: 'relative' // Añadimos posición relativa al contenedor
+              position: 'relative'
             }}
           >
-            {/* Imagen */}
             <Image
               style={{
                 width: 24,
                 height: 24,
-                position: 'absolute', // Posición absoluta para superponer la imagen
-                left: 10, // Ajustamos la posición izquierda de la imagen
-                zIndex: 1 // Aseguramos que la imagen esté por encima del TextInput
+                position: 'absolute',
+                left: 10,
+                zIndex: 1
               }}
               source={require('../assets/group-535.png')}
             />
 
-            {/* TextInput */}
             <TextInput
               placeholder="Buscar"
               placeholderTextColor={Color.gREY2SPORTSMATCH}
@@ -136,7 +111,7 @@ const TusNotificaciones1 = () => {
                 flex: 1,
                 height: 45,
                 color: Color.gREY2SPORTSMATCH,
-                paddingHorizontal: 40, // Ajustamos el padding horizontal para dejar espacio para la imagen
+                paddingHorizontal: 40,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontSize: FontSize.t2TextSTANDARD_size,
                 borderWidth: 1,
@@ -160,238 +135,6 @@ const TusNotificaciones1 = () => {
               />
             ))}
         </View>
-
-        {/* <View
-          style={{
-            marginTop: 20,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 15,
-            gap: 5
-            // gap: 10
-          }}
-        >
-          <Image
-            style={[styles.groupIconLayout]}
-            contentFit="cover"
-            source={require('../assets/avatar.png')}
-          />
-          <View style={{ width: '80%' }}>
-            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-              ¡Has hecho un Match! ¡Felicidades! ¡Carles Mir y tú tenéis buen
-              feeling!
-            </Text>
-          </View>
-          <Text style={[styles.ayer, styles.ayerTypo]}>Ayer</Text>
-        </View>
-
-        <View
-          style={{
-            borderWidth: 0.5,
-            borderColor: Color.colorDimgray_100,
-            marginVertical: 15
-          }}
-        />
-
-        <View
-          style={{
-            // marginTop: 20,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 15,
-            gap: 5
-            // gap: 10
-          }}
-        >
-          <Image
-            style={[styles.groupIconLayout]}
-            contentFit="cover"
-            source={require('../assets/avatar.png')}
-          />
-          <View style={{ width: '80%' }}>
-            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-              ¡Has hecho un Match! ¡Felicidades! ¡Carles Mir y tú tenéis buen
-              feeling!
-            </Text>
-          </View>
-          <Text style={[styles.ayer, styles.ayerTypo]}>21/06/2023</Text>
-        </View> */}
-
-        {/* <Pressable style={styles.tuBuzn} onPress={() => navigation.goBack()}>
-          <Text style={styles.tuBuzn1}>Tu Buzón</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.coolicon, styles.cooliconPosition]}
-          onPress={() => navigation.goBack()}
-        >
-          <Image
-            style={[styles.icon, styles.iconChildLayout]}
-            contentFit="cover"
-            source={require("../assets/coolicon4.png")}
-          />
-        </Pressable>
-      </View>
-      <Image
-        style={styles.tusNotificacionesChild}
-        contentFit="cover"
-        source={require("../assets/line-6.png")}
-      />
-      <Pressable
-        style={[styles.mensajes, styles.mensajesPosition]}
-        onPress={() => navigation.navigate("TusMensajes1")}
-      >
-        <Text style={[styles.mensajes1, styles.mensajes1Typo]}>Mensajes</Text>
-      </Pressable>
-      <Text style={[styles.notficaciones, styles.mensajes1Typo]}>
-        Notíficaciones
-      </Text>
-      <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{`¡Has hecho un Match!
-¡Felicidades! ¡Carles Mir y tu tenéis buen feeling! `}</Text>
-      <Text style={[styles.hasHechoUn1, styles.textTypo]}>{`¡Has hecho un Match!
-¡Felicidades! ¡Jordi Espelt y tu tenéis buen feeling! `}</Text>
-      <Text style={[styles.ayer, styles.ayerTypo]}>Ayer</Text>
-      <Text style={[styles.text, styles.textTypo]}>21/06/23</Text>
-      <View style={[styles.tusNotificacionesItem, styles.tusLayout]} />
-      <Image
-        style={[styles.tusNotificacionesInner, styles.groupIconLayout]}
-        contentFit="cover"
-        source={require("../assets/avatar.png")}
-      />
-      <View style={[styles.lineView, styles.tusLayout]} />
-      <View style={[styles.tusNotificacionesChild1, styles.tusLayout]} />
-      <Image
-        style={[styles.groupIcon, styles.groupIconLayout]}
-        contentFit="cover"
-        source={require("../assets/avatar.png")}
-      />
-      <Image
-        style={[styles.ellipseIcon, styles.ellipseIconLayout]}
-        contentFit="cover"
-        source={require("../assets/ellipse-83.png")}
-      />
-      <Image
-        style={[styles.tusNotificacionesChild2, styles.groupInnerPosition]}
-        contentFit="cover"
-        source={require("../assets/ellipse-83.png")}
-      />
-      <View style={styles.groupChildPosition}>
-        <View style={[styles.groupChild, styles.groupChildPosition]} />
-        <View style={[styles.group, styles.groupLayout]}>
-          <View style={[styles.battery, styles.groupLayout]}>
-            <View style={[styles.border, styles.groupLayout]} />
-            <Image
-              style={styles.capIcon}
-              contentFit="cover"
-              source={require("../assets/cap1.png")}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection.png")}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View>
-      <View style={[styles.menuClub, styles.menuClubPosition]}>
-        <Image
-          style={[styles.maskGroupIcon, styles.maskGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/mask-group1.png")}
-        />
-        <Image
-          style={[styles.maskGroupIcon1, styles.maskGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/mask-group1.png")}
-        />
-        <View style={[styles.menuClubChild, styles.itemPosition]} />
-        <View style={[styles.menuClubItem, styles.menuPosition]} />
-        <Pressable
-          style={[styles.ellipseParent, styles.ellipseParentPosition]}
-          onPress={() => navigation.navigate("PerfilDatosPropioClub")}
-        >
-          <Image
-            style={[styles.groupItem, styles.itemPosition]}
-            contentFit="cover"
-            source={require("../assets/ellipse-765.png")}
-          />
-          <Image
-            style={[
-              styles.logoUem21RemovebgPreview1Icon,
-              styles.iconChildLayout,
-            ]}
-            contentFit="cover"
-            source={require("../assets/logo-uem21removebgpreview-17.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.wrapper}
-          onPress={() => navigation.navigate("ExplorarClubs")}
-        >
-          <Image
-            style={[styles.icon, styles.iconChildLayout]}
-            contentFit="cover"
-            source={require("../assets/group-535.png")}
-          />
-        </Pressable>
-        <View style={styles.groupParent}>
-          <Pressable
-            style={[styles.container, styles.itemPosition]}
-            onPress={() => navigation.navigate("SiguiendoJugadores")}
-          >
-            <Image
-              style={[styles.icon, styles.iconChildLayout]}
-              contentFit="cover"
-              source={require("../assets/group-5402.png")}
-            />
-          </Pressable>
-          <Image
-            style={[styles.groupInner, styles.groupInnerPosition]}
-            contentFit="cover"
-            source={require("../assets/group-5396.png")}
-          />
-        </View>
-        <Image
-          style={[styles.menuClubInner, styles.ellipseParentPosition]}
-          contentFit="cover"
-          source={require("../assets/group-593.png")}
-        />
-        <Image
-          style={[styles.lineIcon, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-51.png")}
-        />
-        <Image
-          style={[styles.menuClubChild1, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-7.png")}
-        />
-        <Image
-          style={[styles.menuClubChild2, styles.menuPosition]}
-          contentFit="cover"
-          source={require("../assets/line-61.png")}
-        />
-      </View>
-      <Image
-        style={[styles.tusNotificacionesChild3, styles.iconChildLayout]}
-        contentFit="cover"
-        source={require("../assets/ellipse-83.png")}
-      />
-      <Image
-        style={[styles.tusNotificacionesChild4, styles.menuClubPosition]}
-        contentFit="cover"
-        source={require("../assets/line-9.png")}
-      /> */}
       </View>
     </View>
   )
@@ -781,9 +524,7 @@ const styles = StyleSheet.create({
     maxHeight: '100%'
   },
   tusNotificaciones: {
-    borderRadius: Border.br_21xl,
     flex: 1,
-
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

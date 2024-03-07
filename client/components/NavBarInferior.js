@@ -27,9 +27,9 @@ const NavBarInferior = () => {
       <View>
         <DiarySVG />
       </View>
-      <View>
+      <Pressable onPress={() => navigation.navigate('ExplorarClubs')}>
         <LensSVG />
-      </View>
+      </Pressable>
       <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
         <HomeSVG />
       </Pressable>
