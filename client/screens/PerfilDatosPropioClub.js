@@ -467,8 +467,8 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   graficoTerrenoJuego: {
-    width: 166
-    // height: 240
+    width: 166,
+    height: 240
   },
   estadio: {
     fontWeight: '500',
