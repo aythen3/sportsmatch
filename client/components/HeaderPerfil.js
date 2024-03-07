@@ -3,8 +3,10 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
+import { useSelector } from 'react-redux'
 
-const HeaderPerfil = ({ name, description, club, navBar }) => {
+const HeaderPerfil = ({ name, description }) => {
+  const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
 
   return (
@@ -44,7 +46,7 @@ const HeaderPerfil = ({ name, description, club, navBar }) => {
       </View>
 
       <View style={styles.groupContainer}>
-        {!club ? (
+        {isSportman === false ? (
           <View
             style={{
               flexDirection: 'row',
@@ -79,7 +81,7 @@ const HeaderPerfil = ({ name, description, club, navBar }) => {
             <Text style={[styles.ojear, styles.timeTypo]}>Editar perfil</Text>
           </View>
         )}
-        {!club ? (
+        {isSportman === false ? (
           <View
             style={{
               flexDirection: 'row',
@@ -133,7 +135,7 @@ const HeaderPerfil = ({ name, description, club, navBar }) => {
           </Pressable>
         )}
       </View>
-      {navBar && (
+      {isSportman === true && (
         <View
           style={{
             width: '100%',
@@ -167,7 +169,7 @@ const HeaderPerfil = ({ name, description, club, navBar }) => {
           </Text>
         </View>
       )}
-      {navBar && (
+      {isSportman === true && (
         <View
           style={{
             flexDirection: 'row',
