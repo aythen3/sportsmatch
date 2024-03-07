@@ -2,8 +2,11 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
+import { useNavigation } from '@react-navigation/core'
 
-const HeaderPerfil = ({ name, description }) => {
+const HeaderPerfil = ({ name, description, club, navBar }) => {
+  const navigation = useNavigation()
+
   return (
     <View>
       <Image
@@ -41,118 +44,150 @@ const HeaderPerfil = ({ name, description }) => {
       </View>
 
       <View style={styles.groupContainer}>
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: Color.colorDimgray_100,
-            borderRadius: Border.br_81xl,
-            height: 35,
-            width: 170,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require('../assets/group-5361.png')}
-          />
-          <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: Color.bALONCESTO,
-
-            borderRadius: Border.br_81xl,
-            height: 35,
-            width: 170,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Text style={[styles.ojear, styles.timeTypo]}>Pedir Match</Text>
-
-          {/* <View style={{ position: 'absolute', left: 0, top: 5 }}> */}
-          {/* <Image
-              style={styles.frameLayout}
-              contentFit="cover"
-              source={require('../assets/group-4332.png')}
-            /> */}
+        {!club ? (
           <View
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 50,
+              flexDirection: 'row',
+              backgroundColor: Color.colorDimgray_100,
+              borderRadius: Border.br_81xl,
+              height: 35,
+              width: 170,
               justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: Color.bALONCESTO,
-              position: 'absolute',
-              left: -10
-              //   top: 5
+              alignItems: 'center'
             }}
           >
             <Image
-              style={styles.groupIcon}
+              style={styles.frameChild}
               contentFit="cover"
-              source={require('../assets/group13.png')}
+              source={require('../assets/group-5361.png')}
             />
-            {/* </View> */}
+            <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
           </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: Color.colorDimgray_100,
+              borderRadius: Border.br_81xl,
+              height: 35,
+              width: 180,
+              paddingHorizontal: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.ojear, styles.timeTypo]}>Editar perfil</Text>
+          </View>
+        )}
+        {!club ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: Color.bALONCESTO,
+
+              borderRadius: Border.br_81xl,
+              height: 35,
+              width: 170,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.ojear, styles.timeTypo]}>Pedir Match</Text>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: Color.bALONCESTO,
+                position: 'absolute',
+                left: -10
+                //   top: 5
+              }}
+            >
+              <Image
+                style={styles.groupIcon}
+                contentFit="cover"
+                source={require('../assets/group13.png')}
+              />
+            </View>
+          </View>
+        ) : (
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              backgroundColor: Color.colorWhitesmoke,
+
+              borderRadius: Border.br_81xl,
+              height: 35,
+              width: 180,
+
+              paddingHorizontal: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+            onPress={() => navigation.navigate('MiSuscripcin')}
+          >
+            <Text style={[styles.ojear2, styles.timeTypo]}>Mi suscripcion</Text>
+          </Pressable>
+        )}
+      </View>
+      {navBar && (
+        <View
+          style={{
+            width: '100%',
+            height: 60,
+            backgroundColor: Color.bLACK3SPORTSMATCH,
+            marginTop: 20,
+            paddingHorizontal: 15
+          }}
+        >
+          <Text
+            style={{
+              width: '30.28%',
+              top: '10%',
+              lineHeight: 14,
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO,
+              marginBottom: 10
+            }}
+          >
+            Seguidores
+          </Text>
+          <Text
+            style={{
+              fontSize: FontSize.h3TitleMEDIUM_size,
+              lineHeight: 22,
+              color: Color.wHITESPORTSMATCH
+            }}
+          >
+            24
+          </Text>
         </View>
-      </View>
-      <View
-        style={{
-          width: '100%',
-          height: 60,
-          backgroundColor: Color.bLACK3SPORTSMATCH,
-          marginTop: 20,
-          paddingHorizontal: 15
-        }}
-      >
-        <Text
+      )}
+      {navBar && (
+        <View
           style={{
-            width: '30.28%',
-            top: '10%',
-            lineHeight: 14,
-            fontSize: FontSize.t4TEXTMICRO_size,
-            color: Color.wHITESPORTSMATCH,
-            fontFamily: FontFamily.t4TEXTMICRO,
-            marginBottom: 10
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginTop: 15
           }}
         >
-          Seguidores
-        </Text>
-        <Text
-          style={{
-            fontSize: FontSize.h3TitleMEDIUM_size,
-            lineHeight: 22,
-            color: Color.wHITESPORTSMATCH
-          }}
-        >
-          24
-        </Text>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          marginTop: 15
-        }}
-      >
-        <Image
-          contentFit="cover"
-          source={require('../assets/cuadrado-icon.png')}
-        />
-        <Image
-          style={{ width: 30, height: 18 }}
-          contentFit="cover"
-          source={require('../assets/vector-8.png')}
-        />
-      </View>
+          <Image
+            contentFit="cover"
+            source={require('../assets/cuadrado-icon.png')}
+          />
+          <Image
+            style={{ width: 30, height: 18 }}
+            contentFit="cover"
+            source={require('../assets/vector-8.png')}
+          />
+        </View>
+      )}
     </View>
   )
 }
@@ -187,6 +222,13 @@ const styles = StyleSheet.create({
   ojear: {
     marginLeft: 5,
     color: Color.wHITESPORTSMATCH,
+    fontSize: FontSize.t2TextSTANDARD_size,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontWeight: '700'
+  },
+  ojear2: {
+    marginLeft: 5,
+    color: Color.bLACK2SPORTMATCH,
     fontSize: FontSize.t2TextSTANDARD_size,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontWeight: '700'

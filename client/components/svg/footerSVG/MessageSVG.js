@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Svg, Rect, Path } from 'react-native-svg'
 
 const MessageSVG = () => {
+  const navigation = useNavigation()
   return (
     <Svg
+      onPress={() => navigation.navigate('TusNotificaciones1')}
       width="34"
       height="23"
       viewBox="0 0 34 23"

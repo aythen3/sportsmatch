@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const offersSlices = createSlice({
   name: 'offers',
   initialState: {
+    offer: {},
     offers: [
       {
         id: 1,
@@ -18,7 +19,7 @@ const offersSlices = createSlice({
         category: 'Senior',
         position: 'Escolta',
         urgency: '9',
-        remuneration: 'NO'
+        remuneration: 'SI'
       },
       {
         id: 3,
@@ -26,7 +27,7 @@ const offersSlices = createSlice({
         category: 'Senior',
         position: 'Lateral izquierdo',
         urgency: '8',
-        remuneration: 'NO'
+        remuneration: 'SI'
       },
       {
         id: 4,
@@ -36,11 +37,36 @@ const offersSlices = createSlice({
         urgency: '7',
         remuneration: 'NO'
       }
+    ],
+    usersRegistered: [
+      {
+        id: 1,
+        name: 'Cristian Perez',
+        image: '../../assets/group9.png',
+        match: true
+      },
+      {
+        id: 2,
+        name: 'Max Power',
+        image: '../../assets/group9.png',
+        match: true
+      },
+      {
+        id: 3,
+        name: '+ 4 inscripciones mas',
+        image: '../../assets/image-borroso.png',
+        match: false
+      }
     ]
   },
-  reducers: {}
+  reducers: {
+    setOffer: (state, action) => {
+      console.log(action.payload)
+      state.offer = action.payload
+    }
+  }
 })
 
-export const {} = offersSlices.actions
+export const { setOffer } = offersSlices.actions
 
 export default offersSlices.reducer

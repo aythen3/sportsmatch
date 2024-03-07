@@ -5,17 +5,20 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Pressable
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../components/ModalOptionOffers'
+import { setOffer } from '../redux/slices/offers.slices'
 
 const OfertasEmitidas = () => {
   const { offers } = useSelector((state) => state.offers)
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
@@ -61,7 +64,13 @@ const OfertasEmitidas = () => {
               <Text style={[styles.oferta1, styles.sexo1Typo]}>
                 Oferta {i + 1}
               </Text>
-              <TouchableOpacity onPress={handleImageClick}>
+              <TouchableOpacity
+                style={{ width: 20 }}
+                onPress={(event) => {
+                  // dispatch(setOffer(offer))
+                  handleImageClick(event)
+                }}
+              >
                 <Image
                   style={styles.titularChild}
                   contentFit="cover"
@@ -73,7 +82,7 @@ const OfertasEmitidas = () => {
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
                 <Text style={[styles.masculino, styles.timeTypo]}>
-                  Masculino
+                  {offer.gender}
                 </Text>
               </View>
 
@@ -87,7 +96,9 @@ const OfertasEmitidas = () => {
 
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoria</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Senior</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.category}
+                </Text>
               </View>
 
               <View
@@ -100,7 +111,9 @@ const OfertasEmitidas = () => {
 
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Escolta</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.position}
+                </Text>
               </View>
 
               <View
@@ -119,13 +132,17 @@ const OfertasEmitidas = () => {
               >
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>7/10</Text>
+                  <Text style={[styles.masculino, styles.timeTypo]}>
+                    {offer.urgency}/10
+                  </Text>
                 </View>
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>
                     Retribucion
                   </Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>NO</Text>
+                  <Text style={[styles.masculino, styles.timeTypo]}>
+                    {offer.remuneration}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -134,646 +151,37 @@ const OfertasEmitidas = () => {
                 <Text style={[styles.pausar1, styles.pausar1Typo]}>Pausar</Text>
               </View>
             </View>
+            <Pressable
+              style={styles.inscritos}
+              onPress={() => navigation.navigate('InscritosAMisOfertas')}
+            >
+              <Text
+                style={[styles.inscritos1, styles.pausar1Typo]}
+              >{`6 inscritos `}</Text>
+            </Pressable>
+            <Modal visible={modalVisible} transparent={true}>
+              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: modalPosition.y,
+                      left: modalPosition.x,
+                      padding: 20,
+                      borderRadius: 8
+                    }}
+                  >
+                    <ModalOptionOffers
+                      offer={offer}
+                      onClose={() => setModalVisible(false)}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
           </View>
         ))}
       </View>
-
-      <Modal visible={modalVisible} transparent={true}>
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                position: 'absolute',
-                top: modalPosition.y,
-                left: modalPosition.x,
-                // backgroundColor: 'white',
-                padding: 20,
-                borderRadius: 8
-              }}
-            >
-              <ModalOptionOffers onClose={() => setModalVisible(false)} />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-
-      {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Text style={[styles.oferta1, styles.sexo1Typo]}>Oferta 1</Text>
-          <Image
-            style={styles.titularChild}
-            contentFit="cover"
-            source={require('../assets/frame-957.png')}
-          />
-        </View>
-        <View style={{ marginTop: 8 }}>
-          <View>
-            <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
-            <Text style={[styles.masculino, styles.timeTypo]}>Masculino</Text>
-          </View>
-
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: Color.bLACK3SPORTSMATCH,
-              marginVertical: 8
-            }}
-          />
-
-          <View>
-            <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoria</Text>
-            <Text style={[styles.masculino, styles.timeTypo]}>Senior</Text>
-          </View>
-
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: Color.bLACK3SPORTSMATCH,
-              marginVertical: 8
-            }}
-          />
-
-          <View>
-            <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-            <Text style={[styles.masculino, styles.timeTypo]}>Escolta</Text>
-          </View>
-
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: Color.bLACK3SPORTSMATCH,
-              marginVertical: 8
-            }}
-          />
-
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
-            <View>
-              <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
-              <Text style={[styles.masculino, styles.timeTypo]}>7/10</Text>
-            </View>
-            <View>
-              <Text style={[styles.sexo1, styles.sexo1Typo]}>Retribucion</Text>
-              <Text style={[styles.masculino, styles.timeTypo]}>NO</Text>
-            </View>
-          </View>
-        </View> */}
-
-      {/* <View style={styles.ofertasSuperior}>
-          <View style={styles.oferta1Wrapper}>
-            <Text style={[styles.oferta1, styles.sexo1Typo]}>Oferta 1</Text>
-          </View>
-          <Image
-            style={styles.titularChild}
-            contentFit="cover"
-            source={require('../assets/frame-957.png')}
-          />
-        </View>
-        <View style={styles.ofertaIzquierda}>
-          <View style={styles.columnaIzquierda}>
-            <View>
-              <View>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>
-                  Masculino
-                </Text>
-              </View>
-              <View style={[styles.camposChild, styles.childLayout]} />
-              <View style={styles.categoria}>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoría</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Sénior</Text>
-              </View>
-              <View style={[styles.camposChild, styles.childLayout]} />
-              <View style={styles.categoria}>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Posición</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>Escolta</Text>
-              </View>
-            </View>
-            <View style={[styles.linia1, styles.childLayout]} />
-            <View style={styles.urgencia}>
-              <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
-              <Text style={[styles.masculino, styles.timeTypo]}>7/10</Text>
-            </View>
-          </View>
-          <View style={[styles.columnaDerecha, styles.contenidoPosition]}>
-            <Text style={[styles.sexo1, styles.sexo1Typo]}>Retribución</Text>
-            <Text style={[styles.masculino, styles.timeTypo]}>No</Text>
-          </View>
-        </View> */}
-
-      {/* <View style={styles.gridOfertas}>
-        <View style={styles.ofertasSuperior}>
-          <View style={styles.ofertaIzquierda}>
-            <View style={styles.fondoGrupo}>
-              <View style={styles.fondo} />
-            </View>
-            <View style={[styles.contenido, styles.contenidoPosition]}>
-              <View style={styles.titularcamposboton}>
-                <View style={styles.titularcamposboton}>
-                  <View style={styles.ofertasSuperior}>
-                    <View style={styles.oferta1Wrapper}>
-                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                        Oferta 1
-                      </Text>
-                    </View>
-                    <Image
-                      style={styles.titularChild}
-                      contentFit="cover"
-                      source={require("../assets/frame-957.png")}
-                    />
-                  </View>
-                  <View style={styles.ofertaIzquierda}>
-                    <View style={styles.columnaIzquierda}>
-                      <View>
-                        <View>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Sexo
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Masculino
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Categoría
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Sénior
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Posición
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Escolta
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={[styles.linia1, styles.childLayout]} />
-                      <View style={styles.urgencia}>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Urgencia
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          7/10
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={[styles.columnaDerecha, styles.contenidoPosition]}
-                    >
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Retribución
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        No
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.botonPausar}>
-                  <View style={[styles.pausar, styles.pausarFlexBox]}>
-                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                      Pausar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.inscritos}>
-                <Text
-                  style={[styles.inscritos1, styles.pausar1Typo]}
-                >{`6 inscritos `}</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.ofertaIzquierda1}>
-            <View style={styles.fondoGrupo}>
-              <View style={styles.fondo} />
-            </View>
-            <View style={[styles.contenido, styles.contenidoPosition]}>
-              <View style={styles.titularcamposboton}>
-                <View style={styles.titularcamposboton}>
-                  <View style={styles.ofertasSuperior}>
-                    <View style={styles.oferta1Wrapper}>
-                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                        Oferta 1
-                      </Text>
-                    </View>
-                    <Image
-                      style={styles.titularChild}
-                      contentFit="cover"
-                      source={require("../assets/frame-957.png")}
-                    />
-                  </View>
-                  <View style={styles.ofertaIzquierda}>
-                    <View style={styles.columnaIzquierda}>
-                      <View>
-                        <View>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Sexo
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Masculino
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Categoría
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Sénior
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Posición
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Escolta
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={[styles.linia1, styles.childLayout]} />
-                      <View style={styles.urgencia}>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Urgencia
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          7/10
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={[styles.columnaDerecha, styles.contenidoPosition]}
-                    >
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Retribución
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        No
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.botonPausar}>
-                  <View style={[styles.pausar, styles.pausarFlexBox]}>
-                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                      Pausar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.inscritos}>
-                <Text
-                  style={[styles.inscritos1, styles.pausar1Typo]}
-                >{`6 inscritos `}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.ofertasInferior}>
-          <View style={styles.ofertaIzquierda}>
-            <View style={styles.fondoGrupo}>
-              <View style={styles.fondo} />
-            </View>
-            <View style={[styles.contenido, styles.contenidoPosition]}>
-              <View style={styles.titularcamposboton}>
-                <View style={styles.titularcamposboton}>
-                  <View style={styles.ofertasSuperior}>
-                    <View style={styles.oferta1Wrapper}>
-                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                        Oferta 1
-                      </Text>
-                    </View>
-                    <Image
-                      style={styles.titularChild}
-                      contentFit="cover"
-                      source={require("../assets/frame-957.png")}
-                    />
-                  </View>
-                  <View style={styles.ofertaIzquierda}>
-                    <View style={styles.columnaIzquierda}>
-                      <View>
-                        <View>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Sexo
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Masculino
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Categoría
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Sénior
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Posición
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Escolta
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={[styles.linia1, styles.childLayout]} />
-                      <View style={styles.urgencia}>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Urgencia
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          7/10
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={[styles.columnaDerecha, styles.contenidoPosition]}
-                    >
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Retribución
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        No
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.botonPausar}>
-                  <View style={[styles.pausar, styles.pausarFlexBox]}>
-                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                      Pausar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.inscritos}>
-                <Text
-                  style={[styles.inscritos1, styles.pausar1Typo]}
-                >{`6 inscritos `}</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.ofertaIzquierda1}>
-            <View style={styles.fondoGrupo}>
-              <View style={styles.fondo} />
-            </View>
-            <View style={[styles.contenido, styles.contenidoPosition]}>
-              <View style={styles.titularcamposboton}>
-                <View style={styles.titularcamposboton}>
-                  <View style={styles.ofertasSuperior}>
-                    <View style={styles.oferta1Wrapper}>
-                      <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                        Oferta 1
-                      </Text>
-                    </View>
-                    <Image
-                      style={styles.titularChild}
-                      contentFit="cover"
-                      source={require("../assets/frame-957.png")}
-                    />
-                  </View>
-                  <View style={styles.ofertaIzquierda}>
-                    <View style={styles.columnaIzquierda}>
-                      <View>
-                        <View>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Sexo
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Masculino
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Categoría
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Sénior
-                          </Text>
-                        </View>
-                        <View
-                          style={[styles.camposChild, styles.childLayout]}
-                        />
-                        <View style={styles.categoria}>
-                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                            Posición
-                          </Text>
-                          <Text style={[styles.masculino, styles.timeTypo]}>
-                            Escolta
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={[styles.linia1, styles.childLayout]} />
-                      <View style={styles.urgencia}>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Urgencia
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          7/10
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={[styles.columnaDerecha, styles.contenidoPosition]}
-                    >
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Retribución
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        No
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.botonPausar}>
-                  <View style={[styles.pausar, styles.pausarFlexBox]}>
-                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                      Pausar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.inscritos}>
-                <Text
-                  style={[styles.inscritos1, styles.pausar1Typo]}
-                >{`6 inscritos `}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
-        <View style={styles.eliminarWrapperLayout}>
-          <View style={[styles.editarWrapper, styles.childPosition]}>
-            <Text style={[styles.editar, styles.editarLayout]}>Editar</Text>
-          </View>
-        </View>
-        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
-        <View style={[styles.eliminarWrapper, styles.eliminarWrapperLayout]}>
-          <Text style={[styles.editar, styles.editarLayout]}>Eliminar</Text>
-        </View>
-        <View style={[styles.despliegueOpcionesItem, styles.childLayout]} />
-        <View style={[styles.eliminarWrapper, styles.eliminarWrapperLayout]}>
-          <Text style={[styles.promocionar, styles.editarLayout]}>
-            Promocionar
-          </Text>
-        </View>
-      </View>
-      <View style={styles.atrasOfertas}>
-        <View style={[styles.atrasOfertasFrame, styles.oferta1Position]}>
-          <Pressable
-            style={styles.coolicon}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={require("../assets/coolicon3.png")}
-            />
-          </Pressable>
-          <Pressable style={styles.ofertas} onPress={() => navigation.goBack()}>
-            <Text style={[styles.ofertas1, styles.sexo1Typo]}>Ofertas</Text>
-          </Pressable>
-        </View>
-      </View>
-      <View style={styles.menuClub}>
-        <Image
-          style={[styles.maskGroupIcon, styles.iconGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/mask-group7.png")}
-        />
-        <Image
-          style={[styles.maskGroupIcon1, styles.iconGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/mask-group7.png")}
-        />
-        <View style={[styles.menuClubChild, styles.childPosition]} />
-        <View style={[styles.menuClubItem, styles.oferta1Position]} />
-        <View style={[styles.menuClubInner, styles.borderBorder]} />
-        <Pressable
-          style={[styles.ellipseParent, styles.groupIconPosition]}
-          onPress={() => navigation.navigate("PerfilDatosPropioClub")}
-        >
-          <Image
-            style={[styles.groupChild, styles.iconGroupLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-765.png")}
-          />
-          <Image
-            style={[
-              styles.logoUem21RemovebgPreview1Icon,
-              styles.iconGroupLayout,
-            ]}
-            contentFit="cover"
-            source={require("../assets/logo-uem21removebgpreview-16.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.wrapper}
-          onPress={() => navigation.navigate("ExplorarClubs")}
-        >
-          <Image
-            style={[styles.icon1, styles.iconGroupLayout]}
-            contentFit="cover"
-            source={require("../assets/group-5351.png")}
-          />
-        </Pressable>
-        <Image
-          style={[styles.lineIcon, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-5.png")}
-        />
-        <Image
-          style={[styles.menuClubChild1, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-5.png")}
-        />
-        <View style={styles.groupParent}>
-          <Pressable
-            style={[styles.container, styles.childPosition]}
-            onPress={() => navigation.navigate("OfertasEmitidas")}
-          >
-            <Image
-              style={[styles.icon1, styles.iconGroupLayout]}
-              contentFit="cover"
-              source={require("../assets/group-5404.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.frame}
-            onPress={() => navigation.navigate("TusMensajes1")}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={require("../assets/group-5391.png")}
-            />
-          </Pressable>
-        </View>
-        <Image
-          style={[styles.groupIcon, styles.groupIconPosition]}
-          contentFit="cover"
-          source={require("../assets/group-593.png")}
-        />
-      </View>
-      <View style={styles.iphonePosition}>
-        <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderBorder]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require("../assets/cap.png")}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi1.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection2.png")}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View> */}
     </View>
   )
 }
@@ -963,17 +371,12 @@ const styles = StyleSheet.create({
   inscritos1: {
     fontSize: FontSize.button_size,
     lineHeight: 20,
-    width: 172,
     textAlign: 'center',
-    color: Color.wHITESPORTSMATCH,
-    left: 0,
-    position: 'absolute',
-    top: 0
+    color: Color.wHITESPORTSMATCH
   },
   inscritos: {
-    height: 20,
-    marginTop: 16,
-    width: 172
+    // height: 20,
+    marginTop: 16
   },
   contenido: {
     top: 6,

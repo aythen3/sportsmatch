@@ -1,17 +1,107 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Text, Pressable, View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
-import { FontFamily, FontSize, Padding, Border, Color } from "../GlobalStyles";
+import * as React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, Text, Pressable, View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useNavigation } from '@react-navigation/native'
+import HeaderPerfil from '../components/HeaderPerfil'
+import { FontFamily, FontSize, Padding, Border, Color } from '../GlobalStyles'
 
 const PerfilDatosPropioClub = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View style={styles.perfilDatosPropioClub}>
-      <View style={styles.contenido}>
-        <View style={styles.headercirculosSuperioresParent}>
+      <View>
+        <HeaderPerfil
+          name="Club Atletico Boca Juniors"
+          description="Presidente: Cristian Perez"
+          club={true}
+          navBar={false}
+        />
+
+        <View
+          style={{
+            marginTop: 20,
+            marginHorizontal: 15,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 5
+          }}
+        >
+          <View
+            style={{
+              width: 120,
+              height: 120,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+          <View
+            style={{
+              width: 130,
+              height: 130,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+          <View
+            style={{
+              width: 130,
+              height: 130,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+        </View>
+
+        <View style={styles.moduloCampo}>
+          {/* <View style={[styles.fondoModulo, styles.borderBorder]} /> */}
+          <View style={styles.graficotextoLateral}>
+            <Image
+              style={styles.graficoTerrenoJuego}
+              contentFit="cover"
+              source={require('../assets/grafico-terreno-juego.png')}
+            />
+            <View style={styles.textoLateral}>
+              <Pressable onPress={() => navigation.goBack()}>
+                <Text style={[styles.estadio, styles.taxto1Clr]}>Estadio</Text>
+              </Pressable>
+              <View style={styles.bloqueInformacion}>
+                <Text style={styles.nombreDelEstadio}>{`Nombre del 
+estadio o pavellón
+Palau Municipals 
+d’Esports Josep Mora`}</Text>
+                <Text
+                  style={[styles.poblacinMatar, styles.pasEspaaTypo]}
+                >{`Población
+Mataró`}</Text>
+                <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>{`País
+España`}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* <View style={styles.headercirculosSuperioresParent}>
           <View>
             <View style={styles.headerBotones}>
               <View style={styles.header}>
@@ -187,194 +277,184 @@ España`}</Text>
         </View>
         <View style={[styles.starus, styles.timeLayout]}>
           <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
+        </View> */}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   iconLayout: {
-    maxWidth: "100%",
-    overflow: "hidden",
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   editarPerfilTypo: {
-    fontWeight: "700",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontWeight: '700',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   textoLayout: {
     lineHeight: 14,
-    fontSize: FontSize.t4TEXTMICRO_size,
+    fontSize: FontSize.t4TEXTMICRO_size
   },
   botonFlexBox: {
     paddingVertical: Padding.p_4xs,
     paddingHorizontal: Padding.p_11xl,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: Border.br_81xl,
-    flexDirection: "row",
-    alignItems: "center",
-    overflow: "hidden",
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden'
   },
   timeTypo: {
     fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: "center",
+    textAlign: 'center'
   },
-  circuloIconFlexBox: {
-    alignSelf: "stretch",
-    flex: 1,
-  },
+
   taxto1Clr: {
     color: Color.bALONCESTO,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   borderBorder: {
-    borderStyle: "solid",
-    top: 0,
+    borderStyle: 'solid',
+    top: 0
   },
-  uxIphonePosition: {
-    top: 10,
-    position: "absolute",
-  },
+
   pasEspaaTypo: {
     marginTop: 13,
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size,
     color: Color.bALONCESTO,
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   descripcinDelClubTypo: {
     width: 357,
     color: Color.gREY2SPORTSMATCH,
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   opacidadPosition: {
     height: 150,
     width: 390,
     top: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   groupLayout: {
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   avatarIcon: {
     height: 112,
     flex: 1,
-    maxWidth: "100%",
+    maxWidth: '100%'
   },
   uniEsportvaMatarBalonces: {
-    height: "100%",
+    height: '100%',
     fontSize: FontSize.button_size,
     lineHeight: 20,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    width: "100%",
+    width: '100%'
   },
   uniEsportvaMatarContainer: {
-    left: "0%",
-    top: "0%",
-    position: "absolute",
+    left: '0%',
+    top: '0%',
+    position: 'absolute'
   },
   nombreClub: {
     width: 144,
-    height: 60,
+    height: 60
   },
   textoInferior: {
     width: 235,
     height: 36,
     marginTop: 2,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   descripcionClub: {
     height: 86,
-    marginLeft: 14,
+    marginLeft: 14
   },
   header: {
     width: 359,
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end'
   },
   editarPerfil: {
-    textAlign: "center",
+    textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   botonEditarPerfil: {
     backgroundColor: Color.colorDimgray_100,
-    width: 173,
+    width: 173
   },
   miSuscripcin: {
     color: Color.bLACK1SPORTSMATCH,
-    textAlign: "center",
+    textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   botonMiSuscripcion: {
     width: 177,
     marginLeft: 10,
-    backgroundColor: Color.wHITESPORTSMATCH,
+    backgroundColor: Color.wHITESPORTSMATCH
   },
   botones: {
     width: 356,
     marginTop: 22,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   headerBotones: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   circuloIcon: {
-    maxHeight: "100%",
+    maxHeight: '100%',
     zIndex: 0,
-    maxWidth: "100%",
-    overflow: "hidden",
-    width: "100%",
+    maxWidth: '100%',
+    overflow: 'hidden',
+    width: '100%'
   },
   taxto1: {
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 40,
     fontSize: FontSize.h2TITLEBIG_size,
     width: 109,
-    textAlign: "center",
+    textAlign: 'center'
   },
   texto2: {
     marginTop: 9,
     width: 109,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 14,
-    fontSize: FontSize.t4TEXTMICRO_size,
+    fontSize: FontSize.t4TEXTMICRO_size
   },
   textoFrame: {
     top: 32,
     zIndex: 1,
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
-  circuloFrame: {
-    height: 110,
-    width: 109,
-    flexDirection: "row",
-  },
+
   circulo1: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   circulo2: {
     marginLeft: 14,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   circulosSuperiores: {
     marginTop: 32,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   fondoModulo: {
     borderRadius: Border.br_8xs,
@@ -384,58 +464,58 @@ const styles = StyleSheet.create({
     width: 358,
     height: 260,
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   graficoTerrenoJuego: {
     width: 166,
-    height: 240,
+    height: 240
   },
   estadio: {
-    width: 114,
-    height: 20,
-    fontWeight: "500",
-    lineHeight: 40,
-    fontSize: FontSize.h2TITLEBIG_size,
-    textAlign: "left",
+    fontWeight: '500',
+    fontSize: FontSize.h2TITLEBIG_size
   },
   nombreDelEstadio: {
-    lineHeight: 16,
-    width: 170,
     fontSize: FontSize.t1TextSMALL_size,
     color: Color.bALONCESTO,
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   poblacinMatar: {
-    width: 185,
+    width: 185
   },
   pasEspaa: {
-    width: 138,
+    width: 138
   },
   bloqueInformacion: {
-    marginTop: 27,
+    marginTop: 27
   },
   textoLateral: {
-    marginLeft: 12,
+    marginLeft: 12
   },
   graficotextoLateral: {
-    left: 10,
-    width: 349,
-    height: 240,
-    flexDirection: "row",
+    // left: 10,
+    // width: 349,
+    // height: 240,
+    flexDirection: 'row'
   },
   moduloCampo: {
     marginTop: 29,
+    padding: 10,
+    // borderRadius: Border.br_8xs,
+    backgroundColor: Color.bLACK3SPORTSMATCH
+    // borderColor: Color.colorDimgray_100,
+    // borderWidth: 1,
+    // width: 358,
+    // height: 260
   },
   headercirculosSuperioresParent: {
     height: 600,
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   descripcinDelClub: {
     height: 40,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 40,
-    fontSize: FontSize.h2TITLEBIG_size,
+    fontSize: FontSize.h2TITLEBIG_size
   },
   apasionadoLderCompettvo: {
     height: 90,
@@ -443,19 +523,19 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     width: 357,
     color: Color.gREY2SPORTSMATCH,
-    fontSize: FontSize.t1TextSMALL_size,
+    fontSize: FontSize.t1TextSMALL_size
   },
   descripcionDelClub: {
-    marginTop: 14,
+    marginTop: 14
   },
   contenido: {
     top: 142,
     left: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   opacidad: {
     opacity: 0.5,
-    backgroundColor: Color.promocio,
+    backgroundColor: Color.promocio
   },
   border: {
     right: 2,
@@ -464,8 +544,8 @@ const styles = StyleSheet.create({
     borderWidth: 1.1,
     width: 22,
     opacity: 0.35,
-    borderStyle: "solid",
-    top: 0,
+    borderStyle: 'solid',
+    top: 0
   },
   capIcon: {
     top: 4,
@@ -473,7 +553,7 @@ const styles = StyleSheet.create({
     height: 4,
     opacity: 0.4,
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   capacity: {
     top: 2,
@@ -482,56 +562,56 @@ const styles = StyleSheet.create({
     width: 18,
     height: 7,
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   battery: {
     width: 25,
     right: 0,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group: {
     top: 7,
     width: 68,
-    right: 0,
+    right: 0
   },
   time: {
     marginTop: -9.55,
-    top: "50%",
+    top: '50%',
     left: 4,
     letterSpacing: 0,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: FontFamily.openSansSemiBold,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: FontSize.t2TextSTANDARD_size,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   starus: {
     height: 24,
     top: 0,
-    left: 0,
+    left: 0
   },
   uxIphone: {
     right: 15,
     width: 360,
-    height: 24,
+    height: 24
   },
   perfilDatosPropioClub: {
     borderRadius: Border.br_21xl,
     backgroundColor: Color.bLACK1SPORTSMATCH,
     height: 844,
-    overflow: "hidden",
-    width: "100%",
-    flex: 1,
-  },
-});
+    overflow: 'hidden',
+    width: '100%',
+    flex: 1
+  }
+})
 
-export default PerfilDatosPropioClub;
+export default PerfilDatosPropioClub

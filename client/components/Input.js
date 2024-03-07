@@ -2,7 +2,13 @@ import React from 'react'
 import { View, Text, TextInput, Image } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 
-function Input({ title, placeholderText, isAccordeon, isMultiLine }) {
+function Input({
+  title,
+  placeholderText,
+  isAccordeon,
+  isMultiLine,
+  changeColor
+}) {
   return (
     <View
       style={{
@@ -42,7 +48,8 @@ function Input({ title, placeholderText, isAccordeon, isMultiLine }) {
               borderColor: Color.gREY2SPORTSMATCH,
               borderStyle: 'solid',
               borderRadius: isMultiLine ? 12 : Border.br_81xl,
-              position: 'relative'
+              position: 'relative',
+              backgroundColor: changeColor ? 'red' : 'transparent'
             }}
           />
           {isAccordeon && (

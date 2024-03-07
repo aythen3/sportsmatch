@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   checkedCircle: {
-    backgroundColor: 'green' // Cambia el color del círculo cuando está marcado
+    backgroundColor: 'green'
   },
   fondoLayout: {
     height: 583,
