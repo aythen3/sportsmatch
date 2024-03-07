@@ -29,8 +29,9 @@ export class SportmanEntity extends BaseEntity {
   @ManyToOne(() => ClubEntity, (club) => club.sportman, { nullable: true })
   club?: ClubEntity;
 
-  @OneToOne(() => SportEntity, (sport) => sport.sportman)
-  @JoinColumn()
+  @ManyToOne(() => SportEntity, (sport) => sport.sportman, {
+    nullable: true
+  })
   sport: SportEntity;
 
   @OneToOne(() => SkillEntity, (skill) => skill.sportman)
