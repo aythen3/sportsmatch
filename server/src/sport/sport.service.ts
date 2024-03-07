@@ -47,7 +47,7 @@ export class SportService {
       const createdSport = await this.sportRepository.save(deportes);
       return createdSport;
     } catch (error) {
-      throw new HttpException('Error creating sportmen', 505);
+      throw new HttpException('Error creating sport', 505);
     }
   }
 }
