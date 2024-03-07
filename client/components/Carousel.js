@@ -25,7 +25,7 @@ function Carousel({
         />
         <Text
           style={{ color: 'white' }}
-          onPress={() => navigation.navigate('PerfilFeedVisualitzaciClu2')}
+          onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
         >
           {name}
         </Text>

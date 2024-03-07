@@ -5,7 +5,14 @@ import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
 
-const HeaderPerfil = ({ name, description }) => {
+const HeaderPerfil = ({
+  name,
+  description,
+  button1,
+  button2,
+  setSelectComponents,
+  selectComponents
+}) => {
   const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
 
@@ -78,7 +85,9 @@ const HeaderPerfil = ({ name, description }) => {
               alignItems: 'center'
             }}
           >
-            <Text style={[styles.ojear, styles.timeTypo]}>Editar perfil</Text>
+            <Text style={[styles.ojear, styles.timeTypo]}>
+              {button1 ? button1 : 'Editar perfil'}
+            </Text>
           </View>
         )}
         {isSportman === false ? (
@@ -119,7 +128,9 @@ const HeaderPerfil = ({ name, description }) => {
           <Pressable
             style={{
               flexDirection: 'row',
-              backgroundColor: Color.colorWhitesmoke,
+              backgroundColor: button2
+                ? Color.colorDimgray_100
+                : Color.colorWhitesmoke,
 
               borderRadius: Border.br_81xl,
               height: 35,
@@ -131,7 +142,11 @@ const HeaderPerfil = ({ name, description }) => {
             }}
             onPress={() => navigation.navigate('MiSuscripcin')}
           >
-            <Text style={[styles.ojear2, styles.timeTypo]}>Mi suscripcion</Text>
+            <Text
+              style={[button2 ? styles.ojear : styles.ojear2, styles.timeTypo]}
+            >
+              {button2 ? button2 : 'Mi suscripcion'}
+            </Text>
           </Pressable>
         )}
       </View>
@@ -179,15 +194,46 @@ const HeaderPerfil = ({ name, description }) => {
             marginTop: 15
           }}
         >
-          <Image
-            contentFit="cover"
-            source={require('../assets/cuadrado-icon.png')}
-          />
-          <Image
-            style={{ width: 30, height: 18 }}
-            contentFit="cover"
-            source={require('../assets/vector-8.png')}
-          />
+          <Pressable onPress={() => setSelectComponents('perfil')}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor:
+                  selectComponents === 'perfil'
+                    ? Color.colorGainsboro
+                    : 'transparent',
+                width: 100,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ marginBottom: 10 }}
+                contentFit="cover"
+                source={require('../assets/cuadrado-icon.png')}
+              />
+            </View>
+          </Pressable>
+          <Pressable onPress={() => setSelectComponents('estadisticas')}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor:
+                  selectComponents === 'estadisticas'
+                    ? Color.colorGainsboro
+                    : 'transparent',
+                width: 100,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ width: 30, height: 18, marginBottom: 10 }}
+                contentFit="cover"
+                source={require('../assets/vector-8.png')}
+              />
+            </View>
+          </Pressable>
         </View>
       )}
     </View>
