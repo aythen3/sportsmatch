@@ -16,7 +16,91 @@ const PerfilDatosPropioClub = () => {
           name="Club Atletico Boca Juniors"
           description="Presidente: Cristian Perez"
           club={true}
+          navBar={false}
         />
+
+        <View
+          style={{
+            marginTop: 20,
+            marginHorizontal: 15,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 5
+          }}
+        >
+          <View
+            style={{
+              width: 120,
+              height: 120,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+          <View
+            style={{
+              width: 130,
+              height: 130,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+          <View
+            style={{
+              width: 130,
+              height: 130,
+              borderWidth: 4,
+              borderColor: Color.colorDimgray_100,
+              borderRadius: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+            <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
+          </View>
+        </View>
+
+        <View style={styles.moduloCampo}>
+          {/* <View style={[styles.fondoModulo, styles.borderBorder]} /> */}
+          <View style={styles.graficotextoLateral}>
+            <Image
+              style={styles.graficoTerrenoJuego}
+              contentFit="cover"
+              source={require('../assets/grafico-terreno-juego.png')}
+            />
+            <View style={styles.textoLateral}>
+              <Pressable onPress={() => navigation.goBack()}>
+                <Text style={[styles.estadio, styles.taxto1Clr]}>Estadio</Text>
+              </Pressable>
+              <View style={styles.bloqueInformacion}>
+                <Text style={styles.nombreDelEstadio}>{`Nombre del 
+estadio o pavellón
+Palau Municipals 
+d’Esports Josep Mora`}</Text>
+                <Text
+                  style={[styles.poblacinMatar, styles.pasEspaaTypo]}
+                >{`Población
+Mataró`}</Text>
+                <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>{`País
+España`}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
         {/* <View style={styles.headercirculosSuperioresParent}>
           <View>
             <View style={styles.headerBotones}>
@@ -225,10 +309,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t2TextSTANDARD_size,
     textAlign: 'center'
   },
-  circuloIconFlexBox: {
-    alignSelf: 'stretch',
-    flex: 1
-  },
+
   taxto1Clr: {
     color: Color.bALONCESTO,
     fontFamily: FontFamily.t4TEXTMICRO
@@ -237,10 +318,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     top: 0
   },
-  uxIphonePosition: {
-    top: 10,
-    position: 'absolute'
-  },
+
   pasEspaaTypo: {
     marginTop: 13,
     lineHeight: 17,
@@ -366,11 +444,7 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute'
   },
-  circuloFrame: {
-    height: 110,
-    width: 109,
-    flexDirection: 'row'
-  },
+
   circulo1: {
     flexDirection: 'row'
   },
@@ -393,23 +467,16 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   graficoTerrenoJuego: {
-    width: 166,
-    height: 240
+    width: 166
+    // height: 240
   },
   estadio: {
-    width: 114,
-    height: 20,
     fontWeight: '500',
-    lineHeight: 40,
-    fontSize: FontSize.h2TITLEBIG_size,
-    textAlign: 'left'
+    fontSize: FontSize.h2TITLEBIG_size
   },
   nombreDelEstadio: {
-    lineHeight: 16,
-    width: 170,
     fontSize: FontSize.t1TextSMALL_size,
     color: Color.bALONCESTO,
-    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO
   },
   poblacinMatar: {
@@ -425,13 +492,20 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   graficotextoLateral: {
-    left: 10,
-    width: 349,
-    height: 240,
+    // left: 10,
+    // width: 349,
+    // height: 240,
     flexDirection: 'row'
   },
   moduloCampo: {
-    marginTop: 29
+    marginTop: 29,
+    padding: 10,
+    // borderRadius: Border.br_8xs,
+    backgroundColor: Color.bLACK3SPORTSMATCH
+    // borderColor: Color.colorDimgray_100,
+    // borderWidth: 1,
+    // width: 358,
+    // height: 260
   },
   headercirculosSuperioresParent: {
     height: 600,

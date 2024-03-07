@@ -4,7 +4,7 @@ import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 
-const HeaderPerfil = ({ name, description, club }) => {
+const HeaderPerfil = ({ name, description, club, navBar }) => {
   const navigation = useNavigation()
 
   return (
@@ -133,57 +133,61 @@ const HeaderPerfil = ({ name, description, club }) => {
           </Pressable>
         )}
       </View>
-      <View
-        style={{
-          width: '100%',
-          height: 60,
-          backgroundColor: Color.bLACK3SPORTSMATCH,
-          marginTop: 20,
-          paddingHorizontal: 15
-        }}
-      >
-        <Text
+      {navBar && (
+        <View
           style={{
-            width: '30.28%',
-            top: '10%',
-            lineHeight: 14,
-            fontSize: FontSize.t4TEXTMICRO_size,
-            color: Color.wHITESPORTSMATCH,
-            fontFamily: FontFamily.t4TEXTMICRO,
-            marginBottom: 10
+            width: '100%',
+            height: 60,
+            backgroundColor: Color.bLACK3SPORTSMATCH,
+            marginTop: 20,
+            paddingHorizontal: 15
           }}
         >
-          Seguidores
-        </Text>
-        <Text
+          <Text
+            style={{
+              width: '30.28%',
+              top: '10%',
+              lineHeight: 14,
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO,
+              marginBottom: 10
+            }}
+          >
+            Seguidores
+          </Text>
+          <Text
+            style={{
+              fontSize: FontSize.h3TitleMEDIUM_size,
+              lineHeight: 22,
+              color: Color.wHITESPORTSMATCH
+            }}
+          >
+            24
+          </Text>
+        </View>
+      )}
+      {navBar && (
+        <View
           style={{
-            fontSize: FontSize.h3TitleMEDIUM_size,
-            lineHeight: 22,
-            color: Color.wHITESPORTSMATCH
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginTop: 15
           }}
         >
-          24
-        </Text>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          marginTop: 15
-        }}
-      >
-        <Image
-          contentFit="cover"
-          source={require('../assets/cuadrado-icon.png')}
-        />
-        <Image
-          style={{ width: 30, height: 18 }}
-          contentFit="cover"
-          source={require('../assets/vector-8.png')}
-        />
-      </View>
+          <Image
+            contentFit="cover"
+            source={require('../assets/cuadrado-icon.png')}
+          />
+          <Image
+            style={{ width: 30, height: 18 }}
+            contentFit="cover"
+            source={require('../assets/vector-8.png')}
+          />
+        </View>
+      )}
     </View>
   )
 }

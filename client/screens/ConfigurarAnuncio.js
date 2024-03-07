@@ -73,33 +73,7 @@ const ConfigurarAnuncio = () => {
           </View>
         </Pressable>
       </View>
-      <View style={styles.groupChildPosition}>
-        <View style={[styles.groupChild, styles.groupChildPosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderPosition]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require('../assets/cap1.png')}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require('../assets/wifi.png')}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require('../assets/cellular-connection.png')}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View>
+
       <Image
         style={styles.configurarAnuncioChild}
         contentFit="cover"
