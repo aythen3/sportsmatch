@@ -8,6 +8,9 @@ import { PositionEntity } from 'src/position/entities/position.entity';
 import { SkillEntity } from './entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SportmanService } from 'src/sportman/sportman.service';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
@@ -17,10 +20,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       MatchEntity,
       PositionEntity,
       SkillEntity,
-      SportEntity
+      SportEntity,
+      UserEntity
     ])
   ],
   controllers: [SkillController],
-  providers: [SkillService]
+  providers: [SkillService, SportmanService, UserService]
 })
 export class SkillModule {}
