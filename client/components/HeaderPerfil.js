@@ -140,7 +140,7 @@ const HeaderPerfil = ({
               justifyContent: 'center',
               alignItems: 'center'
             }}
-            onPress={() => navigation.navigate('MiSuscripcin')}
+            onPress={() => !button2 && navigation.navigate('MiSuscripcin')}
           >
             <Text
               style={[button2 ? styles.ojear : styles.ojear2, styles.timeTypo]}

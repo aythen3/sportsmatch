@@ -118,8 +118,8 @@ const TodasLasOfertas = () => {
       </View>
 
       <View style={{ flexDirection: 'row' }}>
-        <CardInfoOffers text="Urgencia" value={`4${'0%'}`} />
-        <CardInfoOffers text="Retribucion" value="SI" />
+        <CardInfoOffers text="Urgencia" value={`6${'0%'}`} />
+        <CardInfoOffers text="Retribucion" value="NO" />
       </View>
 
       <View
@@ -130,13 +130,7 @@ const TodasLasOfertas = () => {
           marginTop: 30
         }}
       >
-        <Pressable
-          onPress={
-            () => console.log('gato')
-            // setModalVisible(true)
-          }
-          style={[styles.aceptar, styles.aceptarBg]}
-        >
+        <Pressable style={[styles.aceptar, styles.aceptarBg]}>
           <Text
             onPress={() => setModalVisible(true)}
             style={[styles.verOferta, styles.verOfertaTypo]}

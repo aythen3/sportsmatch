@@ -19,6 +19,8 @@ const PerfilFeedVisualitzaciJug = () => {
         <HeaderPerfil
           button1={'Seguir'}
           button2={'Mensaje'}
+          name={'Pupi Zanetti'}
+          description={'Seleccion Argentina'}
           setSelectComponents={setSelectComponents}
           selectComponents={selectComponents}
         />
@@ -56,7 +58,7 @@ const PerfilFeedVisualitzaciJug = () => {
               <CircleSkills skill="Velocidad" percentage={90} />
             </View>
 
-            <PercentageSkills skill="Bote" percentage={'60%'} />
+            <PercentageSkills skill="Bote" percentage={'40%'} />
             <PercentageSkills skill="Lanzamiento" percentage={'80%'} />
             <PercentageSkills skill="Dribling" percentage={'40%'} />
 

@@ -44,7 +44,7 @@ const NavBarInferior = () => {
         }
       >
         <Image
-          style={{ width: 25, height: 25 }}
+          style={{ width: 35, height: 35 }}
           contentFit="cover"
           source={require('../assets/group-5161.png')}
         />

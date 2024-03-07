@@ -24,7 +24,7 @@ const PerfilDatosPropioClub = () => {
                 ? 'Jugando en Barcelona desde 2005'
                 : 'Presidente: Cristian Perez'
             }
-            myPerfil={false}
+            // myPerfil={false}
           />
 
           {isSportman ? (

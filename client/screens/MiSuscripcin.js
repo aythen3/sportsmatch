@@ -372,12 +372,9 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   miSuscripcin: {
-    borderRadius: Border.br_21xl,
     backgroundColor: Color.bLACK1SPORTSMATCH,
     flex: 1,
     paddingHorizontal: 15,
-    // height: 1293,
-    // overflow: 'hidden',
     width: '100%'
   }
 })
