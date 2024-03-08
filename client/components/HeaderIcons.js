@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginVertical: 20
+    marginTop: 50,
+    marginBottom: 30
   },
   superiorLayout: {
     height: 45,

@@ -3,6 +3,7 @@ import { Image } from 'expo-image'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Padding, Border } from '../GlobalStyles'
+import MatchDetailsInfo from '../components/MatchDetailsInfo'
 
 const TusMatchsDetalle = ({ onClose }) => {
   const navigation = useNavigation()
@@ -37,8 +38,17 @@ const TusMatchsDetalle = ({ onClose }) => {
 Mataró`}</Text>
       </View>
 
-      <View style={styles.aoFundacionParent}>
-        <View style={styles.aoFundacion}>
+      <MatchDetailsInfo title="Año de fundación" value={1920} />
+      <MatchDetailsInfo title="Aforo" value={300} />
+      <MatchDetailsInfo
+        title="Nombre del estadio o pavellón"
+        value="Palau Municipals 
+d’Esports Josep Mora"
+      />
+      <MatchDetailsInfo title=" Población" value="Mataró" />
+      <MatchDetailsInfo title=" País" value="España" />
+
+      {/* <View style={styles.aoFundacion}>
           <View style={styles.aoDeFundacinParent}>
             <Text style={[styles.aoDeFundacin, styles.aforo1Layout]}>
               Año de fundación
@@ -67,29 +77,30 @@ d’Esports Josep Mora`}</Text>
         </View>
         <View style={styles.aforo}>
           <View style={styles.paisItemLayout} />
-          <View style={styles.aforoParent}>
-            <Text style={[styles.poblacin, styles.textFlexBox]}>Población</Text>
+          <View tyle={styles.aforoParent} s>
+            <Text style={[styles.nombreDelEstadio, styles.textFlexBox]}>
+              Población
+            </Text>
             <Text style={[styles.text, styles.textFlexBox]}>Mataró</Text>
           </View>
         </View>
         <View style={styles.aforo}>
           <View style={styles.paisItemLayout} />
           <View style={styles.pasParent}>
-            <Text style={[styles.pas, styles.pasTypo]}>País</Text>
+            <Text style={[styles.nombreDelEstadio, styles.pasTypo]}>País</Text>
             <Text style={[styles.espaa, styles.textFlexBox]}>España</Text>
           </View>
           <View style={[styles.paisItem, styles.paisItemLayout]} />
-        </View>
-        <Pressable
-          style={[styles.aceptar, styles.aceptarFlexBox]}
-          onPress={() => {
-            onClose()
-            navigation.navigate('ChatAbierto1')
-          }}
-        >
-          <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
-        </Pressable>
-      </View>
+        </View> */}
+      <Pressable
+        style={[styles.aceptar, styles.aceptarFlexBox]}
+        onPress={() => {
+          onClose()
+          navigation.navigate('ChatAbierto1')
+        }}
+      >
+        <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
+      </Pressable>
     </Pressable>
   )
 }
@@ -129,12 +140,14 @@ const styles = StyleSheet.create({
   },
   paisItemLayout: {
     height: 1,
-    width: 331,
+    // width: 331,
     borderTopWidth: 1.1,
     borderColor: Color.wHITESPORTSMATCH,
     borderStyle: 'solid'
   },
   aceptarFlexBox: {
+    width: '90%',
+    height: 50,
     paddingVertical: Padding.p_8xs,
     alignItems: 'center',
     borderRadius: Border.br_81xl,
@@ -203,7 +216,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   fondoColorIcon: {
-    height: '59.24%',
+    height: '80.24%',
     width: '100%',
     position: 'absolute',
     borderRadius: 8
@@ -280,9 +293,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '500',
-    lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
-    flex: 1
+    // lineHeight: 22,
+    fontSize: FontSize.h3TitleMEDIUM_size
+    // flex: 1
   },
   aoDeFundacinParent: {
     height: 40
@@ -333,8 +346,8 @@ const styles = StyleSheet.create({
     marginTop: 11
   },
   aoFundacionParent: {
-    marginTop: 33,
-    justifyContent: 'center'
+    // marginTop: 33,
+    // justifyContent: 'center'
   },
   verOferta: {
     textAlign: 'center'

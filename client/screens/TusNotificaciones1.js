@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   tuBuznParent: {
-    marginTop: 20
+    marginTop: 50
     // marginLeft: 15
   },
   tusNotificacionesChild: {
