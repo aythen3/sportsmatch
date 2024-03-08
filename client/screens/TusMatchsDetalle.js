@@ -264,7 +264,6 @@ const styles = StyleSheet.create({
   },
   uniEsportvaMatar: {
     width: 184,
-    height: 39,
     marginLeft: 8,
     fontWeight: '500',
     lineHeight: 22,

@@ -21,8 +21,8 @@ const SiguiendoJugadores = () => {
             imgPerfil={publication.imgPerfil}
             image={publication.image}
             club={publication.club}
-            // likes={publication.likes}
-            // comments={publication.comments}
+            likes={publication.likes}
+            comments={publication.comments}
             index={i}
           />
         ))}

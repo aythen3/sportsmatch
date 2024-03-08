@@ -59,11 +59,17 @@ const EditarPerfil = () => {
             Contraseña
           </Text>
           <View style={styles.frameChild} />
-          <Text style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}>
+          <Text
+            style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
+            onPress={() => navigation.navigate('CerrarSesin')}
+          >
             Cerrar sesión
           </Text>
           <View style={styles.frameChild} />
-          <Text style={[styles.eliminarCuenta, styles.eliminarCuentaTypo]}>
+          <Text
+            style={[styles.eliminarCuenta, styles.eliminarCuentaTypo]}
+            onPress={() => navigation.navigate('EliminarCuenta')}
+          >
             Eliminar cuenta
           </Text>
           <View style={styles.frameChild} />

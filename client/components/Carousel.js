@@ -55,7 +55,7 @@ function Carousel({
           />
         </View>
       </PagerView>
-      <View>
+      <View style={{ paddingHorizontal: 15 }}>
         <Text style={styles.likes}>{likes} likes</Text>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.commentsTitle}>Ver los 24 comentarios</Text>
@@ -70,7 +70,6 @@ export default Carousel
 const styles = StyleSheet.create({
   likes: {
     fontWeight: '700',
-    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t1TextSMALL_size

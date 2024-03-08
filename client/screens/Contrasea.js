@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -42,88 +42,6 @@ const Contrasea = () => {
           <Text style={styles.aceptar}>Aceptar</Text>
         </View>
       </View>
-
-      {/* <View style={styles.frameParent}>
-          <View>
-            <View style={styles.email}>
-              <View style={styles.emailInner}>
-                <View style={styles.contraseaParent}>
-                  <Text style={[styles.contrasea3, styles.contraseaTypo]}>
-                    Contraseña
-                  </Text>
-                  <View style={styles.parent}>
-                    <Text style={[styles.text, styles.textPosition]}>
-                      **************
-                    </Text>
-                    <View style={[styles.groupChild, styles.borderPosition]} />
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={styles.nuevoEmasiol}>
-              <View style={styles.emailInner}>
-                <View style={styles.contraseaParent}>
-                  <Text style={[styles.nuevaContrasea, styles.contraseaTypo]}>
-                    Nueva contraseña
-                  </Text>
-                  <View style={styles.rectangleWrapper}>
-                    <View style={[styles.groupChild, styles.borderPosition]} />
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={styles.nuevoEmasiol}>
-              <View style={styles.emailInner}>
-                <View style={styles.contraseaParent}>
-                  <Text style={[styles.contrasea3, styles.contraseaTypo]}>
-                    Repetir Nueva contraseña
-                  </Text>
-                  <View style={styles.parent}>
-                    <View style={[styles.groupChild, styles.borderPosition]} />
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.boton}>
-            <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
-              <Text style={styles.aceptar}>Aceptar</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <Image
-        style={[styles.contraseaItem, styles.contraseaLayout]}
-        contentFit="cover"
-        source={require('../assets/line-9.png')}
-      />
-      <View style={styles.rectanglePosition}>
-        <View style={[styles.rectangleView, styles.rectanglePosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderPosition]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require('../assets/cap.png')}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require('../assets/wifi.png')}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require('../assets/cellular-connection1.png')}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View> */}
     </View>
   )
 }

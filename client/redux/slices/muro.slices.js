@@ -31,8 +31,8 @@ const muroSlices = createSlice({
         description: 'Noche de boxeo. Maravilla Martinez derrota a Mike Tison',
         likes: 246,
         comments: 'Sali de ahi Maravilla!!',
-        image: '../../assets/nickfithenbuugssofvounsplash-13.png',
-        imgPerfil: require('../../assets/mask-group8.png'),
+        image: require('../../assets/basketball-mira-kireeva-11.png'),
+        imgPerfil: require('../../assets/logo-uem21removebgpreview-11.png'),
         club: false
       }
     ]

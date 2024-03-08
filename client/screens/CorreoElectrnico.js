@@ -10,11 +10,6 @@ const CorreoElectrnico = () => {
 
   return (
     <View style={styles.correoElectrnico}>
-      {/* <Image
-        style={[styles.correoElectrnicoChild, styles.correoLayout]}
-        contentFit="cover"
-        source={require('../assets/group-2413.png')}
-      /> */}
       <View style={styles.cabezeraParent}>
         <View style={styles.loremIpsumFlexBox}>
           <Pressable
