@@ -107,7 +107,7 @@ const HeaderPerfil = ({
               alignItems: 'center'
             }}
           >
-            <Text style={[styles.ojear, styles.timeTypo]}>Pedir Match</Text>
+            <Text style={[styles.ojear, styles.timeTypo2]}>Pedir Match</Text>
             <View
               style={{
                 width: 50,
@@ -267,11 +267,16 @@ const styles = StyleSheet.create({
     height: 60
   },
   timeTypo: {
-    textAlign: 'center',
+    fontSize: FontSize.t2TextSTANDARD_size
+  },
+  timeTypo2: {
+    // backgroundColor: 'red',
+    marginRight: 20,
+    width: '100%',
+    textAlign: 'right',
     fontSize: FontSize.t2TextSTANDARD_size
   },
   ojear: {
-    marginLeft: 5,
     color: Color.wHITESPORTSMATCH,
     fontSize: FontSize.t2TextSTANDARD_size,
     fontFamily: FontFamily.t4TEXTMICRO,

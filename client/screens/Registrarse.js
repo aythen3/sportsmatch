@@ -1,38 +1,38 @@
-import React, { useState } from "react";
-import { Image } from "expo-image";
+import React, { useState } from 'react'
+import { Image } from 'expo-image'
 import {
   StyleSheet,
   Text,
   Pressable,
   View,
   ScrollView,
-  TextInput,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { FontSize, Color, Padding, Border, FontFamily } from "../GlobalStyles";
-import CheckBox from "react-native-check-box";
+  TextInput
+} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { FontSize, Color, Padding, Border, FontFamily } from '../GlobalStyles'
+import CheckBox from 'react-native-check-box'
 
 const Registrarse = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(false)
 
   const handleCheckboxToggle = () => {
-    setChecked(!isChecked);
-  };
+    setChecked(!isChecked)
+  }
   return (
     <ScrollView style={styles.registrarse}>
       <Image
         style={styles.fondoIcon}
         contentFit="cover"
-        source={require("../assets/fondo2.png")}
+        source={require('../assets/fondo2.png')}
       />
       <View style={styles.contenido}>
         <View style={styles.botonAtrasFrame}>
           <Image
             style={styles.simboloIcon}
             contentFit="cover"
-            source={require("../assets/coolicon3.png")}
+            source={require('../assets/coolicon3.png')}
           />
           <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
             <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
@@ -51,7 +51,7 @@ const Registrarse = () => {
                       <Image
                         style={styles.simboloIcon1}
                         contentFit="cover"
-                        source={require("../assets/simbolo4.png")}
+                        source={require('../assets/simbolo4.png')}
                       />
                       <TextInput
                         style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -65,7 +65,7 @@ const Registrarse = () => {
                       <Image
                         style={styles.vectorIcon}
                         contentFit="cover"
-                        source={require("../assets/vector4.png")}
+                        source={require('../assets/vector4.png')}
                       />
                       <TextInput
                         style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -80,7 +80,7 @@ const Registrarse = () => {
                         <Image
                           style={styles.simboloIcon2}
                           contentFit="cover"
-                          source={require("../assets/simbolo3.png")}
+                          source={require('../assets/simbolo3.png')}
                         />
                         <TextInput
                           style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -106,7 +106,7 @@ const Registrarse = () => {
           </View>
           <Pressable
             style={styles.yaTenesUnaContainer}
-            onPress={() => navigation.navigate("IniciarSesin")}
+            onPress={() => navigation.navigate('IniciarSesin')}
           >
             <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
               ¿Ya tíenes una cuenta? Inicia sesión
@@ -135,21 +135,21 @@ const Registrarse = () => {
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   timeTypo: {
     fontSize: FontSize.t2TextSTANDARD_size,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   titularLayout: {
     width: 390,
-    textAlign: "center",
+    textAlign: 'center'
   },
   eMailSpaceBlock: {
     marginLeft: 10,
-    textAlign: "left",
+    textAlign: 'left'
   },
   framePosition: {
     paddingBottom: Padding.p_3xs,
@@ -157,65 +157,64 @@ const styles = StyleSheet.create({
     paddingLeft: Padding.p_mini,
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: Border.br_81xl,
     top: 0,
-    flexDirection: "row",
+    flexDirection: 'row',
     left: 0,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   eMailTypo: {
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   loremPosition: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%'
   },
   textoTypo: {
     fontSize: FontSize.t4TEXTMICRO_size,
     color: Color.gREY2SPORTSMATCH,
-    textAlign: "center",
+    textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    width: "80%",
+    width: '80%'
   },
   simboloIcon: {
     width: 9,
-    height: 15,
+    height: 15
   },
   atrs1: {
-    textAlign: "center",
+    textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   atrs: {
-    marginLeft: 5,
+    marginLeft: 5
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
-    alignItems: "center",
-    flexDirection: "row",
-    height: 18,
-    width: 393,
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: 393
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,
     lineHeight: 40,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   simboloIcon1: {
     width: 22,
-    height: 22,
+    height: 22
   },
   nombre: {
     height: 19,
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   campo1Frame: {
     paddingTop: Padding.p_2xs,
@@ -224,126 +223,126 @@ const styles = StyleSheet.create({
     paddingLeft: Padding.p_mini,
     borderColor: Color.gREY2SPORTSMATCH,
     borderWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: Border.br_81xl,
-    flexDirection: "row",
-    overflow: "hidden",
+    flexDirection: 'row',
+    overflow: 'hidden'
   },
   campo1: {
     width: 359,
-    height: 43,
+    height: 43
   },
   vectorIcon: {
     width: 21,
-    height: 16,
+    height: 16
   },
   campo2Frame: {
-    paddingRight: Padding.p_12xs,
+    paddingRight: Padding.p_12xs
   },
   campo2: {
     height: 38,
     marginTop: 15,
-    width: 360,
+    width: 360
   },
   simboloIcon2: {
     width: 14,
-    height: 18,
+    height: 18
   },
   contraseaFrame: {
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   campo3Frame: {
     height: 39,
     paddingRight: 23,
-    width: 360,
+    width: 360
   },
   campo3: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     marginTop: 15,
-    flex: 1,
+    flex: 1
   },
   campos: {
     marginTop: 34,
-    flex: 1,
+    flex: 1
   },
   titularcampos: {
-    alignItems: "center",
-    flex: 1,
+    alignItems: 'center',
+    flex: 1
   },
   camposFormulario: {
-    height: 259,
+    height: 259
   },
   aceptar: {
     fontSize: FontSize.button_size,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Color.bLACK1SPORTSMATCH,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   loremIpsum1: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
     width: 360,
     borderRadius: Border.br_81xl,
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   loremIpsum: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   botonRegistrate: {
     height: 40,
     marginTop: 36,
-    width: 360,
+    width: 360
   },
   formularioFrame: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   yaTenesUnaCuentaIniciaS: {
     width: 390,
-    textAlign: "center",
+    textAlign: 'center'
   },
   yaTenesUnaContainer: {
-    marginTop: 27,
+    marginTop: 27
   },
   texto1: {
     lineHeight: 14,
-    zIndex: 0,
+    zIndex: 0
   },
   textoLegalFrame: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textoInferior: {
-    marginTop: 9,
+    marginTop: 9
   },
   textoLegal: {
-    marginTop: 42,
+    marginTop: 42
   },
   formulariotextoLegal: {
-    marginTop: 45,
+    marginTop: 45
   },
   contenido: {
-    top: "25%",
-    height: "130%",
+    top: '25%',
+    height: '130%'
   },
   fondoIcon: {
-    width: "160%",
-    height: "70%",
-    bottom: "60%",
-    right: "0%",
-    position: "absolute",
-    zIndex: 0,
+    width: '160%',
+    height: '70%',
+    bottom: '60%',
+    right: '0%',
+    position: 'absolute',
+    zIndex: 0
   },
   registrarse: {
     height: 844,
-    overflow: "hidden",
-    width: "100%",
+    overflow: 'hidden',
+    width: '100%',
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  }
+})
 
-export default Registrarse;
+export default Registrarse

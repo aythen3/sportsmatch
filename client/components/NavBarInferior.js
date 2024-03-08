@@ -24,13 +24,13 @@ const NavBarInferior = () => {
         paddingHorizontal: 20
       }}
     >
-      <View>
+      <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
         <DiarySVG />
-      </View>
+      </Pressable>
       <Pressable onPress={() => navigation.navigate('ExplorarClubs')}>
         <LensSVG />
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
+      <Pressable onPress={() => navigation.navigate('CrearHighlight')}>
         <HomeSVG />
       </Pressable>
       <View>
