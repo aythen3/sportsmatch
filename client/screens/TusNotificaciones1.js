@@ -81,6 +81,8 @@ const TusNotificaciones1 = () => {
               key={notification.id}
               text={notification.notification}
               send={notification.send}
+              read={notification.read}
+              match={notification.match}
             />
           ))}
 

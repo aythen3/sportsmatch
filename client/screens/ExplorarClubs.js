@@ -50,7 +50,7 @@ const ExplorarClubs = () => {
           </View>
           <View style={{ width: '70%', gap: 5 }}>
             <Pressable
-              onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
+            // onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
             >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
@@ -59,7 +59,7 @@ const ExplorarClubs = () => {
               />
             </Pressable>
             <Pressable
-              onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
+            // onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
             >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
@@ -68,7 +68,7 @@ const ExplorarClubs = () => {
               />
             </Pressable>
             <Pressable
-              onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
+            // onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
             >
               <Image
                 style={{ width: '100%', height: 250, borderRadius: 3 }}
