@@ -54,6 +54,7 @@ const LoginSwitch = () => {
                 <Text style={styles.jugador}>
                   Jugador / Profesional deporte*
                 </Text>
+
                 <Switch
                   trackColor={{ false: '#00FF18', true: '#00FF18' }}
                   thumbColor={isEnabled ? 'black' : 'black'}
@@ -61,6 +62,7 @@ const LoginSwitch = () => {
                   onValueChange={toggleSwitch}
                   value={isEnabled}
                 />
+
                 <Text style={styles.clubScouting}>Club / Scouting</Text>
               </View>
             </View>

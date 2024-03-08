@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
     height: 63
   },
   formulariosInferiores: {
-    paddingHorizontal: 15,
     marginTop: '10%',
     width: '100%',
     gap: 20

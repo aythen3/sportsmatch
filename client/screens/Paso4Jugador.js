@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     width: '100%',
+    paddingHorizontal: 15,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   headersubirImagenesPerfil: {

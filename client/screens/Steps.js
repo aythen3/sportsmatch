@@ -86,11 +86,13 @@ const Steps = () => {
         <TouchableOpacity
           style={{
             marginVertical: 30,
-            height: 60,
+            // height: 60,
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: Color.wHITESPORTSMATCH,
-            borderRadius: Border.br_81xl
+            borderRadius: Border.br_81xl,
+            paddingHorizontal: Padding.p_81xl,
+            paddingVertical: Padding.p_3xs
           }}
           onPress={() => hadleIndex('add')}
         >
@@ -157,7 +159,8 @@ const styles = StyleSheet.create({
   escogerDeporte: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+    paddingHorizontal: 15
   }
 })
 

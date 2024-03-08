@@ -34,7 +34,6 @@ const SiguiendoJugadores = () => {
 const styles = StyleSheet.create({
   siguiendoJugadores: {
     flex: 1,
-    paddingBottom: 100,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }
