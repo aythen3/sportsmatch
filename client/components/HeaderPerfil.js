@@ -11,7 +11,9 @@ const HeaderPerfil = ({
   button1,
   button2,
   setSelectComponents,
-  selectComponents
+  selectComponents,
+  club,
+  myPerfil
 }) => {
   const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
@@ -30,8 +32,7 @@ const HeaderPerfil = ({
             borderColor: Color.bALONCESTO,
             backgroundColor: Color.bALONCESTO,
             height: 108,
-            borderRadius: 50,
-            overflow: 'hidden'
+            borderRadius: 50
           }}
         >
           <Image
@@ -53,7 +54,7 @@ const HeaderPerfil = ({
       </View>
 
       <View style={styles.groupContainer}>
-        {isSportman === false ? (
+        {club && !myPerfil ? (
           <View
             style={{
               flexDirection: 'row',
@@ -90,7 +91,7 @@ const HeaderPerfil = ({
             </Text>
           </View>
         )}
-        {isSportman === false ? (
+        {club && !myPerfil ? (
           <View
             style={{
               flexDirection: 'row',
@@ -184,58 +185,57 @@ const HeaderPerfil = ({
           </Text>
         </View>
       )}
-      {isSportman === true && (
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            marginTop: 15
-          }}
-        >
-          <Pressable onPress={() => setSelectComponents('perfil')}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderColor:
-                  selectComponents === 'perfil'
-                    ? Color.colorGainsboro
-                    : 'transparent',
-                width: 100,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Image
-                style={{ marginBottom: 10 }}
-                contentFit="cover"
-                source={require('../assets/cuadrado-icon.png')}
-              />
-            </View>
-          </Pressable>
-          <Pressable onPress={() => setSelectComponents('estadisticas')}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderColor:
-                  selectComponents === 'estadisticas'
-                    ? Color.colorGainsboro
-                    : 'transparent',
-                width: 100,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Image
-                style={{ width: 30, height: 18, marginBottom: 10 }}
-                contentFit="cover"
-                source={require('../assets/vector-8.png')}
-              />
-            </View>
-          </Pressable>
-        </View>
-      )}
+
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          marginTop: 15
+        }}
+      >
+        <Pressable onPress={() => setSelectComponents('perfil')}>
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor:
+                selectComponents === 'perfil'
+                  ? Color.colorWhitesmoke
+                  : 'transparent',
+              width: 100,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              style={{ marginBottom: 10 }}
+              contentFit="cover"
+              source={require('../assets/cuadrado-icon.png')}
+            />
+          </View>
+        </Pressable>
+        <Pressable onPress={() => setSelectComponents('estadisticas')}>
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor:
+                selectComponents === 'estadisticas'
+                  ? Color.colorWhitesmoke
+                  : 'transparent',
+              width: 100,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              style={{ width: 30, height: 18, marginBottom: 10 }}
+              contentFit="cover"
+              source={require('../assets/vector-8.png')}
+            />
+          </View>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -297,6 +297,8 @@ const styles = StyleSheet.create({
   jordiEspeltPvotBaloncestoWrapper: {
     flexDirection: 'row',
     gap: 20,
+    justifyContent: 'flex-start',
+    maxWidth: '60%',
     alignItems: 'center',
     height: 120,
     paddingHorizontal: 15

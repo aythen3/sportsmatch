@@ -20,8 +20,9 @@ const SiguiendoJugadores = () => {
             description={publication.description}
             imgPerfil={publication.imgPerfil}
             image={publication.image}
-            likes={publication.likes}
-            comments={publication.comments}
+            club={publication.club}
+            // likes={publication.likes}
+            // comments={publication.comments}
             index={i}
           />
         ))}

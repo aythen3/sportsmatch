@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
+import { useDispatch } from 'react-redux'
 
 function Carousel({
   name,
@@ -12,20 +13,30 @@ function Carousel({
   image,
   likes,
   comments,
+  club,
   index
 }) {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   return (
     <View style={{ width: '100%', marginVertical: 15 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <Image
           style={{ width: 30, height: 30, borderRadius: 50 }}
-          source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
+          source={imgPerfil}
         />
         <Text
           style={{ color: 'white' }}
-          onPress={() => navigation.navigate('PerfilFeedVisualitzaciJug')}
+          onPress={() =>
+            navigation.navigate('PerfilFeedVisualitzaciJug', {
+              club: club,
+              name: name,
+              description: description,
+              image: image,
+              imgPerfil: imgPerfil
+            })
+          }
         >
           {name}
         </Text>
@@ -35,10 +46,7 @@ function Carousel({
         initialPage={0}
       >
         <View style={{ width: '100%', height: 300 }} key={index}>
-          <Image
-            style={{ width: '100%', height: 300 }}
-            source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-          />
+          <Image style={{ width: '100%', height: 300 }} source={image} />
         </View>
         <View style={{ width: '100%', height: 300 }} key={index + 1}>
           <Image
