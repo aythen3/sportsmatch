@@ -8,19 +8,32 @@ const notificationsSlices = createSlice({
         id: 1,
         notification:
           '¡Has hecho un Match! ¡Felicidades! ¡Carles Mir y tú tenéis buen feeling!',
-        send: 'Ayer'
+        send: 'Ayer',
+        read: true,
+        match: false
       },
       {
         id: 2,
         notification:
           '¡Has hecho un Match! ¡Felicidades! ¡Carles Mir y tú tenéis buen feeling!',
-        send: '10/10/2023'
+        send: '10/10/2023',
+        read: true,
+        match: false
       },
       {
         id: 3,
         notification:
           '¡Has hecho un Match! ¡Felicidades! ¡Carles Mir y tú tenéis buen feeling! lkadfj sdlfskdjf sdfaj dsflsdkfj osdiah jlskdfj aosfdiu ',
-        send: '08/10/2023'
+        send: '08/10/2023',
+        read: true,
+        match: false
+      },
+      {
+        id: 4,
+        notification: '¡Te han solicitado un Match!',
+        send: 'Ayer',
+        read: false,
+        match: true
       }
     ],
     messages: [

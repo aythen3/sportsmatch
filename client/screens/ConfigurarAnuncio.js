@@ -392,9 +392,6 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   configurarAnuncio: {
-    borderRadius: Border.br_21xl,
-    height: 844,
-    overflow: 'hidden',
     flex: 1,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH

@@ -36,12 +36,7 @@ const Paso3Jugador = () => {
                 Define tus skills
               </Text>
             </View>
-            {/* <View style={styles.linias}>
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout2} />
-              <View style={styles.liniaLayout1} />
-            </View> */}
+
             <Lines index={3} />
           </View>
         </View>

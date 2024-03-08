@@ -1,18 +1,18 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Pressable, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { FontFamily, FontSize, Color, Border, Padding } from "../GlobalStyles";
+import * as React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, Pressable, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
 
 const DefineTusSkills = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View style={styles.defineTusSkills}>
       <Image
         style={[styles.defineTusSkillsChild, styles.defineLayout]}
         contentFit="cover"
-        source={require("../assets/group-2413.png")}
+        source={require('../assets/group-2413.png')}
       />
       <View style={styles.groupParent}>
         <View style={styles.frameWrapper}>
@@ -24,7 +24,7 @@ const DefineTusSkills = () => {
               <Image
                 style={styles.icon}
                 contentFit="cover"
-                source={require("../assets/coolicon3.png")}
+                source={require('../assets/coolicon3.png')}
               />
             </Pressable>
             <Pressable
@@ -90,7 +90,7 @@ const DefineTusSkills = () => {
                     <View
                       style={[
                         styles.categoraParent,
-                        styles.frameParentPosition,
+                        styles.frameParentPosition
                       ]}
                     >
                       <Text style={styles.categoraTypo}>Categoría</Text>
@@ -101,7 +101,7 @@ const DefineTusSkills = () => {
                         <View
                           style={[
                             styles.rectangleView,
-                            styles.groupChildBorder,
+                            styles.groupChildBorder
                           ]}
                         />
                       </View>
@@ -110,7 +110,7 @@ const DefineTusSkills = () => {
                   <Image
                     style={[styles.coolicon1, styles.cooliconPosition]}
                     contentFit="cover"
-                    source={require("../assets/coolicon2.png")}
+                    source={require('../assets/coolicon2.png')}
                   />
                 </View>
                 <View style={styles.groupParent3}>
@@ -134,7 +134,7 @@ const DefineTusSkills = () => {
                   <Image
                     style={[styles.coolicon2, styles.cooliconPosition]}
                     contentFit="cover"
-                    source={require("../assets/coolicon2.png")}
+                    source={require('../assets/coolicon2.png')}
                   />
                 </View>
                 <View style={styles.frameWrapper2}>
@@ -159,7 +159,7 @@ const DefineTusSkills = () => {
                         <View
                           style={[
                             styles.rectangleView,
-                            styles.groupChildBorder,
+                            styles.groupChildBorder
                           ]}
                         />
                       </View>
@@ -186,7 +186,7 @@ const DefineTusSkills = () => {
                         <View
                           style={[
                             styles.rectangleView,
-                            styles.groupChildBorder,
+                            styles.groupChildBorder
                           ]}
                         />
                       </View>
@@ -215,7 +215,7 @@ const DefineTusSkills = () => {
                         <View
                           style={[
                             styles.rectangleView,
-                            styles.groupChildBorder,
+                            styles.groupChildBorder
                           ]}
                         />
                       </View>
@@ -244,7 +244,7 @@ const DefineTusSkills = () => {
                         <View
                           style={[
                             styles.rectangleView,
-                            styles.groupChildBorder,
+                            styles.groupChildBorder
                           ]}
                         />
                       </View>
@@ -264,7 +264,7 @@ const DefineTusSkills = () => {
       <Image
         style={[styles.defineTusSkillsItem, styles.defineLayout]}
         contentFit="cover"
-        source={require("../assets/line-9.png")}
+        source={require('../assets/line-9.png')}
       />
       <View style={styles.groupChild6Position}>
         <View style={[styles.groupChild6, styles.groupChild6Position]} />
@@ -274,19 +274,19 @@ const DefineTusSkills = () => {
             <Image
               style={[styles.capIcon, styles.batteryPosition]}
               contentFit="cover"
-              source={require("../assets/cap.png")}
+              source={require('../assets/cap.png')}
             />
             <View style={[styles.capacity, styles.capacityPosition]} />
           </View>
           <Image
             style={styles.wifiIcon}
             contentFit="cover"
-            source={require("../assets/wifi.png")}
+            source={require('../assets/wifi.png')}
           />
           <Image
             style={styles.cellularConnectionIcon}
             contentFit="cover"
-            source={require("../assets/cellular-connection1.png")}
+            source={require('../assets/cellular-connection1.png')}
           />
         </View>
         <View style={[styles.starus, styles.timeLayout]}>
@@ -294,333 +294,333 @@ const DefineTusSkills = () => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   defineLayout: {
-    maxHeight: "100%",
-    position: "absolute",
+    maxHeight: '100%',
+    position: 'absolute'
   },
   frameParentPosition: {
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   ataqueTypo: {
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   frameViewLayout: {
     width: 363,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   timeTypo: {
     fontSize: FontSize.t2TextSTANDARD_size,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   textTypo: {
     color: Color.gREY2SPORTSMATCH,
     fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
-    position: "absolute",
+    position: 'absolute'
   },
   groupChildBorder: {
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: Border.br_81xl,
     height: 40,
     left: 0,
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   valorTypo: {
     marginLeft: 19,
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     color: Color.gREY2SPORTSMATCH,
-    textAlign: "left",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   jniorPosition: {
     left: 15,
-    top: 10,
+    top: 10
   },
   cooliconPosition: {
-    bottom: "23.81%",
-    top: "65.08%",
-    height: "11.11%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
+    bottom: '23.81%',
+    top: '65.08%',
+    height: '11.11%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    position: 'absolute',
+    overflow: 'hidden'
   },
   categoraTypo: {
     height: 23,
     width: 360,
     fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   capacityPosition: {
     top: 2,
-    position: "absolute",
+    position: 'absolute'
   },
   groupChild6Position: {
     height: 34,
     width: 390,
     left: 0,
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   batteryPosition: {
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   defineTusSkillsChild: {
-    height: "113.22%",
-    width: "980.1%",
-    top: "-9.24%",
-    right: "-413.18%",
-    bottom: "-3.98%",
-    left: "-466.92%",
+    height: '113.22%',
+    width: '980.1%',
+    top: '-9.24%',
+    right: '-413.18%',
+    bottom: '-3.98%',
+    left: '-466.92%',
     opacity: 0.2,
-    maxWidth: "100%",
-    maxHeight: "100%",
-    overflow: "hidden",
+    maxWidth: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden'
   },
   icon: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%'
   },
   coolicon: {
     width: 9,
-    height: 15,
+    height: 15
   },
   defineTusSkills1: {
     fontSize: FontSize.h3TitleMEDIUM_size,
     lineHeight: 22,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Color.wHITESPORTSMATCH,
-    textAlign: "left",
+    textAlign: 'left'
   },
   defineTusSkillsContainer: {
-    marginLeft: 9,
+    marginLeft: 9
   },
   cooliconParent: {
-    alignItems: "center",
-    flexDirection: "row",
-    top: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    top: 0
   },
   frameWrapper: {
     width: 170,
-    height: 22,
+    height: 22
   },
   ataque: {
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
-    flex: 1,
+    flex: 1
   },
   defensa: {
     marginLeft: 15,
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
-    flex: 1,
+    flex: 1
   },
   velocidad: {
     marginLeft: 15,
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
     height: 22,
-    flex: 1,
+    flex: 1
   },
   text: {
     left: 13,
     width: 97,
     top: 10,
-    color: Color.gREY2SPORTSMATCH,
+    color: Color.gREY2SPORTSMATCH
   },
   groupChild: {
-    width: 111,
+    width: 111
   },
   parent: {
     width: 111,
-    alignSelf: "stretch",
+    alignSelf: 'stretch'
   },
   group: {
     marginLeft: 15,
-    alignSelf: "stretch",
-    flex: 1,
+    alignSelf: 'stretch',
+    flex: 1
   },
   frameView: {
     height: 40,
-    marginLeft: 15,
+    marginLeft: 15
   },
   ataqueParent: {
-    flexWrap: "wrap",
+    flexWrap: 'wrap'
   },
   valorEntre01: {
-    flex: 1,
+    flex: 1
   },
   frameGroup: {
-    alignItems: "flex-end",
-    flexWrap: "wrap",
+    alignItems: 'flex-end',
+    flexWrap: 'wrap',
     width: 361,
-    flexDirection: "row",
-    top: 0,
+    flexDirection: 'row',
+    top: 0
   },
   groupView: {
     height: 81,
-    alignSelf: "stretch",
+    alignSelf: 'stretch'
   },
   jnior: {
     width: 313,
     color: Color.gREY2SPORTSMATCH,
     fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
-    position: "absolute",
+    position: 'absolute'
   },
   rectangleView: {
-    width: 360,
+    width: 360
   },
   jniorParent: {
-    alignSelf: "stretch",
-    flex: 1,
+    alignSelf: 'stretch',
+    flex: 1
   },
   categoraParent: {
     height: 63,
-    top: 0,
+    top: 0
   },
   frameWrapper1: {
     height: 63,
     width: 360,
-    top: 0,
+    top: 0
   },
   coolicon1: {
-    width: "3.33%",
-    right: "4.44%",
-    left: "92.22%",
+    width: '3.33%',
+    right: '4.44%',
+    left: '92.22%'
   },
   groupParent2: {
     height: 63,
-    width: 360,
+    width: 360
   },
   posicinPrincipal: {
     left: 1,
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   baseParent: {
     top: 23,
     width: 360,
-    height: 40,
+    height: 40
   },
   posicinPrincipalParent: {
     zIndex: 0,
     height: 63,
-    width: 361,
+    width: 361
   },
   coolicon2: {
-    width: "3.32%",
-    right: "4.71%",
-    left: "91.97%",
-    zIndex: 1,
+    width: '3.32%',
+    right: '4.71%',
+    left: '91.97%',
+    zIndex: 1
   },
   groupParent3: {
-    marginTop: 10,
+    marginTop: 10
   },
   altura: {
-    textAlign: "left",
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO,
     left: 0,
-    position: "absolute",
-    top: 0,
+    position: 'absolute',
+    top: 0
   },
   valorEntre03: {
     left: 260,
-    textAlign: "right",
+    textAlign: 'right',
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     top: 2,
     color: Color.gREY2SPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   alturaParent: {
     width: 350,
-    height: 18,
+    height: 18
   },
   groupWrapper: {
     marginTop: 5,
     width: 360,
-    height: 40,
+    height: 40
   },
   frameParent1: {
-    top: 0,
+    top: 0
   },
   frameWrapper2: {
     marginTop: 10,
     height: 63,
-    width: 360,
+    width: 360
   },
   parent3: {
     width: 360,
-    height: 40,
+    height: 40
   },
   groupWrapper1: {
-    marginTop: 5,
+    marginTop: 5
   },
   groupParent1: {
     marginTop: 25,
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   aceptar: {
     fontSize: FontSize.button_size,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Color.bLACK1SPORTSMATCH,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   loremIpsum: {
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 145,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   boto: {
     marginTop: 27,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   frameParent: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   frameContainer: {
     marginTop: 64,
-    alignItems: "center",
+    alignItems: 'center'
   },
   groupParent: {
     top: 60,
     left: 14,
-    position: "absolute",
+    position: 'absolute'
   },
   defineTusSkillsItem: {
     marginLeft: -74,
     top: 831,
-    left: "50%",
-    width: 148,
+    left: '50%',
+    width: 148
   },
   groupChild6: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    width: 390,
+    width: 390
   },
   border: {
     right: 2,
@@ -630,68 +630,65 @@ const styles = StyleSheet.create({
     width: 22,
     opacity: 0.35,
     height: 12,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   capIcon: {
     top: 4,
     width: 1,
     height: 4,
-    opacity: 0.4,
+    opacity: 0.4
   },
   capacity: {
     right: 4,
     borderRadius: 2,
     width: 18,
     height: 7,
-    backgroundColor: Color.wHITESPORTSMATCH,
+    backgroundColor: Color.wHITESPORTSMATCH
   },
   battery: {
     width: 25,
     height: 12,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group1: {
     top: 17,
     right: 15,
     width: 68,
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   time: {
     marginTop: -9.55,
-    top: "50%",
+    top: '50%',
     left: 4,
     letterSpacing: 0,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: FontFamily.openSansSemiBold,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: FontSize.t2TextSTANDARD_size,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   starus: {
     height: 24,
     left: 15,
-    top: 10,
+    top: 10
   },
   defineTusSkills: {
-    borderRadius: Border.br_21xl,
-    height: 844,
-    overflow: "hidden",
-    width: "100%",
+    width: '100%',
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  }
+})
 
-export default DefineTusSkills;
+export default DefineTusSkills

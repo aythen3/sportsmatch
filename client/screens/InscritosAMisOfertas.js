@@ -578,7 +578,6 @@ const styles = StyleSheet.create({
     left: 15
   },
   inscritosAMisOfertas: {
-    borderRadius: Border.br_21xl,
     flex: 1,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH

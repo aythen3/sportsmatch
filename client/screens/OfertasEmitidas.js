@@ -678,10 +678,7 @@ const styles = StyleSheet.create({
     left: 15
   },
   ofertasEmitidas: {
-    borderRadius: Border.br_21xl,
     flex: 1,
-    height: 844,
-    overflow: 'hidden',
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

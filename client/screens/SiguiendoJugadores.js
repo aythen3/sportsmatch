@@ -20,6 +20,7 @@ const SiguiendoJugadores = () => {
             description={publication.description}
             imgPerfil={publication.imgPerfil}
             image={publication.image}
+            club={publication.club}
             likes={publication.likes}
             comments={publication.comments}
             index={i}
@@ -33,7 +34,6 @@ const SiguiendoJugadores = () => {
 const styles = StyleSheet.create({
   siguiendoJugadores: {
     flex: 1,
-    paddingBottom: 100,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

@@ -50,7 +50,6 @@ const TodasLasOfertas = () => {
         <Pressable
           onPress={() => {
             setSelectOfferComponent('todas')
-            //  navigation.navigate('TusMensajes')
           }}
         >
           <View
@@ -79,7 +78,6 @@ const TodasLasOfertas = () => {
         <Pressable
           onPress={() => {
             setSelectOfferComponent('favoritas')
-            //  navigation.navigate('TusMensajes')
           }}
         >
           <View
@@ -107,37 +105,58 @@ const TodasLasOfertas = () => {
         </Pressable>
       </View>
 
-      <View style={{ flexDirection: 'row' }}>
-        <CardInfoOffers text="Sexo" value="Masculino" />
-        <CardInfoOffers text="Categoria" value="Senior" />
-      </View>
-
-      <View style={{ flexDirection: 'row' }}>
-        <CardInfoOffers text="Posicion" value="Pivot" />
-        <CardInfoOffers text="Ubicacion" value="Maresme" />
-      </View>
-
-      <View style={{ flexDirection: 'row' }}>
-        <CardInfoOffers text="Urgencia" value={`6${'0%'}`} />
-        <CardInfoOffers text="Retribucion" value="NO" />
-      </View>
-
       <View
         style={{
-          width: '100%',
-          justifyContent: 'center',
+          marginTop: 20,
+          padding: 10,
+          flex: 1,
           alignItems: 'center',
-          marginTop: 30
+          opacity: 0.7
         }}
       >
-        <Pressable style={[styles.aceptar, styles.aceptarBg]}>
-          <Text
-            onPress={() => setModalVisible(true)}
-            style={[styles.verOferta, styles.verOfertaTypo]}
-          >
-            Inscríbete en la oferta 
-          </Text>
-        </Pressable>
+        <View style={{ flexDirection: 'row', zIndex: 5 }}>
+          <CardInfoOffers text="Sexo" value="Masculino" />
+          <CardInfoOffers text="Categoria" value="Senior" />
+        </View>
+
+        <View style={{ flexDirection: 'row', zIndex: 5 }}>
+          <CardInfoOffers text="Posicion" value="Pivot" />
+          <CardInfoOffers text="Ubicacion" value="Maresme" />
+        </View>
+
+        <View style={{ flexDirection: 'row', zIndex: 5 }}>
+          <CardInfoOffers text="Urgencia" value={`6${'0%'}`} />
+          <CardInfoOffers text="Retribucion" value="NO" />
+        </View>
+
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 30
+          }}
+        >
+          <Pressable style={[styles.aceptar, styles.aceptarBg]}>
+            <Text
+              onPress={() => setModalVisible(true)}
+              style={[styles.verOferta, styles.verOfertaTypo]}
+            >
+              Inscríbete en la oferta 
+            </Text>
+          </Pressable>
+        </View>
+        <Image
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '90%',
+            zIndex: 1,
+            borderRadius: 8,
+            overflow: 'hidden'
+          }}
+          source={require('../assets/group-4891.png')}
+        />
       </View>
 
       <Modal visible={modalVisible} transparent={true} animationType="slide">
@@ -821,7 +840,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: Border.br_81xl,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 5
   },
   targetaContenido: {
     flexDirection: 'row',

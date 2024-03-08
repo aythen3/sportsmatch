@@ -22,24 +22,6 @@ const Steps = () => {
   const [stepsIndex, setstepsIndex] = useState(1)
 
   const hadleIndex = (value) => {
-    // if (isClub === false) {
-    //   navigation.navigate('Paso1')
-    // } else {
-    //   if (value === 'add') {
-    //     if (stepsIndex <= 2) {
-    //       setstepsIndex((prev) => prev + 1)
-    //     } else {
-    //       navigation.navigate('SiguiendoJugadores')
-    //       // navigation.navigate('ExplorarClubs')
-    //     }
-    //   } else {
-    //     if (stepsIndex >= 2) {
-    //       setstepsIndex((prev) => prev - 1)
-    //     } else {
-    //       navigation.goBack()
-    //     }
-    //   }
-    // }
     if (isSportman) {
       navigation.navigate('Paso1')
     } else {
@@ -59,8 +41,6 @@ const Steps = () => {
       }
     }
   }
-
-  console.log('isSportman', isSportman)
 
   const ViewComponent = (index) => {
     switch (index) {
@@ -106,11 +86,13 @@ const Steps = () => {
         <TouchableOpacity
           style={{
             marginVertical: 30,
-            height: 60,
+            // height: 60,
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: Color.wHITESPORTSMATCH,
-            borderRadius: Border.br_81xl
+            borderRadius: Border.br_81xl,
+            paddingHorizontal: Padding.p_81xl,
+            paddingVertical: Padding.p_3xs
           }}
           onPress={() => hadleIndex('add')}
         >
@@ -177,7 +159,8 @@ const styles = StyleSheet.create({
   escogerDeporte: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+    paddingHorizontal: 15
   }
 })
 

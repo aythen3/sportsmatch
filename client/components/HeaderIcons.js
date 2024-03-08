@@ -42,12 +42,13 @@ const HeaderIcons = () => {
             source={require('../assets/group-6583.png')}
           />
         </Pressable>
-
-        <Image
-          style={[styles.groupIcon1, styles.iconGroupLayout]}
-          contentFit="cover"
-          source={require('../assets/group10.png')}
-        />
+        <Pressable onPress={() => navigation.navigate('TusMatchs')}>
+          <Image
+            style={[styles.groupIcon1, styles.iconGroupLayout]}
+            contentFit="cover"
+            source={require('../assets/group10.png')}
+          />
+        </Pressable>
       </View>
     </View>
   )

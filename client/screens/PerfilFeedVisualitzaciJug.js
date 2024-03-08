@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import HeaderPerfil from '../components/HeaderPerfil'
 import CircleSkills from '../components/CircleSkills'
@@ -11,7 +11,11 @@ import ImagesRender from '../components/ImagesRender'
 
 const PerfilFeedVisualitzaciJug = () => {
   const navigation = useNavigation()
+  const router = useRoute()
+  const { club, name, description, image, imgPerfil } = router.params
   const [selectComponents, setSelectComponents] = useState('perfil')
+
+  console.log('es club???', name)
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
@@ -19,10 +23,11 @@ const PerfilFeedVisualitzaciJug = () => {
         <HeaderPerfil
           button1={'Seguir'}
           button2={'Mensaje'}
-          name={'Pupi Zanetti'}
-          description={'Seleccion Argentina'}
+          name={name}
+          description={description}
           setSelectComponents={setSelectComponents}
           selectComponents={selectComponents}
+          club={club}
         />
 
         {selectComponents === 'perfil' && (
