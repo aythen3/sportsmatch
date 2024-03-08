@@ -22,24 +22,6 @@ const Steps = () => {
   const [stepsIndex, setstepsIndex] = useState(1)
 
   const hadleIndex = (value) => {
-    // if (isClub === false) {
-    //   navigation.navigate('Paso1')
-    // } else {
-    //   if (value === 'add') {
-    //     if (stepsIndex <= 2) {
-    //       setstepsIndex((prev) => prev + 1)
-    //     } else {
-    //       navigation.navigate('SiguiendoJugadores')
-    //       // navigation.navigate('ExplorarClubs')
-    //     }
-    //   } else {
-    //     if (stepsIndex >= 2) {
-    //       setstepsIndex((prev) => prev - 1)
-    //     } else {
-    //       navigation.goBack()
-    //     }
-    //   }
-    // }
     if (isSportman) {
       navigation.navigate('Paso1')
     } else {
@@ -59,8 +41,6 @@ const Steps = () => {
       }
     }
   }
-
-  console.log('isSportman', isSportman)
 
   const ViewComponent = (index) => {
     switch (index) {

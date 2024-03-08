@@ -74,7 +74,7 @@ const HeaderPerfil = ({
             <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
           </View>
         ) : (
-          <View
+          <Pressable
             style={{
               flexDirection: 'row',
               backgroundColor: Color.colorDimgray_100,
@@ -85,11 +85,14 @@ const HeaderPerfil = ({
               justifyContent: 'center',
               alignItems: 'center'
             }}
+            onPress={() =>
+              !button1 ? navigation.navigate('EditarPerfil') : ''
+            }
           >
             <Text style={[styles.ojear, styles.timeTypo]}>
               {button1 ? button1 : 'Editar perfil'}
             </Text>
-          </View>
+          </Pressable>
         )}
         {club && !myPerfil ? (
           <View
