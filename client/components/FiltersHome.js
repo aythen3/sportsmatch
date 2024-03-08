@@ -18,7 +18,8 @@ const FiltersHome = ({ modalActive, text }) => {
       style={{
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: 10
       }}
     >
       <View style={[styles.groupContainer, styles.groupContainerSpaceBlock]}>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   groupIcon2: {
-    marginLeft: 20,
+    // marginLeft: 20,
     height: 17,
     width: 22
   }

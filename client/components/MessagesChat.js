@@ -52,7 +52,7 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
             alignItems: 'baseline'
           }}
         >
-          {!read && !confirmation && <Text style={styles.point}>.</Text>}
+          {/* {!read && !confirmation && <Text style={styles.point}>.</Text>} */}
           <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
 
           {confirmation && (
@@ -64,18 +64,18 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: Border.br_81xl,
-                marginRight: 50
+                marginRight: 20
               }}
             >
               <Text style={[styles.match, styles.timeTypo]}>Match</Text>
               <View
                 style={{
-                  width: 45,
-                  height: 45,
+                  width: 40,
+                  height: 40,
                   borderRadius: 50,
                   backgroundColor: Color.bALONCESTO,
                   position: 'absolute',
-                  left: -8,
+                  left: -12,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -103,20 +103,16 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
 
 const styles = StyleSheet.create({
   groupIconLayout: {
-    height: 42,
-    width: 42
+    height: 28,
+    width: 28
   },
   match: {
+    marginLeft: 20,
     color: Color.bALONCESTO,
-    alignSelf: 'flex-end',
-    marginRight: 10,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: '700',
-    lineHeight: 17
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   timeTypo: {
-    fontSize: FontSize.t2TextSTANDARD_size,
-    textAlign: 'center'
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   hasHechoUn: {
     fontWeight: '700',

@@ -91,22 +91,11 @@ const TusMatchs = () => {
 de Mar`}</Text>
         </Pressable>
       </View>
-      {/* 
-      <Modal visible={details} transparent={true} animationType="slide">
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <TusMatchsDetalle onClose={() => setDetails(false)} />
-        </View>
-      </Modal> */}
 
       <Modal visible={details} transparent={true} animationType="slide">
         <View
           style={{
             flex: 1
-            // justifyContent: 'center',
-            // alignItems: 'center'
-            // paddingHorizontal: 20
           }}
         >
           <TusMatchsDetalle onClose={() => setDetails(false)} />

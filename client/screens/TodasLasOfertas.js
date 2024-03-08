@@ -150,7 +150,7 @@ const TodasLasOfertas = () => {
           style={{
             position: 'absolute',
             width: '100%',
-            height: '90%',
+            height: '100%',
             zIndex: 1,
             borderRadius: 8,
             overflow: 'hidden'
