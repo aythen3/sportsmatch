@@ -1,11 +1,20 @@
-import React from 'react'
-import { Text, StyleSheet, Pressable, View, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import {
+  Text,
+  StyleSheet,
+  Pressable,
+  View,
+  TextInput,
+  Modal
+} from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, Border, FontSize, Color, Padding } from '../GlobalStyles'
+import TusMatchsDetalle from './TusMatchsDetalle'
 
 const TusMatchs = () => {
   const navigation = useNavigation()
+  const [details, setDetails] = useState(false)
 
   return (
     <View style={styles.tusMatchs}>
@@ -48,17 +57,19 @@ const TusMatchs = () => {
       </Text>
 
       <View style={styles.targetaClub}>
-        <Pressable
-          style={styles.fondoPastilla}
-          onPress={() => navigation.navigate('TusMatchsDetalle')}
-        >
+        <Pressable style={styles.fondoPastilla}>
           <Image
             style={styles.iconLayout}
             contentFit="cover"
             source={require('../assets/fondo-pastilla.png')}
           />
         </Pressable>
-        <View style={styles.texto}>
+        <Pressable
+          style={styles.texto}
+          onPress={() => {
+            setDetails(true)
+          }}
+        >
           <View style={styles.escudo}>
             <Image
               style={[styles.escudoChild, styles.iconGroupLayout]}
@@ -78,8 +89,29 @@ const TusMatchs = () => {
             style={[styles.clubBasquetLametlla, styles.tusMatchs2Typo]}
           >{`Club Basquet L’ametlla 
 de Mar`}</Text>
-        </View>
+        </Pressable>
       </View>
+      {/* 
+      <Modal visible={details} transparent={true} animationType="slide">
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <TusMatchsDetalle onClose={() => setDetails(false)} />
+        </View>
+      </Modal> */}
+
+      <Modal visible={details} transparent={true} animationType="slide">
+        <View
+          style={{
+            flex: 1
+            // justifyContent: 'center',
+            // alignItems: 'center'
+            // paddingHorizontal: 20
+          }}
+        >
+          <TusMatchsDetalle onClose={() => setDetails(false)} />
+        </View>
+      </Modal>
     </View>
   )
 }

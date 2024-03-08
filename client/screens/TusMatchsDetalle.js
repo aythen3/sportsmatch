@@ -1,528 +1,380 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, View, Text, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Color, FontFamily, FontSize, Padding, Border } from "../GlobalStyles";
+import * as React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, View, Text, Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { Color, FontFamily, FontSize, Padding, Border } from '../GlobalStyles'
 
-const TusMatchsDetalle = () => {
-  const navigation = useNavigation();
+const TusMatchsDetalle = ({ onClose }) => {
+  const navigation = useNavigation()
 
   return (
-    <View style={styles.tusMatchsDetalle}>
+    <Pressable style={styles.tusMatchsDetalle}>
       <Image
         style={[styles.fondoColorIcon, styles.iconGroupLayout]}
         contentFit="cover"
-        source={require("../assets/fondo-color.png")}
+        source={require('../assets/fondo-color.png')}
       />
-      <View style={styles.tusMatchsDetalleChild} />
-      <View style={styles.groupParent}>
-        <View style={styles.matchParent}>
-          <Pressable style={styles.match} onPress={() => navigation.goBack()}>
-            <Text style={[styles.match1, styles.pasTypo]}>Match</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.coolicon, styles.cooliconPosition]}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={[styles.icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/coolicon4.png")}
-            />
-          </Pressable>
+
+      <View style={{ flexDirection: 'row', width: '100%', marginLeft: 20 }}>
+        <View style={styles.avatar}>
+          <Image
+            style={[styles.avatarChild, styles.itemChildPosition]}
+            contentFit="cover"
+            source={require('../assets/ellipse-762.png')}
+          />
+          <Image
+            style={[
+              styles.logoUem21RemovebgPreview1Icon,
+              styles.iconGroupLayout
+            ]}
+            contentFit="cover"
+            source={require('../assets/logo-uem21removebgpreview-13.png')}
+          />
         </View>
-        <View style={styles.textoWrapper}>
-          <View style={styles.texto}>
-            <View>
-              <View style={styles.nombreClub}>
-                <View style={styles.avatar}>
-                  <Image
-                    style={[styles.avatarChild, styles.itemChildPosition]}
-                    contentFit="cover"
-                    source={require("../assets/ellipse-762.png")}
-                  />
-                  <Image
-                    style={[
-                      styles.logoUem21RemovebgPreview1Icon,
-                      styles.iconGroupLayout,
-                    ]}
-                    contentFit="cover"
-                    source={require("../assets/logo-uem21removebgpreview-13.png")}
-                  />
-                </View>
-                <Text
-                  style={[styles.uniEsportvaMatar, styles.pasTypo]}
-                >{`Unió Esportíva 
+        <Text
+          style={[styles.uniEsportvaMatar, styles.pasTypo]}
+        >{`Unió Esportíva 
 Mataró`}</Text>
-              </View>
-              <View style={styles.aoFundacionParent}>
-                <View style={styles.aoFundacion}>
-                  <View style={styles.aoDeFundacinParent}>
-                    <Text style={[styles.aoDeFundacin, styles.aforo1Layout]}>
-                      Año de fundación
-                    </Text>
-                    <Text style={[styles.text, styles.textFlexBox]}>1920</Text>
-                  </View>
-                </View>
-                <View style={styles.aforo}>
-                  <View style={styles.paisItemLayout} />
-                  <View style={styles.aforoParent}>
-                    <Text style={[styles.aforo1, styles.textFlexBox]}>
-                      Aforo
-                    </Text>
-                    <Text style={[styles.text, styles.textFlexBox]}>300</Text>
-                  </View>
-                </View>
-                <View style={styles.aforo}>
-                  <View style={styles.paisItemLayout} />
-                  <View style={styles.frameParent}>
-                    <View>
-                      <Text
-                        style={[styles.nombreDelEstadio, styles.aforo1Layout]}
-                      >
-                        Nombre del estadio o pavellón
-                      </Text>
-                    </View>
-                    <Text
-                      style={[styles.text, styles.textFlexBox]}
-                    >{`Palau Municipals 
+      </View>
+
+      <View style={styles.aoFundacionParent}>
+        <View style={styles.aoFundacion}>
+          <View style={styles.aoDeFundacinParent}>
+            <Text style={[styles.aoDeFundacin, styles.aforo1Layout]}>
+              Año de fundación
+            </Text>
+            <Text style={[styles.text, styles.textFlexBox]}>1920</Text>
+          </View>
+        </View>
+        <View style={styles.aforo}>
+          <View style={styles.paisItemLayout} />
+          <View style={styles.aforoParent}>
+            <Text style={[styles.aforo1, styles.textFlexBox]}>Aforo</Text>
+            <Text style={[styles.text, styles.textFlexBox]}>300</Text>
+          </View>
+        </View>
+        <View style={styles.aforo}>
+          <View style={styles.paisItemLayout} />
+          <View style={styles.frameParent}>
+            <View>
+              <Text style={[styles.nombreDelEstadio, styles.aforo1Layout]}>
+                Nombre del estadio o pavellón
+              </Text>
+            </View>
+            <Text style={[styles.text, styles.textFlexBox]}>{`Palau Municipals 
 d’Esports Josep Mora`}</Text>
-                  </View>
-                </View>
-                <View style={styles.aforo}>
-                  <View style={styles.paisItemLayout} />
-                  <View style={styles.aforoParent}>
-                    <Text style={[styles.poblacin, styles.textFlexBox]}>
-                      Población
-                    </Text>
-                    <Text style={[styles.text, styles.textFlexBox]}>
-                      Mataró
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.aforo}>
-                  <View style={styles.paisItemLayout} />
-                  <View style={styles.pasParent}>
-                    <Text style={[styles.pas, styles.pasTypo]}>País</Text>
-                    <Text style={[styles.espaa, styles.textFlexBox]}>
-                      España
-                    </Text>
-                  </View>
-                  <View style={[styles.paisItem, styles.paisItemLayout]} />
-                </View>
-              </View>
-            </View>
-            <View style={styles.boton}>
-              <Pressable
-                style={[styles.aceptar, styles.aceptarFlexBox]}
-                onPress={() => navigation.navigate("ChatAbierto")}
-              >
-                <Text style={[styles.verOferta, styles.verTypo]}>
-                  Enviar mensaje
-                </Text>
-              </Pressable>
-              <View style={[styles.aceptar1, styles.aceptarFlexBox]}>
-                <Text style={[styles.verOferta1, styles.verTypo]}>
-                  Ver perfil
-                </Text>
-              </View>
-            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.groupChildPosition}>
-        <View style={[styles.groupChild, styles.groupChildPosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderPosition]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require("../assets/cap.png")}
-            />
-            <View style={styles.capacity} />
+        <View style={styles.aforo}>
+          <View style={styles.paisItemLayout} />
+          <View style={styles.aforoParent}>
+            <Text style={[styles.poblacin, styles.textFlexBox]}>Población</Text>
+            <Text style={[styles.text, styles.textFlexBox]}>Mataró</Text>
           </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection1.png")}
-          />
         </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
+        <View style={styles.aforo}>
+          <View style={styles.paisItemLayout} />
+          <View style={styles.pasParent}>
+            <Text style={[styles.pas, styles.pasTypo]}>País</Text>
+            <Text style={[styles.espaa, styles.textFlexBox]}>España</Text>
+          </View>
+          <View style={[styles.paisItem, styles.paisItemLayout]} />
         </View>
+        <Pressable
+          style={[styles.aceptar, styles.aceptarFlexBox]}
+          onPress={() => {
+            onClose()
+            navigation.navigate('ChatAbierto1')
+          }}
+        >
+          <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
+        </Pressable>
       </View>
-      <View style={styles.menuClub}>
-        <Image
-          style={[styles.maskGroupIcon, styles.maskGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/mask-group11.png")}
-        />
-        <Image
-          style={[styles.maskGroupIcon1, styles.iconPosition]}
-          contentFit="cover"
-          source={require("../assets/mask-group11.png")}
-        />
-        <View style={[styles.menuClubChild, styles.itemChildPosition]} />
-        <View style={[styles.menuClubItem, styles.itemChildPosition]} />
-        <View style={[styles.menuClubInner, styles.borderBorder]} />
-        <Image
-          style={[styles.groupIcon, styles.iconGroupLayout]}
-          contentFit="cover"
-          source={require("../assets/group-535.png")}
-        />
-        <Image
-          style={[styles.lineIcon, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-5.png")}
-        />
-        <Image
-          style={[styles.menuClubChild1, styles.lineIconLayout]}
-          contentFit="cover"
-          source={require("../assets/line-5.png")}
-        />
-        <View style={styles.groupContainer}>
-          <Image
-            style={[styles.groupItem, styles.itemChildPosition]}
-            contentFit="cover"
-            source={require("../assets/group-5402.png")}
-          />
-          <Pressable
-            style={styles.wrapper}
-            onPress={() => navigation.navigate("TusMensajes")}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={require("../assets/group-5392.png")}
-            />
-          </Pressable>
-        </View>
-        <Image
-          style={[styles.menuClubChild2, styles.menuClubChild2Layout]}
-          contentFit="cover"
-          source={require("../assets/group-593.png")}
-        />
-        <Image
-          style={[styles.maskGroupIcon2, styles.menuClubChild2Layout]}
-          contentFit="cover"
-          source={require("../assets/mask-group11.png")}
-        />
-        <Image
-          style={[styles.ellipseIcon, styles.iconPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-83.png")}
-        />
-      </View>
-    </View>
-  );
-};
+    </Pressable>
+  )
+}
 
 const styles = StyleSheet.create({
   iconGroupLayout: {
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    maxHeight: '100%',
+    maxWidth: '100%'
   },
   pasTypo: {
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   cooliconPosition: {
-    left: "0%",
-    position: "absolute",
+    left: '0%',
+    position: 'absolute'
   },
   iconLayout: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%'
   },
   itemChildPosition: {
-    bottom: "0%",
-    height: "100%",
-    top: "0%",
+    bottom: '0%',
+    height: '100%',
+    top: '0%'
   },
   aforo1Layout: {
     height: 17,
-    fontSize: FontSize.size_smi_9,
+    fontSize: FontSize.size_smi_9
   },
   textFlexBox: {
-    alignSelf: "stretch",
-    textAlign: "left",
+    alignSelf: 'stretch',
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   paisItemLayout: {
     height: 1,
     width: 331,
     borderTopWidth: 1.1,
     borderColor: Color.wHITESPORTSMATCH,
-    borderStyle: "solid",
+    borderStyle: 'solid'
   },
   aceptarFlexBox: {
     paddingVertical: Padding.p_8xs,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: Border.br_81xl,
     backgroundColor: Color.wHITESPORTSMATCH,
-    justifyContent: "center",
-    flexDirection: "row",
-    position: "absolute",
+    justifyContent: 'center',
+    flexDirection: 'row'
   },
   verTypo: {
     color: Color.bLACK1SPORTSMATCH,
-    fontWeight: "700",
+    fontWeight: '700',
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size,
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   groupChildPosition: {
     height: 34,
     left: 0,
     width: 390,
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   batteryPosition: {
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   borderPosition: {
     top: 0,
-    height: 12,
+    height: 12
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   maskGroupLayout: {
-    width: "8.97%",
-    height: "44.87%",
+    width: '8.97%',
+    height: '44.87%'
   },
   iconPosition: {
-    bottom: "33.33%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
+    bottom: '33.33%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    position: 'absolute',
+    overflow: 'hidden'
   },
   borderBorder: {
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute'
   },
   lineIconLayout: {
     width: 0,
-    bottom: "0%",
-    height: "100%",
-    top: "0%",
-    maxHeight: "100%",
-    position: "absolute",
+    bottom: '0%',
+    height: '100%',
+    top: '0%',
+    maxHeight: '100%',
+    position: 'absolute'
   },
   menuClubChild2Layout: {
-    bottom: "38.46%",
-    top: "16.67%",
-    width: "8.97%",
-    height: "44.87%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
+    bottom: '38.46%',
+    top: '16.67%',
+    width: '8.97%',
+    height: '44.87%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    position: 'absolute',
+    overflow: 'hidden'
   },
   fondoColorIcon: {
-    height: "59.24%",
-    width: "92.05%",
-    top: "15.88%",
-    right: "4.1%",
-    bottom: "24.88%",
-    left: "3.85%",
-    position: "absolute",
+    height: '59.24%',
+    width: '100%',
+    position: 'absolute',
+    borderRadius: 8
   },
   tusMatchsDetalleChild: {
     top: 156,
     left: 31,
-    position: "absolute",
+    position: 'absolute'
   },
   match1: {
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   match: {
-    left: "21.95%",
-    top: "0%",
-    position: "absolute",
+    left: '21.95%',
+    top: '0%',
+    position: 'absolute'
   },
   icon: {
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   coolicon: {
-    top: "18.18%",
-    right: "89.27%",
-    bottom: "13.64%",
-    width: "10.73%",
-    height: "68.18%",
+    top: '18.18%',
+    right: '89.27%',
+    bottom: '13.64%',
+    width: '10.73%',
+    height: '68.18%'
   },
   matchParent: {
     width: 82,
-    height: 22,
+    height: 22
   },
   avatarChild: {
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
-    position: "absolute",
-    width: "100%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    right: '0%',
+    bottom: '0%',
+    left: '0%',
+    position: 'absolute',
+    width: '100%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   logoUem21RemovebgPreview1Icon: {
-    height: "72.44%",
-    width: "77.56%",
-    top: "13.78%",
-    right: "10.67%",
-    bottom: "13.78%",
-    left: "11.78%",
-    position: "absolute",
+    height: '72.44%',
+    width: '77.56%',
+    top: '13.78%',
+    right: '10.67%',
+    bottom: '13.78%',
+    left: '11.78%',
+    position: 'absolute'
   },
   avatar: {
     width: 45,
-    height: 45,
+    height: 45
   },
   uniEsportvaMatar: {
     width: 184,
     height: 39,
     marginLeft: 8,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   nombreClub: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   aoDeFundacin: {
     width: 126,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   text: {
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22,
     fontSize: FontSize.h3TitleMEDIUM_size,
-    flex: 1,
+    flex: 1
   },
   aoDeFundacinParent: {
-    height: 40,
+    height: 40
   },
   aoFundacion: {
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   aforo1: {
     height: 17,
-    fontSize: FontSize.size_smi_9,
+    fontSize: FontSize.size_smi_9
   },
   aforoParent: {
     marginTop: 8,
-    height: 40,
+    height: 40
   },
   aforo: {
-    marginTop: 9,
+    marginTop: 9
   },
   nombreDelEstadio: {
     width: 344,
-    textAlign: "left",
+    textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   frameParent: {
     height: 62,
-    marginTop: 8,
+    marginTop: 8
   },
   poblacin: {
-    fontSize: FontSize.size_smi_9,
+    fontSize: FontSize.size_smi_9
   },
   pas: {
     width: 80,
     fontSize: FontSize.size_smi_9,
-    flex: 1,
+    flex: 1
   },
   espaa: {
     height: 23,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   pasParent: {
     marginTop: 11,
-    height: 40,
+    height: 40
   },
   paisItem: {
-    marginTop: 11,
+    marginTop: 11
   },
   aoFundacionParent: {
     marginTop: 33,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   verOferta: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   aceptar: {
-    marginTop: -13.5,
-    marginLeft: -163.5,
-    paddingHorizontal: 115,
-    left: "50%",
+    marginTop: 20,
     paddingVertical: Padding.p_8xs,
-    alignItems: "center",
-    borderRadius: Border.br_81xl,
-    top: "50%",
+    alignItems: 'center',
+    borderRadius: Border.br_81xl
   },
   verOferta1: {
-    display: "none",
-    textAlign: "center",
+    textAlign: 'center'
   },
-  aceptar1: {
-    width: "105.87%",
-    right: "-88.23%",
-    left: "82.35%",
-    paddingHorizontal: Padding.p_mini,
-    display: "none",
-    bottom: "0%",
-    height: "100%",
-    top: "0%",
-  },
+
   boton: {
-    width: 327,
-    height: 27,
-    marginTop: 46,
+    // width: 327,
+    // height: 27,
+    // marginTop: 46
   },
   texto: {
     top: 22,
     left: 14,
     height: 455,
     zIndex: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   textoWrapper: {
     borderRadius: Border.br_3xs,
     marginTop: 52,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   groupParent: {
     top: 60,
     left: 15,
-    position: "absolute",
+    position: 'absolute'
   },
   groupChild: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    left: 0,
+    left: 0
   },
   border: {
     right: 2,
@@ -532,14 +384,14 @@ const styles = StyleSheet.create({
     width: 22,
     opacity: 0.35,
     height: 12,
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute'
   },
   capIcon: {
     top: 4,
     width: 1,
     height: 4,
-    opacity: 0.4,
+    opacity: 0.4
   },
   capacity: {
     top: 2,
@@ -548,27 +400,27 @@ const styles = StyleSheet.create({
     width: 18,
     height: 7,
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   battery: {
     width: 25,
     height: 12,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group: {
     top: 17,
     right: 15,
     width: 68,
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   time: {
     marginTop: -9.55,
@@ -576,139 +428,139 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t2TextSTANDARD_size,
     letterSpacing: 0,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: FontFamily.openSansSemiBold,
-    textAlign: "center",
-    top: "50%",
+    textAlign: 'center',
+    top: '50%',
     width: 61,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   starus: {
     top: 10,
     height: 24,
-    left: 15,
+    left: 15
   },
   maskGroupIcon: {
-    top: "20.51%",
-    right: "5.38%",
-    bottom: "34.62%",
-    left: "85.64%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
-    position: "absolute",
+    top: '20.51%',
+    right: '5.38%',
+    bottom: '34.62%',
+    left: '85.64%',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden',
+    position: 'absolute'
   },
   maskGroupIcon1: {
-    top: "21.79%",
-    right: "9.74%",
-    left: "81.28%",
-    width: "8.97%",
-    height: "44.87%",
+    top: '21.79%',
+    right: '9.74%',
+    left: '81.28%',
+    width: '8.97%',
+    height: '44.87%'
   },
   menuClubChild: {
     backgroundColor: Color.bLACK2SPORTMATCH,
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
-    position: "absolute",
-    width: "100%",
+    right: '0%',
+    bottom: '0%',
+    left: '0%',
+    position: 'absolute',
+    width: '100%'
   },
   menuClubItem: {
-    width: "19.74%",
-    right: "59.49%",
+    width: '19.74%',
+    right: '59.49%',
     backgroundColor: Color.bLACK3SPORTSMATCH,
-    left: "20.77%",
-    position: "absolute",
+    left: '20.77%',
+    position: 'absolute'
   },
   menuClubInner: {
-    height: "3.85%",
-    width: "20.51%",
-    top: "1.92%",
-    right: "59.1%",
-    bottom: "94.23%",
-    left: "20.38%",
+    height: '3.85%',
+    width: '20.51%',
+    top: '1.92%',
+    right: '59.1%',
+    bottom: '94.23%',
+    left: '20.38%',
     borderColor: Color.bALONCESTO,
-    borderTopWidth: 3,
+    borderTopWidth: 3
   },
   groupIcon: {
-    height: "37.95%",
-    width: "7.69%",
-    top: "14.1%",
-    right: "66.41%",
-    bottom: "47.95%",
-    left: "25.9%",
-    position: "absolute",
+    height: '37.95%',
+    width: '7.69%',
+    top: '14.1%',
+    right: '66.41%',
+    bottom: '47.95%',
+    left: '25.9%',
+    position: 'absolute'
   },
   lineIcon: {
-    left: "20.77%",
+    left: '20.77%'
   },
   menuClubChild1: {
-    left: "40.51%",
+    left: '40.51%'
   },
   groupItem: {
-    width: "11.94%",
-    right: "88.06%",
-    left: "0%",
-    position: "absolute",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    overflow: "hidden",
+    width: '11.94%',
+    right: '88.06%',
+    left: '0%',
+    position: 'absolute',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden'
   },
   wrapper: {
     left: 234,
     top: 3,
     width: 34,
     height: 23,
-    position: "absolute",
+    position: 'absolute'
   },
   groupContainer: {
-    height: "39.23%",
-    width: "68.69%",
-    top: "19.74%",
-    right: "25.41%",
-    bottom: "41.03%",
-    left: "5.9%",
-    position: "absolute",
+    height: '39.23%',
+    width: '68.69%',
+    top: '19.74%',
+    right: '25.41%',
+    bottom: '41.03%',
+    left: '5.9%',
+    position: 'absolute'
   },
   menuClubChild2: {
-    right: "44.87%",
-    left: "46.15%",
+    right: '44.87%',
+    left: '46.15%'
   },
   maskGroupIcon2: {
-    right: "6.15%",
-    left: "84.87%",
+    right: '6.15%',
+    left: '84.87%'
   },
   ellipseIcon: {
-    height: "6.41%",
-    width: "1.28%",
-    top: "60.26%",
-    right: "28.97%",
-    left: "69.74%",
+    height: '6.41%',
+    width: '1.28%',
+    top: '60.26%',
+    right: '28.97%',
+    left: '69.74%'
   },
   menuClub: {
     marginLeft: -195,
     top: 766,
-    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
-      height: -4,
+      height: -4
     },
     shadowRadius: 4,
     elevation: 4,
     shadowOpacity: 1,
     height: 78,
     width: 390,
-    left: "50%",
-    position: "absolute",
+    left: '50%',
+    position: 'absolute'
   },
   tusMatchsDetalle: {
-    borderRadius: Border.br_21xl,
-    height: 844,
-    overflow: "hidden",
-    width: "100%",
+    padding: 20,
+    width: '100%',
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  }
+})
 
-export default TusMatchsDetalle;
+export default TusMatchsDetalle
