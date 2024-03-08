@@ -1,5 +1,5 @@
 const Stack = createNativeStackNavigator()
-import React from 'react'
+import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import LoginSwitch from './screens/LoginSwitch'
@@ -93,7 +93,8 @@ import NavBarInferior from './components/NavBarInferior'
 // import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(true)
+  const [hideSplashScreen, setHideSplashScreen] = useState(true)
+  const [isFooterShow, setIsFooterShow] = useState(null)
 
   const [fontsLoaded, error] = useFonts({
     'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
@@ -110,7 +111,22 @@ const App = () => {
       <Provider store={store}>
         <NavigationContainer>
           {hideSplashScreen ? (
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator
+              screenOptions={({ route }) => ({
+                headerShown: false,
+                footerShown: setIsFooterShow(
+                  route.name !== 'LoginSwitch' &&
+                    route.name !== 'IniciarSesin' &&
+                    route.name !== 'steps' &&
+                    route.name !== 'Registrarse' &&
+                    route.name !== 'Paso1' &&
+                    route.name !== 'Paso3Profesional' &&
+                    route.name !== 'Paso3Jugador' &&
+                    route.name !== 'Paso4Jugador' &&
+                    route.name !== 'Paso4Profesional'
+                )
+              })}
+            >
               <Stack.Screen
                 name="LoginSwitch"
                 component={LoginSwitch}
@@ -528,7 +544,7 @@ const App = () => {
               />
             </Stack.Navigator>
           ) : null}
-          <NavBarInferior />
+          {isFooterShow && <NavBarInferior />}
         </NavigationContainer>
       </Provider>
     </>

@@ -119,15 +119,11 @@ const styles = StyleSheet.create({
     borderColor: Color.gREY2SPORTSMATCH,
     borderStyle: 'solid',
     borderRadius: Border.br_81xl,
-    top: 0,
-    height: 38,
-    width: 360,
-    flexDirection: 'row',
-    left: 0,
-    overflow: 'hidden'
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   campoLayout: {
-    height: 38,
+    // height: 38,
     width: 360
   },
   contraseaClr: {
@@ -247,14 +243,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   nombre: {
-    height: 19,
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t2TextSTANDARD_size
   },
   eMailSpaceBlock: {
-    marginLeft: 10,
-    textAlign: 'left'
+    marginLeft: 10
   }
 })
 

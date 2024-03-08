@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   borderPosition: {
     borderStyle: 'solid',
-    top: -50
+    marginTop: 30
   },
   contnuarTypo: {
     width: 393,
@@ -199,28 +199,31 @@ const styles = StyleSheet.create({
   },
 
   wrapper: {
-    top: '16%'
+    marginTop: 120
+    // height: 180,
+    // top: '12%'
   },
   eresJugadorO: {
     fontSize: FontSize.h1TitleHUGE_size,
-    lineHeight: 40,
     fontWeight: '500',
     textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    bottom: '15%'
+    marginTop: 20
+    // bottom: '15%'
   },
   loginSwitchChild: {
-    width: '200%',
+    width: '100%',
     height: '48%',
-    bottom: '75%',
+    top: '-25%',
+    // bottom: '75%',
     position: 'absolute',
+    left: '45%',
     zIndex: 0
   },
   icon: {
-    height: '34%',
-    // backgroundColor: 'red',
-    width: '52%',
-    left: '4%'
+    height: 40,
+    width: 170,
+    marginLeft: 15
   },
   groupChild: {
     borderColor: Color.gREY2SPORTSMATCH,
@@ -240,8 +243,10 @@ const styles = StyleSheet.create({
   },
   entrenadoraPreparadoraFs: {
     fontSize: FontSize.bodyBodyXS_size,
-    lineHeight: 14,
-    width: 271,
+    // lineHeight: 14,
+    // width: 271,
+    marginTop: 15,
+    paddingHorizontal: 40,
     color: Color.gREY2SPORTSMATCH,
     textAlign: 'center'
   },
@@ -356,12 +361,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#00FF18'
   },
   clubScouting: {
     color: '#999999',
-    fontSize: 14
+    fontSize: 12
   }
 })
 
