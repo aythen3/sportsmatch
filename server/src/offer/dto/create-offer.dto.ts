@@ -36,13 +36,13 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
-  position: string;
+  positionId: string;
 
   @IsString()
   @IsOptional()
-  match: string;
+  matchId?: string;
 
   @IsString()
   @IsOptional()
-  club: string;
+  clubId: string;
 }

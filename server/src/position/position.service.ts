@@ -33,7 +33,15 @@ export class PositionService {
   }
 
   public async findOne(id: string) {
-    return `This action returns a #${id} position`;
+    const position = await this.positionRepository
+      .createQueryBuilder('position')
+      .where({ id })
+      .getOne();
+
+    if (!position) {
+      throw new HttpException(`Position id ${id} not found`, 404);
+    }
+    return position;
   }
 
   public async update(id: string, updatePositionDto: UpdatePositionDto) {
