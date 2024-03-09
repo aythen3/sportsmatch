@@ -42,8 +42,7 @@ Mataró`}</Text>
       <MatchDetailsInfo title="Aforo" value={300} />
       <MatchDetailsInfo
         title="Nombre del estadio o pavellón"
-        value="Palau Municipals 
-d’Esports Josep Mora"
+        value="Palau Municipals d’Esports Josep Mora"
       />
       <MatchDetailsInfo title=" Población" value="Mataró" />
       <MatchDetailsInfo title=" País" value="España" />
