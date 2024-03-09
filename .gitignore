@@ -17,6 +17,8 @@ client/.env
 server/node_modules
 server/.env
 server/dist
+server/uploads
+
 # Yarn Integrity file
 .yarn-integrity
 
