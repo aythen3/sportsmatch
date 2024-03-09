@@ -24,15 +24,12 @@ const LoginSwitch = () => {
     dispatch(setIsSpotMan(isEnabled))
   }
 
-  console.log('Enable?', isEnabled)
-  console.log('isSportman?', isSportman)
-
   return (
     <ScrollView style={styles.loginSwitch}>
       <Image
         style={styles.loginSwitchChild}
         contentFit="cover"
-        source={require('../assets/group-10.png')}
+        source={require('../assets/fondo-inicial.png')}
       />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
@@ -212,12 +209,13 @@ const styles = StyleSheet.create({
     // bottom: '15%'
   },
   loginSwitchChild: {
-    width: '100%',
-    height: '48%',
-    top: '-25%',
+    // backgroundColor: 'red',
+    width: '150%',
+    height: '40%',
+    top: '-20%',
     // bottom: '75%',
     position: 'absolute',
-    left: '45%',
+    left: '-45%',
     zIndex: 0
   },
   icon: {
