@@ -10,6 +10,8 @@ import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 
+import { OfferEntity } from 'src/offer/entities/offer.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -19,7 +21,8 @@ import { UserEntity } from 'src/user/entities/user.entity';
       PositionEntity,
       SkillEntity,
       SportEntity,
-      UserEntity
+      UserEntity,
+      OfferEntity
     ])
   ],
   controllers: [MatchController],
