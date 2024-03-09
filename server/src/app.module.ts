@@ -13,6 +13,7 @@ import { OfferModule } from './offer/offer.module';
 import { SkillModule } from './skill/skill.module';
 import { PositionModule } from './position/position.module';
 import { MatchModule } from './match/match.module';
+import { ImgManagerModule } from './img-manager/img-manager.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { MatchModule } from './match/match.module';
     OfferModule,
     SkillModule,
     PositionModule,
-    MatchModule
+    MatchModule,
+    ImgManagerModule
   ],
   controllers: [],
   providers: []
