@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   contenido: {
     top: 77,
     alignItems: 'center',
-    height: '180%'
+    height: '150%'
   },
   paso6: {
     flex: 1,

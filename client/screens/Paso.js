@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Text, View } from "react-native";
-import { FontFamily, Color, FontSize, Padding, Border } from "../GlobalStyles";
+import * as React from 'react'
+import { Image } from 'expo-image'
+import { StyleSheet, Text, View } from 'react-native'
+import { FontFamily, Color, FontSize, Padding, Border } from '../GlobalStyles'
 
 const Paso = () => {
   return (
@@ -9,7 +9,7 @@ const Paso = () => {
       <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
-        source={require("../assets/imagen-de-fondo.png")}
+        source={require('../assets/imagen-de-fondo.png')}
       />
       <View style={styles.contenido}>
         <View style={styles.headerSteps}>
@@ -17,7 +17,7 @@ const Paso = () => {
             <Image
               style={styles.coolicon}
               contentFit="cover"
-              source={require("../assets/coolicon1.png")}
+              source={require('../assets/coolicon1.png')}
             />
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </View>
@@ -41,7 +41,7 @@ const Paso = () => {
             <Image
               style={[styles.grupoFutbolIcon, styles.grupoLayout]}
               contentFit="cover"
-              source={require("../assets/grupo-futbol.png")}
+              source={require('../assets/grupo-futbol.png')}
             />
             <Text style={[styles.ftbol, styles.ftbolTypo]}>Fútbol</Text>
           </View>
@@ -49,7 +49,7 @@ const Paso = () => {
             <Image
               style={[styles.grupoFutbolIcon, styles.grupoLayout]}
               contentFit="cover"
-              source={require("../assets/grupo-baloncesto.png")}
+              source={require('../assets/grupo-baloncesto.png')}
             />
             <Text style={[styles.baloncesto1, styles.ftbolTypo]}>
               Baloncesto
@@ -59,7 +59,7 @@ const Paso = () => {
             <Image
               style={[styles.grupoFutbolIcon, styles.grupoLayout]}
               contentFit="cover"
-              source={require("../assets/grupo-hockey.png")}
+              source={require('../assets/grupo-hockey.png')}
             />
             <Text style={[styles.hockey1, styles.ftbolTypo]}>Hockey</Text>
           </View>
@@ -67,7 +67,7 @@ const Paso = () => {
             <Image
               style={[styles.grupoFutbolIcon, styles.grupoLayout]}
               contentFit="cover"
-              source={require("../assets/grupo-futbol-sala.png")}
+              source={require('../assets/grupo-futbol-sala.png')}
             />
             <Text style={[styles.baloncesto1, styles.ftbolTypo]}>
               Fútbol sala
@@ -78,18 +78,18 @@ const Paso = () => {
               <Image
                 style={[styles.maskGroupIcon, styles.groupIconLayout]}
                 contentFit="cover"
-                source={require("../assets/mask-group6.png")}
+                source={require('../assets/mask-group6.png')}
               />
               <View style={[styles.group, styles.groupPosition]}>
                 <Image
                   style={[styles.vectorIcon, styles.groupPosition]}
                   contentFit="cover"
-                  source={require("../assets/vector2.png")}
+                  source={require('../assets/vector2.png')}
                 />
                 <Image
                   style={[styles.groupIcon, styles.groupIconLayout]}
                   contentFit="cover"
-                  source={require("../assets/group3.png")}
+                  source={require('../assets/group3.png')}
                 />
               </View>
             </View>
@@ -99,7 +99,7 @@ const Paso = () => {
             <Image
               style={styles.grupoBalonmanoIcon}
               contentFit="cover"
-              source={require("../assets/grupo-balonmano.png")}
+              source={require('../assets/grupo-balonmano.png')}
             />
             <Text style={[styles.balonmano1, styles.ftbolTypo]}>Balonmano</Text>
           </View>
@@ -118,19 +118,19 @@ const Paso = () => {
             <Image
               style={[styles.capIcon, styles.batteryPosition]}
               contentFit="cover"
-              source={require("../assets/cap.png")}
+              source={require('../assets/cap.png')}
             />
             <View style={styles.capacity} />
           </View>
           <Image
             style={styles.wifiIcon}
             contentFit="cover"
-            source={require("../assets/wifi.png")}
+            source={require('../assets/wifi.png')}
           />
           <Image
             style={styles.cellularConnectionIcon}
             contentFit="cover"
-            source={require("../assets/cellular-connection1.png")}
+            source={require('../assets/cellular-connection1.png')}
           />
         </View>
         <View style={[styles.starus, styles.timeLayout]}>
@@ -138,17 +138,17 @@ const Paso = () => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   atrsTypo: {
-    textAlign: "center",
-    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   timeClr: {
     color: Color.wHITESPORTSMATCH,
-    textAlign: "center",
+    textAlign: 'center'
   },
   liniaLayout1: {
     height: 3,
@@ -156,70 +156,70 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     top: -1,
     borderColor: Color.colorDimgray_100,
-    borderStyle: "solid",
-    position: "absolute",
+    borderStyle: 'solid',
+    position: 'absolute'
   },
   liniaLayout: {
     width: 81,
     height: 3,
     borderTopWidth: 3,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     top: -1,
-    position: "absolute",
+    position: 'absolute'
   },
   verticalesSpaceBlock: {
     marginTop: 47,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   grupoLayout: {
     width: 130,
-    flex: 1,
+    flex: 1
   },
   ftbolTypo: {
     marginTop: 7,
     color: Color.wHITESPORTSMATCH,
-    textAlign: "center",
+    textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   voleibolSpaceBlock: {
     marginLeft: 15,
-    height: 155,
+    height: 155
   },
   hockeyLayout: {
     height: 157,
-    marginLeft: 15,
+    marginLeft: 15
   },
   groupIconLayout: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    overflow: "hidden",
+    maxWidth: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden'
   },
   groupPosition: {
-    left: "0%",
-    bottom: "0%",
-    height: "100%",
-    top: "0%",
-    position: "absolute",
+    left: '0%',
+    bottom: '0%',
+    height: '100%',
+    top: '0%',
+    position: 'absolute'
   },
   iphonePosition: {
     height: 34,
     width: 390,
     top: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   batteryPosition: {
     right: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   borderPosition: {
     top: 0,
-    height: 12,
+    height: 12
   },
   timeLayout: {
     width: 61,
-    position: "absolute",
+    position: 'absolute'
   },
   imagenDeFondo: {
     top: -38,
@@ -227,159 +227,159 @@ const styles = StyleSheet.create({
     width: 956,
     height: 956,
     opacity: 0.2,
-    position: "absolute",
+    position: 'absolute'
   },
   coolicon: {
     width: 9,
-    height: 15,
+    height: 15
   },
   atrs: {
     color: Color.gREY2SPORTSMATCH,
     marginLeft: 5,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   botonAtras: {
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   paso2: {
     fontSize: FontSize.t1TextSMALL_size,
     lineHeight: 17,
     color: Color.bALONCESTO,
-    width: 393,
+    width: 393
   },
   escogeTuDeporte: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     fontSize: FontSize.size_9xl,
     lineHeight: 32,
-    fontWeight: "500",
+    fontWeight: '500',
     fontFamily: FontFamily.t4TEXTMICRO,
-    color: Color.wHITESPORTSMATCH,
+    color: Color.wHITESPORTSMATCH
   },
   linia1: {
     left: -1,
-    zIndex: 0,
+    zIndex: 0
   },
   linia2: {
     left: 93,
     zIndex: 1,
     borderColor: Color.colorDimgray_100,
-    width: 81,
+    width: 81
   },
   linia3: {
     left: 187,
     borderColor: Color.bALONCESTO,
-    zIndex: 2,
+    zIndex: 2
   },
   linia44: {
     left: 282,
-    zIndex: 3,
+    zIndex: 3
   },
   linias: {
     padding: Padding.p_3xs,
     marginTop: 20,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   stepseccion: {
     marginTop: 3,
-    alignItems: "center",
+    alignItems: 'center'
   },
   headerSteps: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   grupoFutbolIcon: {
-    maxHeight: "100%",
+    maxHeight: '100%'
   },
   ftbol: {
-    width: 133,
+    width: 133
   },
   futbol: {
-    height: 156,
+    height: 156
   },
   baloncesto1: {
-    width: 137,
+    width: 137
   },
   baloncesto: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   hockey1: {
-    width: 132,
+    width: 132
   },
   futbolSala: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   maskGroupIcon: {
-    height: "98.08%",
-    width: "97.7%",
-    bottom: "1.92%",
-    left: "2.3%",
-    right: "0%",
-    maxWidth: "100%",
-    top: "0%",
-    position: "absolute",
+    height: '98.08%',
+    width: '97.7%',
+    bottom: '1.92%',
+    left: '2.3%',
+    right: '0%',
+    maxWidth: '100%',
+    top: '0%',
+    position: 'absolute'
   },
   vectorIcon: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    overflow: "hidden",
-    right: "0%",
-    width: "100%",
-    left: "0%",
-    bottom: "0%",
-    height: "100%",
+    maxWidth: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden',
+    right: '0%',
+    width: '100%',
+    left: '0%',
+    bottom: '0%',
+    height: '100%'
   },
   groupIcon: {
-    height: "34%",
-    width: "34%",
-    top: "9.23%",
-    right: "56.77%",
-    bottom: "56.77%",
-    left: "9.23%",
-    position: "absolute",
+    height: '34%',
+    width: '34%',
+    top: '9.23%',
+    right: '56.77%',
+    bottom: '56.77%',
+    left: '9.23%',
+    position: 'absolute'
   },
   group: {
-    width: "99.62%",
-    right: "0.38%",
+    width: '99.62%',
+    right: '0.38%'
   },
   grupoBalonmanoIcon: {
     width: 131,
-    maxHeight: "100%",
-    flex: 1,
+    maxHeight: '100%',
+    flex: 1
   },
   balonmano1: {
-    width: 138,
+    width: 138
   },
   verticales: {
     width: 287,
-    flexWrap: "wrap",
+    flexWrap: 'wrap'
   },
   siguiente1: {
     fontSize: FontSize.button_size,
-    fontWeight: "700",
-    color: Color.bLACK1SPORTSMATCH,
+    fontWeight: '700',
+    color: Color.bLACK1SPORTSMATCH
   },
   siguiente: {
     borderRadius: Border.br_81xl,
     width: 360,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   contenido: {
     top: 77,
-    alignItems: "center",
+    alignItems: 'center',
     left: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   uxIphoneChild: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     height: 34,
-    width: 390,
+    width: 390
   },
   border: {
     right: 2,
@@ -389,15 +389,15 @@ const styles = StyleSheet.create({
     width: 22,
     opacity: 0.35,
     height: 12,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     top: 0,
-    position: "absolute",
+    position: 'absolute'
   },
   capIcon: {
     top: 4,
     width: 1,
     height: 4,
-    opacity: 0.4,
+    opacity: 0.4
   },
   capacity: {
     top: 2,
@@ -406,53 +406,53 @@ const styles = StyleSheet.create({
     width: 18,
     height: 7,
     backgroundColor: Color.wHITESPORTSMATCH,
-    position: "absolute",
+    position: 'absolute'
   },
   battery: {
     width: 25,
     height: 12,
-    top: 0,
+    top: 0
   },
   wifiIcon: {
     width: 16,
-    height: 11,
+    height: 11
   },
   cellularConnectionIcon: {
     width: 17,
-    height: 11,
+    height: 11
   },
   group1: {
     top: 17,
     right: 15,
     width: 68,
     height: 12,
-    position: "absolute",
+    position: 'absolute'
   },
   time: {
     marginTop: -9.55,
-    top: "50%",
+    top: '50%',
     left: 4,
     letterSpacing: 0,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: FontFamily.openSansSemiBold,
     color: Color.wHITESPORTSMATCH,
-    textAlign: "center",
-    fontSize: FontSize.t2TextSTANDARD_size,
+    textAlign: 'center',
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   starus: {
     top: 10,
     left: 15,
-    height: 24,
+    height: 24
   },
   paso5: {
     borderRadius: Border.br_21xl,
     height: 844,
-    overflow: "hidden",
-    width: "100%",
+    overflow: 'hidden',
+    width: '100%',
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-  },
-});
+    backgroundColor: Color.bLACK1SPORTSMATCH
+  }
+})
 
-export default Paso;
+export default Paso

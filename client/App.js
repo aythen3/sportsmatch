@@ -88,8 +88,9 @@ import MENUCLUB from './screens/MENUCLUB'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
-import Steps from './screens/Steps'
 import NavBarInferior from './components/NavBarInferior'
+import StepsClub from './screens/StepsClub'
+import StepsJugador from './screens/StepsJugador'
 // import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
@@ -117,7 +118,7 @@ const App = () => {
                 footerShown: setIsFooterShow(
                   route.name !== 'LoginSwitch' &&
                     route.name !== 'IniciarSesin' &&
-                    route.name !== 'steps' &&
+                    route.name !== 'stepsClub' &&
                     route.name !== 'Registrarse' &&
                     route.name !== 'Paso1' &&
                     route.name !== 'Paso3Profesional' &&
@@ -138,8 +139,13 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="steps"
-                component={Steps}
+                name="stepsClub"
+                component={StepsClub}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="stepsJugador"
+                component={StepsJugador}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
