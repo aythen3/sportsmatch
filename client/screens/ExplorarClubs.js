@@ -16,10 +16,16 @@ import HeaderIcons from '../components/HeaderIcons'
 import { imgagesMuro } from '../utils/imagesMuro'
 import FiltersHome from '../components/FiltersHome'
 import ExplorarClubsConFiltroPrem from './ExplorarClubsConFiltroPrem'
+import FiltersSportman from '../components/FiltersSportman'
 
 const ExplorarClubs = () => {
   const navigation = useNavigation()
   const [modalFilters, setModalFilters] = useState(false)
+  const [modalFilterSportman, setModalFilterSportman] = useState(false)
+
+  const onFilterSportman = () => {
+    setModalFilterSportman(true)
+  }
 
   const onFilters = () => {
     setModalFilters(true)
@@ -30,7 +36,10 @@ const ExplorarClubs = () => {
       <ScrollView>
         <HeaderIcons />
 
-        <FiltersHome modalActive={onFilters} />
+        <FiltersHome
+          modalActive={onFilters}
+          modalSportmanActive={onFilterSportman}
+        />
 
         <View style={{ marginTop: 15, flexDirection: 'row', gap: 5 }}>
           <View style={{ flexDirection: 'column', width: '30%', gap: 5 }}>
@@ -84,6 +93,23 @@ const ExplorarClubs = () => {
           <View style={{ flex: 1 }} />
         </TouchableWithoutFeedback>
         <ExplorarClubsConFiltroPrem onClose={() => setModalFilters(false)} />
+      </Modal>
+
+      <Modal
+        visible={modalFilterSportman}
+        transparent={true}
+        animationType="slide"
+      >
+        <View
+          style={{
+            width: 200,
+            position: 'absolute',
+            right: 10,
+            top: 160
+          }}
+        >
+          <FiltersSportman onClose={() => setModalFilterSportman(false)} />
+        </View>
       </Modal>
     </View>
   )

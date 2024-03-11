@@ -13,11 +13,18 @@ import { Color, Border, FontSize, FontFamily, Padding } from '../GlobalStyles'
 import CardInfoOffers from '../components/CardInfoOffers'
 import FiltersHome from '../components/FiltersHome'
 import MonetizarOfertaPRO from './MonetizarOfertaPRO'
+import FiltersSportman from '../components/FiltersSportman'
 
 const TodasLasOfertas = () => {
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
+
+  const [modalFilterSportman, setModalFilterSportman] = useState(false)
+
+  const onFilterSportman = () => {
+    setModalFilterSportman(true)
+  }
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -39,7 +46,7 @@ const TodasLasOfertas = () => {
         </View>
       </View>
 
-      <FiltersHome />
+      <FiltersHome modalSportmanActive={onFilterSportman} />
       <View
         style={{
           flexDirection: 'row',
@@ -134,7 +141,12 @@ const TodasLasOfertas = () => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 30
+            marginTop: 30,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 10,
+            borderWidth: 2,
+            borderColor: Color.bLACK3SPORTSMATCH,
+            height: 90
           }}
         >
           <Pressable style={[styles.aceptar, styles.aceptarBg]}>
@@ -165,12 +177,30 @@ const TodasLasOfertas = () => {
             style={{
               flex: 1,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              paddingHorizontal: 15
             }}
           >
             <MonetizarOfertaPRO onClose={() => setModalVisible(false)} />
           </View>
         </TouchableWithoutFeedback>
+      </Modal>
+
+      <Modal
+        visible={modalFilterSportman}
+        transparent={true}
+        animationType="slide"
+      >
+        <View
+          style={{
+            width: 200,
+            position: 'absolute',
+            right: 10,
+            top: 160
+          }}
+        >
+          <FiltersSportman onClose={() => setModalFilterSportman(false)} />
+        </View>
       </Modal>
 
       {/* <Text style={[styles.misOfertas, styles.ofertasTypo]}>Mis ofertas</Text>

@@ -10,7 +10,18 @@ const muroSlices = createSlice({
         name: 'Club Deportivo Rosario Central',
         description: 'Manu metiendo un incleible tanto ante el dream teams',
         likes: 312,
-        comments: 'Titan, gracias por todo genio',
+        comments: [
+          {
+            id: 1,
+            name: 'Alex Mijares',
+            comment: 'Pedazo de jugada, Crack!'
+          },
+          {
+            id: 2,
+            name: 'Carles Mir',
+            comment: 'Buena jugada, nos vemos en el partido'
+          }
+        ],
         image: require('../../assets/basketball-mira-kireeva-11.png'),
         imgPerfil: require('../../assets/logo-uem21removebgpreview-11.png'),
         club: true
@@ -20,7 +31,18 @@ const muroSlices = createSlice({
         name: 'Edison Cavani',
         description: 'anotando 3 goles ante belgrano, una noche espectacular',
         likes: 486,
-        comments: 'Vamos Uruguayo querido',
+        comments: [
+          {
+            id: 1,
+            name: 'Alex Mijares',
+            comment: 'Pedazo de jugada, Crack!'
+          },
+          {
+            id: 2,
+            name: 'Carles Mir',
+            comment: 'Buena jugada, nos vemos en el partido'
+          }
+        ],
         image: require('../../assets/basketball-unsplash-3-1.png'),
         imgPerfil: require('../../assets/mask-group8.png'),
         club: false
@@ -30,7 +52,18 @@ const muroSlices = createSlice({
         name: 'Maravilla Martinez',
         description: 'Noche de boxeo. Maravilla Martinez derrota a Mike Tison',
         likes: 246,
-        comments: 'Sali de ahi Maravilla!!',
+        comments: [
+          {
+            id: 1,
+            name: 'Alex Mijares',
+            comment: 'Pedazo de jugada, Crack!'
+          },
+          {
+            id: 2,
+            name: 'Carles Mir',
+            comment: 'Buena jugada, nos vemos en el partido'
+          }
+        ],
         image: require('../../assets/basketball-mira-kireeva-11.png'),
         imgPerfil: require('../../assets/logo-uem21removebgpreview-11.png'),
         club: false

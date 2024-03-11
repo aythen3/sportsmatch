@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, FlatList, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import HeaderPerfil from '../components/HeaderPerfil'
 import { Color } from '../GlobalStyles'
@@ -11,20 +11,25 @@ import { useSelector } from 'react-redux'
 import CircleSkills from '../components/CircleSkills'
 import PercentageSkills from '../components/PercentageSkills'
 import CardInfoPerfil from '../components/CardInfoPerfil'
+import { Image } from 'expo-image'
+import MoreDetailsAboutMe from '../components/MoreDetailsAboutMe'
 
 const PerfilDatosPropioClub = () => {
   const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectComponents, setSelectComponents] = useState('perfil')
+
   return (
     <View style={styles.perfilDatosPropioClub}>
       <ScrollView>
         <View>
           <HeaderPerfil
             name={isSportman ? 'Cristian Perez' : 'Club Atletico Boca Juniors'}
+            sport={isSportman ? 'Baloncesto' : ''}
+            position={isSportman ? 'Pivot' : ''}
             description={
               isSportman
-                ? 'Jugando en Barcelona desde 2005'
+                ? 'Jugando Al Unio Esportiva desde 2011'
                 : 'Presidente: Cristian Perez'
             }
             myPerfil={true}
@@ -32,7 +37,7 @@ const PerfilDatosPropioClub = () => {
             selectComponents={selectComponents}
           />
 
-          {selectComponents === 'perfil' && !isSportman && (
+          {selectComponents === 'perfil' && isSportman && (
             <View
               style={{
                 height: '100%',
@@ -40,21 +45,36 @@ const PerfilDatosPropioClub = () => {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 marginTop: 15,
-                gap: 5,
-                justifyContent: 'center'
+                gap: 3,
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
-              <View>
-                <CirclePerfilClub />
-                <PlayingFieldPerfilClub />
-              </View>
               {allImagesMuro.map((image) => (
-                <ImagesRender key={image.id} img={image.img} />
+                <ImagesRender
+                  key={image.id}
+                  img={image.img}
+                  width={115}
+                  height={120}
+                />
               ))}
             </View>
           )}
+          {!isSportman && (
+            <View>
+              <CirclePerfilClub />
+              <PlayingFieldPerfilClub />
+              <MoreDetailsAboutMe
+                title="Descripcion del club"
+                description="Apasionado lider competitivo. Mi carrera en baloncesto refleja
+        dedicacion, habilidades excepcionales y la capacidad de motivar al
+        equipo . Me dedico a ello desde que tengo 6 años y llevo toda la vida en
+        el mismo club, el CF Mataro"
+              />
+            </View>
+          )}
 
-          {selectComponents === 'estadisticas' && (
+          {selectComponents === 'estadisticas' && isSportman && (
             <View>
               <View
                 style={{
@@ -69,9 +89,21 @@ const PerfilDatosPropioClub = () => {
                 <CircleSkills skill="Velocidad" percentage={90} />
               </View>
 
-              <PercentageSkills skill="Bote" percentage={'40%'} />
-              <PercentageSkills skill="Lanzamiento" percentage={'80%'} />
-              <PercentageSkills skill="Dribling" percentage={'40%'} />
+              <PercentageSkills
+                skill="Bote"
+                percentage={'90%'}
+                percentageText={90}
+              />
+              <PercentageSkills
+                skill="Lanzamiento"
+                percentage={'80%'}
+                percentageText={80}
+              />
+              <PercentageSkills
+                skill="Dribling"
+                percentage={'40%'}
+                percentageText={40}
+              />
 
               <View style={{ flexDirection: 'row', paddingHorizontal: 15 }}>
                 <CardInfoPerfil text="Sexo" value="Masculino" />
@@ -86,9 +118,16 @@ const PerfilDatosPropioClub = () => {
                 <CardInfoPerfil text="Altura" value="190cm" />
                 <CardInfoPerfil text="Lugar de residencia" value="Mataro" />
               </View>
+              <MoreDetailsAboutMe
+                title="Mas detalles sobre mi"
+                description="Apasionado lider competitivo. Mi carrera en baloncesto refleja
+        dedicacion, habilidades excepcionales y la capacidad de motivar al
+        equipo . Me dedico a ello desde que tengo 6 años y llevo toda la vida en
+        el mismo club, el CF Mataro"
+              />
             </View>
           )}
-
+          {/* 
           {isSportman ? (
             <View
               style={{
@@ -110,7 +149,7 @@ const PerfilDatosPropioClub = () => {
               <CirclePerfilClub />
               <PlayingFieldPerfilClub />
             </View>
-          )}
+          )} */}
         </View>
       </ScrollView>
     </View>

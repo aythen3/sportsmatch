@@ -33,7 +33,7 @@ const MonetizarOfertaPRO = ({ onClose }) => {
         <Text style={[styles.pro, styles.proTypo]}>PRO</Text>
       </LinearGradient>
 
-      <View>
+      <View style={{ paddingHorizontal: 50 }}>
         <Text
           style={[
             styles.loSentmos,
@@ -567,6 +567,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   loSentmos: {
+    marginTop: 40,
     fontWeight: '700',
     fontFamily: FontFamily.t4TEXTMICRO
   },

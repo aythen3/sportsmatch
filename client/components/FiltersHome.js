@@ -9,8 +9,10 @@ import {
 import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
+import { useSelector } from 'react-redux'
 
-const FiltersHome = ({ modalActive, text }) => {
+const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
+  const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
 
   return (
@@ -34,7 +36,11 @@ const FiltersHome = ({ modalActive, text }) => {
           placeholder={text ? text : 'Posicón de juego, población, club...'}
         />
       </View>
-      <Pressable onPress={modalActive}>
+      <Pressable
+        onPress={() => {
+          isSportman ? modalSportmanActive() : modalActive()
+        }}
+      >
         <Image
           style={styles.groupIcon2}
           contentFit="cover"
