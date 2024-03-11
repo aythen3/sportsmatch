@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
-  Pressable
+  Pressable,
+  ScrollView
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -26,162 +27,170 @@ const OfertasEmitidas = () => {
   const handleImageClick = (event) => {
     const { pageX, pageY } = event.nativeEvent
 
-    setModalPosition({ x: pageX - 130, y: pageY - 60 })
+    setModalPosition({ x: pageX - 160, y: pageY - 60 })
 
     setModalVisible(true)
   }
 
   return (
     <View style={styles.ofertasEmitidas}>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          marginTop: 30,
-          width: '100%',
-          justifyContent: 'center',
-          gap: 10
-        }}
-      >
-        {offers.map((offer, i) => (
-          <View
-            key={offer.id}
-            style={{
-              width: 170,
-              marginTop: 20,
-              backgroundColor: Color.bLACK2SPORTMATCH,
-              borderRadius: 8,
-              padding: 10
-            }}
-          >
+      <ScrollView>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            marginTop: 30,
+            width: '100%',
+            justifyContent: 'center',
+            gap: 10
+          }}
+        >
+          {offers.map((offer, i) => (
             <View
+              key={offer.id}
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                width: 170,
+                marginTop: 20,
+                backgroundColor: Color.bLACK2SPORTMATCH,
+                borderRadius: 8,
+                padding: 10
               }}
             >
-              <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                Oferta {i + 1}
-              </Text>
-              <TouchableOpacity
-                style={{ width: 20 }}
-                onPress={(event) => {
-                  // dispatch(setOffer(offer))
-                  handleImageClick(event)
-                }}
-              >
-                <Image
-                  style={styles.titularChild}
-                  contentFit="cover"
-                  source={require('../assets/frame-957.png')}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginTop: 8 }}>
-              <View>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>
-                  {offer.gender}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  borderWidth: 0.5,
-                  borderColor: Color.colorGhostwhite,
-                  marginVertical: 8
-                }}
-              />
-
-              <View>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoria</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>
-                  {offer.category}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  borderWidth: 0.5,
-                  borderColor: Color.colorGhostwhite,
-                  marginVertical: 8
-                }}
-              />
-
-              <View>
-                <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-                <Text style={[styles.masculino, styles.timeTypo]}>
-                  {offer.position}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  borderWidth: 0.5,
-                  borderColor: Color.colorGhostwhite,
-                  marginVertical: 8
-                }}
-              />
-
               <View
                 style={{
                   flexDirection: 'row',
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
                 }}
               >
+                <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                  Oferta {i + 1}
+                </Text>
+                <TouchableOpacity
+                  onPress={(event) => {
+                    handleImageClick(event)
+                  }}
+                >
+                  <Image
+                    style={styles.titularChild}
+                    contentFit="cover"
+                    source={require('../assets/frame-957.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ marginTop: 8 }}>
                 <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
+                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.urgency}/10
+                    {offer.gender}
                   </Text>
                 </View>
+
+                <View
+                  style={{
+                    borderWidth: 0.5,
+                    borderColor: Color.colorGhostwhite,
+                    marginVertical: 8
+                  }}
+                />
+
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                    Retribucion
+                    Categoria
                   </Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.remuneration}
+                    {offer.category}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    borderWidth: 0.5,
+                    borderColor: Color.colorGhostwhite,
+                    marginVertical: 8
+                  }}
+                />
+
+                <View>
+                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
+                  <Text style={[styles.masculino, styles.timeTypo]}>
+                    {offer.position}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    borderWidth: 0.5,
+                    borderColor: Color.colorGhostwhite,
+                    marginVertical: 8
+                  }}
+                />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <View>
+                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                      Urgencia
+                    </Text>
+                    <Text style={[styles.masculino, styles.timeTypo]}>
+                      {offer.urgency}/10
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                      Retribucion
+                    </Text>
+                    <Text style={[styles.masculino, styles.timeTypo]}>
+                      {offer.remuneration}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.botonPausar}>
+                <View style={[styles.pausar, styles.pausarFlexBox]}>
+                  <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                    Pausar
                   </Text>
                 </View>
               </View>
-            </View>
-            <View style={styles.botonPausar}>
-              <View style={[styles.pausar, styles.pausarFlexBox]}>
-                <Text style={[styles.pausar1, styles.pausar1Typo]}>Pausar</Text>
-              </View>
-            </View>
-            <Pressable
-              style={styles.inscritos}
-              onPress={() => navigation.navigate('InscritosAMisOfertas')}
-            >
-              <Text
-                style={[styles.inscritos1, styles.pausar1Typo]}
-              >{`6 inscritos `}</Text>
-            </Pressable>
-            <Modal visible={modalVisible} transparent={true}>
-              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                <View style={{ flex: 1 }}>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: modalPosition.y,
-                      left: modalPosition.x,
-                      padding: 20,
-                      borderRadius: 8
-                    }}
-                  >
-                    <ModalOptionOffers
-                      offer={offer}
-                      onClose={() => setModalVisible(false)}
-                    />
+              <Pressable
+                style={styles.inscritos}
+                onPress={() => navigation.navigate('InscritosAMisOfertas')}
+              >
+                <Text
+                  style={[styles.inscritos1, styles.pausar1Typo]}
+                >{`6 inscritos `}</Text>
+              </Pressable>
+              <Modal visible={modalVisible} transparent={true}>
+                <TouchableWithoutFeedback
+                  onPress={() => setModalVisible(false)}
+                >
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: modalPosition.y,
+                        left: modalPosition.x,
+                        padding: 20,
+                        borderRadius: 8
+                      }}
+                    >
+                      <ModalOptionOffers
+                        offer={offer}
+                        onClose={() => setModalVisible(false)}
+                      />
+                    </View>
                   </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
-          </View>
-        ))}
-      </View>
+                </TouchableWithoutFeedback>
+              </Modal>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   )
 }

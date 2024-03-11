@@ -46,6 +46,7 @@ const InscritosAMisOfertas = () => {
             name={user.name}
             image={user.image}
             match={user.match}
+            modalPremium={() => setModalPremium(true)}
           />
         ))}
       </View>

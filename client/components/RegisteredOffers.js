@@ -4,7 +4,7 @@ import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { Image } from 'expo-image'
 
-const RegisteredOffers = ({ name, image, match }) => {
+const RegisteredOffers = ({ name, image, match, modalPremium }) => {
   const navigation = useNavigation()
 
   return (
@@ -34,7 +34,9 @@ const RegisteredOffers = ({ name, image, match }) => {
           )}
           <Pressable
             style={[styles.jordiEspeltWrapper, styles.groupFrameSpaceBlock]}
-            onPress={() => navigation.navigate('ChatAbierto1')}
+            onPress={() =>
+              match ? navigation.navigate('ChatAbierto1') : modalPremium()
+            }
           >
             <Text style={[styles.jordiEspelt, styles.carlesMirTypo]}>
               {name}

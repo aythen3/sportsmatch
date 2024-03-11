@@ -37,11 +37,19 @@ const HeaderPerfil = ({
             borderRadius: 50
           }}
         >
-          <Image
-            style={styles.perfilFeedVisualitzaciCluItem}
-            contentFit="cover"
-            source={require('../assets/group-5161.png')}
-          />
+          {isSportman ? (
+            <Image
+              style={styles.perfilFeedVisualitzaciCluItem}
+              contentFit="cover"
+              source={require('../assets/group-5161.png')}
+            />
+          ) : (
+            <Image
+              style={styles.perfilFeedVisualitzaciCluItem}
+              contentFit="cover"
+              source={require('../assets/avatar1.png')}
+            />
+          )}
         </View>
         <View>
           <Text

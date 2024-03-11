@@ -36,6 +36,22 @@ const offersSlices = createSlice({
         position: 'Escolta',
         urgency: '7',
         remuneration: 'NO'
+      },
+      {
+        id: 5,
+        gender: 'Masculino',
+        category: 'Senior',
+        position: 'Lateral izquierdo',
+        urgency: '8',
+        remuneration: 'SI'
+      },
+      {
+        id: 6,
+        gender: 'Masculino',
+        category: 'Senior',
+        position: 'Escolta',
+        urgency: '7',
+        remuneration: 'NO'
       }
     ],
     usersRegistered: [

@@ -78,9 +78,7 @@ más probabilidades tendrás de hacer match!`}</Text>
               El más popular
             </Text>
           </LinearGradient>
-          <View
-            style={{ backgroundColor: '#EBC02A', opacity: 0.6, height: 180 }}
-          >
+          <View style={{ backgroundColor: '#F8E08A', height: 180 }}>
             <View style={styles.perfilesFrame1}>
               <Text style={[styles.gold, styles.textoTypo]}>Gold</Text>
               <Text style={[styles.textTypo]}>30</Text>
