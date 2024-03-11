@@ -16,8 +16,8 @@ const CirclePerfilClub = () => {
     >
       <View
         style={{
-          width: 120,
-          height: 120,
+          width: 110,
+          height: 110,
           borderWidth: 4,
           borderColor: Color.colorDimgray_100,
           borderRadius: 80,
@@ -30,8 +30,8 @@ const CirclePerfilClub = () => {
       </View>
       <View
         style={{
-          width: 130,
-          height: 130,
+          width: 110,
+          height: 110,
           borderWidth: 4,
           borderColor: Color.colorDimgray_100,
           borderRadius: 80,
@@ -44,8 +44,8 @@ const CirclePerfilClub = () => {
       </View>
       <View
         style={{
-          width: 130,
-          height: 130,
+          width: 110,
+          height: 110,
           borderWidth: 4,
           borderColor: Color.colorDimgray_100,
           borderRadius: 80,

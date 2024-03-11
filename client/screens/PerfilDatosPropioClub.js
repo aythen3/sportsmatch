@@ -19,18 +19,20 @@ const PerfilDatosPropioClub = () => {
   const navigation = useNavigation()
   const [selectComponents, setSelectComponents] = useState('perfil')
 
+  console.log('sportmannnnnnnn', isSportman)
+
   return (
     <View style={styles.perfilDatosPropioClub}>
       <ScrollView>
         <View>
           <HeaderPerfil
-            name={isSportman ? 'Cristian Perez' : 'Club Atletico Boca Juniors'}
-            sport={isSportman ? 'Baloncesto' : ''}
+            name={isSportman ? 'Cristian Perez' : 'Unio Espotiva Mataro'}
+            sport={'Baloncesto'}
             position={isSportman ? 'Pivot' : ''}
             description={
               isSportman
                 ? 'Jugando Al Unio Esportiva desde 2011'
-                : 'Presidente: Cristian Perez'
+                : 'Presidente Joan Pi'
             }
             myPerfil={true}
             setSelectComponents={setSelectComponents}
