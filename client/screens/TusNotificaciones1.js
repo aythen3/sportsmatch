@@ -54,7 +54,6 @@ const TusNotificaciones1 = () => {
                 selectedComponent === 'messages'
                   ? styles.notficaciones
                   : styles.mensajes1,
-                ,
                 styles.mensajes1Typo
               ]}
             >
@@ -281,7 +280,11 @@ const styles = StyleSheet.create({
 
   notficaciones: {
     color: Color.bALONCESTO,
-    textAlign: 'center'
+    textAlign: 'center',
+    borderBottomWidth: 2,
+    borderColor: Color.bALONCESTO,
+    paddingBottom: 5,
+    width: 120
   },
   hasHechoUn: {
     fontWeight: '700',

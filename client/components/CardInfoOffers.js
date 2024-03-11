@@ -48,23 +48,27 @@ const CardInfoOffers = ({ text, value }) => {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    marginTop: 30,
-    height: 100,
-    backgroundColor: Color.colorDimgray_100,
+    marginTop: 10,
+    height: 110,
+    backgroundColor: Color.bLACK3SPORTSMATCH,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
     marginRight: 5,
     borderRadius: 5,
-    paddingHorizontal: 20
+    paddingHorizontal: 5
   },
   text: {
-    color: Color.gREY2SPORTSMATCH
+    color: Color.colorWhitesmoke,
+    alignSelf: 'flex-start',
+    alignItems: 'flex-start',
+    top: -15
   },
   taxto1Clr: {
     color: Color.colorWhitesmoke,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 22,
+    alignSelf: 'center',
     fontWeight: '700'
   }
 })

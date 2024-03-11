@@ -16,7 +16,7 @@ import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
 
-const Steps = () => {
+const StepsClub = () => {
   const navigation = useNavigation()
   const { isSportman } = useSelector((state) => state.users)
   const [stepsIndex, setstepsIndex] = useState(1)
@@ -81,7 +81,7 @@ const Steps = () => {
         </View>
         <Lines index={stepsIndex} />
 
-        {ViewComponent(stepsIndex)}
+        {ViewComponent(stepsIndex, isSportman)}
 
         <TouchableOpacity
           style={{
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Steps
+export default StepsClub

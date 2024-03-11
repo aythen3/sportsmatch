@@ -15,7 +15,7 @@ const Notifications = ({ text, send, read, match }) => {
   const [isMatch, setIsMatch] = useState(false)
   return (
     <Pressable
-      style={{ marginTop: 30 }}
+      style={{ marginTop: 20 }}
       onPress={() => (match ? setIsMatch(true) : '')}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
@@ -40,51 +40,11 @@ const Notifications = ({ text, send, read, match }) => {
         </View>
         <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
       </View>
-      {/* <View
-        style={{
-          // marginTop: 20,
-          flexDirection: 'row',
-          // justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 5
-        }}
-      >
-        <Image
-          style={[styles.groupIconLayout]}
-          contentFit="cover"
-          source={require('../assets/avatar.png')}
-        />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {!read && (
-            <Text
-              style={{
-                color: Color.bALONCESTO,
-                fontSize: 40,
-                top: -40
-              }}
-            >
-              .
-            </Text>
-          )}
-          <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{text}</Text>
-        </View>
-        <View
-          style={
-            {
-              // width: '20%',
-              // justifyContent: 'center'
-              // alignItems: 'center'
-            }
-          }
-        >
-          <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
-        </View>
-      </View>
       <View
         style={{
-          borderWidth: 0.5,
-          borderColor: Color.colorDimgray_100,
-          marginVertical: 15
+          borderWidth: 1.3,
+          borderColor: Color.bLACK3SPORTSMATCH,
+          marginVertical: 10
         }}
       />
       <Modal visible={isMatch} transparent={true} animationType="slide">
@@ -93,19 +53,8 @@ const Notifications = ({ text, send, read, match }) => {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingHorizontal: 20
-          }}
-        >
-          <NotificacinMatch onClose={() => setIsMatch(false)} />
-        </View>
-      </Modal> */}
-      <Modal visible={isMatch} transparent={true} animationType="slide">
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: 20
+            paddingHorizontal: 20,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)'
           }}
         >
           <NotificacinMatch onClose={() => setIsMatch(false)} />

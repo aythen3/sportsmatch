@@ -6,8 +6,8 @@ const CircleSkills = ({ percentage, skill }) => {
   return (
     <View
       style={{
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
         borderWidth: 4,
         borderColor: Color.colorDimgray_100,
         borderRadius: 80,

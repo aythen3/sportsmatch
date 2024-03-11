@@ -21,7 +21,7 @@ const Registrarse = () => {
     setChecked(!isChecked)
   }
   return (
-    <ScrollView style={styles.registrarse}>
+    <View style={styles.registrarse}>
       <Image
         style={styles.fondoIcon}
         contentFit="cover"
@@ -134,7 +134,7 @@ const Registrarse = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -326,18 +326,24 @@ const styles = StyleSheet.create({
   },
   contenido: {
     top: '25%',
-    height: '130%'
+    height: '100%'
   },
   fondoIcon: {
+    // width: '160%',
+    // height: '70%',
+    // bottom: '60%',
+    // right: '0%',
+    // position: 'absolute',
+    // zIndex: 0
     width: '160%',
-    height: '70%',
-    bottom: '60%',
-    right: '0%',
+    height: '50%',
+    bottom: '70%',
+    right: '-5%',
     position: 'absolute',
     zIndex: 0
   },
   registrarse: {
-    height: 844,
+    // height: 844,
     overflow: 'hidden',
     width: '100%',
     flex: 1,

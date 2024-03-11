@@ -36,13 +36,7 @@ const Paso4Profesional = () => {
                 Unos detalles sobre ti
               </Text>
             </View>
-            {/* <View style={styles.linias}>
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout2} />
-            </View> */}
-            <Lines index={3} />
+            <Lines index={4} />
           </View>
         </View>
 
@@ -114,8 +108,8 @@ const styles = StyleSheet.create({
   },
   imagenDeFondo: {
     position: 'absolute',
-    height: '110%',
-    width: '100%',
+    height: '100%',
+    width: '110%',
     zIndex: 0
   },
   coolicon: {
@@ -169,7 +163,8 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    top: '4%'
+    top: '4%',
+    width: '90%'
   },
   siguiente1: {
     fontWeight: '700',
@@ -182,7 +177,7 @@ const styles = StyleSheet.create({
     top: 77,
     alignItems: 'center',
     left: 0,
-    height: '120%'
+    height: '100%'
   },
   paso6: {
     flex: 1,

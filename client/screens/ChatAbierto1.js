@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Padding, Border } from '../GlobalStyles'
 import Chat from '../components/Chat'
 import { useSelector } from 'react-redux'
+import ThreePointsSVG from '../components/svg/ThreePointsSVG'
 
 const ChatAbierto1 = () => {
   const { message } = useSelector((state) => state.notifications)
@@ -14,32 +15,39 @@ const ChatAbierto1 = () => {
     <View style={styles.chatAbierto}>
       <View
         style={{
-          marginTop: 50,
+          marginTop: 20,
           flexDirection: 'row',
           width: '100%',
           alignItems: 'center',
-          marginLeft: 15
+          justifyContent: 'space-between',
+          paddingHorizontal: 15
         }}
       >
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            style={{ width: 9, height: 18, marginRight: 10 }}
-            contentFit="cover"
-            source={require('../assets/coolicon4.png')}
-          />
-        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              style={{ width: 9, height: 18, marginRight: 10 }}
+              contentFit="cover"
+              source={require('../assets/coolicon4.png')}
+            />
+          </Pressable>
 
-        <Image
-          style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
-          contentFit="cover"
-          source={require('../assets/imagen6.png')}
-        />
-        <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
-          Unió Esportíva Mataró
-        </Text>
+          <Image
+            style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
+            contentFit="cover"
+            source={require('../assets/imagen6.png')}
+          />
+          <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
+            Unió Esportíva Mataró
+          </Text>
+        </View>
+
+        <View>
+          <ThreePointsSVG />
+        </View>
       </View>
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 15 }}>
         {message?.map((chat) => (
           <Chat
             key={chat.id}
@@ -436,7 +444,6 @@ const styles = StyleSheet.create({
   },
   chatAbierto: {
     flex: 1,
-    height: 844,
     overflow: 'hidden',
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH

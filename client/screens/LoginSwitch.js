@@ -5,9 +5,10 @@ import {
   Pressable,
   Text,
   View,
-  ScrollView,
-  Switch
+  ScrollView
+  // Switch
 } from 'react-native'
+import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +24,8 @@ const LoginSwitch = () => {
     setIsEnabled((previousState) => !previousState)
     dispatch(setIsSpotMan(isEnabled))
   }
+
+  console.log('enabled', isEnabled)
 
   return (
     <ScrollView style={styles.loginSwitch}>
@@ -48,19 +51,38 @@ const LoginSwitch = () => {
           <View>
             <View>
               <View style={[styles.groupChild, styles.borderPosition]}>
-                <Text style={styles.jugador}>
+                <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
                   Jugador / Profesional deporte*
                 </Text>
 
                 <Switch
-                  trackColor={{ false: '#00FF18', true: '#00FF18' }}
-                  thumbColor={isEnabled ? 'black' : 'black'}
-                  ios_backgroundColor="#00FF18"
+                  // trackColor={{ false: '#00FF18', true: '#00FF18' }}
+                  // thumbColor={isEnabled ? 'black' : 'black'}
+                  // ios_backgroundColor="#00FF18"
+                  // onValueChange={toggleSwitch}
+                  // value={isEnabled}
+                  circleSize={16}
                   onValueChange={toggleSwitch}
                   value={isEnabled}
+                  backgroundActive={'#00FF18'}
+                  backgroundInactive={'#00FF18'}
+                  activeText={false}
+                  inActiveText={false}
+                  // circleBorderWidth={3}
+                  circleActiveColor={'black'}
+                  circleInActiveColor={'black'}
+                  barHeight={18}
+                  switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                  switchRightPx={5}
                 />
 
-                <Text style={styles.clubScouting}>Club / Scouting</Text>
+                <Text
+                  style={
+                    !isEnabled ? styles.clubScouting : styles.clubScouting2
+                  }
+                >
+                  Club / Scouting
+                </Text>
               </View>
             </View>
           </View>
@@ -360,11 +382,23 @@ const styles = StyleSheet.create({
   },
   jugador: {
     fontSize: 12,
-    color: '#00FF18'
+    color: '#00FF18',
+    marginRight: 5
+  },
+  jugador2: {
+    fontSize: 12,
+    color: '#999999',
+    marginRight: 5
   },
   clubScouting: {
     color: '#999999',
-    fontSize: 12
+    fontSize: 12,
+    marginLeft: 5
+  },
+  clubScouting2: {
+    color: '#00FF18',
+    fontSize: 12,
+    marginLeft: 5
   }
 })
 

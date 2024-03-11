@@ -87,7 +87,8 @@ const TusMatchs = () => {
           </View>
           <Text
             style={[styles.clubBasquetLametlla, styles.tusMatchs2Typo]}
-          >{`Club Basquet L’ametlla 
+          >{`Club Basquet 
+L’ametlla 
 de Mar`}</Text>
         </Pressable>
       </View>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   tusMatchs2Typo: {
-    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontSize: 16,
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontWeight: '500'

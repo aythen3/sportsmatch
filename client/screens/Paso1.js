@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { FontFamily, Color, FontSize, Padding, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
+import Lines from '../components/Lines'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -29,7 +30,7 @@ const Paso1 = () => {
   }
 
   return (
-    <ScrollView style={styles.paso6}>
+    <View style={styles.paso6}>
       <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
@@ -50,17 +51,12 @@ const Paso1 = () => {
           </Pressable>
           <View style={styles.stepseccion}>
             <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 1</Text>
+              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 2</Text>
               <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
                 Escoge tu rol
               </Text>
             </View>
-            <View style={styles.linias}>
-              <View style={styles.liniaLayout2} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-              <View style={styles.liniaLayout1} />
-            </View>
+            <Lines index={2} />
           </View>
         </View>
         <View style={styles.botonesRoles}>
@@ -120,7 +116,7 @@ const Paso1 = () => {
           </Pressable>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -167,7 +163,7 @@ const styles = StyleSheet.create({
   imagenDeFondo: {
     position: 'absolute',
     height: '100%',
-    width: '100%',
+    width: '110%',
     zIndex: 0
   },
   coolicon: {
@@ -265,9 +261,10 @@ const styles = StyleSheet.create({
   },
   paso6: {
     flex: 1,
-    height: 844,
-    overflow: 'hidden',
-    width: '100%',
+    paddingHorizontal: 15,
+    // height: 844,
+    // overflow: 'hidden',
+    // width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   selectedBackground: {

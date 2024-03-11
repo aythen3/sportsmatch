@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
@@ -8,6 +8,12 @@ import { useNavigation } from '@react-navigation/core'
 
 const CrearHighlight = () => {
   const navigation = useNavigation()
+  const [options, setOptions] = useState('Recientes')
+  const [showOptions, setShowOptions] = useState(false)
+
+  const handleOptions = (value) => {
+    setOptions(value)
+  }
 
   return (
     <View style={styles.crearHighlight}>
@@ -19,7 +25,7 @@ const CrearHighlight = () => {
       /> */}
         <View
           style={{
-            marginTop: 50,
+            marginTop: 20,
             paddingHorizontal: 15,
             justifyContent: 'space-between',
             flexDirection: 'row'
@@ -56,15 +62,71 @@ const CrearHighlight = () => {
               alignItems: 'center'
             }}
           >
-            <Text style={[styles.recientes, styles.siguientePosition]}>
-              Recientes
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 5
+              }}
+            >
+              <Text
+                style={[styles.recientes, styles.siguientePosition]}
+                onPress={() => setShowOptions(!showOptions)}
+              >
+                {options}
+              </Text>
+
+              <Image
+                style={[styles.coolicon, styles.cooliconLayout]}
+                contentFit="cover"
+                source={require('../assets/coolicon6.png')}
+              />
+            </View>
+
             <Image
               style={styles.groupIcon}
               contentFit="cover"
               source={require('../assets/group-621.png')}
             />
           </View>
+          {showOptions && (
+            <View>
+              {options !== 'Recientes' && (
+                <Text
+                  style={[styles.recientes, styles.siguientePosition]}
+                  onPress={() => {
+                    setShowOptions(false)
+                    handleOptions('Recientes')
+                  }}
+                >
+                  Recientes
+                </Text>
+              )}
+              {options !== 'Camara' && (
+                <Text
+                  style={[styles.recientes, styles.siguientePosition]}
+                  onPress={() => {
+                    setShowOptions(false)
+                    handleOptions('Camara')
+                  }}
+                >
+                  Camara
+                </Text>
+              )}
+              {options !== 'Galeria' && (
+                <Text
+                  style={[styles.recientes, styles.siguientePosition]}
+                  onPress={() => {
+                    setShowOptions(false)
+                    handleOptions('Galeria')
+                  }}
+                >
+                  Galeria
+                </Text>
+              )}
+            </View>
+          )}
 
           <View
             style={{
@@ -78,7 +140,12 @@ const CrearHighlight = () => {
             }}
           >
             {allImagesMuro.map((image) => (
-              <ImagesRender key={image.id} img={image.img} />
+              <ImagesRender
+                key={image.id}
+                img={image.img}
+                width={90}
+                height={90}
+              />
             ))}
           </View>
           {/* <Image
@@ -345,15 +412,8 @@ const styles = StyleSheet.create({
   },
 
   coolicon: {
-    height: '34.12%',
-    width: '12.99%',
-    top: '35.29%',
-    right: '0%',
-    bottom: '30.59%',
-    left: '87.01%',
-    maxWidth: '100%',
-    maxHeight: '100%',
-    overflow: 'hidden'
+    height: 15,
+    width: 9
   },
   groupParent: {
     width: '19.74%',

@@ -13,7 +13,9 @@ const HeaderPerfil = ({
   setSelectComponents,
   selectComponents,
   club,
-  myPerfil
+  myPerfil,
+  position,
+  sport
 }) => {
   const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
@@ -41,16 +43,36 @@ const HeaderPerfil = ({
             source={require('../assets/group-5161.png')}
           />
         </View>
-        <Pressable onPress={() => navigation.goBack()}>
+        <View>
           <Text
             style={[styles.jordiEspeltPvotBaloncesto, styles.jugandoAlUniTypo]}
           >
             {name}
           </Text>
-          <Text style={[styles.jugandoAlUni, styles.seguidoresLayout]}>
+          {position && (
+            <Text
+              style={[
+                styles.jordiEspeltPvotBaloncesto,
+                styles.jugandoAlUniTypo
+              ]}
+            >
+              {position}
+            </Text>
+          )}
+          {sport && (
+            <Text
+              style={[
+                styles.jordiEspeltPvotBaloncesto,
+                styles.jugandoAlUniTypo
+              ]}
+            >
+              {sport}
+            </Text>
+          )}
+          <Text style={[styles.description, styles.seguidoresLayout]}>
             {description}
           </Text>
-        </Pressable>
+        </View>
       </View>
 
       <View style={styles.groupContainer}>
@@ -198,46 +220,50 @@ const HeaderPerfil = ({
           marginTop: 15
         }}
       >
-        <Pressable onPress={() => setSelectComponents('perfil')}>
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderColor:
-                selectComponents === 'perfil'
-                  ? Color.colorWhitesmoke
-                  : 'transparent',
-              width: 100,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Image
-              style={{ marginBottom: 10 }}
-              contentFit="cover"
-              source={require('../assets/cuadrado-icon.png')}
-            />
-          </View>
-        </Pressable>
-        <Pressable onPress={() => setSelectComponents('estadisticas')}>
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderColor:
-                selectComponents === 'estadisticas'
-                  ? Color.colorWhitesmoke
-                  : 'transparent',
-              width: 100,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Image
-              style={{ width: 30, height: 18, marginBottom: 10 }}
-              contentFit="cover"
-              source={require('../assets/vector-8.png')}
-            />
-          </View>
-        </Pressable>
+        {isSportman && (
+          <Pressable onPress={() => setSelectComponents('perfil')}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor:
+                  selectComponents === 'perfil'
+                    ? Color.colorWhitesmoke
+                    : 'transparent',
+                width: 100,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ marginBottom: 10 }}
+                contentFit="cover"
+                source={require('../assets/cuadrado-icon.png')}
+              />
+            </View>
+          </Pressable>
+        )}
+        {isSportman && (
+          <Pressable onPress={() => setSelectComponents('estadisticas')}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor:
+                  selectComponents === 'estadisticas'
+                    ? Color.colorWhitesmoke
+                    : 'transparent',
+                width: 100,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ width: 30, height: 18, marginBottom: 10 }}
+                contentFit="cover"
+                source={require('../assets/vector-8.png')}
+              />
+            </View>
+          </Pressable>
+        )}
       </View>
     </View>
   )
@@ -297,6 +323,12 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     marginTop: 3
+  },
+  description: {
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    marginTop: 3,
+    width: '80%'
   },
   seguidoresLayout: {
     lineHeight: 14,

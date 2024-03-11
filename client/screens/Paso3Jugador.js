@@ -150,10 +150,11 @@ const styles = StyleSheet.create({
     top: 77,
     alignItems: 'center',
     left: 0,
-    height: '150%'
+    height: '110%'
   },
   paso6: {
     flex: 1,
+    paddingHorizontal: 15,
     overflow: 'hidden',
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH

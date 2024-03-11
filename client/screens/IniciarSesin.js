@@ -77,7 +77,9 @@ const IniciarSesin = () => {
 
               <Pressable
                 style={styles.botonIniciaSesin2}
-                onPress={() => navigation.navigate('steps')}
+                onPress={() => {
+                  navigation.navigate('stepsClub')
+                }}
               >
                 <Text style={styles.aceptar}>Inicia sesión</Text>
               </Pressable>

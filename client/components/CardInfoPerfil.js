@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     height: 100,
-    backgroundColor: Color.colorDimgray_100,
+    backgroundColor: Color.bLACK3SPORTSMATCH,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
