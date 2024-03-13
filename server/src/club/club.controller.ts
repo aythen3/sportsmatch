@@ -5,15 +5,22 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  UseInterceptors,
+  UploadedFiles
 } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ImgManagerService } from '../img-manager/img-manager.service';
 
 @Controller('club')
 export class ClubController {
-  constructor(private readonly clubService: ClubService) {}
+  constructor(
+    private readonly clubService: ClubService,
+    private readonly imgManagerService: ImgManagerService
+  ) {}
 
   @Post()
   create(@Body() createClubDto: CreateClubDto) {
@@ -23,6 +30,32 @@ export class ClubController {
   @Get()
   findAll() {
     return this.clubService.findAll();
+  }
+
+  @Patch('/img/:id')
+  @UseInterceptors(FilesInterceptor('files', 2))
+  public async updateImg(
+    @Param('id') id: string,
+    @UploadedFiles() files: any[]
+  ) {
+    if (!files || files.length !== 2) {
+      throw new Error('Debes proporcionar dos archivos.');
+    }
+
+    const [file1, file2] = files;
+    const image_url1 = await this.imgManagerService.imgUpload(file1);
+    const image_url2 = await this.imgManagerService.imgUpload(file2);
+
+    const club = await this.clubService.findOne(id);
+    const newClub = {
+      ...club,
+      img_perfil: image_url1,
+      img_front: image_url2
+    };
+
+    await this.clubService.update(id, newClub);
+
+    return newClub;
   }
 
   @Get(':id')

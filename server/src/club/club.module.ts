@@ -8,6 +8,7 @@ import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ClubEntity } from './entities/club.entity';
 import { UserService } from 'src/user/user.service';
+import { ImgManagerService } from 'src/img-manager/img-manager.service';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { UserService } from 'src/user/user.service';
   ],
   exports: [],
   controllers: [ClubController],
-  providers: [ClubService, UserService]
+  providers: [ClubService, UserService, ImgManagerService]
 })
 export class ClubModule {}

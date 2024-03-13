@@ -10,6 +10,7 @@ import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { ImgManagerService } from 'src/img-manager/img-manager.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { UserEntity } from 'src/user/entities/user.entity';
   ],
   exports: [],
   controllers: [SportmanController],
-  providers: [SportmanService, UserService]
+  providers: [SportmanService, UserService, ImgManagerService]
 })
 export class SportmanModule {}

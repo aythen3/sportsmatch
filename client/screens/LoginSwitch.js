@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsSpotMan } from '../redux/slices/users.slices'
+import { getAll } from '../redux/actions/sports'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -20,12 +21,14 @@ const LoginSwitch = () => {
   const { isSportman } = useSelector((state) => state.users)
   const [isEnabled, setIsEnabled] = useState(false)
 
+  useEffect(() => {
+    dispatch(getAll())
+  }, [])
+
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState)
     dispatch(setIsSpotMan(isEnabled))
   }
-
-  console.log('enabled', isEnabled)
 
   return (
     <ScrollView style={styles.loginSwitch}>
