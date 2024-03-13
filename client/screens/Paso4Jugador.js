@@ -11,13 +11,13 @@ const Paso4Jugador = () => {
 
   return (
     <ScrollView style={styles.paso6}>
-      <Image
+      {/* <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
         source={require('../assets/imagen-de-fondo1.png')}
-      />
-      <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
+      /> */}
+      <View>
+        {/* <View style={styles.headerSteps}>
           <Pressable
             style={styles.botonAtras}
             onPress={() => navigation.goBack()}
@@ -38,7 +38,7 @@ const Paso4Jugador = () => {
             </View>
             <Lines index={4} />
           </View>
-        </View>
+        </View> */}
 
         <View>
           <View style={styles.headersubirImagenesPerfil}>
@@ -72,12 +72,12 @@ const Paso4Jugador = () => {
 
         <DetallesSeleccion />
 
-        <Pressable
+        {/* <Pressable
           style={styles.siguiente}
           onPress={() => navigation.navigate('SiguiendoJugadores')}
         >
           <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </ScrollView>
   )
@@ -184,8 +184,8 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     width: '100%',
-    paddingHorizontal: 15,
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    paddingHorizontal: 15
+    // backgroundColor: Color.bLACK1SPORTSMATCH
   },
   headersubirImagenesPerfil: {
     alignItems: 'center',

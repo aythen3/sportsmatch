@@ -11,11 +11,19 @@ import {
 import { FontFamily, Color, FontSize, Padding, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
 import Lines from '../components/Lines'
+import Paso3Profesional from './Paso3Profesional'
+import Paso3Jugador from './Paso3Jugador'
+import Paso4Jugador from './Paso4Jugador'
+import Paso4Profesional from './Paso4Profesional'
 
 const Paso1 = () => {
   const navigation = useNavigation()
 
   const [selectedRole, setSelectedRole] = useState(null)
+  const [sportman, setSportman] = useState(false)
+  const [stepsSportman, setStepsSportman] = useState(0)
+  const [profesional, setProfesional] = useState(false)
+  const [stepsProfesional, setStepsProfesional] = useState(0)
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role)
@@ -23,9 +31,31 @@ const Paso1 = () => {
 
   const handleNext = () => {
     if (selectedRole === 'Profesional del deporte') {
-      navigation.navigate('Paso3Profesional')
+      // navigation.navigate('Paso3Profesional')
+      setProfesional(true)
+      setSportman(false)
     } else {
-      navigation.navigate('Paso3Jugador', { role: selectedRole })
+      // navigation.navigate('Paso3Jugador', { role: selectedRole })
+      setProfesional(false)
+      setSportman(true)
+    }
+  }
+
+  const handleNavigation = () => {
+    if (sportman) {
+      setStepsSportman((prev) => prev + 1)
+
+      if (stepsSportman === 1) {
+        setStepsSportman(0)
+        navigation.navigate('SiguiendoJugadores')
+      }
+    } else {
+      setStepsProfesional((prev) => prev + 1)
+
+      if (stepsProfesional === 1) {
+        setStepsProfesional(0)
+        navigation.navigate('SiguiendoJugadores')
+      }
     }
   }
 
@@ -37,7 +67,7 @@ const Paso1 = () => {
         source={require('../assets/imagen-de-fondo3.png')}
       />
       <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
+        <View>
           <Pressable
             style={styles.botonAtras}
             onPress={() => navigation.goBack()}
@@ -56,65 +86,105 @@ const Paso1 = () => {
                 Escoge tu rol
               </Text>
             </View>
-            <Lines index={2} />
+            <Lines
+              index={
+                !sportman && !profesional
+                  ? 2
+                  : (sportman && stepsSportman === 0) ||
+                      (profesional && stepsProfesional === 0)
+                    ? 3
+                    : stepsProfesional === 1 || stepsSportman
+                      ? 4
+                      : ''
+              }
+            />
           </View>
         </View>
-        <View style={styles.botonesRoles}>
-          <View style={styles.botonLayout1}>
-            <TouchableOpacity
-              style={[
-                styles.rectangulo,
-                selectedRole === 'Jugador' && styles.selectedBackground
-              ]}
-              onPress={() => handleRoleSelection('Jugador')}
-            >
-              <Text
-                style={[
-                  styles.jugador,
-                  styles.jugadorTypo,
-                  selectedRole === 'Jugador' && styles.selectedText
-                ]}
-              >
-                Jugador
-              </Text>
-              <Image
-                style={styles.simboloIconLayout}
-                contentFit="cover"
-                source={require('../assets/simbolo6.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.botonLayout1}>
-            <TouchableOpacity
-              style={[
-                styles.rectangulo,
-                selectedRole === 'Profesional del deporte' &&
-                  styles.selectedBackground
-              ]}
-              onPress={() => handleRoleSelection('Profesional del deporte')}
-            >
-              <Text
-                style={[
-                  styles.jugador,
-                  styles.jugadorTypo,
-                  selectedRole === 'Profesional del deporte' &&
-                    styles.selectedText
-                ]}
-              >
-                Profesional del deporte
-              </Text>
-              <Image
-                style={styles.simboloIconLayout}
-                contentFit="cover"
-                source={require('../assets/simbolo7.png')}
-              />
-            </TouchableOpacity>
-          </View>
+      </View>
 
-          <Pressable style={styles.siguiente} onPress={handleNext}>
-            <Text style={styles.siguiente1}>Siguiente</Text>
-          </Pressable>
-        </View>
+      <View
+        style={{
+          height: '73%'
+        }}
+      >
+        <ScrollView>
+          {!sportman && !profesional && (
+            <View
+              style={{
+                gap: 20,
+                alignSelf: 'center',
+                justifyContent: 'center',
+                marginTop: 80
+              }}
+            >
+              <View style={styles.botonLayout1}>
+                <TouchableOpacity
+                  style={[
+                    styles.rectangulo,
+                    selectedRole === 'Jugador' && styles.selectedBackground
+                  ]}
+                  onPress={() => handleRoleSelection('Jugador')}
+                >
+                  <Image
+                    style={styles.simboloIconLayout}
+                    contentFit="cover"
+                    source={require('../assets/simbolo6.png')}
+                  />
+                  <Text
+                    style={[
+                      styles.jugador,
+                      styles.jugadorTypo,
+                      selectedRole === 'Jugador' && styles.selectedText
+                    ]}
+                  >
+                    Jugador
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.botonLayout1}>
+                <TouchableOpacity
+                  style={[
+                    styles.rectangulo,
+                    selectedRole === 'Profesional del deporte' &&
+                      styles.selectedBackground
+                  ]}
+                  onPress={() => handleRoleSelection('Profesional del deporte')}
+                >
+                  <Text
+                    style={[
+                      styles.jugador,
+                      styles.jugadorTypo,
+                      selectedRole === 'Profesional del deporte' &&
+                        styles.selectedText
+                    ]}
+                  >
+                    Profesional del deporte
+                  </Text>
+                  <Image
+                    style={styles.simboloIconLayout}
+                    contentFit="cover"
+                    source={require('../assets/simbolo7.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
+          {sportman && stepsSportman === 0 && <Paso3Jugador />}
+          {profesional && stepsProfesional === 0 && <Paso3Profesional />}
+          {stepsSportman === 1 && <Paso4Jugador />}
+          {stepsProfesional === 1 && <Paso4Profesional />}
+          <View style={styles.botonesRoles}>
+            <Pressable
+              style={styles.siguiente}
+              onPress={() =>
+                !sportman && !profesional ? handleNext() : handleNavigation()
+              }
+            >
+              <Text style={styles.siguiente1}>Siguiente</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
       </View>
     </View>
   )
@@ -148,13 +218,15 @@ const styles = StyleSheet.create({
   jugadorTypo: {
     fontSize: FontSize.button_size,
     textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO,
-    top: '35%'
+    fontFamily: FontFamily.t4TEXTMICRO
+    // top: '35%'
   },
   simboloIconLayout: {
-    height: '43.71%',
-    width: '8.53%',
-    left: '5%'
+    height: 25,
+    width: 25,
+    position: 'absolute',
+    left: 20
+    // left: '5%'
   },
   botonLayout1: {
     height: 70,
@@ -180,21 +252,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
     flexDirection: 'row',
-    alignItems: 'center',
-    right: '10%',
-    marginBottom: '5%'
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+
+    // right: '10%'
+    // marginBottom: '5%'
   },
   paso1: {
     fontSize: FontSize.t1TextSMALL_size,
-    lineHeight: 17,
+    // lineHeight: 17,
     color: Color.bALONCESTO,
-    width: 393,
+    // width: 393,
     textAlign: 'center'
   },
   escogeTuRol: {
-    alignSelf: 'stretch',
     fontSize: FontSize.size_9xl,
-    lineHeight: 32,
     color: Color.wHITESPORTSMATCH,
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
@@ -206,21 +278,22 @@ const styles = StyleSheet.create({
     gap: 20
   },
   stepseccion: {
-    marginTop: 3,
-    alignItems: 'center'
-  },
-  headerSteps: {
-    alignItems: 'flex-end'
+    // marginTop: 3
+    // alignItems: 'center'
   },
   rectangulo: {
     borderColor: Color.wHITESPORTSMATCH,
     borderWidth: 1,
     borderRadius: Border.br_81xl,
     height: '100%',
-    borderStyle: 'solid'
+    borderStyle: 'solid',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+    // justifyContent: 'center'
   },
   jugador: {
-    lineHeight: 20,
+    // lineHeight: 20,
     color: Color.wHITESPORTSMATCH,
     fontWeight: '500'
   },
@@ -235,8 +308,8 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   botonesRoles: {
-    marginTop: 170,
-    gap: 30
+    width: '100%',
+    marginTop: 30
   },
   siguiente1: {
     fontWeight: '700',
@@ -246,18 +319,20 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   siguiente: {
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
-    borderRadius: Border.br_81xl,
-    marginTop: '25%'
+    borderRadius: Border.br_81xl
+    // marginTop: '25%'
   },
   contenido: {
-    top: 77,
-    alignItems: 'center',
-    left: 0,
-    height: '130%'
+    // top: 77,
+    marginTop: 20,
+    height: '20%',
+    // justifyContent: 'space-between',
+    // gap: 50,
+    alignItems: 'center'
   },
   paso6: {
     flex: 1,

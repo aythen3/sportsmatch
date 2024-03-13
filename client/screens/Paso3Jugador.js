@@ -10,14 +10,14 @@ const Paso3Jugador = () => {
   const navigation = useNavigation()
 
   return (
-    <ScrollView style={styles.paso6}>
-      <Image
+    <View style={styles.paso6}>
+      {/* <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
         source={require('../assets/imagen-de-fondo2.png')}
-      />
-      <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
+      /> */}
+      <View>
+        {/* <View style={styles.headerSteps}>
           <Pressable
             style={styles.botonAtras}
             onPress={() => navigation.goBack()}
@@ -39,17 +39,17 @@ const Paso3Jugador = () => {
 
             <Lines index={3} />
           </View>
-        </View>
+        </View> */}
         <SkillSeleccion />
 
-        <Pressable
+        {/* <Pressable
           style={styles.siguiente}
           onPress={() => navigation.navigate('Paso4Jugador')}
         >
           <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -147,17 +147,17 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   contenido: {
-    top: 77,
-    alignItems: 'center',
-    left: 0,
-    height: '110%'
+    // top: 77,
+    alignItems: 'center'
+    // left: 0,
+    // height: '110%'
   },
   paso6: {
-    flex: 1,
-    paddingHorizontal: 15,
-    overflow: 'hidden',
-    width: '100%',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    // flex: 1,
+    // paddingHorizontal: 15,
+    // overflow: 'hidden',
+    width: '100%'
+    // backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 

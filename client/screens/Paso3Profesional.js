@@ -7,69 +7,45 @@ import SeleccionProfesional from '../components/SeleccionProfesional'
 import Lines from '../components/Lines'
 import Input from '../components/Input'
 
-const Paso3Jugador = () => {
+const Paso3Profesional = () => {
   const navigation = useNavigation()
 
   return (
-    <ScrollView style={styles.paso6}>
-      <Image
+    <View style={styles.paso6}>
+      {/* <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
         source={require('../assets/imagen-de-fondo1.png')}
-      />
-      <View style={styles.contenido}>
-        <View style={styles.headerSteps}>
-          <Pressable
-            style={styles.botonAtras}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../assets/coolicon1.png')}
-            />
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-          <View style={styles.stepseccion}>
-            <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 3</Text>
-              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
-                Unos detalles sobre ti
-              </Text>
-            </View>
-            <Lines index={3} />
-          </View>
-        </View>
-        {/* <SeleccionProfesional /> */}
-        <Input
-          title="Tipo de profesional"
-          placeholderText="Entrenador"
-          isAccordeon={true}
-        />
-        <Input title="Años en activo" placeholderText="2000" />
-        <Input
-          title="Lugar de residencia"
-          placeholderText="Barcelona"
-          isAccordeon={true}
-        />
-        <Input
-          title="Club actual"
-          placeholderText="Rellena solo si estas en algun club"
-        />
-        <Input
-          title="Como te defines como profesional"
-          placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
-          isMultiLine={true}
-        />
+      /> */}
 
-        <Pressable
+      <Input
+        title="Tipo de profesional"
+        placeholderText="Entrenador"
+        isAccordeon={true}
+      />
+      <Input title="Años en activo" placeholderText="2000" />
+      <Input
+        title="Lugar de residencia"
+        placeholderText="Barcelona"
+        isAccordeon={true}
+      />
+      <Input
+        title="Club actual"
+        placeholderText="Rellena solo si estas en algun club"
+      />
+      <Input
+        title="Como te defines como profesional"
+        placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
+        isMultiLine={true}
+      />
+
+      {/* <Pressable
           style={styles.siguiente}
           onPress={() => navigation.navigate('Paso4Profesional')}
         >
           <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+        </Pressable> */}
+    </View>
   )
 }
 
@@ -167,18 +143,17 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   contenido: {
-    top: 77,
-    alignItems: 'center',
-    height: '100%'
+    // top: 77,
+    // alignItems: 'center',
+    // height: '100%'
     // height: '150%'
   },
   paso6: {
-    flex: 1,
-    overflow: 'hidden',
+    // flex: 1,
+    // overflow: 'hidden',
     // paddingHorizontal: 15,
-    width: '100%',
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    width: '100%'
   }
 })
 
-export default Paso3Jugador
+export default Paso3Profesional
