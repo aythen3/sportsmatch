@@ -9,8 +9,8 @@ const Lines = ({ index }) => {
         marginVertical: 30,
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 15
+        justifyContent: 'space-between'
+        // paddingHorizontal: 15
       }}
     >
       <View

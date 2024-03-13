@@ -170,8 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl,
     height: 45,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    width: '96%'
+    justifyContent: 'center'
   },
   defensa: {
     textAlign: 'left',
@@ -206,12 +205,12 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    height: 63,
-    marginTop: 18
+    // height: 70,
+    marginTop: 14
   },
   formulariosInferiores: {
-    marginTop: '10%',
-    left: 5
+    marginTop: '5%'
+    // left: 5
   },
   contenidoFormulariosboton: {
     marginTop: 20

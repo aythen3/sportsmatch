@@ -179,10 +179,10 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    height: 63
+    // height: 63
   },
   formulariosInferiores: {
-    marginTop: '10%',
+    marginTop: 20,
     width: '100%',
     gap: 20
   },
