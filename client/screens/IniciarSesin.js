@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -10,9 +10,40 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontSize, Padding, Color, Border, FontFamily } from '../GlobalStyles'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/actions/users'
+import { getAll } from '../redux/actions/sports'
 
 const IniciarSesin = () => {
   const navigation = useNavigation()
+  const { user } = useSelector((state) => state.users)
+  const { sports } = useSelector((state) => state.sports)
+  const dispatch = useDispatch()
+  const [valuesUser, setValuesUser] = useState({
+    email: '',
+    password: ''
+  })
+
+  const seterValues = (field, value) => {
+    setValuesUser((prev) => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  useEffect(() => {
+    if (user.accesToken) {
+      navigation.navigate('stepsClub')
+    }
+  }, [user])
+
+  const submit = () => {
+    if (valuesUser.email && valuesUser.password) {
+      dispatch(login(valuesUser))
+    }
+  }
+
+  console.log('userrrrr', user)
 
   return (
     <ScrollView style={styles.iniciarSesin}>
@@ -50,6 +81,8 @@ const IniciarSesin = () => {
                           style={[styles.nombre, styles.eMailSpaceBlock]}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
+                          value={valuesUser.email}
+                          onChangeText={(value) => seterValues('email', value)}
                         />
                       </View>
                     </View>
@@ -65,6 +98,10 @@ const IniciarSesin = () => {
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={true}
+                          value={valuesUser.password}
+                          onChangeText={(value) =>
+                            seterValues('password', value)
+                          }
                         />
                       </View>
                     </View>
@@ -78,7 +115,8 @@ const IniciarSesin = () => {
               <Pressable
                 style={styles.botonIniciaSesin2}
                 onPress={() => {
-                  navigation.navigate('stepsClub')
+                  submit()
+                  // navigation.navigate('stepsClub')
                 }}
               >
                 <Text style={styles.aceptar}>Inicia sesión</Text>

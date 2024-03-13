@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -6,19 +6,46 @@ import {
   Pressable,
   View,
   ScrollView,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontSize, Color, Padding, Border, FontFamily } from '../GlobalStyles'
 import CheckBox from 'react-native-check-box'
+import { useDispatch, useSelector } from 'react-redux'
+import { create } from '../redux/actions/users'
 
 const Registrarse = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const { isSportman } = useSelector((state) => state.users)
 
   const [isChecked, setChecked] = useState(false)
+  const [valuesUser, setValuesUser] = useState({
+    nickname: '',
+    password: '',
+    email: '',
+    type: isSportman === true ? 'sportman' : 'club'
+  })
+
+  const seterValues = (field, value) => {
+    setValuesUser((prev) => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
   const handleCheckboxToggle = () => {
     setChecked(!isChecked)
+  }
+
+  const submit = () => {
+    if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
+      dispatch(create(valuesUser))
+      navigation.navigate('IniciarSesin')
+    } else {
+      Alert.alert('Debes llenar todos los campos')
+    }
   }
   return (
     <View style={styles.registrarse}>
@@ -57,6 +84,8 @@ const Registrarse = () => {
                         style={[styles.nombre, styles.eMailSpaceBlock]}
                         placeholder="Nombre"
                         placeholderTextColor="#999"
+                        value={valuesUser.nickname}
+                        onChangeText={(value) => seterValues('nickname', value)}
                       />
                     </View>
                   </View>
@@ -71,6 +100,9 @@ const Registrarse = () => {
                         style={[styles.nombre, styles.eMailSpaceBlock]}
                         placeholder="E-mail"
                         placeholderTextColor="#999"
+                        autoCapitalize="none"
+                        value={valuesUser.email}
+                        onChangeText={(value) => seterValues('email', value)}
                       />
                     </View>
                   </View>
@@ -87,6 +119,10 @@ const Registrarse = () => {
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={true}
+                          value={valuesUser.password}
+                          onChangeText={(value) =>
+                            seterValues('password', value)
+                          }
                         />
                       </View>
                     </View>
@@ -98,7 +134,9 @@ const Registrarse = () => {
               <View style={styles.loremPosition}>
                 <View style={[styles.loremIpsum, styles.loremPosition]}>
                   <View style={styles.loremIpsum1}>
-                    <Text style={styles.aceptar}>Regístrate</Text>
+                    <Text style={styles.aceptar} onPress={submit}>
+                      Regístrate
+                    </Text>
                   </View>
                 </View>
               </View>

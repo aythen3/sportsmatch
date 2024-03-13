@@ -10,6 +10,7 @@ import Lines from '../components/Lines'
 const Paso2Jugador = () => {
   const navigation = useNavigation()
   const { isSportMan } = useSelector((state) => state.users)
+  const { sports } = useSelector((state) => state.sports)
   // const router = useRoute()
 
   // const { role } = router.params
@@ -30,7 +31,9 @@ const Paso2Jugador = () => {
 
   return (
     <View style={styles.paso6}>
-      <DeportesSeleccion />
+      {sports.map((sport) => (
+        <DeportesSeleccion key={sport.id} name={sport.name} />
+      ))}
     </View>
   )
 }
@@ -137,6 +140,10 @@ const styles = StyleSheet.create({
     marginBottom: 130
   },
   paso6: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 15
     // flex: 1,
     // overflow: 'hidden',
     // width: '100%',

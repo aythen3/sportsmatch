@@ -1,15 +1,85 @@
 import React, { useState } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSport } from '../redux/slices/sports.slices'
 
-const DeportesSeleccion = () => {
+const DeportesSeleccion = ({ name }) => {
+  const dispatch = useDispatch()
+  const { sport } = useSelector((state) => state.sports)
   const [selectedImage, setSelectedImage] = useState(null)
+
+  const [selectedSport, setSelectedSport] = useState(null)
+
+  const handleSportSelection = (name) => {
+    if (selectedSport === name) {
+      setSelectedSport(null) // Deseleccionar si ya está seleccionado
+    } else {
+      setSelectedSport(name) // Seleccionar si no está seleccionado
+      // Aquí también puedes despachar tu acción para actualizar el estado global si es necesario
+      // dispatch(setSport(name));
+    }
+  }
 
   return (
     <View style={styles.frameParent}>
-      <TouchableOpacity onPress={() => setSelectedImage('futbol')}>
+      <TouchableOpacity onPress={() => handleSportSelection(name)}>
         <View>
-          {selectedImage === 'futbol' ? (
+          {name === 'Futbol' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-futbol.png')
+                  : require('../assets/group-389.png')
+              }
+            />
+          )}
+          {name === 'Basquekball' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-baloncesto.png')
+                  : require('../assets/group-390.png')
+              }
+            />
+          )}
+          {name === 'Futbol de Salon' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-futbol-sala.png')
+                  : require('../assets/group-395.png')
+              }
+            />
+          )}
+          {name === 'Hockey' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={require('../assets/grupo-hockey.png')}
+            />
+          )}
+          {name === 'Voley' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={require('../assets/grupo-voleibol.png')}
+            />
+          )}
+          {name === 'Handball' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={require('../assets/grupo-balonmano.png')}
+            />
+          )}
+          {/* {selectedImage === name ? (
             <Image
               style={styles.frameChild}
               contentFit="cover"
@@ -21,11 +91,11 @@ const DeportesSeleccion = () => {
               contentFit="cover"
               source={require('../assets/grupo-futbol.png')}
             />
-          )}
-          <Text style={styles.ftbolTypo}>Fútbol</Text>
+          )} */}
+          <Text style={styles.ftbolTypo}>{name}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setSelectedImage('baloncesto')}>
+      {/* <TouchableOpacity onPress={() => setSelectedImage('baloncesto')}>
         <View>
           {selectedImage === 'baloncesto' ? (
             <Image
@@ -114,18 +184,19 @@ const DeportesSeleccion = () => {
           )}
           <Text style={styles.ftbolTypo}>Handball</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   frameParent: {
-    width: '100%',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 18
+    // width: '100%',
+    // flexWrap: 'wrap',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center'
+    // gap: 18
     // top: '10%'
   },
   frameChild: {
