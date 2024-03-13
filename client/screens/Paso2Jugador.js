@@ -15,8 +15,6 @@ const Paso2Jugador = () => {
 
   // const { role } = router.params
 
-  // console.log('rolll', role)
-
   const handleNavigation = () => {
     if (isSportMan === true) {
       // if (role === 'Profesional del deporte') {

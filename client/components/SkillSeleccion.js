@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
+import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
+import Acordeon from './Acordeon'
 
-const SkillSeleccion = () => {
+const SkillSeleccion = ({ editable, setEditable }) => {
+  const navigation = useNavigation()
+
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
   const [positionModalVisible, setPositionModalVisible] = useState(false)
@@ -23,11 +27,11 @@ const SkillSeleccion = () => {
   const opcionesPosicion = ['Pase', 'Resistencia', 'Disparo', 'Regate']
 
   const openModal = () => {
-    setModalVisible(true)
+    setModalVisible(!modalVisible)
   }
 
   const openPositionModal = () => {
-    setPositionModalVisible(true)
+    setPositionModalVisible(!positionModalVisible)
   }
 
   const closeModal = () => {
@@ -81,39 +85,40 @@ const SkillSeleccion = () => {
         </View>
       </View>
       <View style={styles.formulariosInferiores}>
-        <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Categoría</Text>
-          <Pressable onPress={openModal} style={styles.rectanguloBorder}>
-            <CustomModal
-              visible={modalVisible}
-              closeModal={closeModal}
-              onSelectItem={handleSelectCategoria}
-              title="Selecciona tu opción"
-              options={opcionesCategoria}
-            />
-            {selectedCategoria && (
-              <Text style={styles.atributoInner}>{selectedCategoria}</Text>
-            )}
-          </Pressable>
-        </View>
-        <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Posición Principal</Text>
-          <Pressable
-            onPress={openPositionModal}
-            style={styles.rectanguloBorder}
-          >
-            <CustomModal
-              visible={positionModalVisible}
-              closeModal={closeModal}
-              onSelectItem={handleSelectPosition}
-              title="Selecciona tu opción"
-              options={opcionesPosicion}
-            />
-            {selectedPosition && (
-              <Text style={styles.atributoInner}>{selectedPosition}</Text>
-            )}
-          </Pressable>
-        </View>
+        <Acordeon
+          title="Categoria"
+          placeholderText={
+            selectedCategoria ? selectedCategoria : 'Selecciona tu categoria'
+          }
+          isAccordeon={true}
+          open={openModal}
+        />
+        {modalVisible && (
+          <CustomModal
+            visible={modalVisible}
+            closeModal={closeModal}
+            onSelectItem={handleSelectCategoria}
+            options={opcionesCategoria}
+          />
+        )}
+
+        <Acordeon
+          title="Posicion Principal"
+          placeholderText={
+            selectedPosition ? selectedPosition : 'Selecciona tu posicion'
+          }
+          isAccordeon={true}
+          open={openPositionModal}
+        />
+        {positionModalVisible && (
+          <CustomModal
+            visible={positionModalVisible}
+            closeModal={closeModal}
+            onSelectItem={handleSelectPosition}
+            options={opcionesPosicion}
+          />
+        )}
+
         <View style={styles.formularioCategoria}>
           <Text style={styles.atributo}>Altura</Text>
           <View style={styles.rectanguloBorder}>
@@ -159,6 +164,19 @@ const SkillSeleccion = () => {
           </View>
         </View>
       </View>
+      {editable && (
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.saveButton}
+            onPress={() => {
+              navigation.navigate('EditarPerfil')
+              setEditable(false)
+            }}
+          >
+            <Text style={styles.saveButtonText}>Guardar</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   )
 }
@@ -190,7 +208,8 @@ const styles = StyleSheet.create({
   campos: {
     height: 40,
     flexDirection: 'row',
-    gap: 20
+    gap: 20,
+    justifyContent: 'center'
   },
   atributo: {
     color: Color.wHITESPORTSMATCH,
@@ -205,24 +224,42 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    // height: 70,
-    marginTop: 14
+    marginTop: 14,
+    width: '90%'
   },
   formulariosInferiores: {
-    marginTop: '5%'
-    // left: 5
+    marginTop: '5%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   contenidoFormulariosboton: {
     marginTop: 20
   },
   atributoContainer: {
-    width: '28%',
-    justifyContent: 'center'
+    width: '26%'
   },
   textInput: {
     left: 10,
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: '10%'
+  },
+  saveButton: {
+    backgroundColor: Color.wHITESPORTSMATCH,
+    width: '90%',
+    height: 45,
+    borderRadius: Border.br_81xl,
+    justifyContent: 'center'
+  },
+  saveButtonText: {
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.size_lgi_3,
+    color: Color.bLACK3SPORTSMATCH,
+    textAlign: 'center',
+    fontWeight: '700'
   }
 })
 

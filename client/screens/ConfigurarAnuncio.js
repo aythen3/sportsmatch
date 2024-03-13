@@ -12,8 +12,6 @@ const ConfigurarAnuncio = () => {
 
   const { offer } = route.params
 
-  console.log(offer)
-
   return (
     <View style={[styles.configurarAnuncio, styles.iconLayout1]}>
       <View style={styles.contenido}>

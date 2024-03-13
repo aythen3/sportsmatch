@@ -15,8 +15,6 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club, name, description, image, imgPerfil } = router.params
   const [selectComponents, setSelectComponents] = useState('perfil')
 
-  console.log('es club???', name)
-
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
       <ScrollView>

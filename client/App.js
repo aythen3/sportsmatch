@@ -22,14 +22,10 @@ import TusMatchsDetalle from './screens/TusMatchsDetalle'
 import TusMensajes from './screens/TusMensajes'
 import TusNotificaciones from './screens/TusNotificaciones'
 import NotificacinMatch from './screens/NotificacinMatch'
-import EditarPerfil from './screens/EditarPerfil'
-import CerrarSesin from './screens/CerrarSesin'
-import EliminarCuenta from './screens/EliminarCuenta'
+import EditarPerfil from './screens/EditarPerfil/EditarPerfil'
+import CerrarSesin from './screens/EditarPerfil/CerrarSesin'
+import EliminarCuenta from './screens/EditarPerfil/EliminarCuenta'
 import MiSuscripcin from './screens/MiSuscripcin'
-import MiSuscripcin1 from './screens/MiSuscripcin1'
-import SILVER from './screens/SILVER'
-import GOLD from './screens/GOLD'
-import STAR from './screens/STAR'
 import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
 import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
 import PerfilVisualizacinClubs from './screens/PerfilVisualizacinClubs'
@@ -79,14 +75,15 @@ import AquSeMonetza2 from './screens/AquSeMonetza2'
 import AquSeHace from './screens/AquSeHace'
 import AquSeHace1 from './screens/AquSeHace1'
 import AquSeMonetza3 from './screens/AquSeMonetza3'
-import DetallesDelUsuario from './screens/DetallesDelUsuario'
 import DefineTusSkills from './screens/DefineTusSkills'
-import CorreoElectrnico from './screens/CorreoElectrnico'
-import Contrasea from './screens/Contrasea'
+import CorreoElectrnico from './screens/EditarPerfil/CorreoElectrnico'
+import Contrasea from './screens/EditarPerfil/Contrasea'
 import MENUCLUB from './screens/MENUCLUB'
 import NavBarInferior from './components/NavBarInferior'
 import StepsClub from './screens/StepsClub'
 import StepsJugador from './screens/StepsJugador'
+import EditarSkills from './screens/EditarPerfil/EditarSkills'
+import DetallesUsuario from './screens/EditarPerfil/DetallesUsuario'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
@@ -141,6 +138,16 @@ const App = () => {
               <Stack.Screen
                 name="Paso2Jugador"
                 component={Paso2Jugador}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EditarSkills"
+                component={EditarSkills}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="DetallesUsuario"
+                component={DetallesUsuario}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
@@ -261,26 +268,6 @@ const App = () => {
               <Stack.Screen
                 name="MiSuscripcin"
                 component={MiSuscripcin}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MiSuscripcin1"
-                component={MiSuscripcin1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SILVER"
-                component={SILVER}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="GOLD"
-                component={GOLD}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="STAR"
-                component={STAR}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
@@ -521,11 +508,6 @@ const App = () => {
               <Stack.Screen
                 name="AquSeMonetza3"
                 component={AquSeMonetza3}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="DetallesDelUsuario"
-                component={DetallesDelUsuario}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

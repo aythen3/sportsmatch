@@ -77,7 +77,6 @@ const offersSlices = createSlice({
   },
   reducers: {
     setOffer: (state, action) => {
-      console.log(action.payload)
       state.offer = action.payload
     }
   }

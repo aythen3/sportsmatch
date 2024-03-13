@@ -14,8 +14,6 @@ const EliminarOferta = () => {
   const [check1, setCheck1] = useState(false)
   const [check2, setCheck2] = useState(false)
 
-  console.log(color)
-
   return (
     <View style={styles.eliminarOferta3}>
       <View

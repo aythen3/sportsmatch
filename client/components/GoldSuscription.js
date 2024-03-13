@@ -28,14 +28,15 @@ const GoldSuscription = () => {
               '#ebc02a'
             ]}
           >
-            <Text style={[styles.freemium2, styles.ofertasTypo]}>Gold</Text>
+            <Text style={[styles.freemium2, styles.ofertasTypo]}>Pro</Text>
           </LinearGradient>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={[styles.gratuito, styles.timeTypo]}>125$</Text>
+                <Text style={styles.gratuito}>12,90€</Text>
+                <Text style={styles.timeTypo}>O también 124.40€/año</Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -152,11 +153,16 @@ const styles = StyleSheet.create({
   },
   gratuito: {
     fontSize: FontSize.size_21xl,
-    fontFamily: FontFamily.t4TEXTMICRO
+    fontFamily: FontFamily.t4TEXTMICRO,
+    color: '#e6b300',
+    fontWeight: '700',
+    textAlign: 'center'
   },
   timeTypo: {
     fontWeight: '600',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   frameView: {
     marginTop: 30
