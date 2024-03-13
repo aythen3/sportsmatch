@@ -1,34 +1,84 @@
-import React from 'react'
-import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import SeleccionProfesional from '../components/SeleccionProfesional'
 import Lines from '../components/Lines'
 import Input from '../components/Input'
+import CustomModal from '../components/modals/CustomModal'
+import Acordeon from '../components/Acordeon'
 
 const Paso3Profesional = () => {
   const navigation = useNavigation()
 
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedProfesional, setSelectedProfesional] = useState(null)
+  const [cityModal, setCityModal] = useState(false)
+  const [selectedCity, setSelectedCity] = useState(null)
+
+  const opcionesProfesional = ['Entrenador']
+  const opcionesResidencia = [
+    'Barcelona',
+    'Madrid',
+    'Sevilla',
+    'Valencia',
+    'Murcia',
+    'Toledo'
+  ]
+
+  const openModal = () => {
+    setModalVisible(!modalVisible)
+  }
+
+  const openCityModal = () => {
+    setCityModal(!cityModal)
+  }
+
+  const closeModal = () => {
+    setModalVisible(false)
+    setCityModal(false)
+  }
+
+  const handleSelectProfesional = (profesional) => {
+    setSelectedProfesional(profesional)
+  }
+
+  const handleSelectCity = (city) => {
+    setSelectedCity(city)
+  }
+
   return (
     <View style={styles.paso6}>
-      {/* <Image
-        style={styles.imagenDeFondo}
-        contentFit="cover"
-        source={require('../assets/imagen-de-fondo1.png')}
-      /> */}
-
-      <Input
+      <Acordeon
         title="Tipo de profesional"
         placeholderText="Entrenador"
         isAccordeon={true}
+        open={openModal}
       />
+      {modalVisible && (
+        <CustomModal
+          visible={modalVisible}
+          closeModal={closeModal}
+          onSelectItem={handleSelectProfesional}
+          options={opcionesProfesional}
+        />
+      )}
       <Input title="Años en activo" placeholderText="2000" />
-      <Input
+      <Acordeon
         title="Lugar de residencia"
         placeholderText="Barcelona"
         isAccordeon={true}
+        open={openCityModal}
       />
+      {cityModal && (
+        <CustomModal
+          visible={cityModal}
+          closeModal={closeModal}
+          onSelectItem={handleSelectCity}
+          title="Selecciona tu opción"
+          options={opcionesResidencia}
+        />
+      )}
       <Input
         title="Club actual"
         placeholderText="Rellena solo si estas en algun club"
@@ -38,13 +88,6 @@ const Paso3Profesional = () => {
         placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
         isMultiLine={true}
       />
-
-      {/* <Pressable
-          style={styles.siguiente}
-          onPress={() => navigation.navigate('Paso4Profesional')}
-        >
-          <Text style={styles.siguiente1}>Siguiente</Text>
-        </Pressable> */}
     </View>
   )
 }
@@ -142,16 +185,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  contenido: {
-    // top: 77,
-    // alignItems: 'center',
-    // height: '100%'
-    // height: '150%'
-  },
   paso6: {
-    // flex: 1,
-    // overflow: 'hidden',
-    // paddingHorizontal: 15,
     width: '100%'
   }
 })

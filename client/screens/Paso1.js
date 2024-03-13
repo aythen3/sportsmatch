@@ -174,6 +174,7 @@ const Paso1 = () => {
           {profesional && stepsProfesional === 0 && <Paso3Profesional />}
           {stepsSportman === 1 && <Paso4Jugador />}
           {stepsProfesional === 1 && <Paso4Profesional />}
+
           <View style={styles.botonesRoles}>
             <Pressable
               style={styles.siguiente}
