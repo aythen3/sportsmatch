@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -29,10 +29,21 @@ const Paso2Jugador = () => {
     }
   }
 
+  const [selectedSport, setSelectedSport] = useState(null)
+
+  const handleSportSelection = (name) => {
+    setSelectedSport(name)
+  }
+
   return (
     <View style={styles.paso6}>
       {sports.map((sport) => (
-        <DeportesSeleccion key={sport.id} name={sport.name} />
+        <DeportesSeleccion
+          key={sport.id}
+          name={sport.name}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
       ))}
     </View>
   )

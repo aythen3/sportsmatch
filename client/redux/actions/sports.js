@@ -3,7 +3,7 @@ import axiosInstance from '../../utils/apiBackend'
 
 export const getAll = createAsyncThunk('getAll/sports', async () => {
   try {
-    const { data } = await axiosInstance.get('sport/sportmaker/')
+    const { data } = await axiosInstance.get('sport/')
     return data
   } catch (error) {
     throw new Error(error)

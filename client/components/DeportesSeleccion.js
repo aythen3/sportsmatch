@@ -4,26 +4,22 @@ import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSport } from '../redux/slices/sports.slices'
 
-const DeportesSeleccion = ({ name }) => {
+const DeportesSeleccion = ({ name, selectedSport, onSelect }) => {
   const dispatch = useDispatch()
   const { sport } = useSelector((state) => state.sports)
-  const [selectedImage, setSelectedImage] = useState(null)
 
-  const [selectedSport, setSelectedSport] = useState(null)
-
-  const handleSportSelection = (name) => {
-    if (selectedSport === name) {
-      setSelectedSport(null) // Deseleccionar si ya está seleccionado
-    } else {
-      setSelectedSport(name) // Seleccionar si no está seleccionado
-      // Aquí también puedes despachar tu acción para actualizar el estado global si es necesario
-      // dispatch(setSport(name));
-    }
+  const handlePress = () => {
+    onSelect(name)
   }
 
   return (
     <View style={styles.frameParent}>
-      <TouchableOpacity onPress={() => handleSportSelection(name)}>
+      <TouchableOpacity
+        onPress={() => {
+          handlePress()
+          dispatch(setSport(name))
+        }}
+      >
         <View>
           {name === 'Futbol' && (
             <Image
@@ -62,23 +58,92 @@ const DeportesSeleccion = ({ name }) => {
             <Image
               style={styles.frameChild}
               contentFit="cover"
-              source={require('../assets/grupo-hockey.png')}
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-hockey.png')
+                  : require('../assets/group-391.png')
+              }
             />
           )}
           {name === 'Voley' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
-              source={require('../assets/grupo-voleibol.png')}
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-voleibol.png')
+                  : require('../assets/group-393.png')
+              }
             />
           )}
           {name === 'Handball' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
-              source={require('../assets/grupo-balonmano.png')}
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-balonmano.png')
+                  : require('../assets/group-394.png')
+              }
             />
           )}
+          <Text style={styles.ftbolTypo}>{name}</Text>
+
+          {/* {name === 'Basquekball' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-baloncesto.png')
+                  : require('../assets/group-390.png')
+              }
+            />
+          )}
+          {name === 'Futbol de Salon' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-futbol-sala.png')
+                  : require('../assets/group-395.png')
+              }
+            />
+          )}
+          {name === 'Hockey' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-hockey.png')
+                  : require('../assets/group-391.png')
+              }
+            />
+          )}
+          {name === 'Voley' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-voleibol.png')
+                  : require('../assets/group-393.png')
+              }
+            />
+          )}
+          {name === 'Handball' && (
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={
+                selectedSport !== name
+                  ? require('../assets/grupo-balonmano.png')
+                  : require('../assets/group-394.png')
+              }
+            />
+          )} */}
           {/* {selectedImage === name ? (
             <Image
               style={styles.frameChild}
@@ -92,7 +157,7 @@ const DeportesSeleccion = ({ name }) => {
               source={require('../assets/grupo-futbol.png')}
             />
           )} */}
-          <Text style={styles.ftbolTypo}>{name}</Text>
+          {/* <Text style={styles.ftbolTypo}>{name}</Text> */}
         </View>
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => setSelectedImage('baloncesto')}>

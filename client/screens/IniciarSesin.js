@@ -43,8 +43,6 @@ const IniciarSesin = () => {
     }
   }
 
-  console.log('userrrrr', user)
-
   return (
     <ScrollView style={styles.iniciarSesin}>
       <View style={styles.contenido}>
