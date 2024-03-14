@@ -2,17 +2,13 @@ import React from 'react'
 import { View, Text, TextInput, Image } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 
-function Input({
+function Acordeon({
   title,
   placeholderText,
   isAccordeon,
   isMultiLine,
   changeColor,
-  value,
-  onValues,
-  field,
   open
-
 }) {
   return (
     <View
@@ -35,32 +31,26 @@ function Input({
         </Text>
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TextInput
-            multiline={isMultiLine}
-            placeholder={placeholderText}
-            placeholderTextColor={Color.gREY2SPORTSMATCH}
+          <Text
             style={{
               flex: 1,
-              height: isMultiLine ? 150 : 45,
+              height: !isMultiLine && 45,
               color: Color.gREY2SPORTSMATCH,
               paddingHorizontal: 15,
+              paddingVertical: 11,
               fontFamily: FontFamily.t4TEXTMICRO,
               fontSize: FontSize.t2TextSTANDARD_size,
               borderWidth: 1,
               borderColor: Color.gREY2SPORTSMATCH,
               borderStyle: 'solid',
-              borderRadius: isMultiLine ? 20 : Border.br_81xl,
+              borderRadius: isMultiLine ? 12 : Border.br_81xl,
               position: 'relative',
-              backgroundColor: changeColor ? 'red' : 'transparent',
-              textAlignVertical: isMultiLine ? 'top' : 'center'
+              backgroundColor: changeColor ? 'red' : 'transparent'
             }}
-
-            value={value}
-            onChangeText={(value) => onValues(field, value)}
-
-            onPressIn={open}
-
-          />
+            onPress={open}
+          >
+            {title}
+          </Text>
           {isAccordeon && (
             <Image
               style={{ width: 12, height: 12, position: 'absolute', right: 20 }}
@@ -74,4 +64,4 @@ function Input({
   )
 }
 
-export default Input
+export default Acordeon

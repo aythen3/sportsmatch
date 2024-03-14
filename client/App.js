@@ -84,14 +84,13 @@ import DefineTusSkills from './screens/DefineTusSkills'
 import CorreoElectrnico from './screens/CorreoElectrnico'
 import Contrasea from './screens/Contrasea'
 import MENUCLUB from './screens/MENUCLUB'
+import NavBarInferior from './components/NavBarInferior'
+import StepsClub from './screens/StepsClub'
+import StepsJugador from './screens/StepsJugador'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
-import NavBarInferior from './components/NavBarInferior'
-import StepsClub from './screens/StepsClub'
-import StepsJugador from './screens/StepsJugador'
-// import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -116,7 +115,8 @@ const App = () => {
               screenOptions={({ route }) => ({
                 headerShown: false,
                 footerShown: setIsFooterShow(
-                  route.name !== 'LoginSwitch' &&
+                  route.name !== 'PantallaInicio' &&
+                    route.name !== 'LoginSwitch' &&
                     route.name !== 'IniciarSesin' &&
                     route.name !== 'stepsClub' &&
                     route.name !== 'Registrarse' &&
@@ -128,6 +128,11 @@ const App = () => {
                 )
               })}
             >
+              <Stack.Screen
+                name="PantallaInicio"
+                component={PantallaInicio}
+                options={{ headerShown: false }}
+              />
               <Stack.Screen
                 name="LoginSwitch"
                 component={LoginSwitch}
@@ -351,11 +356,6 @@ const App = () => {
               <Stack.Screen
                 name="LoginSwitch1"
                 component={LoginSwitch1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PantallaInicio"
-                component={PantallaInicio}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
