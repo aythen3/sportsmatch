@@ -1,23 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { StyleSheet, ScrollView, View, Pressable, Text } from 'react-native'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
-import DetallesSeleccion from '../components/DetallesSeleccion'
-import Lines from '../components/Lines'
+import {
+  Color,
+  FontFamily,
+  FontSize,
+  Padding,
+  Border
+} from '../../GlobalStyles'
+import DetallesSeleccion from '../../components/DetallesSeleccion'
 
-const Paso4Jugador = () => {
+const EditarSkills = () => {
   const navigation = useNavigation()
+  const [editable, setEditable] = useState(true)
 
   return (
     <ScrollView style={styles.paso6}>
+      <View style={styles.cooliconParent}>
+        <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
+          <Image
+            style={styles.icon}
+            contentFit="cover"
+            source={require('../../assets/coolicon3.png')}
+          />
+        </Pressable>
+        <Pressable
+          style={styles.editarPerfil1}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.editarPerfil2}>Detalles del usuario</Text>
+        </Pressable>
+      </View>
+
       <View>
         <View>
           <View style={styles.headersubirImagenesPerfil}>
             <Image
               style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../assets/circulo.png')}
+              source={require('../../assets/circulo.png')}
             />
             <View style={styles.botonSubirImagen}>
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -42,22 +64,44 @@ const Paso4Jugador = () => {
           </View>
         </View>
 
-        <DetallesSeleccion />
+        <DetallesSeleccion editable={editable} setEditable={setEditable} />
       </View>
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  cooliconParent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 60,
+    left: 15
+  },
+  coolicon: {
+    width: 9,
+    height: 15
+  },
+  icon: {
+    height: '100%',
+    width: '100%'
+  },
+  editarPerfil1: {
+    marginLeft: 9
+  },
+  editarPerfil2: {
+    fontSize: FontSize.h3TitleMEDIUM_size,
+    fontWeight: '500',
+    textAlign: 'left',
+    fontFamily: FontFamily.t4TEXTMICRO,
+    color: Color.wHITESPORTSMATCH
+  },
+  paso6: {
+    width: '100%',
+    backgroundColor: Color.bLACK3SPORTSMATCH
+  },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,
     textAlign: 'center'
-  },
-  paso6: {
-    flex: 1,
-    overflow: 'hidden',
-    width: '100%',
-    paddingHorizontal: 15
   },
   headersubirImagenesPerfil: {
     alignItems: 'center',
@@ -107,4 +151,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Paso4Jugador
+export default EditarSkills

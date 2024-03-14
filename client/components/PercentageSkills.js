@@ -3,7 +3,6 @@ import React from 'react'
 import { Color, FontFamily } from '../GlobalStyles'
 
 const PercentageSkills = ({ skill, percentage, percentageText }) => {
-  console.log('porcentajeeeeeee', percentage)
   return (
     <View style={{ paddingHorizontal: 15, marginTop: 10, gap: 5 }}>
       <Text style={[styles.taxto2Clr]}>{skill}</Text>

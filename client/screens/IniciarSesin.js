@@ -80,6 +80,7 @@ const IniciarSesin = () => {
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           value={valuesUser.email}
+                          capitalize="sentences"
                           onChangeText={(value) => seterValues('email', value)}
                         />
                       </View>

@@ -22,7 +22,6 @@ const sportsSlices = createSlice({
         state.error = false
       })
       .addCase(getAll.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.loading = false
         state.sports = action.payload
         state.error = false

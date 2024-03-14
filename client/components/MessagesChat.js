@@ -11,8 +11,6 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
   const { message: messageRedux } = useSelector((state) => state.notifications)
   const navigation = useNavigation()
 
-  console.log('mensajes', messageRedux)
-
   const cuteMessage =
     message.length >= 35 ? message.slice(0, 35).concat('...') : message
 

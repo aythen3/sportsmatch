@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
+import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
 import AñoNacimientoModal from './modals/AñoNacimientoModal'
+import Acordeon from './Acordeon'
 
-const SkillSeleccion = () => {
+const SkillSeleccion = ({ editable, setEditable }) => {
+  const navigation = useNavigation()
+
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedGenero, setSelectedGenero] = useState(null)
   const [añoNacimientoModalVisible, setAñoNacimientoModalVisible] =
@@ -36,7 +40,7 @@ const SkillSeleccion = () => {
   }
 
   const openModal = () => {
-    setModalVisible(true)
+    setModalVisible(!modalVisible)
   }
 
   const closeModal = () => {
@@ -49,7 +53,7 @@ const SkillSeleccion = () => {
   }
 
   const openCityModal = () => {
-    setCityModal(true)
+    setCityModal(!cityModal)
   }
   const handleSelectCity = (city) => {
     setSelectedCity(city)
@@ -57,21 +61,21 @@ const SkillSeleccion = () => {
 
   return (
     <View style={styles.formulariosInferiores}>
-      <View style={styles.formularioCategoria}>
-        <Text style={styles.atributo}>Sexo</Text>
-        <Pressable onPress={openModal} style={styles.rectanguloBorder}>
-          <CustomModal
-            visible={modalVisible}
-            closeModal={closeModal}
-            onSelectItem={handleSelectGenero}
-            title="Selecciona tu opción"
-            options={opcionesGenero}
-          />
-          {selectedGenero && (
-            <Text style={styles.atributoInner}>{selectedGenero}</Text>
-          )}
-        </Pressable>
-      </View>
+      <Acordeon
+        title="Sexo"
+        placeholderText={selectedGenero ? selectedGenero : 'Selecciona tu sexo'}
+        isAccordeon={true}
+        open={openModal}
+      />
+      {modalVisible && (
+        <CustomModal
+          visible={modalVisible}
+          closeModal={closeModal}
+          onSelectItem={handleSelectGenero}
+          options={opcionesGenero}
+        />
+      )}
+
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Año de Nacimiento</Text>
         <Pressable
@@ -88,21 +92,22 @@ const SkillSeleccion = () => {
           )}
         </Pressable>
       </View>
-      <View style={styles.formularioCategoria}>
-        <Text style={styles.atributo}>Lugar de Residencia</Text>
-        <Pressable onPress={openCityModal} style={styles.rectanguloBorder}>
-          <CustomModal
-            visible={cityModal}
-            closeModal={closeModal}
-            onSelectItem={handleSelectCity}
-            title="Selecciona tu opción"
-            options={opcionesResidencia}
-          />
-          {selectedCity && (
-            <Text style={styles.atributoInner}>{selectedCity}</Text>
-          )}
-        </Pressable>
-      </View>
+
+      <Acordeon
+        title="Lugar de residencia"
+        placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
+        isAccordeon={true}
+        open={openCityModal}
+      />
+      {cityModal && (
+        <CustomModal
+          visible={cityModal}
+          closeModal={closeModal}
+          onSelectItem={handleSelectCity}
+          options={opcionesResidencia}
+        />
+      )}
+
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Club actual</Text>
         <View style={styles.rectanguloBorder}>
@@ -125,6 +130,19 @@ const SkillSeleccion = () => {
           />
         </View>
       </View>
+      {editable && (
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.saveButton}
+            onPress={() => {
+              navigation.navigate('EditarPerfil')
+              setEditable(false)
+            }}
+          >
+            <Text style={styles.saveButtonText}>Guardar</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   )
 }
@@ -179,19 +197,21 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    // height: 63
+    width: '90%'
   },
   formulariosInferiores: {
     marginTop: 20,
     width: '100%',
-    gap: 20
+    gap: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   contenidoFormulariosboton: {
     marginTop: 20
   },
   atributoContainer: {
-    width: '28%',
-    justifyContent: 'center'
+    width: '28%'
+    // justifyContent: 'center'
   },
   textInput: {
     left: 10,
@@ -199,6 +219,25 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     width: '90%',
     height: 50
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: '10%',
+    width: 350
+  },
+  saveButton: {
+    backgroundColor: Color.wHITESPORTSMATCH,
+    width: '90%',
+    height: 45,
+    borderRadius: Border.br_81xl,
+    justifyContent: 'center'
+  },
+  saveButtonText: {
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.size_lgi_3,
+    color: Color.bLACK3SPORTSMATCH,
+    textAlign: 'center',
+    fontWeight: '700'
   }
 })
 

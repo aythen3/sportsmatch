@@ -2,7 +2,13 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, Color, FontFamily, Border, Padding } from '../GlobalStyles'
+import {
+  FontSize,
+  Color,
+  FontFamily,
+  Border,
+  Padding
+} from '../../GlobalStyles'
 
 const EliminarCuenta = () => {
   const navigation = useNavigation()
@@ -20,7 +26,7 @@ const EliminarCuenta = () => {
                 <Image
                   style={styles.icon}
                   contentFit="cover"
-                  source={require('../assets/coolicon3.png')}
+                  source={require('../../assets/coolicon3.png')}
                 />
               </Pressable>
               <Pressable

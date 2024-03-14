@@ -37,7 +37,6 @@ const usersSlices = createSlice({
         state.error = false
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.loading = false
         state.user = action.payload
         state.error = false

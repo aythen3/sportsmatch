@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily } from '../GlobalStyles'
 
 const CardInfoOffers = ({ text, value }) => {
-  console.log(text)
 
   return (
     <View style={styles.card}>

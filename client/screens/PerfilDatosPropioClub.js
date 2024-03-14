@@ -20,8 +20,6 @@ const PerfilDatosPropioClub = () => {
   const navigation = useNavigation()
   const [selectComponents, setSelectComponents] = useState('perfil')
 
-  console.log('sportmannnnnnnn', isSportman)
-
   return (
     <View style={styles.perfilDatosPropioClub}>
       <ScrollView>

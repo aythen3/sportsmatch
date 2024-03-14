@@ -10,7 +10,6 @@ const Lines = ({ index }) => {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between'
-        // paddingHorizontal: 15
       }}
     >
       <View
