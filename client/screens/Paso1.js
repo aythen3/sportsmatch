@@ -59,6 +59,15 @@ const Paso1 = () => {
     }
   }
 
+  const data = {
+    name: '',
+    apellido: '',
+    sexo: '',
+    fechaNacimiento: '',
+    telefono: '',
+    direccion: ''
+  }
+
   return (
     <View style={styles.paso6}>
       <Image
@@ -178,9 +187,9 @@ const Paso1 = () => {
             </View>
           )}
 
-          {sportman && stepsSportman === 0 && <Paso3Jugador />}
+          {sportman && stepsSportman === 0 && <Paso4Jugador />}
           {profesional && stepsProfesional === 0 && <Paso3Profesional />}
-          {stepsSportman === 1 && <Paso4Jugador />}
+          {stepsSportman === 1 && <Paso3Jugador />}
           {stepsProfesional === 1 && <Paso4Profesional />}
 
           <View style={styles.botonesRoles}>

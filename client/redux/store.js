@@ -4,6 +4,7 @@ import muroSlices from './slices/muro.slices'
 import offersSlices from './slices/offers.slices'
 import notificacionsSlices from './slices/notificacions.slices'
 import sportsSlices from './slices/sports.slices'
+import clubSlices from './slices/club.slices'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     muro: muroSlices,
     offers: offersSlices,
     notifications: notificacionsSlices,
-    sports: sportsSlices
+    sports: sportsSlices,
+    clubs: clubSlices
   }
 })

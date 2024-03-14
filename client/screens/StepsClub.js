@@ -14,12 +14,25 @@ import EscogerDeporte2 from './EscogerDeporte2'
 import EscogerDeporte1 from './EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createClub } from '../redux/actions/club'
 
 const StepsClub = () => {
   const navigation = useNavigation()
+  const { user } = useSelector((state) => state.users)
+  const { club } = useSelector((state) => state.clubs)
+  const dispatch = useDispatch()
   const { isSportman } = useSelector((state) => state.users)
   const [stepsIndex, setstepsIndex] = useState(1)
+  const [clubValues, setClubValues] = useState({
+    name: '',
+    city: '',
+    country: '',
+    field: '',
+    year: '',
+    capacity: '',
+    description: ''
+  })
 
   const hadleIndex = (value) => {
     if (isSportman) {
@@ -27,6 +40,13 @@ const StepsClub = () => {
     } else {
       if (value === 'add') {
         if (stepsIndex <= 2) {
+          if (clubValues.name) {
+            const data = {
+              userId: user.user.id,
+              clubData: clubValues
+            }
+            dispatch(createClub(data))
+          }
           setstepsIndex((prev) => prev + 1)
         } else {
           navigation.navigate('SiguiendoJugadores')
@@ -47,7 +67,12 @@ const StepsClub = () => {
       case 1:
         return <Paso2Jugador />
       case 2:
-        return <EscogerDeporte2 />
+        return (
+          <EscogerDeporte2
+            clubValues={clubValues}
+            setClubValues={setClubValues}
+          />
+        )
       case 3:
         return <EscogerDeporte1 />
       default:

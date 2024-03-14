@@ -8,7 +8,11 @@ function Input({
   isAccordeon,
   isMultiLine,
   changeColor,
+  value,
+  onValues,
+  field,
   open
+
 }) {
   return (
     <View
@@ -50,7 +54,12 @@ function Input({
               backgroundColor: changeColor ? 'red' : 'transparent',
               textAlignVertical: isMultiLine ? 'top' : 'center'
             }}
+
+            value={value}
+            onChangeText={(value) => onValues(field, value)}
+
             onPressIn={open}
+
           />
           {isAccordeon && (
             <Image
