@@ -14,6 +14,9 @@ import { SkillModule } from './skill/skill.module';
 import { PositionModule } from './position/position.module';
 import { MatchModule } from './match/match.module';
 import { ImgManagerModule } from './img-manager/img-manager.module';
+import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -30,7 +33,10 @@ import { ImgManagerModule } from './img-manager/img-manager.module';
     SkillModule,
     PositionModule,
     MatchModule,
-    ImgManagerModule
+    ImgManagerModule,
+    PostModule,
+    CommentModule,
+    LikeModule
   ],
   controllers: [],
   providers: []
