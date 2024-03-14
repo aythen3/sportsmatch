@@ -59,6 +59,15 @@ const Paso1 = () => {
     }
   }
 
+  const data = {
+    name: '',
+    apellido: '',
+    sexo: '',
+    fechaNacimiento: '',
+    telefono: '',
+    direccion: ''
+  }
+
   return (
     <View style={styles.paso6}>
       <Image
@@ -80,12 +89,20 @@ const Paso1 = () => {
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </Pressable>
           <View style={styles.stepseccion}>
-            <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>Paso 2</Text>
-              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
-                Escoge tu rol
-              </Text>
-            </View>
+            <Text style={[styles.paso1, styles.atrsTypo]}>
+              {!sportman && !profesional && 'Paso 2'}
+              {sportman && stepsSportman === 0 && 'Paso 3'}
+              {stepsSportman === 1 && 'Paso 4'}
+              {profesional && stepsProfesional === 0 && 'Paso 3'}
+              {stepsProfesional === 1 && 'Paso 4'}
+            </Text>
+            <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
+              {!sportman && !profesional && 'Escoge tu rol'}
+              {sportman && stepsSportman === 0 && 'Define tus skills'}
+              {stepsSportman === 1 && 'Unos detalles sobre ti'}
+              {profesional && 'Unos detalles sobre ti'}
+            </Text>
+
             <Lines
               index={
                 !sportman && !profesional
@@ -170,9 +187,9 @@ const Paso1 = () => {
             </View>
           )}
 
-          {sportman && stepsSportman === 0 && <Paso3Jugador />}
+          {sportman && stepsSportman === 0 && <Paso4Jugador />}
           {profesional && stepsProfesional === 0 && <Paso3Profesional />}
-          {stepsSportman === 1 && <Paso4Jugador />}
+          {stepsSportman === 1 && <Paso3Jugador />}
           {stepsProfesional === 1 && <Paso4Profesional />}
 
           <View style={styles.botonesRoles}>
@@ -261,9 +278,7 @@ const styles = StyleSheet.create({
   },
   paso1: {
     fontSize: FontSize.t1TextSMALL_size,
-    // lineHeight: 17,
     color: Color.bALONCESTO,
-    // width: 393,
     textAlign: 'center'
   },
   escogeTuRol: {

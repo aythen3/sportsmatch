@@ -16,6 +16,7 @@ import MoreDetailsAboutMe from '../components/MoreDetailsAboutMe'
 
 const PerfilDatosPropioClub = () => {
   const { isSportman } = useSelector((state) => state.users)
+  const { club } = useSelector((state) => state.clubs)
   const navigation = useNavigation()
   const [selectComponents, setSelectComponents] = useState('perfil')
 
@@ -24,13 +25,13 @@ const PerfilDatosPropioClub = () => {
       <ScrollView>
         <View>
           <HeaderPerfil
-            name={isSportman ? 'Cristian Perez' : 'Unio Espotiva Mataro'}
+            name={isSportman ? 'Cristian Perez' : club.name}
             sport={'Baloncesto'}
             position={isSportman ? 'Pivot' : ''}
             description={
               isSportman
                 ? 'Jugando Al Unio Esportiva desde 2011'
-                : 'Presidente Joan Pi'
+                : club.description
             }
             myPerfil={true}
             setSelectComponents={setSelectComponents}
@@ -62,8 +63,12 @@ const PerfilDatosPropioClub = () => {
           )}
           {!isSportman && (
             <View>
-              <CirclePerfilClub />
-              <PlayingFieldPerfilClub />
+              <CirclePerfilClub year={club.year} />
+              <PlayingFieldPerfilClub
+                fieldName={club.field}
+                city={club.city}
+                country={club.country}
+              />
               <MoreDetailsAboutMe
                 title="Descripcion del club"
                 description="Apasionado lider competitivo. Mi carrera en baloncesto refleja

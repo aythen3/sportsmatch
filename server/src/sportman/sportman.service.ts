@@ -55,6 +55,7 @@ export class SportmanService {
     // Devolver el sportman encontrado
     return sportman;
   }
+
   /**
    * Método para actualizar un deportista por su ID
    * @param {string} id - El ID del deportista a actualizar

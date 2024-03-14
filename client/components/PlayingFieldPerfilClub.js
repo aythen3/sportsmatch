@@ -3,7 +3,7 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
-const PlayingFieldPerfilClub = () => {
+const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
   return (
     <View style={styles.moduloCampo}>
       {/* <View style={[styles.fondoModulo, styles.borderBorder]} /> */}
@@ -20,14 +20,13 @@ const PlayingFieldPerfilClub = () => {
           <View style={styles.bloqueInformacion}>
             <Text style={styles.nombreDelEstadio}>{`Nombre del 
 estadio o pavellón
-Palau Municipals 
-d’Esports Josep Mora`}</Text>
+${fieldName}`}</Text>
             <Text
               style={[styles.poblacinMatar, styles.pasEspaaTypo]}
             >{`Población
-Mataró`}</Text>
+${city}`}</Text>
             <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>{`País
-España`}</Text>
+${country}`}</Text>
           </View>
         </View>
       </View>

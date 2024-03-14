@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
-const CirclePerfilClub = () => {
+const CirclePerfilClub = ({ year }) => {
   return (
     <View
       style={{
@@ -25,7 +25,7 @@ const CirclePerfilClub = () => {
           alignItems: 'center'
         }}
       >
-        <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+        <Text style={[styles.taxto1, styles.taxto1Clr]}>{year}</Text>
         <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
       </View>
       <View
@@ -39,7 +39,7 @@ const CirclePerfilClub = () => {
           alignItems: 'center'
         }}
       >
-        <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+        <Text style={[styles.taxto1, styles.taxto1Clr]}>{year}</Text>
         <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
       </View>
       <View
@@ -53,7 +53,7 @@ const CirclePerfilClub = () => {
           alignItems: 'center'
         }}
       >
-        <Text style={[styles.taxto1, styles.taxto1Clr]}>1920</Text>
+        <Text style={[styles.taxto1, styles.taxto1Clr]}>{year}</Text>
         <Text style={[styles.texto2, styles.taxto1Clr]}>Fundación</Text>
       </View>
     </View>
