@@ -6,7 +6,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,6 +31,10 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('/child/:id')
+  findChild(@Param('id') id: string, @Query('type') type: string) {
+    return this.userService.findChild(id, type);
+  }
   // Método para encontrar un usuario por su ID
   @Get(':id')
   findOne(@Param('id') id: string) {
