@@ -49,6 +49,27 @@ export class UserService {
     // Devolver el nuevo perfil del usuario
     return newProfile;
   }
+  public async findChild(id: string, type: string) {
+    let user: UserEntity | undefined;
+
+    if (type === 'sportman') {
+      console.log('entre');
+      user = await this.userRepository
+        .createQueryBuilder('user')
+        .where({ id })
+        .leftJoinAndSelect('user.sportman', 'sportman')
+        .getOne();
+    } else if (type === 'club') {
+      user = await this.userRepository
+        .createQueryBuilder('user')
+        .where({ id })
+        .leftJoinAndSelect('user.club', 'club')
+        .getOne();
+    }
+
+    // Devolver el sportman encontrado
+    return user;
+  }
 
   // Método para obtener todos los usuarios
   public async findAll() {
