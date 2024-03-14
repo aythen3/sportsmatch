@@ -18,7 +18,7 @@ export class PostEntity extends BaseEntity {
   author: UserEntity;
 
   @Column()
-  authorType: string; // Puedes definir un enum si prefieres
+  authorType: string; // sportMan o club
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
