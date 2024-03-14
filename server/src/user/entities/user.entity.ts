@@ -1,7 +1,10 @@
 import { ClubEntity } from 'src/club/entities/club.entity';
+import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { BaseEntity } from 'src/config/base.entity';
+import { LikeEntity } from 'src/like/entities/like.entity';
+import { PostEntity } from 'src/post/entities/post.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
@@ -27,4 +30,13 @@ export class UserEntity extends BaseEntity {
   @OneToOne(() => SportmanEntity, { nullable: true })
   @JoinColumn()
   sportman: SportmanEntity | null;
+
+  @OneToMany(() => PostEntity, (post) => post.author)
+  posts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, (post) => post.author)
+  comments: CommentEntity[];
+
+  @OneToMany(() => LikeEntity, (post) => post.author)
+  likes: LikeEntity[];
 }
