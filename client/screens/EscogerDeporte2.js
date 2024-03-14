@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import {
   ScrollView,
@@ -12,27 +12,68 @@ import Lines from '../components/Lines'
 import Input from '../components/Input'
 import { useNavigation } from '@react-navigation/core'
 
-const EscogerDeporte2 = () => {
+const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
   const navigation = useNavigation()
+
+  const handleValues = (field, value) => {
+    setClubValues((prev) => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  console.log(clubValues)
 
   return (
     <View>
       <View>
         <View>
-          <Input title="Nombre de club" placeholderText="union" />
-          <Input title="Poblacion" placeholderText="union" isAccordeon={true} />
-          <Input title="Pais" placeholderText="España" isAccordeon={true} />
+          <Input
+            title="Nombre de club"
+            placeholderText="union"
+            field="name"
+            value={clubValues.name}
+            onValues={handleValues}
+          />
+          <Input
+            title="Poblacion"
+            placeholderText="union"
+            isAccordeon={true}
+            field="city"
+            value={clubValues.city}
+            onValues={handleValues}
+          />
+          <Input
+            title="Pais"
+            placeholderText="España"
+            isAccordeon={true}
+            field="country"
+            value={clubValues.country}
+            onValues={handleValues}
+          />
           <Input
             title="Nombre del estadio, campo o pavellón"
             placeholderText="Palau Municipal d’Esports Josep Mora"
             isAccordeon={true}
+            field="field"
+            value={clubValues.field}
+            onValues={handleValues}
           />
           <Input
             title="Año de fundacion"
             placeholderText="1920"
             isAccordeon={true}
+            field="year"
+            value={clubValues.year}
+            onValues={handleValues}
           />
-          <Input title="Aforo" placeholderText="300 personas" />
+          <Input
+            title="Aforo"
+            placeholderText="300 personas"
+            field="capacity"
+            value={clubValues.capacity}
+            onValues={handleValues}
+          />
 
           <Input
             title="Descripbe tu club"
@@ -41,6 +82,9 @@ const EscogerDeporte2 = () => {
         sdfkj hdfjksjdhf shdfjksjdhf sdkfjhsd fsjdkh "
             isMultiLine={true}
             isLast={true}
+            field="description"
+            value={clubValues.description}
+            onValues={handleValues}
           />
           {/* <TouchableOpacity
               style={{

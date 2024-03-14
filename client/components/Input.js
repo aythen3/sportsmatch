@@ -7,7 +7,10 @@ function Input({
   placeholderText,
   isAccordeon,
   isMultiLine,
-  changeColor
+  changeColor,
+  value,
+  onValues,
+  field
 }) {
   return (
     <View
@@ -51,6 +54,8 @@ function Input({
               position: 'relative',
               backgroundColor: changeColor ? 'red' : 'transparent'
             }}
+            value={value}
+            onChangeText={(value) => onValues(field, value)}
           />
           {isAccordeon && (
             <Image
