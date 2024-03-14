@@ -18,13 +18,11 @@ export class PositionService {
 
   public async create(createPositionDto: CreatePositionDto) {
     const newPosition = await this.positionRepository.save(createPositionDto);
-
-    // Si no se pudo crear el nuevo perfil, lanzar una excepción
+    // Si no se pudo crear el nuevo position, lanzar una excepción
     if (!newPosition) {
       throw new HttpException('The new position is not created', 501);
     }
-
-    // Devolver el nuevo perfil del usuario
+    // Devolver el nuevo position del usuario
     return newPosition;
   }
 
