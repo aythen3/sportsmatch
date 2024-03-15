@@ -40,6 +40,23 @@ const Paso1 = () => {
     description: ''
   })
 
+  const [profesionalValues, setProfesionalValues] = useState({
+    rol: '',
+    sport: sport,
+    yearsOfExperience: '',
+    city: city,
+    actualClub: '',
+    description: ''
+  })
+
+  useEffect(() => {
+    setProfesionalValues((prevValues) => ({
+      ...prevValues,
+      sport: sport,
+      city: city
+    }))
+  }, [sport, city])
+
   useEffect(() => {
     setSportmanValues((prevValues) => ({
       ...prevValues,
@@ -90,6 +107,18 @@ const Paso1 = () => {
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
+      if (profesional && stepsProfesional === 0) {
+        const body = {
+          sportmanData: {
+            type: selectedRole === 'Jugador' ? 'player' : 'coach',
+            info: profesionalValues,
+            club: null
+          },
+
+          userId: user.user.id
+        }
+        dispatch(createSportman(body))
+      }
 
       if (stepsProfesional === 1) {
         setStepsProfesional(0)
@@ -223,7 +252,12 @@ const Paso1 = () => {
               setSportmanValues={setSportmanValues}
             />
           )}
-          {profesional && stepsProfesional === 0 && <Paso3Profesional />}
+          {profesional && stepsProfesional === 0 && (
+            <Paso3Profesional
+              profesionalValues={profesionalValues}
+              setProfesionalValues={setProfesionalValues}
+            />
+          )}
           {stepsSportman === 1 && <Paso3Jugador />}
           {stepsProfesional === 1 && <Paso4Profesional />}
 

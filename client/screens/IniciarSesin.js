@@ -32,8 +32,12 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    if (user.accesToken) {
-      navigation.navigate('stepsClub')
+    if (user.user?.club || user.user?.sportman) {
+      navigation.navigate('SiguiendoJugadores')
+    } else {
+      if (user.accesToken) {
+        navigation.navigate('stepsClub')
+      }
     }
   }, [user])
 
@@ -42,6 +46,8 @@ const IniciarSesin = () => {
       dispatch(login(valuesUser))
     }
   }
+
+  console.log('USER EN LOGIN', user)
 
   return (
     <ScrollView style={styles.iniciarSesin}>

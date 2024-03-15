@@ -8,6 +8,8 @@ const usersSlices = createSlice({
     sportmanGender: '',
     birthdate: '',
     city: '',
+    profesionalType: '',
+
     error: false,
     loading: false,
     isSportman: true,
@@ -40,6 +42,9 @@ const usersSlices = createSlice({
     },
     setCity: (state, action) => {
       state.city = action.payload
+    },
+    setProfesionalType: (state, action) => {
+      state.profesionalType = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -60,7 +65,12 @@ const usersSlices = createSlice({
   }
 })
 
-export const { setIsSpotMan, setGender, setBirthdate, setCity } =
-  usersSlices.actions
+export const {
+  setIsSpotMan,
+  setGender,
+  setBirthdate,
+  setCity,
+  setProfesionalType
+} = usersSlices.actions
 
 export default usersSlices.reducer
