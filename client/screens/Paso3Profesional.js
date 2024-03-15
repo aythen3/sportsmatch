@@ -7,16 +7,19 @@ import Lines from '../components/Lines'
 import Input from '../components/Input'
 import CustomModal from '../components/modals/CustomModal'
 import Acordeon from '../components/Acordeon'
+import { useDispatch } from 'react-redux'
+import { setCity, setProfesionalType } from '../redux/slices/users.slices'
 
-const Paso3Profesional = () => {
+const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedProfesional, setSelectedProfesional] = useState(null)
   const [cityModal, setCityModal] = useState(false)
   const [selectedCity, setSelectedCity] = useState(null)
 
-  const opcionesProfesional = ['Entrenador']
+  const opcionesProfesional = ['Entrenador', 'Masajista', 'Ayudante de campo']
   const opcionesResidencia = [
     'Barcelona',
     'Madrid',
@@ -40,12 +43,23 @@ const Paso3Profesional = () => {
   }
 
   const handleSelectProfesional = (profesional) => {
+    dispatch(setProfesionalType(profesional))
     setSelectedProfesional(profesional)
   }
 
   const handleSelectCity = (city) => {
+    dispatch(setCity(city))
     setSelectedCity(city)
   }
+
+  const handlesValues = (field, value) => {
+    setProfesionalValues((prev) => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  console.log('PROBANDO', profesionalValues)
 
   return (
     <View style={styles.paso6}>
@@ -63,10 +77,16 @@ const Paso3Profesional = () => {
           options={opcionesProfesional}
         />
       )}
-      <Input title="Años en activo" placeholderText="2000" />
+      <Input
+        title="Años en activo"
+        placeholderText="+5"
+        field="yearsOfExperience"
+        onValues={handlesValues}
+        value={profesionalValues.yearsOfExperience}
+      />
       <Acordeon
         title="Lugar de residencia"
-        placeholderText="Barcelona"
+        placeholderText={profesionalValues.city}
         isAccordeon={true}
         open={openCityModal}
       />
@@ -82,11 +102,17 @@ const Paso3Profesional = () => {
       <Input
         title="Club actual"
         placeholderText="Rellena solo si estas en algun club"
+        field="actualClub"
+        onValues={handlesValues}
+        value={profesionalValues.actualClub}
       />
       <Input
         title="Como te defines como profesional"
         placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
         isMultiLine={true}
+        field="description"
+        onValues={handlesValues}
+        value={profesionalValues.description}
       />
     </View>
   )

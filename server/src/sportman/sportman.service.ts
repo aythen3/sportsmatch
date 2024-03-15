@@ -19,6 +19,8 @@ export class SportmanService {
 
   public async create(createSportmanDto: CreateSportmanDto) {
     const { sportmanData, userId } = createSportmanDto;
+    console.log('SERVICE', createSportmanDto);
+
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new HttpException('the user not found', 404);

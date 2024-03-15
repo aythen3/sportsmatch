@@ -24,6 +24,8 @@ export class SportmanController {
 
   @Post()
   public async create(@Body() createSportmanDto: CreateSportmanDto) {
+    console.log('CONTROLLER', createSportmanDto);
+
     return await this.sportmanService.create(createSportmanDto);
   }
 

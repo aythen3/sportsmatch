@@ -5,9 +5,17 @@ import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
 import AñoNacimientoModal from './modals/AñoNacimientoModal'
 import Acordeon from './Acordeon'
+import { useDispatch } from 'react-redux'
+import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
 
-const SkillSeleccion = ({ editable, setEditable }) => {
+const SkillSeleccion = ({
+  editable,
+  setEditable,
+  sportmanValues,
+  setSportmanValues
+}) => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedGenero, setSelectedGenero] = useState(null)
@@ -36,6 +44,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
   }
 
   const handleSelectAñoNacimiento = (año) => {
+    dispatch(setBirthdate(año))
     setSelectedAñoNacimiento(año)
   }
 
@@ -49,6 +58,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
   }
 
   const handleSelectGenero = (genero) => {
+    dispatch(setGender(genero))
     setSelectedGenero(genero)
   }
 
@@ -56,7 +66,15 @@ const SkillSeleccion = ({ editable, setEditable }) => {
     setCityModal(!cityModal)
   }
   const handleSelectCity = (city) => {
+    dispatch(setCity(city))
     setSelectedCity(city)
+  }
+
+  const descriptionSportMan = (field, value) => {
+    setSportmanValues((prev) => ({
+      ...prev,
+      [field]: value
+    }))
   }
 
   return (
@@ -115,6 +133,8 @@ const SkillSeleccion = ({ editable, setEditable }) => {
             style={styles.textInput}
             placeholder="Escribe sólo si estas en algún club"
             placeholderTextColor={'#999'}
+            value={sportmanValues.actualClub}
+            onChangeText={(value) => descriptionSportMan('actualClub', value)}
           />
         </View>
       </View>
@@ -127,6 +147,8 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               tu personalidad en el campo..."
             placeholderTextColor={'#999'}
             multiline={true}
+            value={sportmanValues.description}
+            onChangeText={(value) => descriptionSportMan('description', value)}
           />
         </View>
       </View>
