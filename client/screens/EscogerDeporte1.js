@@ -1,9 +1,72 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontSize, Color, FontFamily, Border, Padding } from '../GlobalStyles'
+import * as ImagePicker from 'expo-image-picker'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateImgClub } from '../redux/actions/club'
 
 const EscogerDeporte1 = () => {
+  const dispatch = useDispatch()
+  const { club } = useSelector((state) => state.clubs)
+  const [image1, setImage1] = useState(null)
+  const [image2, setImage2] = useState(null)
+
+  console.log('clubbbb', club)
+  const pickImage = async (setImage) => {
+    let result = {}
+    await ImagePicker.requestMediaLibraryPermissionsAsync()
+    result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+      // base64: true
+    })
+    // const resultImage = result.assets[0].base64
+    // if (result?.assets[0].base64.startWith('data:image/jpeg;base64,')) {
+    //   setSelectedImage(result?.assets[0].base64)
+    // } else {
+    // setImage(result?.assets[0])
+    // }
+
+    if (!result.canceled && result.assets.length >= 0) {
+      const firstImage = result.assets[0]
+
+      const imageObject = {
+        fieldname: 'files',
+        originalname:
+          firstImage.fileName ||
+          (result.assets[0].uri.split('/').pop() || '').split('?')[0],
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        buffer: null,
+        size: firstImage.fileSize
+      }
+
+      setImage(imageObject)
+    } else {
+      console.log('No se seleccionó ninguna imagen.')
+    }
+  }
+
+  const files = new FormData()
+  files.append('files', image1)
+  files.append('files', image2)
+
+  const id = club.id
+
+  const uploadImages = () => {
+    console.log('EJECUTO SUBMIT', files, id)
+    const body = {
+      files,
+      id
+    }
+    dispatch(updateImgClub(body))
+  }
+
+  console.log('imagen 1', image1)
+
   return (
     <View style={styles.escogerDeporte}>
       <Image
@@ -11,11 +74,14 @@ const EscogerDeporte1 = () => {
         contentFit="cover"
         source={require('../assets/circulo.png')}
       />
-      <View style={[styles.rectangleView, styles.rectangleViewLayout]}>
+      <TouchableOpacity
+        style={[styles.rectangleView, styles.rectangleViewLayout]}
+        onPress={() => pickImage(setImage1)}
+      >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
           Subir foto de perfil
         </Text>
-      </View>
+      </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
 
       <View
@@ -27,11 +93,14 @@ const EscogerDeporte1 = () => {
           borderRadius: 8
         }}
       />
-      <View style={[styles.rectangleView, styles.rectangleViewLayout]}>
+      <TouchableOpacity
+        style={[styles.rectangleView, styles.rectangleViewLayout]}
+        onPress={() => pickImage(setImage2)}
+      >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
           Subir foto de portada
         </Text>
-      </View>
+      </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
 
       {/* <View style={[styles.escogerDeporteChild2, styles.rectangleViewLayout]} /> */}
@@ -46,6 +115,12 @@ const EscogerDeporte1 = () => {
         contentFit="cover"
         source={require('../assets/line-9.png')}
       /> */}
+      <Text
+        style={{ width: '100%', height: 60, backgroundColor: 'green' }}
+        onPress={uploadImages}
+      >
+        Enviar Imagen
+      </Text>
     </View>
   )
 }

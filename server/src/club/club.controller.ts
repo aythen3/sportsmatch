@@ -38,6 +38,9 @@ export class ClubController {
     @Param('id') id: string,
     @UploadedFiles() files: any[]
   ) {
+    console.log('CONTROLLER FILES', files);
+    console.log('CONTROLLER ID', id);
+
     if (!files || files.length !== 2) {
       throw new Error('Debes proporcionar dos archivos.');
     }
