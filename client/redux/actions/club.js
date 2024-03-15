@@ -10,16 +10,19 @@ export const createClub = createAsyncThunk('create/club', async (body) => {
   }
 })
 
-export const updateImgClub = createAsyncThunk('upImages/club', async (body) => {
-  try {
-    const { files, id } = body
+export const updateImgClub = createAsyncThunk(
+  'upImages/club',
+  async ({ id, files }) => {
+    try {
+      // const { files, id } = body
 
-    console.log('entreeeee', id, files)
+      console.log('entreeeee', id, files)
 
-    const { data } = await axiosInstance.patch(`club/img/${id}`, files)
-    console.log('RESPUESTRAAAAAA', data)
-    return data
-  } catch (error) {
-    throw new Error(error)
+      const { data } = await axiosInstance.patch(`club/img/${id}`, files)
+      console.log('RESPUESTRAAAAAA', data)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
   }
-})
+)

@@ -5,6 +5,9 @@ const usersSlices = createSlice({
   name: 'users',
   initialState: {
     user: {},
+    sportmanGender: '',
+    birthdate: '',
+    city: '',
     error: false,
     loading: false,
     isSportman: true,
@@ -28,6 +31,15 @@ const usersSlices = createSlice({
   reducers: {
     setIsSpotMan: (state, action) => {
       state.isSportman = action.payload
+    },
+    setGender: (state, action) => {
+      state.sportmanGender = action.payload
+    },
+    setBirthdate: (state, action) => {
+      state.birthdate = action.payload
+    },
+    setCity: (state, action) => {
+      state.city = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -48,6 +60,7 @@ const usersSlices = createSlice({
   }
 })
 
-export const { setIsSpotMan } = usersSlices.actions
+export const { setIsSpotMan, setGender, setBirthdate, setCity } =
+  usersSlices.actions
 
 export default usersSlices.reducer

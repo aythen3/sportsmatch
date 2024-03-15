@@ -6,7 +6,7 @@ import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import DetallesSeleccion from '../components/DetallesSeleccion'
 import Lines from '../components/Lines'
 
-const Paso4Jugador = () => {
+const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
   const navigation = useNavigation()
 
   return (
@@ -42,7 +42,10 @@ const Paso4Jugador = () => {
           </View>
         </View>
 
-        <DetallesSeleccion />
+        <DetallesSeleccion
+          sportmanValues={sportmanValues}
+          setSportmanValues={setSportmanValues}
+        />
       </View>
     </ScrollView>
   )

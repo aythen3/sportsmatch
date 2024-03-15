@@ -12,7 +12,6 @@ const EscogerDeporte1 = () => {
   const [image1, setImage1] = useState(null)
   const [image2, setImage2] = useState(null)
 
-  console.log('clubbbb', club)
   const pickImage = async (setImage) => {
     let result = {}
     await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -56,8 +55,7 @@ const EscogerDeporte1 = () => {
 
   const id = club.id
 
-  const uploadImages = () => {
-    console.log('EJECUTO SUBMIT', files, id)
+  const submit = () => {
     const body = {
       files,
       id
@@ -65,7 +63,7 @@ const EscogerDeporte1 = () => {
     dispatch(updateImgClub(body))
   }
 
-  console.log('imagen 1', image1)
+  console.log('CLUB', club)
 
   return (
     <View style={styles.escogerDeporte}>
@@ -115,12 +113,14 @@ const EscogerDeporte1 = () => {
         contentFit="cover"
         source={require('../assets/line-9.png')}
       /> */}
-      <Text
-        style={{ width: '100%', height: 60, backgroundColor: 'green' }}
-        onPress={uploadImages}
-      >
-        Enviar Imagen
-      </Text>
+      <TouchableOpacity onPress={submit}>
+        <Text
+          style={{ width: '100%', height: 60, backgroundColor: 'green' }}
+          // onPress={uploadImages}
+        >
+          Enviar Imagen
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }

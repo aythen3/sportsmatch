@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   Pressable,
@@ -15,15 +15,42 @@ import Paso3Profesional from './Paso3Profesional'
 import Paso3Jugador from './Paso3Jugador'
 import Paso4Jugador from './Paso4Jugador'
 import Paso4Profesional from './Paso4Profesional'
+import { useDispatch, useSelector } from 'react-redux'
+import { createSportman } from '../redux/actions/sportman'
 
 const Paso1 = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const { sport } = useSelector((state) => state.sports)
+  const { user, sportmanGender, birthdate, city } = useSelector(
+    (state) => state.users
+  )
 
   const [selectedRole, setSelectedRole] = useState(null)
   const [sportman, setSportman] = useState(false)
   const [stepsSportman, setStepsSportman] = useState(0)
   const [profesional, setProfesional] = useState(false)
   const [stepsProfesional, setStepsProfesional] = useState(0)
+  const [sportmanValues, setSportmanValues] = useState({
+    sport: sport,
+    gender: sportmanGender,
+    birthdate: birthdate,
+    city: city,
+    actualClub: '',
+    description: ''
+  })
+
+  useEffect(() => {
+    setSportmanValues((prevValues) => ({
+      ...prevValues,
+      gender: sportmanGender,
+      sport: sport,
+      birthdate: birthdate,
+      city: city
+    }))
+  }, [sport, sportmanGender, birthdate, city])
+
+  console.log('TYPE', selectedRole)
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role)
@@ -44,10 +71,22 @@ const Paso1 = () => {
   const handleNavigation = () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
+      if (sportman && stepsSportman === 0) {
+        const body = {
+          sportmanData: {
+            type: selectedRole === 'Jugador' ? 'player' : 'coach',
+            info: sportmanValues,
+            club: null
+          },
+
+          userId: user.user.id
+        }
+        dispatch(createSportman(body))
+      }
 
       if (stepsSportman === 1) {
         setStepsSportman(0)
-        navigation.navigate('SiguiendoJugadores')
+        // navigation.navigate('SiguiendoJugadores')
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
@@ -57,15 +96,6 @@ const Paso1 = () => {
         navigation.navigate('SiguiendoJugadores')
       }
     }
-  }
-
-  const data = {
-    name: '',
-    apellido: '',
-    sexo: '',
-    fechaNacimiento: '',
-    telefono: '',
-    direccion: ''
   }
 
   return (
@@ -187,7 +217,12 @@ const Paso1 = () => {
             </View>
           )}
 
-          {sportman && stepsSportman === 0 && <Paso4Jugador />}
+          {sportman && stepsSportman === 0 && (
+            <Paso4Jugador
+              sportmanValues={sportmanValues}
+              setSportmanValues={setSportmanValues}
+            />
+          )}
           {profesional && stepsProfesional === 0 && <Paso3Profesional />}
           {stepsSportman === 1 && <Paso3Jugador />}
           {stepsProfesional === 1 && <Paso4Profesional />}
