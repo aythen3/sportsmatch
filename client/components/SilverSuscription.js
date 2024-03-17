@@ -15,7 +15,7 @@ const SilverSuscription = () => {
             justifyContent: 'center'
           }}
         >
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>Silver</Text>
+          <Text style={[styles.freemium2, styles.ofertasTypo]}>Freemium</Text>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
@@ -138,10 +138,11 @@ const styles = StyleSheet.create({
   },
   gratuito: {
     fontSize: FontSize.size_21xl,
-    fontFamily: FontFamily.t4TEXTMICRO
+    fontFamily: FontFamily.t4TEXTMICRO,
+    color: Color.colorSilver
   },
   timeTypo: {
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center'
   },
   frameView: {

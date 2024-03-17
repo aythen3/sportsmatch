@@ -49,7 +49,7 @@ function Acordeon({
             }}
             onPress={open}
           >
-            {title}
+            {placeholderText}
           </Text>
           {isAccordeon && (
             <Image

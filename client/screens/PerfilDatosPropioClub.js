@@ -20,8 +20,6 @@ const PerfilDatosPropioClub = () => {
   const navigation = useNavigation()
   const [selectComponents, setSelectComponents] = useState('perfil')
 
-  console.log('sportmannnnnnnn', isSportman)
-
   return (
     <View style={styles.perfilDatosPropioClub}>
       <ScrollView>
@@ -73,10 +71,7 @@ const PerfilDatosPropioClub = () => {
               />
               <MoreDetailsAboutMe
                 title="Descripcion del club"
-                description="Apasionado lider competitivo. Mi carrera en baloncesto refleja
-        dedicacion, habilidades excepcionales y la capacidad de motivar al
-        equipo . Me dedico a ello desde que tengo 6 años y llevo toda la vida en
-        el mismo club, el CF Mataro"
+                description={club.description}
               />
             </View>
           )}

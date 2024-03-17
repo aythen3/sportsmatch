@@ -40,6 +40,11 @@ const MiSuscripcin = () => {
 
         <View style={{ marginTop: 30, gap: 30 }}>
           <SilverSuscription />
+          <View>
+            <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+              Otros planes
+            </Text>
+          </View>
           <GoldSuscription />
           <StarSuscription />
         </View>

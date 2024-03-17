@@ -2,14 +2,20 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
-import Input from '../components/Input'
+import {
+  FontFamily,
+  FontSize,
+  Color,
+  Border,
+  Padding
+} from '../../GlobalStyles'
+import Input from '../../components/Input'
 
-const Contrasea = () => {
+const CorreoElectrnico = () => {
   const navigation = useNavigation()
 
   return (
-    <View style={styles.contrasea}>
+    <View style={styles.correoElectrnico}>
       <View style={styles.cabezeraParent}>
         <View style={styles.loremIpsumFlexBox}>
           <Pressable
@@ -19,22 +25,26 @@ const Contrasea = () => {
             <Image
               style={styles.icon}
               contentFit="cover"
-              source={require('../assets/coolicon3.png')}
+              source={require('../../assets/coolicon3.png')}
             />
           </Pressable>
           <Pressable
-            style={styles.contrasea1}
+            style={styles.correoElecrnico}
             onPress={() => navigation.goBack()}
           >
-            <Text style={[styles.contrasea2, styles.textTypo]}>Contraseña</Text>
+            <Text
+              style={[styles.correoElecrnico1, styles.correoElecrnico1Typo]}
+            >
+              Correo elecrónico
+            </Text>
           </Pressable>
         </View>
       </View>
 
-      <View View style={{ marginTop: 30 }}>
-        <Input title="Contraseña" placeholderText="***********" />
-        <Input title="Nueva contraseña" />
-        <Input title="Repetir nueva contraseña" />
+      <View style={{ marginTop: 30 }}>
+        <Input title="E-mail" placeholderText="loremipsum@loremipsum.com" />
+        <Input title="Nuevo e-mail" />
+        <Input title="Repetir nuevo e-mail" />
       </View>
 
       <View style={styles.boton}>
@@ -47,31 +57,26 @@ const Contrasea = () => {
 }
 
 const styles = StyleSheet.create({
-  contraseaLayout: {
+  correoLayout: {
     maxHeight: '100%',
     position: 'absolute'
   },
   loremIpsumFlexBox: {
     alignItems: 'center',
-    flexDirection: 'row',
-    gap: 10
+    flexDirection: 'row'
   },
-  cabezeraParent: {
-    marginTop: 30,
-    marginLeft: 15
-    // left: 15
-  },
-  textTypo: {
+  correoElecrnico1Typo: {
+    textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  contraseaTypo: {
+  emailTypo: {
     height: 23,
     fontSize: FontSize.t2TextSTANDARD_size,
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  textPosition: {
+  starusPosition: {
     top: 10,
     left: 15
   },
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
     width: 61,
     position: 'absolute'
   },
-  contraseaChild: {
+  correoElectrnicoChild: {
     height: '112.16%',
     width: '980.1%',
     top: '-9.15%',
@@ -114,19 +119,20 @@ const styles = StyleSheet.create({
     width: 9,
     height: 15
   },
-  contrasea2: {
+  correoElecrnico1: {
     fontSize: FontSize.h3TitleMEDIUM_size,
+    lineHeight: 22,
     fontWeight: '500',
     color: Color.wHITESPORTSMATCH
   },
-  contrasea1: {
-    // marginLeft: 9
+  correoElecrnico: {
+    marginLeft: 9
   },
 
-  contrasea3: {
+  email1: {
     width: 360
   },
-  text: {
+  loremipsumloremipsumcom: {
     color: Color.gREY2SPORTSMATCH,
     width: 313,
     fontSize: FontSize.t2TextSTANDARD_size,
@@ -142,11 +148,11 @@ const styles = StyleSheet.create({
     width: 360,
     left: 0
   },
-  parent: {
+  loremipsumloremipsumcomParent: {
     alignSelf: 'stretch',
     flex: 1
   },
-  contraseaParent: {
+  emailGroup: {
     height: 63,
     left: 0,
     top: 0,
@@ -163,7 +169,7 @@ const styles = StyleSheet.create({
     height: 63,
     width: 360
   },
-  nuevaContrasea: {
+  nuevoEmail: {
     alignSelf: 'stretch'
   },
   rectangleWrapper: {
@@ -199,8 +205,12 @@ const styles = StyleSheet.create({
   frameParent: {
     marginTop: 64
   },
-
-  contraseaItem: {
+  cabezeraParent: {
+    marginTop: 30,
+    marginLeft: 15
+    // left: 15
+  },
+  correoElectrnicoItem: {
     marginLeft: -74,
     top: 831,
     left: '50%',
@@ -270,11 +280,11 @@ const styles = StyleSheet.create({
     top: 10,
     left: 15
   },
-  contrasea: {
+  correoElectrnico: {
     width: '100%',
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 
-export default Contrasea
+export default CorreoElectrnico

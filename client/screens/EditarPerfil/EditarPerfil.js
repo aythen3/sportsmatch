@@ -2,7 +2,7 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, FontFamily, Color, Border } from '../GlobalStyles'
+import { FontSize, FontFamily, Color, Border } from '../../GlobalStyles'
 
 const EditarPerfil = () => {
   const navigation = useNavigation()
@@ -10,37 +10,36 @@ const EditarPerfil = () => {
   return (
     <View style={styles.editarPerfil}>
       <View style={styles.groupParent}>
-        <View style={styles.frameWrapper}>
-          <View style={[styles.cooliconParent, styles.starusPosition]}>
-            <Pressable
-              style={styles.coolicon}
-              onPress={() => navigation.goBack()}
-            >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require('../assets/coolicon3.png')}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.editarPerfil1}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={styles.editarPerfil2}>Editar perfil</Text>
-            </Pressable>
-          </View>
+        <View style={[styles.cooliconParent, styles.starusPosition]}>
+          <Pressable
+            style={styles.coolicon}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={styles.icon}
+              contentFit="cover"
+              source={require('../../assets/coolicon3.png')}
+            />
+          </Pressable>
+          <Pressable
+            style={styles.editarPerfil1}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.editarPerfil2}>Editar perfil</Text>
+          </Pressable>
         </View>
+
         <View style={styles.defineTusSkillsParent}>
           <Text
             style={[styles.defineTusSkills, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('Paso3Jugador')}
+            onPress={() => navigation.navigate('EditarSkills')}
           >
             Define tus skills
           </Text>
           <View style={styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('Paso4Jugador')}
+            onPress={() => navigation.navigate('DetallesUsuario')}
           >
             Detalles del usuario
           </Text>

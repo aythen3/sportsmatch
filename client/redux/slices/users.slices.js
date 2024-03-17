@@ -5,6 +5,11 @@ const usersSlices = createSlice({
   name: 'users',
   initialState: {
     user: {},
+    sportmanGender: '',
+    birthdate: '',
+    city: '',
+    profesionalType: '',
+
     error: false,
     loading: false,
     isSportman: true,
@@ -28,6 +33,18 @@ const usersSlices = createSlice({
   reducers: {
     setIsSpotMan: (state, action) => {
       state.isSportman = action.payload
+    },
+    setGender: (state, action) => {
+      state.sportmanGender = action.payload
+    },
+    setBirthdate: (state, action) => {
+      state.birthdate = action.payload
+    },
+    setCity: (state, action) => {
+      state.city = action.payload
+    },
+    setProfesionalType: (state, action) => {
+      state.profesionalType = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -37,7 +54,6 @@ const usersSlices = createSlice({
         state.error = false
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.loading = false
         state.user = action.payload
         state.error = false
@@ -49,6 +65,12 @@ const usersSlices = createSlice({
   }
 })
 
-export const { setIsSpotMan } = usersSlices.actions
+export const {
+  setIsSpotMan,
+  setGender,
+  setBirthdate,
+  setCity,
+  setProfesionalType
+} = usersSlices.actions
 
 export default usersSlices.reducer

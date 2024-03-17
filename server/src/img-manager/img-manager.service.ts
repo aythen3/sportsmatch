@@ -15,6 +15,8 @@ export class ImgManagerService {
   constructor() {}
 
   public async imgUpload(file) {
+    console.log('FILEEEE', file);
+
     try {
       if (!file) {
         throw new Error('No se proporcionó ningún archivo.');

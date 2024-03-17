@@ -20,6 +20,7 @@ import { createClub } from '../redux/actions/club'
 const StepsClub = () => {
   const navigation = useNavigation()
   const { user } = useSelector((state) => state.users)
+  const { sport } = useSelector((state) => state.sports)
   const { club } = useSelector((state) => state.clubs)
   const dispatch = useDispatch()
   const { isSportman } = useSelector((state) => state.users)
@@ -31,7 +32,8 @@ const StepsClub = () => {
     field: '',
     year: '',
     capacity: '',
-    description: ''
+    description: '',
+    sport
   })
 
   const hadleIndex = (value) => {

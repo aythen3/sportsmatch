@@ -23,7 +23,6 @@ export class ClubService {
    */
   public async create(createClubDto: CreateClubDto) {
     const { clubData, userId } = createClubDto;
-    console.log('CLUBBB', createClubDto);
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new HttpException('the user not found', 404);
