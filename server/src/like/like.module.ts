@@ -6,6 +6,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from './entities/like.entity';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { LikeEntity } from './entities/like.entity';
     ])
   ],
   controllers: [LikeController],
-  providers: [LikeService]
+  providers: [LikeService, PostService]
 })
 export class LikeModule {}
