@@ -5,6 +5,8 @@ import { FontSize, Color, FontFamily, Border, Padding } from '../GlobalStyles'
 import * as ImagePicker from 'expo-image-picker'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateImgClub } from '../redux/actions/club'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const EscogerDeporte1 = () => {
   const dispatch = useDispatch()
@@ -12,65 +14,61 @@ const EscogerDeporte1 = () => {
   const [image1, setImage1] = useState(null)
   const [image2, setImage2] = useState(null)
 
-  const pickImage = async (setImage) => {
-    let result = {}
-    await ImagePicker.requestMediaLibraryPermissionsAsync()
-    result = await ImagePicker.launchImageLibraryAsync({
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1
-      // base64: true
     })
-    // const resultImage = result.assets[0].base64
-    // if (result?.assets[0].base64.startWith('data:image/jpeg;base64,')) {
-    //   setSelectedImage(result?.assets[0].base64)
-    // } else {
-    // setImage(result?.assets[0])
-    // }
 
-    if (!result.canceled && result.assets.length >= 0) {
-      const firstImage = result.assets[0]
+    console.log('result', result)
 
-      const imageObject = {
-        fieldname: 'files',
-        originalname:
-          firstImage.fileName ||
-          (result.assets[0].uri.split('/').pop() || '').split('?')[0],
-        encoding: '7bit',
-        mimetype: 'image/jpeg',
-        buffer: null,
-        size: firstImage.fileSize
-      }
+    if (!result.canceled) {
+      console.log('NO ESTA CANCELADOOOOOO')
+      setImage1(result.assets[0])
 
-      setImage(imageObject)
-    } else {
-      console.log('No se seleccionó ninguna imagen.')
+      const fileName = `${result.assets[0].uri.split('.').pop()}`
+
+      const file = new FormData()
+
+      // Adjuntar la imagen al FormData
+      file.append('file', {
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: fileName
+      })
+
+      // Llama a la acción para subir la imagen al servidor
+      dispatch(updateImgClub(file))
     }
   }
 
-  const files = new FormData()
-  files.append('files', image1)
-  files.append('files', image2)
+  // const files = new FormData()
+  // files.append('files', image1)
+  // files.append('files', image2)
 
-  const id = club.id
+  // const id = club.id
 
-  const submit = () => {
-    const body = {
-      files,
-      id
-    }
-    dispatch(updateImgClub(body))
-  }
-
-  console.log('CLUB', club)
+  // const submit = () => {
+  //   const body = {
+  //     files,
+  //     id
+  //   }
+  //   dispatch(updateImgClub(body))
+  // }
 
   return (
     <View style={styles.escogerDeporte}>
       <Image
-        style={styles.ellipseIcon}
+        style={{
+          width: 120,
+          height: 120,
+          borderRadius: 150
+        }}
         contentFit="cover"
-        source={require('../assets/circulo.png')}
+        source={{ uri: image1?.uri }}
       />
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
@@ -93,7 +91,7 @@ const EscogerDeporte1 = () => {
       />
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
-        onPress={() => pickImage(setImage2)}
+        onPress={() => pickImage()}
       >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
           Subir foto de portada
@@ -113,7 +111,7 @@ const EscogerDeporte1 = () => {
         contentFit="cover"
         source={require('../assets/line-9.png')}
       /> */}
-      <TouchableOpacity onPress={submit}>
+      <TouchableOpacity /* onPress={submit} */>
         <Text
           style={{ width: '100%', height: 60, backgroundColor: 'green' }}
           // onPress={uploadImages}

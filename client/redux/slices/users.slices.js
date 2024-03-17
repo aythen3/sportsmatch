@@ -45,6 +45,9 @@ const usersSlices = createSlice({
     },
     setProfesionalType: (state, action) => {
       state.profesionalType = action.payload
+    },
+    clearUser: (state) => {
+      state.user = null
     }
   },
   extraReducers: (builder) => {
@@ -70,7 +73,8 @@ export const {
   setGender,
   setBirthdate,
   setCity,
-  setProfesionalType
+  setProfesionalType,
+  clearUser
 } = usersSlices.actions
 
 export default usersSlices.reducer

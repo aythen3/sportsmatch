@@ -32,10 +32,10 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    if (user.user?.club || user.user?.sportman) {
+    if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
-      if (user.accesToken) {
+      if (user?.accesToken) {
         navigation.navigate('stepsClub')
       }
     }
@@ -87,6 +87,7 @@ const IniciarSesin = () => {
                           placeholderTextColor="#999"
                           value={valuesUser.email}
                           capitalize="sentences"
+                          autoCapitalize="none"
                           onChangeText={(value) => seterValues('email', value)}
                         />
                       </View>
