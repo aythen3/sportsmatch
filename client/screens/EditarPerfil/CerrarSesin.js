@@ -1,6 +1,12 @@
 import React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   FontSize,
@@ -9,9 +15,12 @@ import {
   Border,
   Padding
 } from '../../GlobalStyles'
+import { useDispatch } from 'react-redux'
+import { clearUser } from '../../redux/slices/users.slices'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   return (
     <View style={styles.cerrarSesin}>
@@ -55,11 +64,17 @@ quieres `}</Text>
               <Text style={styles.estsSeguroQue}> la sesión?</Text>
             </Text>
             <View style={styles.boton}>
-              <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
+              <TouchableOpacity
+                style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
+                onPress={() => {
+                  navigation.navigate('LoginSwitch')
+                  dispatch(clearUser())
+                }}
+              >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>
                   Cerrar sesión
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

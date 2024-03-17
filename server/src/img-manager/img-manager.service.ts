@@ -15,7 +15,7 @@ export class ImgManagerService {
   constructor() {}
 
   public async imgUpload(file) {
-    console.log('FILEEEE', file);
+    console.log('SERVICE', file);
 
     try {
       if (!file) {
@@ -43,6 +43,31 @@ export class ImgManagerService {
       throw error; // Manejar el error según la lógica de tu aplicación
     }
   }
+
+  //POSIBLE SOLUCION PARA IMAGENES DE DISPOSITIVOS MOVILES
+  // public async imgUpload(file: any) {
+  //   try {
+  //     console.log('SERVICE', file);
+
+  //     if (!file) {
+  //       throw new Error('No se proporcionó ningún archivo.');
+  //     }
+
+  //     // Subir el archivo a Cloudinary
+  //     const cloudinaryResponse = await cloudinary.v2.uploader.upload(file.uri, {
+  //       // Configura las opciones de subida de Cloudinary según sea necesario
+  //       // Por ejemplo, puedes configurar el nombre del archivo, el directorio, etc.
+  //       // Aquí estamos utilizando un nombre predeterminado para el archivo
+  //       public_id: 'imagen_subida'
+  //     });
+
+  //     console.log('RESPONSE CLOUD', cloudinaryResponse);
+  //     return cloudinaryResponse.secure_url;
+  //   } catch (error) {
+  //     console.error('Error al subir la imagen a Cloudinary:', error);
+  //     throw error; // Manejar el error según la lógica de tu aplicación
+  //   }
+  // }
 
   findAll() {
     return `This action returns all imgManager`;
