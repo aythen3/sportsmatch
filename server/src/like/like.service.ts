@@ -1,28 +1,56 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateLikeDto } from './dto/create-like.dto';
+
 import { UpdateLikeDto } from './dto/update-like.dto';
 import { LikeEntity } from './entities/like.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PostService } from 'src/post/post.service';
 
 @Injectable()
 export class LikeService {
   constructor(
     @InjectRepository(LikeEntity)
-    private readonly likeRepository: Repository<LikeEntity>
+    private readonly likeRepository: Repository<LikeEntity>,
+
+    private readonly postService: PostService
   ) {}
-  public async create(createLikeDto: CreateLikeDto) {
-    const like = await this.likeRepository.save(createLikeDto);
-    // Si no se pudo crear el nuevo like, lanzar una excepción
-    if (!like) {
-      throw new HttpException('The new like is not created', 501);
+  public async create(createLikeDto: any) {
+    const { post, author } = createLikeDto;
+
+    // Verificar si ya existe un like con el autor y el post especificados
+    const existingLike = await this.findExisten(post, author);
+    console.log(existingLike, 'eeeeee');
+
+    if (existingLike) {
+      // Si existe un like, eliminarlo y devolver todos menos el eliminado
+      await this.likeRepository.remove(existingLike);
+      await this.postService.updatePostLikeCount(post, -1);
+      const likes = await this.likeRepository.find();
+      return likes.filter((like) => like.id !== existingLike.id);
+    } else {
+      // Si no existe un like, crear uno nuevo y devolver todos incluido el recién creado
+      await this.likeRepository.save(createLikeDto);
+      await this.postService.updatePostLikeCount(post, 1);
+      const likes = await this.likeRepository.find();
+      return likes;
     }
-    // Devolver el nuevo like del usuario
-    return like;
   }
 
   public async findAll() {
     return this.likeRepository.find({ where: { isDelete: false } });
+  }
+
+  public async findExisten(
+    postId: string,
+    authorId: string
+  ): Promise<LikeEntity> {
+    const like = await this.likeRepository
+      .createQueryBuilder('like')
+      .where('like.post = :postId', { postId })
+      .andWhere('like.author = :authorId', { authorId })
+      .getOne();
+
+    return like;
   }
 
   public async findOne(id: string) {
