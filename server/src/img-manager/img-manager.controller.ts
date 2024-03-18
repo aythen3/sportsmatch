@@ -19,6 +19,8 @@ export class ImgManagerController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {
+    console.log('CONTROLLER', file);
+
     const response = await this.imgManagerService.imgUpload(file);
     return response;
   }

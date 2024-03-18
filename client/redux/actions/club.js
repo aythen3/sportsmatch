@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from '../../utils/apiBackend'
+import axios from 'axios'
 
 export const createClub = createAsyncThunk('create/club', async (body) => {
   try {
@@ -10,19 +11,38 @@ export const createClub = createAsyncThunk('create/club', async (body) => {
   }
 })
 
-export const updateImgClub = createAsyncThunk(
-  'upImages/club',
-  async ({ id, files }) => {
-    try {
-      // const { files, id } = body
+export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
+  try {
+    // console.log('action', formData)
+    // const formData = new FormData()
+    // formData.append('file', {
+    //   uri: image1.uri,
+    //   type: image1.type,
+    //   name: fileName
+    // })
 
-      console.log('entreeeee', id, files)
+    console.log('form', file)
 
-      const { data } = await axiosInstance.patch(`club/img/${id}`, files)
-      console.log('RESPUESTRAAAAAA', data)
-      return data
-    } catch (error) {
-      throw new Error(error)
-    }
+    // for (const part of formData._parts) {
+    //   const [name, value] = part
+    //   console.log(`Part Name: ${name}`)
+    //   console.log(`Part Value:`, value)
+    // }
+
+    const { data } = await axios.post(
+      'http://192.168.18.82:3000/api/img-manager',
+      file.file,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data' // Este es el encabezado requerido para enviar FormData
+          // Otros headers opcionales pueden ser agregados aquí según tus necesidades
+        }
+      }
+    )
+
+    console.log('RESPUESTRAAAAAA', data)
+    return data
+  } catch (error) {
+    throw new Error(error)
   }
-)
+})

@@ -76,10 +76,8 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           />
 
           <Input
-            title="Descripbe tu club"
-            placeholderText="lkj lskfj lsdkfj lsdkfj hjk sdfhjksdjhf shdfjksjdhf shdfjks dfsdfkjh df
-        sdfjshdfkjsdh fhsjdfkjshd fhsjdkfjhsdf hjsdkf
-        sdfkj hdfjksjdhf shdfjksjdhf sdkfjhsd fsjdkh "
+            title="Describe tu club"
+            placeholderText="Descripcion"
             isMultiLine={true}
             isLast={true}
             field="description"
