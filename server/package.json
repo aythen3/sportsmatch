@@ -27,7 +27,10 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.3.3",
+    "@nestjs/platform-socket.io": "^10.3.3",
+    "@nestjs/platform-ws": "^10.3.4",
     "@nestjs/typeorm": "^10.0.1",
+    "@nestjs/websockets": "^10.3.3",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",
@@ -39,6 +42,7 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "socket.io": "^4.7.5",
     "typeorm": "^0.3.20",
     "typeorm-naming-strategies": "^4.1.0"
   },
