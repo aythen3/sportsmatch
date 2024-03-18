@@ -19,7 +19,6 @@ export class LikeService {
 
     // Verificar si ya existe un like con el autor y el post especificados
     const existingLike = await this.findExisten(post, author);
-    console.log(existingLike, 'eeeeee');
 
     if (existingLike) {
       // Si existe un like, eliminarlo y devolver todos menos el eliminado
