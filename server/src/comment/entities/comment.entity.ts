@@ -11,9 +11,7 @@ export class CommentEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (user) => user.comments)
   author: UserEntity;
 
-  @Column()
-  authorType: string; // Puedes definir un enum si prefieres
-
   @ManyToOne(() => PostEntity, (post) => post.comments)
   post: PostEntity;
+  comment: Promise<UserEntity>;
 }

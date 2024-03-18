@@ -6,6 +6,8 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from './entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
+import { PostService } from 'src/post/post.service';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
@@ -17,6 +19,6 @@ import { LikeEntity } from 'src/like/entities/like.entity';
     ])
   ],
   controllers: [CommentController],
-  providers: [CommentService]
+  providers: [CommentService, PostService, UserService]
 })
 export class CommentModule {}

@@ -17,6 +17,7 @@ import { ImgManagerModule } from './img-manager/img-manager.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { LikeModule } from './like/like.module';
     ImgManagerModule,
     PostModule,
     CommentModule,
-    LikeModule
+    LikeModule,
+    SocketModule
   ],
   controllers: [],
   providers: []

@@ -1,1 +1,5 @@
-export class CreateLikeDto {}
+export class CreateLikeDto {
+  post: string;
+
+  author: string;
+}

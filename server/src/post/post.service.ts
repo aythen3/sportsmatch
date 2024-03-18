@@ -52,4 +52,15 @@ export class PostService {
     await this.postRepository.update(id, { isDelete: true });
     return await this.findOne(id);
   }
+
+  public async updatePostLikeCount(id: string, increment: number) {
+    // Buscar el post
+    const post = await this.findOne(id);
+
+    // Actualizar el conteo de likes del post
+    if (post) {
+      post.likes += increment;
+      await this.postRepository.save(post);
+    }
+  }
 }
