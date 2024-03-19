@@ -44,6 +44,7 @@ export class SocketGateway
   @SubscribeMessage('chat')
   handleEvent(
     @MessageBody() data: string,
+    // eslint-disable-next-line
     @ConnectedSocket() client: Socket
   ): any {
     console.log('data', data);
