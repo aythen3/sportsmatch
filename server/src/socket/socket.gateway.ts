@@ -4,11 +4,15 @@ import {
   SubscribeMessage,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  OnGatewayInit
+  OnGatewayInit,
+  MessageBody,
+  ConnectedSocket
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(81, {
+  path: '/chat',
+  transports: ['websocket'],
   cors: { origin: '*' }
 })
 export class SocketGateway
@@ -38,12 +42,12 @@ export class SocketGateway
   }
 
   @SubscribeMessage('chat')
-  handleMessage(
-    client: Socket,
-    payload: { sender: string; message: string }
-  ): void {
-    //const { sender, message } = payload;
-    console.log(`Mensaje recibido: ${payload.message} from  ${payload.sender}`);
-    this.server.emit('chat', payload.message);
+  handleEvent(
+    @MessageBody() data: string,
+    // eslint-disable-next-line
+    @ConnectedSocket() client: Socket
+  ): any {
+    console.log('data', data);
+    return data;
   }
 }
