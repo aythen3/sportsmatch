@@ -5,11 +5,12 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  MessageBody
+  MessageBody,
+  ConnectedSocket
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway(81)
+@WebSocketGateway(3010)
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -22,7 +23,7 @@ export class SocketGateway
     console.log('inicio');
   }
   // eslint-disable-next-line
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket) {
     this.connectedUsers++;
     this.server.emit('users online', this.connectedUsers);
     console.log('users online', this.connectedUsers);
@@ -37,7 +38,12 @@ export class SocketGateway
   }
 
   @SubscribeMessage('message')
-  handleMessage(@MessageBody() message: string): void {
-    this.server.emit('message', message);
+  handleMessage(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: any
+  ): void {
+    client.broadcast.emit('message-server', ` ${data.message} , ${client.id}`);
+    console.log('message', data.message);
+    return data;
   }
 }
