@@ -5,16 +5,11 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  MessageBody,
-  ConnectedSocket
+  MessageBody
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway(81, {
-  path: '/chat',
-  transports: ['websocket'],
-  cors: { origin: '*' }
-})
+@WebSocketGateway(81)
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -41,13 +36,8 @@ export class SocketGateway
     console.log(`Cliente desconectado: ${client.id}`);
   }
 
-  @SubscribeMessage('chat')
-  handleEvent(
-    @MessageBody() data: string,
-    // eslint-disable-next-line
-    @ConnectedSocket() client: Socket
-  ): any {
-    console.log('data', data);
-    return data;
+  @SubscribeMessage('message')
+  handleMessage(@MessageBody() message: string): void {
+    this.server.emit('message', message);
   }
 }
