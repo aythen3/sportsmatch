@@ -42,7 +42,10 @@ export class SocketGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() data: any
   ): void {
-    client.broadcast.emit('message-server', ` ${data.message} , ${client.id}`);
+    client.broadcast.emit(
+      'message-server',
+      ` message: ${data.message} , id: ${client.id}`
+    );
     console.log('message', data.message);
     return data;
   }
