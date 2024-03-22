@@ -46,27 +46,35 @@ export class ChatGateway
   }
 
   @SubscribeMessage('message')
-  handleMessage(
+  async handleMessage(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { sender: string; receiver: string; message: string }
-  ): any {
+  ): Promise<any> {
     const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
+    await this.messageService.saveMessage(
+      data.sender,
+      data.receiver,
+      room,
+      data.message
+    );
     this.server.to(room).emit('message-server', data);
     console.log('message', room);
     return data;
   }
 
   @SubscribeMessage('joinRoom')
-  handleRoomJoin(client: Socket, room: { room: string }) {
-    client.join(room.room);
+  handleRoomJoin(client: Socket, data: { sender: string; receiver: string }) {
+    const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
+    client.join(room);
     client.emit('joinedRoom', room);
-    console.log('joinedRoom', room.room);
+    console.log('joinedRoom', room);
   }
 
   @SubscribeMessage('leaveRoom')
-  handleRoomLeave(client: Socket, room: string) {
-    client.leave(room);
-    client.emit('leftRoom', room);
-    console.log('leftRoom', room);
+  handleRoomLeave(client: Socket, data: { sender: string; receiver: string }) {
+    const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
+    client.join(room);
+    client.emit('joinedRoom', room);
+    console.log('joinedRoom', room);
   }
 }
