@@ -25,8 +25,27 @@ export class MessageService {
     return await this.messageRepository.save(newMessage);
   }
 
-  async getMessagesForRoom(room: string): Promise<MessageEntity[]> {
-    return await this.messageRepository.find({ where: { room: room } });
+  async getMessagesForRoom(
+    room: string,
+    createdAt?: Date,
+    limit: number = 10
+  ): Promise<MessageEntity[]> {
+    let query = this.messageRepository
+      .createQueryBuilder('message')
+      .where('message.room = :room', { room })
+      .orderBy('message.createdAt', 'DESC')
+      .limit(limit);
+
+    if (createdAt) {
+      const date = new Date(createdAt); // Convierte la cadena de texto en un objeto Date
+
+      query = query.andWhere('message.createdAt < :createdAt', {
+        createdAt: date
+      });
+      query = query.orderBy('message.createdAt', 'DESC'); // Re-ordenar por fecha de creación (descendente)
+    }
+
+    return await query.getMany();
   }
 
   async getMessagesBetweenUsers(
