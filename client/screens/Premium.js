@@ -80,7 +80,7 @@ más probabilidades tendrás de hacer match!`}</Text>
           </LinearGradient>
           <View style={{ backgroundColor: '#F8E08A', height: 180 }}>
             <View style={styles.perfilesFrame1}>
-              <Text style={[styles.gold, styles.textoTypo]}>Gold</Text>
+              {/* <Text style={[styles.gold, styles.textoTypo]}>Gold</Text> */}
               <Text style={[styles.textTypo]}>30</Text>
               <Text style={[styles.perfiles2, styles.textoTypo]}>Perfiles</Text>
               <View style={styles.perfilesFrame1}>
@@ -96,7 +96,7 @@ más probabilidades tendrás de hacer match!`}</Text>
         <View style={styles.targetaStarSpaceBlock}>
           <View>
             <View>
-              <Text style={[styles.silver, styles.textLayout]}>Star</Text>
+              {/* <Text style={[styles.silver, styles.textLayout]}>Star</Text> */}
             </View>
           </View>
           <View style={styles.perfilesFrame1}>

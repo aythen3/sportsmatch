@@ -1,10 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
-import { LinearGradient } from 'expo-linear-gradient'
+import {
+  Border,
+  Color,
+  FontFamily,
+  FontSize,
+  Padding
+} from '../../GlobalStyles'
 
-const GoldSuscription = () => {
+const SilverSuscription = () => {
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
@@ -16,27 +21,13 @@ const GoldSuscription = () => {
             justifyContent: 'center'
           }}
         >
-          <LinearGradient
-            style={{ height: 42 }}
-            locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
-            colors={[
-              '#e6b300',
-              '#bd9710',
-              '#ebc02a',
-              '#e6b300',
-              '#bd9710',
-              '#ebc02a'
-            ]}
-          >
-            <Text style={[styles.freemium2, styles.ofertasTypo]}>Pro</Text>
-          </LinearGradient>
+          <Text style={[styles.freemium2, styles.ofertasTypo]}>FREEMIUM</Text>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>12,90€</Text>
-                <Text style={styles.timeTypo}>O también 124.40€/año</Text>
+                <Text style={[styles.gratuito, styles.timeTypo]}>Gratuito</Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -44,7 +35,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -60,7 +51,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -76,7 +67,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -92,7 +83,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -108,7 +99,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
                   <Text style={styles.accesoA}>{`Acceso a `}</Text>
@@ -154,15 +145,11 @@ const styles = StyleSheet.create({
   gratuito: {
     fontSize: FontSize.size_21xl,
     fontFamily: FontFamily.t4TEXTMICRO,
-    color: '#e6b300',
-    fontWeight: '700',
-    textAlign: 'center'
+    color: Color.colorSilver
   },
   timeTypo: {
-    fontWeight: '600',
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
+    fontWeight: '700',
+    textAlign: 'center'
   },
   frameView: {
     marginTop: 30
@@ -207,4 +194,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default GoldSuscription
+export default SilverSuscription

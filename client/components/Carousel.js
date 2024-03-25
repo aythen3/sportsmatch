@@ -1,14 +1,9 @@
-import { Image } from 'expo-image'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { Image } from 'expo-image'
 import PagerView from 'react-native-pager-view'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
-import { useDispatch } from 'react-redux'
-import LikeSVG from './svg/LikeSVG'
-import ShareSVG from './svg/ShareSVG'
-import FeedSVG from './svg/FeedSVG'
-import CommentSVG from './svg/CommentSVG'
 import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
 import CommentsMuro from './CommentsMuro'
@@ -24,7 +19,6 @@ function Carousel({
   index
 }) {
   const navigation = useNavigation()
-  const dispatch = useDispatch()
   const [showComments, setShowComments] = useState(false)
 
   return (
@@ -41,7 +35,10 @@ function Carousel({
           source={imgPerfil}
         />
         <Text
-          style={{ color: 'white' }}
+          style={{
+            color: 'white',
+            fontWeight: '700'
+          }}
           onPress={() =>
             navigation.navigate('PerfilFeedVisualitzaciJug', {
               club: club,
@@ -101,13 +98,7 @@ function Carousel({
             Promocionar publicación
           </Text>
         </LinearGradient>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 10
-          }}
-        >
+        <View style={styles.iconsLikes}>
           <Text style={styles.likes}>{likes} likes</Text>
           <IconsMuro />
         </View>
@@ -178,5 +169,12 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size
+  },
+  iconsLikes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems: 'center'
   }
 })

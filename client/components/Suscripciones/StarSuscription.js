@@ -1,7 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
+import {
+  Border,
+  Color,
+  FontFamily,
+  FontSize,
+  Padding
+} from '../../GlobalStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const GoldSuscription = () => {
@@ -17,11 +23,11 @@ const GoldSuscription = () => {
           }}
         >
           <LinearGradient
-            style={{ height: 42 }}
+            style={styles.gradient}
             locations={[0, 0.8]}
             colors={['#FF00E6', '#1FFFBC']}
           >
-            <Text style={[styles.freemium2, styles.ofertasTypo]}>Star</Text>
+            <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
           </LinearGradient>
         </View>
         <View style={styles.silverInner}>
@@ -37,7 +43,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -53,7 +59,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -69,7 +75,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -85,7 +91,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -101,7 +107,7 @@ const GoldSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
                   <Text style={styles.accesoA}>{`Acceso a `}</Text>
@@ -195,6 +201,11 @@ const styles = StyleSheet.create({
   },
   accesoA: {
     fontFamily: FontFamily.t4TEXTMICRO
+  },
+  gradient: {
+    height: 42,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
