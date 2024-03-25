@@ -3,9 +3,9 @@ import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
-import SilverSuscription from '../components/SilverSuscription'
-import GoldSuscription from '../components/GoldSuscription'
-import StarSuscription from '../components/StarSuscription'
+import SilverSuscription from '../components/Suscripciones/SilverSuscription'
+import GoldSuscription from '../components/Suscripciones/GoldSuscription'
+import StarSuscription from '../components/Suscripciones/StarSuscription'
 
 const MiSuscripcin = () => {
   const navigation = useNavigation()

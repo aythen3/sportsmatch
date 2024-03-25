@@ -16,8 +16,8 @@ import ExplorarBuscar from './screens/ExplorarBuscar'
 import MonetizarOfertaPRO from './screens/MonetizarOfertaPRO'
 import BuscarOfertasDeportvas from './screens/BuscarOfertasDeportvas'
 import TodasLasOfertas from './screens/TodasLasOfertas'
-import MisOfertas from './screens/MisOfertas'
-import TusMatchs from './screens/TusMatchs'
+import MisOfertas from './screens/Ofertas/MisOfertas'
+import TusMatchs from './screens/Match/TusMatchs'
 import TusMatchsDetalle from './screens/TusMatchsDetalle'
 import TusMensajes from './screens/TusMensajes'
 import TusNotificaciones from './screens/TusNotificaciones'
@@ -31,25 +31,23 @@ import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
 import PerfilVisualizacinClubs from './screens/PerfilVisualizacinClubs'
 import MiPerfil from './screens/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
-import PN0213202410517AM from './screens/PN0213202410517AM'
 import ChatAbierto from './screens/ChatAbierto'
 import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
 import SiguiendoUsuarios1 from './screens/SiguiendoUsuarios1'
 import SiguiendoJugadores from './screens/SiguiendoJugadores'
-import OfertasEmitidas from './screens/OfertasEmitidas'
+import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
 import ExplorarClubs from './screens/ExplorarClubs'
 import ExplorarClubsConFiltroPrem from './screens/ExplorarClubsConFiltroPrem'
 import LoginSwitch1 from './screens/LoginSwitch1'
-import PantallaInicio from './screens/PantallaInicio'
-import IniciarSesin from './screens/IniciarSesin'
-import Registrarse from './screens/Registrarse'
+import PantallaInicio from './screens/Login/PantallaInicio'
+import IniciarSesin from './screens/Login/IniciarSesin'
+import Registrarse from './screens/Login/Registrarse'
 import TusMatchs1 from './screens/TusMatchs1'
 import TusMatchsDetalle1 from './screens/TusMatchsDetalle1'
 import TusMensajes1 from './screens/TusMensajes1'
-import TusNotificaciones1 from './screens/TusNotificaciones1'
-import EliminarOferta from './screens/EliminarOferta'
-import EliminarOferta1 from './screens/EliminarOferta1'
+import TusNotificaciones1 from './screens/Notificaciones/TusNotificaciones1'
+import EliminarOferta from './screens/Ofertas/EliminarOferta'
 import ChatAbierto1 from './screens/ChatAbierto1'
 import CrearHighlight from './screens/CrearHighlight'
 import PerfilFeedVisualitzaciClu from './screens/PerfilFeedVisualitzaciClu'
@@ -296,11 +294,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="PN0213202410517AM"
-                component={PN0213202410517AM}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="ChatAbierto"
                 component={ChatAbierto}
                 options={{ headerShown: false }}
@@ -378,11 +371,6 @@ const App = () => {
               <Stack.Screen
                 name="EliminarOferta"
                 component={EliminarOferta}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EliminarOferta1"
-                component={EliminarOferta1}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

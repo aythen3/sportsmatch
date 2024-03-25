@@ -91,6 +91,29 @@ const notificationsSlices = createSlice({
         isMy: true,
         read: false
       }
+    ],
+    userMessages: [
+      {
+        id: 1,
+        name: 'Unió Esportiva Mataró',
+        message: 'Perfecto, quedamos asi pues, muchas gracias',
+        send: '10:33',
+        read: true
+      },
+      {
+        id: 2,
+        name: 'Unió Esportiva Mataró',
+        message: 'Perfecto, quedamos asi pues, muchas gracias',
+        send: '10:33',
+        read: true
+      },
+      {
+        id: 3,
+        name: 'Unió Esportiva Mataró',
+        message: 'Perfecto, quedamos asi pues, muchas gracias',
+        send: '10:33',
+        read: true
+      }
     ]
   },
   reducers: {

@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
   Text,
   Pressable,
   View,
-  ScrollView,
   TextInput,
   Alert
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, Color, Padding, Border, FontFamily } from '../GlobalStyles'
+import {
+  FontSize,
+  Color,
+  Padding,
+  Border,
+  FontFamily
+} from '../../GlobalStyles'
 import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
-import { create } from '../redux/actions/users'
+import { create } from '../../redux/actions/users'
 
 const Registrarse = () => {
   const navigation = useNavigation()
+
   const dispatch = useDispatch()
+
   const { isSportman } = useSelector((state) => state.users)
+
+  const emailInputRef = useRef(null)
+  const passwordInputRef = useRef(null)
+  const confirmPasswordInputRef = useRef(null)
 
   const [isChecked, setChecked] = useState(false)
   const [valuesUser, setValuesUser] = useState({
@@ -27,6 +38,7 @@ const Registrarse = () => {
     email: '',
     type: isSportman === true ? 'sportman' : 'club'
   })
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   const seterValues = (field, value) => {
     setValuesUser((prev) => ({
@@ -41,25 +53,30 @@ const Registrarse = () => {
 
   const submit = () => {
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
-      dispatch(create(valuesUser))
-      navigation.navigate('IniciarSesin')
+      if (valuesUser.password === confirmPassword) {
+        dispatch(create(valuesUser))
+        navigation.navigate('IniciarSesin')
+      } else {
+        Alert.alert('Las contraseñas no coinciden')
+      }
     } else {
       Alert.alert('Debes llenar todos los campos')
     }
   }
+
   return (
     <View style={styles.registrarse}>
       <Image
         style={styles.fondoIcon}
         contentFit="cover"
-        source={require('../assets/fondo2.png')}
+        source={require('../../assets/fondo2.png')}
       />
       <View style={styles.contenido}>
         <View style={styles.botonAtrasFrame}>
           <Image
             style={styles.simboloIcon}
             contentFit="cover"
-            source={require('../assets/coolicon3.png')}
+            source={require('../../assets/coolicon3.png')}
           />
           <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
             <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
@@ -78,7 +95,7 @@ const Registrarse = () => {
                       <Image
                         style={styles.simboloIcon1}
                         contentFit="cover"
-                        source={require('../assets/simbolo4.png')}
+                        source={require('../../assets/simbolo4.png')}
                       />
                       <TextInput
                         style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -86,6 +103,9 @@ const Registrarse = () => {
                         placeholderTextColor="#999"
                         value={valuesUser.nickname}
                         onChangeText={(value) => seterValues('nickname', value)}
+                        onSubmitEditing={() => {
+                          emailInputRef.current.focus()
+                        }}
                       />
                     </View>
                   </View>
@@ -94,7 +114,7 @@ const Registrarse = () => {
                       <Image
                         style={styles.vectorIcon}
                         contentFit="cover"
-                        source={require('../assets/vector4.png')}
+                        source={require('../../assets/vector4.png')}
                       />
                       <TextInput
                         style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -103,28 +123,51 @@ const Registrarse = () => {
                         autoCapitalize="none"
                         value={valuesUser.email}
                         onChangeText={(value) => seterValues('email', value)}
+                        ref={emailInputRef}
+                        onSubmitEditing={() => {
+                          passwordInputRef.current.focus()
+                        }}
                       />
                     </View>
                   </View>
-                  <View style={styles.campo3}>
-                    <View style={[styles.campo3Frame, styles.framePosition]}>
-                      <View style={styles.contraseaFrame}>
-                        <Image
-                          style={styles.simboloIcon2}
-                          contentFit="cover"
-                          source={require('../assets/simbolo3.png')}
-                        />
-                        <TextInput
-                          style={[styles.nombre, styles.eMailSpaceBlock]}
-                          placeholder="Contraseña"
-                          placeholderTextColor="#999"
-                          secureTextEntry={true}
-                          value={valuesUser.password}
-                          onChangeText={(value) =>
-                            seterValues('password', value)
-                          }
-                        />
-                      </View>
+                  <View style={[styles.campo3Frame, styles.framePosition]}>
+                    <View style={styles.contraseaFrame}>
+                      <Image
+                        style={styles.simboloIcon2}
+                        contentFit="cover"
+                        source={require('../../assets/simbolo3.png')}
+                      />
+                      <TextInput
+                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        placeholder="Contraseña"
+                        placeholderTextColor="#999"
+                        secureTextEntry={true}
+                        value={valuesUser.password}
+                        onChangeText={(value) => seterValues('password', value)}
+                        ref={passwordInputRef}
+                        onSubmitEditing={() => {
+                          confirmPasswordInputRef.current.focus()
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <View style={[styles.campo3Frame, styles.framePosition]}>
+                    <View style={styles.contraseaFrame}>
+                      <Image
+                        style={styles.simboloIcon2}
+                        contentFit="cover"
+                        source={require('../../assets/simbolo3.png')}
+                      />
+                      <TextInput
+                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        placeholder="Confirmar contraseña"
+                        placeholderTextColor="#999"
+                        secureTextEntry={true}
+                        value={confirmPassword}
+                        onChangeText={(value) => setConfirmPassword(value)}
+                        ref={confirmPasswordInputRef}
+                        onSubmitEditing={submit}
+                      />
                     </View>
                   </View>
                 </View>
@@ -293,7 +336,8 @@ const styles = StyleSheet.create({
   campo3Frame: {
     height: 39,
     paddingRight: 23,
-    width: 360
+    width: 360,
+    marginTop: 15
   },
   campo3: {
     alignSelf: 'stretch',
@@ -342,7 +386,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
-    marginTop: 27
+    marginTop: 27,
+    alignItems: 'center'
   },
   texto1: {
     lineHeight: 14,
@@ -363,16 +408,10 @@ const styles = StyleSheet.create({
     marginTop: 45
   },
   contenido: {
-    top: '25%',
+    top: '20%',
     height: '100%'
   },
   fondoIcon: {
-    // width: '160%',
-    // height: '70%',
-    // bottom: '60%',
-    // right: '0%',
-    // position: 'absolute',
-    // zIndex: 0
     width: '160%',
     height: '50%',
     bottom: '70%',
@@ -381,7 +420,6 @@ const styles = StyleSheet.create({
     zIndex: 0
   },
   registrarse: {
-    // height: 844,
     overflow: 'hidden',
     width: '100%',
     flex: 1,

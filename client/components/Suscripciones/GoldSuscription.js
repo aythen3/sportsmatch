@@ -1,27 +1,45 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Image } from 'expo-image'
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
+import {
+  Border,
+  Color,
+  FontFamily,
+  FontSize,
+  Padding
+} from '../../GlobalStyles'
+import { LinearGradient } from 'expo-linear-gradient'
 
-const SilverSuscription = () => {
+const GoldSuscription = () => {
+  const { user } = useSelector((state) => state.users)
+
+  console.log(user)
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
-        <View
-          style={{
-            width: '100%',
-            height: 42,
-            backgroundColor: Color.colorSilver,
-            justifyContent: 'center'
-          }}
-        >
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>Freemium</Text>
+        <View style={styles.container}>
+          <LinearGradient
+            style={styles.gradient}
+            locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+            colors={[
+              '#e6b300',
+              '#bd9710',
+              '#ebc02a',
+              '#e6b300',
+              '#bd9710',
+              '#ebc02a'
+            ]}
+          >
+            <Text style={[styles.freemium2, styles.ofertasTypo]}>PRO</Text>
+          </LinearGradient>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={[styles.gratuito, styles.timeTypo]}>Gratuito</Text>
+                <Text style={styles.gratuito}>12,90€</Text>
+                <Text style={styles.timeTypo}>O también 124.40€/año</Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -29,7 +47,7 @@ const SilverSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -45,7 +63,7 @@ const SilverSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -61,7 +79,7 @@ const SilverSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -77,7 +95,7 @@ const SilverSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text
                   style={[
@@ -93,7 +111,7 @@ const SilverSuscription = () => {
                 <Image
                   style={styles.frameChild}
                   contentFit="cover"
-                  source={require('../assets/vector-27.png')}
+                  source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
                   <Text style={styles.accesoA}>{`Acceso a `}</Text>
@@ -105,7 +123,6 @@ const SilverSuscription = () => {
           </View>
         </View>
       </View>
-      {/* <View style={[styles.marcaPlanActual, styles.aceptarBorder]} /> */}
     </View>
   )
 }
@@ -117,6 +134,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.wHITESPORTSMATCH,
     alignItems: 'center',
     overflow: 'hidden'
+  },
+  container: {
+    width: '100%',
+    height: 42,
+    backgroundColor: Color.colorSilver,
+    justifyContent: 'center'
   },
   freemium2: {
     zIndex: 1,
@@ -139,11 +162,15 @@ const styles = StyleSheet.create({
   gratuito: {
     fontSize: FontSize.size_21xl,
     fontFamily: FontFamily.t4TEXTMICRO,
-    color: Color.colorSilver
-  },
-  timeTypo: {
+    color: '#e6b300',
     fontWeight: '700',
     textAlign: 'center'
+  },
+  timeTypo: {
+    fontWeight: '600',
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t2TextSTANDARD_size
   },
   frameView: {
     marginTop: 30
@@ -185,7 +212,12 @@ const styles = StyleSheet.create({
   },
   accesoA: {
     fontFamily: FontFamily.t4TEXTMICRO
+  },
+  gradient: {
+    height: 42,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
-export default SilverSuscription
+export default GoldSuscription

@@ -67,8 +67,6 @@ const Paso1 = () => {
     }))
   }, [sport, sportmanGender, birthdate, city])
 
-  console.log('TYPE', selectedRole)
-
   const handleRoleSelection = (role) => {
     setSelectedRole(role)
   }

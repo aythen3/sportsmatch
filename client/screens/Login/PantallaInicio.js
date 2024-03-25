@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, FontSize, FontFamily, Border } from '../GlobalStyles'
+import { Color, FontSize, FontFamily, Border } from '../../GlobalStyles'
 
 const PantallaInicio = () => {
   const navigation = useNavigation()
@@ -23,14 +23,14 @@ const PantallaInicio = () => {
       <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
-        source={require('../assets/lineas.png')}
+        source={require('../../assets/lineas.png')}
       />
       <View style={styles.logotipotagline}>
         <View style={styles.logotipo}>
           <Image
             style={styles.icon}
             contentFit="cover"
-            source={require('../assets/logotipo.png')}
+            source={require('../../assets/logotipo.png')}
           />
         </View>
         <Text style={[styles.tagline, styles.timeFlexBox]}>
@@ -40,7 +40,7 @@ const PantallaInicio = () => {
       <Image
         style={styles.liniasimagenIcon}
         contentFit="cover"
-        source={require('../assets/liniasimagen.png')}
+        source={require('../../assets/liniasimagen.png')}
       />
       <View style={[styles.uxIphone, styles.iphonePosition]}>
         <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
@@ -50,19 +50,19 @@ const PantallaInicio = () => {
             <Image
               style={[styles.capIcon, styles.batteryPosition]}
               contentFit="cover"
-              source={require('../assets/cap.png')}
+              source={require('../../assets/cap.png')}
             />
             <View style={styles.capacity} />
           </View>
           <Image
             style={styles.wifiIcon}
             contentFit="cover"
-            source={require('../assets/wifi.png')}
+            source={require('../../assets/wifi.png')}
           />
           <Image
             style={styles.cellularConnectionIcon}
             contentFit="cover"
-            source={require('../assets/cellular-connection.png')}
+            source={require('../../assets/cellular-connection.png')}
           />
         </View>
         <View style={[styles.starus, styles.timeLayout]}>

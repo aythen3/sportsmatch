@@ -10,10 +10,16 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, Padding, Color, Border, FontFamily } from '../GlobalStyles'
+import {
+  FontSize,
+  Padding,
+  Color,
+  Border,
+  FontFamily
+} from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../redux/actions/users'
-import { getAll } from '../redux/actions/sports'
+import { login } from '../../redux/actions/users'
+import { getAll } from '../../redux/actions/sports'
 
 const IniciarSesin = () => {
   const navigation = useNavigation()
@@ -60,13 +66,13 @@ const IniciarSesin = () => {
         <Image
           style={styles.fondoIcon}
           contentFit="cover"
-          source={require('../assets/fondo1.png')}
+          source={require('../../assets/fondo1.png')}
         />
         <View style={styles.botonAtrasFrame}>
           <Image
             style={styles.simboloIcon}
             contentFit="cover"
-            source={require('../assets/coolicon3.png')}
+            source={require('../../assets/coolicon3.png')}
           />
           <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
             <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
@@ -84,7 +90,7 @@ const IniciarSesin = () => {
                         <Image
                           style={styles.vectorIcon}
                           contentFit="cover"
-                          source={require('../assets/vector4.png')}
+                          source={require('../../assets/vector4.png')}
                         />
                         <TextInput
                           style={[styles.nombre, styles.eMailSpaceBlock]}
@@ -106,7 +112,7 @@ const IniciarSesin = () => {
                         <Image
                           style={styles.simboloIcon1}
                           contentFit="cover"
-                          source={require('../assets/simbolo3.png')}
+                          source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
                           style={[styles.nombre, styles.eMailSpaceBlock]}
