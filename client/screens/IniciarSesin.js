@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   Pressable,
   View,
   ScrollView,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontSize, Padding, Color, Border, FontFamily } from '../GlobalStyles'
@@ -16,9 +17,14 @@ import { getAll } from '../redux/actions/sports'
 
 const IniciarSesin = () => {
   const navigation = useNavigation()
+
+  const dispatch = useDispatch()
+
+  const passwordInputRef = useRef(null)
+
   const { user } = useSelector((state) => state.users)
   const { sports } = useSelector((state) => state.sports)
-  const dispatch = useDispatch()
+
   const [valuesUser, setValuesUser] = useState({
     email: '',
     password: ''
@@ -41,13 +47,12 @@ const IniciarSesin = () => {
     }
   }, [user])
 
-  const submit = () => {
+  const handleSubmit = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
     }
+    // navigation.navigate('stepsClub')
   }
-
-  console.log('USER EN LOGIN', user)
 
   return (
     <ScrollView style={styles.iniciarSesin}>
@@ -89,6 +94,10 @@ const IniciarSesin = () => {
                           capitalize="sentences"
                           autoCapitalize="none"
                           onChangeText={(value) => seterValues('email', value)}
+                          onSubmitEditing={() => {
+                            // Manejar el evento onSubmitEditing
+                            passwordInputRef.current.focus() // Pasar el foco al siguiente campo (contraseña)
+                          }}
                         />
                       </View>
                     </View>
@@ -108,6 +117,8 @@ const IniciarSesin = () => {
                           onChangeText={(value) =>
                             seterValues('password', value)
                           }
+                          ref={passwordInputRef}
+                          onSubmitEditing={handleSubmit}
                         />
                       </View>
                     </View>
@@ -118,15 +129,12 @@ const IniciarSesin = () => {
                 </Text>
               </View>
 
-              <Pressable
+              <TouchableOpacity
                 style={styles.botonIniciaSesin2}
-                onPress={() => {
-                  submit()
-                  // navigation.navigate('stepsClub')
-                }}
+                onPress={handleSubmit}
               >
                 <Text style={styles.aceptar}>Inicia sesión</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <Pressable
               style={styles.noTenesUnaContainer}
