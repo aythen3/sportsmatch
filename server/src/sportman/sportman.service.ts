@@ -48,6 +48,7 @@ export class SportmanService {
     const sportman = await this.sportmanRepository
       .createQueryBuilder('sportman')
       .where({ id })
+
       .getOne();
 
     // Si no se encuentra el sportman, lanzar una excepción

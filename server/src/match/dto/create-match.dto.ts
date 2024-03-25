@@ -4,4 +4,8 @@ export class CreateMatchDto {
   @IsString()
   @IsOptional()
   offerId: string;
+
+  @IsString()
+  @IsOptional()
+  sportmanId: string;
 }

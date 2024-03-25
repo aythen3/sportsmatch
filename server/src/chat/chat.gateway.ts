@@ -51,15 +51,15 @@ export class ChatGateway
     @MessageBody() data: { sender: string; receiver: string; message: string }
   ): Promise<any> {
     const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
-    await this.messageService.saveMessage(
+    const newMessage = await this.messageService.saveMessage(
       data.sender,
       data.receiver,
       room,
       data.message
     );
-    this.server.to(room).emit('message-server', data);
+    this.server.to(room).emit('message-server', newMessage);
     console.log('message', room);
-    return data;
+    return newMessage;
   }
 
   @SubscribeMessage('joinRoom')
