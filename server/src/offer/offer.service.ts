@@ -57,6 +57,8 @@ export class OfferService {
   public async findOne(id: string) {
     const offer = await this.offerRepository
       .createQueryBuilder('offer')
+      .leftJoinAndSelect('offer.position', 'position')
+      .leftJoinAndSelect('offer.club', 'club')
       .where({ id })
       .getOne();
 
@@ -67,7 +69,6 @@ export class OfferService {
     // Devolver el offer encontrado
     return offer;
   }
-
   public async update(id: string, updateOfferDto: UpdateOfferDto) {
     const offer = await this.findOne(id);
     const { offerData, positionId } = updateOfferDto;
@@ -81,13 +82,12 @@ export class OfferService {
 
     if (positionId) {
       const position = await this.positionService.findOne(positionId);
-      return await this.offerRepository.save({
-        ...offerData,
-        position: position
-      });
-    } else {
-      return await this.offerRepository.save(offer);
+      offer.position = position;
     }
+    const updatedOffer = await this.offerRepository.save(offer);
+
+    return updatedOffer;
+    //return await this.offerRepository.save(offer);
   }
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
