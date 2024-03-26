@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "sportsmatch",
-    "slug": "spotsmatch",
+    "slug": "sportsmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.crisper1988.spotsmatch"
+      "package": "com.mauriidg.spotsmatch"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,7 +39,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2422b150-fbd2-444d-854f-cae81ffc43e6"
+        "projectId": "6869db0c-fea2-4bc8-aad3-e2d390e5e98b"
       }
     }
   }

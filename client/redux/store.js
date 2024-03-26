@@ -6,6 +6,7 @@ import notificacionsSlices from './slices/notificacions.slices'
 import sportsSlices from './slices/sports.slices'
 import clubSlices from './slices/club.slices'
 import sportmanSlices from './slices/sportman.slices'
+import postSlices from './slices/post.slices'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     notifications: notificacionsSlices,
     sports: sportsSlices,
     clubs: clubSlices,
-    sportman: sportmanSlices
+    sportman: sportmanSlices,
+    post: postSlices
   }
 })

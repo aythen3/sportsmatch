@@ -8,8 +8,8 @@ import Paso from './screens/Paso'
 import Paso4Jugador from './screens/Paso4Jugador'
 import Paso3Profesional from './screens/Paso3Profesional'
 import Paso4Profesional from './screens/Paso4Profesional'
-import EscogerDeporte1 from './screens/EscogerDeporte1'
-import EscogerDeporte2 from './screens/EscogerDeporte2'
+import EscogerDeporte1 from './screens/Pasos/EscogerDeporte1'
+import EscogerDeporte2 from './screens/Pasos/EscogerDeporte2'
 import ExplorarPersonaClubsFiltr from './screens/ExplorarPersonaClubsFiltr'
 import MonetizarOfertaPRO from './screens/MonetizarOfertaPRO'
 import BuscarOfertasDeportvas from './screens/BuscarOfertasDeportvas'
@@ -25,7 +25,6 @@ import CerrarSesin from './screens/EditarPerfil/CerrarSesin'
 import EliminarCuenta from './screens/EditarPerfil/EliminarCuenta'
 import MiSuscripcin from './screens/MiSuscripcin'
 import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
-import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
 import MiPerfil from './screens/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import ChatAbierto from './screens/ChatAbierto'
@@ -33,12 +32,11 @@ import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
 import SiguiendoJugadores from './screens/SiguiendoJugadores'
 import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
-import ExplorarClubs from './screens/ExplorarClubs'
-import ExplorarClubsConFiltroPrem from './screens/ExplorarClubsConFiltroPrem'
+import ExplorarClubs from './screens/Explorar/ExplorarClubs'
+import ExplorarClubsConFiltroPrem from './screens/Explorar/ExplorarClubsConFiltroPrem'
 import PantallaInicio from './screens/Login/PantallaInicio'
 import IniciarSesin from './screens/Login/IniciarSesin'
 import Registrarse from './screens/Login/Registrarse'
-import TusMatchs1 from './screens/TusMatchs1'
 import TusMatchsDetalle1 from './screens/TusMatchsDetalle1'
 import TusMensajes1 from './screens/TusMensajes1'
 import TusNotificaciones1 from './screens/Notificaciones/TusNotificaciones1'
@@ -48,7 +46,7 @@ import CrearHighlight from './screens/CrearHighlight'
 import ConfigurarAnuncio from './screens/ConfigurarAnuncio'
 import Premium from './screens/Premium'
 import Paso3Jugador from './screens/Paso3Jugador'
-import Paso1 from './screens/Paso1'
+import Paso1 from './screens/Pasos/Paso1'
 import DefineTusSkills from './screens/DefineTusSkills'
 import CorreoElectrnico from './screens/EditarPerfil/CorreoElectrnico'
 import Contrasea from './screens/EditarPerfil/Contrasea'
@@ -239,11 +237,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="PerfilVisualizacinJugador"
-                component={PerfilVisualizacinJugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="MiPerfil"
                 component={MiPerfil}
                 options={{ headerShown: false }}
@@ -296,11 +289,6 @@ const App = () => {
               <Stack.Screen
                 name="Registrarse"
                 component={Registrarse}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMatchs1"
-                component={TusMatchs1}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

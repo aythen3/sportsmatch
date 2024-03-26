@@ -10,8 +10,8 @@ import {
 import React, { useState } from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import Lines from '../components/Lines'
-import EscogerDeporte2 from './EscogerDeporte2'
-import EscogerDeporte1 from './EscogerDeporte1'
+import EscogerDeporte2 from './Pasos/EscogerDeporte2'
+import EscogerDeporte1 from './Pasos/EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +27,7 @@ const StepsClub = () => {
   const { club } = useSelector((state) => state.clubs)
 
   const { isSportman } = useSelector((state) => state.users)
-  const [stepsIndex, setstepsIndex] = useState(1)
+  const [stepsIndex, setstepsIndex] = useState(2)
   const [clubValues, setClubValues] = useState({
     name: '',
     city: '',
@@ -36,9 +36,11 @@ const StepsClub = () => {
     year: '',
     capacity: '',
     description: '',
-    sport
+    // sport
+    img_perfil: ''
   })
 
+  console.log('club', club)
   const hadleIndex = (value) => {
     if (isSportman) {
       navigation.navigate('Paso1')
@@ -103,7 +105,7 @@ const StepsClub = () => {
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </Pressable>
         </View>
-        <View style={{ marginTop: 100 }}>
+        <View>
           <Text style={styles.paso2}>Paso {stepsIndex}</Text>
           <Text style={styles.detallesDelClub}>
             {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
@@ -114,27 +116,10 @@ const StepsClub = () => {
         {ViewComponent(stepsIndex, isSportman)}
 
         <TouchableOpacity
-          style={{
-            marginVertical: 30,
-            // height: 60,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: Color.wHITESPORTSMATCH,
-            borderRadius: Border.br_81xl,
-            paddingHorizontal: Padding.p_81xl,
-            paddingVertical: Padding.p_3xs
-          }}
+          style={styles.touchable}
           onPress={() => hadleIndex('add')}
         >
-          <Text
-            style={{
-              fontSize: FontSize.button_size,
-              fontWeight: '700',
-              color: Color.bLACK1SPORTSMATCH
-            }}
-          >
-            Siguiente
-          </Text>
+          <Text style={styles.nextText}>Siguiente</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -179,7 +164,8 @@ const styles = StyleSheet.create({
     width: '100%',
     top: 60,
     justifyContent: 'flex-end',
-    right: 30
+    right: 30,
+    marginBottom: 100
   },
   escogerDeporteChild: {
     width: '100%',
@@ -191,6 +177,20 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15
+  },
+  nextText: {
+    fontSize: FontSize.button_size,
+    fontWeight: '700',
+    color: Color.bLACK1SPORTSMATCH
+  },
+  touchable: {
+    marginVertical: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Color.wHITESPORTSMATCH,
+    borderRadius: Border.br_81xl,
+    paddingHorizontal: Padding.p_81xl,
+    paddingVertical: Padding.p_3xs
   }
 })
 
