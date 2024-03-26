@@ -21,8 +21,8 @@ export class PostService {
     return post;
   }
 
-  public async findAll() {
-    return this.postRepository.find({ where: { isDelete: false } });
+  public async findAll(query: any) {
+    return this.postRepository.find({ where: { isDelete: false, ...query } });
   }
 
   public async findOne(id: string) {
