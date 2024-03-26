@@ -26,12 +26,10 @@ import EliminarCuenta from './screens/EditarPerfil/EliminarCuenta'
 import MiSuscripcin from './screens/MiSuscripcin'
 import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
 import PerfilVisualizacinJugador from './screens/PerfilVisualizacinJugador'
-import PerfilVisualizacinClubs from './screens/PerfilVisualizacinClubs'
 import MiPerfil from './screens/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import ChatAbierto from './screens/ChatAbierto'
 import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
-import SiguiendoUsuarios1 from './screens/SiguiendoUsuarios1'
 import SiguiendoJugadores from './screens/SiguiendoJugadores'
 import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
@@ -246,11 +244,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="PerfilVisualizacinClubs"
-                component={PerfilVisualizacinClubs}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="MiPerfil"
                 component={MiPerfil}
                 options={{ headerShown: false }}
@@ -268,11 +261,6 @@ const App = () => {
               <Stack.Screen
                 name="SiguiendoUsuarios"
                 component={SiguiendoUsuarios}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SiguiendoUsuarios1"
-                component={SiguiendoUsuarios1}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
