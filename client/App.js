@@ -11,8 +11,6 @@ import Paso4Profesional from './screens/Paso4Profesional'
 import EscogerDeporte1 from './screens/EscogerDeporte1'
 import EscogerDeporte2 from './screens/EscogerDeporte2'
 import ExplorarPersonaClubsFiltr from './screens/ExplorarPersonaClubsFiltr'
-import ExplorarPersonasClubs from './screens/ExplorarPersonasClubs'
-import ExplorarBuscar from './screens/ExplorarBuscar'
 import MonetizarOfertaPRO from './screens/MonetizarOfertaPRO'
 import BuscarOfertasDeportvas from './screens/BuscarOfertasDeportvas'
 import TodasLasOfertas from './screens/TodasLasOfertas'
@@ -39,7 +37,6 @@ import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
 import ExplorarClubs from './screens/ExplorarClubs'
 import ExplorarClubsConFiltroPrem from './screens/ExplorarClubsConFiltroPrem'
-import LoginSwitch1 from './screens/LoginSwitch1'
 import PantallaInicio from './screens/Login/PantallaInicio'
 import IniciarSesin from './screens/Login/IniciarSesin'
 import Registrarse from './screens/Login/Registrarse'
@@ -50,33 +47,13 @@ import TusNotificaciones1 from './screens/Notificaciones/TusNotificaciones1'
 import EliminarOferta from './screens/Ofertas/EliminarOferta'
 import ChatAbierto1 from './screens/ChatAbierto1'
 import CrearHighlight from './screens/CrearHighlight'
-import PerfilFeedVisualitzaciClu from './screens/PerfilFeedVisualitzaciClu'
-import PerfilFeedVisualitzaciClu1 from './screens/PerfilFeedVisualitzaciClu1'
-import PerfilFeedVisualitzaciClu2 from './screens/PerfilFeedVisualitzaciClu2'
-import Group from './screens/Group'
-import Group1 from './screens/Group1'
 import ConfigurarAnuncio from './screens/ConfigurarAnuncio'
 import Premium from './screens/Premium'
 import Paso3Jugador from './screens/Paso3Jugador'
 import Paso1 from './screens/Paso1'
-import Vector from './screens/Vector'
-import PuntoConflictvoEl from './screens/PuntoConflictvoEl'
-import CuandoElJugador from './screens/CuandoElJugador'
-import LineVector from './screens/LineVector'
-import Group2 from './screens/Group2'
-import Group3 from './screens/Group3'
-import Group4 from './screens/Group4'
-import Group5 from './screens/Group5'
-import AquSeMonetza from './screens/AquSeMonetza'
-import AquSeMonetza1 from './screens/AquSeMonetza1'
-import AquSeMonetza2 from './screens/AquSeMonetza2'
-import AquSeHace from './screens/AquSeHace'
-import AquSeHace1 from './screens/AquSeHace1'
-import AquSeMonetza3 from './screens/AquSeMonetza3'
 import DefineTusSkills from './screens/DefineTusSkills'
 import CorreoElectrnico from './screens/EditarPerfil/CorreoElectrnico'
 import Contrasea from './screens/EditarPerfil/Contrasea'
-import MENUCLUB from './screens/MENUCLUB'
 import NavBarInferior from './components/NavBarInferior'
 import StepsClub from './screens/StepsClub'
 import StepsJugador from './screens/StepsJugador'
@@ -191,16 +168,6 @@ const App = () => {
               <Stack.Screen
                 name="ExplorarPersonaClubsFiltr"
                 component={ExplorarPersonaClubsFiltr}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ExplorarPersonasClubs"
-                component={ExplorarPersonasClubs}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ExplorarBuscar"
-                component={ExplorarBuscar}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
@@ -334,11 +301,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="LoginSwitch1"
-                component={LoginSwitch1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="IniciarSesin"
                 component={IniciarSesin}
                 options={{ headerShown: false }}
@@ -384,31 +346,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="PerfilFeedVisualitzaciClu"
-                component={PerfilFeedVisualitzaciClu}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PerfilFeedVisualitzaciClu1"
-                component={PerfilFeedVisualitzaciClu1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PerfilFeedVisualitzaciClu2"
-                component={PerfilFeedVisualitzaciClu2}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group"
-                component={Group}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group1"
-                component={Group1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="ConfigurarAnuncio"
                 component={ConfigurarAnuncio}
                 options={{ headerShown: false }}
@@ -429,76 +366,6 @@ const App = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="Vector"
-                component={Vector}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PuntoConflictvoEl"
-                component={PuntoConflictvoEl}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CuandoElJugador"
-                component={CuandoElJugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="LineVector"
-                component={LineVector}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group2"
-                component={Group2}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group3"
-                component={Group3}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group4"
-                component={Group4}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Group5"
-                component={Group5}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeMonetza"
-                component={AquSeMonetza}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeMonetza1"
-                component={AquSeMonetza1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeMonetza2"
-                component={AquSeMonetza2}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeHace"
-                component={AquSeHace}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeHace1"
-                component={AquSeHace1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="AquSeMonetza3"
-                component={AquSeMonetza3}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="DefineTusSkills"
                 component={DefineTusSkills}
                 options={{ headerShown: false }}
@@ -511,11 +378,6 @@ const App = () => {
               <Stack.Screen
                 name="Contrasea"
                 component={Contrasea}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MENUCLUB"
-                component={MENUCLUB}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>

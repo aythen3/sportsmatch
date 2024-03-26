@@ -1,29 +1,16 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  Pressable
-} from 'react-native'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { View, StyleSheet, Image, TextInput, Pressable } from 'react-native'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
 
 const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
-  const { isSportman } = useSelector((state) => state.users)
   const navigation = useNavigation()
 
+  const { isSportman } = useSelector((state) => state.users)
+
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 10
-      }}
-    >
+    <View style={styles.container}>
       <View style={[styles.groupContainer, styles.groupContainerSpaceBlock]}>
         <Image
           style={styles.frameChild1}
@@ -33,7 +20,7 @@ const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
         <TextInput
           style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
           placeholderTextColor={Color.gREY2SPORTSMATCH}
-          placeholder={text ? text : 'Posicón de juego, población, club...'}
+          placeholder={text ? text : 'Posición de juego, población, club...'}
         />
       </View>
       <Pressable
@@ -52,6 +39,12 @@ const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10
+  },
   groupContainer: {
     borderRadius: Border.br_81xl,
     borderColor: Color.wHITESPORTSMATCH,
@@ -80,7 +73,6 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   groupIcon2: {
-    // marginLeft: 20,
     height: 17,
     width: 22
   }

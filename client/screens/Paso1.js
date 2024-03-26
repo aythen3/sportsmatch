@@ -20,7 +20,9 @@ import { createSportman } from '../redux/actions/sportman'
 
 const Paso1 = () => {
   const navigation = useNavigation()
+
   const dispatch = useDispatch()
+
   const { sport } = useSelector((state) => state.sports)
   const { user, sportmanGender, birthdate, city } = useSelector(
     (state) => state.users
