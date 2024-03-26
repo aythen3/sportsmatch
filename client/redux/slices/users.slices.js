@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { create, login } from '../actions/users'
+import { create, login, getAllUsers } from '../actions/users'
 
 const usersSlices = createSlice({
   name: 'users',
@@ -9,7 +9,7 @@ const usersSlices = createSlice({
     birthdate: '',
     city: '',
     profesionalType: '',
-
+    allUsers: [],
     error: false,
     loading: false,
     isSportman: true,
@@ -52,6 +52,7 @@ const usersSlices = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Login
       .addCase(login.pending, (state) => {
         state.loading = true
         state.error = false
@@ -64,6 +65,19 @@ const usersSlices = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false
         state.error = true
+      })
+      // Traer todos los usuarios
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false
+        state.allUsers = action.payload
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
       })
   }
 })
