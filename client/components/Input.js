@@ -11,7 +11,9 @@ function Input({
   value,
   onValues,
   field,
-  open
+  open,
+  inputRef,
+  onSubmit
 }) {
   return (
     <View
@@ -55,8 +57,8 @@ function Input({
             }}
             value={value}
             onChangeText={(value) => onValues(field, value)}
-
-            // onPressIn={open}
+            ref={inputRef}
+            onSubmitEditing={onSubmit}
           />
           {isAccordeon && (
             <Image

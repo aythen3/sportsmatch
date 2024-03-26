@@ -18,7 +18,7 @@ const clubSlices = createSlice({
       .addCase(createClub.fulfilled, (state, action) => {
         console.log(action.payload)
         state.loading = false
-        state.club = action.payload
+        state.club = action.payload.data
         state.error = false
       })
       .addCase(createClub.rejected, (state) => {

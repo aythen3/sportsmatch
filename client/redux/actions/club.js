@@ -5,6 +5,7 @@ import axios from 'axios'
 export const createClub = createAsyncThunk('create/club', async (body) => {
   try {
     const { data } = await axiosInstance.post('club/', body)
+    console.log('data', data)
     return data
   } catch (error) {
     throw new Error(error)
@@ -30,7 +31,7 @@ export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
     // }
 
     const { data } = await axios.post(
-      'http://192.168.18.82:3000/api/img-manager',
+      'https://api-sportsmatch.ay-cloud.com/api/img-manager',
       file.file,
       {
         headers: {

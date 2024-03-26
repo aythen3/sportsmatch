@@ -2,7 +2,13 @@ import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontFamily, FontSize, Padding, Border, Color } from '../GlobalStyles'
+import {
+  FontFamily,
+  FontSize,
+  Padding,
+  Border,
+  Color
+} from '../../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons'
 
 const ExplorarClubsConFiltroPrem = ({ onClose }) => {
@@ -19,7 +25,7 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
           <Image
             style={styles.cerrarFiltrosChild}
             contentFit="cover"
-            source={require('../assets/line-66.png')}
+            source={require('../../assets/line-66.png')}
           />
           <Text
             style={[styles.cerrarFiltros1, styles.sexoTypo]}
@@ -36,7 +42,7 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
               <Image
                 style={styles.coolicon}
                 contentFit="cover"
-                source={require('../assets/coolicon5.png')}
+                source={require('../../assets/coolicon5.png')}
               />
             </View>
           </View>
@@ -47,7 +53,7 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
               <Image
                 style={styles.coolicon}
                 contentFit="cover"
-                source={require('../assets/coolicon2.png')}
+                source={require('../../assets/coolicon2.png')}
               />
             </View>
           </View>
@@ -60,7 +66,7 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
               <Image
                 style={styles.coolicon}
                 contentFit="cover"
-                source={require('../assets/coolicon2.png')}
+                source={require('../../assets/coolicon2.png')}
               />
             </View>
           </View>

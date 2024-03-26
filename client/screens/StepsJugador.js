@@ -10,16 +10,18 @@ import {
 import React, { useState } from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import Lines from '../components/Lines'
-import EscogerDeporte2 from './EscogerDeporte2'
-import EscogerDeporte1 from './EscogerDeporte1'
+import EscogerDeporte2 from './Pasos/EscogerDeporte2'
+import EscogerDeporte1 from './Pasos/EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
-import Paso1 from './Paso1'
+import Paso1 from './Pasos/Paso1'
 
 const StepsJugador = () => {
   const navigation = useNavigation()
+
   const { isSportman } = useSelector((state) => state.users)
+
   const [stepsIndex, setstepsIndex] = useState(1)
 
   //   const hadleIndex = (value) => {
@@ -97,27 +99,10 @@ const StepsJugador = () => {
         <View>{ViewComponent(stepsIndex)}</View>
 
         <TouchableOpacity
-          style={{
-            marginVertical: 60,
-            // height: 60,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: Color.wHITESPORTSMATCH,
-            borderRadius: Border.br_81xl,
-            paddingHorizontal: Padding.p_81xl,
-            paddingVertical: Padding.p_3xs
-          }}
+          style={styles.touchable}
           onPress={() => hadleIndex('add')}
         >
-          <Text
-            style={{
-              fontSize: FontSize.button_size,
-              fontWeight: '700',
-              color: Color.bLACK1SPORTSMATCH
-            }}
-          >
-            Siguiente
-          </Text>
+          <Text style={styles.nextText}>Siguiente</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -175,6 +160,20 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15
+  },
+  touchable: {
+    marginVertical: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Color.wHITESPORTSMATCH,
+    borderRadius: Border.br_81xl,
+    paddingHorizontal: Padding.p_81xl,
+    paddingVertical: Padding.p_3xs
+  },
+  nextText: {
+    fontSize: FontSize.button_size,
+    fontWeight: '700',
+    color: Color.bLACK1SPORTSMATCH
   }
 })
 

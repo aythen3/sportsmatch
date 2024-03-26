@@ -8,15 +8,21 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FontFamily, Color, FontSize, Padding, Border } from '../GlobalStyles'
+import {
+  FontFamily,
+  Color,
+  FontSize,
+  Padding,
+  Border
+} from '../../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
-import Lines from '../components/Lines'
-import Paso3Profesional from './Paso3Profesional'
-import Paso3Jugador from './Paso3Jugador'
-import Paso4Jugador from './Paso4Jugador'
-import Paso4Profesional from './Paso4Profesional'
+import Lines from '../../components/Lines'
+import Paso3Profesional from '../Paso3Profesional'
+import Paso3Jugador from '../Paso3Jugador'
+import Paso4Jugador from '../Paso4Jugador'
+import Paso4Profesional from '../Paso4Profesional'
 import { useDispatch, useSelector } from 'react-redux'
-import { createSportman } from '../redux/actions/sportman'
+import { createSportman } from '../../redux/actions/sportman'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -132,7 +138,7 @@ const Paso1 = () => {
       <Image
         style={styles.imagenDeFondo}
         contentFit="cover"
-        source={require('../assets/imagen-de-fondo3.png')}
+        source={require('../../assets/imagen-de-fondo3.png')}
       />
       <View style={styles.contenido}>
         <View>
@@ -143,7 +149,7 @@ const Paso1 = () => {
             <Image
               style={styles.coolicon}
               contentFit="cover"
-              source={require('../assets/coolicon1.png')}
+              source={require('../../assets/coolicon1.png')}
             />
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </Pressable>
@@ -204,7 +210,7 @@ const Paso1 = () => {
                   <Image
                     style={styles.simboloIconLayout}
                     contentFit="cover"
-                    source={require('../assets/simbolo6.png')}
+                    source={require('../../assets/simbolo6.png')}
                   />
                   <Text
                     style={[
@@ -239,7 +245,7 @@ const Paso1 = () => {
                   <Image
                     style={styles.simboloIconLayout}
                     contentFit="cover"
-                    source={require('../assets/simbolo7.png')}
+                    source={require('../../assets/simbolo7.png')}
                   />
                 </TouchableOpacity>
               </View>

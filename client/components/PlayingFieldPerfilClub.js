@@ -1,9 +1,14 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
 const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
+  const { club } = useSelector((state) => state.clubs)
+
+  console.log('user', club)
+
   return (
     <View style={styles.moduloCampo}>
       {/* <View style={[styles.fondoModulo, styles.borderBorder]} /> */}
