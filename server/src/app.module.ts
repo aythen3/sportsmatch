@@ -18,6 +18,7 @@ import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { ChatModule } from './chat/chat.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { ChatModule } from './chat/chat.module';
     PostModule,
     CommentModule,
     LikeModule,
-    ChatModule
+    ChatModule,
+    StripeModule
   ],
   controllers: [],
   providers: []

@@ -49,6 +49,7 @@ export class UserService {
     // Devolver el nuevo perfil del usuario
     return newProfile;
   }
+
   public async findChild(id: string, type: string) {
     let user: UserEntity | undefined;
 

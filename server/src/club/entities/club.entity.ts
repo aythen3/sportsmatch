@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/config/base.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
+import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
@@ -49,4 +50,9 @@ export class ClubEntity extends BaseEntity {
     nullable: true
   })
   positions?: PositionEntity[];
+
+  @OneToMany(() => SportEntity, (sport) => sport.club, {
+    nullable: true
+  })
+  sports?: SportEntity[];
 }
