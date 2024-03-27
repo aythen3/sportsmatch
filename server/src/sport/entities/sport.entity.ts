@@ -1,8 +1,9 @@
+import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
@@ -26,4 +27,9 @@ export class SportEntity extends BaseEntity {
     nullable: true
   })
   positions: PositionEntity[] | null;
+
+  @ManyToOne(() => ClubEntity, (club) => club.sports, {
+    nullable: true
+  })
+  club: ClubEntity | null;
 }
