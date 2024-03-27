@@ -19,7 +19,8 @@ import {
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/actions/users'
-import { getAll } from '../../redux/actions/sports'
+import { setClub } from '../../redux/slices/club.slices'
+// import { getAll } from '../../redux/actions/sports'
 
 const IniciarSesin = () => {
   const navigation = useNavigation()
@@ -29,7 +30,7 @@ const IniciarSesin = () => {
   const passwordInputRef = useRef(null)
 
   const { user } = useSelector((state) => state.users)
-  const { sports } = useSelector((state) => state.sports)
+  // const { sports } = useSelector((state) => state.sports)
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -56,8 +57,14 @@ const IniciarSesin = () => {
   const handleSubmit = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
+        .then(async (response) => {
+          // await AsyncStorage.setItem('userData', JSON.stringify(response))
+          dispatch(setClub(response))
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
-    // navigation.navigate('stepsClub')
   }
 
   return (
@@ -101,8 +108,7 @@ const IniciarSesin = () => {
                           autoCapitalize="none"
                           onChangeText={(value) => seterValues('email', value)}
                           onSubmitEditing={() => {
-                            // Manejar el evento onSubmitEditing
-                            passwordInputRef.current.focus() // Pasar el foco al siguiente campo (contraseña)
+                            passwordInputRef.current.focus()
                           }}
                         />
                       </View>

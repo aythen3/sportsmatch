@@ -1,31 +1,17 @@
 import React, { useState } from 'react'
-import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
-import DeportesSeleccion from '../components/DeportesSeleccion'
+import { StyleSheet, View } from 'react-native'
+import {
+  Color,
+  FontFamily,
+  FontSize,
+  Border,
+  Padding
+} from '../../GlobalStyles'
+import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
-import Lines from '../components/Lines'
 
 const Paso2Jugador = () => {
-  const navigation = useNavigation()
-  const { isSportMan } = useSelector((state) => state.users)
   const { sports } = useSelector((state) => state.sports)
-  // const router = useRoute()
-
-  // const { role } = router.params
-
-  const handleNavigation = () => {
-    if (isSportMan === true) {
-      // if (role === 'Profesional del deporte') {
-      //   navigation.navigate('Paso4Profesional')
-      // } else {
-      navigation.navigate('Paso3Jugador')
-      // }
-    } else {
-      navigation.navigate('EscogerDeporte2')
-    }
-  }
 
   const [selectedSport, setSelectedSport] = useState(null)
 

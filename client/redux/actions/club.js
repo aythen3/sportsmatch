@@ -4,8 +4,25 @@ import axios from 'axios'
 
 export const createClub = createAsyncThunk('create/club', async (body) => {
   try {
-    const { data } = await axiosInstance.post('club/', body)
-    console.log('data', data)
+    const { data } = await axiosInstance.post('club', body)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
+export const getAllClubs = createAsyncThunk('getAll/club', async () => {
+  try {
+    const { data } = await axiosInstance.get('club')
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
+export const getClub = createAsyncThunk('get/club', async (id) => {
+  try {
+    const { data } = await axiosInstance.get(`club/${id}`)
     return data
   } catch (error) {
     throw new Error(error)
@@ -14,34 +31,17 @@ export const createClub = createAsyncThunk('create/club', async (body) => {
 
 export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
   try {
-    // console.log('action', formData)
-    // const formData = new FormData()
-    // formData.append('file', {
-    //   uri: image1.uri,
-    //   type: image1.type,
-    //   name: fileName
-    // })
-
-    console.log('form', file)
-
-    // for (const part of formData._parts) {
-    //   const [name, value] = part
-    //   console.log(`Part Name: ${name}`)
-    //   console.log(`Part Value:`, value)
-    // }
-
+    console.log('file', file.file)
     const { data } = await axios.post(
-      'https://api-sportsmatch.ay-cloud.com/api/img-manager',
+      // 'https://api-sportsmatch.ay-cloud.com/api/img-manager',
+      'http://192.168.1.47:3000/api/img-manager',
       file.file,
       {
         headers: {
-          'Content-Type': 'multipart/form-data' // Este es el encabezado requerido para enviar FormData
-          // Otros headers opcionales pueden ser agregados aquí según tus necesidades
+          'Content-Type': 'multipart/form-data'
         }
       }
     )
-
-    console.log('RESPUESTRAAAAAA', data)
     return data
   } catch (error) {
     throw new Error(error)

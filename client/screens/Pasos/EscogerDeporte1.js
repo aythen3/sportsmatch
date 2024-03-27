@@ -1,27 +1,17 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import {
-  FontSize,
-  Color,
-  FontFamily,
-  Border,
-  Padding
-} from '../../GlobalStyles'
+import { FontSize, Color, FontFamily, Border } from '../../GlobalStyles'
 import * as ImagePicker from 'expo-image-picker'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateImgClub } from '../../redux/actions/club'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 
 const EscogerDeporte1 = () => {
   const dispatch = useDispatch()
-  const { club } = useSelector((state) => state.clubs)
+
   const [image1, setImage1] = useState(null)
-  const [image2, setImage2] = useState(null)
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,

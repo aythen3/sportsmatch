@@ -47,7 +47,6 @@ export class ImgManagerService {
   //POSIBLE SOLUCION PARA IMAGENES DE DISPOSITIVOS MOVILES
   // public async imgUpload(file: any) {
   //   try {
-  //     console.log('SERVICE', file);
 
   //     if (!file) {
   //       throw new Error('No se proporcionó ningún archivo.');
@@ -61,7 +60,6 @@ export class ImgManagerService {
   //       public_id: 'imagen_subida'
   //     });
 
-  //     console.log('RESPONSE CLOUD', cloudinaryResponse);
   //     return cloudinaryResponse.secure_url;
   //   } catch (error) {
   //     console.error('Error al subir la imagen a Cloudinary:', error);

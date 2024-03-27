@@ -88,6 +88,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
             onValues={handleValues}
             inputRef={yearRef}
             onSubmit={handleSubmit}
+            keyboardType="numeric"
           />
           <Input
             title="Aforo"
@@ -97,6 +98,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
             onValues={handleValues}
             inputRef={capacityRef}
             onSubmit={handleSubmit}
+            keyboardType="numeric"
           />
 
           <Input

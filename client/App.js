@@ -2,12 +2,11 @@ const Stack = createNativeStackNavigator()
 import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import LoginSwitch from './screens/LoginSwitch'
-import Paso2Jugador from './screens/Paso2Jugador'
-import Paso from './screens/Paso'
-import Paso4Jugador from './screens/Paso4Jugador'
-import Paso3Profesional from './screens/Paso3Profesional'
-import Paso4Profesional from './screens/Paso4Profesional'
+import LoginSwitch from './screens/Login/LoginSwitch'
+import Paso2Jugador from './screens/Pasos/Paso2Jugador'
+import Paso4Jugador from './screens/Pasos/Paso4Jugador'
+import Paso3Profesional from './screens/Pasos/Paso3Profesional'
+import Paso4Profesional from './screens/Pasos/Paso4Profesional'
 import EscogerDeporte1 from './screens/Pasos/EscogerDeporte1'
 import EscogerDeporte2 from './screens/Pasos/EscogerDeporte2'
 import ExplorarPersonaClubsFiltr from './screens/ExplorarPersonaClubsFiltr'
@@ -29,7 +28,7 @@ import MiPerfil from './screens/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import ChatAbierto from './screens/ChatAbierto'
 import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
-import SiguiendoJugadores from './screens/SiguiendoJugadores'
+import SiguiendoJugadores from './screens/Muro/SiguiendoJugadores'
 import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
 import ExplorarClubs from './screens/Explorar/ExplorarClubs'
@@ -45,14 +44,13 @@ import ChatAbierto1 from './screens/ChatAbierto1'
 import CrearHighlight from './screens/CrearHighlight'
 import ConfigurarAnuncio from './screens/ConfigurarAnuncio'
 import Premium from './screens/Premium'
-import Paso3Jugador from './screens/Paso3Jugador'
+import Paso3Jugador from './screens/Pasos/Paso3Jugador'
 import Paso1 from './screens/Pasos/Paso1'
-import DefineTusSkills from './screens/DefineTusSkills'
 import CorreoElectrnico from './screens/EditarPerfil/CorreoElectrnico'
 import Contrasea from './screens/EditarPerfil/Contrasea'
 import NavBarInferior from './components/NavBarInferior'
-import StepsClub from './screens/StepsClub'
-import StepsJugador from './screens/StepsJugador'
+import StepsClub from './screens/Pasos/StepsClub'
+import StepsJugador from './screens/Pasos/StepsJugador'
 import EditarSkills from './screens/EditarPerfil/EditarSkills'
 import DetallesUsuario from './screens/EditarPerfil/DetallesUsuario'
 
@@ -129,11 +127,6 @@ const App = () => {
               <Stack.Screen
                 name="stepsJugador"
                 component={StepsJugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso"
-                component={Paso}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
@@ -339,11 +332,6 @@ const App = () => {
               <Stack.Screen
                 name="Paso1"
                 component={Paso1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="DefineTusSkills"
-                component={DefineTusSkills}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

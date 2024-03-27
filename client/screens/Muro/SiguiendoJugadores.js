@@ -1,11 +1,13 @@
-import React from 'react'
-import { StyleSheet, View, Text, ScrollView } from 'react-native'
-import { Color } from '../GlobalStyles'
-import HeaderIcons from '../components/HeaderIcons'
-import { useSelector } from 'react-redux'
-import Carousel from '../components/Carousel'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Color } from '../../GlobalStyles'
+import HeaderIcons from '../../components/HeaderIcons'
+import Carousel from '../../components/Carousel'
 
 const SiguiendoJugadores = () => {
+  const dispatch = useDispatch()
+
   const { publications } = useSelector((state) => state.muro)
 
   return (

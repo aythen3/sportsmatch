@@ -2,9 +2,15 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
-import DetallesSeleccion from '../components/DetallesSeleccion'
-import Lines from '../components/Lines'
+import {
+  Color,
+  FontFamily,
+  FontSize,
+  Border,
+  Padding
+} from '../../GlobalStyles'
+import DetallesSeleccion from '../../components/DetallesSeleccion'
+import Lines from '../../components/Lines'
 
 const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
   const navigation = useNavigation()
@@ -17,7 +23,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             <Image
               style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../assets/circulo.png')}
+              source={require('../../assets/circulo.png')}
             />
             <View style={styles.botonSubirImagen}>
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>

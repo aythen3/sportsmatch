@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
   Border,
@@ -12,9 +12,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 
 const GoldSuscription = () => {
-  const { user } = useSelector((state) => state.users)
+  // const { user } = useSelector((state) => state.users)
 
-  console.log(user)
   return (
     <View>
       <View style={styles.goldSpaceBlock}>

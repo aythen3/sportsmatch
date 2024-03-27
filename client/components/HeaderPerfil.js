@@ -1,9 +1,17 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity
+} from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
+import * as ImagePicker from 'expo-image-picker'
+import { updateImgClub } from '../redux/actions/club'
 
 const HeaderPerfil = ({
   name,
@@ -15,28 +23,54 @@ const HeaderPerfil = ({
   club,
   myPerfil,
   position,
-  sport
+  sport,
+  front,
+  avatar
 }) => {
-  const { isSportman } = useSelector((state) => state.users)
+  const dispatch = useDispatch()
   const navigation = useNavigation()
+
+  const { isSportman } = useSelector((state) => state.users)
+
+  const [image1, setImage1] = useState(null)
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    })
+
+    if (!result.canceled) {
+      setImage1(result.assets[0])
+
+      const fileName = `${result.assets[0].uri.split('.').pop()}`
+
+      const file = new FormData()
+
+      file.append('file', {
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: fileName
+      })
+      dispatch(updateImgClub(file))
+    }
+  }
+
+  console.log(image1)
 
   return (
     <View>
-      <Image
-        style={{ width: '100%', height: 150 }}
-        contentFit="cover"
-        source={require('../assets/hannahredingkqyboqrw5wunsplash-12.png')}
-      />
+      <TouchableOpacity onPress={() => pickImage(setImage1)}>
+        <Image
+          style={styles.imgFront}
+          contentFit="cover"
+          source={{ uri: image1?.uri }}
+        />
+      </TouchableOpacity>
       <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-        <View
-          style={{
-            borderWidth: 4,
-            borderColor: Color.bALONCESTO,
-            backgroundColor: Color.bALONCESTO,
-            height: 108,
-            borderRadius: 50
-          }}
-        >
+        <View style={styles.circleAvatar}>
           {isSportman ? (
             <Image
               style={styles.perfilFeedVisualitzaciCluItem}
@@ -85,17 +119,7 @@ const HeaderPerfil = ({
 
       <View style={styles.groupContainer}>
         {club && !myPerfil ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              backgroundColor: Color.colorDimgray_100,
-              borderRadius: Border.br_81xl,
-              height: 35,
-              width: 170,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
+          <View style={styles.leftButton}>
             <Image
               style={styles.frameChild}
               contentFit="cover"
@@ -105,16 +129,7 @@ const HeaderPerfil = ({
           </View>
         ) : (
           <Pressable
-            style={{
-              flexDirection: 'row',
-              backgroundColor: Color.colorDimgray_100,
-              borderRadius: Border.br_81xl,
-              height: 35,
-              width: 180,
-              paddingHorizontal: 20,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
+            style={styles.leftButton}
             onPress={() =>
               !button1 ? navigation.navigate('EditarPerfil') : ''
             }
@@ -125,18 +140,7 @@ const HeaderPerfil = ({
           </Pressable>
         )}
         {club && !myPerfil ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              backgroundColor: Color.bALONCESTO,
-
-              borderRadius: Border.br_81xl,
-              height: 35,
-              width: 170,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
+          <View style={styles.matchButton}>
             <Text style={[styles.ojear, styles.timeTypo2]}>Pedir Match</Text>
             <View
               style={{
@@ -148,7 +152,6 @@ const HeaderPerfil = ({
                 backgroundColor: Color.bALONCESTO,
                 position: 'absolute',
                 left: -10
-                //   top: 5
               }}
             >
               <Image
@@ -165,12 +168,9 @@ const HeaderPerfil = ({
               backgroundColor: button2
                 ? Color.colorDimgray_100
                 : Color.colorWhitesmoke,
-
               borderRadius: Border.br_81xl,
               height: 35,
-              width: 180,
-
-              paddingHorizontal: 20,
+              width: 170,
               justifyContent: 'center',
               alignItems: 'center'
             }}
@@ -185,37 +185,9 @@ const HeaderPerfil = ({
         )}
       </View>
       {isSportman === true && (
-        <View
-          style={{
-            width: '100%',
-            height: 60,
-            backgroundColor: Color.bLACK3SPORTSMATCH,
-            marginTop: 20,
-            paddingHorizontal: 15
-          }}
-        >
-          <Text
-            style={{
-              width: '30.28%',
-              top: '10%',
-              lineHeight: 14,
-              fontSize: FontSize.t4TEXTMICRO_size,
-              color: Color.wHITESPORTSMATCH,
-              fontFamily: FontFamily.t4TEXTMICRO,
-              marginBottom: 10
-            }}
-          >
-            Seguidores
-          </Text>
-          <Text
-            style={{
-              fontSize: FontSize.h3TitleMEDIUM_size,
-              lineHeight: 22,
-              color: Color.wHITESPORTSMATCH
-            }}
-          >
-            24
-          </Text>
+        <View style={styles.seguidoresContainer}>
+          <Text style={styles.seguidoresText}>Seguidores</Text>
+          <Text style={styles.numeroText}>24</Text>
         </View>
       )}
 
@@ -279,32 +251,19 @@ const HeaderPerfil = ({
 
 const styles = StyleSheet.create({
   groupContainer: {
-    // top: 9,
-    // left: 45,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginTop: 10
   },
   groupIcon: {
     height: 25,
     width: 32,
-    // top: '23.68%',
-    // right: '15%',
-    // bottom: '21.32%',
-    // left: '13.68%',
     opacity: 0.9
-    // maxHeight: '100%',
-    // maxWidth: '100%',
-    // overflow: 'hidden'
-  },
-  frameLayout: {
-    width: 60,
-    height: 60
   },
   timeTypo: {
     fontSize: FontSize.t2TextSTANDARD_size
   },
   timeTypo2: {
-    // backgroundColor: 'red',
     marginRight: 20,
     width: '100%',
     textAlign: 'right',
@@ -326,11 +285,6 @@ const styles = StyleSheet.create({
   frameChild: {
     width: 26,
     height: 17
-  },
-  jugandoAlUni: {
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    marginTop: 3
   },
   description: {
     color: Color.wHITESPORTSMATCH,
@@ -362,16 +316,59 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  perfilFeedVisualitzaciCluChild: {
-    // top: 148,
-    // left: 20,
-    width: 105,
-    height: 105
-    // position: 'absolute'
-  },
   perfilFeedVisualitzaciCluItem: {
     height: 100,
     width: 100
+  },
+  imgFront: {
+    width: '100%',
+    height: 150
+  },
+  circleAvatar: {
+    borderWidth: 4,
+    borderColor: Color.bALONCESTO,
+    backgroundColor: Color.bALONCESTO,
+    height: 108,
+    borderRadius: 50
+  },
+  leftButton: {
+    flexDirection: 'row',
+    backgroundColor: Color.colorDimgray_100,
+    borderRadius: Border.br_81xl,
+    height: 35,
+    width: 170,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  matchButton: {
+    flexDirection: 'row',
+    backgroundColor: Color.bALONCESTO,
+    borderRadius: Border.br_81xl,
+    height: 35,
+    width: 170,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  seguidoresContainer: {
+    width: '100%',
+    height: 60,
+    backgroundColor: Color.bLACK3SPORTSMATCH,
+    marginTop: 20,
+    paddingHorizontal: 15
+  },
+  seguidoresText: {
+    width: '30.28%',
+    top: '10%',
+    lineHeight: 14,
+    fontSize: FontSize.t4TEXTMICRO_size,
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    marginBottom: 10
+  },
+  numeroText: {
+    fontSize: FontSize.h3TitleMEDIUM_size,
+    lineHeight: 22,
+    color: Color.wHITESPORTSMATCH
   }
 })
 

@@ -4,17 +4,7 @@ import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
 const CircleSkills = ({ percentage, skill }) => {
   return (
-    <View
-      style={{
-        width: 100,
-        height: 100,
-        borderWidth: 4,
-        borderColor: Color.colorDimgray_100,
-        borderRadius: 80,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
+    <View style={styles.container}>
       <Text style={[styles.taxto1, styles.taxto1Clr]}>{percentage}</Text>
       <Text style={[styles.texto2, styles.taxto2Clr]}>{skill}</Text>
     </View>
@@ -22,6 +12,15 @@ const CircleSkills = ({ percentage, skill }) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: 100,
+    height: 100,
+    borderWidth: 4,
+    borderColor: Color.colorDimgray_100,
+    borderRadius: 80,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   taxto1: {
     fontWeight: '500',
     lineHeight: 40,

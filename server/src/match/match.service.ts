@@ -21,13 +21,13 @@ export class MatchService {
 
   public async create(createMatchDto: CreateMatchDto) {
     const { offerId, sportmanId } = createMatchDto;
-    console.log(sportmanId);
+    // console.log(sportmanId);
     // Buscar la oferta por su ID
     const offer = await this.offerRepository
       .createQueryBuilder('offer')
       .where({ id: offerId })
       .getOne();
-    console.log(offer);
+    // console.log(offer);
     if (!offer) {
       throw new HttpException(`Offer with ID ${offerId} not found`, 404);
     }
