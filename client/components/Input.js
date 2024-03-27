@@ -13,7 +13,8 @@ function Input({
   field,
   open,
   inputRef,
-  onSubmit
+  onSubmit,
+  keyboardType
 }) {
   return (
     <View
@@ -59,6 +60,7 @@ function Input({
             onChangeText={(value) => onValues(field, value)}
             ref={inputRef}
             onSubmitEditing={onSubmit}
+            keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
           />
           {isAccordeon && (
             <Image

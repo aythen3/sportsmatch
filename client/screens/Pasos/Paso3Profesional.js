@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
-import SeleccionProfesional from '../components/SeleccionProfesional'
-import Lines from '../components/Lines'
-import Input from '../components/Input'
-import CustomModal from '../components/modals/CustomModal'
-import Acordeon from '../components/Acordeon'
+import {
+  Color,
+  FontFamily,
+  FontSize,
+  Border,
+  Padding
+} from '../../GlobalStyles'
+import SeleccionProfesional from '../../components/SeleccionProfesional'
+import Lines from '../../components/Lines'
+import Input from '../../components/Input'
+import CustomModal from '../../components/modals/CustomModal'
+import Acordeon from '../../components/Acordeon'
 import { useDispatch } from 'react-redux'
-import { setCity, setProfesionalType } from '../redux/slices/users.slices'
+import { setCity, setProfesionalType } from '../../redux/slices/users.slices'
 
 const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
   const navigation = useNavigation()
@@ -58,8 +64,6 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
       [field]: value
     }))
   }
-
-  console.log('PROBANDO', profesionalValues)
 
   return (
     <View style={styles.paso6}>

@@ -1,17 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
 const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
-  const { club } = useSelector((state) => state.clubs)
-
-  console.log('user', club)
-
   return (
     <View style={styles.moduloCampo}>
-      {/* <View style={[styles.fondoModulo, styles.borderBorder]} /> */}
       <View style={styles.graficotextoLateral}>
         <Image
           style={styles.graficoTerrenoJuego}
@@ -23,15 +17,14 @@ const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
             <Text style={[styles.estadio, styles.taxto1Clr]}>Estadio</Text>
           </Pressable>
           <View style={styles.bloqueInformacion}>
-            <Text style={styles.nombreDelEstadio}>{`Nombre del 
-estadio o pavellón
-${fieldName}`}</Text>
-            <Text
-              style={[styles.poblacinMatar, styles.pasEspaaTypo]}
-            >{`Población
-${city}`}</Text>
-            <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>{`País
-${country}`}</Text>
+            <Text style={styles.nombreDelEstadio}>
+              Nombre del estadio o pavellón
+            </Text>
+            <Text style={styles.secondText}>{fieldName}</Text>
+            <Text style={styles.pasEspaaTypo}>Ciudad</Text>
+            <Text style={styles.secondText}>{city}</Text>
+            <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>País</Text>
+            <Text style={styles.secondText}>{country}</Text>
           </View>
         </View>
       </View>
@@ -64,26 +57,30 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   bloqueInformacion: {
-    marginTop: 27
+    marginTop: 15
   },
   nombreDelEstadio: {
-    fontSize: FontSize.t1TextSMALL_size,
+    fontSize: 15,
     color: Color.bALONCESTO,
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  poblacinMatar: {
-    width: 185
+    fontFamily: FontFamily.t4TEXTMICRO,
+    width: '60%'
   },
   pasEspaaTypo: {
     marginTop: 13,
     lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
+    fontSize: 15,
     color: Color.bALONCESTO,
     textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO
   },
   pasEspaa: {
     width: 138
+  },
+  secondText: {
+    fontSize: FontSize.t1TextSMALL_size,
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    marginTop: 5
   }
 })
 

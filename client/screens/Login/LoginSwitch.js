@@ -10,10 +10,16 @@ import {
 } from 'react-native'
 import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
-import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
+import {
+  FontFamily,
+  FontSize,
+  Color,
+  Border,
+  Padding
+} from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsSpotMan } from '../redux/slices/users.slices'
-import { getAll } from '../redux/actions/sports'
+import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { getAll } from '../../redux/actions/sports'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -35,14 +41,14 @@ const LoginSwitch = () => {
       <Image
         style={styles.loginSwitchChild}
         contentFit="cover"
-        source={require('../assets/fondo-inicial.png')}
+        source={require('../../assets/fondo-inicial.png')}
       />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
             style={styles.icon}
             contentFit="cover"
-            source={require('../assets/group-1.png')}
+            source={require('../../assets/group-1.png')}
           />
         </Pressable>
         <Text style={[styles.eresJugadorO, styles.aceptarTypo]}>
@@ -116,7 +122,7 @@ const LoginSwitch = () => {
                         <Image
                           style={[styles.groupItem, styles.groupPosition1]}
                           contentFit="cover"
-                          source={require('../assets/group-236.png')}
+                          source={require('../../assets/group-236.png')}
                         />
                       </View>
                       <View style={styles.loremIpsumGroup}>
@@ -129,7 +135,7 @@ const LoginSwitch = () => {
                         <Image
                           style={[styles.groupInner, styles.groupPosition1]}
                           contentFit="cover"
-                          source={require('../assets/group-237.png')}
+                          source={require('../../assets/group-237.png')}
                         />
                       </View>
                       <View style={styles.loremIpsumGroup}>
@@ -142,7 +148,7 @@ const LoginSwitch = () => {
                         <Image
                           style={[styles.groupIcon, styles.groupPosition]}
                           contentFit="cover"
-                          source={require('../assets/group12.png')}
+                          source={require('../../assets/group12.png')}
                         />
                       </View>
                     </View>
@@ -163,7 +169,7 @@ const LoginSwitch = () => {
                     <Image
                       style={[styles.groupChild1, styles.groupPosition]}
                       contentFit="cover"
-                      source={require('../assets/group-238.png')}
+                      source={require('../../assets/group-238.png')}
                     />
                   </Pressable>
                 </View>
