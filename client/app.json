@@ -1,5 +1,6 @@
 {
   "expo": {
+    "runtimeVersion": "1.0.0",
     "name": "sportsmatch",
     "slug": "sportsmatch",
     "version": "1.0.0",
@@ -23,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.mauriidg.spotsmatch"
+      "package": "com.mauriidg.spotsmatch",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,6 +43,7 @@
       "eas": {
         "projectId": "6869db0c-fea2-4bc8-aad3-e2d390e5e98b"
       }
-    }
+    },
+    "owner": "mauriidg"
   }
 }
