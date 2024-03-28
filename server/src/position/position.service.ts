@@ -27,13 +27,18 @@ export class PositionService {
   }
 
   public async findAll() {
-    return this.positionRepository.find({ where: { isDelete: false } });
+    return this.positionRepository
+      .createQueryBuilder('position')
+      .where({ isDelete: false })
+      .leftJoinAndSelect('position.sport', 'sport')
+      .getMany();
   }
 
   public async findOne(id: string) {
     const position = await this.positionRepository
       .createQueryBuilder('position')
       .where({ id })
+      .leftJoinAndSelect('position.sport', 'sport')
       .getOne();
 
     if (!position) {
