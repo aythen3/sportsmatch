@@ -29,8 +29,16 @@ export class SportService {
     return this.sportRepository.find({ where: { isDelete: false } });
   }
 
-  public async findOne(id: number) {
-    return `This action returns a #${id} sport`;
+  public async findOne(id: string) {
+    const sport = await this.sportRepository.findOne({
+      where: { isDelete: false }
+    });
+
+    if (!sport) {
+      throw new HttpException(`Sport id ${id} not found`, 404);
+    }
+
+    return sport;
   }
 
   public async update(id: number, updateSportDto: UpdateSportDto) {
