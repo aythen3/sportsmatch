@@ -9,15 +9,7 @@ const RegisteredOffers = ({ name, image, match, modalPremium }) => {
 
   return (
     <>
-      <View
-        style={{
-          //   marginTop: 15,
-          paddingHorizontal: 15,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
+      <View style={styles.container}>
         <View style={styles.frameGroup}>
           {match ? (
             <Image
@@ -45,31 +37,11 @@ const RegisteredOffers = ({ name, image, match, modalPremium }) => {
         </View>
 
         {match && (
-          <View
-            style={{
-              backgroundColor: Color.colorMaroon,
-              width: 110,
-              height: 40,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: Border.br_81xl
-            }}
-          >
+          <View style={styles.matchContainer}>
             <Text style={[styles.match, styles.timeTypo]}>Match</Text>
-            <View
-              style={{
-                width: 45,
-                height: 45,
-                borderRadius: 50,
-                backgroundColor: Color.bALONCESTO,
-                position: 'absolute',
-                left: -8,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
+            <View style={styles.imgView}>
               <Image
-                style={{ width: 30, height: 23 }}
+                style={styles.img}
                 contentFit="cover"
                 source={require('../assets/group9.png')}
               />
@@ -77,18 +49,18 @@ const RegisteredOffers = ({ name, image, match, modalPremium }) => {
           </View>
         )}
       </View>
-      <View
-        style={{
-          borderWidth: 0.5,
-          borderColor: Color.colorDimgray_100,
-          marginVertical: 10
-        }}
-      />
+      <View style={styles.line} />
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   frameGroup: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -114,6 +86,14 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
+  matchContainer: {
+    backgroundColor: Color.colorMaroon,
+    width: 110,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: Border.br_81xl
+  },
   match: {
     color: Color.bALONCESTO,
     alignSelf: 'flex-end',
@@ -125,6 +105,25 @@ const styles = StyleSheet.create({
   timeTypo: {
     fontSize: FontSize.t2TextSTANDARD_size,
     textAlign: 'center'
+  },
+  imgView: {
+    width: 45,
+    height: 45,
+    borderRadius: 50,
+    backgroundColor: Color.bALONCESTO,
+    position: 'absolute',
+    left: -8,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  img: {
+    width: 30,
+    height: 23
+  },
+  line: {
+    borderWidth: 0.5,
+    borderColor: Color.colorDimgray_100,
+    marginVertical: 10
   }
 })
 

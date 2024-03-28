@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import { useDispatch } from 'react-redux'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity
+} from 'react-native'
 import {
   Color,
   FontSize,
@@ -10,13 +17,28 @@ import {
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
+import { useRoute } from '@react-navigation/native'
+import { deleteOffer, getAllOffers } from '../../redux/actions/offers'
 
 const EliminarOferta = () => {
   const navigation = useNavigation()
+
+  const dispatch = useDispatch()
+
+  const route = useRoute()
+
+  const { offer } = route.params
+
   const [color, setColor] = useState(false)
   const [color2, setColor2] = useState(false)
   const [check1, setCheck1] = useState(false)
   const [check2, setCheck2] = useState(false)
+
+  const handleDelete = () => {
+    dispatch(deleteOffer(offer.id))
+    dispatch(getAllOffers())
+    navigation.goBack()
+  }
 
   return (
     <View style={styles.eliminarOferta3}>
@@ -128,11 +150,14 @@ eliminar esta oferta?`}</Text>
         </View>
 
         <View style={styles.botonEliminarOferta}>
-          <View style={styles.botonEliminarOferta2}>
+          <TouchableOpacity
+            style={styles.botonEliminarOferta2}
+            onPress={handleDelete}
+          >
             <Text style={[styles.textoBoton, styles.cerrarTypo]}>
               Eliminar la oferta
             </Text>
-          </View>
+          </TouchableOpacity>
           <Text
             style={[styles.cerrar, styles.cerrarTypo]}
             onPress={() => navigation.goBack()}
