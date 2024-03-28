@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -20,15 +20,20 @@ import {
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../../components/ModalOptionOffers'
-import { setOffer } from '../../redux/slices/offers.slices'
+import { getAllOffers, setOffer } from '../../redux/actions/offers'
 
 const OfertasEmitidas = () => {
-  const { offers } = useSelector((state) => state.offers)
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
+  const { offers } = useSelector((state) => state.offers)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    dispatch(getAllOffers())
+  }, [])
 
   const handleImageClick = (event) => {
     const { pageX, pageY } = event.nativeEvent
@@ -42,15 +47,9 @@ const OfertasEmitidas = () => {
     <View style={styles.ofertasEmitidas}>
       <ScrollView>
         <View style={styles.container}>
-          {offers.map((offer, i) => (
+          {/* {offers.map((offer, i) => (
             <View key={offer.id} style={styles.offers}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
+              <View style={styles.offerView}>
                 <Text style={[styles.oferta1, styles.sexo1Typo]}>
                   Oferta {i + 1}
                 </Text>
@@ -66,7 +65,7 @@ const OfertasEmitidas = () => {
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{ marginTop: 8 }}>
+              <View>
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
@@ -74,13 +73,7 @@ const OfertasEmitidas = () => {
                   </Text>
                 </View>
 
-                <View
-                  style={{
-                    borderWidth: 0.5,
-                    borderColor: Color.colorGhostwhite,
-                    marginVertical: 8
-                  }}
-                />
+                <View style={styles.innerLine} />
 
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>
@@ -91,13 +84,7 @@ const OfertasEmitidas = () => {
                   </Text>
                 </View>
 
-                <View
-                  style={{
-                    borderWidth: 0.5,
-                    borderColor: Color.colorGhostwhite,
-                    marginVertical: 8
-                  }}
-                />
+                <View style={styles.innerLine} />
 
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
@@ -106,20 +93,9 @@ const OfertasEmitidas = () => {
                   </Text>
                 </View>
 
-                <View
-                  style={{
-                    borderWidth: 0.5,
-                    borderColor: Color.colorGhostwhite,
-                    marginVertical: 8
-                  }}
-                />
+                <View style={styles.innerLine} />
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <View style={styles.offerView}>
                   <View>
                     <Text style={[styles.sexo1, styles.sexo1Typo]}>
                       Urgencia
@@ -176,7 +152,7 @@ const OfertasEmitidas = () => {
                 </TouchableWithoutFeedback>
               </Modal>
             </View>
-          ))}
+          ))} */}
         </View>
       </ScrollView>
     </View>
@@ -277,6 +253,16 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: 8,
     padding: 10
+  },
+  offerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  innerLine: {
+    borderWidth: 0.5,
+    borderColor: Color.colorGhostwhite,
+    marginVertical: 8
   }
 })
 

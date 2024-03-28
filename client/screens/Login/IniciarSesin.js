@@ -58,7 +58,6 @@ const IniciarSesin = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
         .then(async (response) => {
-          // await AsyncStorage.setItem('userData', JSON.stringify(response))
           dispatch(setClub(response))
         })
         .catch((error) => {

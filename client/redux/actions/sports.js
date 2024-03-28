@@ -9,3 +9,15 @@ export const getAll = createAsyncThunk('getAll/sports', async () => {
     throw new Error(error)
   }
 })
+
+export const getAllPositions = createAsyncThunk(
+  'getAll/positions',
+  async () => {
+    try {
+      const { data } = await axiosInstance.get('position')
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
