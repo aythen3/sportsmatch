@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t1TextSMALL_size
   },
   despliegueOpcionesChild: {
-    // marginTop: 8,
     borderTopWidth: 1,
     marginVertical: 5,
     width: '100%',

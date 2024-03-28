@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setOffer, getAllOffers } from '../actions/offers'
+import {
+  setOffer,
+  getAllOffers,
+  updateOffer,
+  deleteOffer
+} from '../actions/offers'
 
 const offersSlices = createSlice({
   name: 'offers',
@@ -59,6 +64,34 @@ const offersSlices = createSlice({
         state.error = false
       })
       .addCase(getAllOffers.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Borrar oferta
+      .addCase(deleteOffer.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(deleteOffer.fulfilled, (state) => {
+        state.loading = false
+        state.offer = {}
+        state.error
+      })
+      .addCase(deleteOffer.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Actualizar oferta
+      .addCase(updateOffer.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateOffer.fulfilled, (state, action) => {
+        state.loading = false
+        state.offer = action.payload
+        state.error
+      })
+      .addCase(updateOffer.rejected, (state) => {
         state.loading = false
         state.error = true
       })

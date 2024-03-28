@@ -21,18 +21,22 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../../components/ModalOptionOffers'
 import { getAllOffers, setOffer } from '../../redux/actions/offers'
+import BackArrowSVG from '../../components/svg/BackArrowSVG'
+import { getAllPositions } from '../../redux/actions/sports'
 
 const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
   const { offers } = useSelector((state) => state.offers)
+  // const { positions } = useSelector((state) => state.sports)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     dispatch(getAllOffers())
+    dispatch(getAllPositions())
   }, [])
 
   const handleImageClick = (event) => {
@@ -44,118 +48,120 @@ const OfertasEmitidas = () => {
   }
 
   return (
-    <View style={styles.ofertasEmitidas}>
-      <ScrollView>
-        <View style={styles.container}>
-          {/* {offers.map((offer, i) => (
-            <View key={offer.id} style={styles.offers}>
-              <View style={styles.offerView}>
-                <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                  Oferta {i + 1}
-                </Text>
-                <TouchableOpacity
-                  onPress={(event) => {
-                    handleImageClick(event)
-                  }}
-                >
-                  <Image
-                    style={styles.titularChild}
-                    contentFit="cover"
-                    source={require('../../assets/frame-957.png')}
-                  />
-                </TouchableOpacity>
-              </View>
+    <ScrollView style={styles.ofertasEmitidas}>
+      <View style={styles.topContainer}>
+        <Pressable style={styles.header} onPress={() => navigation.goBack()}>
+          <BackArrowSVG />
+          <Text style={styles.titular}>Ofertas</Text>
+        </Pressable>
+        <TouchableOpacity
+          style={styles.add}
+          onPress={() => navigation.navigate('ConfigurarAnuncio')}
+        >
+          <Text style={styles.addText}>+</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        {offers.map((offer, i) => (
+          <View key={offer.id} style={styles.offers}>
+            <View style={styles.offerView}>
+              <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                Oferta {i + 1}
+              </Text>
+              <TouchableOpacity
+                onPress={(event) => {
+                  handleImageClick(event)
+                }}
+              >
+                <Image
+                  style={styles.titularChild}
+                  contentFit="cover"
+                  source={require('../../assets/frame-957.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
               <View>
+                <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.sexo}
+                </Text>
+              </View>
+
+              <View style={styles.innerLine} />
+
+              <View>
+                <Text style={[styles.sexo1, styles.sexo1Typo]}>Categoria</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {offer.category}
+                </Text>
+              </View>
+
+              <View style={styles.innerLine} />
+
+              <View>
+                <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
+                <Text style={[styles.masculino, styles.timeTypo]}>
+                  {/* {offer.position} */} Posicion
+                </Text>
+              </View>
+
+              <View style={styles.innerLine} />
+
+              <View style={styles.offerView}>
                 <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
+                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Urgencia</Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.gender}
+                    {offer.urgency}/10
                   </Text>
                 </View>
-
-                <View style={styles.innerLine} />
-
                 <View>
                   <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                    Categoria
+                    Retribucion
                   </Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.category}
-                  </Text>
-                </View>
-
-                <View style={styles.innerLine} />
-
-                <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.position}
-                  </Text>
-                </View>
-
-                <View style={styles.innerLine} />
-
-                <View style={styles.offerView}>
-                  <View>
-                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Urgencia
-                    </Text>
-                    <Text style={[styles.masculino, styles.timeTypo]}>
-                      {offer.urgency}/10
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Retribucion
-                    </Text>
-                    <Text style={[styles.masculino, styles.timeTypo]}>
-                      {offer.remuneration}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.botonPausar}>
-                <View style={[styles.pausar, styles.pausarFlexBox]}>
-                  <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                    Pausar
+                    {offer.retribution}
                   </Text>
                 </View>
               </View>
-              <Pressable
-                style={styles.inscritos}
-                onPress={() => navigation.navigate('InscritosAMisOfertas')}
-              >
-                <Text
-                  style={[styles.inscritos1, styles.pausar1Typo]}
-                >{`6 inscritos `}</Text>
-              </Pressable>
-              <Modal visible={modalVisible} transparent={true}>
-                <TouchableWithoutFeedback
-                  onPress={() => setModalVisible(false)}
-                >
-                  <View style={{ flex: 1 }}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: modalPosition.y,
-                        left: modalPosition.x,
-                        padding: 20,
-                        borderRadius: 8
-                      }}
-                    >
-                      <ModalOptionOffers
-                        offer={offer}
-                        onClose={() => setModalVisible(false)}
-                      />
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              </Modal>
             </View>
-          ))} */}
-        </View>
-      </ScrollView>
-    </View>
+            <View style={styles.botonPausar}>
+              <View style={[styles.pausar, styles.pausarFlexBox]}>
+                <Text style={[styles.pausar1, styles.pausar1Typo]}>Pausar</Text>
+              </View>
+            </View>
+            <Pressable
+              style={styles.inscritos}
+              onPress={() => navigation.navigate('InscritosAMisOfertas')}
+            >
+              <Text
+                style={[styles.inscritos1, styles.pausar1Typo]}
+              >{`6 inscritos `}</Text>
+            </Pressable>
+            <Modal visible={modalVisible} transparent={true}>
+              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: modalPosition.y,
+                      left: modalPosition.x,
+                      padding: 20,
+                      borderRadius: 8
+                    }}
+                  >
+                    <ModalOptionOffers
+                      offer={offer}
+                      onClose={() => setModalVisible(false)}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   )
 }
 
@@ -242,7 +248,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 30,
     width: '100%',
     justifyContent: 'center',
     gap: 10
@@ -263,6 +268,41 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: Color.colorGhostwhite,
     marginVertical: 8
+  },
+  topContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginTop: '5%',
+    marginRight: 10
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15
+  },
+  titular: {
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.size_9xl,
+    color: Color.wHITESPORTSMATCH,
+    bottom: 4
+  },
+  add: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Color.bALONCESTO,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Color.bALONCESTO
+  },
+  addText: {
+    color: Color.wHITESPORTSMATCH,
+    fontSize: FontSize.size_21xl,
+    bottom: 8.5
   }
 })
 
