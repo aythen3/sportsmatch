@@ -33,6 +33,7 @@ const OfertasEmitidas = () => {
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
+  const [localOffer, setLocalOffer] = useState({})
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -71,7 +72,9 @@ const OfertasEmitidas = () => {
               <TouchableOpacity
                 onPress={(event) => {
                   handleImageClick(event)
+                  setLocalOffer(offer)
                 }}
+                style={styles.touchableImg}
               >
                 <Image
                   style={styles.titularChild}
@@ -120,7 +123,7 @@ const OfertasEmitidas = () => {
                     Retribucion
                   </Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.retribution}
+                    {offer && offer.retribution ? 'Si' : 'No'}
                   </Text>
                 </View>
               </View>
@@ -151,7 +154,7 @@ const OfertasEmitidas = () => {
                     }}
                   >
                     <ModalOptionOffers
-                      offer={offer}
+                      offer={localOffer}
                       onClose={() => setModalVisible(false)}
                     />
                   </View>
@@ -303,6 +306,12 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontSize: FontSize.size_21xl,
     bottom: 8.5
+  },
+  touchableImg: {
+    width: 24,
+    height: 25,
+    top: 2,
+    alignItems: 'center'
   }
 })
 

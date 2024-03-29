@@ -30,14 +30,15 @@ export class OfferController {
     return this.offerService.findOne(id);
   }
 
+  //------------agregar un match (pendiente)-----------------------------------//////////
   @Patch('/add-match/:id')
   addMatch(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
     return this.offerService.addMatch(id, updateOfferDto);
   }
 
-  //------------agregar un match (pendiente)-----------------------------------//////////
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
+    console.log(updateOfferDto);
     return this.offerService.update(id, updateOfferDto);
   }
 

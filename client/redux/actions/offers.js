@@ -30,9 +30,12 @@ export const deleteOffer = createAsyncThunk('deleteOffer', async (id) => {
 
 export const updateOffer = createAsyncThunk('updateOffer', async (offer) => {
   try {
-    const { data } = await axiosInstance.put(`offer/${offer.id}`, offer)
+    const { id, offerData } = offer
+    console.log('action', offer)
+    const { data } = await axiosInstance.patch(`offer/${id}`, { offerData })
     return data
   } catch (error) {
+    console.log('error', error)
     throw new Error(error)
   }
 })
