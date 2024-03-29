@@ -51,4 +51,8 @@ export class CreateClubDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  sportId: string;
 }

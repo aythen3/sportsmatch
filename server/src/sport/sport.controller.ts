@@ -32,7 +32,7 @@ export class SportController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string) {
-    return this.sportService.findOne(id);
+    return await this.sportService.findById(id);
   }
 
   @Patch(':id')

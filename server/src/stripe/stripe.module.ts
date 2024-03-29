@@ -1,5 +1,7 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import Stripe from 'stripe';
+import { StripeService } from './stripe.service';
+import { StripeController } from './stripe.controller';
 
 @Module({})
 export class StripeModule {
@@ -12,8 +14,9 @@ export class StripeModule {
     };
     return {
       module: StripeModule,
-      providers: [stripeProvider],
+      providers: [stripeProvider, StripeService],
       exports: [stripeProvider],
+      controllers: [StripeController],
       global: true
     };
   }

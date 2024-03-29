@@ -14,6 +14,7 @@ import { PositionService } from 'src/position/position.service';
 import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { UserService } from 'src/user/user.service';
+import { SportService } from 'src/sport/sport.service';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { UserService } from 'src/user/user.service';
     PositionService,
     MatchService,
     ClubService,
-    UserService
+    UserService,
+    SportService
   ]
 })
 export class OfferModule {}

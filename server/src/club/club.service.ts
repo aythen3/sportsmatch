@@ -7,6 +7,9 @@ import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 
+import { SportEntity } from 'src/sport/entities/sport.entity';
+import { SportService } from 'src/sport/sport.service';
+
 @Injectable()
 export class ClubService {
   constructor(
@@ -14,7 +17,10 @@ export class ClubService {
     private readonly clubRepository: Repository<ClubEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    @InjectRepository(SportEntity)
+    private readonly sportRepository: Repository<SportEntity>,
+    private readonly sportService: SportService
   ) {}
 
   /**
@@ -22,16 +28,22 @@ export class ClubService {
    * @param {CreateClubDto} createClubDto - Los datos del club a crear
    */
   public async create(createClubDto: CreateClubDto) {
-    const { clubData, userId } = createClubDto;
+    const { clubData, userId, sportId } = createClubDto;
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new HttpException('the user not found', 404);
     }
+    const sport = await this.sportService.findById(sportId);
+    if (!sport) {
+      throw new HttpException('the sport not found', 404);
+    }
     const newClub = await this.clubRepository.create(clubData);
+    newClub.sports = [sport]; // Relate the club with the sport
     const saveClub = await this.clubRepository.save(newClub);
     if (!saveClub) {
       throw new HttpException('the new club is not created', 501);
     }
+
     await this.userRepository.save({
       ...user,
       club: saveClub
