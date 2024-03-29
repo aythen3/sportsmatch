@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -17,7 +17,6 @@ import {
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
-import { useRoute } from '@react-navigation/native'
 import { deleteOffer, getAllOffers } from '../../redux/actions/offers'
 
 const EliminarOferta = () => {
@@ -25,9 +24,7 @@ const EliminarOferta = () => {
 
   const dispatch = useDispatch()
 
-  const route = useRoute()
-
-  const { offer } = route.params
+  const { offer } = useSelector((state) => state.offers)
 
   const [color, setColor] = useState(false)
   const [color2, setColor2] = useState(false)
@@ -46,13 +43,7 @@ const EliminarOferta = () => {
         <Text style={styles.estsSeguroDe}>{`¿Estás seguro de que quieres 
 eliminar esta oferta?`}</Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 30
-          }}
-        >
+        <View style={styles.middleContainer}>
           <Text
             onPress={() => setColor(!color)}
             style={{

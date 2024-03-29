@@ -19,6 +19,15 @@ export const getAllOffers = createAsyncThunk('getAllOffers', async () => {
   }
 })
 
+export const getOfferById = createAsyncThunk('getOfferById', async (id) => {
+  try {
+    const { data } = await axiosInstance.get(`offer/${id}`)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
 export const deleteOffer = createAsyncThunk('deleteOffer', async (id) => {
   try {
     const { data } = await axiosInstance.delete(`offer/${id}`)
@@ -30,7 +39,8 @@ export const deleteOffer = createAsyncThunk('deleteOffer', async (id) => {
 
 export const updateOffer = createAsyncThunk('updateOffer', async (offer) => {
   try {
-    const { data } = await axiosInstance.put(`offer/${offer.id}`, offer)
+    const { id, body } = offer
+    const { data } = await axiosInstance.patch(`offer/${id}`, body)
     return data
   } catch (error) {
     throw new Error(error)

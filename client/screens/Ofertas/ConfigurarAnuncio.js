@@ -26,8 +26,9 @@ const ConfigurarAnuncio = () => {
 
   const dispatch = useDispatch()
 
-  const { offer } = route.params || {}
+  const { offer } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
+  const { editOffer } = route.params || false
 
   const [values, setValues] = useState({
     sexo: '',
@@ -42,32 +43,6 @@ const ConfigurarAnuncio = () => {
       [name]: value
     }))
   }
-
-  // console.log('offer', offer)
-  // const handleSubmit = () => {
-  //   if (
-  //     values.sexo &&
-  //     values.category &&
-  //     values.urgency &&
-  //     values.retribution
-  //   ) {
-  //     const data = {
-  //       offerData: {
-  //         sexo: values.sexo, //MALE OR FEMALE /////////////
-  //         category: values.category,
-  //         urgency: values.urgency,
-  //         retribution: values.retribution
-  //       },
-  //       positionId: 'f75dce92-1641-408f-8f7f-bf58a82c7fe5', //'9fc403b7-e032-46f5-938f-867756091824' ERROR DE DUPLICADO //
-  //       clubId: club.id
-  //     }
-  //     dispatch(setOffer(data))
-  //     dispatch(getAllOffers())
-  //     navigation.navigate('OfertasEmitidas')
-  //   } else {
-  //     alert('Debes rellenar todos los campos')
-  //   }
-  // }
 
   return (
     <ScrollView style={styles.configurarAnuncio}>
@@ -133,10 +108,19 @@ const ConfigurarAnuncio = () => {
             </View>
             <TouchableOpacity
               style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
-              onPress={() => handleSubmit(dispatch, values, navigation, club)}
+              onPress={() =>
+                handleSubmit(
+                  dispatch,
+                  values,
+                  navigation,
+                  club,
+                  offer,
+                  editOffer
+                )
+              }
             >
               <Text style={[styles.crearOferta, styles.ofertaTypo]}>
-                Crear oferta
+                {editOffer ? 'Editar oferta' : 'Crear oferta'}
               </Text>
             </TouchableOpacity>
           </View>

@@ -41,7 +41,8 @@ import TusMensajes1 from './screens/TusMensajes1'
 import TusNotificaciones1 from './screens/Notificaciones/TusNotificaciones1'
 import EliminarOferta from './screens/Ofertas/EliminarOferta'
 import ChatAbierto1 from './screens/ChatAbierto1'
-import CrearHighlight from './screens/CrearHighlight'
+import CrearHighlight from './screens/Muro/CrearPost/CrearHighlight'
+import SeleccionarImagen from './screens/Muro/CrearPost/SeleccionarImagen'
 import ConfigurarAnuncio from './screens/Ofertas/ConfigurarAnuncio'
 import Premium from './screens/Premium'
 import Paso3Jugador from './screens/Pasos/Paso3Jugador'
@@ -312,6 +313,11 @@ const App = () => {
               <Stack.Screen
                 name="CrearHighlight"
                 component={CrearHighlight}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SeleccionarImagen"
+                component={SeleccionarImagen}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

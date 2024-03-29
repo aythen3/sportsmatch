@@ -9,6 +9,7 @@ const SiguiendoJugadores = () => {
   const dispatch = useDispatch()
 
   const { publications } = useSelector((state) => state.muro)
+  console.log(publications)
 
   return (
     <View style={styles.siguiendoJugadores}>

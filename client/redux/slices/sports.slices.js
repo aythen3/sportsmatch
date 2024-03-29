@@ -1,20 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { create, login } from '../actions/users'
-import { getAll, getAllPositions } from '../actions/sports'
+import { getAll, getAllPositions, getSportById } from '../actions/sports'
 
 const sportsSlices = createSlice({
   name: 'sports',
   initialState: {
     sports: [],
-    sport: '',
+    sport: {},
     loading: false,
     positions: []
   },
-  reducers: {
-    setSport: (state, action) => {
-      state.sport = action.payload
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Todos los deportes
@@ -28,6 +23,20 @@ const sportsSlices = createSlice({
         state.error = false
       })
       .addCase(getAll.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Deporte por id
+      .addCase(getSportById.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getSportById.fulfilled, (state, action) => {
+        state.loading = false
+        state.sport = action.payload
+        state.error = false
+      })
+      .addCase(getSportById.rejected, (state) => {
         state.loading = false
         state.error = true
       })
@@ -47,7 +56,5 @@ const sportsSlices = createSlice({
       })
   }
 })
-
-export const { setSport } = sportsSlices.actions
 
 export default sportsSlices.reducer

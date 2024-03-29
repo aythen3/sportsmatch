@@ -81,11 +81,9 @@ const Paso1 = () => {
 
   const handleNext = () => {
     if (selectedRole === 'Profesional del deporte') {
-      // navigation.navigate('Paso3Profesional')
       setProfesional(true)
       setSportman(false)
     } else {
-      // navigation.navigate('Paso3Jugador', { role: selectedRole })
       setProfesional(false)
       setSportman(true)
     }
@@ -191,14 +189,7 @@ const Paso1 = () => {
       >
         <ScrollView>
           {!sportman && !profesional && (
-            <View
-              style={{
-                gap: 20,
-                alignSelf: 'center',
-                justifyContent: 'center',
-                marginTop: 80
-              }}
-            >
+            <View style={styles.container}>
               <View style={styles.botonLayout1}>
                 <TouchableOpacity
                   style={[
@@ -292,34 +283,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Color.wHITESPORTSMATCH
   },
-  liniaLayout1: {
-    height: 3,
-    width: '20%',
-    borderTopWidth: 3,
-    top: -1,
-    borderColor: Color.colorDimgray_100,
-    borderStyle: 'solid'
-  },
-  liniaLayout2: {
-    height: 3,
-    width: '20%',
-    borderTopWidth: 3,
-    top: -1,
-    borderColor: Color.bALONCESTO,
-    borderStyle: 'solid'
-  },
   jugadorTypo: {
     fontSize: FontSize.button_size,
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
-    // top: '35%'
   },
   simboloIconLayout: {
     height: 25,
     width: 25,
     position: 'absolute',
     left: 20
-    // left: '5%'
   },
   botonLayout1: {
     height: 70,
@@ -347,9 +320,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
-
-    // right: '10%'
-    // marginBottom: '5%'
   },
   paso1: {
     fontSize: FontSize.t1TextSMALL_size,
@@ -362,16 +332,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  linias: {
-    padding: Padding.p_3xs,
-    marginTop: 20,
-    flexDirection: 'row',
-    gap: 20
-  },
-  stepseccion: {
-    // marginTop: 3
-    // alignItems: 'center'
-  },
   rectangulo: {
     borderColor: Color.wHITESPORTSMATCH,
     borderWidth: 1,
@@ -381,22 +341,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
-    // justifyContent: 'center'
   },
   jugador: {
-    // lineHeight: 20,
     color: Color.wHITESPORTSMATCH,
     fontWeight: '500'
-  },
-  boton: {
-    bottom: '0%',
-    right: '0%',
-    top: '0%',
-    height: '100%',
-    left: '0%'
-  },
-  botonProfesionalDelDeporte: {
-    marginTop: 20
   },
   botonesRoles: {
     width: '100%',
@@ -410,31 +358,29 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   siguiente: {
-    // justifyContent: 'center',
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl
-    // marginTop: '25%'
   },
   contenido: {
-    // top: 77,
     marginTop: 20,
     height: '20%',
-    // justifyContent: 'space-between',
-    // gap: 50,
     alignItems: 'center'
   },
   paso6: {
     flex: 1,
     paddingHorizontal: 15,
-    // height: 844,
-    // overflow: 'hidden',
-    // width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   selectedBackground: {
     backgroundColor: Color.bALONCESTO
+  },
+  container: {
+    gap: 20,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 80
   }
 })
 

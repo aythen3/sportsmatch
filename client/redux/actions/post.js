@@ -9,3 +9,12 @@ export const getAllPosts = createAsyncThunk('getAll/post', async () => {
     throw new Error(error)
   }
 })
+
+export const createPost = createAsyncThunk('create/post', async (post) => {
+  try {
+    const { data } = await axiosInstance.post('post', post)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})

@@ -20,7 +20,11 @@ import {
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../../components/ModalOptionOffers'
-import { getAllOffers, setOffer } from '../../redux/actions/offers'
+import {
+  getAllOffers,
+  getOfferById,
+  setOffer
+} from '../../redux/actions/offers'
 import BackArrowSVG from '../../components/svg/BackArrowSVG'
 import { getAllPositions } from '../../redux/actions/sports'
 
@@ -28,7 +32,7 @@ const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
-  const { offers } = useSelector((state) => state.offers)
+  const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
 
   const [modalVisible, setModalVisible] = useState(false)
@@ -71,7 +75,9 @@ const OfertasEmitidas = () => {
               <TouchableOpacity
                 onPress={(event) => {
                   handleImageClick(event)
+                  dispatch(getOfferById(offer.id))
                 }}
+                style={styles.touchableImg}
               >
                 <Image
                   style={styles.titularChild}
@@ -120,7 +126,7 @@ const OfertasEmitidas = () => {
                     Retribucion
                   </Text>
                   <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.retribution}
+                    {offer && offer.retribution ? 'Si' : 'No'}
                   </Text>
                 </View>
               </View>
@@ -151,7 +157,7 @@ const OfertasEmitidas = () => {
                     }}
                   >
                     <ModalOptionOffers
-                      offer={offer}
+                      offer={offerRedux}
                       onClose={() => setModalVisible(false)}
                     />
                   </View>
@@ -303,6 +309,12 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontSize: FontSize.size_21xl,
     bottom: 8.5
+  },
+  touchableImg: {
+    width: 24,
+    height: 25,
+    top: 2,
+    alignItems: 'center'
   }
 })
 

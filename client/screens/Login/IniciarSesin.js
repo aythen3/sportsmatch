@@ -20,7 +20,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
-// import { getAll } from '../../redux/actions/sports'
 
 const IniciarSesin = () => {
   const navigation = useNavigation()
@@ -30,7 +29,6 @@ const IniciarSesin = () => {
   const passwordInputRef = useRef(null)
 
   const { user } = useSelector((state) => state.users)
-  // const { sports } = useSelector((state) => state.sports)
 
   const [valuesUser, setValuesUser] = useState({
     email: '',

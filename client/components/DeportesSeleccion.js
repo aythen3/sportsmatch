@@ -2,91 +2,87 @@ import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch } from 'react-redux'
-import { setSport } from '../redux/slices/sports.slices'
+import { getSportById } from '../redux/actions/sports'
 
-const DeportesSeleccion = ({ name, selectedSport, onSelect }) => {
+const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
   const dispatch = useDispatch()
 
   const handlePress = () => {
-    onSelect(name)
+    onSelect(sport)
+    dispatch(getSportById(sport.id))
   }
 
   return (
     <View style={styles.frameParent}>
-      <TouchableOpacity
-        onPress={() => {
-          handlePress()
-          dispatch(setSport(name))
-        }}
-      >
+      <TouchableOpacity onPress={handlePress}>
         <View>
-          {name === 'Futbol' && (
+          {sport?.name === 'Futbol' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-futbol.png')
                   : require('../assets/group-389.png')
               }
             />
           )}
-          {name === 'Basquekball' && (
+          {sport?.name === 'Basquekball' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-baloncesto.png')
                   : require('../assets/group-390.png')
               }
             />
           )}
-          {name === 'Futbol de Salon' && (
+          {sport?.name === 'Futbol de Salon' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-futbol-sala.png')
                   : require('../assets/group-395.png')
               }
             />
           )}
-          {name === 'Hockey' && (
+          {sport?.name === 'Hockey' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-hockey.png')
                   : require('../assets/group-391.png')
               }
             />
           )}
-          {name === 'Voley' && (
+          {sport?.name === 'Voley' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-voleibol.png')
                   : require('../assets/group-393.png')
               }
             />
           )}
-          {name === 'Handball' && (
+          {sport?.name === 'Handball' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
               source={
-                selectedSport !== name
+                selectedSport?.name !== sport.name
                   ? require('../assets/grupo-balonmano.png')
                   : require('../assets/group-394.png')
               }
             />
           )}
-          <Text style={styles.ftbolTypo}>{name}</Text>
+          <Text style={styles.ftbolTypo}>{sport?.name}</Text>
         </View>
       </TouchableOpacity>
     </View>
