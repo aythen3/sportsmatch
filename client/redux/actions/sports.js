@@ -21,3 +21,15 @@ export const getAllPositions = createAsyncThunk(
     }
   }
 )
+
+export const getSportById = createAsyncThunk(
+  'getSportById/sport',
+  async (id) => {
+    try {
+      const { data } = await axiosInstance.get(`sport/${id}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)

@@ -29,7 +29,7 @@ const StepsClub = () => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
-  // const { sport } = useSelector((state) => state.sports)
+  const { sport } = useSelector((state) => state.sports)
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [clubValues, setClubValues] = useState({
@@ -40,7 +40,6 @@ const StepsClub = () => {
     year: '',
     capacity: '',
     description: ''
-    // sport
   })
 
   const hadleIndex = (value) => {
@@ -49,7 +48,8 @@ const StepsClub = () => {
         if (clubValues.name) {
           const data = {
             userId: user.user.id,
-            clubData: clubValues
+            clubData: clubValues,
+            sportId: sport.id
           }
           dispatch(createClub(data))
         }

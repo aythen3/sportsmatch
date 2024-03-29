@@ -26,7 +26,7 @@ export const handleSubmit = async (
           urgency: values.urgency,
           retribution: values.retribution
         },
-        positionId: '52b32097-b6a3-43ac-9ba4-4af1710b5ff3', //'9fc403b7-e032-46f5-938f-867756091824' ERROR DE DUPLICADO //
+        positionId: '32ad4ca6-b922-4cc9-8d25-90d2fbc71927', //'9fc403b7-e032-46f5-938f-867756091824' ERROR DE DUPLICADO //
         clubId: club.id
       }
       await dispatch(setOffer(data))

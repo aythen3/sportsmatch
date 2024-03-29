@@ -35,6 +35,7 @@ const HeaderPerfil = ({
   const [image1, setImage1] = useState(null)
 
   const pickImage = async () => {
+    await ImagePicker.requestMediaLibraryPermissionsAsync()
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -44,6 +45,7 @@ const HeaderPerfil = ({
 
     if (!result.canceled) {
       setImage1(result.assets[0])
+      console.log('result', result.assets[0].uri)
 
       const fileName = `${result.assets[0].uri.split('.').pop()}`
 
