@@ -40,9 +40,7 @@ import { StripeModule } from './stripe/stripe.module';
     CommentModule,
     LikeModule,
     ChatModule,
-    StripeModule.forRoot(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2023-10-16'
-    })
+    StripeModule
   ],
   controllers: [],
   providers: []
