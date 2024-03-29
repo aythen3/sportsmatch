@@ -6,9 +6,9 @@ import { PaymentDto } from './dto/PaymentDto.dto';
 export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 
-  @Post('charge')
+  @Post('/charge')
   async chargeCard(@Body() paymentData: PaymentDto) {
-    return this.stripeService.createCharge(
+    return await this.stripeService.createCharge(
       paymentData.amount,
       paymentData.currency,
       paymentData.source

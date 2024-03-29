@@ -20,6 +20,7 @@ import { SportEntity } from './entities/sport.entity';
       SportEntity
     ])
   ],
+  exports: [SportService],
   controllers: [SportController],
   providers: [SportService]
 })
