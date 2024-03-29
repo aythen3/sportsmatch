@@ -20,7 +20,7 @@ import { ImgManagerService } from 'src/img-manager/img-manager.service';
       SportmanEntity
     ])
   ],
-  exports: [],
+  exports: [ClubService],
   controllers: [ClubController],
   providers: [ClubService, UserService, ImgManagerService]
 })

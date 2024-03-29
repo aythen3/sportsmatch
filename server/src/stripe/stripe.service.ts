@@ -1,24 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
-import { SubscriptionEntity } from './entities/stripe.entity';
 
 @Injectable()
 export class StripeService {
-  /*   constructor(private readonly stripe: Stripe) {}
+  constructor(
+    @Inject('STRIPE_CLIENT')
+    private stripe: Stripe
+  ) {}
 
-  async createCustomer(email: string): Promise<Customer> {
-    return await this.stripe.customers.create({ email });
+  async createCharge(
+    amount: number,
+    currency: string,
+    source: string
+  ): Promise<any> {
+    return this.stripe.charges.create({
+      amount,
+      currency,
+      source
+    });
   }
 
-  async createSubscription(
-    customerId: string,
-    planId: string
-  ): Promise<SubscriptionEntity> {
-    const subscription = await this.stripe.subscriptions.create({
+  async createSubscription(customerId: string, priceId: string): Promise<any> {
+    return this.stripe.subscriptions.create({
       customer: customerId,
-      plan: planId
+      items: [{ price: priceId }]
     });
+  }
 
-    // ...
-  } */
+  async createCustomer(email: string): Promise<any> {
+    return this.stripe.customers.create({ email });
+  }
 }
