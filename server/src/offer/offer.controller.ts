@@ -38,7 +38,6 @@ export class OfferController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
-    console.log(updateOfferDto);
     return this.offerService.update(id, updateOfferDto);
   }
 

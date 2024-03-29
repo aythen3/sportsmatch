@@ -26,8 +26,9 @@ const ConfigurarAnuncio = () => {
 
   const dispatch = useDispatch()
 
-  const { offer } = route.params || {}
+  const { offer } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
+  const { editOffer } = route.params || false
 
   const [values, setValues] = useState({
     sexo: '',
@@ -108,11 +109,18 @@ const ConfigurarAnuncio = () => {
             <TouchableOpacity
               style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
               onPress={() =>
-                handleSubmit(dispatch, values, navigation, club, offer)
+                handleSubmit(
+                  dispatch,
+                  values,
+                  navigation,
+                  club,
+                  offer,
+                  editOffer
+                )
               }
             >
               <Text style={[styles.crearOferta, styles.ofertaTypo]}>
-                Crear oferta
+                {editOffer ? 'Editar oferta' : 'Crear oferta'}
               </Text>
             </TouchableOpacity>
           </View>

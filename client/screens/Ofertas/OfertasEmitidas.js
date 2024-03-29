@@ -20,7 +20,11 @@ import {
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalOptionOffers from '../../components/ModalOptionOffers'
-import { getAllOffers, setOffer } from '../../redux/actions/offers'
+import {
+  getAllOffers,
+  getOfferById,
+  setOffer
+} from '../../redux/actions/offers'
 import BackArrowSVG from '../../components/svg/BackArrowSVG'
 import { getAllPositions } from '../../redux/actions/sports'
 
@@ -28,12 +32,11 @@ const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
-  const { offers } = useSelector((state) => state.offers)
+  const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
-  const [localOffer, setLocalOffer] = useState({})
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -72,7 +75,7 @@ const OfertasEmitidas = () => {
               <TouchableOpacity
                 onPress={(event) => {
                   handleImageClick(event)
-                  setLocalOffer(offer)
+                  dispatch(getOfferById(offer.id))
                 }}
                 style={styles.touchableImg}
               >
@@ -154,7 +157,7 @@ const OfertasEmitidas = () => {
                     }}
                   >
                     <ModalOptionOffers
-                      offer={localOffer}
+                      offer={offerRedux}
                       onClose={() => setModalVisible(false)}
                     />
                   </View>

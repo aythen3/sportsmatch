@@ -3,7 +3,8 @@ import {
   setOffer,
   getAllOffers,
   updateOffer,
-  deleteOffer
+  deleteOffer,
+  getOfferById
 } from '../actions/offers'
 
 const offersSlices = createSlice({
@@ -64,6 +65,20 @@ const offersSlices = createSlice({
         state.error = false
       })
       .addCase(getAllOffers.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Traer oferta por id
+      .addCase(getOfferById.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getOfferById.fulfilled, (state, action) => {
+        state.loading = false
+        state.offer = action.payload
+        state.error = false
+      })
+      .addCase(getOfferById.rejected, (state) => {
         state.loading = false
         state.error = true
       })
