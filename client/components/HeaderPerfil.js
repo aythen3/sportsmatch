@@ -54,11 +54,10 @@ const HeaderPerfil = ({
         type: result.assets[0].type,
         name: fileName
       })
+      console.log('file', file)
       dispatch(updateImgClub(file))
     }
   }
-
-  console.log(image1)
 
   return (
     <View>

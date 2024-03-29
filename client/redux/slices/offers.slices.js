@@ -1,59 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
+import {
+  setOffer,
+  getAllOffers,
+  updateOffer,
+  deleteOffer
+} from '../actions/offers'
 
 const offersSlices = createSlice({
   name: 'offers',
   initialState: {
     offer: {},
-    offers: [
-      {
-        id: 1,
-        gender: 'Masculino',
-        category: 'Senior',
-        position: 'Escolta',
-        urgency: '7',
-        remuneration: 'NO'
-      },
-      {
-        id: 2,
-        gender: 'Femenino',
-        category: 'Senior',
-        position: 'Escolta',
-        urgency: '9',
-        remuneration: 'SI'
-      },
-      {
-        id: 3,
-        gender: 'Masculino',
-        category: 'Senior',
-        position: 'Lateral izquierdo',
-        urgency: '8',
-        remuneration: 'SI'
-      },
-      {
-        id: 4,
-        gender: 'Masculino',
-        category: 'Senior',
-        position: 'Escolta',
-        urgency: '7',
-        remuneration: 'NO'
-      },
-      {
-        id: 5,
-        gender: 'Masculino',
-        category: 'Senior',
-        position: 'Lateral izquierdo',
-        urgency: '8',
-        remuneration: 'SI'
-      },
-      {
-        id: 6,
-        gender: 'Masculino',
-        category: 'Senior',
-        position: 'Escolta',
-        urgency: '7',
-        remuneration: 'NO'
-      }
-    ],
+    offers: [],
     usersRegistered: [
       {
         id: 1,
@@ -76,12 +33,71 @@ const offersSlices = createSlice({
     ]
   },
   reducers: {
-    setOffer: (state, action) => {
-      state.offer = action.payload
-    }
+    // setOffer: (state, action) => {
+    //   state.offer = action.payload
+    // }
+  },
+  extraReducers: (builder) => {
+    builder
+      // Crear oferta
+      .addCase(setOffer.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(setOffer.fulfilled, (state, action) => {
+        state.loading = false
+        state.offer = action.payload
+        state.error
+      })
+      .addCase(setOffer.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Traer todas las ofertas
+      .addCase(getAllOffers.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getAllOffers.fulfilled, (state, action) => {
+        state.loading = false
+        state.offers = action.payload
+        state.error = false
+      })
+      .addCase(getAllOffers.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Borrar oferta
+      .addCase(deleteOffer.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(deleteOffer.fulfilled, (state) => {
+        state.loading = false
+        state.offer = {}
+        state.error
+      })
+      .addCase(deleteOffer.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Actualizar oferta
+      .addCase(updateOffer.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateOffer.fulfilled, (state, action) => {
+        state.loading = false
+        state.offer = action.payload
+        state.error
+      })
+      .addCase(updateOffer.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
   }
 })
 
-export const { setOffer } = offersSlices.actions
+// export const { setOffer } = offersSlices.actions
 
 export default offersSlices.reducer
