@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createPost, getAllPosts } from '../actions/post'
+import { createPost, getAllLikes, getAllPosts, like } from '../actions/post'
 
 const postSlices = createSlice({
   name: 'post',
   initialState: {
     allPosts: [],
     post: {},
+    likes: [],
     loading: false
   },
   reducers: {},
@@ -36,6 +37,34 @@ const postSlices = createSlice({
         state.error = false
       })
       .addCase(createPost.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Dar like
+      .addCase(like.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(like.fulfilled, (state, action) => {
+        state.loading = false
+        state.post = action.payload
+        state.error = false
+      })
+      .addCase(like.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Traer todos los likes
+      .addCase(getAllLikes.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getAllLikes.fulfilled, (state, action) => {
+        state.loading = false
+        state.likes = action.payload
+        state.error = false
+      })
+      .addCase(getAllLikes.rejected, (state) => {
         state.loading = false
         state.error = true
       })

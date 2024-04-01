@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Image } from 'expo-image'
 import PagerView from 'react-native-pager-view'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
@@ -14,72 +14,42 @@ function Carousel({
   imgPerfil,
   image,
   likes,
-  comments,
+  // comments,
   club,
-  index
+  index,
+  id,
+  userId
 }) {
   const navigation = useNavigation()
   const [showComments, setShowComments] = useState(false)
 
   return (
-    <View style={{ width: '100%', marginVertical: 15, paddingHorizontal: 10 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 10
-        }}
+    <View style={styles.container}>
+      <Pressable
+        style={styles.topContainer}
+        onPress={() =>
+          navigation.navigate('PerfilFeedVisualitzaciJug', {
+            club: club,
+            name: name,
+            description: description,
+            image: image,
+            imgPerfil: imgPerfil
+          })
+        }
       >
-        <Image
-          style={{ width: 30, height: 30, borderRadius: 50 }}
-          source={imgPerfil}
-        />
-        <Text
-          style={{
-            color: 'white',
-            fontWeight: '700'
-          }}
-          onPress={() =>
-            navigation.navigate('PerfilFeedVisualitzaciJug', {
-              club: club,
-              name: name,
-              description: description,
-              image: image,
-              imgPerfil: imgPerfil
-            })
-          }
-        >
-          {name}
-        </Text>
-      </View>
-      <PagerView
-        style={{ width: '100%', height: 300, marginTop: 10 }}
-        initialPage={0}
-      >
-        <View
-          style={{
-            width: '100%',
-            height: 300
-          }}
-          key={index}
-        >
-          <Image
-            style={{ width: '100%', height: 300, borderRadius: 5 }}
-            source={image}
-          />
+        <Image style={styles.imgPerfil} source={imgPerfil} />
+        <Text style={styles.nameText}>{name}</Text>
+      </Pressable>
+      <PagerView style={styles.postContainer} initialPage={0}>
+        <View key={id}>
+          <Image style={styles.postImage} source={image} />
         </View>
-        <View
-          style={{
-            width: '100%',
-            height: 300
-          }}
-          key={index + 1}
-        >
+        {/* <View key={index + 1}>
           <Image
-            style={{ width: '100%', height: 300, borderRadius: 5 }}
+            style={styles.postImage}
             source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
           />
-        </View>
+        </View> */}
       </PagerView>
       <View>
         <LinearGradient
@@ -100,7 +70,7 @@ function Carousel({
         </LinearGradient>
         <View style={styles.iconsLikes}>
           <Text style={styles.likes}>{likes} likes</Text>
-          <IconsMuro />
+          <IconsMuro id={id} userId={userId} />
         </View>
         <Text style={styles.description}>{description}</Text>
         <Text
@@ -110,14 +80,14 @@ function Carousel({
           Ver los 24 comentarios
         </Text>
 
-        {showComments &&
+        {/* {showComments &&
           comments.map((comment) => (
             <CommentsMuro key={comment.id} comment={comment} />
           ))}
 
         {!showComments && (
           <Text style={styles.comments}>{comments[0].comment}</Text>
-        )}
+        )} */}
       </View>
     </View>
   )
@@ -176,5 +146,34 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     alignItems: 'center'
+  },
+  container: {
+    width: '100%',
+    marginVertical: 15,
+    paddingHorizontal: 10
+  },
+  topContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10
+  },
+  imgPerfil: {
+    width: 30,
+    height: 30,
+    borderRadius: 50
+  },
+  nameText: {
+    color: 'white',
+    fontWeight: '700'
+  },
+  postContainer: {
+    width: '100%',
+    height: 300,
+    marginTop: 10
+  },
+  postImage: {
+    width: '100%',
+    height: 300,
+    borderRadius: 5
   }
 })

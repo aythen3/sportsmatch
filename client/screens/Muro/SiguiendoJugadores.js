@@ -1,32 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Color } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
 import Carousel from '../../components/Carousel'
+import { getAllLikes, getAllPosts } from '../../redux/actions/post'
 
 const SiguiendoJugadores = () => {
   const dispatch = useDispatch()
 
-  const { publications } = useSelector((state) => state.muro)
-  console.log(publications)
+  const { allPosts, post } = useSelector((state) => state.post)
+  const { user } = useSelector((state) => state.users)
+
+  useEffect(() => {
+    dispatch(getAllPosts())
+    dispatch(getAllLikes())
+  }, [post])
+
+  const sortedPosts = [...allPosts].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  )
 
   return (
     <View style={styles.siguiendoJugadores}>
       <ScrollView>
         <HeaderIcons />
 
-        {publications.map((publication, i) => (
+        {sortedPosts.map((publication, i) => (
           <Carousel
             key={i}
-            name={publication.name}
+            name={user.user.club.name}
             description={publication.description}
-            imgPerfil={publication.imgPerfil}
+            imgPerfil={user.user.club.imgPerfil}
             image={publication.image}
-            club={publication.club}
+            club={publication.club === user.user.type}
             likes={publication.likes}
-            comments={publication.comments}
+            // comments={publication.comments}
             index={i}
+            id={publication.id}
+            userId={user.user.id}
           />
         ))}
       </ScrollView>

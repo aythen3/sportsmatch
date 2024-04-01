@@ -4,21 +4,19 @@ import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
 const CommentsMuro = ({ comment }) => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-
-        padding: 5,
-        borderRadius: 10
-      }}
-    >
-      <Text style={styles.comments}>{comment.name}: </Text>
-      <Text style={styles.comments}>{comment.comment}</Text>
+    <View style={styles.container}>
+      <Text style={styles.comments}>hola </Text>
+      <Text style={styles.comments}>crack</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    padding: 5,
+    borderRadius: 10
+  },
   comments: {
     flexDirection: 'row',
     fontWeight: '700',
