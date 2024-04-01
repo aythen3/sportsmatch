@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -28,6 +29,14 @@ export class LikeController {
   @Get(':id')
   public async findOne(@Param('id') id: string) {
     return this.likeService.findOne(id);
+  }
+
+  @Get('find')
+  public async findLike(
+    @Query('postId') postId: string,
+    @Query('authorId') authorId: string
+  ) {
+    return this.likeService.findExisten(postId, authorId);
   }
 
   @Patch(':id')
