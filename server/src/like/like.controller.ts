@@ -26,17 +26,17 @@ export class LikeController {
     return this.likeService.findAll();
   }
 
-  @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    return this.likeService.findOne(id);
-  }
-
-  @Get('find')
+  @Get('/find')
   public async findLike(
     @Query('postId') postId: string,
     @Query('authorId') authorId: string
   ) {
     return this.likeService.findExisten(postId, authorId);
+  }
+
+  @Get(':id')
+  public async findOne(@Param('id') id: string) {
+    return this.likeService.findOne(id);
   }
 
   @Patch(':id')
