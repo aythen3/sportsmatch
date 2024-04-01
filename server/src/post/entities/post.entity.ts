@@ -5,8 +5,8 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity({ name: 'post' })
 export class PostEntity extends BaseEntity {
-  @Column()
-  image: string;
+  @Column('simple-array')
+  image: string[];
 
   @Column()
   description: string;

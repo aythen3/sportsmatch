@@ -24,14 +24,17 @@ export class StripeService {
     });
   }
 
-  public async createSubscription(req, res) {
+  public async createSubscription(req, res, amount) {
+    //Crea un nuevo cliente en Stripe.
     const customer = await this.stripe.customers.create();
+    //La clave efímera se utiliza para autenticar al cliente en la aplicación móvil.
     const ephemeralKey = await this.stripe.ephemeralKeys.create(
       { customer: customer.id },
       { apiVersion: '2023-10-16' }
     );
+    //el intento de pago se utiliza para cobrar al cliente por la suscripción
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: 1099,
+      amount: amount,
       currency: 'usd',
       customer: customer.id,
       // In the latest version of the API, specifying the `automatic_payment_methods` parameter
