@@ -16,9 +16,9 @@ export class StripeController {
   }
 
   @Post('/subscription')
-  createSubscription(@Req() req, @Res() res) {
+  createSubscription(@Req() req, @Res() res, @Body() body: { amount: number }) {
     try {
-      return this.stripeService.createSubscription(req, res);
+      return this.stripeService.createSubscription(req, res, body.amount);
     } catch (error) {
       return error;
     }
