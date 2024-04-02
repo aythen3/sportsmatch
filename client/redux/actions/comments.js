@@ -12,3 +12,15 @@ export const createComment = createAsyncThunk(
     }
   }
 )
+
+export const getCommentByPost = createAsyncThunk(
+  'getCommentByPost',
+  async (id) => {
+    try {
+      const { data } = await axiosInstance.get(`comment/post/${id}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)

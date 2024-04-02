@@ -22,6 +22,7 @@ const IconsMuro = ({ id, userId }) => {
     }
     dispatch(like(data))
   }
+  console.log(userId)
 
   const isLiked = likes.some((like) => like.id === id)
 
@@ -47,7 +48,11 @@ const IconsMuro = ({ id, userId }) => {
         <CommentSVG />
       </TouchableOpacity>
       {modalVisible && (
-        <CommentSection visible={modalVisible} closeModal={closeModal} />
+        <CommentSection
+          visible={modalVisible}
+          closeModal={closeModal}
+          postId={id}
+        />
       )}
     </View>
   )
