@@ -7,19 +7,25 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from 'src/auth-jwt/guards/auth.guard';
+import { PublicAccess } from 'src/auth-jwt/decorators/public.decorator';
 
 // Definición del controlador de usuario
+
 @Controller('user')
+@UseGuards(AuthGuard)
 export class UserController {
   // Constructor del controlador que recibe el servicio de usuario
   constructor(private readonly userService: UserService) {}
 
   // Método para crear un usuario
+  @PublicAccess()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -36,6 +42,7 @@ export class UserController {
     return this.userService.findChild(id, type);
   }
   // Método para encontrar un usuario por su ID
+  @PublicAccess()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
