@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   createPost,
-  findLikes,
   getAllLikes,
   getAllPosts,
-  like
+  like,
+  listLikes
 } from '../actions/post'
 
 const postSlices = createSlice({
@@ -13,7 +13,7 @@ const postSlices = createSlice({
     allPosts: [],
     post: {},
     likes: [],
-    findedLike: {},
+    findedLike: [],
     loading: false
   },
   reducers: {},
@@ -76,16 +76,16 @@ const postSlices = createSlice({
         state.error = true
       })
       // Encontrar like
-      .addCase(findLikes.pending, (state) => {
+      .addCase(listLikes.pending, (state) => {
         state.loading = true
         state.error = false
       })
-      .addCase(findLikes.fulfilled, (state, action) => {
+      .addCase(listLikes.fulfilled, (state, action) => {
         state.loading = false
         state.findedLike = action.payload
         state.error = false
       })
-      .addCase(findLikes.rejected, (state) => {
+      .addCase(listLikes.rejected, (state) => {
         state.loading = false
         state.error = true
       })
