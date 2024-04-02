@@ -29,7 +29,6 @@ export class UserService {
       .createQueryBuilder('user')
       .where({ email: createUserDto.email })
       .getOne();
-
     // Si el usuario ya existe, lanzar una excepción
     if (existingUser) {
       throw new HttpException(
@@ -37,15 +36,12 @@ export class UserService {
         409
       );
     }
-
     // Guardar el nuevo perfil del usuario en la base de datos
     const newProfile = await this.userRepository.save(createUserDto);
-
     // Si no se pudo crear el nuevo perfil, lanzar una excepción
     if (!newProfile) {
       throw new HttpException('The new profile is not created', 501);
     }
-
     // Devolver el nuevo perfil del usuario
     return newProfile;
   }
@@ -67,8 +63,7 @@ export class UserService {
         .leftJoinAndSelect('user.club', 'club')
         .getOne();
     }
-
-    // Devolver el sportman encontrado
+    // Devolver el user encontrado
     return user;
   }
 
@@ -90,7 +85,6 @@ export class UserService {
     // Si no se encuentra el usuario, lanzar una excepción
     if (!user)
       throw new HttpException(`Usuario con ID ${id} no encontrado`, 404);
-
     // Devolver el usuario encontrado
     return user;
   }

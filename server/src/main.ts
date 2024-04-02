@@ -1,15 +1,13 @@
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as morgan from 'morgan';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { CORS } from './config/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(morgan('dev'));
-
-  app.enableCors(CORS);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,6 +17,10 @@ async function bootstrap() {
     })
   );
 
+  const reflector = app.get(Reflector);
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+  app.enableCors(CORS);
   app.setGlobalPrefix('api');
 
   const configService = app.get(ConfigService);

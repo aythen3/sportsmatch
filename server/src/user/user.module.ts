@@ -22,7 +22,7 @@ import { LikeEntity } from 'src/like/entities/like.entity';
       LikeEntity
     ])
   ],
-  exports: [UserService],
+  exports: [UserService, TypeOrmModule],
   controllers: [UserController],
   providers: [UserService, JwtService, AuthJwtService]
 })
