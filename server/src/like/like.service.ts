@@ -51,6 +51,13 @@ export class LikeService {
 
     return like;
   }
+  public async likeList(userId: string){
+    const list = await this.likeRepository.createQueryBuilder('like')
+    .select('like.id')
+    .where('like.author = :userId', {userId})
+    .getRawMany();
+    return list.map(like => like.like_id);
+  }
 
   public async findOne(id: string) {
     const like = await this.likeRepository
