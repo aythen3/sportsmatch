@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AuthJwtService } from './auth-jwt.service';
 import { AuthJwtController } from './auth-jwt.controller';
 import { UserService } from 'src/user/user.service';
@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 
 const configService = new ConfigService();
 
+@Global()
 @Module({
   // Definir los módulos importados
   imports: [
