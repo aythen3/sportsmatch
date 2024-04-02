@@ -33,6 +33,14 @@ export class LikeController {
   ) {
     return this.likeService.findExisten(postId, authorId);
   }
+  
+  @Get('/list')
+  public async listofLikes(
+   
+    @Query('authorId') authorId: string
+  ) {
+    return this.likeService.likeList( authorId);
+  }
 
   @Get(':id')
   public async findOne(@Param('id') id: string) {
