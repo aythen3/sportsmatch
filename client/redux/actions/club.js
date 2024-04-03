@@ -31,7 +31,6 @@ export const getClub = createAsyncThunk('get/club', async (id) => {
 
 export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
   try {
-    console.log('actionfile', file)
     const { data } = await axiosInstance.post(
       // 'https://api-sportsmatch.ay-cloud.com/api/img-manager',
       'img-manager',
@@ -42,10 +41,8 @@ export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
         }
       }
     )
-    console.log('actiondata', data)
     return data
   } catch (error) {
-    console.log('actionerror', error)
     throw new Error(error)
   }
 })

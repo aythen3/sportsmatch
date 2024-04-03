@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   FontSize,
@@ -25,11 +25,15 @@ import { setClub } from '../../redux/slices/club.slices'
 const IniciarSesin = () => {
   const navigation = useNavigation()
 
+  const route = useRoute()
+
   const dispatch = useDispatch()
 
   const passwordInputRef = useRef(null)
 
   const { user } = useSelector((state) => state.users)
+
+  const { isPlayer } = route.params
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -47,8 +51,14 @@ const IniciarSesin = () => {
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
-      if (user?.accesToken) {
-        navigation.navigate('stepsClub')
+      if (!isPlayer) {
+        if (user?.accesToken) {
+          navigation.navigate('stepsClub')
+        }
+      } else {
+        if (user?.accesToken) {
+          navigation.navigate('stepsJugador')
+        }
       }
     }
   }, [user])

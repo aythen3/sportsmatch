@@ -47,7 +47,6 @@ const Paso1 = () => {
     actualClub: '',
     description: ''
   })
-
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
     sport: sport,
@@ -88,7 +87,7 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
-
+  console.log('sportmanValues', sportmanValues)
   const handleNavigation = () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
@@ -99,7 +98,6 @@ const Paso1 = () => {
             info: sportmanValues,
             club: null
           },
-
           userId: user.user.id
         }
         dispatch(createSportman(body))
@@ -107,7 +105,7 @@ const Paso1 = () => {
 
       if (stepsSportman === 1) {
         setStepsSportman(0)
-        // navigation.navigate('SiguiendoJugadores')
+        navigation.navigate('SiguiendoJugadores')
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
@@ -243,7 +241,7 @@ const Paso1 = () => {
             </View>
           )}
 
-          {sportman && stepsSportman === 0 && (
+          {sportman && stepsSportman === 1 && (
             <Paso4Jugador
               sportmanValues={sportmanValues}
               setSportmanValues={setSportmanValues}
@@ -255,8 +253,8 @@ const Paso1 = () => {
               setProfesionalValues={setProfesionalValues}
             />
           )}
-          {stepsSportman === 1 && <Paso3Jugador />}
-          {stepsProfesional === 1 && <Paso4Profesional />}
+          {sportman && stepsSportman === 0 && <Paso3Jugador />}
+          {profesional && stepsProfesional === 1 && <Paso4Profesional />}
 
           <View style={styles.botonesRoles}>
             <Pressable
@@ -296,7 +294,7 @@ const styles = StyleSheet.create({
   },
   botonLayout1: {
     height: 70,
-    width: 360
+    width: 330
   },
   imagenDeFondo: {
     position: 'absolute',
@@ -364,7 +362,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl
   },
   contenido: {
-    marginTop: 20,
+    marginTop: 60,
     height: '20%',
     alignItems: 'center'
   },

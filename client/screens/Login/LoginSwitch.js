@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
-import {
-  StyleSheet,
-  Pressable,
-  Text,
-  View,
-  ScrollView
-  // Switch
-} from 'react-native'
+import { StyleSheet, Pressable, Text, View, ScrollView } from 'react-native'
 import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -17,15 +10,16 @@ import {
   Border,
   Padding
 } from '../../GlobalStyles'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman } = useSelector((state) => state.users)
+
   const [isEnabled, setIsEnabled] = useState(false)
+  const [isPlayer, setIsPlayer] = useState(true)
 
   useEffect(() => {
     dispatch(getAll())
@@ -34,6 +28,7 @@ const LoginSwitch = () => {
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState)
     dispatch(setIsSpotMan(isEnabled))
+    setIsPlayer(!isPlayer)
   }
 
   return (
@@ -65,11 +60,6 @@ const LoginSwitch = () => {
                 </Text>
 
                 <Switch
-                  // trackColor={{ false: '#00FF18', true: '#00FF18' }}
-                  // thumbColor={isEnabled ? 'black' : 'black'}
-                  // ios_backgroundColor="#00FF18"
-                  // onValueChange={toggleSwitch}
-                  // value={isEnabled}
                   circleSize={16}
                   onValueChange={toggleSwitch}
                   value={isEnabled}
@@ -77,7 +67,6 @@ const LoginSwitch = () => {
                   backgroundInactive={'#00FF18'}
                   activeText={false}
                   inActiveText={false}
-                  // circleBorderWidth={3}
                   circleActiveColor={'black'}
                   circleInActiveColor={'black'}
                   barHeight={18}
@@ -158,7 +147,11 @@ const LoginSwitch = () => {
                   </View>
                   <Pressable
                     style={styles.loremIpsumGroup}
-                    onPress={() => navigation.navigate('Registrarse')}
+                    onPress={() =>
+                      navigation.navigate('Registrarse', {
+                        isPlayer
+                      })
+                    }
                   >
                     <View style={styles.loremIpsum2}>
                       <Text style={[styles.aceptar, styles.aceptarTypo]}>
@@ -175,7 +168,11 @@ const LoginSwitch = () => {
                 </View>
                 <Pressable
                   style={styles.yaTenesUnaContainer}
-                  onPress={() => navigation.navigate('IniciarSesin')}
+                  onPress={() =>
+                    navigation.navigate('IniciarSesin', {
+                      isPlayer
+                    })
+                  }
                 >
                   <Text
                     style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
