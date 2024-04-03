@@ -1,12 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 
 const CommentsMuro = ({ comment }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.comments}>hola </Text>
-      <Text style={styles.comments}>crack</Text>
+      <Text style={styles.comments}>{comment.content} </Text>
     </View>
   )
 }
