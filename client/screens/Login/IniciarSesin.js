@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   FontSize,
   Padding,
@@ -56,6 +57,7 @@ const IniciarSesin = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
         .then(async (response) => {
+          await AsyncStorage.setItem('userToken', response.payload.accesToken)
           dispatch(setClub(response))
         })
         .catch((error) => {

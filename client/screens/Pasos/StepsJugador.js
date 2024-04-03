@@ -4,8 +4,7 @@ import {
   StyleSheet,
   Pressable,
   Image,
-  TouchableOpacity,
-  ScrollView
+  TouchableOpacity
 } from 'react-native'
 import React, { useState } from 'react'
 import {
