@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
 import Acordeon from './Acordeon'
+import { setCategory, setPosition } from '../redux/slices/users.slices'
 
-const SkillSeleccion = ({ editable, setEditable }) => {
+const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   const navigation = useNavigation()
+
+  const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
@@ -41,10 +45,20 @@ const SkillSeleccion = ({ editable, setEditable }) => {
 
   const handleSelectCategoria = (edad) => {
     setSelectedCategoria(edad)
+    dispatch(setCategory(edad))
   }
 
   const handleSelectPosition = (posicion) => {
     setSelectedPosition(posicion)
+    dispatch(setPosition(posicion))
+  }
+
+  const handleData = (key, value) => {
+    const newData = {
+      ...data,
+      [key]: value
+    }
+    setData(newData)
   }
 
   return (
@@ -54,10 +68,12 @@ const SkillSeleccion = ({ editable, setEditable }) => {
           <Text style={styles.defensa}>Ataque</Text>
           <View style={styles.rectangulo}>
             <TextInput
+              key={'attack'}
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
+              onChangeText={(value) => handleData('attack', value)}
             />
           </View>
         </View>
@@ -69,6 +85,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
+              onChangeText={(value) => handleData('defense', value)}
             />
           </View>
         </View>
@@ -80,6 +97,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
+              onChangeText={(value) => handleData('speed', value)}
             />
           </View>
         </View>
@@ -127,6 +145,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholder="1.80m"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              onChangeText={(value) => handleData('height', value)}
             />
           </View>
         </View>
@@ -138,6 +157,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              onChangeText={(value) => handleData('prop1', value)}
             />
           </View>
         </View>
@@ -149,6 +169,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              onChangeText={(value) => handleData('prop2', value)}
             />
           </View>
         </View>
@@ -160,6 +181,7 @@ const SkillSeleccion = ({ editable, setEditable }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              onChangeText={(value) => handleData('prop3', value)}
             />
           </View>
         </View>
