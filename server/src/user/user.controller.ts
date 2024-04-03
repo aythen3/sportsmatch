@@ -23,14 +23,12 @@ import { PublicAccess } from 'src/auth-jwt/decorators/public.decorator';
 export class UserController {
   // Constructor del controlador que recibe el servicio de usuario
   constructor(private readonly userService: UserService) {}
-
   // Método para crear un usuario
   @PublicAccess()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
   // Método para encontrar todos los usuarios
   @Get()
   findAll() {
@@ -47,13 +45,11 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
-
   // Método para actualizar un usuario por su ID
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
-
   // Método para eliminar un usuario por su ID
   @Delete(':id')
   remove(@Param('id') id: string) {
