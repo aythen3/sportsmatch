@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubEntity } from './entities/club.entity';
@@ -9,6 +9,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
 
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportService } from 'src/sport/sport.service';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class ClubService {
@@ -28,34 +29,60 @@ export class ClubService {
    * @param {CreateClubDto} createClubDto - Los datos del club a crear
    */
   public async create(createClubDto: CreateClubDto) {
-    const { clubData, userId, sportId } = createClubDto;
-    const user = await this.userService.findOne(userId);
-    if (!user) {
-      throw new HttpException('the user not found', 404);
-    }
-    const sport = await this.sportService.findById(sportId);
-    if (!sport) {
-      throw new HttpException('the sport not found', 404);
-    }
-    const newClub = await this.clubRepository.create(clubData);
-    newClub.sports = [sport]; // Relate the club with the sport
-    const saveClub = await this.clubRepository.save(newClub);
-    if (!saveClub) {
-      throw new HttpException('the new club is not created', 501);
-    }
+    try {
+      const { clubData, userId, sportId } = createClubDto;
+      const user = await this.userService.findOne(userId);
+      if (!user) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'User not found'
+        });
+      }
+      const sport = await this.sportService.findById(sportId);
+      if (!sport) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Sport not found'
+        });
+      }
+      const newClub = await this.clubRepository.create(clubData);
+      newClub.sports = [sport]; // Relate the club with the sport
+      const saveClub = await this.clubRepository.save(newClub);
+      if (!saveClub) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'The new club is not created'
+        });
+      }
 
-    await this.userRepository.save({
-      ...user,
-      club: saveClub
-    });
+      await this.userRepository.save({
+        ...user,
+        club: saveClub
+      });
 
-    return saveClub;
+      return saveClub;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
   /**
    * Método para obtener todos los clubes
    */
   public async findAll() {
-    return await this.clubRepository.find({ where: { isDelete: false } });
+    try {
+      const clubs: ClubEntity[] = await this.clubRepository.find({
+        where: { isDelete: false }
+      });
+      if (clubs.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Clubs not found'
+        });
+      }
+      return clubs;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   /**
@@ -63,16 +90,23 @@ export class ClubService {
    * @param {string} id - El ID del club a buscar
    */
   public async findOne(id: string) {
-    const club = await this.clubRepository
-      .createQueryBuilder('club')
-      .where({ id })
-      .getOne();
-
-    // Si no se encuentra el club, lanzar una excepción
-    if (!club) throw new HttpException(`Club con ID ${id} no encontrado`, 404);
-
-    // Devolver el club encontrado
-    return club;
+    try {
+      const club = await this.clubRepository
+        .createQueryBuilder('club')
+        .where({ id })
+        .getOne();
+      // Si no se encuentra el club, lanzar una excepción
+      if (!club) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Club id: ${id} not found`
+        });
+      }
+      // Devolver el club encontrado
+      return club;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
   /**
    * Método para actualizar un club por su ID
@@ -80,14 +114,21 @@ export class ClubService {
    * @param {UpdateClubDto} updateClubDto - Los datos del club a actualizar
    */
   public async update(id: string, updateClubDto: UpdateClubDto) {
-    const club = await this.findOne(id);
-    if (!club) {
-      throw new HttpException(`Club con id ${id} no encontrado`, 404);
+    try {
+      const club = await this.findOne(id);
+      if (!club) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `User id: ${id} not found`
+        });
+      }
+      for (const key in updateClubDto) {
+        club[key] = updateClubDto[key];
+      }
+      return await this.clubRepository.save(club);
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    for (const key in updateClubDto) {
-      club[key] = updateClubDto[key];
-    }
-    return await this.clubRepository.save(club);
   }
 
   public async remove(id: string) {
