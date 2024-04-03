@@ -1,4 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common';
 import { compare } from 'bcrypt';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import { UserEntity } from 'src/user/entities/user.entity';
@@ -83,7 +87,7 @@ export class AuthJwtService {
         user
       };
     } catch (error) {
-      throw new HttpException('error en login', 501);
+      throw new UnauthorizedException('Invalid login');
     }
   }
 }

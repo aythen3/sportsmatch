@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { BaseEntity } from 'src/config/base.entity';
@@ -14,6 +15,7 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
