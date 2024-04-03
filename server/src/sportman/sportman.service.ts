@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateSportmanDto } from './dto/create-sportman.dto';
 import { UpdateSportmanDto } from './dto/update-sportman.dto';
 import { SportmanEntity } from './entities/sportman.entity';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class SportmanService {
@@ -19,44 +20,72 @@ export class SportmanService {
 
   public async create(createSportmanDto: CreateSportmanDto) {
     const { sportmanData, userId } = createSportmanDto;
-    console.log('SERVICE', createSportmanDto);
+    try {
+      const user = await this.userService.findOne(userId);
+      if (user) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `User with id: ${userId} not found`
+        });
+      }
+      const newSportman = await this.sportmanRepository.create(sportmanData);
+      const saveSportman = await this.sportmanRepository.save(newSportman);
+      if (!saveSportman) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: `the new sportman is not created`
+        });
+      }
+      await this.userRepository.save({
+        ...user,
+        sportman: saveSportman
+      });
 
-    const user = await this.userService.findOne(userId);
-    if (!user) {
-      throw new HttpException('the user not found', 404);
+      return saveSportman;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    const newSportman = await this.sportmanRepository.create(sportmanData);
-    const saveSportman = await this.sportmanRepository.save(newSportman);
-    if (!saveSportman) {
-      throw new HttpException('the new sportman is not created', 501);
-    }
-    await this.userRepository.save({
-      ...user,
-      sportman: saveSportman
-    });
-
-    return saveSportman;
   }
   /**
    * Método para obtener todos los Deportistas
    */
   public async findAll() {
-    return await this.sportmanRepository.find({ where: { isDelete: false } });
+    try {
+      const sportmans = await this.sportmanRepository.find({
+        where: { isDelete: false }
+      });
+      if (sportmans.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Sportmans not found'
+        });
+      }
+      return sportmans;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   public async findOne(id: string) {
-    const sportman = await this.sportmanRepository
-      .createQueryBuilder('sportman')
-      .where({ id })
+    try {
+      const sportman = await this.sportmanRepository
+        .createQueryBuilder('sportman')
+        .where({ id })
+        .getOne();
 
-      .getOne();
+      // Si no se encuentra el sportman, lanzar una excepción
+      if (!sportman) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Sportman id: ${id} not found`
+        });
+      }
 
-    // Si no se encuentra el sportman, lanzar una excepción
-    if (!sportman)
-      throw new HttpException(`sportman con ID ${id} no encontrado`, 404);
-
-    // Devolver el sportman encontrado
-    return sportman;
+      // Devolver el sportman encontrado
+      return sportman;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   /**
@@ -65,23 +94,41 @@ export class SportmanService {
    * @param {UpdateSportmanDto} updateSportmanDto - Los datos del deportista a actualizar
    */
   public async update(id: string, updateSportmanDto: UpdateSportmanDto) {
-    const { sportmanData } = updateSportmanDto;
-    const sportman = await this.findOne(id);
-    if (!sportman) {
-      throw new HttpException(`Club con id ${id} no encontrado`, 404);
-    }
-    for (const key in sportmanData) {
-      if (key === 'info') {
-        sportman.info = { ...sportman.info, ...sportmanData };
-      } else {
-        sportman[key] = sportmanData[key];
+    try {
+      const { sportmanData } = updateSportmanDto;
+      const sportman = await this.findOne(id);
+      if (!sportman) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Sportman id: ${id} not found`
+        });
       }
+      for (const key in sportmanData) {
+        if (key === 'info') {
+          sportman.info = { ...sportman.info, ...sportmanData };
+        } else {
+          sportman[key] = sportmanData[key];
+        }
+      }
+      return await this.sportmanRepository.save(sportman);
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    return await this.sportmanRepository.save(sportman);
   }
 
   public async remove(id: string) {
-    await this.sportmanRepository.update(id, { isDelete: true });
-    return await this.findOne(id);
+    try {
+      await this.sportmanRepository.update(id, { isDelete: true });
+      const sportman: SportmanEntity = await this.findOne(id);
+      if (!sportman) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `User id: ${id} not found`
+        });
+      }
+      return sportman;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 }
