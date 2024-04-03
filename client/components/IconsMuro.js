@@ -15,16 +15,14 @@ const IconsMuro = ({ id, userId }) => {
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  const handleLike = (id, userId) => {
+  const handleLike = async (id, userId) => {
     const data = {
       post: id,
       author: userId
     }
-    dispatch(like(data))
+    await dispatch(like(data))
     const authorId = userId
-    dispatch(listLikes(authorId))
-    console.log(id)
-    console.log(findedLike)
+    await dispatch(listLikes(authorId))
   }
 
   useEffect(() => {
@@ -36,13 +34,15 @@ const IconsMuro = ({ id, userId }) => {
     setModalVisible(false)
   }
 
+  const liked = findedLike.some((likeId) => likeId === id)
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.likeView}
         onPress={() => handleLike(id, userId)}
       >
-        <LikeSVG liked={false} />
+        <LikeSVG liked={liked} />
       </TouchableOpacity>
       <View style={styles.shareView}>
         <ShareSVG />

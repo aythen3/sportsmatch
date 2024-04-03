@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+// import { useSelector } from 'react-redux'
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { Image } from 'expo-image'
 import PagerView from 'react-native-pager-view'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
-import CommentsMuro from './CommentsMuro'
+// import CommentsMuro from './CommentsMuro'
+import CommentSection from './modals/CommentSection'
 
 function Carousel({
   name,
@@ -14,14 +22,18 @@ function Carousel({
   imgPerfil,
   image,
   likes,
-  // comments,
   club,
-  index,
+  // index,
   id,
   userId
 }) {
   const navigation = useNavigation()
-  const [showComments, setShowComments] = useState(false)
+
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const closeModal = () => {
+    setModalVisible(false)
+  }
 
   return (
     <View style={styles.container}>
@@ -73,21 +85,26 @@ function Carousel({
           <IconsMuro id={id} userId={userId} />
         </View>
         <Text style={styles.description}>{description}</Text>
-        <Text
-          style={styles.commentsTitle}
-          onPress={() => setShowComments(!showComments)}
-        >
-          Ver los 24 comentarios
-        </Text>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text style={styles.commentsTitle}>Ver los 24 comentarios</Text>
+        </TouchableOpacity>
 
+        {modalVisible && (
+          <CommentSection
+            visible={modalVisible}
+            closeModal={closeModal}
+            postId={id}
+          />
+        )}
         {/* {showComments &&
-          comments.map((comment) => (
+          !error &&
+          postComments?.map((comment) => (
             <CommentsMuro key={comment.id} comment={comment} />
-          ))}
+          ))} */}
 
-        {!showComments && (
+        {/* {!showComments && (
           <Text style={styles.comments}>{comments[0].comment}</Text>
-        )} */}
+        )}  */}
       </View>
     </View>
   )
