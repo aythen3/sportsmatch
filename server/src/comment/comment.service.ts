@@ -1,4 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
@@ -16,10 +20,12 @@ export class CommentService {
     private readonly postService: PostService
   ) {}
   public async create(createCommentDto: CreateCommentDto) {
-    console.log(createCommentDto);
     const author = await this.userService.findOne(createCommentDto.author);
 
     const post = await this.postService.findOne(createCommentDto.post);
+
+    if (!post) throw new UnauthorizedException('Post invalid');
+    this.postService.updatePostComentCount(post, 1);
 
     const comment = new CommentEntity();
     comment.content = createCommentDto.content;
