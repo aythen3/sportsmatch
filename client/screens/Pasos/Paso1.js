@@ -18,8 +18,8 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import Lines from '../../components/Lines'
 import Paso3Profesional from './Paso3Profesional'
-import Paso3Jugador from './Paso3Jugador'
 import Paso4Jugador from './Paso4Jugador'
+import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSportman } from '../../redux/actions/sportman'
@@ -30,9 +30,8 @@ const Paso1 = () => {
   const dispatch = useDispatch()
 
   const { sport } = useSelector((state) => state.sports)
-  const { user, sportmanGender, birthdate, city } = useSelector(
-    (state) => state.users
-  )
+  const { user, sportmanGender, birthdate, city, category, position } =
+    useSelector((state) => state.users)
 
   const [selectedRole, setSelectedRole] = useState(null)
   const [sportman, setSportman] = useState(false)
@@ -45,7 +44,9 @@ const Paso1 = () => {
     birthdate: birthdate,
     city: city,
     actualClub: '',
-    description: ''
+    description: '',
+    category: category,
+    position: position
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
@@ -55,6 +56,9 @@ const Paso1 = () => {
     actualClub: '',
     description: ''
   })
+  const [data, setData] = useState({})
+
+  console.log('data', data)
 
   useEffect(() => {
     setProfesionalValues((prevValues) => ({
@@ -70,9 +74,11 @@ const Paso1 = () => {
       gender: sportmanGender,
       sport: sport,
       birthdate: birthdate,
-      city: city
+      city: city,
+      position: position,
+      category: category
     }))
-  }, [sport, sportmanGender, birthdate, city])
+  }, [sport, sportmanGender, birthdate, city, position, category])
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role)
@@ -87,7 +93,7 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
-  console.log('sportmanValues', sportmanValues)
+
   const handleNavigation = () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
@@ -253,7 +259,9 @@ const Paso1 = () => {
               setProfesionalValues={setProfesionalValues}
             />
           )}
-          {sportman && stepsSportman === 0 && <Paso3Jugador />}
+          {sportman && stepsSportman === 0 && (
+            <SkillSeleccion setData={setData} data={data} />
+          )}
           {profesional && stepsProfesional === 1 && <Paso4Profesional />}
 
           <View style={styles.botonesRoles}>
