@@ -63,4 +63,9 @@ export class PostService {
       await this.postRepository.save(post);
     }
   }
+
+  public async updatePostComentCount(post: PostEntity, increment: number) {
+    post.commentCount += increment;
+    await this.postRepository.save(post);
+  }
 }
