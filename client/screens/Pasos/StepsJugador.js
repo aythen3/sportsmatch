@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Pressable,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native'
 import React, { useState } from 'react'
 import {
@@ -15,17 +16,15 @@ import {
   Padding
 } from '../../GlobalStyles'
 import Lines from '../../components/Lines'
-import EscogerDeporte2 from './EscogerDeporte2'
+// import EscogerDeporte2 from './EscogerDeporte2'
 import EscogerDeporte1 from './EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
+import Paso1 from './Paso1'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
-import Paso1 from './Paso1'
 
 const StepsJugador = () => {
   const navigation = useNavigation()
-
-  const { isSportman } = useSelector((state) => state.users)
 
   const [stepsIndex, setstepsIndex] = useState(1)
 
@@ -52,10 +51,14 @@ const StepsJugador = () => {
 
   const hadleIndex = (value) => {
     if (value === 'add') {
-      if (stepsIndex <= 2) {
-        setstepsIndex((prev) => prev + 1)
+      if (stepsIndex === 1) {
+        navigation.navigate('Paso1')
       } else {
-        setstepsIndex((prev) => prev - 1)
+        if (stepsIndex <= 2) {
+          setstepsIndex((prev) => prev + 1)
+        } else {
+          setstepsIndex((prev) => prev - 1)
+        }
       }
     }
   }
@@ -64,10 +67,6 @@ const StepsJugador = () => {
     switch (index) {
       case 1:
         return <Paso2Jugador />
-      case 2:
-        return <Paso1 />
-      case 3:
-        return <EscogerDeporte1 />
       default:
         return null
     }
@@ -75,41 +74,43 @@ const StepsJugador = () => {
 
   return (
     <View style={styles.escogerDeporte}>
-      <Image
-        style={styles.escogerDeporteChild}
-        contentFit="cover"
-        source={require('../../assets/group-2412.png')}
-      />
-      <View>
-        <View style={{ justifyContent: 'flex-start' }}>
-          <View style={styles.atrsParent}>
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../../assets/coolicon.png')}
-            />
-            <Pressable onPress={() => hadleIndex('minus')}>
-              <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-            </Pressable>
+      <ScrollView>
+        <Image
+          style={styles.escogerDeporteChild}
+          contentFit="cover"
+          source={require('../../assets/group-2412.png')}
+        />
+        <View>
+          <View style={{ justifyContent: 'flex-start' }}>
+            <View style={styles.atrsParent}>
+              <Image
+                style={styles.coolicon}
+                contentFit="cover"
+                source={require('../../assets/coolicon.png')}
+              />
+              <Pressable onPress={() => hadleIndex('minus')}>
+                <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+              </Pressable>
+            </View>
+            <View style={{ marginTop: 100 }}>
+              <Text style={styles.paso2}>Paso {stepsIndex}</Text>
+              <Text style={styles.detallesDelClub}>
+                {stepsIndex === 1 && 'Escoge tu deporte'}
+              </Text>
+            </View>
+            <Lines index={stepsIndex} />
           </View>
-          <View style={{ marginTop: 100 }}>
-            <Text style={styles.paso2}>Paso {stepsIndex}</Text>
-            <Text style={styles.detallesDelClub}>
-              {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
-            </Text>
-          </View>
-          <Lines index={stepsIndex} />
+
+          {ViewComponent(stepsIndex)}
+
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => hadleIndex('add')}
+          >
+            <Text style={styles.nextText}>Siguiente</Text>
+          </TouchableOpacity>
         </View>
-
-        <View>{ViewComponent(stepsIndex)}</View>
-
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() => hadleIndex('add')}
-        >
-          <Text style={styles.nextText}>Siguiente</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   )
 }
@@ -161,7 +162,6 @@ const styles = StyleSheet.create({
   },
   escogerDeporte: {
     flex: 1,
-    justifyContent: 'center',
     overflow: 'hidden',
     backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15

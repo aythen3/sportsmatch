@@ -27,7 +27,6 @@ const NavBarInferior = () => {
 
     if (!result.canceled) {
       setImage(result.assets[0])
-      console.log('result', result.assets[0].uri)
 
       const fileName = `${result.assets[0].uri.split('.').pop()}`
 
@@ -38,7 +37,6 @@ const NavBarInferior = () => {
         type: result.assets[0].type,
         name: fileName
       })
-      console.log('file', file)
       // dispatch(updateImgClub(file))
       navigation.navigate('CrearHighlight', { image })
     }

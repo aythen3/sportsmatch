@@ -17,8 +17,6 @@ const PerfilDatosPropioClub = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
 
-  console.log('club', club)
-
   const [selectComponents, setSelectComponents] = useState('perfil')
 
   return (
