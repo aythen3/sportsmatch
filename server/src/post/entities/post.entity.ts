@@ -14,6 +14,9 @@ export class PostEntity extends BaseEntity {
   @Column({ default: 0 })
   likes: number;
 
+  @Column({ default: 0 })
+  commentCount: number;
+
   @ManyToOne(() => UserEntity, (user) => user.posts)
   author: UserEntity;
 
