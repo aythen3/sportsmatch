@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { PositionService } from 'src/position/position.service';
 import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class OfferService {
@@ -25,50 +26,74 @@ export class OfferService {
    * @returns {OfferEntity} La nueva oferta creada
    */
   public async create(createOfferDto: CreateOfferDto) {
-    const { offerData, positionId, clubId } = createOfferDto;
+    try {
+      const { offerData, positionId, clubId } = createOfferDto;
 
-    const position = await this.positionService.findOne(positionId);
-    if (!position) {
-      throw new HttpException(`position ${position} not found`, 404);
+      const position = await this.positionService.findOne(positionId);
+      if (!position) {
+        throw new HttpException(`position ${position} not found`, 404);
+      }
+
+      const club = await this.clubService.findOne(clubId);
+      if (!club) {
+        throw new HttpException(`club ${club} not found`, 404);
+      }
+
+      const newOffer = await this.offerRepository.create({
+        ...offerData,
+        position: position,
+        club: club
+      });
+      const saveOffer = await this.offerRepository.save(newOffer);
+      if (!saveOffer) {
+        throw new HttpException('the new sportman is not created', 501);
+      }
+
+      return saveOffer;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-
-    const club = await this.clubService.findOne(clubId);
-    if (!club) {
-      throw new HttpException(`club ${club} not found`, 404);
-    }
-
-    const newOffer = await this.offerRepository.create({
-      ...offerData,
-      position: position,
-      club: club
-    });
-    const saveOffer = await this.offerRepository.save(newOffer);
-    if (!saveOffer) {
-      throw new HttpException('the new sportman is not created', 501);
-    }
-
-    return saveOffer;
   }
 
   public async findAll() {
-    return await this.offerRepository.find({ where: { isDelete: false } });
+    try {
+      const offer: OfferEntity[] = await this.offerRepository.find({
+        where: { isDelete: false }
+      });
+      if (offer.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Offer not found'
+        });
+      }
+      return offer;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   public async findOne(id: string) {
-    const offer = await this.offerRepository
-      .createQueryBuilder('offer')
-      .leftJoinAndSelect('offer.position', 'position')
-      .leftJoinAndSelect('offer.club', 'club')
-      .where({ id })
-      .getOne();
-
-    // Si no se encuentra el offer, lanzar una excepción
-    if (!offer)
-      throw new HttpException(`Offer con ID ${id} no encontrado`, 404);
-
-    // Devolver el offer encontrado
-    return offer;
+    try {
+      const offer = await this.offerRepository
+        .createQueryBuilder('offer')
+        .leftJoinAndSelect('offer.position', 'position')
+        .leftJoinAndSelect('offer.club', 'club')
+        .where({ id })
+        .getOne();
+      // Si no se encuentra el offer, lanzar una excepción
+      if (!offer) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Offer id: ${id} not found`
+        });
+      }
+      // Devolver el offer encontrado
+      return offer;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
+
   public async update(id: string, updateOfferDto: UpdateOfferDto) {
     const offer = await this.findOne(id);
     const { offerData, positionId } = updateOfferDto;
