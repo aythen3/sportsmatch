@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -11,8 +11,17 @@ import {
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import * as MediaLibrary from 'expo-media-library'
+import { Context } from '../../../context/Context'
 
 const SeleccionarImagen = () => {
+  const {
+    pickImage,
+    coverImage,
+    profileImage,
+    provisoryProfileImage,
+    provisoryCoverImage
+  } = useContext(Context)
+
   const navigation = useNavigation()
 
   const [imagenes, setImagenes] = useState([])
@@ -36,6 +45,7 @@ const SeleccionarImagen = () => {
 
   const handleSeleccionarImagen = (imagen) => {
     setSelectedImage(imagen)
+    console.log(imagen.uri)
   }
 
   const renderizarImagenes = () => {

@@ -46,7 +46,9 @@ const Paso1 = () => {
     actualClub: '',
     description: '',
     category: category,
-    position: position
+    position: position,
+    img_perfil: '',
+    img_front: ''
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
@@ -91,7 +93,7 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
-  console.log('user', user)
+
   const handleNavigation = () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
@@ -108,7 +110,6 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        console.log('data', body)
         dispatch(createSportman(body))
         setStepsSportman(0)
         navigation.navigate('SiguiendoJugadores')

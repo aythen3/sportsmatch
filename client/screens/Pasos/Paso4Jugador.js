@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -15,19 +15,31 @@ import {
   Padding
 } from '../../GlobalStyles'
 import DetallesSeleccion from '../../components/DetallesSeleccion'
+import { Context } from '../../context/Context'
 
 const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
   const {
     pickImage,
     coverImage,
-    setCoverImage,
     profileImage,
-    setProfileImage,
     provisoryProfileImage,
-    setProvisoryProfileImage,
-    provisoryCoverImage,
-    setProvisoryCoverImage
+    provisoryCoverImage
   } = useContext(Context)
+
+  const handlePickImage = (type) => {
+    pickImage(type)
+    if (type === 'profile') {
+      setSportmanValues((prevState) => ({
+        ...prevState,
+        img_perfil: profileImage
+      }))
+    } else if (type === 'cover') {
+      setSportmanValues((prevState) => ({
+        ...prevState,
+        img_front: coverImage
+      }))
+    }
+  }
 
   return (
     <ScrollView style={styles.paso6}>
@@ -45,7 +57,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             />
             <TouchableOpacity
               style={styles.botonSubirImagen}
-              onPress={() => pickImage('profile')}
+              onPress={() => handlePickImage('profile')}
             >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de perfil
@@ -57,10 +69,18 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             </Text>
           </View>
           <View style={styles.rectangulobotonpesoMaximo}>
-            <View style={styles.rectangulo} />
+            <Image
+              style={styles.rectangulo}
+              contentFit="cover"
+              source={
+                provisoryProfileImage
+                  ? { uri: provisoryCoverImage }
+                  : require('../../assets/circulo.png')
+              }
+            />
             <TouchableOpacity
               style={styles.botonSubirImagen}
-              onPress={() => pickImage('cover')}
+              onPress={() => handlePickImage('cover')}
             >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de portada
@@ -135,8 +155,8 @@ const styles = StyleSheet.create({
   rectangulo: {
     borderRadius: Border.br_10xs,
     backgroundColor: Color.colorGainsboro,
-    width: '200%',
-    flex: 1
+    width: 380,
+    height: 120
   }
 })
 

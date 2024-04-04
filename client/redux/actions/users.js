@@ -19,6 +19,20 @@ export const getUserData = createAsyncThunk('getUserData/users', async (id) => {
   }
 })
 
+export const getUserChild = createAsyncThunk(
+  'getUserChild/users',
+  async (body) => {
+    const { id, type } = body
+    console.log(body)
+    try {
+      const { data } = await axiosInstance.get(`user/child/${id}?type=${type}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const updateUserData = createAsyncThunk(
   'updateUserData/users',
   async ({ id, body }) => {

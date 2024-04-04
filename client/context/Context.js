@@ -40,7 +40,6 @@ export const ContextProvider = ({ children }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('dataUrl from profile:', data.url)
             setProfileImage(data.url)
           })
       } else {
@@ -61,7 +60,6 @@ export const ContextProvider = ({ children }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('dataUrl from cover:', data.url)
             setCoverImage(data.url)
           })
       }
