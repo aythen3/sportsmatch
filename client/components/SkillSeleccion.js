@@ -74,6 +74,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               keyboardType="numeric"
               style={styles.textInput}
               onChangeText={(value) => handleData('attack', value)}
+              maxLength={3}
             />
           </View>
         </View>
@@ -86,6 +87,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               keyboardType="numeric"
               style={styles.textInput}
               onChangeText={(value) => handleData('defense', value)}
+              maxLength={3}
             />
           </View>
         </View>
@@ -98,6 +100,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               keyboardType="numeric"
               style={styles.textInput}
               onChangeText={(value) => handleData('speed', value)}
+              maxLength={3}
             />
           </View>
         </View>
@@ -146,6 +149,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('height', value)}
+              maxLength={4}
             />
           </View>
         </View>
@@ -158,6 +162,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop1', value)}
+              maxLength={3}
             />
           </View>
         </View>
@@ -170,6 +175,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop2', value)}
+              maxLength={3}
             />
           </View>
         </View>
@@ -182,6 +188,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop3', value)}
+              maxLength={3}
             />
           </View>
         </View>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Color } from '../../GlobalStyles'
@@ -8,10 +8,9 @@ import { getAllLikes, getAllPosts } from '../../redux/actions/post'
 
 const SiguiendoJugadores = () => {
   const dispatch = useDispatch()
-
   const { allPosts, post } = useSelector((state) => state.post)
   const { user } = useSelector((state) => state.users)
-  console.log('user', user)
+
   useEffect(() => {
     dispatch(getAllPosts())
     dispatch(getAllLikes())

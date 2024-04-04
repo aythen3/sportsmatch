@@ -30,10 +30,28 @@ const HeaderPerfil = ({
 }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-
   const { isSportman } = useSelector((state) => state.users)
 
   const [image1, setImage1] = useState(null)
+
+  useEffect(() => {
+    console.log(
+      'data from headerperfil: ',
+      name,
+      description,
+      button1,
+      button2,
+      setSelectComponents,
+      selectComponents,
+      club,
+      myPerfil,
+      position,
+      sport,
+      front,
+      avatar
+    )
+  }, [])
+
   const pickImage = async () => {
     await ImagePicker.requestMediaLibraryPermissionsAsync()
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,24 +78,6 @@ const HeaderPerfil = ({
       dispatch(updateImgClub(file))
     }
   }
-
-  useEffect(() => {
-    console.log(
-      'params from HP: ',
-      name,
-      description,
-      button1,
-      button2,
-      setSelectComponents,
-      selectComponents,
-      club,
-      myPerfil,
-      position,
-      sport,
-      front,
-      avatar
-    )
-  }, [])
 
   return (
     <View>
