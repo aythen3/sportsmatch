@@ -67,13 +67,16 @@ export class CommentService {
     return comments;
   }
 
-  public async findAllByPost(postId: string): Promise<CommentEntity[]> {
+  public async findAllByPost(
+    postId: string,
+    type: string
+  ): Promise<CommentEntity[]> {
     try {
       // Buscar todos los comentarios asociados al post especificado
       const comments = await this.commentRepository
         .createQueryBuilder('comment')
         .leftJoinAndSelect('comment.author', 'author')
-        .leftJoinAndSelect('author.club', 'club')
+        .leftJoinAndSelect(`author.${type}`, `${type}`)
         .where('comment.post = :postId', { postId })
         .getMany();
       // Si no se encuentran comentarios, lanzar una excepción
