@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Border,
   Color,
@@ -22,13 +22,20 @@ import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { createClub } from '../../redux/actions/club'
+import { Context } from '../../context/Context'
 
 const StepsClub = () => {
   const navigation = useNavigation()
-  const [provisoryProfileImage, setProvisoryProfileImage] = useState()
-  const [provisoryCoverImage, setProvisoryCoverImage] = useState()
-  const [profileImage, setProfileImage] = useState()
-  const [coverImage, setCoverImage] = useState()
+  const {
+    coverImage,
+    setCoverImage,
+    profileImage,
+    setProfileImage,
+    provisoryProfileImage,
+    setProvisoryProfileImage,
+    provisoryCoverImage,
+    setProvisoryCoverImage
+  } = useContext(Context)
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)

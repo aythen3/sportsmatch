@@ -21,6 +21,7 @@ export const getAllClubs = createAsyncThunk('getAll/club', async () => {
 })
 
 export const getClub = createAsyncThunk('get/club', async (id) => {
+  console.log('on getClub action!')
   try {
     const { data } = await axiosInstance.get(`club/${id}`)
     return data
@@ -51,22 +52,24 @@ export const getClub = createAsyncThunk('get/club', async (id) => {
 // })
 export const updateClubProfileImage = createAsyncThunk(
   'updateClubProfileImage/club',
-  async (id) => {
+  async ({ id, body }) => {
     try {
-      const { data } = await axiosInstance.patch(`club/img/${id}`)
+      const { data } = await axiosInstance.patch(`club/img/${id}`, body)
       return data
     } catch (error) {
       throw new Error(error)
     }
-
   }
 )
 
+// img_perfil
+// img_front
+
 export const updateClubCoverImage = createAsyncThunk(
   'updateClubCoverImage/club',
-  async (id) => {
+  async ({ id, body }) => {
     try {
-      const { data } = await axiosInstance.patch(`club/img/${id}`)
+      const { data } = await axiosInstance.patch(`club/img/${id}`, body)
       return data
     } catch (error) {
       throw new Error(error)

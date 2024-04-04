@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
@@ -15,6 +15,10 @@ const PerfilFeedVisualitzaciJug = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
+
+  useEffect(() => {
+    console.log('club from PerfilFeedVisualitzaciJug: ', club)
+  }, [])
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>

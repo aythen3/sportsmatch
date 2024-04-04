@@ -57,6 +57,7 @@ import DetallesUsuario from './screens/EditarPerfil/DetallesUsuario'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
+import { ContextProvider } from './context/Context'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -75,278 +76,280 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        <NavigationContainer>
-          {hideSplashScreen ? (
-            <Stack.Navigator
-              screenOptions={({ route }) => ({
-                headerShown: false,
-                footerShown: setIsFooterShow(
-                  route.name !== 'PantallaInicio' &&
-                    route.name !== 'LoginSwitch' &&
-                    route.name !== 'IniciarSesin' &&
-                    route.name !== 'stepsClub' &&
-                    route.name !== 'Registrarse' &&
-                    route.name !== 'Paso1' &&
-                    route.name !== 'Paso3Profesional' &&
-                    route.name !== 'Paso4Jugador' &&
-                    route.name !== 'Paso4Profesional'
-                )
-              })}
-            >
-              <Stack.Screen
-                name="PantallaInicio"
-                component={PantallaInicio}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="LoginSwitch"
-                component={LoginSwitch}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso2Jugador"
-                component={Paso2Jugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EditarSkills"
-                component={EditarSkills}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="DetallesUsuario"
-                component={DetallesUsuario}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="stepsClub"
-                component={StepsClub}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="stepsJugador"
-                component={StepsJugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso4Jugador"
-                component={Paso4Jugador}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso3Profesional"
-                component={Paso3Profesional}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso4Profesional"
-                component={Paso4Profesional}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EscogerDeporte1"
-                component={EscogerDeporte1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EscogerDeporte2"
-                component={EscogerDeporte2}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ExplorarPersonaClubsFiltr"
-                component={ExplorarPersonaClubsFiltr}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MonetizarOfertaPRO"
-                component={MonetizarOfertaPRO}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="BuscarOfertasDeportvas"
-                component={BuscarOfertasDeportvas}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TodasLasOfertas"
-                component={TodasLasOfertas}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MisOfertas"
-                component={MisOfertas}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMatchs"
-                component={TusMatchs}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMatchsDetalle"
-                component={TusMatchsDetalle}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMensajes"
-                component={TusMensajes}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusNotificaciones"
-                component={TusNotificaciones}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="NotificacinMatch"
-                component={NotificacinMatch}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EditarPerfil"
-                component={EditarPerfil}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CerrarSesin"
-                component={CerrarSesin}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EliminarCuenta"
-                component={EliminarCuenta}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MiSuscripcin"
-                component={MiSuscripcin}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PerfilDatosPropioClub"
-                component={PerfilDatosPropioClub}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MiPerfil"
-                component={MiPerfil}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PerfilFeedVisualitzaciJug"
-                component={PerfilFeedVisualitzaciJug}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ChatAbierto"
-                component={ChatAbierto}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SiguiendoUsuarios"
-                component={SiguiendoUsuarios}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SiguiendoJugadores"
-                component={SiguiendoJugadores}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="OfertasEmitidas"
-                component={OfertasEmitidas}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="InscritosAMisOfertas"
-                component={InscritosAMisOfertas}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ExplorarClubs"
-                component={ExplorarClubs}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ExplorarClubsConFiltroPrem"
-                component={ExplorarClubsConFiltroPrem}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="IniciarSesin"
-                component={IniciarSesin}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Registrarse"
-                component={Registrarse}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMatchsDetalle1"
-                component={TusMatchsDetalle1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusMensajes1"
-                component={TusMensajes1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="TusNotificaciones1"
-                component={TusNotificaciones1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="EliminarOferta"
-                component={EliminarOferta}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ChatAbierto1"
-                component={ChatAbierto1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CrearHighlight"
-                component={CrearHighlight}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SeleccionarImagen"
-                component={SeleccionarImagen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ConfigurarAnuncio"
-                component={ConfigurarAnuncio}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Premium"
-                component={Premium}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso1"
-                component={Paso1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CorreoElectrnico"
-                component={CorreoElectrnico}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Contrasea"
-                component={Contrasea}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
-          ) : null}
-          {isFooterShow && <NavBarInferior />}
-        </NavigationContainer>
+        <ContextProvider>
+          <NavigationContainer>
+            {hideSplashScreen ? (
+              <Stack.Navigator
+                screenOptions={({ route }) => ({
+                  headerShown: false,
+                  footerShown: setIsFooterShow(
+                    route.name !== 'PantallaInicio' &&
+                      route.name !== 'LoginSwitch' &&
+                      route.name !== 'IniciarSesin' &&
+                      route.name !== 'stepsClub' &&
+                      route.name !== 'Registrarse' &&
+                      route.name !== 'Paso1' &&
+                      route.name !== 'Paso3Profesional' &&
+                      route.name !== 'Paso4Jugador' &&
+                      route.name !== 'Paso4Profesional'
+                  )
+                })}
+              >
+                <Stack.Screen
+                  name="PantallaInicio"
+                  component={PantallaInicio}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="LoginSwitch"
+                  component={LoginSwitch}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Paso2Jugador"
+                  component={Paso2Jugador}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EditarSkills"
+                  component={EditarSkills}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="DetallesUsuario"
+                  component={DetallesUsuario}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="stepsClub"
+                  component={StepsClub}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="stepsJugador"
+                  component={StepsJugador}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Paso4Jugador"
+                  component={Paso4Jugador}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Paso3Profesional"
+                  component={Paso3Profesional}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Paso4Profesional"
+                  component={Paso4Profesional}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EscogerDeporte1"
+                  component={EscogerDeporte1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EscogerDeporte2"
+                  component={EscogerDeporte2}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ExplorarPersonaClubsFiltr"
+                  component={ExplorarPersonaClubsFiltr}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="MonetizarOfertaPRO"
+                  component={MonetizarOfertaPRO}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="BuscarOfertasDeportvas"
+                  component={BuscarOfertasDeportvas}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TodasLasOfertas"
+                  component={TodasLasOfertas}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="MisOfertas"
+                  component={MisOfertas}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusMatchs"
+                  component={TusMatchs}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusMatchsDetalle"
+                  component={TusMatchsDetalle}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusMensajes"
+                  component={TusMensajes}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusNotificaciones"
+                  component={TusNotificaciones}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="NotificacinMatch"
+                  component={NotificacinMatch}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EditarPerfil"
+                  component={EditarPerfil}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CerrarSesin"
+                  component={CerrarSesin}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EliminarCuenta"
+                  component={EliminarCuenta}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="MiSuscripcin"
+                  component={MiSuscripcin}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="PerfilDatosPropioClub"
+                  component={PerfilDatosPropioClub}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="MiPerfil"
+                  component={MiPerfil}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="PerfilFeedVisualitzaciJug"
+                  component={PerfilFeedVisualitzaciJug}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ChatAbierto"
+                  component={ChatAbierto}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SiguiendoUsuarios"
+                  component={SiguiendoUsuarios}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SiguiendoJugadores"
+                  component={SiguiendoJugadores}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="OfertasEmitidas"
+                  component={OfertasEmitidas}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="InscritosAMisOfertas"
+                  component={InscritosAMisOfertas}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ExplorarClubs"
+                  component={ExplorarClubs}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ExplorarClubsConFiltroPrem"
+                  component={ExplorarClubsConFiltroPrem}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="IniciarSesin"
+                  component={IniciarSesin}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Registrarse"
+                  component={Registrarse}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusMatchsDetalle1"
+                  component={TusMatchsDetalle1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusMensajes1"
+                  component={TusMensajes1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="TusNotificaciones1"
+                  component={TusNotificaciones1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="EliminarOferta"
+                  component={EliminarOferta}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ChatAbierto1"
+                  component={ChatAbierto1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CrearHighlight"
+                  component={CrearHighlight}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SeleccionarImagen"
+                  component={SeleccionarImagen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ConfigurarAnuncio"
+                  component={ConfigurarAnuncio}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Premium"
+                  component={Premium}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Paso1"
+                  component={Paso1}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CorreoElectrnico"
+                  component={CorreoElectrnico}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Contrasea"
+                  component={Contrasea}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            ) : null}
+            {isFooterShow && <NavBarInferior />}
+          </NavigationContainer>
+        </ContextProvider>
       </Provider>
     </>
   )
