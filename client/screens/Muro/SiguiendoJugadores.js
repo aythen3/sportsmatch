@@ -29,16 +29,16 @@ const SiguiendoJugadores = () => {
         {sortedPosts.map((publication, i) => (
           <Carousel
             key={i}
-            name={user.user.club.name}
-            description={publication.description}
-            imgPerfil={user.user.club.imgPerfil}
-            image={publication.image}
-            club={publication.club === user.user.type}
-            likes={publication.likes}
+            name={user?.user?.club?.name}
+            description={publication?.description}
+            imgPerfil={user?.user?.club?.imgPerfil}
+            image={publication?.image}
+            club={publication?.club === user?.user?.type}
+            likes={publication?.likes}
             // comments={publication.comments}
             index={i}
-            id={publication.id}
-            userId={user.user.id}
+            id={publication?.id}
+            userId={user?.user?.id}
           />
         ))}
       </ScrollView>

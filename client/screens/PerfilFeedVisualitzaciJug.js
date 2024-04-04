@@ -12,20 +12,23 @@ import ImagesRender from '../components/ImagesRender'
 const PerfilFeedVisualitzaciJug = () => {
   const navigation = useNavigation()
   const router = useRoute()
-  const { club, name, description, image, imgPerfil } = router.params
+  const { isSportman } = useSelector((state) => state.users)
+  const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
       <ScrollView>
         <HeaderPerfil
-          button1={'Seguir'}
-          button2={'Mensaje'}
-          name={name}
-          description={description}
+          name={isSportman ? '' : club?.name}
+          sport={'Baloncesto'}
+          position={isSportman ? 'Pivot' : ''}
+          description={isSportman ? '' : club?.description}
+          myPerfil={true}
           setSelectComponents={setSelectComponents}
           selectComponents={selectComponents}
-          club={club}
+          front={club?.img_front}
+          avatar={club?.img_perfil}
         />
 
         {selectComponents === 'perfil' && (

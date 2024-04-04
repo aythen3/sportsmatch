@@ -26,19 +26,15 @@ const PerfilDatosPropioClub = () => {
       <ScrollView>
         <View>
           <HeaderPerfil
-            name={isSportman ? 'Cristian Perez' : club.name}
+            name={isSportman ? '' : club?.name}
             sport={'Baloncesto'}
             position={isSportman ? 'Pivot' : ''}
-            description={
-              isSportman
-                ? 'Jugando Al Unio Esportiva desde 2011'
-                : club.description
-            }
+            description={isSportman ? '' : club?.description}
             myPerfil={true}
             setSelectComponents={setSelectComponents}
             selectComponents={selectComponents}
-            // front={club.img_front}
-            // avatar={club.img_perfil}
+            front={club?.img_front}
+            avatar={club?.img_perfil}
           />
 
           {selectComponents === 'perfil' && isSportman && (
@@ -56,13 +52,13 @@ const PerfilDatosPropioClub = () => {
           {!isSportman && (
             <View>
               <PlayingFieldPerfilClub
-                fieldName={club.field}
-                city={club.city}
-                country={club.country}
+                fieldName={club?.field}
+                city={club?.city}
+                country={club?.country}
               />
               <MoreDetailsAboutMe
                 title="Descripcion del club"
-                description={club.description}
+                description={club?.description}
               />
             </View>
           )}

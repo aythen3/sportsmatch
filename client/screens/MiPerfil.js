@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -13,9 +13,12 @@ import FeedSVG from '../components/svg/FeedSVG'
 import StatsSVG from '../components/svg/StatsSVG'
 import Feed from '../components/Feed'
 import FeedStats from '../components/FeedStats'
+import { useDispatch } from 'react-redux'
+import { updateUserData } from '../redux/actions/users'
 
 const MiPerfil = () => {
   const navigation = useNavigation()
+
   const [selectedTab, setSelectedTab] = useState('Feed')
 
   const renderContent = () => {
@@ -45,7 +48,7 @@ const MiPerfil = () => {
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>Jordi Espelt</Text>
                 <Text style={styles.textTypo}>Pívot</Text>
-                <Text style={styles.textTypo}>Baloncesto</Text>
+                <Text style={styles.textTypo}>asddasasd</Text>
               </View>
               <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>
                 Jugando al Unió Esportíva de Mataró desde el 2021

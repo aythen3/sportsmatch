@@ -52,8 +52,10 @@ const Registrarse = () => {
   }
 
   const submit = () => {
+    console.log('on submit')
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
       if (valuesUser.password === confirmPassword) {
+        console.log('valuesUser: ', valuesUser)
         dispatch(create(valuesUser))
         navigation.navigate('IniciarSesin')
       } else {
@@ -173,14 +175,14 @@ const Registrarse = () => {
                 </View>
               </View>
             </View>
-            <View style={styles.botonRegistrate}>
-              <View style={styles.loremPosition}>
-                <View style={[styles.loremIpsum, styles.loremPosition]}>
-                  <View style={styles.loremIpsum1}>
-                    <Text style={styles.aceptar} onPress={submit}>
-                      Regístrate
-                    </Text>
-                  </View>
+          </View>
+          <View style={styles.botonRegistrate}>
+            <View style={styles.loremPosition}>
+              <View style={[styles.loremIpsum, styles.loremPosition]}>
+                <View style={styles.loremIpsum1}>
+                  <Text style={styles.aceptar} onPress={submit}>
+                    Regístrate
+                  </Text>
                 </View>
               </View>
             </View>

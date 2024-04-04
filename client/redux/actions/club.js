@@ -29,23 +29,58 @@ export const getClub = createAsyncThunk('get/club', async (id) => {
   }
 })
 
-export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
-  try {
-    console.log('actionfile', file)
-    const { data } = await axiosInstance.post(
-      // 'https://api-sportsmatch.ay-cloud.com/api/img-manager',
-      'img-manager',
-      file,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-    console.log('actiondata', data)
-    return data
-  } catch (error) {
-    console.log('actionerror', error)
-    throw new Error(error)
+// export const updateImgClub = createAsyncThunk('upImages/club', async (file) => {
+//   try {
+//     console.log('actionfile', file)
+//     const { data } = await axiosInstance.post(
+//       // 'https://api-sportsmatch.ay-cloud.com/api/img-manager',
+//       'img-manager',
+//       file,
+//       {
+//         headers: {
+//           'Content-Type': 'multipart/form-data'
+//         }
+//       }
+//     )
+//     console.log('actiondata', data)
+//     return data
+//   } catch (error) {
+//     console.log('actionerror', error)
+//     throw new Error(error)
+//   }
+// })
+export const updateClubProfileImage = createAsyncThunk(
+  'updateClubProfileImage/club',
+  async (id) => {
+    try {
+      const { data } = await axiosInstance.patch(`club/img/${id}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
   }
-})
+)
+
+export const updateClubCoverImage = createAsyncThunk(
+  'updateClubCoverImage/club',
+  async (id) => {
+    try {
+      const { data } = await axiosInstance.patch(`club/img/${id}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
+export const deleteClubById = createAsyncThunk(
+  'deleteClubById/club',
+  async (id) => {
+    try {
+      const { data } = await axiosInstance.delete(`club/${id}`)
+      return id
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)

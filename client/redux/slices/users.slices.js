@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { create, login, getAllUsers } from '../actions/users'
+import {
+  create,
+  login,
+  getAllUsers,
+  getUserData,
+  updateUserData,
+  deleteUserById
+} from '../actions/users'
 
 const usersSlices = createSlice({
   name: 'users',
@@ -76,6 +83,47 @@ const usersSlices = createSlice({
         state.allUsers = action.payload
       })
       .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      // Get user data
+      .addCase(getUserData.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getUserData.fulfilled, (state, action) => {
+        state.loading = false
+        state.user = action.payload
+      })
+      .addCase(getUserData.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      // Update user data (CHECK BACKEND)
+      .addCase(updateUserData.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.loading = false
+        state.user = action.payload
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      // Delete specific user (CHECK BACKEND)
+      .addCase(deleteUserById.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(deleteUserById.fulfilled, (state, action) => {
+        state.loading = false
+        state.allUsers = [...state.allUsers].filter(
+          (user) => user.id !== action.payload
+        )
+      })
+      .addCase(deleteUserById.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
       })
