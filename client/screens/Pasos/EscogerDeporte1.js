@@ -54,7 +54,7 @@ const EscogerDeporte1 = ({
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('dataUrl from profile:', data.url)
+            // console.log('dataUrl from profile:', data.url)
             setProfileImage(data.url)
           })
       } else {
@@ -75,7 +75,7 @@ const EscogerDeporte1 = ({
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('dataUrl from cover:', data.url)
+            // console.log('dataUrl from cover:', data.url)
             setCoverImage(data.url)
           })
       }

@@ -22,7 +22,7 @@ export class SportmanService {
     const { sportmanData, userId } = createSportmanDto;
     try {
       const user = await this.userService.findOne(userId);
-      if (user) {
+      if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: `User with id: ${userId} not found`

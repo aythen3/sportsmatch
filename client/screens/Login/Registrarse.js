@@ -55,10 +55,8 @@ const Registrarse = () => {
   }
 
   const submit = () => {
-    console.log('on submit')
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
       if (valuesUser.password === confirmPassword) {
-        console.log('valuesUser: ', valuesUser)
         dispatch(create(valuesUser))
         navigation.navigate('IniciarSesin', { isPlayer })
       } else {

@@ -11,7 +11,7 @@ const SiguiendoJugadores = () => {
 
   const { allPosts, post } = useSelector((state) => state.post)
   const { user } = useSelector((state) => state.users)
-  console.log('user', user)
+
   useEffect(() => {
     dispatch(getAllPosts())
     dispatch(getAllLikes())
