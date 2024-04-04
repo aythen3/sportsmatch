@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -26,8 +27,8 @@ export class CommentController {
   }
 
   @Get('post/:id')
-  findAllByPost(@Param('id') id: string) {
-    return this.commentService.findAllByPost(id);
+  findAllByPost(@Param('id') id: string, @Query('type') type: string) {
+    return this.commentService.findAllByPost(id, type);
   }
 
   @Get('user/:id')
