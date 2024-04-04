@@ -133,7 +133,7 @@ const SkillSeleccion = ({
             style={styles.textInput}
             placeholder="Escribe sólo si estas en algún club"
             placeholderTextColor={'#999'}
-            value={sportmanValues.actualClub}
+            value={sportmanValues?.actualClub}
             onChangeText={(value) => descriptionSportMan('actualClub', value)}
           />
         </View>
@@ -147,7 +147,7 @@ const SkillSeleccion = ({
               tu personalidad en el campo..."
             placeholderTextColor={'#999'}
             multiline={true}
-            value={sportmanValues.description}
+            value={sportmanValues?.description}
             onChangeText={(value) => descriptionSportMan('description', value)}
           />
         </View>

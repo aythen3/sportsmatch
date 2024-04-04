@@ -41,11 +41,11 @@ function Carousel({
         style={styles.topContainer}
         onPress={() =>
           navigation.navigate('PerfilFeedVisualitzaciJug', {
-            club: club,
-            name: name,
-            description: description,
-            image: image,
-            imgPerfil: imgPerfil
+            club: club || '',
+            name: name || '',
+            description: description || '',
+            image: image || '',
+            imgPerfil: imgPerfil || ''
           })
         }
       >

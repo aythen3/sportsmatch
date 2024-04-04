@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Border,
   Color,
@@ -25,7 +25,10 @@ import { createClub } from '../../redux/actions/club'
 
 const StepsClub = () => {
   const navigation = useNavigation()
-
+  const [provisoryProfileImage, setProvisoryProfileImage] = useState()
+  const [provisoryCoverImage, setProvisoryCoverImage] = useState()
+  const [profileImage, setProfileImage] = useState()
+  const [coverImage, setCoverImage] = useState()
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -41,28 +44,22 @@ const StepsClub = () => {
     capacity: '',
     description: ''
   })
+  useEffect(() => {
+    console.log('stepsIndex changed: ', stepsIndex)
+  }, [stepsIndex])
 
-  const hadleIndex = (value) => {
-    if (value === 'add') {
-      if (stepsIndex <= 2) {
-        if (clubValues.name) {
-          const data = {
-            userId: user.user.id,
-            clubData: clubValues,
-            sportId: sport.id
-          }
-          dispatch(createClub(data))
-        }
-        setstepsIndex((prev) => prev + 1)
-      } else {
-        navigation.navigate('SiguiendoJugadores')
+  const handleRegister = async () => {
+    if (profileImage && coverImage) {
+      clubValues.img_perfil = profileImage
+      clubValues.img_front = coverImage
+      const data = {
+        userId: user.user.id,
+        clubData: clubValues,
+        sportId: sport.id
       }
-    } else {
-      if (stepsIndex >= 2) {
-        setstepsIndex((prev) => prev - 1)
-      } else {
-        navigation.goBack()
-      }
+      console.log('data to createClub: ', data)
+      await dispatch(createClub(data))
+      navigation.navigate('SiguiendoJugadores')
     }
   }
 
@@ -78,7 +75,18 @@ const StepsClub = () => {
           />
         )
       case 3:
-        return <EscogerDeporte1 />
+        return (
+          <EscogerDeporte1
+            profileImage={profileImage}
+            setProfileImage={setProfileImage}
+            coverImage={coverImage}
+            setCoverImage={setCoverImage}
+            provisoryCoverImage={provisoryCoverImage}
+            setProvisoryCoverImage={setProvisoryCoverImage}
+            provisoryProfileImage={provisoryProfileImage}
+            setProvisoryProfileImage={setProvisoryProfileImage}
+          />
+        )
       default:
         return null
     }
@@ -98,7 +106,13 @@ const StepsClub = () => {
             contentFit="cover"
             source={require('../../assets/coolicon.png')}
           />
-          <Pressable onPress={() => hadleIndex('minus')}>
+          <Pressable
+            onPress={() =>
+              stepsIndex === 1
+                ? navigation.goBack()
+                : setstepsIndex((prev) => prev - 1)
+            }
+          >
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </Pressable>
         </View>
@@ -114,7 +128,11 @@ const StepsClub = () => {
 
         <TouchableOpacity
           style={styles.touchable}
-          onPress={() => hadleIndex('add')}
+          onPress={() => {
+            stepsIndex === 3
+              ? handleRegister()
+              : setstepsIndex((prev) => prev + 1)
+          }}
         >
           <Text style={styles.nextText}>Siguiente</Text>
         </TouchableOpacity>

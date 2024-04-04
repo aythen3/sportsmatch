@@ -1,67 +1,97 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  SectionList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { FontSize, Color, FontFamily, Border } from '../../GlobalStyles'
 import * as ImagePicker from 'expo-image-picker'
 import { useDispatch } from 'react-redux'
 import { updateImgClub } from '../../redux/actions/club'
 
-const EscogerDeporte1 = () => {
+const EscogerDeporte1 = ({
+  coverImage,
+  setCoverImage,
+  profileImage,
+  setProfileImage,
+  provisoryProfileImage,
+  setProvisoryProfileImage,
+  provisoryCoverImage,
+  setProvisoryCoverImage
+}) => {
   const dispatch = useDispatch()
 
-  const [image1, setImage1] = useState(null)
-
-  const pickImage = async () => {
+  const pickImage = async (source) => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1
     })
 
     if (!result.canceled) {
-      setImage1(result.assets[0])
+      source === 'profile'
+        ? setProvisoryProfileImage(result.assets[0].uri)
+        : setProvisoryCoverImage(result.assets[0].uri)
+      if (source === 'profile') {
+        const profileImageData = {
+          uri: result.assets[0].uri,
+          type: 'image/jpg',
+          name: result.assets[0].uri?.split('/')?.reverse()[0]?.split('.')[0]
+        }
 
-      const fileName = `${result.assets[0].uri.split('.').pop()}`
+        const profileImageForm = new FormData()
+        profileImageForm.append('file', profileImageData)
+        profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
+        profileImageForm.append('cloud_name', 'dnewfuuv0')
 
-      const file = new FormData()
+        await fetch('https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload', {
+          method: 'post',
+          body: profileImageForm
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log('dataUrl from profile:', data.url)
+            setProfileImage(data.url)
+          })
+      } else {
+        const coverImageData = {
+          uri: result.assets[0].uri,
+          type: 'image/jpg',
+          name: result.assets[0].uri?.split('/')?.reverse()[0]?.split('.')[0]
+        }
 
-      // Adjuntar la imagen al FormData
-      file.append('file', {
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: fileName
-      })
+        const coverImageForm = new FormData()
+        coverImageForm.append('file', coverImageData)
+        coverImageForm.append('upload_preset', 'cfbb_profile_pictures')
+        coverImageForm.append('cloud_name', 'dnewfuuv0')
 
-      // Llama a la acción para subir la imagen al servidor
-      dispatch(updateImgClub(file))
+        await fetch('https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload', {
+          method: 'post',
+          body: coverImageForm
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log('dataUrl from cover:', data.url)
+            setCoverImage(data.url)
+          })
+      }
     }
   }
-
-  // const files = new FormData()
-  // files.append('files', image1)
-  // files.append('files', image2)
-
-  // const id = club.id
-
-  // const submit = () => {
-  //   const body = {
-  //     files,
-  //     id
-  //   }
-  //   dispatch(updateImgClub(body))
-  // }
 
   return (
     <View style={styles.escogerDeporte}>
       <Image
         style={styles.perfilImage}
         contentFit="cover"
-        source={{ uri: image1?.uri }}
+        source={{ uri: provisoryProfileImage }}
       />
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
-        onPress={() => pickImage(setImage1)}
+        onPress={() => pickImage('profile')}
       >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
           Subir foto de perfil
@@ -69,37 +99,20 @@ const EscogerDeporte1 = () => {
       </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
 
-      <View style={styles.portadaBg} />
+      <Image
+        style={styles.portadaBg}
+        contentFit="cover"
+        source={{ uri: provisoryCoverImage }}
+      />
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
-        onPress={() => pickImage()}
+        onPress={() => pickImage('cover')}
       >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
           Subir foto de portada
         </Text>
       </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
-
-      {/* <View style={[styles.escogerDeporteChild2, styles.rectangleViewLayout]} /> */}
-      {/* <Text style={[styles.subirFotoDe1, styles.subirTypo]}>
-        Subir foto de perfil
-      </Text>
-      <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
-      <Text style={[styles.max1mbJpeg1, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
-      <View style={styles.escogerDeporteChild3} />
-      <Image
-        style={styles.lineIcon}
-        contentFit="cover"
-        source={require('../assets/line-9.png')}
-      /> */}
-      <TouchableOpacity /* onPress={submit} */>
-        <Text
-          style={styles.sendText}
-          // onPress={uploadImages}
-        >
-          Enviar Imagen
-        </Text>
-      </TouchableOpacity>
     </View>
   )
 }

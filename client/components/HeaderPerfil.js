@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
@@ -12,6 +12,7 @@ import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
 import { updateImgClub } from '../redux/actions/club'
+import { updateUserData } from '../redux/actions/users'
 
 const HeaderPerfil = ({
   name,
@@ -33,7 +34,6 @@ const HeaderPerfil = ({
   const { isSportman } = useSelector((state) => state.users)
 
   const [image1, setImage1] = useState(null)
-
   const pickImage = async () => {
     await ImagePicker.requestMediaLibraryPermissionsAsync()
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,13 +61,31 @@ const HeaderPerfil = ({
     }
   }
 
+  useEffect(() => {
+    console.log(
+      'params from HP: ',
+      name,
+      description,
+      button1,
+      button2,
+      setSelectComponents,
+      selectComponents,
+      club,
+      myPerfil,
+      position,
+      sport,
+      front,
+      avatar
+    )
+  }, [])
+
   return (
     <View>
       <TouchableOpacity onPress={() => pickImage(setImage1)}>
         <Image
           style={styles.imgFront}
           contentFit="cover"
-          source={{ uri: image1?.uri }}
+          source={{ uri: front }}
         />
       </TouchableOpacity>
       <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
@@ -76,13 +94,13 @@ const HeaderPerfil = ({
             <Image
               style={styles.perfilFeedVisualitzaciCluItem}
               contentFit="cover"
-              source={require('../assets/group-5161.png')}
+              source={{ uri: avatar }}
             />
           ) : (
             <Image
               style={styles.perfilFeedVisualitzaciCluItem}
               contentFit="cover"
-              source={require('../assets/avatar1.png')}
+              source={{ uri: avatar }}
             />
           )}
         </View>
@@ -329,7 +347,9 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: Color.bALONCESTO,
     backgroundColor: Color.bALONCESTO,
-    height: 108,
+    width: 110,
+    overflow: 'hidden',
+    height: 110,
     borderRadius: 50
   },
   leftButton: {
