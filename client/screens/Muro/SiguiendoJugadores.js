@@ -44,7 +44,6 @@ const SiguiendoJugadores = () => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   )
 
-  console.log('sortedPosts', sortedPosts)
   return (
     <View style={styles.siguiendoJugadores}>
       <ScrollView>

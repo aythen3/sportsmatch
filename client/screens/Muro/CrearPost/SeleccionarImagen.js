@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import React, { useState, useEffect, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -7,16 +6,16 @@ import {
   Text,
   ScrollView,
   Pressable,
-  TouchableOpacity,
-  SafeAreaView
+  TouchableOpacity
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import * as MediaLibrary from 'expo-media-library'
 import { Context } from '../../../context/Context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SeleccionarImagen = () => {
-  const { pickImage } = useContext(Context)
+  const { pickImage, libraryImage } = useContext(Context)
 
   const navigation = useNavigation()
 
@@ -72,7 +71,7 @@ const SeleccionarImagen = () => {
           <TouchableOpacity
             onPress={() => {
               pickImage('a', selectedImage.uri)
-              navigation.navigate('CrearHighlight', { image: selectedImage })
+              navigation.navigate('CrearHighlight', { image: libraryImage })
             }}
           >
             <Text style={styles.siguiente}>Siguiente</Text>
@@ -91,11 +90,11 @@ const SeleccionarImagen = () => {
 
 const styles = StyleSheet.create({
   crearHighlight: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   container: {
-    marginTop: 60,
+    marginTop: 20,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row'

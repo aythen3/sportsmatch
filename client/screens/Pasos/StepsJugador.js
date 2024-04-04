@@ -16,38 +16,13 @@ import {
   Padding
 } from '../../GlobalStyles'
 import Lines from '../../components/Lines'
-// import EscogerDeporte2 from './EscogerDeporte2'
-import EscogerDeporte1 from './EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
-import Paso1 from './Paso1'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
 
 const StepsJugador = () => {
   const navigation = useNavigation()
 
   const [stepsIndex, setstepsIndex] = useState(1)
-
-  //   const hadleIndex = (value) => {
-  //     if (isSportman) {
-  //       navigation.navigate('Paso1')
-  //     } else {
-  //       if (value === 'add') {
-  //         if (stepsIndex <= 2) {
-  //           setstepsIndex((prev) => prev + 1)
-  //         } else {
-  //           navigation.navigate('SiguiendoJugadores')
-  //           // navigation.navigate('ExplorarClubs')
-  //         }
-  //       } else {
-  //         if (stepsIndex >= 2) {
-  //           setstepsIndex((prev) => prev - 1)
-  //         } else {
-  //           navigation.goBack()
-  //         }
-  //       }
-  //     }
-  //   }
 
   const hadleIndex = (value) => {
     if (value === 'add') {

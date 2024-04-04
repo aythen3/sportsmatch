@@ -18,7 +18,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
-  const { postComments, error } = useSelector((state) => state.comments)
+  const { postComments } = useSelector((state) => state.comments)
 
   const [comment, setComment] = useState('')
 
@@ -26,11 +26,11 @@ const CommentSection = ({ visible, closeModal, postId }) => {
     dispatch(getCommentByPost(postId))
   }, [postId])
 
-  const sortedComments = postComments.slice().sort((a, b) => {
-    const dateA = new Date(a.createdAt)
-    const dateB = new Date(b.createdAt)
-    return dateB - dateA
-  })
+  // const sortedComments = postComments?.slice().sort((a, b) => {
+  //   const dateA = new Date(a.createdAt)
+  //   const dateB = new Date(b.createdAt)
+  //   return dateB - dateA
+  // })
 
   return (
     <Modal
@@ -47,8 +47,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
             <View style={styles.line} />
           </Pressable>
 
-          {!error ? (
-            sortedComments.map((comment) => (
+          {postComments?.length > 0 ? (
+            postComments?.map((comment) => (
               <View key={comment.id} style={styles.commentContainer}>
                 <View style={styles.authorContainer}>
                   {/* <Image /> */}
