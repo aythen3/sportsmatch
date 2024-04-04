@@ -51,9 +51,6 @@ const StepsClub = () => {
     capacity: '',
     description: ''
   })
-  useEffect(() => {
-    console.log('stepsIndex changed: ', stepsIndex)
-  }, [stepsIndex])
 
   const handleRegister = async () => {
     if (profileImage && coverImage) {
@@ -64,7 +61,6 @@ const StepsClub = () => {
         clubData: clubValues,
         sportId: sport.id
       }
-      console.log('data to createClub: ', data)
       await dispatch(createClub(data))
       navigation.navigate('SiguiendoJugadores')
     }

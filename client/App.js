@@ -1,5 +1,5 @@
 const Stack = createNativeStackNavigator()
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import LoginSwitch from './screens/Login/LoginSwitch'
@@ -58,6 +58,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { ContextProvider } from './context/Context'
+import ClubDetails from './screens/EditarPerfil/ClubDetails'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -72,6 +73,8 @@ const App = () => {
   if (!fontsLoaded && !error) {
     return null
   }
+
+  // ======================= CHAT RELATED STUFF ============================
 
   return (
     <>
@@ -113,6 +116,11 @@ const App = () => {
                 <Stack.Screen
                   name="EditarSkills"
                   component={EditarSkills}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ClubDetails"
+                  component={ClubDetails}
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen

@@ -28,8 +28,7 @@ const CrearHighlight = () => {
 
   const handleSubmit = () => {
     const data = {
-      image:
-        'https://res.cloudinary.com/dx415kqzk/image/upload/v1711466151/basketball-mira-kireeva-1.png',
+      image: image,
       description: description,
       authorType: user.user.type,
       author: user.user.id
@@ -56,7 +55,7 @@ const CrearHighlight = () => {
       <Image
         style={styles.codeBlockPersonaEnCanch}
         contentFit="cover"
-        source={{ uri: image?.uri }}
+        source={{ uri: image }}
       />
       <View style={styles.descriptionContainer}>
         <TextInput
