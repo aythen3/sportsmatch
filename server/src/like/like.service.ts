@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { UpdateLikeDto } from './dto/update-like.dto';
 import { LikeEntity } from './entities/like.entity';
 import { Repository } from 'typeorm';

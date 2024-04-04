@@ -70,10 +70,12 @@ export class CommentService {
   public async findAllByPost(postId: string): Promise<CommentEntity[]> {
     try {
       // Buscar todos los comentarios asociados al post especificado
-      const comments = await this.commentRepository.find({
-        where: { post: { id: postId } },
-        relations: ['author'] // Incluir información del autor del comentario
-      });
+      const comments = await this.commentRepository
+        .createQueryBuilder('comment')
+        .leftJoinAndSelect('comment.author', 'author')
+        .leftJoinAndSelect('author.club', 'club')
+        .where('comment.post = :postId', { postId })
+        .getMany();
       // Si no se encuentran comentarios, lanzar una excepción
       if (!comments || comments.length === 0) {
         throw new ErrorManager({
