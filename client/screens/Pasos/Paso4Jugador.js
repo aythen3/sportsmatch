@@ -1,7 +1,12 @@
 import React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native'
 import {
   Color,
   FontFamily,
@@ -10,10 +15,19 @@ import {
   Padding
 } from '../../GlobalStyles'
 import DetallesSeleccion from '../../components/DetallesSeleccion'
-import Lines from '../../components/Lines'
 
 const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
-  const navigation = useNavigation()
+  const {
+    pickImage,
+    coverImage,
+    setCoverImage,
+    profileImage,
+    setProfileImage,
+    provisoryProfileImage,
+    setProvisoryProfileImage,
+    provisoryCoverImage,
+    setProvisoryCoverImage
+  } = useContext(Context)
 
   return (
     <ScrollView style={styles.paso6}>
@@ -23,13 +37,20 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             <Image
               style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../../assets/circulo.png')}
+              source={
+                provisoryProfileImage
+                  ? { uri: provisoryProfileImage }
+                  : require('../../assets/circulo.png')
+              }
             />
-            <View style={styles.botonSubirImagen}>
+            <TouchableOpacity
+              style={styles.botonSubirImagen}
+              onPress={() => pickImage('profile')}
+            >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de perfil
               </Text>
-            </View>
+            </TouchableOpacity>
 
             <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
               Max 1mb, jpeg
@@ -37,11 +58,14 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
           </View>
           <View style={styles.rectangulobotonpesoMaximo}>
             <View style={styles.rectangulo} />
-            <View style={styles.botonSubirImagen}>
+            <TouchableOpacity
+              style={styles.botonSubirImagen}
+              onPress={() => pickImage('cover')}
+            >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de portada
               </Text>
-            </View>
+            </TouchableOpacity>
             <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
               Max 1mb, jpeg
             </Text>

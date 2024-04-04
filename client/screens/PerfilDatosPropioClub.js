@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import HeaderPerfil from '../components/HeaderPerfil'
@@ -18,6 +18,10 @@ const PerfilDatosPropioClub = () => {
   const { club } = useSelector((state) => state.clubs)
 
   const [selectComponents, setSelectComponents] = useState('perfil')
+
+  useEffect(() => {
+    console.log('club from PerfilDatosPropioClub: ', club)
+  }, [])
 
   return (
     <View style={styles.perfilDatosPropioClub}>
