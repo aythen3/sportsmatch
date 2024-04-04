@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -11,8 +11,11 @@ import {
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import * as MediaLibrary from 'expo-media-library'
+import { Context } from '../../../context/Context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SeleccionarImagen = () => {
+  const { pickImage } = useContext(Context)
   const navigation = useNavigation()
 
   const [imagenes, setImagenes] = useState([])
@@ -40,7 +43,7 @@ const SeleccionarImagen = () => {
 
   const renderizarImagenes = () => {
     return (
-      <View style={styles.galleryContainer}>
+      <SafeAreaView style={styles.galleryContainer}>
         {imagenes.map((imagen, index) => (
           <TouchableOpacity
             key={index}
@@ -49,7 +52,7 @@ const SeleccionarImagen = () => {
             <Image source={{ uri: imagen.uri }} style={styles.gallery} />
           </TouchableOpacity>
         ))}
-      </View>
+      </SafeAreaView>
     )
   }
 
@@ -64,9 +67,10 @@ const SeleccionarImagen = () => {
           />
         </Pressable>
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
+            pickImage('a', selectedImage.uri)
             navigation.navigate('CrearHighlight', { image: selectedImage })
-          }
+          }}
         >
           <Text style={styles.siguiente}>Siguiente</Text>
         </TouchableOpacity>
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   container: {
-    marginTop: 20,
+    marginTop: 60,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row'
