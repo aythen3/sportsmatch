@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -6,7 +7,8 @@ import {
   Text,
   ScrollView,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -14,13 +16,7 @@ import * as MediaLibrary from 'expo-media-library'
 import { Context } from '../../../context/Context'
 
 const SeleccionarImagen = () => {
-  const {
-    pickImage,
-    coverImage,
-    profileImage,
-    provisoryProfileImage,
-    provisoryCoverImage
-  } = useContext(Context)
+  const { pickImage } = useContext(Context)
 
   const navigation = useNavigation()
 
@@ -45,7 +41,6 @@ const SeleccionarImagen = () => {
 
   const handleSeleccionarImagen = (imagen) => {
     setSelectedImage(imagen)
-    console.log(imagen.uri)
   }
 
   const renderizarImagenes = () => {
@@ -64,30 +59,33 @@ const SeleccionarImagen = () => {
   }
 
   return (
-    <ScrollView style={styles.crearHighlight}>
-      <View style={styles.container}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.crearHighlightChild}
-            contentFit="cover"
-            source={require('../../../assets/group-565.png')}
-          />
-        </Pressable>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('CrearHighlight', { image: selectedImage })
-          }
-        >
-          <Text style={styles.siguiente}>Siguiente</Text>
-        </TouchableOpacity>
-      </View>
-      <Image
-        style={styles.codeBlockPersonaEnCanch}
-        contentFit="cover"
-        source={{ uri: selectedImage?.uri }}
-      />
-      {renderizarImagenes()}
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView style={styles.crearHighlight}>
+        <View style={styles.container}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.crearHighlightChild}
+              contentFit="cover"
+              source={require('../../../assets/group-565.png')}
+            />
+          </Pressable>
+          <TouchableOpacity
+            onPress={() => {
+              pickImage('a', selectedImage.uri)
+              navigation.navigate('CrearHighlight', { image: selectedImage })
+            }}
+          >
+            <Text style={styles.siguiente}>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          style={styles.codeBlockPersonaEnCanch}
+          contentFit="cover"
+          source={{ uri: selectedImage?.uri }}
+        />
+        {renderizarImagenes()}
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   container: {
-    marginTop: 20,
+    marginTop: 60,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row'

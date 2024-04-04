@@ -10,6 +10,7 @@ import {
   Border
 } from '../../GlobalStyles'
 import DetallesSeleccion from '../../components/DetallesSeleccion'
+import { useSelector } from 'react-redux'
 
 const EditarSkills = () => {
   const navigation = useNavigation()
@@ -29,7 +30,7 @@ const EditarSkills = () => {
           style={styles.editarPerfil1}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.editarPerfil2}>Detalles del usuario</Text>
+          <Text style={styles.editarPerfil2}>{}</Text>
         </Pressable>
       </View>
 

@@ -3,9 +3,11 @@ import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontSize, FontFamily, Color, Border } from '../../GlobalStyles'
+import { useSelector } from 'react-redux'
 
 const EditarPerfil = () => {
   const navigation = useNavigation()
+  const { user } = useSelector((state) => state.users)
 
   return (
     <View style={styles.editarPerfil}>
@@ -30,18 +32,26 @@ const EditarPerfil = () => {
         </View>
 
         <View style={styles.defineTusSkillsParent}>
-          <Text
-            style={[styles.defineTusSkills, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('EditarSkills')}
-          >
-            Define tus skills
-          </Text>
-          <View style={styles.frameChild} />
+          {user.user.type !== 'club' && (
+            <Text
+              style={[styles.defineTusSkills, styles.eliminarCuentaTypo]}
+              onPress={() => navigation.navigate('EditarSkills')}
+            >
+              Define tus skills
+            </Text>
+          )}
+          <View style={user.user.type !== 'club' && styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('DetallesUsuario')}
+            onPress={() =>
+              navigation.navigate(
+                user.user.type === 'club' ? 'ClubDetails' : 'DetallesUsuario'
+              )
+            }
           >
-            Detalles del usuario
+            {user.user.type === 'club'
+              ? 'Detalles del club'
+              : 'Detalles del usuario'}
           </Text>
           <View style={styles.frameChild} />
           <Text
