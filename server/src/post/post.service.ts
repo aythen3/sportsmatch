@@ -1,9 +1,10 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { Repository } from 'typeorm';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class PostService {
@@ -12,60 +13,114 @@ export class PostService {
     private readonly postRepository: Repository<PostEntity>
   ) {}
   public async create(createPostDto: CreatePostDto) {
-    const post = await this.postRepository.save(createPostDto);
-    // Si no se pudo crear el nuevo position, lanzar una excepción
-    if (!post) {
-      throw new HttpException('The new post is not created', 501);
+    try {
+      const post = await this.postRepository.save(createPostDto);
+      // Si no se pudo crear el nuevo position, lanzar una excepción
+      if (!post) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'The new post is not created'
+        });
+      }
+      // Devolver el nuevo position del usuario
+      return post;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    // Devolver el nuevo position del usuario
-    return post;
   }
 
   public async findAll(query: any) {
-    return this.postRepository.find({ where: { isDelete: false, ...query } });
+    try {
+      const posts: PostEntity[] = await this.postRepository.find({
+        where: { isDelete: false, ...query }
+      });
+      if (posts.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Posts not found'
+        });
+      }
+      return posts;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   public async findOne(id: string) {
-    const post = await this.postRepository
-      .createQueryBuilder('post')
-      .where({ id })
-      .getOne();
+    try {
+      const post = await this.postRepository
+        .createQueryBuilder('post')
+        .where({ id })
+        .getOne();
 
-    if (!post) {
-      throw new HttpException(`Post id ${id} not found`, 404);
+      if (!post) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Post id: ${id} not found`
+        });
+      }
+      return post;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    return post;
   }
 
   public async update(id: string, updatePostDto: UpdatePostDto) {
-    const post = await this.findOne(id);
-    if (!post) {
-      throw new HttpException(`Post con ID ${id} no encontrado`, 404);
-    }
-    for (const key in updatePostDto) {
-      post[key] = updatePostDto[key];
-    }
-    return await this.postRepository.save(post);
+    try {
+      const post = await this.findOne(id);
+      if (!post) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Post id: ${id} not found`
+        });
+      }
+      for (const key in updatePostDto) {
+        post[key] = updatePostDto[key];
+      }
+      return await this.postRepository.save(post);
+    } catch (error) {}
   }
 
   public async remove(id: string) {
-    await this.postRepository.update(id, { isDelete: true });
-    return await this.findOne(id);
-  }
-
-  public async updatePostLikeCount(id: string, increment: number) {
-    // Buscar el post
-    const post = await this.findOne(id);
-
-    // Actualizar el conteo de likes del post
-    if (post) {
-      post.likes += increment;
-      await this.postRepository.save(post);
+    try {
+      await this.postRepository.update(id, { isDelete: true });
+      const post = await this.findOne(id);
+      if (!post) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Post id: ${id} not found`
+        });
+      }
+      return post;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
+  public async updatePostLikeCount(id: string, increment: number) {
+    try {
+      const post = await this.findOne(id);
+      if (!post) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Post id: ${id} not found`
+        });
+      }
+      // Actualizar el conteo de likes del post
+      post.likes += increment;
+      await this.postRepository.save(post);
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+    // Buscar el post
+  }
+
   public async updatePostComentCount(post: PostEntity, increment: number) {
-    post.commentCount += increment;
-    await this.postRepository.save(post);
+    try {
+      post.commentCount += increment;
+      await this.postRepository.save(post);
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 }

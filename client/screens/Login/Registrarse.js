@@ -8,7 +8,7 @@ import {
   TextInput,
   Alert
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import {
   FontSize,
   Color,
@@ -23,9 +23,12 @@ import { create } from '../../redux/actions/users'
 const Registrarse = () => {
   const navigation = useNavigation()
 
+  const route = useRoute()
+
   const dispatch = useDispatch()
 
   const { isSportman } = useSelector((state) => state.users)
+  const { isPlayer } = route.params
 
   const emailInputRef = useRef(null)
   const passwordInputRef = useRef(null)
@@ -57,7 +60,7 @@ const Registrarse = () => {
       if (valuesUser.password === confirmPassword) {
         console.log('valuesUser: ', valuesUser)
         dispatch(create(valuesUser))
-        navigation.navigate('IniciarSesin')
+        navigation.navigate('IniciarSesin', { isPlayer })
       } else {
         Alert.alert('Las contraseñas no coinciden')
       }

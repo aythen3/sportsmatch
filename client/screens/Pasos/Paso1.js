@@ -18,8 +18,8 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import Lines from '../../components/Lines'
 import Paso3Profesional from './Paso3Profesional'
-import Paso3Jugador from './Paso3Jugador'
 import Paso4Jugador from './Paso4Jugador'
+import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSportman } from '../../redux/actions/sportman'
@@ -30,9 +30,8 @@ const Paso1 = () => {
   const dispatch = useDispatch()
 
   const { sport } = useSelector((state) => state.sports)
-  const { user, sportmanGender, birthdate, city } = useSelector(
-    (state) => state.users
-  )
+  const { user, sportmanGender, birthdate, city, category, position } =
+    useSelector((state) => state.users)
 
   const [selectedRole, setSelectedRole] = useState(null)
   const [sportman, setSportman] = useState(false)
@@ -45,9 +44,10 @@ const Paso1 = () => {
     birthdate: birthdate,
     city: city,
     actualClub: '',
-    description: ''
+    description: '',
+    category: category,
+    position: position
   })
-
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
     sport: sport,
@@ -56,6 +56,9 @@ const Paso1 = () => {
     actualClub: '',
     description: ''
   })
+  const [data, setData] = useState({})
+
+  console.log('data', data)
 
   useEffect(() => {
     setProfesionalValues((prevValues) => ({
@@ -71,9 +74,11 @@ const Paso1 = () => {
       gender: sportmanGender,
       sport: sport,
       birthdate: birthdate,
-      city: city
+      city: city,
+      position: position,
+      category: category
     }))
-  }, [sport, sportmanGender, birthdate, city])
+  }, [sport, sportmanGender, birthdate, city, position, category])
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role)
@@ -99,7 +104,6 @@ const Paso1 = () => {
             info: sportmanValues,
             club: null
           },
-
           userId: user.user.id
         }
         dispatch(createSportman(body))
@@ -107,7 +111,7 @@ const Paso1 = () => {
 
       if (stepsSportman === 1) {
         setStepsSportman(0)
-        // navigation.navigate('SiguiendoJugadores')
+        navigation.navigate('SiguiendoJugadores')
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
@@ -243,7 +247,7 @@ const Paso1 = () => {
             </View>
           )}
 
-          {sportman && stepsSportman === 0 && (
+          {sportman && stepsSportman === 1 && (
             <Paso4Jugador
               sportmanValues={sportmanValues}
               setSportmanValues={setSportmanValues}
@@ -255,8 +259,10 @@ const Paso1 = () => {
               setProfesionalValues={setProfesionalValues}
             />
           )}
-          {stepsSportman === 1 && <Paso3Jugador />}
-          {stepsProfesional === 1 && <Paso4Profesional />}
+          {sportman && stepsSportman === 0 && (
+            <SkillSeleccion setData={setData} data={data} />
+          )}
+          {profesional && stepsProfesional === 1 && <Paso4Profesional />}
 
           <View style={styles.botonesRoles}>
             <Pressable
@@ -296,7 +302,7 @@ const styles = StyleSheet.create({
   },
   botonLayout1: {
     height: 70,
-    width: 360
+    width: 330
   },
   imagenDeFondo: {
     position: 'absolute',
@@ -364,7 +370,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl
   },
   contenido: {
-    marginTop: 20,
+    marginTop: 60,
     height: '20%',
     alignItems: 'center'
   },

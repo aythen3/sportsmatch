@@ -45,7 +45,6 @@ import CrearHighlight from './screens/Muro/CrearPost/CrearHighlight'
 import SeleccionarImagen from './screens/Muro/CrearPost/SeleccionarImagen'
 import ConfigurarAnuncio from './screens/Ofertas/ConfigurarAnuncio'
 import Premium from './screens/Premium'
-import Paso3Jugador from './screens/Pasos/Paso3Jugador'
 import Paso1 from './screens/Pasos/Paso1'
 import CorreoElectrnico from './screens/EditarPerfil/CorreoElectrnico'
 import Contrasea from './screens/EditarPerfil/Contrasea'
@@ -89,7 +88,6 @@ const App = () => {
                     route.name !== 'Registrarse' &&
                     route.name !== 'Paso1' &&
                     route.name !== 'Paso3Profesional' &&
-                    route.name !== 'Paso3Jugador' &&
                     route.name !== 'Paso4Jugador' &&
                     route.name !== 'Paso4Profesional'
                 )
@@ -328,11 +326,6 @@ const App = () => {
               <Stack.Screen
                 name="Premium"
                 component={Premium}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Paso3Jugador"
-                component={Paso3Jugador}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

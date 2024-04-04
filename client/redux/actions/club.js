@@ -58,6 +58,7 @@ export const updateClubProfileImage = createAsyncThunk(
     } catch (error) {
       throw new Error(error)
     }
+
   }
 )
 

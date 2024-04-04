@@ -16,6 +16,8 @@ const usersSlices = createSlice({
     birthdate: '',
     city: '',
     profesionalType: '',
+    category: '',
+    position: '',
     allUsers: [],
     error: false,
     loading: false,
@@ -52,6 +54,12 @@ const usersSlices = createSlice({
     },
     setProfesionalType: (state, action) => {
       state.profesionalType = action.payload
+    },
+    setCategory: (state, action) => {
+      state.category = action.payload
+    },
+    setPosition: (state, action) => {
+      state.position = action.payload
     },
     clearUser: (state) => {
       state.user = null
@@ -136,6 +144,8 @@ export const {
   setBirthdate,
   setCity,
   setProfesionalType,
+  setCategory,
+  setPosition,
   clearUser
 } = usersSlices.actions
 

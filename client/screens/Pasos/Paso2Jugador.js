@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import {
-  Color,
-  FontFamily,
-  FontSize,
-  Border,
-  Padding
-} from '../../GlobalStyles'
 import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
