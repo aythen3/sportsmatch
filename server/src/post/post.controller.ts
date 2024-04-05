@@ -5,8 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
-  Query
+  Delete
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -22,8 +21,8 @@ export class PostController {
   }
 
   @Get()
-  public async findAll(@Query() query: any) {
-    return this.postService.findAll(query);
+  public async findAll() {
+    return this.postService.findAll();
   }
 
   @Get(':id')

@@ -14,4 +14,7 @@ export class MessageEntity extends BaseEntity {
 
   @Column()
   message: string; // El contenido del mensaje
+
+  @Column()
+  isReaded: boolean; // El contenido del mensaje
 }
