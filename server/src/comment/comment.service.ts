@@ -73,7 +73,6 @@ export class CommentService {
       const comments = await this.commentRepository
         .createQueryBuilder('comment')
         .leftJoinAndSelect('comment.author', 'author')
-        //.leftJoinAndSelect('author.sportman', 'sportman')
         .where('comment.post = :postId', { postId })
         .getMany();
       // Si no se encuentran comentarios, lanzar una excepción
@@ -83,19 +82,21 @@ export class CommentService {
           message: 'comments not found'
         });
       }
-      comments.map(async (coment) => {
-        return await this.commentRepository
+      const newList: CommentEntity[] = [];
+      for (const comment of comments) {
+        const newComment = await this.commentRepository
           .createQueryBuilder('comment')
           .leftJoinAndSelect('comment.author', 'author')
           .leftJoinAndSelect(
-            `author.${coment.author.type}`,
-            `${coment.author.type}`
+            `author.${comment.author.type}`,
+            `${comment.author.type}`
           )
-          .where('comment.post = :postId', { postId })
-          .getMany();
-      });
+          .where('comment.id = :commentId', { commentId: comment.id })
+          .getOne();
+        newList.push(newComment);
+      }
       // Devolver los comentarios encontrados
-      return comments;
+      return newList;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
