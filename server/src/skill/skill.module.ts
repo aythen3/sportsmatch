@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SportmanService } from 'src/sportman/sportman.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { UserService } from 'src/user/user.service';
     ])
   ],
   controllers: [SkillController],
-  providers: [SkillService, SportmanService, UserService]
+  providers: [SkillService, SportmanService, UserService, SendMailService]
 })
 export class SkillModule {}
