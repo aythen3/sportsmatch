@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, StyleSheet, Pressable, View, TextInput } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -13,7 +13,11 @@ const TusNotificaciones1 = () => {
   const { notifications, messages, userMessages } = useSelector(
     (state) => state.notifications
   )
-  const { user } = useSelector((state) => state.users)
+  const { user, allUsers } = useSelector((state) => state.users)
+
+  useEffect(() => {
+    console.log('allusers', allUsers)
+  }, [])
 
   const [selectedComponent, setSelectedComponent] = useState('notifications')
 
@@ -103,7 +107,7 @@ const TusNotificaciones1 = () => {
             />
           </View>
         )}
-        <View style={{ marginTop: 30 }}>
+        {/* <View style={{ marginTop: 30 }}>
           {selectedComponent === 'messages' && user.user.type === 'club'
             ? messages.map((message) => (
                 <MessagesChat
@@ -126,6 +130,19 @@ const TusNotificaciones1 = () => {
                   confirmation={message.confirmation}
                 />
               ))}
+        </View> */}
+        <View style={{ marginTop: 30 }}>
+          {allUsers.map((user) => (
+            <MessagesChat
+              key={user.id}
+              name={user.nickname}
+              selectedUserId={user.id}
+              // message={user.message}
+              // send={user.send}
+              // read={user.read}
+              // confirmation={user.confirmation}
+            />
+          ))}
         </View>
       </View>
     </View>

@@ -1,21 +1,39 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChat } from '../redux/slices/notificacions.slices'
 import { useNavigation } from '@react-navigation/core'
+import { getChatHistory } from '../redux/actions/chats'
 
-const MessagesChat = ({ name, message, read, send, confirmation }) => {
+const MessagesChat = ({
+  name,
+  message,
+  read,
+  send,
+  confirmation,
+  selectedUserId
+}) => {
   const dispatch = useDispatch()
-
+  const { allMessages } = useSelector((state) => state.chats)
   const navigation = useNavigation()
 
-  const { message: messageRedux } = useSelector((state) => state.notifications)
+  // const { message: messageRedux } = useSelector((state) => state.notifications)
   const { user } = useSelector((state) => state.users)
 
-  const cuteMessage =
-    message.length >= 35 ? message.slice(0, 35).concat('...') : message
+  useEffect(() => {
+    console.log('user.user.id', user.user.id)
+    console.log('selectedUserId: ', selectedUserId)
+    dispatch(getChatHistory({ sender: user.user.id, receiver: selectedUserId }))
+  }, [])
+
+  useEffect(() => {
+    console.log('allMessages: ', allMessages)
+  }, [allMessages])
+
+  // const cuteMessage =
+  //   message.length >= 35 ? message.slice(0, 35).concat('...') : message
 
   return (
     <>
@@ -35,9 +53,7 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
             />
             <View style={{ alignSelf: 'flex-start' }}>
               <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-                {cuteMessage}
-              </Text>
+              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{}</Text>
             </View>
           </View>
         ) : (
@@ -51,14 +67,12 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
             </View>
             <View style={{ alignSelf: 'flex-start' }}>
               <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-                {cuteMessage}
-              </Text>
+              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{}</Text>
             </View>
           </View>
         )}
 
-        <View style={styles.textView}>
+        {/* <View style={styles.textView}>
           <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
 
           {confirmation && (
@@ -73,7 +87,7 @@ const MessagesChat = ({ name, message, read, send, confirmation }) => {
               </View>
             </View>
           )}
-        </View>
+        </View> */}
       </Pressable>
       <View style={styles.line} />
     </>

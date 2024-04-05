@@ -59,6 +59,7 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { ContextProvider } from './context/Context'
 import ClubDetails from './screens/EditarPerfil/ClubDetails'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -69,6 +70,16 @@ const App = () => {
     'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
     'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
   })
+
+  const getUserAuth = () => {
+    AsyncStorage.getItem('userToken').then((value) => {
+      console.log('value: ', value)
+    })
+  }
+
+  useEffect(() => {
+    getUserAuth()
+  }, [])
 
   if (!fontsLoaded && !error) {
     return null
