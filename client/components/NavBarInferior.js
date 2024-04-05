@@ -14,7 +14,6 @@ const NavBarInferior = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
 
-  console.log(user.user.sportman.info)
   const [activeIcon, setActiveIcon] = useState(null)
 
   const handleIconPress = (iconName) => {
@@ -45,7 +44,9 @@ const NavBarInferior = () => {
     }
     setActiveIcon('profile')
   }
-
+  // if (user?.user) {
+  //   return null
+  // }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -81,8 +82,8 @@ const NavBarInferior = () => {
           contentFit="cover"
           source={{
             uri: user.user.sportman
-              ? user.user.sportman.info.img_front
-              : user?.user?.club?.img_front
+              ? user?.user?.sportman?.info?.img_perfil
+              : user?.user?.club?.img_perfil
           }}
         />
       </TouchableOpacity>

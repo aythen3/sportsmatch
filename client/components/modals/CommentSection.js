@@ -51,31 +51,28 @@ const CommentSection = ({ visible, closeModal, postId }) => {
             <View style={styles.line} />
           </Pressable>
           {postComments?.length > 0 ? (
-            sortedComments?.map((comment) => {
-              console.log(comment) // Agregar console.log aquí
-              return (
-                <View key={comment.id} style={styles.commentContainer}>
-                  <View style={styles.authorContainer}>
-                    <Image
-                      contentFit="cover"
-                      source={
-                        comment.author.sportman
-                          ? comment.author?.sportman?.info?.img_perfil
-                          : comment.author?.club?.img_perfil
-                      }
-                      style={styles.authorImg}
-                    />
-                    <Text style={styles.authorText}>
-                      {comment.author.nickname}
-                    </Text>
-                    <Text style={styles.timeText}>
-                      {formatDateDifference(comment.createdAt)}
-                    </Text>
-                  </View>
-                  <Text style={styles.input}>{comment.content}</Text>
+            sortedComments?.map((comment) => (
+              <View key={comment.id} style={styles.commentContainer}>
+                <View style={styles.authorContainer}>
+                  <Image
+                    contentFit="cover"
+                    source={
+                      comment.author.sportman
+                        ? comment.author?.sportman?.info?.img_perfil
+                        : comment.author?.club?.img_perfil
+                    }
+                    style={styles.authorImg}
+                  />
+                  <Text style={styles.authorText}>
+                    {comment.author.nickname}
+                  </Text>
+                  <Text style={styles.timeText}>
+                    {formatDateDifference(comment.createdAt)}
+                  </Text>
                 </View>
-              )
-            })
+                <Text style={styles.input}>{comment.content}</Text>
+              </View>
+            ))
           ) : (
             <Text style={styles.input}>
               Aun no hay ningún comentario, ¡sé el primero!

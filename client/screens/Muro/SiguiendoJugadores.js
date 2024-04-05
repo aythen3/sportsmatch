@@ -11,8 +11,10 @@ import { Color } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
 import Carousel from '../../components/Carousel'
 import { getAllLikes, getAllPosts } from '../../redux/actions/post'
-import { getUserChild } from '../../redux/actions/users'
+import { getUserChild, getUserData } from '../../redux/actions/users'
 import { Context } from '../../context/Context'
+import { getSportman } from '../../redux/actions/sportman'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SiguiendoJugadores = () => {
   const dispatch = useDispatch()
@@ -22,12 +24,23 @@ const SiguiendoJugadores = () => {
   const { user } = useSelector((state) => state.users)
   const { comments } = useSelector((state) => state.comments)
 
+  // const getUserId = async () => {
+  //   const userId = await AsyncStorage.getItem('userId')
+  //   return userId
+  // }
+
+  // useEffect(() => {
+  //   const userId = getUserId()
+  //   dispatch(getUserData(userId))
+  // }, [])
+
   useEffect(() => {
     const data = {
       id: user?.user?.id,
       type: user?.user?.type
     }
     dispatch(getUserChild(data))
+    dispatch(getSportman(user?.user?.sportman?.id))
   }, [])
 
   useEffect(() => {
@@ -46,6 +59,13 @@ const SiguiendoJugadores = () => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   )
 
+  // if (user?.user?.id) {
+  //   return (
+  //     <View>
+  //       <Text>Loading</Text>
+  //     </View>
+  //   )
+  // }
   return (
     <View style={styles.siguiendoJugadores}>
       <ScrollView>
@@ -65,9 +85,13 @@ const SiguiendoJugadores = () => {
         {sortedPosts.map((publication, i) => (
           <Carousel
             key={i}
-            // name={userChild.nickname}
+            name={publication?.author.nickname}
             description={publication?.description}
-            // imgPerfil={userChild?.sportman?.info?.img_perfil}
+            imgPerfil={
+              publication.author.sportman
+                ? publication?.author?.sportman?.info?.img_perfil
+                : publication?.author?.club?.img_perfil
+            }
             image={publication?.image}
             club={publication?.club === user?.user?.type}
             likes={publication?.likes}

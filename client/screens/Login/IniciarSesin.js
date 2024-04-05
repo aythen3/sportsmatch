@@ -68,6 +68,7 @@ const IniciarSesin = () => {
       dispatch(login(valuesUser))
         .then(async (response) => {
           await AsyncStorage.setItem('userToken', response.payload.accesToken)
+          await AsyncStorage.setItem('userId', response.payload.user.id)
           dispatch(setClub(response))
         })
         .catch((error) => {

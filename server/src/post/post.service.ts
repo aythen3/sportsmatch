@@ -54,8 +54,8 @@ export class PostService {
           .where('post.id = :postId', { postId: post.id })
           .getOne();
         newList.push(newPost);
-        return newList;
       }
+      return newList;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
