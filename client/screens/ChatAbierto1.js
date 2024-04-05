@@ -1,21 +1,61 @@
-import React from 'react'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  TouchableOpacity
+} from 'react-native'
+import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Color, Padding, Border } from '../GlobalStyles'
 import Chat from '../components/Chat'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ThreePointsSVG from '../components/svg/ThreePointsSVG'
+import { useRoute } from '@react-navigation/native'
+import { emptyAllMessages, getChatHistory } from '../redux/actions/chats'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Context } from '../context/Context'
 
 const ChatAbierto1 = () => {
-  const { message } = useSelector((state) => state.notifications)
+  const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
+    useContext(Context)
+  const [message, setMessage] = useState()
+  const { allMessages } = useSelector((state) => state.chats)
+  const { user } = useSelector((state) => state.users)
+  const route = useRoute()
+  const dispatch = useDispatch()
   const navigation = useNavigation()
 
+  const handleSendMessage = () => {
+    sendMessage(message, user.user.id, route.params.receiverId)
+    setMessage()
+  }
+
+  useEffect(() => {
+    joinRoom(user.user.id, route.params.receiverId)
+    dispatch(
+      getChatHistory({
+        sender: user.user.id,
+        receiver: route.params.receiverId
+      })
+    )
+    return () => {
+      dispatch(emptyAllMessages())
+      leaveRoom(user.user.id, route.params.receiverId)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('allMessages changed: ', allMessages)
+  }, [allMessages])
+
   return (
-    <View style={styles.chatAbierto}>
+    <SafeAreaView style={styles.chatAbierto}>
       <View
         style={{
-          marginTop: 20,
           flexDirection: 'row',
           width: '100%',
           alignItems: 'center',
@@ -38,7 +78,7 @@ const ChatAbierto1 = () => {
             source={require('../assets/imagen6.png')}
           />
           <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
-            Unió Esportíva Mataró
+            {route.params.receiverName}
           </Text>
         </View>
 
@@ -47,17 +87,67 @@ const ChatAbierto1 = () => {
         </View>
       </View>
 
-      <View style={{ marginTop: 15 }}>
-        {message?.map((chat) => (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column-reverse',
+          paddingRight: 10,
+          paddingLeft: 10
+        }}
+      >
+        {allMessages?.map((chat) => (
           <Chat
+            hour={getTimeFromDate(chat.createdAt)}
             key={chat.id}
-            text={chat.text}
-            isMy={chat.isMy}
-            read={chat.read}
+            text={chat.message}
+            isMy={chat.senderId === user.user.id}
+            read={true}
           />
         ))}
       </View>
-    </View>
+      <View
+        style={{
+          height: 50,
+          margin: 10,
+          borderRadius: 50,
+          borderWidth: 2,
+          borderColor: '#fff'
+        }}
+      >
+        <TextInput
+          value={message}
+          onChangeText={setMessage}
+          placeholder="Escribe tu mensaje..."
+          placeholderTextColor="#fff"
+          style={{
+            flex: 1,
+            paddingLeft: 15,
+            fontSize: 16,
+            color: '#fff'
+          }}
+        />
+        <TouchableOpacity
+          disabled={message ? false : true}
+          onPress={handleSendMessage}
+          style={{
+            width: 25,
+            position: 'absolute',
+            right: 5,
+            top: 12,
+            right: 10
+          }}
+        >
+          <Image
+            source={contact}
+            style={{
+              tintColor: message ? '#fff' : '#cecece',
+              width: 22,
+              height: 22
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   )
 }
 

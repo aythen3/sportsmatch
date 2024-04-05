@@ -3,7 +3,7 @@ import React from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'expo-image'
 
-const Chat = ({ text, isMy, read }) => {
+const Chat = ({ text, isMy, read, hour }) => {
   return (
     <View
       style={{
@@ -37,7 +37,7 @@ const Chat = ({ text, isMy, read }) => {
             justifyContent: 'flex-end'
           }}
         >
-          10:33
+          {hour}
         </Text>
         {read && (
           <Image

@@ -4,21 +4,117 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { FontFamily } from '../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Context } from '../../context/Context'
+import { updateClubData } from '../../redux/actions/club'
 
 const ClubDetails = () => {
+  const dispatch = useDispatch()
+  const [clubName, setClubName] = useState()
+  const [city, setCity] = useState()
+  const [country, setCountry] = useState()
+  const [stadiumName, setStadiumName] = useState()
+  const [foundationDate, setFoundationDate] = useState()
+  const [capacity, setCapacity] = useState()
+  const [description, setDescription] = useState()
   const navigation = useNavigation()
-  const { pickImage, provisoryCoverImage, provisoryProfileImage } =
-    useContext(Context)
+  const {
+    pickImage,
+    profileImage,
+    coverImage,
+    setCoverImage,
+    setProfileImage,
+    provisoryCoverImage,
+    provisoryProfileImage
+  } = useContext(Context)
   const { club } = useSelector((state) => state.clubs)
-  console.log('club: ', club)
+
+  const inputs = [
+    {
+      title: 'Nombre del club',
+      type: 'text',
+      placeHolder: 'Nombre del club...',
+      state: clubName,
+      setState: setClubName
+    },
+    {
+      title: 'Población',
+      type: 'text',
+      placeHolder: 'Población...',
+      state: city,
+      setState: setCity
+    },
+    {
+      title: 'País',
+      type: 'text',
+      placeHolder: 'País...',
+      state: country,
+      setState: setCountry
+    },
+    {
+      title: 'Nombre del estadio, campo o pavellón',
+      type: 'text',
+      placeHolder: 'Nombre del estadio...',
+      state: stadiumName,
+      setState: setStadiumName
+    },
+    {
+      title: 'Año de fundación',
+      type: 'number',
+      placeHolder: 'Año de fundación...',
+      state: foundationDate,
+      setState: setFoundationDate
+    },
+    {
+      title: 'Aforo',
+      type: 'number',
+      placeHolder: 'Aforo...',
+      state: capacity,
+      setState: setCapacity
+    },
+    {
+      title: 'Describe tu club',
+      type: 'number',
+      placeHolder:
+        'Habla de aquello que sea más relevante de tu club. Campeonatos ganados, categorías, anécdotas, etc.',
+      state: description,
+      setState: setDescription,
+      textArea: true
+    }
+  ]
+
+  const handleUpdateClubData = () => {
+    const data = {
+      name: clubName,
+      city,
+      country,
+      capacity,
+      description,
+      field: stadiumName,
+      img_perfil: profileImage,
+      img_front: coverImage,
+      year: foundationDate
+    }
+    const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value
+      }
+      return acc
+    }, {})
+    console.log('updating club data...', filteredData)
+    dispatch(updateClubData({ id: club.id, body: filteredData }))
+    setProfileImage()
+    setCoverImage()
+    navigation.navigate('PerfilDatosPropioClub')
+  }
+
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
       <ScrollView style={styles.generalWrapper}>
@@ -78,6 +174,69 @@ const ClubDetails = () => {
             </TouchableOpacity>
             <Text style={styles.smallText}>Max 1mb, jpeg</Text>
           </View>
+          {/* =========================================================== */}
+          {/* ========================== INPUTS ========================= */}
+          {/* =========================================================== */}
+          <View style={{ gap: 20 }}>
+            {inputs.map((input, index) => (
+              <View style={{ gap: 5 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  {input.title}
+                </Text>
+                <TextInput
+                  multiline={input.textArea && true}
+                  numberOfLines={input.textArea && 4}
+                  value={input.state}
+                  onChangeText={input.setState}
+                  placeholder={input.placeHolder}
+                  keyboardType={input.type === 'text' ? 'default' : 'numeric'}
+                  placeholderTextColor="#999999"
+                  style={{
+                    flex: 1,
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    textAlignVertical: input.textArea && 'top',
+                    borderRadius: input.textArea ? 10 : 50,
+                    paddingTop: input.textArea && 10,
+                    paddingLeft: 15,
+                    height: input.textArea ? 190 : 40,
+                    fontSize: 15,
+                    color: '#fff'
+                  }}
+                />
+              </View>
+            ))}
+          </View>
+          {/* =========================================================== */}
+          {/* ========================== INPUTS ========================= */}
+          {/* =========================================================== */}
+          <TouchableOpacity
+            style={{
+              height: 40,
+              marginTop: 10,
+              marginBottom: 10,
+              backgroundColor: '#fff',
+              borderRadius: 50,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            disabled={
+              !clubName &&
+              !city &&
+              !country &&
+              !capacity &&
+              !description &&
+              !stadiumName &&
+              !profileImage &&
+              !coverImage &&
+              !foundationDate
+            }
+            onPress={handleUpdateClubData}
+          >
+            <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
+              Aceptar
+            </Text>
+          </TouchableOpacity>
           {/* =========================================================== */}
           {/* =========================================================== */}
           {/* =========================================================== */}

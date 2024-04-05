@@ -1,11 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChat } from '../redux/slices/notificacions.slices'
 import { useNavigation } from '@react-navigation/core'
 import { getChatHistory } from '../redux/actions/chats'
+import axiosInstance from '../utils/apiBackend'
+import { Context } from '../context/Context'
 
 const MessagesChat = ({
   name,
@@ -15,22 +17,33 @@ const MessagesChat = ({
   confirmation,
   selectedUserId
 }) => {
-  const dispatch = useDispatch()
-  const { allMessages } = useSelector((state) => state.chats)
+  const { getTimeFromDate } = useContext(Context)
   const navigation = useNavigation()
-
-  // const { message: messageRedux } = useSelector((state) => state.notifications)
+  const [convMessages, setConvMessages] = useState()
+  const [lastMessage, setLastMessage] = useState()
   const { user } = useSelector((state) => state.users)
 
-  useEffect(() => {
-    console.log('user.user.id', user.user.id)
-    console.log('selectedUserId: ', selectedUserId)
-    dispatch(getChatHistory({ sender: user.user.id, receiver: selectedUserId }))
-  }, [])
+  const getChatMessages = async () => {
+    const { data } = await axiosInstance.get(
+      `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
+    )
+    setConvMessages(data)
+  }
 
   useEffect(() => {
-    console.log('allMessages: ', allMessages)
-  }, [allMessages])
+    getChatMessages()
+  }, [])
+
+  const getLastMessage = (messages) => {
+    const received = messages[0].senderId === user.user.id
+    setLastMessage({ message: messages[0], received })
+  }
+
+  useEffect(() => {
+    if (convMessages?.length) {
+      getLastMessage(convMessages)
+    }
+  }, [convMessages])
 
   // const cuteMessage =
   //   message.length >= 35 ? message.slice(0, 35).concat('...') : message
@@ -40,8 +53,10 @@ const MessagesChat = ({
       <Pressable
         style={styles.pressable}
         onPress={() => {
-          navigation.navigate('ChatAbierto1')
-          // dispatch(setChat({ message, name, send }))notifications
+          navigation.navigate('ChatAbierto1', {
+            receiverId: selectedUserId,
+            receiverName: name
+          })
         }}
       >
         {user.user.type === 'club' ? (
@@ -53,7 +68,13 @@ const MessagesChat = ({
             />
             <View style={{ alignSelf: 'flex-start' }}>
               <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{}</Text>
+              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
+                {lastMessage
+                  ? lastMessage?.message?.message?.length >= 35
+                    ? lastMessage?.message?.message.slice(0, 35).concat('...')
+                    : lastMessage?.message?.message
+                  : 'Inicia una conversacion!'}
+              </Text>
             </View>
           </View>
         ) : (
@@ -67,15 +88,23 @@ const MessagesChat = ({
             </View>
             <View style={{ alignSelf: 'flex-start' }}>
               <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{}</Text>
+              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
+                {lastMessage
+                  ? getTimeFromDate(lastMessage?.message?.createdAt)
+                  : ''}
+              </Text>
             </View>
           </View>
         )}
 
-        {/* <View style={styles.textView}>
-          <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
+        <View style={styles.textView}>
+          <Text style={[styles.ayer, styles.ayerTypo]}>
+            {lastMessage
+              ? getTimeFromDate(lastMessage?.message?.createdAt)
+              : ''}
+          </Text>
 
-          {confirmation && (
+          {/* {confirmation && (
             <View style={styles.matchContainer}>
               <Text style={[styles.match, styles.timeTypo]}>Match</Text>
               <View style={styles.match}>
@@ -86,8 +115,8 @@ const MessagesChat = ({
                 />
               </View>
             </View>
-          )}
-        </View> */}
+          )} */}
+        </View>
       </Pressable>
       <View style={styles.line} />
     </>

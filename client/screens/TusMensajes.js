@@ -9,9 +9,7 @@ const TusMensajes = () => {
   const { allUsers } = useSelector((state) => state.users)
   const navigation = useNavigation()
 
-  useEffect(() => {
-    console.log('allUsers', allUsers)
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <View style={styles.tusMensajes}>
