@@ -11,6 +11,7 @@ import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { ImgManagerService } from 'src/img-manager/img-manager.service';
   ],
   exports: [SportmanService],
   controllers: [SportmanController],
-  providers: [SportmanService, UserService, ImgManagerService]
+  providers: [SportmanService, UserService, ImgManagerService, SendMailService]
 })
 export class SportmanModule {}
