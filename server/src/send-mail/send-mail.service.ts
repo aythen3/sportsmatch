@@ -5,7 +5,6 @@ import { join } from 'path';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
-
 @Injectable()
 export class SendMailService {
   constructor(
@@ -15,7 +14,7 @@ export class SendMailService {
   ) {}
 
   async sendRegistrationNotification(email: string) {
-    const sportspotLogo = join(
+    /* const sportspotLogo = join(
       __dirname,
       '..',
       '..',
@@ -23,13 +22,11 @@ export class SendMailService {
       'client',
       'assets',
       'spotsport.png'
-    );
+    ); */
     const facebookIcon = join(
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'facebook_icon.png'
@@ -38,8 +35,6 @@ export class SendMailService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'twitter_icon.png'
@@ -48,8 +43,6 @@ export class SendMailService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'instagram_icon.png'
@@ -62,13 +55,18 @@ export class SendMailService {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 150vh;
-          margin: 0;      
+              
         }
         #container {
           text-align: center;
           padding: 20px;
           background-color: #fcece7;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        
         }
         img {
           width: 40%;
@@ -97,7 +95,7 @@ export class SendMailService {
           margin-left: 30%;
         }
         .iconImg {
-          width: 40px;
+          width: 25px;
         }
       </style>
     </head>
@@ -105,7 +103,7 @@ export class SendMailService {
     <div id="container">
     <img src="cid:sportSpot" />
         <p class='title'>¡Gracias por registrarte!</p>
-        <p>Ya estás listo para comenzar a participar en los mejores eventos deportivos en el área que desees</p>
+        <p>Ya estás listo para entrar al mundo de Sportmatch, bienvenido!!</p>
           <p class='social'>¡Síguenos en nuestras redes!</p>
           <div class='icons'>
             <img src="cid:facebookIcon" class='iconImg'/>
@@ -122,11 +120,11 @@ export class SendMailService {
       html: htmlTemplate, // Archivo de plantilla de correo electrónico
       context: {}, // Datos adicionales que pueden ser pasados a la plantilla
       attachments: [
-        {
+        /* {
           filename: 'sportspot.png',
           path: sportspotLogo,
-          cid: 'sportSpot'
-        },
+          cid: 'sportSpot'a
+        }, */
         {
           filename: 'facebook_icon.png',
           path: facebookIcon,
@@ -143,6 +141,4 @@ export class SendMailService {
 
     return 'Correo enviado exitosamente';
   }
-
-  
 }

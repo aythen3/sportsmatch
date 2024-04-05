@@ -8,6 +8,7 @@ import { CommentEntity } from './entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { PostService } from 'src/post/post.service';
 import { UserService } from 'src/user/user.service';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { UserService } from 'src/user/user.service';
     ])
   ],
   controllers: [CommentController],
-  providers: [CommentService, PostService, UserService]
+  providers: [CommentService, PostService, UserService, SendMailService]
 })
 export class CommentModule {}

@@ -33,21 +33,17 @@ export class ResetCodeService {
       await this.resetCodeRepository.remove(resetCodeOld);
     }
     // Define las rutas a los recursos gráficos
-    const sportspotLogo = join(
+    /*  const sportspotLogo = join(
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'spotsport.png'
-    );
+    ); */
     const facebookIcon = join(
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'facebook_icon.png'
@@ -56,8 +52,6 @@ export class ResetCodeService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'twitter_icon.png'
@@ -66,8 +60,6 @@ export class ResetCodeService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'instagram_icon.png'
@@ -91,7 +83,7 @@ export class ResetCodeService {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 150vh;
+          height: full;
           margin: 0;      
         }
         #container {
@@ -154,11 +146,11 @@ export class ResetCodeService {
       context: {}, // No se pasa ningún contexto adicional
       attachments: [
         // Adjunta los recursos gráficos
-        {
+        /* {
           filename: 'sportspot.png',
           path: sportspotLogo,
           cid: 'sportSpot'
-        },
+        }, */
         {
           filename: 'facebook_icon.png',
           path: facebookIcon,

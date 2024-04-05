@@ -18,6 +18,7 @@ import { SportService } from 'src/sport/sport.service';
 import { SportmanService } from 'src/sportman/sportman.service';
 import { NotificationService } from 'src/notification/notification.service';
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { NotificationEntity } from 'src/notification/entities/notification.entit
     UserService,
     SportService,
     SportmanService,
-    NotificationService
+    NotificationService,
+    SendMailService
   ]
 })
 export class OfferModule {}
