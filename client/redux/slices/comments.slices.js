@@ -38,6 +38,7 @@ const commentSlices = createSlice({
       })
       .addCase(getCommentByPost.rejected, (state) => {
         state.loading = false
+        state.postComments = []
         state.error = true
       })
   }

@@ -12,3 +12,25 @@ export const createSportman = createAsyncThunk(
     }
   }
 )
+
+export const getSportman = createAsyncThunk('get/sportman', async (id) => {
+  try {
+    const { data } = await axiosInstance.get(`sportman/${id}`)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
+export const updateSportman = createAsyncThunk(
+  'update/sportman',
+  async (body) => {
+    try {
+      const { id, newData } = body
+      const { data } = await axiosInstance.patch(`sportman/${id}`, newData)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)

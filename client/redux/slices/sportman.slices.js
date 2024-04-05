@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createSportman } from '../actions/sportman'
+import {
+  createSportman,
+  getSportman,
+  updateSportman
+} from '../actions/sportman'
 
 const sportmanSlices = createSlice({
   name: 'sportman',
@@ -10,7 +14,7 @@ const sportmanSlices = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Crear jugador
+      // Create player
       .addCase(createSportman.pending, (state) => {
         state.loading = true
         state.error = false
@@ -21,6 +25,34 @@ const sportmanSlices = createSlice({
         state.error = false
       })
       .addCase(createSportman.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Get player by user id
+      .addCase(getSportman.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getSportman.fulfilled, (state, action) => {
+        state.loading = false
+        state.sportman = action.payload
+        state.error = false
+      })
+      .addCase(getSportman.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Update player info
+      .addCase(updateSportman.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateSportman.fulfilled, (state, action) => {
+        state.loading = false
+        state.sportman = action.payload
+        state.error = false
+      })
+      .addCase(updateSportman.rejected, (state) => {
         state.loading = false
         state.error = true
       })

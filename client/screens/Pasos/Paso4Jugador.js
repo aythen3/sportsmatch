@@ -18,27 +18,11 @@ import DetallesSeleccion from '../../components/DetallesSeleccion'
 import { Context } from '../../context/Context'
 
 const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
-  const {
-    pickImage,
-    coverImage,
-    profileImage,
-    provisoryProfileImage,
-    provisoryCoverImage
-  } = useContext(Context)
+  const { pickImage, provisoryProfileImage, provisoryCoverImage } =
+    useContext(Context)
 
-  const handlePickImage = (type) => {
-    pickImage(type)
-    if (type === 'profile') {
-      setSportmanValues((prevState) => ({
-        ...prevState,
-        img_perfil: profileImage
-      }))
-    } else if (type === 'cover') {
-      setSportmanValues((prevState) => ({
-        ...prevState,
-        img_front: coverImage
-      }))
-    }
+  const handlePickImage = async (type) => {
+    await pickImage(type)
   }
 
   return (

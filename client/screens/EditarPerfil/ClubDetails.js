@@ -15,10 +15,12 @@ import { Context } from '../../context/Context'
 
 const ClubDetails = () => {
   const navigation = useNavigation()
+
   const { pickImage, provisoryCoverImage, provisoryProfileImage } =
     useContext(Context)
+
   const { club } = useSelector((state) => state.clubs)
-  console.log('club: ', club)
+
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
       <ScrollView style={styles.generalWrapper}>
