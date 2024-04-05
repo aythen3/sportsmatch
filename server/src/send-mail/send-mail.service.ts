@@ -55,13 +55,18 @@ export class SendMailService {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 150vh;
-          margin: 0;      
+              
         }
         #container {
           text-align: center;
           padding: 20px;
           background-color: #fcece7;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        
         }
         img {
           width: 40%;
@@ -90,7 +95,7 @@ export class SendMailService {
           margin-left: 30%;
         }
         .iconImg {
-          width: 40px;
+          width: 25px;
         }
       </style>
     </head>
