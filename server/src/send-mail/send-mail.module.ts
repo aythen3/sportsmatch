@@ -39,6 +39,7 @@ const configService = new ConfigService();
     }),
     TypeOrmModule.forFeature([ResetCodeEntity, UserEntity])
   ],
+  exports: [SendMailService],
   controllers: [SendMailController, ResetCodeController],
   providers: [SendMailService, ResetCodeService, UserService, AuthJwtService]
 })
