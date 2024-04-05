@@ -10,6 +10,8 @@ import { SportEntity } from 'src/sport/entities/sport.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
+import { SendMailService } from 'src/send-mail/send-mail.service';
+import { SendMailModule } from 'src/send-mail/send-mail.module';
 
 @Module({
   imports: [
@@ -22,8 +24,8 @@ import { LikeEntity } from 'src/like/entities/like.entity';
       LikeEntity
     ])
   ],
-  exports: [UserService, TypeOrmModule],
+  exports: [UserService],
   controllers: [UserController],
-  providers: [UserService, JwtService, AuthJwtService]
+  providers: [UserService, JwtService, AuthJwtService, SendMailService]
 })
 export class UserModule {}
