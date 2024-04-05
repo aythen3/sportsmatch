@@ -4,7 +4,8 @@ import axios from 'axios'
 
 export const getChatHistory = createAsyncThunk(
   'getChatHistory/chats',
-  async ({ limit, date, sender, receiver }) => {
+  async ({ sender, receiver, limit, date }) => {
+    console.log('on getChatHistory', sender, receiver)
     try {
       const { data } = await axiosInstance.get(
         `chat?limit=${limit}&createdAt=${date}&senderId=${sender}&receiverId=${receiver}`
