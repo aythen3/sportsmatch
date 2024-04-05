@@ -23,15 +23,19 @@ const CommentSection = ({ visible, closeModal, postId }) => {
   const [comment, setComment] = useState('')
 
   useEffect(() => {
-    dispatch(getCommentByPost(postId))
+    const body = {
+      id: postId,
+      type: user.user.type
+    }
+    dispatch(getCommentByPost(body))
   }, [postId])
 
-  // const sortedComments = postComments?.slice().sort((a, b) => {
-  //   const dateA = new Date(a.createdAt)
-  //   const dateB = new Date(b.createdAt)
-  //   return dateB - dateA
-  // })
-
+  const sortedComments = postComments?.slice().sort((a, b) => {
+    const dateA = new Date(a.createdAt)
+    const dateB = new Date(b.createdAt)
+    return dateB - dateA
+  })
+  // console.log(postComments)
   return (
     <Modal
       animationType="slide"
@@ -48,10 +52,14 @@ const CommentSection = ({ visible, closeModal, postId }) => {
           </Pressable>
 
           {postComments?.length > 0 ? (
-            postComments?.map((comment) => (
+            sortedComments?.map((comment) => (
               <View key={comment.id} style={styles.commentContainer}>
                 <View style={styles.authorContainer}>
-                  {/* <Image /> */}
+                  <Image
+                    contentFit="cover"
+                    source={comment.author?.sportman?.info?.img_perfil}
+                    style={styles.authorImg}
+                  />
                   <Text style={styles.authorText}>
                     {comment.author.nickname}
                   </Text>
@@ -70,14 +78,16 @@ const CommentSection = ({ visible, closeModal, postId }) => {
           )}
 
           <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Escribe un comentario..."
-              placeholderTextColor={Color.wHITESPORTSMATCH}
-              onChangeText={setComment}
-              value={comment}
-              multiline
-              style={styles.input}
-            />
+            <View style={styles.inputBox}>
+              <TextInput
+                placeholder="Escribe un comentario..."
+                placeholderTextColor={Color.wHITESPORTSMATCH}
+                onChangeText={setComment}
+                value={comment}
+                multiline
+                style={styles.input2}
+              />
+            </View>
             <TouchableOpacity
               onPress={() =>
                 handleSubmit({ comment, user, postId, dispatch, setComment })
@@ -110,10 +120,10 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     alignItems: 'center',
-    gap: 25
+    gap: 13
   },
   modalTop: {
-    height: 10,
+    height: 6,
     width: 50,
     borderRadius: 20,
     backgroundColor: Color.wHITESPORTSMATCH
@@ -128,7 +138,8 @@ const styles = StyleSheet.create({
   line: {
     height: 0.7,
     width: '113%',
-    backgroundColor: Color.wHITESPORTSMATCH
+    backgroundColor: Color.wHITESPORTSMATCH,
+    marginTop: 7
   },
   inputContainer: {
     width: '100%',
@@ -140,7 +151,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  inputBox: {
+    borderRadius: 15,
+    borderWidth: 0.5,
+    borderColor: Color.wHITESPORTSMATCH,
+    width: '80%',
+    height: '90%',
+    justifyContent: 'center',
+    paddingHorizontal: 10
+  },
   input: {
+    color: Color.wHITESPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: 15,
+    marginTop: 10
+  },
+  input2: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 15
@@ -149,15 +175,23 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 16,
-    fontWeight: '700'
+    fontWeight: '700',
+    marginLeft: 15
   },
   commentContainer: {
     padding: 5,
-    gap: 2
+    gap: 2,
+    top: 10
   },
   authorContainer: {
     flexDirection: 'row',
-    gap: 10
+    gap: 10,
+    alignItems: 'center'
+  },
+  authorImg: {
+    height: 28,
+    width: 28,
+    borderRadius: 15
   },
   authorText: {
     color: Color.wHITESPORTSMATCH,

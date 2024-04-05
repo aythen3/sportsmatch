@@ -15,10 +15,11 @@ import { getUserChild } from '../../redux/actions/users'
 import { Context } from '../../context/Context'
 
 const SiguiendoJugadores = () => {
-  const { joinRoom, sendMessage } = useContext(Context)
   const dispatch = useDispatch()
+
+  const { joinRoom, sendMessage } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
-  const { user, userChild } = useSelector((state) => state.users)
+  const { user } = useSelector((state) => state.users)
   const { comments } = useSelector((state) => state.comments)
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const SiguiendoJugadores = () => {
       'cf56082a-fe08-4d4d-97ef-750bc87cd07f'
     )
   }, [])
+
   const sortedPosts = [...allPosts].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   )
@@ -63,9 +65,9 @@ const SiguiendoJugadores = () => {
         {sortedPosts.map((publication, i) => (
           <Carousel
             key={i}
-            name={userChild.nickname}
+            // name={userChild.nickname}
             description={publication?.description}
-            imgPerfil={userChild?.sportman?.info?.img_perfil}
+            // imgPerfil={userChild?.sportman?.info?.img_perfil}
             image={publication?.image}
             club={publication?.club === user?.user?.type}
             likes={publication?.likes}

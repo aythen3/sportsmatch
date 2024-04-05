@@ -80,11 +80,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   crearHighlightChild: {
-    height: 20,
-    width: 20
+    height: 15,
+    width: 15
   },
   siguiente: {
     color: Color.wHITESPORTSMATCH,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   codeBlockPersonaEnCanch: {
-    marginVertical: 30,
+    marginBottom: 15,
     height: 300,
     width: '95%',
     left: '2.3%'
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     height: 70,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 20,
     borderColor: Color.wHITESPORTSMATCH,
     width: '98%',
     left: '1%'
@@ -111,7 +112,8 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t2TextSTANDARD_size,
     color: Color.wHITESPORTSMATCH,
     textAlign: 'left',
-    padding: 10
+    padding: 5,
+    left: 5
   }
 })
 

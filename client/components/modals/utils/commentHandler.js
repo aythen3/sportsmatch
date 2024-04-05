@@ -15,9 +15,13 @@ export const handleSubmit = async ({
     author: user.user.id,
     post: postId
   }
+  const body = {
+    id: postId,
+    type: user.user.type
+  }
   await dispatch(createComment(data))
   await setComment('')
-  await dispatch(getCommentByPost(postId))
+  await dispatch(getCommentByPost(body))
 }
 
 // Handler de tiempo del post

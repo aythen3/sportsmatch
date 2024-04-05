@@ -10,7 +10,7 @@ import MessagesChat from '../../components/MessagesChat'
 const TusNotificaciones1 = () => {
   const navigation = useNavigation()
 
-  const { user } = useSelector((state) => state.users)
+  // const { user } = useSelector((state) => state.users)
   const { notifications, messages, userMessages } = useSelector(
     (state) => state.notifications
   )
