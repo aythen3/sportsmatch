@@ -15,6 +15,7 @@ import { SportmanService } from '../sportman/sportman.service';
 import { UserService } from 'src/user/user.service';
 import { NotificationService } from 'src/notification/notification.service';
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
@@ -31,6 +32,12 @@ import { NotificationEntity } from 'src/notification/entities/notification.entit
     ])
   ],
   controllers: [MatchController],
-  providers: [MatchService, SportmanService, UserService, NotificationService]
+  providers: [
+    MatchService,
+    SportmanService,
+    UserService,
+    NotificationService,
+    SendMailService
+  ]
 })
 export class MatchModule {}
