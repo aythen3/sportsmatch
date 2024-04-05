@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Image, Pressable } from 'react-native'
+import React, { useState } from 'react'
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
 import HomeSVG from './svg/footerSVG/HomeSVG'
@@ -14,7 +14,28 @@ const NavBarInferior = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
 
-  console.log(isSportman)
+  console.log(user.user.sportman.info)
+  const [activeIcon, setActiveIcon] = useState(null)
+
+  const handleIconPress = (iconName) => {
+    setActiveIcon(iconName)
+    switch (iconName) {
+      case 'diary':
+        navigation.navigate('SiguiendoJugadores')
+        break
+      case 'lens':
+        navigation.navigate('ExplorarClubs')
+        break
+      case 'post':
+        navigation.navigate('SeleccionarImagen')
+        break
+      case 'message':
+        navigation.navigate('TusNotificaciones1')
+        break
+      default:
+        break
+    }
+  }
 
   const handleNavigation = () => {
     if (isSportman) {
@@ -22,40 +43,79 @@ const NavBarInferior = () => {
     } else {
       navigation.navigate('PerfilDatosPropioClub')
     }
+    setActiveIcon('profile')
   }
+
   return (
-    <View
-      style={{
-        backgroundColor: Color.bLACK2SPORTMATCH,
-        width: '100%',
-        height: 60,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20
-      }}
-    >
-      <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
-        <DiarySVG />
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('ExplorarClubs')}>
-        <LensSVG />
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('SeleccionarImagen')}>
-        <HomeSVG />
-      </Pressable>
-      <View>
-        <MessageSVG />
-      </View>
-      <Pressable onPress={handleNavigation}>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => handleIconPress('diary')}
+        style={activeIcon === 'diary' ? styles.selected : styles.deselected}
+      >
+        <DiarySVG isActive={activeIcon === 'diary'} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleIconPress('lens')}
+        style={activeIcon === 'lens' ? styles.selected : styles.deselected}
+      >
+        <LensSVG isActive={activeIcon === 'lens'} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleIconPress('post')}
+        style={styles.deselected}
+      >
+        <HomeSVG isActive={activeIcon === 'post'} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleIconPress('message')}
+        style={activeIcon === 'message' ? styles.selected : styles.deselected}
+      >
+        <MessageSVG isActive={activeIcon === 'message'} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleNavigation}
+        style={activeIcon === 'profile' ? styles.selected : styles.deselected}
+      >
         <Image
           style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           contentFit="cover"
-          source={{ uri: user?.user?.club?.img_front }}
+          source={{
+            uri: user.user.sportman
+              ? user.user.sportman.info.img_front
+              : user?.user?.club?.img_front
+          }}
         />
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }
+
+export const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Color.bLACK2SPORTMATCH,
+    // width: '100%',
+    height: 60,
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    gap: 8
+  },
+  deselected: {
+    width: 60,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  selected: {
+    backgroundColor: Color.colorDimgray_100,
+    height: 60,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopColor: Color.bALONCESTO,
+    borderTopWidth: 3
+  }
+})
 
 export default NavBarInferior

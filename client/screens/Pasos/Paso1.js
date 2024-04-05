@@ -50,8 +50,6 @@ const Paso1 = () => {
     description: '',
     category: category,
     position: position
-    // img_perfil: '',
-    // img_front: ''
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',

@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   codeBlockPersonaEnCanch: {
+    marginTop: 20,
     marginBottom: 15,
     height: 300,
     width: '95%',

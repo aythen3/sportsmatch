@@ -39,8 +39,9 @@ const SeleccionarImagen = () => {
 
   const handleSeleccionarImagen = (imagen) => {
     setSelectedImage(imagen)
+    pickImage('a', imagen.uri)
   }
-
+  console.log(libraryImage)
   const renderizarImagenes = () => {
     return (
       <View style={styles.galleryContainer}>
@@ -68,9 +69,9 @@ const SeleccionarImagen = () => {
         </Pressable>
         <TouchableOpacity
           onPress={() => {
-            pickImage('a', selectedImage.uri)
             navigation.navigate('CrearHighlight', { image: libraryImage })
           }}
+          disabled={!libraryImage}
         >
           <Text style={styles.siguiente}>Siguiente</Text>
         </TouchableOpacity>
@@ -108,7 +109,8 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   codeBlockPersonaEnCanch: {
-    marginVertical: 30,
+    marginTop: 20,
+    marginBottom: 20,
     height: 300,
     width: '95%',
     left: '2.3%'
