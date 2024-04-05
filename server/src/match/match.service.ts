@@ -9,6 +9,9 @@ import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ErrorManager } from 'src/utils/error.manager';
 
+import { NotificationService } from 'src/notification/notification.service';
+import { CreateNotificationDto } from 'src/notification/dto/create-notification.dto';
+
 @Injectable()
 export class MatchService {
   constructor(
@@ -17,7 +20,8 @@ export class MatchService {
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
     @InjectRepository(SportmanEntity)
-    private readonly sportmanRepository: Repository<SportmanEntity>
+    private readonly sportmanRepository: Repository<SportmanEntity>,
+    private readonly notificationServices: NotificationService
   ) {}
 
   public async create(createMatchDto: CreateMatchDto) {
@@ -40,6 +44,7 @@ export class MatchService {
       const sportman = await this.sportmanRepository
         .createQueryBuilder('sportman')
         .where({ id: sportmanId })
+        .leftJoinAndSelect('sportman.user', 'user')
         .getOne();
       console.log(sportman);
       if (!sportman) {
@@ -64,21 +69,36 @@ export class MatchService {
         });
       }
       await this.sportmanRepository.save(sportman);
-      return savedMatch;
-    } catch (error) {}
+      const newNotification: CreateNotificationDto = {
+        title: 'Nuevo Match',
+        message: '',
+        date: new Date(),
+        recipientId: sportman?.user.id
+      };
+      console.log(newNotification);
+      const notificationCreated =
+        await this.notificationServices.createService(newNotification);
+      return { savedMatch, notificationCreated };
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
   }
 
   public async findAll() {
-    const matchs = await this.matchRepository.find({
-      where: { isDelete: false }
-    });
-    if (matchs.length === 0) {
-      throw new ErrorManager({
-        type: 'NOT_FOUND',
-        message: 'Matchs not found'
+    try {
+      const matchs = await this.matchRepository.find({
+        where: { isDelete: false }
       });
+      if (matchs.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Matchs not found'
+        });
+      }
+      return matchs;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
-    return matchs;
   }
 
   public async findOne(id: string) {

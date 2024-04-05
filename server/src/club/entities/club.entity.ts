@@ -4,7 +4,7 @@ import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'club' })
 export class ClubEntity extends BaseEntity {
@@ -36,6 +36,7 @@ export class ClubEntity extends BaseEntity {
   img_front?: string;
 
   @OneToOne(() => UserEntity)
+  @JoinColumn()
   user: UserEntity;
 
   @OneToMany(() => SportmanEntity, (sportman) => sportman.club, {

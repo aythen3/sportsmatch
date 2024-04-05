@@ -4,6 +4,7 @@ import { MatchEntity } from 'src/match/entities/match.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SkillEntity } from 'src/skill/entities/skill.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -25,6 +26,10 @@ export class SportmanEntity extends BaseEntity {
 
   @Column('simple-json')
   info: { [key: string]: any };
+
+  @OneToOne(() => UserEntity)
+  @JoinColumn()
+  user: UserEntity;
 
   @ManyToOne(() => ClubEntity, (club) => club.sportman, { nullable: true })
   club?: ClubEntity;

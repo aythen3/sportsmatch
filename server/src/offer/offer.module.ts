@@ -15,6 +15,9 @@ import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { UserService } from 'src/user/user.service';
 import { SportService } from 'src/sport/sport.service';
+import { SportmanService } from 'src/sportman/sportman.service';
+import { NotificationService } from 'src/notification/notification.service';
+import { NotificationEntity } from 'src/notification/entities/notification.entity';
 
 @Module({
   imports: [
@@ -26,7 +29,8 @@ import { SportService } from 'src/sport/sport.service';
       PositionEntity,
       SkillEntity,
       SportEntity,
-      UserEntity
+      UserEntity,
+      NotificationEntity
     ])
   ],
   exports: [OfferService],
@@ -37,7 +41,9 @@ import { SportService } from 'src/sport/sport.service';
     MatchService,
     ClubService,
     UserService,
-    SportService
+    SportService,
+    SportmanService,
+    NotificationService
   ]
 })
 export class OfferModule {}

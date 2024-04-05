@@ -19,5 +19,5 @@ export class CreateNotificationDto {
 
   @IsNotEmpty()
   @IsBoolean()
-  read: boolean = false;
+  read?: boolean = false;
 }
