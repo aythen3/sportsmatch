@@ -6,12 +6,15 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
+import { SendMailService } from '../send-mail/send-mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: Repository<UserEntity>,
+
+    private readonly sendMailService: SendMailService
   ) {}
 
   /**
@@ -49,6 +52,7 @@ export class UserService {
         });
       }
       // Devolver el nuevo perfil del usuario
+      await this.sendMailService.sendRegistrationNotification(newProfile.email);
       return newProfile;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
