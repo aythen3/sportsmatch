@@ -35,7 +35,7 @@ export const ContextProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log('dataUrl from uriImg:', data.url)
+          // console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(data.url)
         })
     } else {

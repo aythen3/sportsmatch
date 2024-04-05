@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
   Pressable,
@@ -21,7 +22,6 @@ import Paso3Profesional from './Paso3Profesional'
 import Paso4Jugador from './Paso4Jugador'
 import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
-import { useDispatch, useSelector } from 'react-redux'
 import { createSportman } from '../../redux/actions/sportman'
 
 const Paso1 = () => {
@@ -39,26 +39,26 @@ const Paso1 = () => {
   const [profesional, setProfesional] = useState(false)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [sportmanValues, setSportmanValues] = useState({
-    sport: sport,
+    sport: sport.name,
     gender: sportmanGender,
     birthdate: birthdate,
     city: city,
     actualClub: '',
     description: '',
     category: category,
-    position: position
+    position: position,
+    img_perfil: '',
+    img_front: ''
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
-    sport: sport,
+    sport: sport.name,
     yearsOfExperience: '',
     city: city,
     actualClub: '',
     description: ''
   })
   const [data, setData] = useState({})
-
-  console.log('data', data)
 
   useEffect(() => {
     setProfesionalValues((prevValues) => ({
@@ -72,7 +72,7 @@ const Paso1 = () => {
     setSportmanValues((prevValues) => ({
       ...prevValues,
       gender: sportmanGender,
-      sport: sport,
+      sport: sport.name,
       birthdate: birthdate,
       city: city,
       position: position,
@@ -97,19 +97,20 @@ const Paso1 = () => {
   const handleNavigation = () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
-      if (sportman && stepsSportman === 0) {
+      if (stepsSportman === 1) {
+        const fullData = {
+          ...sportmanValues,
+          ...data
+        }
         const body = {
           sportmanData: {
             type: selectedRole === 'Jugador' ? 'player' : 'coach',
-            info: sportmanValues,
+            info: fullData,
             club: null
           },
           userId: user.user.id
         }
         dispatch(createSportman(body))
-      }
-
-      if (stepsSportman === 1) {
         setStepsSportman(0)
         navigation.navigate('SiguiendoJugadores')
       }

@@ -5,13 +5,15 @@ import {
   getAllUsers,
   getUserData,
   updateUserData,
-  deleteUserById
+  deleteUserById,
+  getUserChild
 } from '../actions/users'
 
 const usersSlices = createSlice({
   name: 'users',
   initialState: {
     user: {},
+    userChild: {},
     sportmanGender: '',
     birthdate: '',
     city: '',
@@ -77,11 +79,11 @@ const usersSlices = createSlice({
         state.user = action.payload
         state.error = false
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state) => {
         state.loading = false
         state.error = true
       })
-      // Traer todos los usuarios
+      // Get all users
       .addCase(getAllUsers.pending, (state) => {
         state.loading = true
         state.error = null
@@ -91,6 +93,19 @@ const usersSlices = createSlice({
         state.allUsers = action.payload
       })
       .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      // Get user child
+      .addCase(getUserChild.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getUserChild.fulfilled, (state, action) => {
+        state.loading = false
+        state.userChild = action.payload
+      })
+      .addCase(getUserChild.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
       })

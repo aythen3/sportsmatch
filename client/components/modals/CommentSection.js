@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native'
+import { Image } from 'expo-image'
 import { Color, FontFamily } from '../../GlobalStyles'
 import { getCommentByPost } from '../../redux/actions/comments'
 import { handleSubmit, formatDateDifference } from './utils/commentHandler'
@@ -17,13 +18,19 @@ const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
-  const { postComments, error } = useSelector((state) => state.comments)
+  const { postComments } = useSelector((state) => state.comments)
 
   const [comment, setComment] = useState('')
 
   useEffect(() => {
     dispatch(getCommentByPost(postId))
   }, [postId])
+
+  // const sortedComments = postComments?.slice().sort((a, b) => {
+  //   const dateA = new Date(a.createdAt)
+  //   const dateB = new Date(b.createdAt)
+  //   return dateB - dateA
+  // })
 
   return (
     <Modal
@@ -40,10 +47,11 @@ const CommentSection = ({ visible, closeModal, postId }) => {
             <View style={styles.line} />
           </Pressable>
 
-          {!error ? (
-            postComments.map((comment) => (
+          {postComments?.length > 0 ? (
+            postComments?.map((comment) => (
               <View key={comment.id} style={styles.commentContainer}>
                 <View style={styles.authorContainer}>
+                  {/* <Image /> */}
                   <Text style={styles.authorText}>
                     {comment.author.nickname}
                   </Text>

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { UpdateLikeDto } from './dto/update-like.dto';
 import { LikeEntity } from './entities/like.entity';
 import { Repository } from 'typeorm';
@@ -66,12 +65,7 @@ export class LikeService {
         .where('like.post = :postId', { postId })
         .andWhere('like.author = :authorId', { authorId })
         .getOne();
-      if (!like) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Like not found`
-        });
-      }
+
       return like;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

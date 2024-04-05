@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import { useSelector } from 'react-redux'
 import {
   Pressable,
   StyleSheet,
@@ -13,7 +12,6 @@ import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
-// import CommentsMuro from './CommentsMuro'
 import CommentSection from './modals/CommentSection'
 
 function Carousel({
@@ -23,7 +21,7 @@ function Carousel({
   image,
   likes,
   club,
-  // index,
+  commentCount,
   id,
   userId
 }) {
@@ -86,7 +84,9 @@ function Carousel({
         </View>
         <Text style={styles.description}>{description}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <Text style={styles.commentsTitle}>Ver los 24 comentarios</Text>
+          <Text style={styles.commentsTitle}>
+            Ver los {commentCount} comentarios
+          </Text>
         </TouchableOpacity>
 
         {modalVisible && (
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   imgPerfil: {
     width: 30,
     height: 30,
-    borderRadius: 50
+    borderRadius: 15
   },
   nameText: {
     color: 'white',

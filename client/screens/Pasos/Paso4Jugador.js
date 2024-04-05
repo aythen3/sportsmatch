@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native'
 import {
   Color,
   FontFamily,
@@ -10,10 +15,31 @@ import {
   Padding
 } from '../../GlobalStyles'
 import DetallesSeleccion from '../../components/DetallesSeleccion'
-import Lines from '../../components/Lines'
+import { Context } from '../../context/Context'
 
 const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
-  const navigation = useNavigation()
+  const {
+    pickImage,
+    coverImage,
+    profileImage,
+    provisoryProfileImage,
+    provisoryCoverImage
+  } = useContext(Context)
+
+  const handlePickImage = (type) => {
+    pickImage(type)
+    if (type === 'profile') {
+      setSportmanValues((prevState) => ({
+        ...prevState,
+        img_perfil: profileImage
+      }))
+    } else if (type === 'cover') {
+      setSportmanValues((prevState) => ({
+        ...prevState,
+        img_front: coverImage
+      }))
+    }
+  }
 
   return (
     <ScrollView style={styles.paso6}>
@@ -23,25 +49,43 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             <Image
               style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../../assets/circulo.png')}
+              source={
+                provisoryProfileImage
+                  ? { uri: provisoryProfileImage }
+                  : require('../../assets/circulo.png')
+              }
             />
-            <View style={styles.botonSubirImagen}>
+            <TouchableOpacity
+              style={styles.botonSubirImagen}
+              onPress={() => handlePickImage('profile')}
+            >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de perfil
               </Text>
-            </View>
+            </TouchableOpacity>
 
             <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
               Max 1mb, jpeg
             </Text>
           </View>
           <View style={styles.rectangulobotonpesoMaximo}>
-            <View style={styles.rectangulo} />
-            <View style={styles.botonSubirImagen}>
+            <Image
+              style={styles.rectangulo}
+              contentFit="cover"
+              source={
+                provisoryProfileImage
+                  ? { uri: provisoryCoverImage }
+                  : require('../../assets/circulo.png')
+              }
+            />
+            <TouchableOpacity
+              style={styles.botonSubirImagen}
+              onPress={() => handlePickImage('cover')}
+            >
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
                 Subir foto de portada
               </Text>
-            </View>
+            </TouchableOpacity>
             <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
               Max 1mb, jpeg
             </Text>
@@ -111,8 +155,8 @@ const styles = StyleSheet.create({
   rectangulo: {
     borderRadius: Border.br_10xs,
     backgroundColor: Color.colorGainsboro,
-    width: '200%',
-    flex: 1
+    width: 380,
+    height: 120
   }
 })
 

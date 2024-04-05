@@ -15,7 +15,8 @@ import { Context } from '../../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SeleccionarImagen = () => {
-  const { pickImage } = useContext(Context)
+  const { pickImage, libraryImage } = useContext(Context)
+
   const navigation = useNavigation()
 
   const [imagenes, setImagenes] = useState([])
@@ -43,7 +44,7 @@ const SeleccionarImagen = () => {
 
   const renderizarImagenes = () => {
     return (
-      <SafeAreaView style={styles.galleryContainer}>
+      <View style={styles.galleryContainer}>
         {imagenes.map((imagen, index) => (
           <TouchableOpacity
             key={index}
@@ -52,46 +53,48 @@ const SeleccionarImagen = () => {
             <Image source={{ uri: imagen.uri }} style={styles.gallery} />
           </TouchableOpacity>
         ))}
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <ScrollView style={styles.crearHighlight}>
-      <View style={styles.container}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.crearHighlightChild}
-            contentFit="cover"
-            source={require('../../../assets/group-565.png')}
-          />
-        </Pressable>
-        <TouchableOpacity
-          onPress={() => {
-            pickImage('a', selectedImage.uri)
-            navigation.navigate('CrearHighlight', { image: selectedImage })
-          }}
-        >
-          <Text style={styles.siguiente}>Siguiente</Text>
-        </TouchableOpacity>
-      </View>
-      <Image
-        style={styles.codeBlockPersonaEnCanch}
-        contentFit="cover"
-        source={{ uri: selectedImage?.uri }}
-      />
-      {renderizarImagenes()}
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView style={styles.crearHighlight}>
+        <View style={styles.container}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.crearHighlightChild}
+              contentFit="cover"
+              source={require('../../../assets/group-565.png')}
+            />
+          </Pressable>
+          <TouchableOpacity
+            onPress={() => {
+              pickImage('a', selectedImage.uri)
+              navigation.navigate('CrearHighlight', { image: libraryImage })
+            }}
+          >
+            <Text style={styles.siguiente}>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          style={styles.codeBlockPersonaEnCanch}
+          contentFit="cover"
+          source={{ uri: selectedImage?.uri }}
+        />
+        {renderizarImagenes()}
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   crearHighlight: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   container: {
-    marginTop: 60,
+    marginTop: 20,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row'

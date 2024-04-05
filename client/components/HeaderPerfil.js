@@ -34,24 +34,6 @@ const HeaderPerfil = ({
 
   const [image1, setImage1] = useState(null)
 
-  useEffect(() => {
-    console.log(
-      'data from headerperfil: ',
-      name,
-      description,
-      button1,
-      button2,
-      setSelectComponents,
-      selectComponents,
-      club,
-      myPerfil,
-      position,
-      sport,
-      front,
-      avatar
-    )
-  }, [])
-
   const pickImage = async () => {
     await ImagePicker.requestMediaLibraryPermissionsAsync()
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -63,7 +45,6 @@ const HeaderPerfil = ({
 
     if (!result.canceled) {
       setImage1(result.assets[0])
-      console.log('result', result.assets[0].uri)
 
       const fileName = `${result.assets[0].uri.split('.').pop()}`
 
@@ -74,7 +55,6 @@ const HeaderPerfil = ({
         type: result.assets[0].type,
         name: fileName
       })
-      console.log('file', file)
       dispatch(updateImgClub(file))
     }
   }
