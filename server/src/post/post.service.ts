@@ -29,18 +29,33 @@ export class PostService {
     }
   }
 
-  public async findAll(query: any) {
+  public async findAll() {
     try {
-      const posts: PostEntity[] = await this.postRepository.find({
-        where: { isDelete: false, ...query }
-      });
+      const posts: PostEntity[] = await this.postRepository
+        .createQueryBuilder('post')
+        .leftJoinAndSelect('post.author', 'author')
+        .where({ isDelete: false })
+        .getMany();
       if (posts.length === 0) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: 'Posts not found'
         });
       }
-      return posts;
+      const newList: PostEntity[] = [];
+      for (const post of posts) {
+        const newPost = await this.postRepository
+          .createQueryBuilder('post')
+          .leftJoinAndSelect('post.author', 'author')
+          .leftJoinAndSelect(
+            `author.${post.author.type}`,
+            `${post.author.type}`
+          )
+          .where('post.id = :postId', { postId: post.id })
+          .getOne();
+        newList.push(newPost);
+        return newList;
+      }
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
