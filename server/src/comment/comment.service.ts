@@ -67,16 +67,13 @@ export class CommentService {
     return comments;
   }
 
-  public async findAllByPost(
-    postId: string,
-    type: string
-  ): Promise<CommentEntity[]> {
+  public async findAllByPost(postId: string): Promise<CommentEntity[]> {
     try {
       // Buscar todos los comentarios asociados al post especificado
       const comments = await this.commentRepository
         .createQueryBuilder('comment')
         .leftJoinAndSelect('comment.author', 'author')
-        .leftJoinAndSelect(`author.${type}`, `${type}`)
+        //.leftJoinAndSelect('author.sportman', 'sportman')
         .where('comment.post = :postId', { postId })
         .getMany();
       // Si no se encuentran comentarios, lanzar una excepción
@@ -86,6 +83,17 @@ export class CommentService {
           message: 'comments not found'
         });
       }
+      comments.map(async (coment) => {
+        return await this.commentRepository
+          .createQueryBuilder('comment')
+          .leftJoinAndSelect('comment.author', 'author')
+          .leftJoinAndSelect(
+            `author.${coment.author.type}`,
+            `${coment.author.type}`
+          )
+          .where('comment.post = :postId', { postId })
+          .getMany();
+      });
       // Devolver los comentarios encontrados
       return comments;
     } catch (error) {
