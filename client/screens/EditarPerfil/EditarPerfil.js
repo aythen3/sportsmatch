@@ -2,7 +2,7 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, FontFamily, Color, Border } from '../../GlobalStyles'
+import { FontSize, FontFamily, Color } from '../../GlobalStyles'
 import { useSelector } from 'react-redux'
 
 const EditarPerfil = () => {

@@ -29,7 +29,11 @@ export class SportmanService {
         });
       }
       const newSportman = await this.sportmanRepository.create(sportmanData);
-      const saveSportman = await this.sportmanRepository.save(newSportman);
+      const saveSportman = await this.sportmanRepository.save({
+        ...newSportman,
+        user: user
+      });
+
       if (!saveSportman) {
         throw new ErrorManager({
           type: 'BAD_REQUEST',

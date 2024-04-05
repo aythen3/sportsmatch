@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -8,16 +9,23 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
-import FeedSVG from '../components/svg/FeedSVG'
-import StatsSVG from '../components/svg/StatsSVG'
-import Feed from '../components/Feed'
-import FeedStats from '../components/FeedStats'
-import { useDispatch } from 'react-redux'
-import { updateUserData } from '../redux/actions/users'
+import {
+  Color,
+  FontFamily,
+  FontSize,
+  Border,
+  Padding
+} from '../../GlobalStyles'
+import FeedSVG from '../../components/svg/FeedSVG'
+import StatsSVG from '../../components/svg/StatsSVG'
+import Feed from '../../components/Feed'
+import FeedStats from '../../components/FeedStats'
 
 const MiPerfil = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+
+  const { sportman } = useSelector((state) => state.sportman)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
 
@@ -35,14 +43,14 @@ const MiPerfil = () => {
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
-          source={require('../assets/hannahredingkqyboqrw5wunsplash-12.png')}
+          source={sportman.info.img_front}
         />
         <View style={styles.bloquePerfil}>
           <View style={styles.imagenInformacion1}>
             <Image
               style={styles.imagenIcon}
               contentFit="cover"
-              source={require('../assets/imagen2.png')}
+              source={sportman.info.img_perfil}
             />
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
@@ -81,7 +89,9 @@ const MiPerfil = () => {
               <StatsSVG />
             </TouchableOpacity>
           </View>
-          <View style={styles.line} />
+          <View
+            style={selectedTab === 'Feed' ? styles.line : styles.lineRight}
+          />
         </View>
         {renderContent()}
       </View>
@@ -112,6 +122,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     width: 175
   },
+  lineRight: {
+    borderColor: Color.wHITESPORTSMATCH,
+    borderStyle: 'solid',
+    height: 10,
+    borderTopWidth: 2,
+    width: 175,
+    left: '50%'
+  },
   iconLayout: {
     borderRadius: Border.br_10xs,
     maxHeight: '100%',
@@ -127,7 +145,8 @@ const styles = StyleSheet.create({
   },
   imagenIcon: {
     height: 120,
-    width: 113
+    width: 113,
+    borderRadius: 120 / 2
   },
   jugandoAlUni: {
     width: '70%',
@@ -206,7 +225,6 @@ const styles = StyleSheet.create({
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    height: 844,
     overflow: 'hidden',
     width: '100%'
   }

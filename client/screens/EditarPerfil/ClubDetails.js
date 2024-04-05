@@ -25,6 +25,7 @@ const ClubDetails = () => {
   const [capacity, setCapacity] = useState()
   const [description, setDescription] = useState()
   const navigation = useNavigation()
+
   const {
     pickImage,
     profileImage,

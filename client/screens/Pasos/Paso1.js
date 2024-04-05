@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -23,11 +23,14 @@ import Paso4Jugador from './Paso4Jugador'
 import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { createSportman } from '../../redux/actions/sportman'
+import { Context } from '../../context/Context'
 
 const Paso1 = () => {
   const navigation = useNavigation()
 
   const dispatch = useDispatch()
+
+  const { profileImage, coverImage } = useContext(Context)
 
   const { sport } = useSelector((state) => state.sports)
   const { user, sportmanGender, birthdate, city, category, position } =
@@ -46,9 +49,7 @@ const Paso1 = () => {
     actualClub: '',
     description: '',
     category: category,
-    position: position,
-    img_perfil: '',
-    img_front: ''
+    position: position
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
@@ -100,6 +101,8 @@ const Paso1 = () => {
       if (stepsSportman === 1) {
         const fullData = {
           ...sportmanValues,
+          img_perfil: profileImage,
+          img_front: coverImage,
           ...data
         }
         const body = {
@@ -268,6 +271,10 @@ const Paso1 = () => {
           <View style={styles.botonesRoles}>
             <Pressable
               style={styles.siguiente}
+              disabled={
+                (stepsSportman === 1 && !profileImage) ||
+                (stepsProfesional === 1 && !coverImage)
+              }
               onPress={() =>
                 !sportman && !profesional ? handleNext() : handleNavigation()
               }

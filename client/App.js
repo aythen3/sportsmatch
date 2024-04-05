@@ -24,7 +24,7 @@ import CerrarSesin from './screens/EditarPerfil/CerrarSesin'
 import EliminarCuenta from './screens/EditarPerfil/EliminarCuenta'
 import MiSuscripcin from './screens/MiSuscripcin'
 import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
-import MiPerfil from './screens/MiPerfil'
+import MiPerfil from './screens/EditarPerfil/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import ChatAbierto from './screens/ChatAbierto'
 import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
@@ -73,7 +73,7 @@ const App = () => {
 
   const getUserAuth = () => {
     AsyncStorage.getItem('userToken').then((value) => {
-      console.log('value: ', value)
+      // console.log('value: ', value)
     })
   }
 
