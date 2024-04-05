@@ -98,7 +98,7 @@ export class SendMailService {
     <div id="container">
     <img src="cid:sportSpot" />
         <p class='title'>¡Gracias por registrarte!</p>
-        <p>Ya estás listo para comenzar a participar en los mejores eventos deportivos en el área que desees</p>
+        <p>Ya estás listo para entrar al mundo de Sportmatch, bienvenido!!</p>
           <p class='social'>¡Síguenos en nuestras redes!</p>
           <div class='icons'>
             <img src="cid:facebookIcon" class='iconImg'/>
