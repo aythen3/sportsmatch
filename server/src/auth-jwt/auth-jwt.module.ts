@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 const configService = new ConfigService();
 
@@ -24,6 +25,6 @@ const configService = new ConfigService();
   // Definir los controladores utilizados
   controllers: [AuthJwtController],
   // Definir los servicios proporcionados
-  providers: [AuthJwtService, UserService]
+  providers: [AuthJwtService, UserService, SendMailService]
 })
 export class AuthJwtModule {}
