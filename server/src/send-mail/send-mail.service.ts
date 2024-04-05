@@ -5,7 +5,6 @@ import { join } from 'path';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
-
 @Injectable()
 export class SendMailService {
   constructor(
@@ -15,7 +14,7 @@ export class SendMailService {
   ) {}
 
   async sendRegistrationNotification(email: string) {
-    const sportspotLogo = join(
+    /* const sportspotLogo = join(
       __dirname,
       '..',
       '..',
@@ -23,13 +22,11 @@ export class SendMailService {
       'client',
       'assets',
       'spotsport.png'
-    );
+    ); */
     const facebookIcon = join(
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'facebook_icon.png'
@@ -38,8 +35,6 @@ export class SendMailService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'twitter_icon.png'
@@ -48,8 +43,6 @@ export class SendMailService {
       __dirname,
       '..',
       '..',
-      '..',
-      'client',
       'assets',
       'icons',
       'instagram_icon.png'
@@ -122,11 +115,11 @@ export class SendMailService {
       html: htmlTemplate, // Archivo de plantilla de correo electrónico
       context: {}, // Datos adicionales que pueden ser pasados a la plantilla
       attachments: [
-        {
+        /* {
           filename: 'sportspot.png',
           path: sportspotLogo,
-          cid: 'sportSpot'
-        },
+          cid: 'sportSpot'a
+        }, */
         {
           filename: 'facebook_icon.png',
           path: facebookIcon,
@@ -143,6 +136,4 @@ export class SendMailService {
 
     return 'Correo enviado exitosamente';
   }
-
-  
 }
