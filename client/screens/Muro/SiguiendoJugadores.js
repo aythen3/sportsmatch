@@ -48,13 +48,6 @@ const SiguiendoJugadores = () => {
     dispatch(getAllLikes())
   }, [post, comments])
 
-  useEffect(() => {
-    joinRoom(
-      '15171abb-8c1c-4ef2-893d-a277d965c4c9',
-      'cf56082a-fe08-4d4d-97ef-750bc87cd07f'
-    )
-  }, [])
-
   const sortedPosts = [...allPosts].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   )
@@ -70,18 +63,6 @@ const SiguiendoJugadores = () => {
     <View style={styles.siguiendoJugadores}>
       <ScrollView>
         <HeaderIcons />
-        {/* <TouchableOpacity
-          style={styles.sendMessageButton}
-          onPress={() =>
-            sendMessage(
-              'Testing messages',
-              'cf56082a-fe08-4d4d-97ef-750bc87cd07f',
-              '15171abb-8c1c-4ef2-893d-a277d965c4c9'
-            )
-          }
-        >
-          <Text style={styles.sendMessageText}>SEND MESSAGE</Text>
-        </TouchableOpacity> */}
         {sortedPosts.map((publication, i) => (
           <Carousel
             key={i}

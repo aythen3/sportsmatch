@@ -2,13 +2,15 @@ import React, { createContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ImagePicker from 'expo-image-picker'
 import io from 'socket.io-client'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
+import { updateMessages } from '../redux/actions/chats'
 
 export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
   const dispatch = useDispatch()
+  const { allUsers } = useSelector((state) => state.users)
   const [provisoryProfileImage, setProvisoryProfileImage] = useState()
   const [provisoryCoverImage, setProvisoryCoverImage] = useState()
   const [profileImage, setProfileImage] = useState()
@@ -107,6 +109,19 @@ export const ContextProvider = ({ children }) => {
     dispatch(getAllUsers())
   }, [])
 
+  useEffect(() => {
+    console.log(allUsers.length)
+  }, [])
+
+  function getTimeFromDate(dateString) {
+    const date = new Date(dateString)
+    const hours = date.getUTCHours()
+    const minutes = date.getUTCMinutes()
+    const formattedHours = hours < 10 ? '0' + hours : hours
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
+    return `${formattedHours}:${formattedMinutes}`
+  }
+
   const socket = io('http://192.168.0.8:3010', {
     transports: ['websocket']
     // auth: {
@@ -135,13 +150,24 @@ export const ContextProvider = ({ children }) => {
     setRoomId(room)
   })
 
+  socket.on('leaveRoom', (room) => {
+    console.log('Leaving room: ', room)
+    setRoomId()
+  })
+
   socket.on('message-server', (msg) => {
     console.log('New message:', msg)
+    dispatch(updateMessages(msg))
   })
 
   const joinRoom = (sender, receiver) => {
     console.log('on joinRoom with id: ', sender, receiver)
     socket.emit('joinRoom', { sender, receiver })
+  }
+
+  const leaveRoom = (sender, receiver) => {
+    console.log('on leaveRoom with id: ', sender, receiver)
+    socket.emit('leaveRoom', { sender, receiver })
   }
 
   const sendMessage = (message, sender, receiver) => {
@@ -165,7 +191,9 @@ export const ContextProvider = ({ children }) => {
         roomId,
         setRoomId,
         libraryImage,
-        setLibraryImage
+        setLibraryImage,
+        leaveRoom,
+        getTimeFromDate
       }}
     >
       {children}

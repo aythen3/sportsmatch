@@ -6,6 +6,7 @@ import {
   getAllClubs,
   getClub,
   updateClubCoverImage,
+  updateClubData,
   updateClubProfileImage
 } from '../actions/club'
 
@@ -106,6 +107,19 @@ const clubSlices = createSlice({
         state.error = false
       })
       .addCase(deleteClubById.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Update club information
+      .addCase(updateClubData.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateClubData.fulfilled, (state, action) => {
+        state.loading = false
+        state.club = action.payload
+      })
+      .addCase(updateClubData.rejected, (state) => {
         state.loading = false
         state.error = true
       })

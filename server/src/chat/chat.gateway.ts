@@ -73,8 +73,8 @@ export class ChatGateway
   @SubscribeMessage('leaveRoom')
   handleRoomLeave(client: Socket, data: { sender: string; receiver: string }) {
     const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
-    client.join(room);
-    client.emit('joinedRoom', room);
-    console.log('joinedRoom', room);
+    client.leave(room);
+    client.emit('leaveRoom', room);
+    console.log('leaveRoom', room);
   }
 }

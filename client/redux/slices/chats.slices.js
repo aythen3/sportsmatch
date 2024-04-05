@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getChatHistory } from '../actions/chats'
+import { getChatHistory, updateMessages } from '../actions/chats'
 
 const clubSlices = createSlice({
   name: 'chats',
@@ -7,9 +7,9 @@ const clubSlices = createSlice({
     allMessages: []
   },
   reducers: {
-    // setClub: (state, action) => {
-    //   state.club = action.payload.payload.user.club
-    // }
+    setAllMessages: (state, action) => {
+      state.allMessages = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -27,9 +27,23 @@ const clubSlices = createSlice({
         state.loading = false
         state.error = true
       })
+      // Update allMessages
+      .addCase(updateMessages.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateMessages.fulfilled, (state, action) => {
+        state.loading = false
+        state.allMessages = [action.payload, ...state.allMessages]
+        state.error = false
+      })
+      .addCase(updateMessages.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
   }
 })
 
-export const { setClub } = clubSlices.actions
+export const { setAllMessages } = clubSlices.actions
 
 export default clubSlices.reducer

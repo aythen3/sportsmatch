@@ -32,6 +32,7 @@ export class MessageService {
     limit: number = 10
   ): Promise<MessageEntity[]> {
     try {
+      console.log('data from backend:', createdAt, limit);
       let query = this.messageRepository
         .createQueryBuilder('message')
         .where('message.room = :room', { room })
