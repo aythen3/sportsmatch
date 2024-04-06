@@ -21,7 +21,8 @@ export class MessageService {
       senderId,
       receiverId,
       room,
-      message
+      message,
+      isReaded: false
     });
     return await this.messageRepository.save(newMessage);
   }
