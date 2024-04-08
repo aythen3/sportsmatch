@@ -53,10 +53,16 @@ export class SportmanService {
   /**
    * Método para obtener todos los Deportistas
    */
-  public async findAll() {
+  public async findAll(query: any) {
     try {
+      const where = { isDelete: false };
+      if (query) {
+        for (const key in query) {
+          where[key] = query[key];
+        }
+      }
       const sportmans = await this.sportmanRepository.find({
-        where: { isDelete: false }
+        where: where
       });
       if (sportmans.length === 0) {
         throw new ErrorManager({
@@ -99,7 +105,7 @@ export class SportmanService {
    */
   public async update(id: string, updateSportmanDto: UpdateSportmanDto) {
     try {
-      const { sportmanData } = updateSportmanDto;
+      const sportmanData = updateSportmanDto;
       const sportman = await this.findOne(id);
       if (!sportman) {
         throw new ErrorManager({
@@ -107,10 +113,14 @@ export class SportmanService {
           message: `Sportman id: ${id} not found`
         });
       }
+      console.log('sportman: ', sportman);
       for (const key in sportmanData) {
+        console.log('sportman: ', key);
         if (key === 'info') {
-          sportman.info = { ...sportman.info, ...sportmanData };
+          console.log('entre ');
+          sportman.info = { ...sportman.info, ...sportmanData[key] };
         } else {
+          console.log('no entre ');
           sportman[key] = sportmanData[key];
         }
       }
