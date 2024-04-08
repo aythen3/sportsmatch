@@ -3,7 +3,7 @@ export const DEPORTES = [
     name: 'Futbol'
   },
   {
-    name: 'Basquekball'
+    name: 'Basquetbol'
   },
   {
     name: 'Futbol de Salon'
