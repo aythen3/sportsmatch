@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFiles
+  UploadedFiles,
+  Query
 } from '@nestjs/common';
 import { SportmanService } from './sportman.service';
 import { CreateSportmanDto } from './dto/create-sportman.dto';
@@ -30,8 +31,8 @@ export class SportmanController {
   }
 
   @Get()
-  findAll() {
-    return this.sportmanService.findAll();
+  findAll(@Query() query: any) {
+    return this.sportmanService.findAll(query);
   }
 
   @Get(':id')
