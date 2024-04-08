@@ -3,8 +3,10 @@ import axiosInstance from '../../utils/apiBackend'
 import axios from 'axios'
 
 export const createClub = createAsyncThunk('create/club', async (body) => {
+  console.log('body from createClub:', body)
   try {
     const { data } = await axiosInstance.post('club', body)
+    console.log('data from createClub: ', data)
     return data
   } catch (error) {
     throw new Error(error)
@@ -24,6 +26,7 @@ export const getClub = createAsyncThunk('get/club', async (id) => {
   console.log('on getClub action!')
   try {
     const { data } = await axiosInstance.get(`club/${id}`)
+    console.log('DATA FROM GETCLUB:', data)
     return data
   } catch (error) {
     throw new Error(error)

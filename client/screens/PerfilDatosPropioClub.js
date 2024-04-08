@@ -15,12 +15,12 @@ const PerfilDatosPropioClub = () => {
   const navigation = useNavigation()
 
   const { isSportman } = useSelector((state) => state.users)
+  const { user } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
-
   const [selectComponents, setSelectComponents] = useState('perfil')
 
   useEffect(() => {
-    console.log('club from PerfilDatosPropioClub: ', club)
+    console.log('user from PerfilDatosPropioClub: ', user)
   }, [])
 
   return (

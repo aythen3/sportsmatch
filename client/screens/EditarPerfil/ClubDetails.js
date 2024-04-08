@@ -8,7 +8,7 @@ import {
   TextInput
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FontFamily } from '../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
@@ -35,7 +35,13 @@ const ClubDetails = () => {
     provisoryCoverImage,
     provisoryProfileImage
   } = useContext(Context)
+  const { user } = useSelector((state) => state.users)
+
   const { club } = useSelector((state) => state.clubs)
+
+  useEffect(() => {
+    console.log('club from CD: ', club)
+  }, [])
 
   const inputs = [
     {
@@ -138,11 +144,13 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.profileImageContainer}>
-              {club?.img_perfil && (
+              {user?.user?.club?.img_perfil && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
-                  source={{ uri: provisoryProfileImage || club?.img_perfil }}
+                  source={{
+                    uri: provisoryProfileImage || user?.user?.club?.img_perfil
+                  }}
                 />
               )}
             </View>
@@ -159,11 +167,13 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.coverImageContainer}>
-              {club?.img_front && (
+              {user?.user?.club?.img_front && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
-                  source={{ uri: provisoryCoverImage || club?.img_front }}
+                  source={{
+                    uri: provisoryCoverImage || user?.user?.club?.img_front
+                  }}
                 />
               )}
             </View>
@@ -180,7 +190,7 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View style={{ gap: 20 }}>
             {inputs.map((input, index) => (
-              <View style={{ gap: 5 }}>
+              <View key={index} style={{ gap: 5 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {input.title}
                 </Text>

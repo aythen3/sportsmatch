@@ -29,6 +29,10 @@ const SiguiendoJugadores = () => {
   //   return userId
   // }
 
+  useEffect(() => {
+    console.log('user data from home: ', user)
+  }, [])
+
   // useEffect(() => {
   //   const userId = getUserId()
   //   dispatch(getUserData(userId))

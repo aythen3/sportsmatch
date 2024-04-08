@@ -6,7 +6,9 @@ import {
   getUserData,
   updateUserData,
   deleteUserById,
-  getUserChild
+  getUserChild,
+  updateClubData,
+  updateUserClubData
 } from '../actions/users'
 
 const usersSlices = createSlice({
@@ -80,6 +82,25 @@ const usersSlices = createSlice({
         state.error = false
       })
       .addCase(login.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      // Update user club data
+      .addCase(updateUserClubData.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateUserClubData.fulfilled, (state, action) => {
+        const oldUserData = { ...state.user }
+        console.log('oldUserData: ', oldUserData)
+        oldUserData.user.club = action.payload
+        oldUserData.user.type = 'club'
+        console.log('oldUserData after update: ', oldUserData)
+        state.loading = false
+        state.user = oldUserData
+        state.error = false
+      })
+      .addCase(updateUserClubData.rejected, (state) => {
         state.loading = false
         state.error = true
       })

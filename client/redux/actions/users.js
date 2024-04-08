@@ -11,13 +11,27 @@ export const getAllUsers = createAsyncThunk('getAll/users', async () => {
 })
 
 export const getUserData = createAsyncThunk('getUserData/users', async (id) => {
+  console.log('id from getUserData: ', id)
   try {
     const { data } = await axiosInstance.get(`user/${id}`)
+    console.log('data from getUserData: ', data)
     return data
   } catch (error) {
     throw new Error(error)
   }
 })
+export const updateUserClubData = createAsyncThunk(
+  'updateUserClubData/users',
+  async ({ id, data }) => {
+    console.log('data from updateUserClubData: ', data)
+    try {
+      // await axiosInstance.patch(`user/${id}`, { type: 'club' })
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
 
 export const getUserChild = createAsyncThunk(
   'getUserChild/users',
@@ -66,8 +80,10 @@ export const create = createAsyncThunk('create/user', async (body) => {
 })
 
 export const login = createAsyncThunk('login/user', async (body) => {
+  console.log('body: ', body)
   try {
     const { data } = await axiosInstance.post('auth/login', body)
+    console.log('data: ', data)
     return data
   } catch (error) {
     throw new Error(error)
