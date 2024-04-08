@@ -70,7 +70,7 @@ const IniciarSesin = () => {
       // console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response from login: ', response)
+          console.log('response from login: ', response.payload.user.club)
           await AsyncStorage.setItem('userToken', response.payload.accesToken)
           await AsyncStorage.setItem('userId', response.payload.user.id)
           dispatch(setClub(response))

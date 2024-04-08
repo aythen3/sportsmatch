@@ -7,7 +7,8 @@ import {
   Pressable,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Touchable
 } from 'react-native'
 import {
   Color,
@@ -20,6 +21,8 @@ import Input from '../../components/Input'
 import { handleSubmit } from './utils/handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomModal from '../../components/modals/CustomModal'
+import axiosInstance from '../../utils/apiBackend'
+import { getClub } from '../../redux/actions/club'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -30,10 +33,20 @@ const ConfigurarAnuncio = () => {
 
   const { offer } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
+  const { user } = useSelector((state) => state.users)
+  const [selectedGender, setSelectedGender] = useState()
+  const [showPriorityModal, setShowPriorityModal] = useState()
+  const [showRemunerationModal, setShowRemunerationModal] = useState()
+  const [selectedRemuneration, setSelectedRemuneration] = useState()
   const { allPositions } = useSelector((state) => state.positions)
+  const [selectedPriority, setSelectedPriority] = useState()
   const [showModal, setShowModal] = useState(false)
+  const [showGenderModal, setShowGenderModal] = useState(false)
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState()
   const [clubPositions, setClubPositions] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
+  const [clubData, setClubData] = useState()
   const { editOffer } = route.params || false
 
   const [values, setValues] = useState({
@@ -43,6 +56,20 @@ const ConfigurarAnuncio = () => {
     retribution: ''
   })
 
+  const categories = [
+    'Escuela (4-6 años)',
+    'Prebenjamín (6-8 años)',
+    'Benjamín (8-10 años)',
+    'Alevín (10-12 años)',
+    'Infantil (12-14 años)',
+    'Cadete (14-16 años)',
+    'Juvenil (16-18 años)',
+    'Senior (+18 años)',
+    'Veteranos (+30 años)'
+  ]
+
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
   const handleChange = (name, value) => {
     setValues((prev) => ({
       ...prev,
@@ -50,17 +77,29 @@ const ConfigurarAnuncio = () => {
     }))
   }
 
-  useEffect(() => {
-    console.log('club: ', club)
-    console.log('allPosiitons: ', allPositions)
-    console.log(
-      'filtered pos: ',
-      allPositions
-        .filter((position) => position.sport.name === club.sport.name)
-        .map((position) => position.name)
-    )
-  }, [])
+  const getClubData = async (id) => {
+    const { data } = await axiosInstance.get(`club/${id}`)
 
+    setClubData(data)
+    return data
+  }
+
+  useEffect(() => {
+    getClubData(club.id)
+  }, [])
+  useEffect(() => {
+    if (clubData && allPositions) {
+      console.log(
+        'filteredPos: ',
+        allPositions
+          .filter(
+            (position) => position?.sport?.name === clubData?.sports[0]?.name
+          )
+          .map((position) => position?.name)
+      )
+    }
+  }, [clubData])
+  if (!clubData && allPositions) return null
   return (
     <SafeAreaView style={styles.configurarAnuncio}>
       <View style={styles.contenido}>
@@ -73,54 +112,140 @@ const ConfigurarAnuncio = () => {
             X
           </Text>
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('setting modal to : ', !showModal)
+            setShowModal(!showModal)
+          }}
+          style={{
+            borderWidth: 1,
+            position: 'relative',
+            borderColor: '#fff',
 
-        <Input
-          title="Sexo"
-          placeholderText={offer && offer.sexo ? offer.sexo : 'Masculino'}
-          isAccordeon={true}
-          onValues={handleChange}
-          value={values.sexo}
-          field="sexo"
-        />
-        {showModal && (
-          <CustomModal
-            closeModal={setShowModal}
-            onSelectItem={setSelectedPosition}
-            options={allPositions
-              .filter((position) => position.sport.name === club.sport.name)
-              .map((position) => position.name)}
-          />
-        )}
-        <Input
-          title="Categoria"
-          placeholderText={offer && offer.category ? offer.category : 'Sénior'}
-          isAccordeon={true}
-          onValues={handleChange}
-          value={values.category}
-          field="category"
-        />
-        {/* <Input title="Posicion" placeholderText="Pívot" isAccordeon={true} /> */}
-        <Input
-          title="Urgencia"
-          placeholderText={
-            offer && offer.urgency ? offer.urgency.toString() : '0-10'
-          }
-          isAccordeon={true}
-          onValues={handleChange}
-          value={values.urgency}
-          keyboardType={'numeric'}
-          field="urgency"
-        />
-        <Input
-          title="Retribucion"
-          placeholderText={
-            offer && offer.retribution !== undefined ? 'Si' : 'No'
-          }
-          isAccordeon={true}
-          onValues={handleChange}
-          value={values.retribution}
-          field="retribution"
-        />
+            borderRadius: 50,
+            width: '100%',
+            height: 40
+          }}
+        >
+          <Text style={{ color: '#fff' }}>
+            {selectedPosition || 'Selecciona una posicion'}
+          </Text>
+          {showModal && (
+            <CustomModal
+              closeModal={setShowModal}
+              onSelectItem={setSelectedPosition}
+              options={allPositions
+                .filter(
+                  (position) => position.sport.name === clubData.sports[0].name
+                )
+                .map((position) => {
+                  return position.name
+                })}
+            />
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowGenderModal(!showGenderModal)
+          }}
+          style={{
+            borderWidth: 1,
+            position: 'relative',
+            borderColor: '#fff',
+
+            borderRadius: 50,
+            width: '100%',
+            height: 40
+          }}
+        >
+          <Text style={{ color: '#fff' }}>
+            {selectedGender || 'Selecciona un genero'}
+          </Text>
+          {showGenderModal && (
+            <CustomModal
+              closeModal={setShowGenderModal}
+              onSelectItem={setSelectedGender}
+              options={['Male', 'Female']}
+            />
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowCategoryModal(!showCategoryModal)
+          }}
+          style={{
+            borderWidth: 1,
+            position: 'relative',
+            borderColor: '#fff',
+
+            borderRadius: 50,
+            width: '100%',
+            height: 40
+          }}
+        >
+          <Text style={{ color: '#fff' }}>
+            {selectedCategory || 'Selecciona una categoria'}
+          </Text>
+          {showCategoryModal && (
+            <CustomModal
+              closeModal={setShowCategoryModal}
+              onSelectItem={setSelectedCategory}
+              options={categories}
+            />
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setShowPriorityModal(!showPriorityModal)
+          }}
+          style={{
+            borderWidth: 1,
+            position: 'relative',
+            borderColor: '#fff',
+
+            borderRadius: 50,
+            width: '100%',
+            height: 40
+          }}
+        >
+          <Text style={{ color: '#fff' }}>
+            {selectedPriority || 'Seleccione el nivel de urgencia'}
+          </Text>
+          {showPriorityModal && (
+            <CustomModal
+              closeModal={setShowPriorityModal}
+              onSelectItem={setSelectedPriority}
+              options={numbers}
+            />
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setShowRemunerationModal(!showRemunerationModal)
+          }}
+          style={{
+            borderWidth: 1,
+            position: 'relative',
+            borderColor: '#fff',
+
+            borderRadius: 50,
+            width: '100%',
+            height: 40
+          }}
+        >
+          <Text style={{ color: '#fff' }}>
+            {selectedRemuneration || 'Seleccione remuneracion'}
+          </Text>
+          {showRemunerationModal && (
+            <CustomModal
+              closeModal={setShowRemunerationModal}
+              onSelectItem={setSelectedRemuneration}
+              options={['Si', 'No']}
+            />
+          )}
+        </TouchableOpacity>
 
         <Pressable
           style={styles.botonsOferta}
