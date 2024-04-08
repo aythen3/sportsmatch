@@ -58,7 +58,7 @@ const Registrarse = () => {
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
       if (valuesUser.password === confirmPassword) {
         dispatch(create(valuesUser))
-        navigation.navigate('IniciarSesin', { isPlayer })
+        navigation.navigate('IniciarSesin')
       } else {
         Alert.alert('Las contraseñas no coinciden')
       }

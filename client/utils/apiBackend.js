@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const axiosInstance = axios.create({
   // baseURL: 'https://api-sportsmatch.ay-cloud.com/api/'
-  baseURL: 'http://192.168.1.47:3000/api/'
+  baseURL: 'http://192.168.0.8:3000/api/'
 })
 
 axiosInstance.interceptors.request.use(

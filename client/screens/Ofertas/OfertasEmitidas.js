@@ -27,6 +27,7 @@ import {
 } from '../../redux/actions/offers'
 import BackArrowSVG from '../../components/svg/BackArrowSVG'
 import { getAllPositions } from '../../redux/actions/sports'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const OfertasEmitidas = () => {
   const navigation = useNavigation()
@@ -52,7 +53,7 @@ const OfertasEmitidas = () => {
   }
 
   return (
-    <ScrollView style={styles.ofertasEmitidas}>
+    <SafeAreaView style={styles.ofertasEmitidas}>
       <View style={styles.topContainer}>
         <Pressable style={styles.header} onPress={() => navigation.goBack()}>
           <BackArrowSVG />
@@ -167,7 +168,7 @@ const OfertasEmitidas = () => {
           </View>
         ))}
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 

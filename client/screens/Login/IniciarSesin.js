@@ -33,7 +33,7 @@ const IniciarSesin = () => {
 
   const { user } = useSelector((state) => state.users)
 
-  const { isPlayer } = route.params
+  // const { isPlayer } = route.params
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -48,10 +48,11 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    console.log('user from IniciarSesin: ', user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
-      if (!isPlayer) {
+      if (user?.user?.type === 'club') {
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
@@ -163,7 +164,7 @@ const IniciarSesin = () => {
             </View>
             <Pressable
               style={styles.noTenesUnaContainer}
-              onPress={() => navigation.navigate('Registrarse')}
+              onPress={() => navigation.navigate('LoginSwitch')}
             >
               <Text
                 style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}

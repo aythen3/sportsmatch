@@ -70,12 +70,13 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   const handleEdit = () => {
-    navigation.navigate('EditarPerfil')
+    navigation.navigate('MiPerfil')
     setEditable(false)
     const body = {
       id: sportman?.id,
       newData: editData
     }
+    console.log('body from handleEdit:', body)
     dispatch(updateSportman(body))
   }
 

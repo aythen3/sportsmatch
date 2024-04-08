@@ -113,6 +113,8 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
+
+        console.log('body')
         dispatch(createSportman(body))
         setStepsSportman(0)
         navigation.navigate('SiguiendoJugadores')

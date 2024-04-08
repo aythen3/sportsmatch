@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -18,6 +18,8 @@ import {
 } from '../../GlobalStyles'
 import Input from '../../components/Input'
 import { handleSubmit } from './utils/handler'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import CustomModal from '../../components/modals/CustomModal'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -28,6 +30,10 @@ const ConfigurarAnuncio = () => {
 
   const { offer } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
+  const { allPositions } = useSelector((state) => state.positions)
+  const [showModal, setShowModal] = useState(false)
+  const [clubPositions, setClubPositions] = useState()
+  const [selectedPosition, setSelectedPosition] = useState()
   const { editOffer } = route.params || false
 
   const [values, setValues] = useState({
@@ -44,8 +50,19 @@ const ConfigurarAnuncio = () => {
     }))
   }
 
+  useEffect(() => {
+    console.log('club: ', club)
+    console.log('allPosiitons: ', allPositions)
+    console.log(
+      'filtered pos: ',
+      allPositions
+        .filter((position) => position.sport.name === club.sport.name)
+        .map((position) => position.name)
+    )
+  }, [])
+
   return (
-    <ScrollView style={styles.configurarAnuncio}>
+    <SafeAreaView style={styles.configurarAnuncio}>
       <View style={styles.contenido}>
         <View style={styles.topContainer}>
           <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
@@ -65,6 +82,15 @@ const ConfigurarAnuncio = () => {
           value={values.sexo}
           field="sexo"
         />
+        {showModal && (
+          <CustomModal
+            closeModal={setShowModal}
+            onSelectItem={setSelectedPosition}
+            options={allPositions
+              .filter((position) => position.sport.name === club.sport.name)
+              .map((position) => position.name)}
+          />
+        )}
         <Input
           title="Categoria"
           placeholderText={offer && offer.category ? offer.category : 'Sénior'}
@@ -126,7 +152,7 @@ const ConfigurarAnuncio = () => {
           </View>
         </Pressable>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 

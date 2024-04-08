@@ -4,7 +4,8 @@ import {
   getAllLikes,
   getAllPosts,
   like,
-  listLikes
+  listLikes,
+  updateLike
 } from '../actions/post'
 
 const postSlices = createSlice({
@@ -44,6 +45,19 @@ const postSlices = createSlice({
         state.error = false
       })
       .addCase(createPost.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      .addCase(updateLike.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateLike.fulfilled, (state, action) => {
+        state.loading = false
+        // state.allPosts = action.payload
+        state.error = false
+      })
+      .addCase(updateLike.rejected, (state) => {
         state.loading = false
         state.error = true
       })

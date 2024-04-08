@@ -3,15 +3,19 @@ import { Image } from 'expo-image'
 import { StyleSheet, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontSize, FontFamily, Border } from '../../GlobalStyles'
+import { useDispatch } from 'react-redux'
+import { getAllPositions } from '../../redux/actions/positions'
 
 const PantallaInicio = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const navigateToOtraPantalla = () => {
     navigation.navigate('LoginSwitch')
   }
 
   useEffect(() => {
+    dispatch(getAllPositions())
     const timeoutId = setTimeout(() => {
       navigateToOtraPantalla()
     }, 2000)

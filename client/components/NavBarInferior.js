@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
@@ -13,8 +13,14 @@ const NavBarInferior = () => {
 
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
 
   const [activeIcon, setActiveIcon] = useState(null)
+
+  useEffect(() => {
+    console.log('User form nav: ', user)
+    console.log('sportman from nav: ', sportman)
+  }, [])
 
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
@@ -81,9 +87,10 @@ const NavBarInferior = () => {
           style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           contentFit="cover"
           source={{
-            uri: user.user.sportman
-              ? user?.user?.sportman?.info?.img_perfil
-              : user?.user?.club?.img_perfil
+            uri:
+              user?.user?.type !== 'club'
+                ? sportman?.info?.img_perfil
+                : user?.user?.club?.img_perfil
           }}
         />
       </TouchableOpacity>

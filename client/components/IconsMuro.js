@@ -5,7 +5,7 @@ import CommentSVG from './svg/CommentSVG'
 import ShareSVG from './svg/ShareSVG'
 import LikeSVG from './svg/LikeSVG'
 import { Color } from '../GlobalStyles'
-import { like, listLikes } from '../redux/actions/post'
+import { like, listLikes, updateLike } from '../redux/actions/post'
 import CommentSection from './modals/CommentSection'
 
 const IconsMuro = ({ id, userId }) => {
@@ -20,7 +20,17 @@ const IconsMuro = ({ id, userId }) => {
       post: id,
       author: userId
     }
+    console.log(
+      'findedLike?.some((likeId) => likeId === id): ',
+      findedLike?.some((likeId) => likeId === id)
+    )
     await dispatch(like(data))
+    // await dispatch(
+    //   updateLike({
+    //     ...data,
+    //     liked: findedLike?.some((likeId) => likeId === id)
+    //   })
+    // )
     const authorId = userId
     await dispatch(listLikes(authorId))
   }
@@ -34,7 +44,7 @@ const IconsMuro = ({ id, userId }) => {
     setModalVisible(false)
   }
 
-  const liked = findedLike.some((likeId) => likeId === id)
+  const liked = findedLike?.some((likeId) => likeId === id)
 
   return (
     <View style={styles.container}>

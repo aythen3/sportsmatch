@@ -50,12 +50,12 @@ export class MessageService {
       }
       const roomMessages = await query.getMany();
 
-      if (!roomMessages.length) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: 'Room messages not found'
-        });
-      }
+      // if (!roomMessages.length) {
+      //   throw new ErrorManager({
+      //     type: 'NOT_FOUND',
+      //     message: 'Room messages not found'
+      //   });
+      // }
       return roomMessages;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

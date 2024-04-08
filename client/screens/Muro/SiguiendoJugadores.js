@@ -31,6 +31,7 @@ const SiguiendoJugadores = () => {
 
   useEffect(() => {
     console.log('user data from home: ', user)
+    console.log('allposts from SiguiendoJugadores: ',allPosts)
   }, [])
 
   // useEffect(() => {

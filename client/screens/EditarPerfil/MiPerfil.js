@@ -44,24 +44,24 @@ const MiPerfil = () => {
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
-          source={sportman?.info.img_front}
+          source={sportman?.info?.img_front}
         />
         <View style={styles.bloquePerfil}>
           <View style={styles.imagenInformacion1}>
             <Image
               style={styles.imagenIcon}
               contentFit="cover"
-              source={sportman?.info.img_perfil}
+              source={sportman?.info?.img_perfil}
             />
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-                <Text style={styles.textTypo}>{user?.user.nickname}</Text>
-                <Text style={styles.textTypo}>{sportman?.info.position}</Text>
-                <Text style={styles.textTypo}>{sportman?.info.sport}</Text>
+                <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
+                <Text style={styles.textTypo}>{sportman?.info?.position}</Text>
+                <Text style={styles.textTypo}>{sportman?.info?.sport}</Text>
               </View>
               <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>
-                {sportman?.info.actualClub.length > 0
-                  ? `Jugando en ${sportman?.info.actualClub}`
+                {sportman?.info?.actualClub?.length > 0
+                  ? `Jugando en ${sportman?.info?.actualClub}`
                   : 'Sin club actualmente'}
               </Text>
             </View>

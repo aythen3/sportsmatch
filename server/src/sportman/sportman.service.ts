@@ -99,7 +99,7 @@ export class SportmanService {
    */
   public async update(id: string, updateSportmanDto: UpdateSportmanDto) {
     try {
-      const { sportmanData } = updateSportmanDto;
+      const sportmanData = updateSportmanDto;
       const sportman = await this.findOne(id);
       if (!sportman) {
         throw new ErrorManager({
@@ -109,7 +109,7 @@ export class SportmanService {
       }
       for (const key in sportmanData) {
         if (key === 'info') {
-          sportman.info = { ...sportman.info, ...sportmanData };
+          sportman.info = { ...sportman.info, ...sportmanData[key] };
         } else {
           sportman[key] = sportmanData[key];
         }
