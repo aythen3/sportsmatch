@@ -18,4 +18,11 @@ export class AuthJwtController {
     // Valida las credenciales del usuario y genera un token JWT si son válidas
     return this.authJwtService.loginValidate(user, body.password);
   }
+
+  @Post('google-login')
+  // Método asíncrono que maneja las solicitudes de inicio de sesión
+  async loginGoogle(@Body() body: any) {
+    console.log(body);
+    return body;
+  }
 }

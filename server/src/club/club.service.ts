@@ -93,6 +93,7 @@ export class ClubService {
     try {
       const club = await this.clubRepository
         .createQueryBuilder('club')
+        .leftJoinAndSelect('club.sports', 'sports')
         .where({ id })
         .getOne();
       // Si no se encuentra el club, lanzar una excepción
