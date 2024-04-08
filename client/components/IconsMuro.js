@@ -5,8 +5,9 @@ import CommentSVG from './svg/CommentSVG'
 import ShareSVG from './svg/ShareSVG'
 import LikeSVG from './svg/LikeSVG'
 import { Color } from '../GlobalStyles'
-import { like, listLikes, updateLike } from '../redux/actions/post'
+import { like } from '../redux/actions/post'
 import CommentSection from './modals/CommentSection'
+import { setFindedLikes } from '../redux/slices/post.slices'
 
 const IconsMuro = ({ id, userId }) => {
   const dispatch = useDispatch()
@@ -15,44 +16,39 @@ const IconsMuro = ({ id, userId }) => {
 
   const [modalVisible, setModalVisible] = useState(false)
 
+  useEffect(() => {}, [findedLike])
+
   const handleLike = async (id, userId) => {
     const data = {
       post: id,
       author: userId
     }
-    console.log(
-      'findedLike?.some((likeId) => likeId === id): ',
-      findedLike?.some((likeId) => likeId === id)
+    const liked = findedLike.includes(id)
+    await dispatch(
+      setFindedLikes({
+        ...data,
+        liked
+      })
     )
     await dispatch(like(data))
-    // await dispatch(
-    //   updateLike({
-    //     ...data,
-    //     liked: findedLike?.some((likeId) => likeId === id)
-    //   })
-    // )
-    const authorId = userId
-    await dispatch(listLikes(authorId))
   }
-
   useEffect(() => {
-    const authorId = userId
-    dispatch(listLikes(authorId))
+    console.log('findedLike', findedLike)
+    console.log('id: ', id)
   }, [])
 
   const closeModal = () => {
     setModalVisible(false)
   }
 
-  const liked = findedLike?.some((likeId) => likeId === id)
-
+  if (!findedLike || !id) return null
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.likeView}
         onPress={() => handleLike(id, userId)}
       >
-        <LikeSVG liked={liked} />
+        <LikeSVG id={id} />
       </TouchableOpacity>
       <View style={styles.shareView}>
         <ShareSVG />

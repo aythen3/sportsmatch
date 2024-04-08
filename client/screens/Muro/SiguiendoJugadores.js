@@ -10,7 +10,7 @@ import {
 import { Color } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
 import Carousel from '../../components/Carousel'
-import { getAllLikes, getAllPosts } from '../../redux/actions/post'
+import { getAllLikes, getAllPosts, listLikes } from '../../redux/actions/post'
 import { getUserChild, getUserData } from '../../redux/actions/users'
 import { Context } from '../../context/Context'
 import { getSportman } from '../../redux/actions/sportman'
@@ -37,6 +37,10 @@ const SiguiendoJugadores = () => {
   //   const userId = getUserId()
   //   dispatch(getUserData(userId))
   // }, [])
+
+  useEffect(() => {
+    dispatch(listLikes(user?.user?.id))
+  }, [])
 
   useEffect(() => {
     const data = {

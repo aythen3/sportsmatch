@@ -30,10 +30,9 @@ export const like = createAsyncThunk('like/post', async (body) => {
 
 export const updateLike = createAsyncThunk(
   'updateLike/post',
-  async ({ post, author }) => {
+  async ({ post, author, liked }) => {
     try {
-      console.log({ post, author, like })
-      return { post, author, like }
+      return { post, author, liked }
     } catch (error) {
       throw new Error(error)
     }

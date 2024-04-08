@@ -10,11 +10,12 @@ const Chat = ({ text, isMy, read, hour }) => {
         backgroundColor: isMy
           ? Color.colorDimgray_100
           : Color.bLACK3SPORTSMATCH,
-        padding: 10,
+        padding: 6,
         borderRadius: 10,
         alignSelf: isMy ? 'flex-end' : 'flex-start',
         maxWidth: '80%',
-        flexDirection: 'row',
+        minWidth: 100,
+        flexDirection: 'column',
         marginTop: 20,
         flexWrap: 'wrap'
       }}
@@ -24,8 +25,9 @@ const Chat = ({ text, isMy, read, hour }) => {
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
-          gap: 5
+          gap: 3,
+          justifyContent: 'flex-end',
+          alignItems: 'center'
         }}
       >
         <Text
@@ -39,10 +41,15 @@ const Chat = ({ text, isMy, read, hour }) => {
         >
           {hour}
         </Text>
-        {read && (
+        {read ? (
           <Image
-            style={{ width: 10, height: 10 }}
-            source={require('../assets/group-4541.png')}
+            style={{ width: 17, height: 17 }}
+            source={require('../assets/readed.png')}
+          />
+        ) : (
+          <Image
+            style={{ width: 17, height: 17 }}
+            source={require('../assets/notReaded.png')}
           />
         )}
       </View>

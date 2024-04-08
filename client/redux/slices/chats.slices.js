@@ -9,6 +9,14 @@ const clubSlices = createSlice({
   reducers: {
     setAllMessages: (state, action) => {
       state.allMessages = action.payload
+    },
+    setAllConversationMessagesToRead: (state, action) => {
+      const allToReaded = state.allMessages.map((message) => ({
+        ...message,
+        isReaded: true
+      }))
+      console.log('allToReaded', allToReaded)
+      state.allMessages = allToReaded
     }
   },
   extraReducers: (builder) => {
@@ -44,6 +52,7 @@ const clubSlices = createSlice({
   }
 })
 
-export const { setAllMessages } = clubSlices.actions
+export const { setAllMessages, setAllConversationMessagesToRead } =
+  clubSlices.actions
 
 export default clubSlices.reducer

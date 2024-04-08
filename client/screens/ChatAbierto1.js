@@ -18,6 +18,8 @@ import { useRoute } from '@react-navigation/native'
 import { emptyAllMessages, getChatHistory } from '../redux/actions/chats'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../context/Context'
+import axiosInstance from '../utils/apiBackend'
+import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 
 const ChatAbierto1 = () => {
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
@@ -49,7 +51,17 @@ const ChatAbierto1 = () => {
   }, [])
 
   useEffect(() => {
-    console.log('allMessages changed: ', allMessages)
+    if (allMessages && allMessages.length > 0) {
+      const messagesToSetReaded = allMessages?.filter(
+        (message) =>
+          message.senderId !== user.user.id && message.isReaded === false
+      )
+      console.log('messagesToSetReaded: ', messagesToSetReaded)
+      messagesToSetReaded.forEach((message) => {
+        axiosInstance.put(`chat/readed/${message.id}`)
+        dispatch(setAllConversationMessagesToRead())
+      })
+    }
   }, [allMessages])
 
   return (
@@ -101,7 +113,7 @@ const ChatAbierto1 = () => {
             key={chat.id}
             text={chat.message}
             isMy={chat.senderId === user.user.id}
-            read={true}
+            read={chat.isReaded}
           />
         ))}
       </View>
