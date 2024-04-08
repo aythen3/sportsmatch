@@ -29,10 +29,9 @@ const SiguiendoJugadores = () => {
   //   return userId
   // }
 
-  useEffect(() => {
-    console.log('user data from home: ', user)
-    console.log('allposts from SiguiendoJugadores: ',allPosts)
-  }, [])
+  // useEffect(() => {
+  //   console.log('user data from home: ', user)
+  // }, [])
 
   // useEffect(() => {
   //   const userId = getUserId()

@@ -45,16 +45,18 @@ const SeleccionarImagen = () => {
   console.log(libraryImage)
   const renderizarImagenes = () => {
     return (
-      <View style={styles.galleryContainer}>
-        {imagenes.map((imagen, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleSeleccionarImagen(imagen)}
-          >
-            <Image source={{ uri: imagen.uri }} style={styles.gallery} />
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ScrollView>
+        <View style={styles.galleryContainer}>
+          {imagenes.map((imagen, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleSeleccionarImagen(imagen)}
+            >
+              <Image source={{ uri: imagen.uri }} style={styles.gallery} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
     )
   }
 

@@ -69,7 +69,9 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
     <View style={styles.paso6}>
       <Acordeon
         title="Tipo de profesional"
-        placeholderText="Entrenador"
+        placeholderText={
+          selectedProfesional ? selectedProfesional : 'Entrenador'
+        }
         isAccordeon={true}
         open={openModal}
       />
@@ -87,6 +89,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
         field="yearsOfExperience"
         onValues={handlesValues}
         value={profesionalValues.yearsOfExperience}
+        keyboardType="numeric"
       />
       <Acordeon
         title="Lugar de residencia"

@@ -35,7 +35,6 @@ const CrearHighlight = () => {
       author: user.user.id
     }
     dispatch(createPost(data))
-    alert('Post creado con exito!')
     navigation.navigate('SiguiendoJugadores')
   }
 
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
   codeBlockPersonaEnCanch: {
     marginTop: 20,
     marginBottom: 15,
-    height: 300,
+    height: 340,
     width: '95%',
     left: '2.3%'
   },
@@ -107,7 +106,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: Color.wHITESPORTSMATCH,
     width: '98%',
-    left: '1%'
+    left: '1%',
+    marginTop: '10%'
   },
   descriptionText: {
     fontFamily: FontFamily.t4TEXTMICRO,

@@ -280,8 +280,8 @@ const styles = StyleSheet.create({
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    width: '100%',
-    height: '140%'
+    width: '100%'
+    // height: '140%'
   }
 })
 

@@ -33,8 +33,15 @@ const Paso1 = () => {
   const { profileImage, coverImage } = useContext(Context)
 
   const { sport } = useSelector((state) => state.sports)
-  const { user, sportmanGender, birthdate, city, category, position } =
-    useSelector((state) => state.users)
+  const {
+    user,
+    sportmanGender,
+    birthdate,
+    city,
+    category,
+    position,
+    profesionalType
+  } = useSelector((state) => state.users)
 
   const [selectedRole, setSelectedRole] = useState(null)
   const [sportman, setSportman] = useState(false)
@@ -52,7 +59,7 @@ const Paso1 = () => {
     position: position
   })
   const [profesionalValues, setProfesionalValues] = useState({
-    rol: '',
+    rol: profesionalType,
     sport: sport.name,
     yearsOfExperience: '',
     city: city,
@@ -121,14 +128,18 @@ const Paso1 = () => {
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
-      if (profesional && stepsProfesional === 0) {
+      if (profesional && stepsProfesional === 1) {
+        const fullData = {
+          ...profesionalValues,
+          img_perfil: profileImage,
+          img_front: coverImage
+        }
         const body = {
           sportmanData: {
             type: selectedRole === 'Jugador' ? 'player' : 'coach',
-            info: profesionalValues,
+            info: fullData,
             club: null
           },
-
           userId: user.user.id
         }
         dispatch(createSportman(body))
@@ -364,7 +375,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    marginTop: 30
+    marginTop: 30,
+    paddingBottom: 30
   },
   siguiente1: {
     fontWeight: '700',

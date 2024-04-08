@@ -37,7 +37,7 @@ const MiPerfil = () => {
       return <FeedStats />
     }
   }
-  console.log(sportman)
+
   return (
     <ScrollView style={styles.perfilDatosVisualitzaciMa}>
       <View style={styles.contenidoPerfil}>
@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   imagenPosition: {
-    height: 150,
-    width: 390
+    height: 150
+    // width: '100%'
   },
   imagenIcon: {
     height: 120,
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: '5%'
   },
   bloquePerfil: {
-    height: 227
+    // height: 227
   },
   pestaasSubmenu: {
     justifyContent: 'space-evenly',
@@ -231,8 +231,8 @@ const styles = StyleSheet.create({
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    overflow: 'hidden',
-    width: '100%'
+    overflow: 'hidden'
+    // width: '100%'
   }
 })
 
