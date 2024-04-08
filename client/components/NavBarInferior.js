@@ -99,19 +99,19 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     // justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     gap: 8
   },
   deselected: {
-    width: 60,
+    width: '18.4%',
     height: 70,
     alignItems: 'center',
     justifyContent: 'center'
   },
   selected: {
     backgroundColor: Color.colorDimgray_100,
+    width: '18.4%',
     height: 60,
-    width: 70,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopColor: Color.bALONCESTO,

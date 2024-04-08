@@ -27,7 +27,6 @@ import PerfilDatosPropioClub from './screens/PerfilDatosPropioClub'
 import MiPerfil from './screens/EditarPerfil/MiPerfil'
 import PerfilFeedVisualitzaciJug from './screens/PerfilFeedVisualitzaciJug'
 import ChatAbierto from './screens/ChatAbierto'
-import SiguiendoUsuarios from './screens/SiguiendoUsuarios'
 import SiguiendoJugadores from './screens/Muro/SiguiendoJugadores'
 import OfertasEmitidas from './screens/Ofertas/OfertasEmitidas'
 import InscritosAMisOfertas from './screens/InscritosAMisOfertas'
@@ -262,11 +261,6 @@ const App = () => {
                 <Stack.Screen
                   name="ChatAbierto"
                   component={ChatAbierto}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SiguiendoUsuarios"
-                  component={SiguiendoUsuarios}
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen

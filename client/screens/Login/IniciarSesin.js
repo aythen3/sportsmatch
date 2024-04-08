@@ -64,9 +64,9 @@ const IniciarSesin = () => {
   }, [user])
 
   const handleSubmit = () => {
-    console.log('on handleSubmit')
+    // console.log('on handleSubmit')
     if (valuesUser.email && valuesUser.password) {
-      console.log('valuesuser: ', valuesUser)
+      // console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
           console.log('response from login: ', response)
