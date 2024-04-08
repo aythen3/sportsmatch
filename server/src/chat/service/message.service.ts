@@ -85,4 +85,13 @@ export class MessageService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
+
+  async markAsRead(id: string): Promise<MessageEntity> {
+    const messageToUpdate = await this.messageRepository
+      .createQueryBuilder('message')
+      .where({ id })
+      .getOne();
+    messageToUpdate.isReaded = true;
+    return this.messageRepository.save(messageToUpdate);
+  }
 }
