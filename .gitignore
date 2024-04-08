@@ -14,6 +14,7 @@ pids
 # Directory used by npm for globally installed node modules
 client/node_modules
 client/.env
+client/utils/apiBackend
 server/node_modules
 server/.env
 server/dist

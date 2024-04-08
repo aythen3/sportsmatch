@@ -34,7 +34,7 @@ const PantallaInicio = () => {
           />
         </View>
         <Text style={[styles.tagline, styles.timeFlexBox]}>
-          La primera red social que conecta clubes y deportístas
+          La primera red social que conecta clubes y deportistas
         </Text>
       </View>
       <Image
