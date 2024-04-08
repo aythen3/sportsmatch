@@ -19,6 +19,7 @@ import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { ChatModule } from './chat/chat.module';
 import { StripeModule } from './stripe/stripe.module';
+import { Auth0Module } from './auth0/auth0.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { StripeModule } from './stripe/stripe.module';
     CommentModule,
     LikeModule,
     ChatModule,
-    StripeModule
+    StripeModule,
+    Auth0Module
   ],
   controllers: [],
   providers: []

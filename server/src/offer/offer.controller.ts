@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common';
 import { OfferService } from './offer.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
@@ -21,8 +22,8 @@ export class OfferController {
   }
 
   @Get()
-  findAll() {
-    return this.offerService.findAll();
+  findAll(@Query() query: any) {
+    return this.offerService.findAll(query);
   }
 
   @Get(':id')

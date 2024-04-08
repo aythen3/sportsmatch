@@ -55,10 +55,16 @@ export class OfferService {
     }
   }
 
-  public async findAll() {
+  public async findAll(query: UpdateOfferDto) {
     try {
+      const where = { isDelete: false };
+      if (query) {
+        for (const key in query) {
+          where[key] = query[key];
+        }
+      }
       const offer: OfferEntity[] = await this.offerRepository.find({
-        where: { isDelete: false }
+        where: where
       });
       if (offer.length === 0) {
         throw new ErrorManager({
