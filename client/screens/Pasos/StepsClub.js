@@ -21,8 +21,9 @@ import EscogerDeporte1 from './EscogerDeporte1'
 import Paso2Jugador from './Paso2Jugador'
 import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
-import { createClub } from '../../redux/actions/club'
+import { createClub, getClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
+import { updateUserClubData } from '../../redux/actions/users'
 
 const StepsClub = () => {
   const navigation = useNavigation()
@@ -61,8 +62,30 @@ const StepsClub = () => {
         clubData: clubValues,
         sportId: sport.id
       }
+      console.log('data from handleRegister: ', data)
       await dispatch(createClub(data))
-      navigation.navigate('SiguiendoJugadores')
+        .then((response) => {
+          console.log(
+            'userData after club creation:',
+            response.meta.arg.clubData
+          )
+          dispatch(getClub(response.payload.id))
+          dispatch(
+            updateUserClubData({
+              id: response.meta.arg.userId,
+              data: response.meta.arg.clubData
+            })
+          )
+            .then(() => {
+              navigation.navigate('SiguiendoJugadores')
+            })
+            .catch((error) => {
+              console.error('Error updating user club data:', error)
+            })
+        })
+        .catch((error) => {
+          console.error('Error creating club:', error)
+        })
     }
   }
 
