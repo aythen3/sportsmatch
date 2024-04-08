@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   paso6: {
     width: '100%',
-    backgroundColor: Color.bLACK3SPORTSMATCH
+    backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 
