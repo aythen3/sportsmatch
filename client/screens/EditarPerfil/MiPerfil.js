@@ -26,6 +26,7 @@ const MiPerfil = () => {
   const dispatch = useDispatch()
 
   const { sportman } = useSelector((state) => state.sportman)
+  const { user } = useSelector((state) => state.users)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
 
@@ -43,29 +44,34 @@ const MiPerfil = () => {
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
-          source={sportman.info.img_front}
+          source={sportman?.info.img_front}
         />
         <View style={styles.bloquePerfil}>
           <View style={styles.imagenInformacion1}>
             <Image
               style={styles.imagenIcon}
               contentFit="cover"
-              source={sportman.info.img_perfil}
+              source={sportman?.info.img_perfil}
             />
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-                <Text style={styles.textTypo}>Jordi Espelt</Text>
-                <Text style={styles.textTypo}>Pívot</Text>
-                <Text style={styles.textTypo}>asddasasd</Text>
+                <Text style={styles.textTypo}>{user?.user.nickname}</Text>
+                <Text style={styles.textTypo}>{sportman?.info.position}</Text>
+                <Text style={styles.textTypo}>{sportman?.info.sport}</Text>
               </View>
               <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>
-                Jugando al Unió Esportíva de Mataró desde el 2021
+                {sportman?.info.actualClub.length > 0
+                  ? `Jugando en ${sportman?.info.actualClub}`
+                  : 'Sin club actualmente'}
               </Text>
             </View>
           </View>
 
           <View style={styles.botonesPerfilSubscripcion}>
-            <TouchableOpacity style={styles.botonEditarPerfilChild}>
+            <TouchableOpacity
+              style={styles.botonEditarPerfilChild}
+              onPress={() => navigation.navigate('EditarPerfil')}
+            >
               <Text style={styles.editarPerfil}>Editar perfil</Text>
             </TouchableOpacity>
 
@@ -73,12 +79,12 @@ const MiPerfil = () => {
               <Text style={styles.miSuscripcin}>Mi suscripción</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.bloqueNumeroSeguidores}>
+          {/* <View style={styles.bloqueNumeroSeguidores}>
             <Text style={[styles.seguidores, styles.seguidoresTypo]}>
               Seguidores
             </Text>
             <Text style={[styles.text, styles.textTypo]}>24</Text>
-          </View>
+          </View> */}
         </View>
         <View style={styles.feddImagenespestaasSubmenu}>
           <View style={styles.pestaasSubmenu}>
@@ -140,8 +146,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   imagenPosition: {
-    height: 150,
-    width: 390
+    height: 150
+    // width: '100%'
   },
   imagenIcon: {
     height: 120,
@@ -211,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: '5%'
   },
   bloquePerfil: {
-    height: 227
+    // height: 227
   },
   pestaasSubmenu: {
     justifyContent: 'space-evenly',
@@ -225,8 +231,8 @@ const styles = StyleSheet.create({
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    overflow: 'hidden',
-    width: '100%'
+    overflow: 'hidden'
+    // width: '100%'
   }
 })
 

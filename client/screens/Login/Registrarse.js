@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   Pressable,
   View,
   TextInput,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -18,7 +19,7 @@ import {
 } from '../../GlobalStyles'
 import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
-import { create } from '../../redux/actions/users'
+import { create, getAllUsers } from '../../redux/actions/users'
 
 const Registrarse = () => {
   const navigation = useNavigation()
@@ -27,7 +28,7 @@ const Registrarse = () => {
 
   const dispatch = useDispatch()
 
-  const { isSportman } = useSelector((state) => state.users)
+  const { isSportman, allUsers } = useSelector((state) => state.users)
   const { isPlayer } = route.params
 
   const emailInputRef = useRef(null)
@@ -42,12 +43,26 @@ const Registrarse = () => {
     type: isSportman === true ? 'sportman' : 'club'
   })
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [isEmailValid, setEmailValid] = useState(false)
+
+  useEffect(() => {
+    dispatch(getAllUsers())
+  }, [])
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.(?:com|net|org|edu|gov|mil|biz|info|name|museum|us|ca|uk|fr|au|de)$/i.test(
+      email
+    )
+  }
 
   const seterValues = (field, value) => {
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
     }))
+    if (field === 'email') {
+      setEmailValid(isValidEmail(value))
+    }
   }
 
   const handleCheckboxToggle = () => {
@@ -56,11 +71,20 @@ const Registrarse = () => {
 
   const submit = () => {
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
-      if (valuesUser.password === confirmPassword) {
-        dispatch(create(valuesUser))
-        navigation.navigate('IniciarSesin', { isPlayer })
-      } else {
-        Alert.alert('Las contraseñas no coinciden')
+      if (isValidEmail(valuesUser.email)) {
+        const existingUser = allUsers.find(
+          (user) => user.email === valuesUser.email
+        )
+        if (existingUser) {
+          Alert.alert('Este correo electrónico ya está registrado')
+          return
+        }
+        if (valuesUser.password === confirmPassword) {
+          dispatch(create(valuesUser))
+          navigation.navigate('IniciarSesin', { isPlayer })
+        } else {
+          Alert.alert('Las contraseñas no coinciden')
+        }
       }
     } else {
       Alert.alert('Debes llenar todos los campos')
@@ -131,6 +155,12 @@ const Registrarse = () => {
                           passwordInputRef.current.focus()
                         }}
                       />
+
+                      {!isEmailValid ? (
+                        <Text style={styles.errorEmail}>X</Text>
+                      ) : (
+                        <Text style={styles.successEmail}>✔</Text>
+                      )}
                     </View>
                   </View>
                   <View style={[styles.campo3Frame, styles.framePosition]}>
@@ -179,13 +209,14 @@ const Registrarse = () => {
           </View>
           <View style={styles.botonRegistrate}>
             <View style={styles.loremPosition}>
-              <View style={[styles.loremIpsum, styles.loremPosition]}>
+              <TouchableOpacity
+                style={[styles.loremIpsum, styles.loremPosition]}
+                onPress={submit}
+              >
                 <View style={styles.loremIpsum1}>
-                  <Text style={styles.aceptar} onPress={submit}>
-                    Regístrate
-                  </Text>
+                  <Text style={styles.aceptar}>Regístrate</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <Pressable
@@ -427,6 +458,22 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
+  },
+  errorEmail: {
+    color: 'red',
+    bottom: 8,
+    fontWeight: '700',
+    fontSize: 18,
+    marginLeft: '95%',
+    position: 'absolute'
+  },
+  successEmail: {
+    color: 'green',
+    bottom: 8,
+    fontWeight: '700',
+    fontSize: 18,
+    marginLeft: '95%',
+    position: 'absolute'
   }
 })
 

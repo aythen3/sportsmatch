@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
 import Acordeon from './Acordeon'
 import { setCategory, setPosition } from '../redux/slices/users.slices'
+import { updateSportman } from '../redux/actions/sportman'
 
 const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   const navigation = useNavigation()
 
   const dispatch = useDispatch()
 
+  const { sportman } = useSelector((state) => state.sportman)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
   const [positionModalVisible, setPositionModalVisible] = useState(false)
   const [selectedPosition, setSelectedPosition] = useState(null)
+  const [editData, setEditData] = useState(null)
 
   const opcionesCategoria = [
     'Escuela (4-6 años)',
@@ -54,11 +58,25 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   const handleData = (key, value) => {
-    const newData = {
-      ...data,
-      [key]: value
+    if (!editable) {
+      const newData = {
+        ...data,
+        [key]: value
+      }
+      setData(newData)
+    } else {
+      setEditData({ ...editData, [key]: value })
     }
-    setData(newData)
+  }
+
+  const handleEdit = () => {
+    navigation.navigate('EditarPerfil')
+    setEditable(false)
+    const body = {
+      id: sportman?.id,
+      newData: editData
+    }
+    dispatch(updateSportman(body))
   }
 
   return (
@@ -195,13 +213,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
       </View>
       {editable && (
         <View style={styles.buttonContainer}>
-          <Pressable
-            style={styles.saveButton}
-            onPress={() => {
-              navigation.navigate('EditarPerfil')
-              setEditable(false)
-            }}
-          >
+          <Pressable style={styles.saveButton} onPress={handleEdit}>
             <Text style={styles.saveButtonText}>Guardar</Text>
           </Pressable>
         </View>

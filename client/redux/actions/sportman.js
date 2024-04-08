@@ -26,6 +26,7 @@ export const updateSportman = createAsyncThunk(
   'update/sportman',
   async (body) => {
     try {
+      console.log('body from updateSportman: ', body)
       const { id, newData } = body
       const { data } = await axiosInstance.patch(`sportman/${id}`, newData)
       return data

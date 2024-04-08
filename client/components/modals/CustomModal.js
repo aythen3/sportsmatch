@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native'
 import { Color } from '../../GlobalStyles'
 
 const CustomModal = ({ closeModal, onSelectItem, options }) => {
   return (
-    <View style={styles.modalContainer}>
+    <ScrollView style={styles.modalContainer}>
       <View style={styles.modalContent}>
         {options.map((item, index) => (
           <Pressable
@@ -19,22 +19,22 @@ const CustomModal = ({ closeModal, onSelectItem, options }) => {
           </Pressable>
         ))}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom: 10
+    // bottom: 10,
+    height: 200
   },
   modalContent: {
     padding: 20,
     borderRadius: 10,
     elevation: 5,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   optionButton: {
     paddingVertical: 10,

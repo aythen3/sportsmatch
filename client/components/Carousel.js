@@ -61,7 +61,7 @@ function Carousel({
           />
         </View> */}
       </PagerView>
-      <View>
+      <View style={{ padding: 5 }}>
         <LinearGradient
           style={styles.botonPromocionarPublicacion}
           locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
@@ -165,14 +165,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    width: '100%',
-    marginVertical: 15,
-    paddingHorizontal: 10
+    width: '100%'
   },
   topContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10
+    gap: 10,
+    padding: 5
   },
   imgPerfil: {
     width: 30,

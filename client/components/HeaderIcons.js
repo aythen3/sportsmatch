@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     marginTop: 50,
-    marginBottom: 30
+    marginBottom: 15
   },
   superiorLayout: {
     height: 45,
