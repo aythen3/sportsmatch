@@ -56,6 +56,7 @@ export class MessageService {
       //     message: 'Room messages not found'
       //   });
       // }
+
       return roomMessages;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
