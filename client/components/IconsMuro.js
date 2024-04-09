@@ -32,10 +32,10 @@ const IconsMuro = ({ id, userId }) => {
     )
     await dispatch(like(data))
   }
-  useEffect(() => {
-    console.log('findedLike', findedLike)
-    console.log('id: ', id)
-  }, [])
+  // useEffect(() => {
+  //   console.log('findedLike', findedLike)
+  //   console.log('id: ', id)
+  // }, [])
 
   const closeModal = () => {
     setModalVisible(false)

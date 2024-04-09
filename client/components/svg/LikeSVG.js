@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const LikeSVG = ({ id }) => {
   const { findedLike } = useSelector((state) => state.post)
   useEffect(() => {
-    console.log('like changed: ', findedLike?.includes(id))
+    // console.log('like changed: ', findedLike?.includes(id))
   }, [findedLike])
   return (
     <Svg

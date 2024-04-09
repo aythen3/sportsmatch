@@ -76,7 +76,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
       id: sportman?.id,
       newData: editData
     }
-    console.log('body from handleEdit:', body)
+    // console.log('body from handleEdit:', body)
     dispatch(updateSportman(body))
   }
 

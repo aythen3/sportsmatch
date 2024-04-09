@@ -13,7 +13,7 @@ export const POSITIONS = [
     ]
   },
   {
-    sport: 'Basquekball',
+    sport: 'Basquetbol',
     positions: ['BASE', 'ESCOLTA', 'ALERO', 'ALA-PIVOT', 'PIVOT']
   },
   {

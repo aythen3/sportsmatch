@@ -26,12 +26,10 @@ export const updateSportman = createAsyncThunk(
   'update/sportman',
   async (body) => {
     try {
-      console.log('body from updateSportman: ', body)
       const { id, newData } = body
       const { data } = await axiosInstance.patch(`sportman/${id}`, {
         info: newData
       })
-      console.log('data response from updateSportsman: ', data)
       return data
     } catch (error) {
       throw new Error(error)

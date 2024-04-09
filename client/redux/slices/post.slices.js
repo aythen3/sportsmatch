@@ -19,8 +19,6 @@ const postSlices = createSlice({
   },
   reducers: {
     setFindedLikes: (state, action) => {
-      console.log('{ post, author, liked }: ', action.payload)
-
       const updateLikesById = (array, id, action) => {
         return array.map((obj) => {
           if (obj.id === id) {
@@ -32,10 +30,8 @@ const postSlices = createSlice({
       }
 
       const alreadyLiked = state.findedLike.includes(action.payload.post)
-      console.log('alreadyLiked: ', alreadyLiked)
 
       const operation = alreadyLiked ? 'substract' : 'add'
-      console.log('operation: ', operation)
 
       const updatedPosts = updateLikesById(
         [...state.allPosts],
@@ -52,7 +48,6 @@ const postSlices = createSlice({
       } else {
         newLikesArray.push(action.payload.post)
       }
-      console.log('newLikes; ', newLikesArray)
 
       return {
         ...state,
