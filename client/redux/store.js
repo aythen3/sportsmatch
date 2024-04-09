@@ -9,6 +9,7 @@ import sportmanSlices from './slices/sportman.slices'
 import postSlices from './slices/post.slices'
 import commentsSlices from './slices/comments.slices'
 import ChatsSlices from './slices/chats.slices'
+import positionsSlices from './slices/positions.slices'
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     sportman: sportmanSlices,
     post: postSlices,
     comments: commentsSlices,
-    chats: ChatsSlices
+    chats: ChatsSlices,
+    positions: positionsSlices
   }
 })

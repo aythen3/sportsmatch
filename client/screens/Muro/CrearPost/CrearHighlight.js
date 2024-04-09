@@ -13,6 +13,7 @@ import {
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { createPost } from '../../../redux/actions/post'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CrearHighlight = () => {
   const navigation = useNavigation()
@@ -38,7 +39,7 @@ const CrearHighlight = () => {
   }
 
   return (
-    <ScrollView style={styles.crearHighlight}>
+    <SafeAreaView style={styles.crearHighlight}>
       <View style={styles.container}>
         <Pressable onPress={() => navigation.goBack()}>
           <Image
@@ -66,7 +67,7 @@ const CrearHighlight = () => {
           value={description}
         />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 

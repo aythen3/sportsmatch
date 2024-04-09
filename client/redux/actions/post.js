@@ -28,6 +28,17 @@ export const like = createAsyncThunk('like/post', async (body) => {
   }
 })
 
+export const updateLike = createAsyncThunk(
+  'updateLike/post',
+  async ({ post, author, liked }) => {
+    try {
+      return { post, author, liked }
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const getAllLikes = createAsyncThunk('getAllLikes/post', async () => {
   try {
     const { data } = await axiosInstance.get('like')
@@ -42,6 +53,17 @@ export const listLikes = createAsyncThunk(
   async (authorId) => {
     try {
       const { data } = await axiosInstance.get(`like/list?authorId=${authorId}`)
+      console.log('data from listLikes: ', data)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+export const updateListLikes = createAsyncThunk(
+  'updateListLikes/post',
+  async ({ authorId, bool }) => {
+    try {
       return data
     } catch (error) {
       throw new Error(error)

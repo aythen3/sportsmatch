@@ -12,6 +12,7 @@ import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import * as MediaLibrary from 'expo-media-library'
 import { Context } from '../../../context/Context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage } = useContext(Context)
@@ -60,7 +61,7 @@ const SeleccionarImagen = () => {
   }
 
   return (
-    <View style={styles.crearHighlight}>
+    <SafeAreaView style={styles.crearHighlight}>
       <View style={styles.container}>
         <Pressable onPress={() => navigation.goBack()}>
           <Image
@@ -84,7 +85,7 @@ const SeleccionarImagen = () => {
         source={{ uri: selectedImage?.uri }}
       />
       {renderizarImagenes()}
-    </View>
+    </SafeAreaView>
   )
 }
 

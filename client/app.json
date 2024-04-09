@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "1.0.0",
     "name": "sportsmatch",
-    "slug": "sportmatchv1",
+    "slug": "sportsmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -41,9 +41,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "6a964a35-f774-41a2-a003-2885557cc629"
+        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
       }
     },
-    "owner": "mauriidg"
+    "owner": "aythenapps"
   }
 }

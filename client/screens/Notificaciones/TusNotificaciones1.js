@@ -134,7 +134,11 @@ const TusNotificaciones1 = () => {
               ))}
         </View> */}
         {selectedComponent === 'messages' && (
-          <ScrollView style={{ marginTop: 30 }}>
+          <ScrollView
+            style={{
+              marginTop: 30
+            }}
+          >
             {allUsers?.map((user) => (
               <MessagesChat
                 key={user.id}
@@ -179,7 +183,8 @@ const styles = StyleSheet.create({
     height: 20
   },
   tuBuznParent: {
-    marginTop: 50
+    marginTop: 50,
+    height: '90%'
   },
   backButton: {
     flexDirection: 'row',

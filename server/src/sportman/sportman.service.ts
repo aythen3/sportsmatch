@@ -115,12 +115,9 @@ export class SportmanService {
       }
       console.log('sportman: ', sportman);
       for (const key in sportmanData) {
-        console.log('sportman: ', key);
         if (key === 'info') {
-          console.log('entre ');
           sportman.info = { ...sportman.info, ...sportmanData[key] };
         } else {
-          console.log('no entre ');
           sportman[key] = sportmanData[key];
         }
       }

@@ -4,7 +4,8 @@ import {
   getAllLikes,
   getAllPosts,
   like,
-  listLikes
+  listLikes,
+  updateLike
 } from '../actions/post'
 
 const postSlices = createSlice({
@@ -16,7 +17,50 @@ const postSlices = createSlice({
     findedLike: [],
     loading: false
   },
-  reducers: {},
+  reducers: {
+    setFindedLikes: (state, action) => {
+      console.log('{ post, author, liked }: ', action.payload)
+
+      const updateLikesById = (array, id, action) => {
+        return array.map((obj) => {
+          if (obj.id === id) {
+            const newLikes = action === 'add' ? obj.likes + 1 : obj.likes - 1
+            return { ...obj, likes: newLikes }
+          }
+          return obj
+        })
+      }
+
+      const alreadyLiked = state.findedLike.includes(action.payload.post)
+      console.log('alreadyLiked: ', alreadyLiked)
+
+      const operation = alreadyLiked ? 'substract' : 'add'
+      console.log('operation: ', operation)
+
+      const updatedPosts = updateLikesById(
+        [...state.allPosts],
+        action.payload.post,
+        operation
+      )
+
+      let newLikesArray = [...state.findedLike]
+
+      if (alreadyLiked) {
+        newLikesArray = newLikesArray.filter(
+          (like) => like !== action.payload.post
+        )
+      } else {
+        newLikesArray.push(action.payload.post)
+      }
+      console.log('newLikes; ', newLikesArray)
+
+      return {
+        ...state,
+        allPosts: updatedPosts,
+        findedLike: newLikesArray
+      }
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Traer todos los post
@@ -48,19 +92,19 @@ const postSlices = createSlice({
         state.error = true
       })
       // Dar like
-      .addCase(like.pending, (state) => {
-        state.loading = true
-        state.error = false
-      })
-      .addCase(like.fulfilled, (state, action) => {
-        state.loading = false
-        state.post = action.payload
-        state.error = false
-      })
-      .addCase(like.rejected, (state) => {
-        state.loading = false
-        state.error = true
-      })
+      // .addCase(like.pending, (state) => {
+      //   state.loading = true
+      //   state.error = false
+      // })
+      // .addCase(like.fulfilled, (state, action) => {
+      //   state.loading = false
+      //   state.post = action.payload
+      //   state.error = false
+      // })
+      // .addCase(like.rejected, (state) => {
+      //   state.loading = false
+      //   state.error = true
+      // })
       // Traer todos los likes
       .addCase(getAllLikes.pending, (state) => {
         state.loading = true
@@ -75,7 +119,7 @@ const postSlices = createSlice({
         state.loading = false
         state.error = true
       })
-      // Encontrar like
+      // Encontrar likes de user
       .addCase(listLikes.pending, (state) => {
         state.loading = true
         state.error = false
@@ -91,5 +135,5 @@ const postSlices = createSlice({
       })
   }
 })
-
+export const { setFindedLikes } = postSlices.actions
 export default postSlices.reducer

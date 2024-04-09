@@ -33,7 +33,7 @@ const IniciarSesin = () => {
 
   const { user } = useSelector((state) => state.users)
 
-  const { isPlayer } = route.params
+  // const { isPlayer } = route.params
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -48,10 +48,11 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    console.log('user from IniciarSesin: ', user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
-      if (!isPlayer) {
+      if (user?.user?.type === 'club') {
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
@@ -69,7 +70,7 @@ const IniciarSesin = () => {
       // console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response from login: ', response)
+          console.log('response from login: ', response.payload.user.club)
           await AsyncStorage.setItem('userToken', response.payload.accesToken)
           await AsyncStorage.setItem('userId', response.payload.user.id)
           dispatch(setClub(response))
@@ -163,7 +164,7 @@ const IniciarSesin = () => {
             </View>
             <Pressable
               style={styles.noTenesUnaContainer}
-              onPress={() => navigation.navigate('Registrarse')}
+              onPress={() => navigation.navigate('LoginSwitch')}
             >
               <Text
                 style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
