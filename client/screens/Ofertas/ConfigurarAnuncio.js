@@ -87,18 +87,7 @@ const ConfigurarAnuncio = () => {
   useEffect(() => {
     getClubData(club.id)
   }, [])
-  useEffect(() => {
-    if (clubData && allPositions) {
-      console.log(
-        'filteredPos: ',
-        allPositions
-          .filter(
-            (position) => position?.sport?.name === clubData?.sports[0]?.name
-          )
-          .map((position) => position?.name)
-      )
-    }
-  }, [clubData])
+
   if (!clubData && allPositions) return null
   return (
     <SafeAreaView style={styles.configurarAnuncio}>
@@ -112,141 +101,102 @@ const ConfigurarAnuncio = () => {
             X
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('setting modal to : ', !showModal)
-            setShowModal(!showModal)
-          }}
-          style={{
-            borderWidth: 1,
-            position: 'relative',
-            borderColor: '#fff',
+        <View style={styles.innerContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowModal(!showModal)
+            }}
+            style={styles.containerBox}
+          >
+            <Text style={styles.inputText}>
+              {selectedPosition || 'Selecciona una posicion'}
+            </Text>
+            {showModal && (
+              <CustomModal
+                closeModal={setShowModal}
+                onSelectItem={setSelectedPosition}
+                options={allPositions
+                  .filter(
+                    (position) =>
+                      position.sport.name === clubData.sports[0].name
+                  )
+                  .map((position) => {
+                    return position.name
+                  })}
+              />
+            )}
+          </TouchableOpacity>
 
-            borderRadius: 50,
-            width: '100%',
-            height: 40
-          }}
-        >
-          <Text style={{ color: '#fff' }}>
-            {selectedPosition || 'Selecciona una posicion'}
-          </Text>
-          {showModal && (
-            <CustomModal
-              closeModal={setShowModal}
-              onSelectItem={setSelectedPosition}
-              options={allPositions
-                .filter(
-                  (position) => position.sport.name === clubData.sports[0].name
-                )
-                .map((position) => {
-                  return position.name
-                })}
-            />
-          )}
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setShowGenderModal(!showGenderModal)
+            }}
+            style={styles.containerBox}
+          >
+            <Text style={styles.inputText}>
+              {selectedGender || 'Selecciona un genero'}
+            </Text>
+            {showGenderModal && (
+              <CustomModal
+                closeModal={setShowGenderModal}
+                onSelectItem={setSelectedGender}
+                options={['Male', 'Female']}
+              />
+            )}
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            setShowGenderModal(!showGenderModal)
-          }}
-          style={{
-            borderWidth: 1,
-            position: 'relative',
-            borderColor: '#fff',
-
-            borderRadius: 50,
-            width: '100%',
-            height: 40
-          }}
-        >
-          <Text style={{ color: '#fff' }}>
-            {selectedGender || 'Selecciona un genero'}
-          </Text>
-          {showGenderModal && (
-            <CustomModal
-              closeModal={setShowGenderModal}
-              onSelectItem={setSelectedGender}
-              options={['Male', 'Female']}
-            />
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            setShowCategoryModal(!showCategoryModal)
-          }}
-          style={{
-            borderWidth: 1,
-            position: 'relative',
-            borderColor: '#fff',
-
-            borderRadius: 50,
-            width: '100%',
-            height: 40
-          }}
-        >
-          <Text style={{ color: '#fff' }}>
-            {selectedCategory || 'Selecciona una categoria'}
-          </Text>
-          {showCategoryModal && (
-            <CustomModal
-              closeModal={setShowCategoryModal}
-              onSelectItem={setSelectedCategory}
-              options={categories}
-            />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setShowPriorityModal(!showPriorityModal)
-          }}
-          style={{
-            borderWidth: 1,
-            position: 'relative',
-            borderColor: '#fff',
-
-            borderRadius: 50,
-            width: '100%',
-            height: 40
-          }}
-        >
-          <Text style={{ color: '#fff' }}>
-            {selectedPriority || 'Seleccione el nivel de urgencia'}
-          </Text>
-          {showPriorityModal && (
-            <CustomModal
-              closeModal={setShowPriorityModal}
-              onSelectItem={setSelectedPriority}
-              options={numbers}
-            />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setShowRemunerationModal(!showRemunerationModal)
-          }}
-          style={{
-            borderWidth: 1,
-            position: 'relative',
-            borderColor: '#fff',
-
-            borderRadius: 50,
-            width: '100%',
-            height: 40
-          }}
-        >
-          <Text style={{ color: '#fff' }}>
-            {selectedRemuneration || 'Seleccione remuneracion'}
-          </Text>
-          {showRemunerationModal && (
-            <CustomModal
-              closeModal={setShowRemunerationModal}
-              onSelectItem={setSelectedRemuneration}
-              options={['Si', 'No']}
-            />
-          )}
-        </TouchableOpacity>
-
+          <TouchableOpacity
+            onPress={() => {
+              setShowCategoryModal(!showCategoryModal)
+            }}
+            style={styles.containerBox}
+          >
+            <Text style={styles.inputText}>
+              {selectedCategory || 'Selecciona una categoria'}
+            </Text>
+            {showCategoryModal && (
+              <CustomModal
+                closeModal={setShowCategoryModal}
+                onSelectItem={setSelectedCategory}
+                options={categories}
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setShowPriorityModal(!showPriorityModal)
+            }}
+            style={styles.containerBox}
+          >
+            <Text style={styles.inputText}>
+              {selectedPriority || 'Seleccione el nivel de urgencia'}
+            </Text>
+            {showPriorityModal && (
+              <CustomModal
+                closeModal={setShowPriorityModal}
+                onSelectItem={setSelectedPriority}
+                options={numbers}
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setShowRemunerationModal(!showRemunerationModal)
+            }}
+            style={styles.containerBox}
+          >
+            <Text style={styles.inputText}>
+              {selectedRemuneration || 'Seleccione remuneracion'}
+            </Text>
+            {showRemunerationModal && (
+              <CustomModal
+                closeModal={setShowRemunerationModal}
+                onSelectItem={setSelectedRemuneration}
+                options={['Si', 'No']}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
         <Pressable
           style={styles.botonsOferta}
           onPress={() => navigation.navigate('SiguiendoJugadores')}
@@ -327,13 +277,14 @@ const styles = StyleSheet.create({
     backgroundColor: Color.wHITESPORTSMATCH
   },
   botonsOferta: {
-    marginTop: 50,
+    // marginTop: 50,
     flexDirection: 'row',
     justifyContent: 'center'
   },
   contenido: {
     top: '5%',
-    marginBottom: '10%'
+    marginBottom: '5%',
+    gap: 25
   },
   configurarAnuncio: {
     flex: 1,
@@ -343,6 +294,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 15
+  },
+  containerBox: {
+    borderWidth: 0.5,
+    position: 'relative',
+    borderColor: Color.colorWhitesmoke,
+    borderRadius: 50,
+    width: '90%',
+    height: 40,
+    justifyContent: 'center',
+    paddingHorizontal: 15
+  },
+  innerContainer: {
+    alignItems: 'center',
+    gap: 20
+  },
+  inputText: {
+    color: Color.colorWhitesmoke,
+    fontFamily: FontFamily.t4TEXTMICRO
   }
 })
 

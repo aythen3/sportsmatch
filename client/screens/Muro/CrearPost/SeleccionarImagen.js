@@ -42,7 +42,7 @@ const SeleccionarImagen = () => {
     setSelectedImage(imagen)
     pickImage('a', imagen.uri)
   }
-  console.log(libraryImage)
+
   const renderizarImagenes = () => {
     return (
       <ScrollView>

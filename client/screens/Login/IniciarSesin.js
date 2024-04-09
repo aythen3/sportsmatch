@@ -48,7 +48,6 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    console.log('user from IniciarSesin: ', user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
@@ -70,7 +69,6 @@ const IniciarSesin = () => {
       // console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response from login: ', response.payload.user.club)
           await AsyncStorage.setItem('userToken', response.payload.accesToken)
           await AsyncStorage.setItem('userId', response.payload.user.id)
           dispatch(setClub(response))

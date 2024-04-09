@@ -39,10 +39,6 @@ const ClubDetails = () => {
 
   const { club } = useSelector((state) => state.clubs)
 
-  useEffect(() => {
-    console.log('club from CD: ', club)
-  }, [])
-
   const inputs = [
     {
       title: 'Nombre del club',
@@ -115,7 +111,6 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    console.log('updating club data...', filteredData)
     dispatch(updateClubData({ id: club.id, body: filteredData }))
     setProfileImage()
     setCoverImage()

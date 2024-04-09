@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from '../../utils/apiBackend'
 
 export const setOffer = createAsyncThunk('setOffer', async (offer) => {
-  console.log('offerL ', offer)
   try {
     const { data } = await axiosInstance.post('offer', offer)
     return data
