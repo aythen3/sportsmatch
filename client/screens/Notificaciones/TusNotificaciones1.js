@@ -19,10 +19,11 @@ const TusNotificaciones1 = () => {
   const { notifications, messages, userMessages } = useSelector(
     (state) => state.notifications
   )
+  const { sportman } = useSelector((state) => state.sportman)
   const { user, allUsers } = useSelector((state) => state.users)
-
+  // console.log('allUsers: ', allUsers)
   const [selectedComponent, setSelectedComponent] = useState('notifications')
-
+  const userId = user.user.id
   return (
     <View style={styles.tusNotificaciones}>
       <View style={styles.tuBuznParent}>
@@ -109,47 +110,26 @@ const TusNotificaciones1 = () => {
             />
           </View>
         )}
-        {/* <View style={{ marginTop: 30 }}>
-          {selectedComponent === 'messages' && user.user.type === 'club'
-            ? messages.map((message) => (
-                <MessagesChat
-                  key={message.id}
-                  name={message.name}
-                  message={message.message}
-                  send={message.send}
-                  read={message.read}
-                  confirmation={message.confirmation}
-                />
-              ))
-            : selectedComponent === 'messages' &&
-              userMessages.map((message) => (
-                <MessagesChat
-                  key={message.id}
-                  name={message.name}
-                  message={message.message}
-                  send={message.send}
-                  read={message.read}
-                  confirmation={message.confirmation}
-                />
-              ))}
-        </View> */}
         {selectedComponent === 'messages' && (
           <ScrollView
             style={{
               marginTop: 30
             }}
           >
-            {allUsers?.map((user) => (
-              <MessagesChat
-                key={user.id}
-                name={user.nickname}
-                selectedUserId={user.id}
-                // message={user.message}
-                // send={user.send}
-                // read={user.read}
-                // confirmation={user.confirmation}
-              />
-            ))}
+            {allUsers
+              ?.filter((user) => user?.id !== userId)
+              .map((user) => (
+                <MessagesChat
+                  key={user.id}
+                  name={user.nickname}
+                  profilePic={
+                    user?.user?.type !== 'club'
+                      ? user?.user?.info?.img_perfil
+                      : user?.user?.club?.img_perfil
+                  }
+                  selectedUserId={user.id}
+                />
+              ))}
           </ScrollView>
         )}
       </View>

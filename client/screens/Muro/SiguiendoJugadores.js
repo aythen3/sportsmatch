@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Text
+  Text,
+  StatusBar
 } from 'react-native'
 import { Color } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
@@ -15,8 +16,11 @@ import { getUserChild, getUserData } from '../../redux/actions/users'
 import { Context } from '../../context/Context'
 import { getSportman } from '../../redux/actions/sportman'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useIsFocused } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SiguiendoJugadores = () => {
+  const isFocused = useIsFocused()
   const dispatch = useDispatch()
 
   const { joinRoom, sendMessage } = useContext(Context)
@@ -68,7 +72,10 @@ const SiguiendoJugadores = () => {
   //   )
   // }
   return (
-    <View style={styles.siguiendoJugadores}>
+    <SafeAreaView style={styles.siguiendoJugadores}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <ScrollView>
         <HeaderIcons />
         {sortedPosts.map((publication, i) => (
@@ -91,7 +98,7 @@ const SiguiendoJugadores = () => {
           />
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -7,7 +7,8 @@ import {
   View,
   ScrollView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -21,8 +22,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
+import { useIsFocused } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const IniciarSesin = () => {
+  const isFocused = useIsFocused()
   const navigation = useNavigation()
 
   const route = useRoute()
@@ -82,7 +86,10 @@ const IniciarSesin = () => {
   }
 
   return (
-    <ScrollView style={styles.iniciarSesin}>
+    <SafeAreaView style={styles.iniciarSesin}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <View style={styles.contenido}>
         <Image
           style={styles.fondoIcon}
@@ -181,7 +188,7 @@ const IniciarSesin = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 

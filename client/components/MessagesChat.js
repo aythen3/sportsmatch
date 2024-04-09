@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
@@ -8,15 +8,11 @@ import { useNavigation } from '@react-navigation/core'
 import { getChatHistory } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useIsFocused } from '@react-navigation/native'
 
-const MessagesChat = ({
-  name,
-  message,
-  read,
-  send,
-  confirmation,
-  selectedUserId
-}) => {
+const MessagesChat = ({ name, selectedUserId, profilePic }) => {
+  const isFocused = useIsFocused()
   const { getTimeFromDate } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState()
@@ -44,12 +40,16 @@ const MessagesChat = ({
       getLastMessage(convMessages)
     }
   }, [convMessages])
+  console.log('profilePic;', profilePic)
 
   // const cuteMessage =
   //   message.length >= 35 ? message.slice(0, 35).concat('...') : message
 
   return (
-    <>
+    <SafeAreaView>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <Pressable
         style={styles.pressable}
         onPress={() => {
@@ -59,43 +59,23 @@ const MessagesChat = ({
           })
         }}
       >
-        {user.user.type === 'club' ? (
-          <View style={styles.topContainer}>
-            <Image
-              style={[styles.groupIconLayout]}
-              contentFit="cover"
-              source={require('../assets/mask-group1.png')}
-            />
-            <View style={{ alignSelf: 'flex-start' }}>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-                {lastMessage
-                  ? lastMessage?.message?.message?.length >= 35
-                    ? lastMessage?.message?.message.slice(0, 35).concat('...')
-                    : lastMessage?.message?.message
-                  : 'Inicia una conversacion!'}
-              </Text>
-            </View>
+        <View style={styles.topContainer}>
+          <Image
+            style={[styles.groupIconLayout]}
+            contentFit="cover"
+            source={{ uri: profilePic }}
+          />
+          <View style={{ alignSelf: 'flex-start' }}>
+            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
+            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
+              {lastMessage
+                ? lastMessage?.message?.message?.length >= 35
+                  ? lastMessage?.message?.message.slice(0, 35).concat('...')
+                  : lastMessage?.message?.message
+                : 'Inicia una conversacion!'}
+            </Text>
           </View>
-        ) : (
-          <View style={styles.topContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                style={[styles.groupIconLayout]}
-                contentFit="cover"
-                source={require('../assets/logo-uem21removebgpreview-1.png')}
-              />
-            </View>
-            <View style={{ alignSelf: 'flex-start' }}>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-              <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-                {lastMessage
-                  ? getTimeFromDate(lastMessage?.message?.createdAt)
-                  : ''}
-              </Text>
-            </View>
-          </View>
-        )}
+        </View>
 
         <View style={styles.textView}>
           <Text style={[styles.ayer, styles.ayerTypo]}>
@@ -119,7 +99,7 @@ const MessagesChat = ({
         </View>
       </Pressable>
       <View style={styles.line} />
-    </>
+    </SafeAreaView>
   )
 }
 

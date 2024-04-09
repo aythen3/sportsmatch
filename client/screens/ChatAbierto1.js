@@ -5,7 +5,8 @@ import {
   Text,
   Pressable,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -20,8 +21,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../context/Context'
 import axiosInstance from '../utils/apiBackend'
 import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
+import { useIsFocused } from '@react-navigation/native'
 
 const ChatAbierto1 = () => {
+  const isFocused = useIsFocused()
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
   const [message, setMessage] = useState()
@@ -66,6 +69,9 @@ const ChatAbierto1 = () => {
 
   return (
     <SafeAreaView style={styles.chatAbierto}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <View
         style={{
           flexDirection: 'row',
