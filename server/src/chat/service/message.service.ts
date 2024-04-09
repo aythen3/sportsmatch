@@ -75,12 +75,7 @@ export class MessageService {
           { senderId: receiverId, receiverId: senderId, room }
         ]
       });
-      if (!messageList.length) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: 'Messages not found'
-        });
-      }
+
       return messageList;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
