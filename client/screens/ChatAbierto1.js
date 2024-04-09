@@ -56,7 +56,7 @@ const ChatAbierto1 = () => {
         (message) =>
           message.senderId !== user.user.id && message.isReaded === false
       )
-      console.log('messagesToSetReaded: ', messagesToSetReaded)
+      // console.log('messagesToSetReaded: ', messagesToSetReaded)
       messagesToSetReaded.forEach((message) => {
         axiosInstance.put(`chat/readed/${message.id}`)
         dispatch(setAllConversationMessagesToRead())

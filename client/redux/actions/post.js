@@ -53,7 +53,6 @@ export const listLikes = createAsyncThunk(
   async (authorId) => {
     try {
       const { data } = await axiosInstance.get(`like/list?authorId=${authorId}`)
-      console.log('data from listLikes: ', data)
       return data
     } catch (error) {
       throw new Error(error)

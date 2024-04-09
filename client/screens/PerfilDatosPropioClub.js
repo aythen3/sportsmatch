@@ -19,10 +19,6 @@ const PerfilDatosPropioClub = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
 
-  useEffect(() => {
-    console.log('user from PerfilDatosPropioClub: ', user)
-  }, [])
-
   return (
     <View style={styles.perfilDatosPropioClub}>
       <ScrollView>

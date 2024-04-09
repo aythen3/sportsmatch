@@ -29,7 +29,6 @@ export const handleSubmit = async (
         positionId: '3e2bd188-f9a3-4d92-8902-e2d4ba20a037',
         clubId: club.id
       }
-      console.log('data from handleSubmit ', data)
       await dispatch(setOffer(data))
       await dispatch(getAllOffers())
       navigation.navigate('OfertasEmitidas')

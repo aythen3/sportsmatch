@@ -92,10 +92,8 @@ const usersSlices = createSlice({
       })
       .addCase(updateUserClubData.fulfilled, (state, action) => {
         const oldUserData = { ...state.user }
-        console.log('oldUserData: ', oldUserData)
         oldUserData.user.club = action.payload
         oldUserData.user.type = 'club'
-        console.log('oldUserData after update: ', oldUserData)
         state.loading = false
         state.user = oldUserData
         state.error = false

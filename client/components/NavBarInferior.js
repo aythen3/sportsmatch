@@ -17,10 +17,10 @@ const NavBarInferior = () => {
 
   const [activeIcon, setActiveIcon] = useState(null)
 
-  useEffect(() => {
-    console.log('User form nav: ', user)
-    console.log('sportman from nav: ', sportman)
-  }, [])
+  // useEffect(() => {
+  //   console.log('User form nav: ', user)
+  //   console.log('sportman from nav: ', sportman)
+  // }, [])
 
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)

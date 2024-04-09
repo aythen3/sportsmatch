@@ -16,10 +16,6 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
 
-  useEffect(() => {
-    console.log('club from PerfilFeedVisualitzaciJug: ', club)
-  }, [])
-
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
       <ScrollView>

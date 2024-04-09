@@ -109,10 +109,6 @@ export const ContextProvider = ({ children }) => {
     dispatch(getAllUsers())
   }, [])
 
-  useEffect(() => {
-    console.log(allUsers.length)
-  }, [])
-
   function getTimeFromDate(dateString) {
     const date = new Date(dateString)
     const hours = date.getUTCHours()
@@ -146,17 +142,17 @@ export const ContextProvider = ({ children }) => {
   })
 
   socket.on('joinedRoom', (room) => {
-    console.log('Joined to room: ', room)
+    // console.log('Joined to room: ', room)
     setRoomId(room)
   })
 
   socket.on('leaveRoom', (room) => {
-    console.log('Leaving room: ', room)
+    // console.log('Leaving room: ', room)
     setRoomId()
   })
 
   socket.on('message-server', (msg) => {
-    console.log('New message:', msg)
+    // console.log('New message:', msg)
     dispatch(updateMessages(msg))
   })
 
