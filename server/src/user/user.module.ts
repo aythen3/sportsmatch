@@ -11,7 +11,6 @@ import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { SendMailService } from 'src/send-mail/send-mail.service';
-import { SendMailModule } from 'src/send-mail/send-mail.module';
 
 @Module({
   imports: [
