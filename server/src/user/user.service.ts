@@ -96,6 +96,11 @@ export class UserService {
       const users: UserEntity[] = await this.userRepository.find({
         where: { isDelete: false }
       });
+
+      for (let i = 0; i < users.length; i++) {
+        users[i] = await this.findChild(users[i].id, users[i].type);
+      }
+
       if (users.length === 0) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
