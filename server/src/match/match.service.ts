@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -147,4 +147,45 @@ export class MatchService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
+
+
+  async findInfoRelation(matchId: number, relations: string[]): Promise<any> {
+    const validRelations = this.validateRelations(relations);
+
+    // Verificar si hay al menos una relación válida
+    if (validRelations.length === 0) {
+      throw new Error('No se han proporcionado relaciones válidas.');
+    }
+
+    // Construir objeto de opciones para la consulta
+    const options: any = { where: { id: matchId }, relations: validRelations };
+console.log("options es", options)
+    // Realizar la consulta del post con las relaciones especificadas
+    const post = await this.matchRepository.findOne(options);
+
+    if (!post) {
+      throw new NotFoundException(`No se encontró ningún post con el ID ${matchId}.`);
+    }
+
+    return post;
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['offer', 'sportmen']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidas
+    relations.forEach(relation => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
+
+  
 }
+
