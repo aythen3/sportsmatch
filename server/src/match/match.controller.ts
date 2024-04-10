@@ -42,7 +42,7 @@ export class MatchController {
 
   @Post(':matchId/info-relation')
   async findInfoRelation(
-    @Param('matchId') postId: number, 
+    @Param('matchId') matchId: number, 
     @Body() requestBody: { relations: string }
   ): Promise<any[]> {
     // Verificar si se proporcionaron relaciones
@@ -54,7 +54,7 @@ export class MatchController {
     const relationsArray = requestBody.relations.split(',');
   
     // Llamar al servicio para obtener la información relacionada
-    return this.matchService.findInfoRelation(postId, relationsArray);
+    return this.matchService.findInfoRelation(matchId, relationsArray);
   }
 
   
