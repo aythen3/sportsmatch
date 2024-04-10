@@ -117,8 +117,9 @@ export const ContextProvider = ({ children }) => {
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
     return `${formattedHours}:${formattedMinutes}`
   }
-
-  const socket = io('http://192.168.0.8:3010', {
+  // https://api-sportsmatch.ay-cloud.com
+  // http://192.168.0.8:3010
+  const socket = io('https://api-sportsmatch.ay-cloud.com', {
     transports: ['websocket']
     // auth: {
     //   autoConnect: true,

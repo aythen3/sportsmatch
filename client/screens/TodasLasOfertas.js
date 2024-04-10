@@ -5,7 +5,8 @@ import {
   View,
   Pressable,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -14,8 +15,13 @@ import CardInfoOffers from '../components/CardInfoOffers'
 import FiltersHome from '../components/FiltersHome'
 import MonetizarOfertaPRO from './MonetizarOfertaPRO'
 import FiltersSportman from '../components/FiltersSportman'
+import { useSelector, useDispatch } from 'react-redux'
+import { sendMatch } from '../redux/actions/matchs'
 
 const TodasLasOfertas = () => {
+  const dispatch = useDispatch()
+  const { offers } = useSelector((state) => state.offers)
+  const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -25,6 +31,8 @@ const TodasLasOfertas = () => {
   const onFilterSportman = () => {
     setModalFilterSportman(true)
   }
+
+  console.log('offers:', offers)
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -51,7 +59,8 @@ const TodasLasOfertas = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-          marginTop: 20
+          marginTop: 20,
+          marginBottom: 15
         }}
       >
         <Pressable
@@ -112,64 +121,87 @@ const TodasLasOfertas = () => {
         </Pressable>
       </View>
 
-      <View
-        style={{
-          marginTop: 20,
-          padding: 10,
-          flex: 1,
-          alignItems: 'center',
-          opacity: 0.7
-        }}
-      >
-        <View style={{ flexDirection: 'row', zIndex: 5 }}>
-          <CardInfoOffers text="Sexo" value="Masculino" />
-          <CardInfoOffers text="Categoria" value="Senior" />
-        </View>
+      <ScrollView>
+        {offers.map((offer, index) => (
+          <View
+            key={index}
+            style={{
+              marginTop: 20,
+              padding: 10,
+              flex: 1,
+              backgroundColor: Color.bLACK2SPORTMATCH,
+              alignItems: 'center',
+              opacity: 0.7
+            }}
+          >
+            <View style={{ flexDirection: 'row', zIndex: 5 }}>
+              <CardInfoOffers
+                text="Sexo"
+                value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+              />
+              <CardInfoOffers text="Categoria" value={offer.category} />
+            </View>
 
-        <View style={{ flexDirection: 'row', zIndex: 5 }}>
-          <CardInfoOffers text="Posicion" value="Pivot" />
-          <CardInfoOffers text="Ubicacion" value="Maresme" />
-        </View>
+            <View style={{ flexDirection: 'row', zIndex: 5 }}>
+              <CardInfoOffers text="Posicion" value={`${offer.urgency}/10`} />
+              <CardInfoOffers text="Ubicacion" value="Random" />
+            </View>
 
-        <View style={{ flexDirection: 'row', zIndex: 5 }}>
-          <CardInfoOffers text="Urgencia" value={`6${'0%'}`} />
-          <CardInfoOffers text="Retribucion" value="NO" />
-        </View>
+            <View style={{ flexDirection: 'row', zIndex: 5 }}>
+              <CardInfoOffers text="Urgencia" value={offer.urgency} />
+              <CardInfoOffers
+                text="Retribucion"
+                value={offer.retribution ? 'Si' : 'No'}
+              />
+            </View>
 
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 30,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 10,
-            borderWidth: 2,
-            borderColor: Color.bLACK3SPORTSMATCH,
-            height: 90
-          }}
-        >
-          <Pressable style={[styles.aceptar, styles.aceptarBg]}>
-            <Text
-              onPress={() => setModalVisible(true)}
-              style={[styles.verOferta, styles.verOfertaTypo]}
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 30,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                zIndex: 10,
+                borderWidth: 2,
+                borderColor: Color.bLACK3SPORTSMATCH,
+                height: 90
+              }}
             >
-              Inscríbete en la oferta 
-            </Text>
-          </Pressable>
-        </View>
-        <Image
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            zIndex: 1,
-            borderRadius: 8,
-            overflow: 'hidden'
-          }}
-          source={require('../assets/group-4891.png')}
-        />
-      </View>
+              <Pressable style={[styles.aceptar, styles.aceptarBg]}>
+                <Text
+                  // onPress={() => setModalVisible(true)}
+                  onPress={() => {
+                    console.log('offer', offer)
+                    console.log(user.user.sportman.id)
+                    dispatch(
+                      sendMatch({
+                        offerId: offer?.id,
+                        sportmanId: user.user.sportman.id
+                      })
+                    )
+                    navigation.navigate('TusMatchs')
+                  }}
+                  style={[styles.verOferta, styles.verOfertaTypo]}
+                >
+                  Inscríbete en la oferta 
+                </Text>
+              </Pressable>
+            </View>
+            <Image
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                zIndex: 1,
+                borderRadius: 8,
+                overflow: 'hidden'
+              }}
+              source={require('../assets/group-4891.png')}
+            />
+          </View>
+        ))}
+      </ScrollView>
 
       <Modal visible={modalVisible} transparent={true} animationType="slide">
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>

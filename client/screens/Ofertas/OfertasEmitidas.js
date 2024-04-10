@@ -91,7 +91,7 @@ const OfertasEmitidas = () => {
               <View>
                 <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
                 <Text style={[styles.masculino, styles.timeTypo]}>
-                  {offer.sexo}
+                  {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
                 </Text>
               </View>
 
@@ -250,6 +250,8 @@ const styles = StyleSheet.create({
   ofertasEmitidas: {
     flex: 1,
     width: '100%',
+    paddingHorizontal: 15,
+    paddingTop: 10,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   container: {

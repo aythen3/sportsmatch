@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontSize, FontFamily, Border } from '../../GlobalStyles'
 import { useDispatch } from 'react-redux'
 import { getAllPositions } from '../../redux/actions/positions'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useIsFocused } from '@react-navigation/native'
 
 const PantallaInicio = () => {
+  const isFocused = useIsFocused()
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
@@ -23,7 +26,10 @@ const PantallaInicio = () => {
   }, [])
 
   return (
-    <View style={styles.pantallaInicio}>
+    <SafeAreaView style={styles.pantallaInicio}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
@@ -73,7 +79,7 @@ const PantallaInicio = () => {
           <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

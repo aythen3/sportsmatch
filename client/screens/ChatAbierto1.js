@@ -5,7 +5,8 @@ import {
   Text,
   Pressable,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -20,8 +21,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../context/Context'
 import axiosInstance from '../utils/apiBackend'
 import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
+import { useIsFocused } from '@react-navigation/native'
 
 const ChatAbierto1 = () => {
+  const isFocused = useIsFocused()
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
   const [message, setMessage] = useState()
@@ -66,6 +69,9 @@ const ChatAbierto1 = () => {
 
   return (
     <SafeAreaView style={styles.chatAbierto}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <View
         style={{
           flexDirection: 'row',
@@ -78,7 +84,7 @@ const ChatAbierto1 = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable onPress={() => navigation.goBack()}>
             <Image
-              style={{ width: 9, height: 18, marginRight: 10 }}
+              style={{ width: 9, height: 18, marginRight: 12, marginTop: 2.5 }}
               contentFit="cover"
               source={require('../assets/coolicon4.png')}
             />
@@ -87,7 +93,7 @@ const ChatAbierto1 = () => {
           <Image
             style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
             contentFit="cover"
-            source={require('../assets/imagen6.png')}
+            source={{ uri: route.params.profilePic }}
           />
           <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
             {route.params.receiverName}
@@ -547,6 +553,8 @@ const styles = StyleSheet.create({
   chatAbierto: {
     flex: 1,
     overflow: 'hidden',
+    paddingTop: 10,
+    paddingHorizontal: 5,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

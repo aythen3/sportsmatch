@@ -5,7 +5,9 @@ import {
   Pressable,
   View,
   TextInput,
-  ScrollView
+  ScrollView,
+  StatusBar,
+  TouchableOpacity
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -13,36 +15,53 @@ import { FontSize, FontFamily, Color, Border } from '../../GlobalStyles'
 import { useSelector } from 'react-redux'
 import Notifications from '../../components/Notifications'
 import MessagesChat from '../../components/MessagesChat'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useIsFocused } from '@react-navigation/native'
 
 const TusNotificaciones1 = () => {
+  const isFocused = useIsFocused()
   const navigation = useNavigation()
   const { notifications, messages, userMessages } = useSelector(
     (state) => state.notifications
   )
+  const { sportman } = useSelector((state) => state.sportman)
   const { user, allUsers } = useSelector((state) => state.users)
 
-  const [selectedComponent, setSelectedComponent] = useState('notifications')
+  const [selectedComponent, setSelectedComponent] = useState('messages')
 
+  const userId = user?.user?.id
   return (
-    <View style={styles.tusNotificaciones}>
+    <SafeAreaView style={styles.tusNotificaciones}>
+      {isFocused && (
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+      )}
       <View style={styles.tuBuznParent}>
-        <Pressable
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 15,
+            justifyContent: 'flex-start'
+          }}
         >
-          <View
-            style={[styles.coolicon, styles.cooliconPosition]}
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
-              style={[styles.icon]}
+              style={{ width: 9, height: 15, marginTop: 2.5 }}
               contentFit="cover"
-              source={require('../../assets/coolicon4.png')}
+              source={require('../../assets/coolicon3.png')}
             />
-          </View>
-
-          <Text style={styles.tuBuzn1}>Tu Buzón</Text>
-        </Pressable>
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: '#fff',
+              fontWeight: '500',
+              fontSize: 22,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Tu Buzón
+          </Text>
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -109,51 +128,30 @@ const TusNotificaciones1 = () => {
             />
           </View>
         )}
-        {/* <View style={{ marginTop: 30 }}>
-          {selectedComponent === 'messages' && user.user.type === 'club'
-            ? messages.map((message) => (
-                <MessagesChat
-                  key={message.id}
-                  name={message.name}
-                  message={message.message}
-                  send={message.send}
-                  read={message.read}
-                  confirmation={message.confirmation}
-                />
-              ))
-            : selectedComponent === 'messages' &&
-              userMessages.map((message) => (
-                <MessagesChat
-                  key={message.id}
-                  name={message.name}
-                  message={message.message}
-                  send={message.send}
-                  read={message.read}
-                  confirmation={message.confirmation}
-                />
-              ))}
-        </View> */}
         {selectedComponent === 'messages' && (
           <ScrollView
             style={{
               marginTop: 30
             }}
           >
-            {allUsers?.map((user) => (
-              <MessagesChat
-                key={user.id}
-                name={user.nickname}
-                selectedUserId={user.id}
-                // message={user.message}
-                // send={user.send}
-                // read={user.read}
-                // confirmation={user.confirmation}
-              />
-            ))}
+            {allUsers
+              ?.filter((user) => user?.id !== userId)
+              .map((user) => (
+                <MessagesChat
+                  key={user.id}
+                  name={user.nickname}
+                  profilePic={
+                    user?.type === 'club'
+                      ? user?.club?.img_perfil
+                      : user?.sportman.info.img_perfil
+                  }
+                  selectedUserId={user.id}
+                />
+              ))}
           </ScrollView>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -215,6 +213,7 @@ const styles = StyleSheet.create({
   },
   tusNotificaciones: {
     flex: 1,
+    paddingHorizontal: 15,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
