@@ -39,4 +39,23 @@ export class MatchController {
   remove(@Param('id') id: string) {
     return this.matchService.remove(id);
   }
+
+  @Post(':matchId/info-relation')
+  async findInfoRelation(
+    @Param('matchId') postId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.matchService.findInfoRelation(postId, relationsArray);
+  }
+
+  
 }

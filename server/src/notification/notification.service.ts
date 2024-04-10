@@ -16,6 +16,7 @@ export class NotificationService {
   ) {}
 
   public async createService(createNotificationDto: CreateNotificationDto) {
+   //El que recive la notificacion
     const user = await this.usersRepository
       .createQueryBuilder('user')
       .where({ id: createNotificationDto.recipientId })
