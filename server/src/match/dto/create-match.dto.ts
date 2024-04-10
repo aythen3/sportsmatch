@@ -7,5 +7,5 @@ export class CreateMatchDto {
 
   @IsString()
   @IsOptional()
-  sportmanId: string;
+  sportmanId: any;
 }

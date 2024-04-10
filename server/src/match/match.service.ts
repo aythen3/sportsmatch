@@ -53,13 +53,16 @@ export class MatchService {
           message: `Sportman id: ${sportmanId} not found`
         });
       }
+
+
+   
       // Crear un match y asignar la oferta
       const newMatch = new MatchEntity();
       newMatch.offer = offer;
-
+      newMatch.sportmen = [sportman];
       // Si la relación es muchos a muchos, necesitas agregar el deportista al arreglo de deportistas del match
       sportman.matches = [newMatch];
-
+      
       // Guardar el match en la base de datos
       const savedMatch = await this.matchRepository.save(newMatch);
       if (!savedMatch) {
@@ -150,6 +153,7 @@ export class MatchService {
 
 
   async findInfoRelation(matchId: number, relations: string[]): Promise<any> {
+   try {
     const validRelations = this.validateRelations(relations);
 
     // Verificar si hay al menos una relación válida
@@ -161,13 +165,16 @@ export class MatchService {
     const options: any = { where: { id: matchId }, relations: validRelations };
 console.log("options es", options)
     // Realizar la consulta del post con las relaciones especificadas
-    const post = await this.matchRepository.findOne(options);
+    const match = await this.matchRepository.findOne(options);
 
-    if (!post) {
+    if (!match) {
       throw new NotFoundException(`No se encontró ningún post con el ID ${matchId}.`);
     }
 
-    return post;
+    return match;
+   } catch (error) {
+    console.log('este es el error ',error)
+   }
   }
 
   private validateRelations(relations: string[]): string[] {
