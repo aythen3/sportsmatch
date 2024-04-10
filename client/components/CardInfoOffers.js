@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily } from '../GlobalStyles'
 
 const CardInfoOffers = ({ text, value }) => {
-
   return (
     <View style={styles.card}>
       <Text style={[styles.text]}>{text}</Text>
@@ -28,8 +27,8 @@ const CardInfoOffers = ({ text, value }) => {
             style={{
               width:
                 text === 'Urgencia'
-                  ? value
-                  : text === 'Retribucion' && value === 'NO'
+                  ? `${value * 10}%`
+                  : text === 'Retribucion' && value === 'No'
                     ? 0
                     : '100%',
               height: 20,

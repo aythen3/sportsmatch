@@ -18,6 +18,7 @@ import { getSportman } from '../../redux/actions/sportman'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { getAllOffers } from '../../redux/actions/offers'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
@@ -56,6 +57,7 @@ const SiguiendoJugadores = () => {
   }, [])
 
   useEffect(() => {
+    dispatch(getAllOffers())
     dispatch(getAllPosts())
     dispatch(getAllLikes())
   }, [post, comments])

@@ -308,7 +308,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 9,
-    height: 15
+    height: 15,
+    marginTop: 2.5
   },
   clubDetailsTitle: {
     color: '#fff',

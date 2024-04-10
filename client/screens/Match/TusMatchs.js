@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -17,10 +17,18 @@ import {
   Padding
 } from '../../GlobalStyles'
 import TusMatchsDetalle from '../TusMatchsDetalle'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { getUserMatchs } from '../../redux/actions/matchs'
 
 const TusMatchs = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+
+  const { userMatchs } = useSelector((state) => state.matchs)
+
+  useEffect(() => {
+    dispatch(getUserMatchs(user.user.id))
+  }, [])
 
   const [details, setDetails] = useState(false)
 

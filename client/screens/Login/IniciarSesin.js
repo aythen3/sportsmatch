@@ -167,7 +167,7 @@ const IniciarSesin = () => {
                 <Text style={styles.aceptar}>Inicia sesión</Text>
               </TouchableOpacity>
             </View>
-            <Pressable
+            {/* <Pressable
               style={styles.noTenesUnaContainer}
               onPress={() => navigation.navigate('LoginSwitch')}
             >
@@ -176,7 +176,7 @@ const IniciarSesin = () => {
               >
                 ¿No tíenes una cuenta? Regístrate
               </Text>
-            </Pressable>
+            </Pressable> */}
           </View>
           <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>

@@ -95,7 +95,7 @@ d’Esports Josep Mora`}</Text>
         style={[styles.aceptar, styles.aceptarFlexBox]}
         onPress={() => {
           onClose()
-          navigation.navigate('ChatAbierto1')
+          navigation.navigate('TusNotificaciones1')
         }}
       >
         <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>

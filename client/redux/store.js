@@ -10,6 +10,7 @@ import postSlices from './slices/post.slices'
 import commentsSlices from './slices/comments.slices'
 import ChatsSlices from './slices/chats.slices'
 import positionsSlices from './slices/positions.slices'
+import matchsSlices from './slices/matchs.slices'
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     post: postSlices,
     comments: commentsSlices,
     chats: ChatsSlices,
-    positions: positionsSlices
+    positions: positionsSlices,
+    matchs: matchsSlices
   }
 })

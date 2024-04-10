@@ -119,7 +119,7 @@ export const ContextProvider = ({ children }) => {
   }
   // https://api-sportsmatch.ay-cloud.com
   // http://192.168.0.8:3010
-  const socket = io('http://192.168.0.8:3010', {
+  const socket = io('https://api-sportsmatch.ay-cloud.com', {
     transports: ['websocket']
     // auth: {
     //   autoConnect: true,

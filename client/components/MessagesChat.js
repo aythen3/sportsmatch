@@ -55,7 +55,8 @@ const MessagesChat = ({ name, selectedUserId, profilePic }) => {
         onPress={() => {
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
-            receiverName: name
+            receiverName: name,
+            profilePic
           })
         }}
       >
@@ -113,8 +114,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   groupIconLayout: {
-    height: 28,
-    width: 28
+    height: 35,
+    borderRadius: 50,
+    width: 35
   },
   topContainer: {
     flexDirection: 'row',
