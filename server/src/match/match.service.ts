@@ -193,6 +193,20 @@ console.log("options es", options)
     return validRelations;
   }
 
+
+  async findAllByUserId(userId: string): Promise<MatchEntity[]> {
+    const matches = await this.matchRepository
+      .createQueryBuilder('match')
+      .innerJoin('match.sportmen', 'sportman')
+      .where('sportman.id = :userId', { userId })
+      .getMany();
+
+    if (!matches) {
+      throw new NotFoundException('Matches not found.');
+    }
+
+    return matches;
+  }
   
 }
 

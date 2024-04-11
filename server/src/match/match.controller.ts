@@ -57,5 +57,10 @@ export class MatchController {
     return this.matchService.findInfoRelation(matchId, relationsArray);
   }
 
+  @Get('user/:userId')
+  findAllByUserId(@Param('userId') userId: string) {
+    return this.matchService.findAllByUserId(userId);
+  }
+
   
 }

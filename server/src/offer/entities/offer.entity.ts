@@ -1,12 +1,13 @@
-import { IsBoolean, IsInt, IsString, Max, Min } from 'class-validator';
+import { IsArray, IsBoolean, IsInt, IsString, Max, Min } from 'class-validator';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'offer' })
 export class OfferEntity extends BaseEntity {
+
   @Column({
     type: 'enum',
     enum: ['Male', 'Female', 'Otro']
@@ -35,4 +36,9 @@ export class OfferEntity extends BaseEntity {
 
   @ManyToOne(() => ClubEntity, (club) => club.offers, { nullable: true })
   club?: ClubEntity;
+
+
+  @Column({ type: 'jsonb', nullable: true })
+  @IsArray()
+  inscriptions: string[]; 
 }

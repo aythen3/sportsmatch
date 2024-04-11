@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -128,5 +128,36 @@ export class OfferService {
   public async remove(id: string) {
     await this.offerRepository.update(id, { isDelete: true });
     return await this.findOne(id);
+  }
+
+
+  async addInscription(offerId: string, userId: string) {
+   try {
+    console.log("buscando la oferta")
+    const offer = await this.offerRepository.findOne({where: {id:offerId}});
+    if (!offer) {
+      throw new NotFoundException('Offer not found.');
+    }
+
+    if (!Array.isArray(offer.inscriptions)) {
+      offer.inscriptions = [];
+    }
+
+    offer.inscriptions.push(userId);
+    console.log("aca se rompe")
+    await this.offerRepository.save(offer);
+   } catch (error) {
+    console.log(error)
+   }
+  }
+
+  async removeInscription(offerId: string, userId: string) {
+    const offer = await this.offerRepository.findOne({where: {id:offerId}});
+    if (!offer) {
+      throw new NotFoundException('Offer not found.');
+    }
+
+    offer.inscriptions = offer.inscriptions.filter(id => id !== userId);
+    await this.offerRepository.save(offer);
   }
 }
