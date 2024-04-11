@@ -45,7 +45,7 @@ const EditarPerfil = () => {
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() =>
               navigation.navigate(
-                user.user.type === 'club' ? 'ClubDetails' : 'DetallesUsuario'
+                user.user.type === 'club' ? 'ClubDetails' : 'PlayerDetails'
               )
             }
           >

@@ -32,8 +32,6 @@ const TodasLasOfertas = () => {
     setModalFilterSportman(true)
   }
 
-  console.log('offers:', offers)
-
   return (
     <View style={styles.todasLasOfertas}>
       <View style={{ marginVertical: 30, marginLeft: 15 }}>

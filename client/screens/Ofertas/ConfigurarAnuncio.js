@@ -101,17 +101,32 @@ const ConfigurarAnuncio = () => {
   }
 
   const getClubData = async (id) => {
-    const { data } = await axiosInstance.get(`club/${id}`)
-
-    setClubData(data)
-    return data
+    console.log('id: ', id)
+    try {
+      const { data } = await axiosInstance.get(`club/${id}`)
+      setClubData(data)
+      console.log('settingData: ', data)
+      return data
+    } catch (error) {
+      console.error('Error fetching club data:', error)
+    }
   }
 
   useEffect(() => {
-    getClubData(club.id)
+    const fetchClubData = async () => {
+      try {
+        const data = await getClubData(club.id)
+        console.log('club data:', data)
+      } catch (error) {
+        console.error('Error fetching club data:', error)
+      }
+    }
+
+    fetchClubData()
   }, [])
 
-  if (!clubData && allPositions) return null
+  if (!clubData || !allPositions)
+    return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
     <SafeAreaView style={styles.configurarAnuncio}>
       <View style={styles.contenido}>

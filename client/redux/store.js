@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import usersSlices from './slices/users.slices'
 import muroSlices from './slices/muro.slices'
 import offersSlices from './slices/offers.slices'
-import notificacionsSlices from './slices/notificacions.slices'
+import notificationsSlices from './slices/notifications.slices'
 import sportsSlices from './slices/sports.slices'
 import clubSlices from './slices/club.slices'
 import sportmanSlices from './slices/sportman.slices'
@@ -17,7 +17,7 @@ export const store = configureStore({
     users: usersSlices,
     muro: muroSlices,
     offers: offersSlices,
-    notifications: notificacionsSlices,
+    notifications: notificationsSlices,
     sports: sportsSlices,
     clubs: clubSlices,
     sportman: sportmanSlices,

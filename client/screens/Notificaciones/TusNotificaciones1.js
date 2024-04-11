@@ -21,9 +21,7 @@ import { useIsFocused } from '@react-navigation/native'
 const TusNotificaciones1 = () => {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-  const { notifications, messages, userMessages } = useSelector(
-    (state) => state.notifications
-  )
+  const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { user, allUsers } = useSelector((state) => state.users)
 
@@ -96,16 +94,41 @@ const TusNotificaciones1 = () => {
           </Pressable>
         </View>
 
-        {selectedComponent === 'notifications' &&
-          notifications.map((notification) => (
-            <Notifications
-              key={notification.id}
-              text={notification.notification}
-              send={notification.send}
-              read={notification.read}
-              match={notification.match}
-            />
-          ))}
+        {selectedComponent === 'notifications' && (
+          <View>
+            {allNotifications?.filter(
+              (notification) => notification.recipientId === userId
+            ).length > 0 ? (
+              allNotifications
+                ?.filter((notification) => notification.recipientId === userId)
+                .map((notification) => (
+                  <Notifications
+                    key={notification.id}
+                    title={notification.title}
+                    text={notification.message}
+                    date={notification.date}
+                    read={notification.read}
+                    match={notification.title === 'Nuevo Match'}
+                  />
+                ))
+            ) : (
+              <View
+                style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
+              >
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontWeight: '600',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    color: Color.wHITESPORTSMATCH
+                  }}
+                >
+                  No tienes notificaciones!
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
 
         {selectedComponent === 'messages' && (
           <View

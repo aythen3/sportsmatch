@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Modal,
@@ -14,9 +14,11 @@ import { Color, FontFamily } from '../../GlobalStyles'
 import { getCommentByPost } from '../../redux/actions/comments'
 import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
+import { Context } from '../../context/Context'
 
 const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
+  const { transformHttpToHttps } = useContext(Context)
 
   const { user } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
@@ -60,8 +62,12 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                       contentFit="cover"
                       source={
                         comment.author.sportman
-                          ? comment.author?.sportman?.info?.img_perfil
-                          : comment.author?.club?.img_perfil
+                          ? transformHttpToHttps(
+                              comment.author?.sportman?.info?.img_perfil
+                            )
+                          : transformHttpToHttps(
+                              comment.author?.club?.img_perfil
+                            )
                       }
                       style={styles.authorImg}
                     />
