@@ -45,4 +45,8 @@ export class CreateOfferDto {
   @IsString()
   @IsOptional()
   clubId: string;
+  
+  @IsString()
+  @IsOptional()
+  inscriptions: string[];
 }
