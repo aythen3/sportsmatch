@@ -59,6 +59,9 @@ import { store } from './redux/store'
 import { ContextProvider } from './context/Context'
 import ClubDetails from './screens/EditarPerfil/ClubDetails'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import PlayerDetails from './screens/EditarPerfil/PlayerDetails'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'react-native'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -87,7 +90,12 @@ const App = () => {
   // ======================= CHAT RELATED STUFF ============================
 
   return (
-    <>
+    <SafeAreaView style={{ backgroundColor: '#000', flex: 1 }}>
+      <StatusBar
+        hidden={!isFooterShow}
+        barStyle={'light-content'}
+        backgroundColor="#000"
+      />
       <Provider store={store}>
         <ContextProvider>
           <NavigationContainer>
@@ -126,6 +134,11 @@ const App = () => {
                 <Stack.Screen
                   name="EditarSkills"
                   component={EditarSkills}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="PlayerDetails"
+                  component={PlayerDetails}
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen
@@ -364,7 +377,7 @@ const App = () => {
           </NavigationContainer>
         </ContextProvider>
       </Provider>
-    </>
+    </SafeAreaView>
   )
 }
 export default App

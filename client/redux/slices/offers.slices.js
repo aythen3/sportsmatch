@@ -12,26 +12,7 @@ const offersSlices = createSlice({
   initialState: {
     offer: {},
     offers: [],
-    usersRegistered: [
-      {
-        id: 1,
-        name: 'Cristian Perez',
-        image: '../../assets/group9.png',
-        match: true
-      },
-      {
-        id: 2,
-        name: 'Max Power',
-        image: '../../assets/group9.png',
-        match: true
-      },
-      {
-        id: 3,
-        name: '+ 4 inscripciones mas',
-        image: '../../assets/image-borroso.png',
-        match: false
-      }
-    ]
+    usersRegistered: []
   },
   reducers: {
     // setOffer: (state, action) => {

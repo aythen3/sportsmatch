@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAllOffers } from '../../redux/actions/offers'
+import { getAllNotifications } from '../../redux/actions/notifications'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
@@ -26,7 +27,9 @@ const SiguiendoJugadores = () => {
 
   const { joinRoom, sendMessage } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
-  const { user } = useSelector((state) => state.users)
+  const { offers } = useSelector((state) => state.offers)
+  const { user, allUsers } = useSelector((state) => state.users)
+  const { allNotifications } = useSelector((state) => state.notifications)
   const { comments } = useSelector((state) => state.comments)
 
   // const getUserId = async () => {
@@ -57,9 +60,11 @@ const SiguiendoJugadores = () => {
   }, [])
 
   useEffect(() => {
+    console.log('useEffect triggering')
     dispatch(getAllOffers())
     dispatch(getAllPosts())
     dispatch(getAllLikes())
+    dispatch(getAllNotifications())
   }, [post, comments])
 
   const sortedPosts = [...allPosts].sort(

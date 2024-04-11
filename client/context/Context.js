@@ -18,6 +18,17 @@ export const ContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState()
   const [libraryImage, setLibraryImage] = useState()
 
+  function transformHttpToHttps(url) {
+    // Check if the URL starts with "http://"
+    if (url.startsWith('http://')) {
+      // Replace "http://" with "https://"
+      return url.replace('http://', 'https://')
+    } else {
+      // If it's already an HTTPS URL, return the same URL
+      return url
+    }
+  }
+
   const pickImage = async (source, imageUri) => {
     if (imageUri) {
       const profileImageData = {
@@ -38,7 +49,7 @@ export const ContextProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           // console.log('dataUrl from uriImg:', data.url)
-          setLibraryImage(data.url)
+          setLibraryImage(transformHttpToHttps(data.url))
         })
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,7 +85,7 @@ export const ContextProvider = ({ children }) => {
             .then((res) => res.json())
             .then((data) => {
               // console.log('dataUrl from profile:', data.url)
-              setProfileImage(data.url)
+              setProfileImage(transformHttpToHttps(data.url))
             })
         } else {
           const coverImageData = {
@@ -98,7 +109,7 @@ export const ContextProvider = ({ children }) => {
             .then((res) => res.json())
             .then((data) => {
               // console.log('dataUrl from cover:', data.url)
-              setCoverImage(data.url)
+              setCoverImage(transformHttpToHttps(data.url))
             })
         }
       }
@@ -189,6 +200,7 @@ export const ContextProvider = ({ children }) => {
         setRoomId,
         libraryImage,
         setLibraryImage,
+        transformHttpToHttps,
         leaveRoom,
         getTimeFromDate
       }}

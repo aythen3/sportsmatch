@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -20,6 +20,7 @@ import FeedSVG from '../../components/svg/FeedSVG'
 import StatsSVG from '../../components/svg/StatsSVG'
 import Feed from '../../components/Feed'
 import FeedStats from '../../components/FeedStats'
+import { Context } from '../../context/Context'
 
 const MiPerfil = () => {
   const navigation = useNavigation()
@@ -29,6 +30,7 @@ const MiPerfil = () => {
   const { user } = useSelector((state) => state.users)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
+  const { transformHttpToHttps } = useContext(Context)
 
   const renderContent = () => {
     if (selectedTab === 'Feed') {
@@ -44,14 +46,16 @@ const MiPerfil = () => {
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
-          source={sportman?.info?.img_front}
+          source={{ uri: transformHttpToHttps(sportman?.info?.img_front) }}
         />
         <View style={styles.bloquePerfil}>
           <View style={styles.imagenInformacion1}>
             <Image
               style={styles.imagenIcon}
               contentFit="cover"
-              source={sportman?.info?.img_perfil}
+              source={{
+                uri: transformHttpToHttps(sportman?.info?.img_perfil)
+              }}
             />
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
