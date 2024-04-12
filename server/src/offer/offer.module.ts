@@ -31,14 +31,13 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       SkillEntity,
       SportEntity,
       UserEntity,
-      NotificationEntity
+      NotificationEntity,
     ])
   ],
   exports: [OfferService],
   controllers: [OfferController],
   providers: [
     OfferService,
-    PositionService,
     MatchService,
     ClubService,
     UserService,

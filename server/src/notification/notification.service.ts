@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationEntity } from './entities/notification.entity';
@@ -23,9 +23,8 @@ export class NotificationService {
       .getOne();
 
     if (!user) {
-      throw new HttpException(
-        `Usuario con ID ${createNotificationDto.recipientId} no encontrado`,
-        404
+      return(
+        `Usuario con ID ${createNotificationDto.recipientId} no encontrado`
       );
     }
 
@@ -52,7 +51,7 @@ export class NotificationService {
       .getOne();
 
     if (!notifications) {
-      throw new HttpException(`Notificación con ID ${id} no encontrada`, 404);
+      return(`Notificación con ID ${id} no encontrada`);
     }
 
     return notifications;
@@ -67,9 +66,10 @@ export class NotificationService {
       .where({ id })
       .getOne();
 
-    if (!notifications) {
-      throw new HttpException(`Notificación con ID ${id} no encontrada`, 404);
-    }
+   
+  if (!notifications) {
+    throw new NotFoundException(`Notificación con ID ${id} no encontrada`);
+  }
 
     Object.keys(updateNotificationDto).forEach((key) => {
       notifications[key] = updateNotificationDto[key];

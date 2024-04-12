@@ -53,7 +53,7 @@ export class PositionService {
       .getOne();
 
     if (!position) {
-      throw new HttpException(`Position id ${id} not found`, 404);
+      return(`Position id ${id} not found`);
     }
     return position;
   }
@@ -70,7 +70,7 @@ export class PositionService {
       });
 
       if (!sport) {
-        throw new HttpException('Sport not found', 404);
+        return('Sport not found');
       }
 
       for (const positionName of sportData.positions) {
