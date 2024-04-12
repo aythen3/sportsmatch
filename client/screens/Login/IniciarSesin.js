@@ -57,11 +57,13 @@ const IniciarSesin = () => {
       navigation.navigate('SiguiendoJugadores')
     } else {
       if (user?.user?.type === 'club') {
+        console.log('cluuuub')
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
       } else {
         if (user?.accesToken) {
+          console.log('jugador')
           navigation.navigate('stepsJugador')
         }
       }

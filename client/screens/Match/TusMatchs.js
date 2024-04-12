@@ -96,7 +96,7 @@ const TusMatchs = () => {
       {user?.user?.type === 'sportman' && matchsData.length > 0 && (
         <View>
           {matchsData.map((match, index) => (
-            <View style={styles.targetaClub}>
+            <View key={index} style={styles.targetaClub}>
               <Pressable
                 onPress={() => {
                   setDetails(true)

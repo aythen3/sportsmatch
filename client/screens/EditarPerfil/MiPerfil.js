@@ -83,8 +83,11 @@ const MiPerfil = () => {
               <Text style={styles.editarPerfil}>Editar perfil</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.boton}>
-              <Text style={styles.miSuscripcin}>Mi suscripción2</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MiSuscripcin')}
+              style={styles.boton}
+            >
+              <Text style={styles.miSuscripcin}>Mi suscripción</Text>
             </TouchableOpacity>
           </View>
           {/* <View style={styles.bloqueNumeroSeguidores}>

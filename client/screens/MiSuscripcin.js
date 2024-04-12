@@ -1,6 +1,13 @@
 import React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
 import SilverSuscription from '../components/Suscripciones/SilverSuscription'
@@ -13,23 +20,33 @@ const MiSuscripcin = () => {
   return (
     <View style={styles.miSuscripcin}>
       <ScrollView>
-        <View style={styles.cooliconParent}>
-          <Pressable
-            style={{ width: 9, height: 20 }}
-            onPress={() => navigation.goBack()}
-          >
+        <View
+          style={{
+            marginTop: 20,
+            marginBottom: 5,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 15,
+            justifyContent: 'flex-start'
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
-              style={styles.icon}
+              style={{ width: 9, height: 15, marginTop: 2.5 }}
               contentFit="cover"
               source={require('../assets/coolicon3.png')}
             />
-          </Pressable>
-          <Pressable
-            style={styles.miSuscripcin1}
-            onPress={() => navigation.goBack()}
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: '#fff',
+              fontWeight: '500',
+              fontSize: 22,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
           >
-            <Text style={styles.miSuscripcin2}>Mi suscripción</Text>
-          </Pressable>
+            Mi suscripción
+          </Text>
         </View>
 
         <View>
@@ -137,8 +154,8 @@ const styles = StyleSheet.create({
     marginLeft: 9
   },
   cooliconParent: {
-    // alignItems: 'center',
-    // marginLeft: 15,
+    width: '95%',
+    alignSelf: 'center',
     marginTop: 50,
     flexDirection: 'row'
   },
@@ -380,6 +397,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH,
     flex: 1,
     paddingHorizontal: 15,
+    paddingBottom: 20,
     width: '100%'
   }
 })

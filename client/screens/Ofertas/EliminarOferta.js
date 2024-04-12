@@ -54,6 +54,8 @@ eliminar esta oferta?`}</Text>
               fontFamily: FontFamily.t4TEXTMICRO,
               fontSize: FontSize.t2TextSTANDARD_size,
               borderWidth: 1,
+              width: '95%',
+              alignSelf: 'center',
               borderColor: Color.gREY2SPORTSMATCH,
               borderStyle: 'solid',
               borderRadius: Border.br_81xl,
@@ -129,6 +131,8 @@ eliminar esta oferta?`}</Text>
               fontFamily: FontFamily.t4TEXTMICRO,
               fontSize: FontSize.t2TextSTANDARD_size,
               borderWidth: 1,
+              width: '95%',
+              alignSelf: 'center',
               borderColor: Color.gREY2SPORTSMATCH,
               borderStyle: 'solid',
               borderRadius: Border.br_81xl,
@@ -136,26 +140,39 @@ eliminar esta oferta?`}</Text>
               backgroundColor: color2 ? Color.colorGainsboro : 'transparent'
             }}
           >
-            "Sí, he encontrado a mi jugador/a o profesional."
+            "Sí, he cubierto la vacante fuera de la app."
           </Text>
         </View>
-
-        <View style={styles.botonEliminarOferta}>
-          <TouchableOpacity
-            style={styles.botonEliminarOferta2}
-            onPress={handleDelete}
-          >
-            <Text style={[styles.textoBoton, styles.cerrarTypo]}>
-              Eliminar la oferta
-            </Text>
-          </TouchableOpacity>
-          <Text
-            style={[styles.cerrar, styles.cerrarTypo]}
-            onPress={() => navigation.goBack()}
-          >
-            Cerrar
+      </View>
+      <View
+        style={{
+          width: '100%',
+          position: 'absolute',
+          bottom: 100
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            width: '95%',
+            height: 40,
+            alignItems: 'center',
+            alignSelf: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#fff',
+            borderRadius: 100
+          }}
+          onPress={handleDelete}
+        >
+          <Text style={{ color: '#000', fontWeight: 600, fontSize: 18 }}>
+            Eliminar la oferta
           </Text>
-        </View>
+        </TouchableOpacity>
+        <Text
+          style={[styles.cerrar, styles.cerrarTypo]}
+          onPress={() => navigation.goBack()}
+        >
+          Cerrar
+        </Text>
       </View>
     </View>
   )
@@ -301,9 +318,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%'
   },
-  botonEliminarOferta: {
-    top: 60
-  },
   cerrar: {
     top: 25,
     color: Color.wHITESPORTSMATCH,
@@ -321,7 +335,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   eliminarOferta3: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
+    backgroundColor: '#1D1D1D',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',

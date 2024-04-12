@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import {
@@ -11,6 +11,9 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 
 const GoldSuscription = () => {
+  const handleGetStar = () => {
+    console.log('handling star plan...')
+  }
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
@@ -118,6 +121,22 @@ const GoldSuscription = () => {
             </View>
           </View>
         </View>
+        <TouchableOpacity
+          onPress={handleGetStar}
+          style={{
+            width: '95%',
+            borderWidth: 1,
+            alignSelf: 'center',
+            marginTop: 25,
+            borderColor: '#000',
+            borderRadius: 100,
+            height: 30,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={styles.ofertasTypo}>Seleccionar este plan</Text>
+        </TouchableOpacity>
       </View>
       {/* <View style={[styles.marcaPlanActual, styles.aceptarBorder]} /> */}
     </View>
