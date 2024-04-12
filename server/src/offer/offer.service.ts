@@ -8,16 +8,16 @@ import { PositionService } from 'src/position/position.service';
 import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { ErrorManager } from 'src/utils/error.manager';
+import { PositionEntity } from 'src/position/entities/position.entity';
 
 @Injectable()
 export class OfferService {
   constructor(
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
-
-    private readonly positionService: PositionService,
-    private readonly matchService: MatchService,
-    private readonly clubService: ClubService
+    private readonly clubService: ClubService,
+    @InjectRepository(PositionEntity)
+    private readonly positionRepository: Repository<PositionEntity>,
   ) {}
 
   /**
@@ -29,19 +29,22 @@ export class OfferService {
     try {
       const { offerData, positionId, clubId } = createOfferDto;
 
-      const position = await this.positionService.findOne(positionId);
+      // const position = await this.positionService.findOne(positionId);
+      const position = await this.positionRepository.findOne({where:{id:positionId}})
+
       if (!position) {
-        throw new HttpException(`position ${position} not found`, 404);
+         return(`position ${position} not found`);
       }
 
       const club = await this.clubService.findOne(clubId);
       if (!club) {
-        throw new HttpException(`club ${club} not found`, 404);
+      return (`club ${club} not found`);
       }
 
       const newOffer = await this.offerRepository.create({
         ...offerData,
         position: position,
+        
         club: club
       });
       const saveOffer = await this.offerRepository.save(newOffer);
@@ -115,14 +118,16 @@ export class OfferService {
     const { offerData, positionId } = updateOfferDto;
 
     if (!offer) {
-      throw new HttpException(`Offer with id ${id} not found`, 404);
+      return(`Offer with id ${id} not found`);
     }
     for (const key in offerData) {
       offer[key] = offerData[key];
     }
 
     if (positionId) {
-      const position = await this.positionService.findOne(positionId);
+      // const position = await this.positionService.findOne(positionId);
+      const position = await this.positionRepository.findOne({where:{id:positionId}})
+      console.log("esto es positiion",position)
       offer.position = position;
     }
     const updatedOffer = await this.offerRepository.save(offer);
