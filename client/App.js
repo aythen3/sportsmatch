@@ -52,6 +52,8 @@ import StepsClub from './screens/Pasos/StepsClub'
 import StepsJugador from './screens/Pasos/StepsJugador'
 import EditarSkills from './screens/EditarPerfil/EditarSkills'
 import DetallesUsuario from './screens/EditarPerfil/DetallesUsuario'
+import { StripeProvider } from '@stripe/stripe-react-native';
+
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
@@ -89,7 +91,16 @@ const App = () => {
 
   // ======================= CHAT RELATED STUFF ============================
 
-  return (
+ 
+    return (
+      <>
+      <StripeProvider
+        publishableKey="pk_test_51OocYQGmE60O5ob7ydu8u1BLMhlWf9F5C6TCuSu75y47X5yBRO8wcbIssEjFc95AferGwyiHNkNGwT25ywIoZahB009vDgPuYd"
+  
+        urlScheme="com.android.app" // required for 3D Secure and bank redirects
+        merchantIdentifier="merchant.com.app" // required for Apple Pay
+      >
+
     <SafeAreaView style={{ backgroundColor: '#000', flex: 1 }}>
       <StatusBar
         hidden={!isFooterShow}
@@ -377,7 +388,12 @@ const App = () => {
           </NavigationContainer>
         </ContextProvider>
       </Provider>
-    </SafeAreaView>
+      </StripeProvider>
+              </SafeAreaView>
+    </>
+
+   
+
   )
 }
 export default App
