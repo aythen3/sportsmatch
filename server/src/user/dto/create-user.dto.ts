@@ -13,6 +13,8 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
+  stripeId: any;
+
   @IsNotEmpty()
   @IsString()
   type: 'sportman' | 'club';
