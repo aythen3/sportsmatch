@@ -77,7 +77,7 @@ export class AuthJwtService {
    */
   public async login(user: UserEntity) {
     try {
-      if (user.isDelete) throw new HttpException('El usuario no existe', 404);
+      if (user.isDelete) return ('El usuario no existe');
       return {
         accesToken: this.signJWT({
           payload: { id: user.id },
