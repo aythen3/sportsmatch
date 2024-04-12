@@ -14,11 +14,16 @@ import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { Context } from '../../context/Context'
 import { updateClubData } from '../../redux/actions/club'
+import CustomPicker from '../../components/CustomPicker/CustomPicker'
+import { years } from '../../utils/years'
+import { cities } from '../../utils/cities'
+import { updateSportman } from '../../redux/actions/sportman'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
   const [showGenderModal, setShowGenderModal] = useState(false)
+  const [showBirthdateModal, setShowBirthdateModal] = useState(false)
   const [showCityModal, setShowCityModal] = useState(false)
   const [gender, setGender] = useState()
   const [birthdate, setBirthdate] = useState()
@@ -42,32 +47,12 @@ const PlayerDetails = () => {
 
   const inputs = [
     {
-      title: 'Sexo',
-      type: 'text',
-      placeHolder: 'Selecciona tu sexo...',
-      state: gender,
-      setState: setGender
-    },
-    {
-      title: 'Año de nacimiento',
-      type: 'number',
-      placeHolder: 'Año de nacimiento...',
-      state: birthdate,
-      setState: setBirthdate
-    },
-    {
-      title: 'Lugar de residencia',
-      type: 'text',
-      placeHolder: 'Lugar de residencia...',
-      state: city,
-      setState: setCity
-    },
-    {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
       state: actualClubName,
-      setState: setActualClubName
+      setState: setActualClubName,
+      zIndex: 7000
     },
     {
       title: 'Como te defines como jugador',
@@ -76,19 +61,21 @@ const PlayerDetails = () => {
         'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
       state: userDescription,
       setState: setUserDescription,
-      textArea: true
+      textArea: true,
+      zIndex: 6000
     }
   ]
 
   const handleUpdateUserData = () => {
+    console.log('on handleUpdateUserData')
     const data = {
       city,
       gender,
       description: userDescription,
-      club: actualClubName,
+      actualClub: actualClubName,
       img_perfil: profileImage,
       img_front: coverImage,
-      year: birthdate
+      birthdate
     }
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
       if (value !== undefined) {
@@ -96,17 +83,20 @@ const PlayerDetails = () => {
       }
       return acc
     }, {})
-    console.log('filteredData: ', filteredData)
-    dispatch(updateUserData({ id: user.id, body: filteredData }))
+    dispatch(updateSportman({ id: sportman.id, newData: filteredData }))
     setProfileImage()
     setCoverImage()
-    navigation.navigate('PerfilDatosPropioClub')
+    navigation.navigate('MiPerfil')
   }
 
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-      <ScrollView style={styles.generalWrapper}>
-        <View style={styles.wrapperGap}>
+      <ScrollView
+        style={{
+          width: '90%'
+        }}
+      >
+        <View style={{ gap: 10, flex: 1 }}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
@@ -169,69 +159,68 @@ const PlayerDetails = () => {
           {/* =========================================================== */}
           {/* ========================== INPUTS ========================= */}
           {/* =========================================================== */}
-          <View style={{ gap: 20 }}>
-            <View
-              style={{ alignItems: 'center', paddingHorizontal: 15, gap: 20 }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setShowGenderModal(!showGenderModal)
-                }}
-                style={{ zIndex: 10000, ...styles.containerBox }}
-              >
-                <Text style={styles.inputText}>
-                  {gender || 'Selecciona una posicion'}
-                </Text>
-                {showGenderModal && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: 40,
-                      width: '100%',
-                      borderRadius: 15,
-                      borderWidth: 1,
-                      backgroundColor: Color.bLACK1SPORTSMATCH
-                    }}
-                  >
-                    {['Hombre', 'Mujer'].map((item, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={{
-                          paddingVertical: 3,
-                          width: '100%',
-                          alignItems: 'center'
-                        }}
-                        onPress={() => {
-                          setGender(item)
-                          setShowGenderModal(false)
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 200,
-                            paddingBottom: 5,
-                            textAlign: 'center',
-                            borderBottomWidth: index !== 2 - 1 ? 1 : 0,
-                            borderBottomColor: '#ccc',
-                            ...styles.optionText
-                          }}
-                        >
-                          {item}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
-              </TouchableOpacity>
+          <View style={{ gap: 20, flex: 1 }}>
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Selecciona tu sexo'}
+              </Text>
+              <CustomPicker
+                zIndex={10000}
+                array={['Male', 'Female']}
+                placeholder={'Selecciona tu sexo'}
+                state={gender}
+                setState={setGender}
+                showModal={showGenderModal}
+                setShowModal={setShowGenderModal}
+              />
             </View>
+
+            <View style={{ gap: 5, zIndex: 9000 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Año de nacimiento'}
+              </Text>
+              <TextInput
+                value={birthdate}
+                onChangeText={setBirthdate}
+                placeholder={'Año de nacimiento...'}
+                keyboardType={'numeric'}
+                placeholderTextColor="#999999"
+                style={{
+                  flex: 1,
+                  borderWidth: 0.5,
+                  borderColor: '#fff',
+                  borderRadius: 50,
+                  paddingLeft: 15,
+                  height: 40,
+                  fontSize: 15,
+                  color: '#fff'
+                }}
+              />
+            </View>
+
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Lugar de residencia'}
+              </Text>
+              <CustomPicker
+                zIndex={8000}
+                array={cities}
+                placeholder={'Lugar de residencia'}
+                state={city}
+                setState={setCity}
+                showModal={showCityModal}
+                setShowModal={setShowCityModal}
+              />
+            </View>
+
             {inputs.map((input, index) => (
-              <View key={index} style={{ gap: 5 }}>
+              <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {input.title}
                 </Text>
                 <TextInput
                   multiline={input.textArea && true}
-                  numberOfLines={input.textArea && 4}
+                  numberOfLines={input.textArea && 3}
                   value={input.state}
                   onChangeText={input.setState}
                   placeholder={input.placeHolder}
@@ -239,13 +228,13 @@ const PlayerDetails = () => {
                   placeholderTextColor="#999999"
                   style={{
                     flex: 1,
-                    borderWidth: 1,
+                    borderWidth: 0.5,
                     borderColor: '#fff',
                     textAlignVertical: input.textArea && 'top',
                     borderRadius: input.textArea ? 10 : 50,
                     paddingTop: input.textArea && 10,
                     paddingLeft: 15,
-                    height: input.textArea ? 190 : 40,
+                    height: input.textArea ? 170 : 40,
                     fontSize: 15,
                     color: '#fff'
                   }}
@@ -260,6 +249,7 @@ const PlayerDetails = () => {
             style={{
               height: 40,
               marginTop: 10,
+              zIndex: 5000,
               marginBottom: 10,
               backgroundColor: '#fff',
               borderRadius: 50,
@@ -314,9 +304,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  wrapperGap: {
-    gap: 10
-  },
   image: {
     width: '100%',
     height: '100%'
@@ -335,9 +322,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     overflow: 'hidden',
     backgroundColor: '#fff'
-  },
-  generalWrapper: {
-    width: '90%'
   },
   topWrapper: {
     marginBottom: 42,

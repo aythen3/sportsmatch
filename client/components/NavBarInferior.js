@@ -15,8 +15,6 @@ const NavBarInferior = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
-  const { transformHttpToHttps } = useContext(Context)
-
   const [activeIcon, setActiveIcon] = useState(null)
 
   // useEffect(() => {
@@ -92,9 +90,8 @@ const NavBarInferior = () => {
           source={{
             uri:
               user?.user?.type !== 'club' && sportman?.info?.img_perfil
-                ? transformHttpToHttps(sportman?.info?.img_perfil)
-                : user?.user?.club?.img_perfil &&
-                  transformHttpToHttps(user?.user?.club?.img_perfil)
+                ? sportman?.info?.img_perfil
+                : user?.user?.club?.img_perfil && user?.user?.club?.img_perfil
           }}
         />
       </TouchableOpacity>

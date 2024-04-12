@@ -72,7 +72,7 @@ const Registrarse = () => {
   const submit = () => {
     if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
       if (isValidEmail(valuesUser.email)) {
-        const existingUser = allUsers.find(
+        const existingUser = allUsers?.find(
           (user) => user.email === valuesUser.email
         )
         if (existingUser) {

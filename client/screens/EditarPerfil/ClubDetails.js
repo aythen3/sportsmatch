@@ -33,8 +33,7 @@ const ClubDetails = () => {
     setCoverImage,
     setProfileImage,
     provisoryCoverImage,
-    provisoryProfileImage,
-    transformHttpToHttps
+    provisoryProfileImage
   } = useContext(Context)
   const { user } = useSelector((state) => state.users)
 
@@ -146,9 +145,7 @@ const ClubDetails = () => {
                   style={styles.image}
                   contentFit="cover"
                   source={{
-                    uri:
-                      provisoryProfileImage ||
-                      transformHttpToHttps(user?.user?.club?.img_perfil)
+                    uri: provisoryProfileImage || user?.user?.club?.img_front
                   }}
                 />
               )}
@@ -171,9 +168,7 @@ const ClubDetails = () => {
                   style={styles.image}
                   contentFit="cover"
                   source={{
-                    uri:
-                      provisoryCoverImage ||
-                      transformHttpToHttps(user?.user?.club?.img_front)
+                    uri: provisoryCoverImage || user?.user?.club?.img_front
                   }}
                 />
               )}

@@ -216,7 +216,8 @@ const styles = StyleSheet.create({
   },
   concepto: {
     lineHeight: 14,
-    fontSize: FontSize.t4TEXTMICRO_size,
+    marginBottom: 2,
+    fontSize: 13,
     textAlign: 'left'
   },
   barraCompletaIcon: {
@@ -276,7 +277,9 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   contenidoDatos: {
-    marginTop: 21
+    marginTop: 21,
+    width: '95%',
+    alignItems: 'center'
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,

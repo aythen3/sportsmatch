@@ -18,8 +18,6 @@ import { Context } from '../../context/Context'
 
 const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
-  const { transformHttpToHttps } = useContext(Context)
-
   const { user } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
 
@@ -62,12 +60,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                       contentFit="cover"
                       source={
                         comment.author.sportman
-                          ? transformHttpToHttps(
-                              comment.author?.sportman?.info?.img_perfil
-                            )
-                          : transformHttpToHttps(
-                              comment.author?.club?.img_perfil
-                            )
+                          ? comment.author?.sportman?.info?.img_perfil
+                          : comment.author?.club?.img_perfil
                       }
                       style={styles.authorImg}
                     />

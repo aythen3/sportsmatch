@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
 const Paso2Jugador = () => {
   const { sports } = useSelector((state) => state.sports)
+
+  useEffect(() => {
+    console.log('sports: ', sports)
+  }, [])
 
   const [selectedSport, setSelectedSport] = useState(null)
 

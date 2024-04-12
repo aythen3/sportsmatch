@@ -30,7 +30,6 @@ const MiPerfil = () => {
   const { user } = useSelector((state) => state.users)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
-  const { transformHttpToHttps } = useContext(Context)
 
   const renderContent = () => {
     if (selectedTab === 'Feed') {
@@ -46,15 +45,20 @@ const MiPerfil = () => {
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
-          source={{ uri: transformHttpToHttps(sportman?.info?.img_front) }}
+          source={{ uri: sportman?.info?.img_front }}
         />
-        <View style={styles.bloquePerfil}>
+        <View
+          style={{
+            width: '95%',
+            alignSelf: 'center'
+          }}
+        >
           <View style={styles.imagenInformacion1}>
             <Image
               style={styles.imagenIcon}
               contentFit="cover"
               source={{
-                uri: transformHttpToHttps(sportman?.info?.img_perfil)
+                uri: sportman?.info?.img_perfil
               }}
             />
             <View style={styles.informacion}>
@@ -90,18 +94,42 @@ const MiPerfil = () => {
             <Text style={[styles.text, styles.textTypo]}>24</Text>
           </View> */}
         </View>
-        <View style={styles.feddImagenespestaasSubmenu}>
-          <View style={styles.pestaasSubmenu}>
-            <TouchableOpacity onPress={() => setSelectedTab('Feed')}>
+        <View
+          style={{
+            width: '95%',
+            marginTop: 20,
+            alignSelf: 'center'
+          }}
+        >
+          <View
+            style={{ width: '100%', marginBottom: 15, flexDirection: 'row' }}
+          >
+            <TouchableOpacity
+              style={{
+                width: '50%',
+                alignItems: 'center',
+                borderBottomWidth: 2,
+                borderBottomColor: selectedTab === 'Feed' ? '#fff' : '#000',
+                paddingBottom: 8
+              }}
+              onPress={() => setSelectedTab('Feed')}
+            >
               <FeedSVG />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelectedTab('FeedStats')}>
+            <TouchableOpacity
+              style={{
+                width: '50%',
+                alignItems: 'center',
+                borderBottomWidth: 2,
+                borderBottomColor:
+                  selectedTab === 'FeedStats' ? '#fff' : '#000',
+                paddingBottom: 8
+              }}
+              onPress={() => setSelectedTab('FeedStats')}
+            >
               <StatsSVG />
             </TouchableOpacity>
           </View>
-          <View
-            style={selectedTab === 'Feed' ? styles.line : styles.lineRight}
-          />
         </View>
         {renderContent()}
       </View>
@@ -220,19 +248,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: '5%'
   },
-  bloquePerfil: {
-    // height: 227
-  },
-  pestaasSubmenu: {
-    justifyContent: 'space-evenly',
-    gap: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: '2%'
-  },
-  feddImagenespestaasSubmenu: {
-    marginTop: 25
-  },
+
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     overflow: 'hidden'
