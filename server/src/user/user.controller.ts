@@ -13,13 +13,13 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/auth-jwt/guards/auth.guard';
+// import { AuthGuard } from 'src/auth-jwt/guards/auth.guard';
 import { PublicAccess } from 'src/auth-jwt/decorators/public.decorator';
 
 // Definición del controlador de usuario
 
 @Controller('user')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class UserController {
   // Constructor del controlador que recibe el servicio de usuario
   constructor(private readonly userService: UserService) {}
@@ -33,6 +33,30 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+  @Post('stripe/create-customer')
+  async createCustomer(
+    @Body('email') email: string,
+    @Body('name') name: string,
+  ) {
+    try {
+      const customer = await this.userService.createCustomer(email, name);
+      return { success: true, customer };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  }
+  @Post('create-subscription')
+  async createSubscription(
+    @Body('customerId') customerId: string,
+    @Body('priceId') priceId: string,
+  ) {
+    try {
+      const subscription = await this.userService.createSubscription(customerId, priceId);
+      return { success: true, subscription };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
   }
 
   @Get('/child/:id')

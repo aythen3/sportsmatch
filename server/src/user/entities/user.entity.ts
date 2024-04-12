@@ -14,6 +14,8 @@ export class UserEntity extends BaseEntity {
 
   @Column({ unique: true })
   email: string;
+  @Column({default:""})
+  stripeId: string;
 
   @Exclude()
   @Column()

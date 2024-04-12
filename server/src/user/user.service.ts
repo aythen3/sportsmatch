@@ -1,3 +1,4 @@
+
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,20 +8,76 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
-
+import Stripe from 'stripe';
 @Injectable()
 export class UserService {
+  private readonly stripe: Stripe;
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-
-    private readonly sendMailService: SendMailService
-  ) {}
+    
+    private readonly sendMailService: SendMailService,
+   
+    
+  ) { this.stripe = new Stripe(
+    'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et',
+  )}
 
   /**
    * Método para crear un nuevo usuario
    * @param {CreateUserDto} createUserDto - Los datos del usuario a crear
    */
+  async createSubscription(customerId: string, priceId: string): Promise<any> {
+    try {
+      const subscription = await this.stripe.subscriptions.create({
+        customer: customerId,
+        items: [{
+          price: priceId,
+        }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      return {
+        subscriptionId: subscription.id,
+        clientSecret: subscription,
+      };
+    } catch (error) {
+      throw new Error('Error creating subscription');
+    }
+  }
+
+  async createCustomer(email: string, name: string): Promise<any> {
+    try {
+      const customer = await this.stripe.customers.create({
+        email,
+        name,
+        shipping: {
+          address: {
+            city: 'Brothers',
+            country: 'US',
+            line1: '27 Fredrick Ave',
+            postal_code: '97712',
+            state: 'CA',
+          },
+          name,
+        },
+        address: {
+          city: 'Brothers',
+          country: 'US',
+          line1: '27 Fredrick Ave',
+          postal_code: '97712',
+          state: 'CA',
+        },
+      });
+      return customer;
+    } catch (error) {
+      throw new Error('Error creating customer');
+    }
+  }
+
+
   public async create(createUserDto: CreateUserDto) {
     try {
       // Encriptar la contraseña del usuario
@@ -41,6 +98,13 @@ export class UserService {
           message: 'The email is already registered in the database'
         });
       }
+      const stripeCustomer = await this.stripe.customers.create({
+        email: createUserDto.email,
+        name: createUserDto.nickname, // Puedes ajustar esto según tu lógica de aplicación
+      });
+
+      // Guardar el ID de cliente de Stripe en el DTO del usuario
+      createUserDto.stripeId = stripeCustomer.id;
       // Guardar el nuevo perfil del usuario en la base de datos
       const newProfile: UserEntity =
         await this.userRepository.save(createUserDto);

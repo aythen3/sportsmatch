@@ -76,7 +76,7 @@ const MiPerfil = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.boton}>
-              <Text style={styles.miSuscripcin}>Mi suscripción</Text>
+              <Text style={styles.miSuscripcin}>Mi suscripción2</Text>
             </TouchableOpacity>
           </View>
           {/* <View style={styles.bloqueNumeroSeguidores}>

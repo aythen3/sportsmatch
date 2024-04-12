@@ -13,7 +13,7 @@ export const DataSourceConfig: DataSourceOptions = {
   host: configService.get('DB_HOST'),
   port: +configService.get('DB_PORT'),
   username: configService.get('DB_USER'),
-  password: configService.get('DB_PASS'),
+  password: `o@c9RDO'z"?p)TR}H"5=`,
   database: configService.get('DB_NAME'),
   entities: [__dirname + '/../**/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
