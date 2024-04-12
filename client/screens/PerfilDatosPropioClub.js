@@ -20,13 +20,18 @@ const PerfilDatosPropioClub = () => {
   const [selectComponents, setSelectComponents] = useState('perfil')
 
   return (
-    <View style={styles.perfilDatosPropioClub}>
+    <View
+      style={{
+        backgroundColor: Color.bLACK1SPORTSMATCH,
+        width: '100%',
+        flex: 1,
+        paddingBottom: 30
+      }}
+    >
       <ScrollView>
         <View>
           <HeaderPerfil
             name={isSportman ? '' : club?.name}
-            sport={'Baloncesto'}
-            position={isSportman ? 'Pivot' : ''}
             description={isSportman ? '' : club?.description}
             myPerfil={true}
             setSelectComponents={setSelectComponents}
@@ -34,19 +39,6 @@ const PerfilDatosPropioClub = () => {
             front={club?.img_front}
             avatar={club?.img_perfil}
           />
-
-          {selectComponents === 'perfil' && isSportman && (
-            <View style={styles.imgContainer}>
-              {/* {allImagesMuro.map((image) => (
-                <ImagesRender
-                  key={image.id}
-                  img={image.img}
-                  width={115}
-                  height={120}
-                />
-              ))} */}
-            </View>
-          )}
           {!isSportman && (
             <View>
               <PlayingFieldPerfilClub
@@ -57,53 +49,6 @@ const PerfilDatosPropioClub = () => {
               <MoreDetailsAboutMe
                 title="Descripcion del club"
                 description={club?.description}
-              />
-            </View>
-          )}
-
-          {selectComponents === 'estadisticas' && isSportman && (
-            <View>
-              <View style={styles.circleSkills}>
-                <CircleSkills skill="Ataque" percentage={80} />
-                <CircleSkills skill="Defensa" percentage={60} />
-                <CircleSkills skill="Velocidad" percentage={90} />
-              </View>
-
-              <PercentageSkills
-                skill="Bote"
-                percentage={'90%'}
-                percentageText={90}
-              />
-              <PercentageSkills
-                skill="Lanzamiento"
-                percentage={'80%'}
-                percentageText={80}
-              />
-              <PercentageSkills
-                skill="Dribling"
-                percentage={'40%'}
-                percentageText={40}
-              />
-
-              <View style={styles.cardContainer}>
-                <CardInfoPerfil text="Sexo" value="Masculino" />
-                <CardInfoPerfil text="Edad" value="24" />
-              </View>
-              <View style={styles.cardContainer}>
-                <CardInfoPerfil text="Categoria" value="Senior" />
-                <CardInfoPerfil text="Posicion principal" value="Pivot" />
-              </View>
-
-              <View style={styles.cardContainer}>
-                <CardInfoPerfil text="Altura" value="190cm" />
-                <CardInfoPerfil text="Lugar de residencia" value="Mataro" />
-              </View>
-              <MoreDetailsAboutMe
-                title="Mas detalles sobre mi"
-                description="Apasionado lider competitivo. Mi carrera en baloncesto refleja
-        dedicacion, habilidades excepcionales y la capacidad de motivar al
-        equipo . Me dedico a ello desde que tengo 6 años y llevo toda la vida en
-        el mismo club, el CF Mataro"
               />
             </View>
           )}

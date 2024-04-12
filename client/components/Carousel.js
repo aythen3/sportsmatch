@@ -24,7 +24,9 @@ function Carousel({
   club,
   commentCount,
   id,
-  userId
+  userId,
+  authorId,
+  data
 }) {
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
@@ -34,18 +36,16 @@ function Carousel({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container }}>
       <Pressable
         style={styles.topContainer}
-        onPress={() =>
-          navigation.navigate('PerfilFeedVisualitzaciJug', {
-            club: club || '',
-            name: name || '',
-            description: description || '',
-            image: image || '',
-            imgPerfil: imgPerfil || ''
-          })
-        }
+        onPress={() => {
+          if (data.author.type === 'club') {
+            navigation.navigate('ClubProfile', data)
+          } else {
+            navigation.navigate('PerfilFeedVisualitzaciJug', data)
+          }
+        }}
       >
         <Image style={styles.imgPerfil} source={imgPerfil} />
         <Text style={styles.nameText}>{name}</Text>

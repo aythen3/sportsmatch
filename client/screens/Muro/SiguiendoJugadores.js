@@ -87,11 +87,11 @@ const SiguiendoJugadores = () => {
         <HeaderIcons />
         {sortedPosts.map((publication, i) => (
           <Carousel
-            key={i}
-            name={publication?.author.nickname}
+            key={publication.id}
+            name={publication?.author?.nickname}
             description={publication?.description}
             imgPerfil={
-              publication.author.sportman
+              publication?.author?.sportman
                 ? publication?.author?.sportman?.info?.img_perfil
                 : publication?.author?.club?.img_perfil
             }
@@ -100,8 +100,9 @@ const SiguiendoJugadores = () => {
             likes={publication?.likes}
             commentCount={publication.commentCount}
             index={i}
-            id={publication?.id}
             userId={user?.user?.id}
+            authorId={publication.author.id}
+            data={publication}
           />
         ))}
       </ScrollView>

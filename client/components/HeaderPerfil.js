@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
@@ -13,6 +14,9 @@ import { useNavigation } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
 import { updateImgClub } from '../redux/actions/club'
 import { updateUserData } from '../redux/actions/users'
+import FeedSVG from './svg/FeedSVG'
+import StatsSVG from './svg/StatsSVG'
+import axiosInstance from '../utils/apiBackend'
 
 const HeaderPerfil = ({
   name,
@@ -26,42 +30,38 @@ const HeaderPerfil = ({
   position,
   sport,
   front,
-  avatar
+  avatar,
+  data,
+  external
 }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman } = useSelector((state) => state.users)
+  const { isSportman, user } = useSelector((state) => state.users)
+  const [clubOffers, setClubOffers] = useState([])
 
-  const [image1, setImage1] = useState(null)
-
-  const pickImage = async () => {
-    await ImagePicker.requestMediaLibraryPermissionsAsync()
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    })
-
-    if (!result.canceled) {
-      setImage1(result.assets[0])
-
-      const fileName = `${result.assets[0].uri.split('.').pop()}`
-
-      const file = new FormData()
-
-      file.append('file', {
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: fileName
-      })
-      dispatch(updateImgClub(file))
-    }
+  const getOffersById = async (id) => {
+    console.log('id from getoffers: ', id)
+    const { data } = await axiosInstance.get('offer')
+    const filteredOffers = data.filter((offer) => offer.club.id === id)
+    setClubOffers(filteredOffers)
   }
+
+  useEffect(() => {
+    if (external) {
+      if (data.author.type === 'club') {
+        getOffersById(data.author.club.id)
+      }
+    }
+    if (!external) {
+      if (!isSportman) {
+        getOffersById(user.user.club.id)
+      }
+    }
+  }, [])
 
   return (
     <View>
-      <TouchableOpacity onPress={() => pickImage(setImage1)}>
+      <TouchableOpacity>
         <Image
           style={styles.imgFront}
           contentFit="cover"
@@ -116,134 +116,536 @@ const HeaderPerfil = ({
         </View>
       </View>
 
-      <View style={styles.groupContainer}>
-        {club && !myPerfil ? (
-          <View style={styles.leftButton}>
-            <Image
-              style={styles.frameChild}
-              contentFit="cover"
-              source={require('../assets/group-5361.png')}
-            />
-            <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
-          </View>
-        ) : (
-          <Pressable
-            style={styles.leftButton}
-            onPress={() =>
-              !button1 ? navigation.navigate('EditarPerfil') : ''
-            }
-          >
-            <Text style={[styles.ojear, styles.timeTypo]}>
-              {button1 ? button1 : 'Editar perfil'}
-            </Text>
-          </Pressable>
-        )}
-        {club && !myPerfil ? (
-          <View style={styles.matchButton}>
-            <Text style={[styles.ojear, styles.timeTypo2]}>Pedir Match</Text>
-            <View
+      {/* ================================================================= */}
+      {/* ========================== EXTERNAL ============================= */}
+      {/* ================================================================= */}
+      {external && data.author.type !== 'club' ? (
+        <View style={styles.groupContainer}>
+          {!isSportman ? (
+            <View style={styles.leftButton}>
+              <Image
+                style={{ ...styles.frameChild, marginRight: 10 }}
+                contentFit="cover"
+                source={require('../assets/group-5361.png')}
+              />
+              <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
+            </View>
+          ) : (
+            <Pressable style={styles.leftButton}>
+              <Text style={[styles.ojear, styles.timeTypo]}>{'Seguir'}</Text>
+            </Pressable>
+          )}
+          {!isSportman ? (
+            <Pressable
               style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
+                flexDirection: 'row',
+                backgroundColor: '#7B2610',
+                borderRadius: Border.br_81xl,
+                height: 35,
+                width: 170,
                 justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: Color.bALONCESTO,
-                position: 'absolute',
-                left: -10
+                alignItems: 'center'
               }}
             >
-              <Image
-                style={styles.groupIcon}
-                contentFit="cover"
-                source={require('../assets/group13.png')}
-              />
-            </View>
+              <Text
+                style={{
+                  marginRight: 40,
+                  width: '100%',
+                  textAlign: 'right',
+                  fontSize: FontSize.t2TextSTANDARD_size,
+                  color: '#E1451E',
+                  fontSize: FontSize.t2TextSTANDARD_size,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: '700'
+                }}
+              >
+                Pedir Match
+              </Text>
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: Color.bALONCESTO,
+                  position: 'absolute',
+                  left: 0
+                }}
+              >
+                <Image
+                  style={styles.groupIcon}
+                  contentFit="cover"
+                  source={require('../assets/group13.png')}
+                />
+              </View>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={{
+                flexDirection: 'row',
+                backgroundColor: button2
+                  ? Color.colorDimgray_100
+                  : Color.colorWhitesmoke,
+                borderRadius: Border.br_81xl,
+                height: 35,
+                width: 170,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              onPress={() =>
+                navigation.navigate('ChatAbierto1', {
+                  receiverId: data.author.id,
+                  receiverName: data.author.nickname,
+                  profilePic: avatar
+                })
+              }
+            >
+              <Text
+                style={[
+                  button2 ? styles.ojear : styles.ojear2,
+                  styles.timeTypo
+                ]}
+              >
+                {'Enviar mensaje'}
+              </Text>
+            </Pressable>
+          )}
+        </View>
+      ) : (
+        external &&
+        data.author.type === 'club' && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ChatAbierto1', {
+                receiverId: data.author.id,
+                receiverName: data.author.nickname,
+                profilePic: avatar
+              })
+            }
+            style={{
+              flexDirection: 'row',
+              marginTop: 10,
+              backgroundColor: Color.colorDimgray_100,
+              borderRadius: Border.br_81xl,
+              height: 35,
+              width: '95%',
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={[styles.ojear, styles.timeTypo]}>Mensaje</Text>
+          </TouchableOpacity>
+        )
+      )}
+      {/* ================================================================= */}
+      {/* ================== CLUB DATA EXTERNAL OR NOT ==================== */}
+      {/* ================================================================= */}
+      {external && data.author.type === 'club' && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '95%',
+            alignSelf: 'center',
+            marginTop: 10
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {data.author.club.year}
+            </Text>
+            <Text
+              style={{
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
+              }}
+            >
+              Fundación
+            </Text>
           </View>
-        ) : (
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {data.author.club.capacity}
+            </Text>
+            <Text
+              style={{
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
+              }}
+            >
+              Aforo
+            </Text>
+          </View>
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {clubOffers?.length}
+            </Text>
+            <Text
+              style={{
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
+              }}
+            >
+              Nº ofertas
+            </Text>
+          </View>
+        </View>
+      )}
+      {/* ================================================================= */}
+      {/* ===================== CLUB/USER PROFILE ========================= */}
+      {/* ================================================================= */}
+      {!external && (
+        <View style={styles.groupContainer}>
+          <Pressable
+            style={styles.leftButton}
+            onPress={() => {
+              if (!external) {
+                navigation.navigate('EditarPerfil')
+              }
+            }}
+          >
+            <Text style={[styles.ojear, styles.timeTypo]}>
+              {'Editar perfil'}
+            </Text>
+          </Pressable>
           <Pressable
             style={{
               flexDirection: 'row',
-              backgroundColor: button2
-                ? Color.colorDimgray_100
-                : Color.colorWhitesmoke,
+              backgroundColor: '#fff',
               borderRadius: Border.br_81xl,
               height: 35,
               width: 170,
               justifyContent: 'center',
               alignItems: 'center'
             }}
-            onPress={() => !button2 && navigation.navigate('MiSuscripcin')}
+            onPress={() => {
+              navigation.navigate('MiSuscripcin')
+            }}
           >
             <Text
-              style={[button2 ? styles.ojear : styles.ojear2, styles.timeTypo]}
+              style={{
+                color: Color.bLACK1SPORTSMATCH,
+                fontSize: FontSize.t2TextSTANDARD_size,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: '700',
+                fontSize: FontSize.t2TextSTANDARD_size
+              }}
             >
-              {button2 ? button2 : 'Mi suscripcion'}
+              {'Mi suscripción'}
             </Text>
           </Pressable>
-        )}
-      </View>
-      {isSportman === true && (
-        <View style={styles.seguidoresContainer}>
-          <Text style={styles.seguidoresText}>Seguidores</Text>
+        </View>
+      )}
+      {/* ================================================================= */}
+      {/* ========================== EXTERNAL ============================= */}
+      {/* ================================================================= */}
+      {!external && isSportman === true && (
+        <View
+          style={{
+            width: '95%',
+            height: 50,
+            alignSelf: 'center',
+            justifyContent: 'space-around',
+            borderRadius: 5,
+            backgroundColor: Color.bLACK3SPORTSMATCH,
+            marginTop: 20,
+            paddingHorizontal: 15
+          }}
+        >
+          <Text
+            style={{
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Seguidores
+          </Text>
+          <Text style={styles.numeroText}>24</Text>
+        </View>
+      )}
+      {external && data.author.type !== 'club' && (
+        <View
+          style={{
+            width: '95%',
+            height: 50,
+            alignSelf: 'center',
+            justifyContent: 'space-around',
+            borderRadius: 5,
+            backgroundColor: Color.bLACK3SPORTSMATCH,
+            marginTop: 20,
+            paddingHorizontal: 15
+          }}
+        >
+          <Text
+            style={{
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Seguidores
+          </Text>
           <Text style={styles.numeroText}>24</Text>
         </View>
       )}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          marginTop: 15
-        }}
-      >
-        {isSportman && (
-          <Pressable onPress={() => setSelectComponents('perfil')}>
-            <View
+      {!external && !isSportman && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '95%',
+            alignSelf: 'center',
+            marginTop: 10
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {user.user.club.year}
+            </Text>
+            <Text
               style={{
-                borderBottomWidth: 1,
-                borderColor:
-                  selectComponents === 'perfil'
-                    ? Color.colorWhitesmoke
-                    : 'transparent',
-                width: 100,
-                justifyContent: 'center',
-                alignItems: 'center'
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
               }}
             >
-              <Image
-                style={{ marginBottom: 10 }}
-                contentFit="cover"
-                source={require('../assets/cuadrado-icon.png')}
-              />
-            </View>
-          </Pressable>
-        )}
-        {isSportman && (
-          <Pressable onPress={() => setSelectComponents('estadisticas')}>
-            <View
+              Fundación
+            </Text>
+          </View>
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {user.user.club.capacity}
+            </Text>
+            <Text
               style={{
-                borderBottomWidth: 1,
-                borderColor:
-                  selectComponents === 'estadisticas'
-                    ? Color.colorWhitesmoke
-                    : 'transparent',
-                width: 100,
-                justifyContent: 'center',
-                alignItems: 'center'
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
               }}
             >
-              <Image
-                style={{ width: 30, height: 18, marginBottom: 10 }}
-                contentFit="cover"
-                source={require('../assets/vector-8.png')}
-              />
+              Aforo
+            </Text>
+          </View>
+          <View
+            style={{
+              borderWidth: 4,
+              gap: 9,
+              backgroundColor: '#1D1D1D',
+              borderColor: '#252525',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 5,
+              borderRadius: 100,
+              height: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              width: (Dimensions.get('window').width * 0.9) / 3 - 15,
+              alignSelf: 'center',
+              marginTop: 10
+            }}
+          >
+            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+              {clubOffers?.length}
+            </Text>
+            <Text
+              style={{
+                color: '#E1451E',
+                fontSize: 12,
+                position: 'absolute',
+                bottom: 15
+              }}
+            >
+              Nº ofertas
+            </Text>
+          </View>
+        </View>
+      )}
+
+      {!external && isSportman === true && (
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginTop: 15
+          }}
+        >
+          <View
+            style={{
+              width: '95%',
+              marginTop: 20,
+              alignSelf: 'center'
+            }}
+          >
+            <View
+              style={{ width: '100%', marginBottom: 15, flexDirection: 'row' }}
+            >
+              <TouchableOpacity
+                style={{
+                  width: '50%',
+                  alignItems: 'center',
+                  borderBottomWidth: 2,
+                  borderBottomColor:
+                    selectComponents === 'perfil' ? '#fff' : '#000',
+                  paddingBottom: 8
+                }}
+                onPress={() => setSelectComponents('perfil')}
+              >
+                <FeedSVG />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: '50%',
+                  alignItems: 'center',
+                  borderBottomWidth: 2,
+                  borderBottomColor:
+                    selectComponents === 'estadisticas' ? '#fff' : '#000',
+                  paddingBottom: 8
+                }}
+                onPress={() => setSelectComponents('estadisticas')}
+              >
+                <StatsSVG />
+              </TouchableOpacity>
             </View>
-          </Pressable>
-        )}
-      </View>
+          </View>
+        </View>
+      )}
+      {external && data.author.type !== 'club' && (
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginTop: 15
+          }}
+        >
+          <View
+            style={{
+              width: '95%',
+              marginTop: 20,
+              alignSelf: 'center'
+            }}
+          >
+            <View
+              style={{ width: '100%', marginBottom: 15, flexDirection: 'row' }}
+            >
+              <TouchableOpacity
+                style={{
+                  width: '50%',
+                  alignItems: 'center',
+                  borderBottomWidth: 2,
+                  borderBottomColor:
+                    selectComponents === 'perfil' ? '#fff' : '#000',
+                  paddingBottom: 8
+                }}
+                onPress={() => setSelectComponents('perfil')}
+              >
+                <FeedSVG />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: '50%',
+                  alignItems: 'center',
+                  borderBottomWidth: 2,
+                  borderBottomColor:
+                    selectComponents === 'estadisticas' ? '#fff' : '#000',
+                  paddingBottom: 8
+                }}
+                onPress={() => setSelectComponents('estadisticas')}
+              >
+                <StatsSVG />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   )
 }
@@ -255,6 +657,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   groupIcon: {
+    marginRight: 1,
+    marginTop: 1,
     height: 25,
     width: 32,
     opacity: 0.9
@@ -340,31 +744,6 @@ const styles = StyleSheet.create({
     width: 170,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  matchButton: {
-    flexDirection: 'row',
-    backgroundColor: Color.bALONCESTO,
-    borderRadius: Border.br_81xl,
-    height: 35,
-    width: 170,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  seguidoresContainer: {
-    width: '100%',
-    height: 60,
-    backgroundColor: Color.bLACK3SPORTSMATCH,
-    marginTop: 20,
-    paddingHorizontal: 15
-  },
-  seguidoresText: {
-    width: '30.28%',
-    top: '10%',
-    lineHeight: 14,
-    fontSize: FontSize.t4TEXTMICRO_size,
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    marginBottom: 10
   },
   numeroText: {
     fontSize: FontSize.h3TitleMEDIUM_size,

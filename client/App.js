@@ -62,6 +62,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlayerDetails from './screens/EditarPerfil/PlayerDetails'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
+import ClubProfile from './screens/Pasos/ClubProfile'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -144,6 +145,11 @@ const App = () => {
                 <Stack.Screen
                   name="ClubDetails"
                   component={ClubDetails}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ClubProfile"
+                  component={ClubProfile}
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen

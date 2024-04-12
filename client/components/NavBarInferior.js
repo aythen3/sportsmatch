@@ -43,17 +43,14 @@ const NavBarInferior = () => {
   }
 
   const handleNavigation = () => {
-    console.log('isSportman', isSportman)
-    if (isSportman) {
+    if (user.user.type !== 'club') {
       navigation.navigate('MiPerfil')
     } else {
       navigation.navigate('PerfilDatosPropioClub')
     }
     setActiveIcon('profile')
   }
-  // if (user?.user) {
-  //   return null
-  // }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
