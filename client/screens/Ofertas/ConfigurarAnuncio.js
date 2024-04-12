@@ -121,9 +121,9 @@ const ConfigurarAnuncio = () => {
         console.error('Error fetching club data:', error)
       }
     }
-
     fetchClubData()
   }, [])
+  console.log('allPositions: ', allPositions)
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -448,7 +448,7 @@ const ConfigurarAnuncio = () => {
                       sexo: selectedGender,
                       category: selectedCategory,
                       urgency: selectedPriority,
-                      retribution: selectedRemuneration
+                      retribution: selectedRemuneration === 'Si' ? true : false
                     },
                     positionId: selectedPosition.id,
                     clubId: club.id

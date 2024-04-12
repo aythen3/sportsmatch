@@ -19,12 +19,9 @@ export const ContextProvider = ({ children }) => {
   const [libraryImage, setLibraryImage] = useState()
 
   function transformHttpToHttps(url) {
-    // Check if the URL starts with "http://"
     if (url.startsWith('http://')) {
-      // Replace "http://" with "https://"
       return url.replace('http://', 'https://')
     } else {
-      // If it's already an HTTPS URL, return the same URL
       return url
     }
   }
@@ -130,7 +127,7 @@ export const ContextProvider = ({ children }) => {
   }
   // https://api-sportsmatch.ay-cloud.com
   // http://192.168.0.8:3010
-  const socket = io('https://api-sportsmatch.ay-cloud.com', {
+  const socket = io('http://192.168.0.8:3010', {
     transports: ['websocket']
     // auth: {
     //   autoConnect: true,

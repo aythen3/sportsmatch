@@ -17,6 +17,7 @@ import MonetizarOfertaPRO from './MonetizarOfertaPRO'
 import FiltersSportman from '../components/FiltersSportman'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMatch } from '../redux/actions/matchs'
+import { signToOffer } from '../redux/actions/offers'
 
 const TodasLasOfertas = () => {
   const dispatch = useDispatch()
@@ -171,11 +172,11 @@ const TodasLasOfertas = () => {
                   // onPress={() => setModalVisible(true)}
                   onPress={() => {
                     console.log('offer', offer)
-                    console.log(user.user.sportman.id)
+                    console.log('sp id: ', user.user.sportman.id)
                     dispatch(
-                      sendMatch({
+                      signToOffer({
                         offerId: offer?.id,
-                        sportmanId: user.user.sportman.id
+                        userId: user.user.sportman.id
                       })
                     )
                     navigation.navigate('TusMatchs')

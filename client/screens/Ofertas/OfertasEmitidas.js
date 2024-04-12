@@ -141,9 +141,11 @@ const OfertasEmitidas = () => {
               style={styles.inscritos}
               onPress={() => navigation.navigate('InscritosAMisOfertas')}
             >
-              <Text
-                style={[styles.inscritos1, styles.pausar1Typo]}
-              >{`6 inscritos `}</Text>
+              <Text style={[styles.inscritos1, styles.pausar1Typo]}>
+                {offer.inscriptions
+                  ? `${offer.inscriptions.length} inscriptos`
+                  : '0 inscriptos'}
+              </Text>
             </Pressable>
             <Modal visible={modalVisible} transparent={true}>
               <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>

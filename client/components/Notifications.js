@@ -51,7 +51,7 @@ const Notifications = ({ text, date, read, match }) => {
         )}
         <View style={{ flex: 1 }}>
           <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-            {match && '¡Te han solicitado un Match!'}
+            {match && '¡Has hecho un Match!'}
           </Text>
         </View>
         <Text style={[styles.ayer, styles.ayerTypo]}>{formatDate(date)}</Text>

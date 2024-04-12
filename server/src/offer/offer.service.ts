@@ -55,7 +55,7 @@ export class OfferService {
     }
   }
 
-  public async findAll(query: UpdateOfferDto) {
+  async findAll(query: UpdateOfferDto) {
     try {
       const where = { isDelete: false };
       if (query) {
@@ -63,16 +63,26 @@ export class OfferService {
           where[key] = query[key];
         }
       }
-      const offer: OfferEntity[] = await this.offerRepository.find({
-        where: where
+
+      const offers: OfferEntity[] = await this.offerRepository.find({
+        where,
+        relations: ['club'] // Incluir la relación con el club
       });
-      if (offer.length === 0) {
+
+      if (offers.length === 0) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: 'Offer not found'
         });
       }
-      return offer;
+
+      // Mapear los resultados para incluir el clubId
+      const offersWithClubId = offers.map((offer) => ({
+        ...offer,
+        clubId: offer.club.id // Agregar el clubId al objeto offer
+      }));
+
+      return offersWithClubId;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
@@ -130,34 +140,37 @@ export class OfferService {
     return await this.findOne(id);
   }
 
-
   async addInscription(offerId: string, userId: string) {
-   try {
-    console.log("buscando la oferta")
-    const offer = await this.offerRepository.findOne({where: {id:offerId}});
-    if (!offer) {
-      throw new NotFoundException('Offer not found.');
-    }
+    try {
+      console.log('buscando la oferta');
+      const offer = await this.offerRepository.findOne({
+        where: { id: offerId }
+      });
+      if (!offer) {
+        throw new NotFoundException('Offer not found.');
+      }
 
-    if (!Array.isArray(offer.inscriptions)) {
-      offer.inscriptions = [];
-    }
+      if (!Array.isArray(offer.inscriptions)) {
+        offer.inscriptions = [];
+      }
 
-    offer.inscriptions.push(userId);
-    console.log("aca se rompe")
-    await this.offerRepository.save(offer);
-   } catch (error) {
-    console.log(error)
-   }
+      offer.inscriptions.push(userId);
+      console.log('aca se rompe');
+      await this.offerRepository.save(offer);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async removeInscription(offerId: string, userId: string) {
-    const offer = await this.offerRepository.findOne({where: {id:offerId}});
+    const offer = await this.offerRepository.findOne({
+      where: { id: offerId }
+    });
     if (!offer) {
       throw new NotFoundException('Offer not found.');
     }
 
-    offer.inscriptions = offer.inscriptions.filter(id => id !== userId);
+    offer.inscriptions = offer.inscriptions.filter((id) => id !== userId);
     await this.offerRepository.save(offer);
   }
 }

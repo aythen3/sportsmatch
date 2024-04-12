@@ -6,7 +6,6 @@ import { getSportById } from '../redux/actions/sports'
 
 const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
   const dispatch = useDispatch()
-
   const handlePress = () => {
     onSelect(sport)
     dispatch(getSportById(sport.id))

@@ -27,7 +27,6 @@ function Carousel({
   userId
 }) {
   const navigation = useNavigation()
-  const { transformHttpToHttps } = useContext(Context)
   const [modalVisible, setModalVisible] = useState(false)
 
   const closeModal = () => {
@@ -53,10 +52,7 @@ function Carousel({
       </Pressable>
       <PagerView style={styles.postContainer} initialPage={0}>
         <View key={id}>
-          <Image
-            style={styles.postImage}
-            source={{ uri: transformHttpToHttps(image[0]) }}
-          />
+          <Image style={styles.postImage} source={image} />
         </View>
         {/* <View key={index + 1}>
           <Image
