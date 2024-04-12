@@ -17,12 +17,12 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     
     private readonly sendMailService: SendMailService,
-   
+    
     
   ) { this.stripe = new Stripe(
     'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et',
   )}
-
+  
   /**
    * Método para crear un nuevo usuario
    * @param {CreateUserDto} createUserDto - Los datos del usuario a crear
@@ -38,6 +38,7 @@ export class UserService {
         payment_settings: { save_default_payment_method: 'on_subscription' },
         expand: ['latest_invoice.payment_intent'],
       });
+      console.log("prueba")
 
       return {
         subscriptionId: subscription.id,
