@@ -31,7 +31,9 @@ const TusMatchs = () => {
   const { userMatchs } = useSelector((state) => state.matchs)
 
   useEffect(() => {
-    dispatch(getUserMatchs(user.user.sportman.id))
+    if (user.user.type !== 'club') {
+      dispatch(getUserMatchs(user.user.sportman.id))
+    }
   }, [])
 
   const [details, setDetails] = useState(false)
@@ -46,7 +48,7 @@ const TusMatchs = () => {
 
   const getMatchData = async (id) => {
     const { data } = await axiosInstance.get(`match/${id}`)
-    getOfferData(data.offer.id)
+    getOfferData(data?.offer?.id)
   }
 
   useEffect(() => {
@@ -94,7 +96,7 @@ const TusMatchs = () => {
       {user?.user?.type === 'sportman' && matchsData.length > 0 && (
         <View>
           {matchsData.map((match, index) => (
-            <View style={styles.targetaClub}>
+            <View key={index} style={styles.targetaClub}>
               <Pressable
                 onPress={() => {
                   setDetails(true)

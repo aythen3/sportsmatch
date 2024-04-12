@@ -191,7 +191,7 @@ const TusNotificaciones1 = () => {
                   profilePic={
                     user?.type === 'club'
                       ? user?.club?.img_perfil
-                      : user.sportman.info.img_perfil
+                      : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
                   applicant={applicants.includes(user.sportman?.id)}

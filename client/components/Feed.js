@@ -11,13 +11,14 @@ import {
 import { Border, Color, FontFamily } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 
-const Feed = () => {
+const Feed = ({ externalId }) => {
   const [userPosts, setUserPosts] = useState([])
   const { user } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
 
   useEffect(() => {
-    setUserPosts(allPosts.filter((post) => post.author.id === user.user.id))
+    const userId = externalId || user.user.id
+    setUserPosts(allPosts.filter((post) => post.author.id === userId))
   }, [])
 
   return (

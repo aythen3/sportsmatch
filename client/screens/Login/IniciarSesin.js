@@ -24,6 +24,7 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { setIsSpotMan } from '../../redux/slices/users.slices'
 
 const IniciarSesin = () => {
   const isFocused = useIsFocused()
@@ -56,11 +57,13 @@ const IniciarSesin = () => {
       navigation.navigate('SiguiendoJugadores')
     } else {
       if (user?.user?.type === 'club') {
+        console.log('cluuuub')
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
       } else {
         if (user?.accesToken) {
+          console.log('jugador')
           navigation.navigate('stepsJugador')
         }
       }
@@ -73,9 +76,12 @@ const IniciarSesin = () => {
       // console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log(response,"resp")
+          console.log('response: ', response.payload.user.type)
+          dispatch(
+            setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+          )
           await AsyncStorage.setItem('userToken', response.payload.accesToken)
-          await AsyncStorage.setItem('userId', response.payload.user.id)
+          await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
         })
         .catch((error) => {

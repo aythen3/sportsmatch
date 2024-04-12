@@ -278,13 +278,13 @@ const styles = StyleSheet.create({
   },
   contenidoDatos: {
     marginTop: 21,
+    alignSelf: 'center',
     width: '95%',
     alignItems: 'center'
   },
   perfilDatosVisualitzaciMa: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     width: '100%'
-    // height: '140%'
   }
 })
 

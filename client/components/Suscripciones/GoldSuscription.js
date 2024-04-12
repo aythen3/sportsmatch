@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 // import { useSelector } from 'react-redux'
 import { Image } from 'expo-image'
@@ -13,6 +13,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 const GoldSuscription = () => {
   // const { user } = useSelector((state) => state.users)
+
+  const handleGetGold = () => {
+    console.log('handling gold plan...')
+  }
 
   return (
     <View>
@@ -33,6 +37,7 @@ const GoldSuscription = () => {
             <Text style={[styles.freemium2, styles.ofertasTypo]}>PRO</Text>
           </LinearGradient>
         </View>
+
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
@@ -121,6 +126,22 @@ const GoldSuscription = () => {
             </View>
           </View>
         </View>
+        <TouchableOpacity
+          onPress={handleGetGold}
+          style={{
+            width: '95%',
+            borderWidth: 1,
+            alignSelf: 'center',
+            marginTop: 25,
+            borderColor: '#000',
+            borderRadius: 100,
+            height: 30,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={styles.ofertasTypo}>Seleccionar este plan</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

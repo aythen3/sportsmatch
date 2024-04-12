@@ -125,15 +125,32 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
-          <View style={styles.topWrapper}>
+          <View
+            style={{
+              marginBottom: 42,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 15,
+              justifyContent: 'flex-start'
+            }}
+          >
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                style={styles.icon}
+                style={{ width: 9, height: 15, marginTop: 2.5 }}
                 contentFit="cover"
                 source={require('../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
-            <Text style={styles.clubDetailsTitle}>Detalles del club</Text>
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: '500',
+                fontSize: 22,
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Detalles del club
+            </Text>
           </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
@@ -302,23 +319,10 @@ const styles = StyleSheet.create({
   generalWrapper: {
     width: '90%'
   },
-  topWrapper: {
-    marginBottom: 42,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 15,
-    justifyContent: 'flex-start'
-  },
   icon: {
     width: 9,
     height: 15,
     marginTop: 2.5
-  },
-  clubDetailsTitle: {
-    color: '#fff',
-    fontWeight: '500',
-    fontSize: 22,
-    fontFamily: FontFamily.t4TEXTMICRO
   },
   mediumText: {
     color: '#fff',

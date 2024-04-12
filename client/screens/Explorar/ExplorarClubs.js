@@ -6,11 +6,13 @@ import {
   // Pressable,
   ScrollView,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Dimensions,
+  TouchableOpacity
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useNavigation } from '@react-navigation/native'
-import { Color } from '../../GlobalStyles'
+import { Border, Color, FontFamily } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
 import FiltersHome from '../../components/FiltersHome'
 import ExplorarClubsConFiltroPrem from './ExplorarClubsConFiltroPrem'
@@ -52,17 +54,43 @@ const ExplorarClubs = () => {
           modalSportmanActive={onFilterSportman}
         />
 
-        <View style={styles.imgContainer}>
-          {/* <View style={styles.imgMap}> */}
-          {allPosts.map((post) => (
-            <Image
-              key={post.id}
-              style={styles.image}
-              contentFit="cover"
-              source={post.image}
-            />
-          ))}
-          {/* </View> */}
+        <View
+          style={{
+            width: '95%',
+            alignSelf: 'center',
+            marginTop: 15,
+            justifyContent: 'flex-start',
+            gap: 10,
+            flexDirection: 'row',
+            flexWrap: 'wrap'
+          }}
+        >
+          {allPosts?.length > 0 ? (
+            allPosts?.map((post, index) => (
+              <TouchableOpacity key={post.id}>
+                <Image
+                  style={styles.iconLayout}
+                  contentFit="cover"
+                  source={{ uri: post.image[0] }}
+                />
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View
+              style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
+            >
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: '600',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  color: Color.wHITESPORTSMATCH
+                }}
+              >
+                No hay publicaciones
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
       <Modal visible={modalFilters} transparent={true} animationType="slide">
@@ -85,6 +113,9 @@ const ExplorarClubs = () => {
   )
 }
 
+const screenWidth = Dimensions.get('window').width
+const itemSize = (screenWidth * 0.9 - 6) / 3
+
 const styles = StyleSheet.create({
   explorarClubs: {
     flex: 1,
@@ -98,8 +129,21 @@ const styles = StyleSheet.create({
   imgContainer: {
     marginTop: 15,
     flexDirection: 'row',
+    aligse: 'center',
+    borderWidth: 2,
+    borderColor: 'red',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 5,
     flexWrap: 'wrap'
+  },
+  iconLayout: {
+    borderRadius: Border.br_10xs,
+    height: itemSize + 15,
+    alignSelf: 'stretch',
+    width: itemSize,
+    overflow: 'hidden'
   },
   modal: {
     width: 200,
