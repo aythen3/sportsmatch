@@ -9,7 +9,7 @@ import { getAllMatchs, getUserMatchs } from '../actions/matchs'
 const matchsSlices = createSlice({
   name: 'matchs',
   initialState: {
-    userMatches: [],
+    userMatchs: [],
     allMatchs: []
   },
   reducers: {},
@@ -22,7 +22,7 @@ const matchsSlices = createSlice({
       })
       .addCase(getUserMatchs.fulfilled, (state, action) => {
         state.loading = false
-        state.userMatches = action.payload
+        state.userMatchs = action.payload
         state.error = false
       })
       .addCase(getUserMatchs.rejected, (state) => {

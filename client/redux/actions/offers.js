@@ -10,6 +10,21 @@ export const setOffer = createAsyncThunk('setOffer', async (offer) => {
   }
 })
 
+export const signToOffer = createAsyncThunk(
+  'signToOffer',
+  async ({ offerId, userId }) => {
+    console.log('{offerId, userId}: ', { offerId, userId })
+    try {
+      const { data } = await axiosInstance.post(
+        `offer/${offerId}/agregar-inscripcion/${userId}`
+      )
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const getAllOffers = createAsyncThunk('getAllOffers', async () => {
   try {
     const { data } = await axiosInstance.get('offer')

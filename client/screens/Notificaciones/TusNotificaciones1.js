@@ -17,19 +17,41 @@ import Notifications from '../../components/Notifications'
 import MessagesChat from '../../components/MessagesChat'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
+import { getAllUsers } from '../../redux/actions/users'
+import { useDispatch } from 'react-redux'
 
 const TusNotificaciones1 = () => {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-  const { notifications, messages, userMessages } = useSelector(
-    (state) => state.notifications
-  )
+  const [applicants, setApplicants] = useState([])
+  const dispatch = useDispatch()
+  const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { user, allUsers } = useSelector((state) => state.users)
+  const { offers } = useSelector((state) => state.offers)
+
+  useEffect(() => {}, [allUsers])
+
+  useEffect(() => {
+    dispatch(getAllUsers())
+  }, [])
+
+  useEffect(() => {
+    if (user && user?.user.type === 'club' && offers) {
+      const clubOffers = offers.filter(
+        (offer) => offer.clubId === user.user.club.id
+      )
+      const postulants = clubOffers.map((offer) => offer.inscriptions)
+      const allApplications = [...new Set([].concat(...postulants))]
+      allApplications.length > 0 && setApplicants(allApplications)
+    }
+  }, [offers])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
 
   const userId = user?.user?.id
+  if (!allUsers)
+    return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
   return (
     <SafeAreaView style={styles.tusNotificaciones}>
       {isFocused && (
@@ -96,16 +118,41 @@ const TusNotificaciones1 = () => {
           </Pressable>
         </View>
 
-        {selectedComponent === 'notifications' &&
-          notifications.map((notification) => (
-            <Notifications
-              key={notification.id}
-              text={notification.notification}
-              send={notification.send}
-              read={notification.read}
-              match={notification.match}
-            />
-          ))}
+        {selectedComponent === 'notifications' && (
+          <View>
+            {allNotifications?.filter(
+              (notification) => notification.recipientId === userId
+            ).length > 0 ? (
+              allNotifications
+                ?.filter((notification) => notification.recipientId === userId)
+                .map((notification) => (
+                  <Notifications
+                    key={notification.id}
+                    title={notification.title}
+                    text={notification.message}
+                    date={notification.date}
+                    read={notification.read}
+                    match={notification.title === 'Nuevo Match'}
+                  />
+                ))
+            ) : (
+              <View
+                style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
+              >
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontWeight: '600',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    color: Color.wHITESPORTSMATCH
+                  }}
+                >
+                  No tienes notificaciones!
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
 
         {selectedComponent === 'messages' && (
           <View
@@ -140,12 +187,14 @@ const TusNotificaciones1 = () => {
                 <MessagesChat
                   key={user.id}
                   name={user.nickname}
+                  sportmanId={user.sportman?.id}
                   profilePic={
                     user?.type === 'club'
                       ? user?.club?.img_perfil
-                      : user?.sportman.info.img_perfil
+                      : user.sportman.info.img_perfil
                   }
                   selectedUserId={user.id}
+                  applicant={applicants.includes(user.sportman?.id)}
                 />
               ))}
           </ScrollView>

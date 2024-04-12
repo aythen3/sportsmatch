@@ -18,6 +18,14 @@ export const ContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState()
   const [libraryImage, setLibraryImage] = useState()
 
+  function transformHttpToHttps(url) {
+    if (url.startsWith('http://')) {
+      return url.replace('http://', 'https://')
+    } else {
+      return url
+    }
+  }
+
   const pickImage = async (source, imageUri) => {
     if (imageUri) {
       const profileImageData = {
@@ -38,7 +46,7 @@ export const ContextProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           // console.log('dataUrl from uriImg:', data.url)
-          setLibraryImage(data.url)
+          setLibraryImage(transformHttpToHttps(data.url))
         })
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,7 +82,7 @@ export const ContextProvider = ({ children }) => {
             .then((res) => res.json())
             .then((data) => {
               // console.log('dataUrl from profile:', data.url)
-              setProfileImage(data.url)
+              setProfileImage(transformHttpToHttps(data.url))
             })
         } else {
           const coverImageData = {
@@ -98,7 +106,7 @@ export const ContextProvider = ({ children }) => {
             .then((res) => res.json())
             .then((data) => {
               // console.log('dataUrl from cover:', data.url)
-              setCoverImage(data.url)
+              setCoverImage(transformHttpToHttps(data.url))
             })
         }
       }
@@ -119,7 +127,7 @@ export const ContextProvider = ({ children }) => {
   }
   // https://api-sportsmatch.ay-cloud.com
   // http://192.168.0.8:3010
-  const socket = io('https://api-sportsmatch.ay-cloud.com', {
+  const socket = io('http://192.168.0.8:3010', {
     transports: ['websocket']
     // auth: {
     //   autoConnect: true,
@@ -189,6 +197,7 @@ export const ContextProvider = ({ children }) => {
         setRoomId,
         libraryImage,
         setLibraryImage,
+        transformHttpToHttps,
         leaveRoom,
         getTimeFromDate
       }}

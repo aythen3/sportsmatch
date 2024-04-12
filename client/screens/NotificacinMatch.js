@@ -21,8 +21,7 @@ const NotificacinMatch = ({ onClose }) => {
         <View style={[styles.textoCuerpo, styles.informacionFlexBox]}>
           <Text
             style={[styles.teHanSolicitado3, styles.seguirTypo]}
-          >{`¡Te han solicitado 
-un Match!`}</Text>
+          >{`¡Has hecho un Match!`}</Text>
           <Text
             style={[styles.pareceQueUni, styles.seguirTypo1]}
           >{`¡Parece que Unió esportíva Mataró

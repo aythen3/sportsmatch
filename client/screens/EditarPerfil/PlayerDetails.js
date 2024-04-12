@@ -14,16 +14,22 @@ import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { Context } from '../../context/Context'
 import { updateClubData } from '../../redux/actions/club'
+import CustomPicker from '../../components/CustomPicker/CustomPicker'
+import { years } from '../../utils/years'
+import { cities } from '../../utils/cities'
+import { updateSportman } from '../../redux/actions/sportman'
 
-const ClubDetails = () => {
+const PlayerDetails = () => {
   const dispatch = useDispatch()
-  const [clubName, setClubName] = useState()
+  const { sportman } = useSelector((state) => state.sportman)
+  const [showGenderModal, setShowGenderModal] = useState(false)
+  const [showBirthdateModal, setShowBirthdateModal] = useState(false)
+  const [showCityModal, setShowCityModal] = useState(false)
+  const [gender, setGender] = useState()
+  const [birthdate, setBirthdate] = useState()
   const [city, setCity] = useState()
-  const [country, setCountry] = useState()
-  const [stadiumName, setStadiumName] = useState()
-  const [foundationDate, setFoundationDate] = useState()
-  const [capacity, setCapacity] = useState()
-  const [description, setDescription] = useState()
+  const [actualClubName, setActualClubName] = useState()
+  const [userDescription, setUserDescription] = useState()
   const navigation = useNavigation()
 
   const {
@@ -41,69 +47,35 @@ const ClubDetails = () => {
 
   const inputs = [
     {
-      title: 'Nombre del club',
+      title: 'Club actual',
       type: 'text',
-      placeHolder: 'Nombre del club...',
-      state: clubName,
-      setState: setClubName
+      placeHolder: 'Escribe solo si estas en algun club...',
+      state: actualClubName,
+      setState: setActualClubName,
+      zIndex: 7000
     },
     {
-      title: 'Población',
-      type: 'text',
-      placeHolder: 'Población...',
-      state: city,
-      setState: setCity
-    },
-    {
-      title: 'País',
-      type: 'text',
-      placeHolder: 'País...',
-      state: country,
-      setState: setCountry
-    },
-    {
-      title: 'Nombre del estadio, campo o pavellón',
-      type: 'text',
-      placeHolder: 'Nombre del estadio...',
-      state: stadiumName,
-      setState: setStadiumName
-    },
-    {
-      title: 'Año de fundación',
-      type: 'number',
-      placeHolder: 'Año de fundación...',
-      state: foundationDate,
-      setState: setFoundationDate
-    },
-    {
-      title: 'Aforo',
-      type: 'number',
-      placeHolder: 'Aforo...',
-      state: capacity,
-      setState: setCapacity
-    },
-    {
-      title: 'Describe tu club',
+      title: 'Como te defines como jugador',
       type: 'text',
       placeHolder:
-        'Habla de aquello que sea más relevante de tu club. Campeonatos ganados, categorías, anécdotas, etc.',
-      state: description,
-      setState: setDescription,
-      textArea: true
+        'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
+      state: userDescription,
+      setState: setUserDescription,
+      textArea: true,
+      zIndex: 6000
     }
   ]
 
-  const handleUpdateClubData = () => {
+  const handleUpdateUserData = () => {
+    console.log('on handleUpdateUserData')
     const data = {
-      name: clubName,
       city,
-      country,
-      capacity,
-      description,
-      field: stadiumName,
+      gender,
+      description: userDescription,
+      actualClub: actualClubName,
       img_perfil: profileImage,
       img_front: coverImage,
-      year: foundationDate
+      birthdate
     }
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
       if (value !== undefined) {
@@ -111,17 +83,20 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    console.log('filteredData: ', filteredData)
-    dispatch(updateClubData({ id: club.id, body: filteredData }))
+    dispatch(updateSportman({ id: sportman.id, newData: filteredData }))
     setProfileImage()
     setCoverImage()
-    navigation.navigate('PerfilDatosPropioClub')
+    navigation.navigate('MiPerfil')
   }
 
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-      <ScrollView style={styles.generalWrapper}>
-        <View style={styles.wrapperGap}>
+      <ScrollView
+        style={{
+          width: '90%'
+        }}
+      >
+        <View style={{ gap: 10, flex: 1 }}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
@@ -133,19 +108,19 @@ const ClubDetails = () => {
                 source={require('../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
-            <Text style={styles.clubDetailsTitle}>Detalles del club</Text>
+            <Text style={styles.clubDetailsTitle}>Detalles del jugador</Text>
           </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.profileImageContainer}>
-              {user?.user?.club?.img_perfil && (
+              {sportman?.info?.img_perfil && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
                   source={{
-                    uri: provisoryProfileImage || user?.user?.club?.img_front
+                    uri: provisoryProfileImage || sportman?.info?.img_perfil
                   }}
                 />
               )}
@@ -163,12 +138,12 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.coverImageContainer}>
-              {user?.user?.club?.img_front && (
+              {sportman?.info?.img_front && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
                   source={{
-                    uri: provisoryCoverImage || user?.user?.club?.img_front
+                    uri: provisoryCoverImage || sportman?.info?.img_front
                   }}
                 />
               )}
@@ -184,15 +159,68 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           {/* ========================== INPUTS ========================= */}
           {/* =========================================================== */}
-          <View style={{ gap: 20 }}>
+          <View style={{ gap: 20, flex: 1 }}>
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Selecciona tu sexo'}
+              </Text>
+              <CustomPicker
+                zIndex={10000}
+                array={['Male', 'Female']}
+                placeholder={'Selecciona tu sexo'}
+                state={gender}
+                setState={setGender}
+                showModal={showGenderModal}
+                setShowModal={setShowGenderModal}
+              />
+            </View>
+
+            <View style={{ gap: 5, zIndex: 9000 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Año de nacimiento'}
+              </Text>
+              <TextInput
+                value={birthdate}
+                onChangeText={setBirthdate}
+                placeholder={'Año de nacimiento...'}
+                keyboardType={'numeric'}
+                placeholderTextColor="#999999"
+                style={{
+                  flex: 1,
+                  borderWidth: 0.5,
+                  borderColor: '#fff',
+                  borderRadius: 50,
+                  paddingLeft: 15,
+                  height: 40,
+                  fontSize: 15,
+                  color: '#fff'
+                }}
+              />
+            </View>
+
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Lugar de residencia'}
+              </Text>
+              <CustomPicker
+                zIndex={8000}
+                array={cities}
+                placeholder={'Lugar de residencia'}
+                state={city}
+                setState={setCity}
+                showModal={showCityModal}
+                setShowModal={setShowCityModal}
+              />
+            </View>
+
             {inputs.map((input, index) => (
-              <View key={index} style={{ gap: 5 }}>
+              <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {input.title}
                 </Text>
                 <TextInput
                   multiline={input.textArea && true}
-                  numberOfLines={input.textArea && 4}
+                  numberOfLines={input.textArea && 3}
                   value={input.state}
                   onChangeText={input.setState}
                   placeholder={input.placeHolder}
@@ -200,13 +228,13 @@ const ClubDetails = () => {
                   placeholderTextColor="#999999"
                   style={{
                     flex: 1,
-                    borderWidth: 1,
+                    borderWidth: 0.5,
                     borderColor: '#fff',
                     textAlignVertical: input.textArea && 'top',
                     borderRadius: input.textArea ? 10 : 50,
                     paddingTop: input.textArea && 10,
                     paddingLeft: 15,
-                    height: input.textArea ? 190 : 40,
+                    height: input.textArea ? 170 : 40,
                     fontSize: 15,
                     color: '#fff'
                   }}
@@ -221,6 +249,7 @@ const ClubDetails = () => {
             style={{
               height: 40,
               marginTop: 10,
+              zIndex: 5000,
               marginBottom: 10,
               backgroundColor: '#fff',
               borderRadius: 50,
@@ -228,17 +257,15 @@ const ClubDetails = () => {
               justifyContent: 'center'
             }}
             disabled={
-              !clubName &&
               !city &&
-              !country &&
-              !capacity &&
-              !description &&
-              !stadiumName &&
               !profileImage &&
               !coverImage &&
-              !foundationDate
+              !userDescription &&
+              !birthdate &&
+              !actualClubName &&
+              !gender
             }
-            onPress={handleUpdateClubData}
+            onPress={handleUpdateUserData}
           >
             <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
               Aceptar
@@ -277,9 +304,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  wrapperGap: {
-    gap: 10
-  },
   image: {
     width: '100%',
     height: '100%'
@@ -287,7 +311,7 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     width: 117,
     height: 117,
-    borderRadius: 100,
+    borderRadius: 1000,
     marginBottom: 8,
     overflow: 'hidden',
     backgroundColor: '#fff'
@@ -298,9 +322,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     overflow: 'hidden',
     backgroundColor: '#fff'
-  },
-  generalWrapper: {
-    width: '90%'
   },
   topWrapper: {
     marginBottom: 42,
@@ -334,4 +355,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ClubDetails
+export default PlayerDetails

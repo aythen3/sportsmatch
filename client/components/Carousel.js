@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Pressable,
   StyleSheet,
@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/core'
 import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
 import CommentSection from './modals/CommentSection'
+import { Context } from '../context/Context'
 
 function Carousel({
   name,
@@ -26,7 +27,6 @@ function Carousel({
   userId
 }) {
   const navigation = useNavigation()
-
   const [modalVisible, setModalVisible] = useState(false)
 
   const closeModal = () => {

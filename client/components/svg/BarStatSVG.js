@@ -10,7 +10,12 @@ const HorizontalProgressBar = ({ value }) => {
 
   const barWidth = (value / maxValue) * width
   return (
-    <View>
+    <View
+      style={{
+        borderRadius: 5,
+        overflow: 'hidden'
+      }}
+    >
       <Svg width={width} height="15">
         {/* Fondo de la barra */}
         <Rect x={0} y={0} width={width} height="15" fill="#252525" />

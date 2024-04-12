@@ -3,22 +3,31 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { setChat } from '../redux/slices/notificacions.slices'
 import { useNavigation } from '@react-navigation/core'
 import { getChatHistory } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
+import { sendMatch } from '../redux/actions/matchs'
 
-const MessagesChat = ({ name, selectedUserId, profilePic }) => {
+const MessagesChat = ({
+  name,
+  selectedUserId,
+  profilePic,
+  applicant,
+  sportmanId
+}) => {
+  const dispatch = useDispatch()
+  const { offers } = useSelector((state) => state.offers)
+  console.log('profilePic: ', profilePic)
   const isFocused = useIsFocused()
   const { getTimeFromDate } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState()
   const [lastMessage, setLastMessage] = useState()
   const { user } = useSelector((state) => state.users)
-
+  console.log('applicant: ', applicant)
   const getChatMessages = async () => {
     const { data } = await axiosInstance.get(
       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
@@ -40,18 +49,17 @@ const MessagesChat = ({ name, selectedUserId, profilePic }) => {
       getLastMessage(convMessages)
     }
   }, [convMessages])
-  console.log('profilePic;', profilePic)
-
-  // const cuteMessage =
-  //   message.length >= 35 ? message.slice(0, 35).concat('...') : message
 
   return (
-    <SafeAreaView>
-      {isFocused && (
-        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
-      )}
+    <View>
       <Pressable
-        style={styles.pressable}
+        style={{
+          zIndex: -10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 5
+        }}
         onPress={() => {
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
@@ -78,29 +86,69 @@ const MessagesChat = ({ name, selectedUserId, profilePic }) => {
           </View>
         </View>
 
-        <View style={styles.textView}>
-          <Text style={[styles.ayer, styles.ayerTypo]}>
-            {lastMessage
-              ? getTimeFromDate(lastMessage?.message?.createdAt)
-              : ''}
-          </Text>
-
-          {/* {confirmation && (
-            <View style={styles.matchContainer}>
-              <Text style={[styles.match, styles.timeTypo]}>Match</Text>
-              <View style={styles.match}>
-                <Image
-                  style={styles.image}
-                  contentFit="cover"
-                  source={require('../assets/group9.png')}
-                />
-              </View>
+        {!applicant && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={[styles.ayer, styles.ayerTypo]}>
+              {lastMessage
+                ? getTimeFromDate(lastMessage?.message?.createdAt)
+                : ''}
+            </Text>
+          </View>
+        )}
+        {applicant && (
+          <Pressable
+            onPress={() => {
+              const offerId = offers.filter(
+                (offer) =>
+                  offer.inscriptions && offer.inscriptions.includes(sportmanId)
+              )[0].id
+              dispatch(
+                sendMatch({
+                  offerId,
+                  sportmanId
+                })
+              )
+            }}
+            style={{
+              backgroundColor: Color.colorMaroon,
+              width: 100,
+              height: 40,
+              position: 'absolute',
+              right: 10,
+              zIndex: 10000,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: Border.br_81xl
+            }}
+          >
+            <Text
+              style={{
+                marginLeft: 20,
+                color: Color.bALONCESTO,
+                fontWeight: 600,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontSize: FontSize.t2TextSTANDARD_size
+              }}
+            >
+              Match
+            </Text>
+            <View style={styles.match}>
+              <Image
+                style={styles.image}
+                contentFit="cover"
+                source={require('../assets/group9.png')}
+              />
             </View>
-          )} */}
-        </View>
+          </Pressable>
+        )}
       </Pressable>
       <View style={styles.line} />
-    </SafeAreaView>
+    </View>
   )
 }
 

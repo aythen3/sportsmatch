@@ -11,8 +11,22 @@ import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
 
-const Notifications = ({ text, send, read, match }) => {
+const Notifications = ({ text, date, read, match }) => {
   const [isMatch, setIsMatch] = useState(false)
+  function formatDate(timestamp) {
+    const date = new Date(timestamp)
+    // Extract the day, month, and year components
+    const day = date.getDate()
+    const month = date.getMonth() + 1 // Months are zero-indexed, so we add 1
+    const year = date.getFullYear() % 100 // Get the last two digits of the year
+
+    // Pad day and month with leading zeros if necessary
+    const formattedDay = day < 10 ? '0' + day : day
+    const formattedMonth = month < 10 ? '0' + month : month
+
+    // Return the formatted date string
+    return `${formattedDay}/${formattedMonth}/${year}`
+  }
   return (
     <Pressable
       style={{ marginTop: 20 }}
@@ -36,9 +50,11 @@ const Notifications = ({ text, send, read, match }) => {
           </Text>
         )}
         <View style={{ flex: 1 }}>
-          <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{text}</Text>
+          <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
+            {match && '¡Has hecho un Match!'}
+          </Text>
         </View>
-        <Text style={[styles.ayer, styles.ayerTypo]}>{send}</Text>
+        <Text style={[styles.ayer, styles.ayerTypo]}>{formatDate(date)}</Text>
       </View>
       <View
         style={{

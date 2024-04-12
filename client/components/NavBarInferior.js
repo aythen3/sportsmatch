@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
@@ -7,6 +7,7 @@ import MessageSVG from './svg/footerSVG/MessageSVG'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
+import { Context } from '../context/Context'
 
 const NavBarInferior = () => {
   const navigation = useNavigation()
@@ -14,7 +15,6 @@ const NavBarInferior = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
-
   const [activeIcon, setActiveIcon] = useState(null)
 
   // useEffect(() => {
@@ -43,6 +43,7 @@ const NavBarInferior = () => {
   }
 
   const handleNavigation = () => {
+    console.log('isSportman', isSportman)
     if (isSportman) {
       navigation.navigate('MiPerfil')
     } else {
@@ -88,9 +89,9 @@ const NavBarInferior = () => {
           contentFit="cover"
           source={{
             uri:
-              user?.user?.type !== 'club'
+              user?.user?.type !== 'club' && sportman?.info?.img_perfil
                 ? sportman?.info?.img_perfil
-                : user?.user?.club?.img_perfil
+                : user?.user?.club?.img_perfil && user?.user?.club?.img_perfil
           }}
         />
       </TouchableOpacity>
