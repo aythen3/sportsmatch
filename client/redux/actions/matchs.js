@@ -21,8 +21,7 @@ export const getUserMatchs = createAsyncThunk(
   'getUserMatchs/matchs',
   async (id) => {
     try {
-      console.log('data from getMatchs', id)
-      const { data } = await axiosInstance.get(`match/${id}`)
+      const { data } = await axiosInstance.get(`match/user/${id}`)
       return data
     } catch (error) {
       throw new Error(error)

@@ -38,7 +38,7 @@ const Feed = () => {
       >
         {userPosts?.length > 0 ? (
           userPosts?.map((post, index) => (
-            <TouchableOpacity>
+            <TouchableOpacity key={index}>
               <Image
                 style={styles.iconLayout}
                 contentFit="cover"

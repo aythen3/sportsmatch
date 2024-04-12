@@ -5,7 +5,8 @@ import {
   Pressable,
   View,
   TextInput,
-  Modal
+  Modal,
+  TouchableOpacity
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -19,18 +20,42 @@ import {
 import TusMatchsDetalle from '../TusMatchsDetalle'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserMatchs } from '../../redux/actions/matchs'
+import axiosInstance from '../../utils/apiBackend'
 
 const TusMatchs = () => {
+  const [matchsData, setMatchsData] = useState([])
+  const [selectedClubDetails, setSelectedClubDetails] = useState()
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
   const { userMatchs } = useSelector((state) => state.matchs)
 
   useEffect(() => {
-    dispatch(getUserMatchs(user.user.id))
+    dispatch(getUserMatchs(user.user.sportman.id))
   }, [])
 
   const [details, setDetails] = useState(false)
+
+  console.log('useramtchs: ', userMatchs)
+
+  const getOfferData = async (id) => {
+    const { data } = await axiosInstance.get(`offer/${id}`)
+    console.log('data from getOfferData', data)
+    setMatchsData([...matchsData, data])
+  }
+
+  const getMatchData = async (id) => {
+    const { data } = await axiosInstance.get(`match/${id}`)
+    getOfferData(data.offer.id)
+  }
+
+  useEffect(() => {
+    if (userMatchs?.length > 0) {
+      userMatchs.forEach((match) => {
+        getMatchData(match.id)
+      })
+    }
+  }, [])
 
   const { user } = useSelector((state) => state.users)
 
@@ -66,37 +91,52 @@ const TusMatchs = () => {
         Nuevos matchs
       </Text>
 
-      {user.user.type === 'sportman' && (
-        <View style={styles.targetaClub}>
-          <Pressable style={styles.fondoPastilla}>
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={require('../../assets/fondo-pastilla.png')}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.texto}
-            onPress={() => {
-              setDetails(true)
-            }}
-          >
-            <View style={styles.escudo}>
-              <Image
-                style={[styles.escudoChild, styles.iconGroupLayout]}
-                contentFit="cover"
-                source={require('../../assets/ellipse-762.png')}
-              />
-              <Image
-                style={styles.logoUem21RemovebgPreview1Icon}
-                contentFit="cover"
-                source={require('../../assets/logo-uem21removebgpreview-12.png')}
-              />
+      {user?.user?.type === 'sportman' && matchsData.length > 0 && (
+        <View>
+          {matchsData.map((match, index) => (
+            <View style={styles.targetaClub}>
+              <Pressable
+                onPress={() => {
+                  setDetails(true)
+                  setSelectedClubDetails(match.club)
+                }}
+                style={styles.fondoPastilla}
+              >
+                <Image
+                  style={styles.iconLayout}
+                  contentFit="cover"
+                  source={require('../../assets/fondo-pastilla.png')}
+                />
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setDetails(true)
+                  setSelectedClubDetails(match.club)
+                }}
+                style={styles.texto}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 15,
+                    marginTop: 9,
+                    marginLeft: 15,
+                    height: '100%',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Image
+                    style={{ width: 40, height: 40, borderRadius: 50 }}
+                    contentFit="cover"
+                    source={{ uri: match.club.img_perfil }}
+                  />
+                  <Text style={styles.clubBasquetLametlla}>
+                    {match.club.name}
+                  </Text>
+                </View>
+              </Pressable>
             </View>
-            <Text style={styles.clubBasquetLametlla}>
-              Club Basquet L’ametlla de Mar
-            </Text>
-          </Pressable>
+          ))}
         </View>
       )}
 
@@ -160,7 +200,10 @@ const TusMatchs = () => {
             flex: 1
           }}
         >
-          <TusMatchsDetalle onClose={() => setDetails(false)} />
+          <TusMatchsDetalle
+            data={selectedClubDetails}
+            onClose={() => setDetails(false)}
+          />
         </View>
       </Modal>
     </View>
@@ -230,11 +273,11 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   logoUem21RemovebgPreview1Icon: {
-    width: '77.78%',
-    height: '77.78%',
-    right: '11.11%',
-    left: '11.11%',
-    top: '11.11%',
+    width: '90%',
+    height: '90%',
+    right: '10%',
+    left: '10%',
+    top: '10%',
     position: 'absolute',
     zIndex: 1
   },
@@ -243,13 +286,10 @@ const styles = StyleSheet.create({
     height: 45
   },
   clubBasquetLametlla: {
-    marginLeft: 9,
     fontSize: 15,
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: '500',
-    width: '45%',
-    height: 60
+    fontWeight: '500'
   },
   playerName: {
     marginLeft: 9,

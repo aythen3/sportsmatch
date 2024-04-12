@@ -179,7 +179,7 @@ const TodasLasOfertas = () => {
                         userId: user.user.sportman.id
                       })
                     )
-                    navigation.navigate('TusMatchs')
+                    navigation.goBack()
                   }}
                   style={[styles.verOferta, styles.verOfertaTypo]}
                 >

@@ -5,8 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Padding, Border } from '../GlobalStyles'
 import MatchDetailsInfo from '../components/MatchDetailsInfo'
 
-const TusMatchsDetalle = ({ onClose }) => {
+const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
+  console.log('data: ', data)
 
   return (
     <Pressable style={styles.tusMatchsDetalle}>
@@ -16,36 +17,34 @@ const TusMatchsDetalle = ({ onClose }) => {
         source={require('../assets/fondo-color.png')}
       />
 
-      <View style={{ flexDirection: 'row', width: '100%', marginLeft: 20 }}>
-        <View style={styles.avatar}>
-          <Image
-            style={[styles.avatarChild, styles.itemChildPosition]}
-            contentFit="cover"
-            source={require('../assets/ellipse-762.png')}
-          />
-          <Image
-            style={[
-              styles.logoUem21RemovebgPreview1Icon,
-              styles.iconGroupLayout
-            ]}
-            contentFit="cover"
-            source={require('../assets/logo-uem21removebgpreview-13.png')}
-          />
-        </View>
-        <Text
-          style={[styles.uniEsportvaMatar, styles.pasTypo]}
-        >{`Unió Esportíva 
-Mataró`}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5,
+          width: '100%',
+          marginLeft: 20
+        }}
+      >
+        <Image
+          style={{ width: 45, height: 45, borderRadius: 50 }}
+          contentFit="cover"
+          source={{ uri: data.img_perfil }}
+        />
+
+        <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
+          {data.name}
+        </Text>
       </View>
 
-      <MatchDetailsInfo title="Año de fundación" value={1920} />
-      <MatchDetailsInfo title="Aforo" value={300} />
+      <MatchDetailsInfo title="Año de fundación" value={data.year} />
+      <MatchDetailsInfo title="Aforo" value={data.capacity} />
       <MatchDetailsInfo
         title="Nombre del estadio o pavellón"
-        value="Palau Municipals d’Esports Josep Mora"
+        value={data.field}
       />
-      <MatchDetailsInfo title=" Población" value="Mataró" />
-      <MatchDetailsInfo title=" País" value="España" />
+      <MatchDetailsInfo title=" Población" value={data.city} />
+      <MatchDetailsInfo title=" País" value={data.country} />
 
       {/* <View style={styles.aoFundacion}>
           <View style={styles.aoDeFundacinParent}>
@@ -95,7 +94,11 @@ d’Esports Josep Mora`}</Text>
         style={[styles.aceptar, styles.aceptarFlexBox]}
         onPress={() => {
           onClose()
-          navigation.navigate('TusNotificaciones1')
+          navigation.navigate('ChatAbierto1', {
+            receiverId: data.id,
+            receiverName: data.name,
+            profilePic: data.img_perfil
+          })
         }}
       >
         <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
