@@ -128,6 +128,7 @@ export class MatchService {
 
   public async update(id: string, updateMatchDto: UpdateMatchDto) {
     try {
+      console.log("hola")
       return `This action updates a #${updateMatchDto} match`;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

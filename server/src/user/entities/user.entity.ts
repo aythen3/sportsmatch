@@ -21,6 +21,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   password: string;
 
+  
   @Column({
     type: 'enum',
     enum: ['sportman', 'club']
