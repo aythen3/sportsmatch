@@ -10,8 +10,9 @@ export class CreateMatchDto {
   @IsOptional()
   sportmanId: any;
 
-
-
+  @IsString()
+  @IsOptional()
+  clubId:any;
   @IsString()
   @IsOptional()
   status: string;

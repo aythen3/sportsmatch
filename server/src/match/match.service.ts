@@ -58,8 +58,8 @@ export class MatchService {
    
       // Crear un match y asignar la oferta
       const newMatch = new MatchEntity();
-      newMatch.offer = offer;
-      newMatch.sportmen = [sportman];
+      newMatch.offerId = offer;
+      newMatch.sportmenId = [sportman];
       // Si la relación es muchos a muchos, necesitas agregar el deportista al arreglo de deportistas del match
       sportman.matches = [newMatch];
       

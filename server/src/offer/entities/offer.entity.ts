@@ -44,7 +44,7 @@ export class OfferEntity extends BaseEntity {
   @ManyToOne(() => PositionEntity)
   position: PositionEntity;
 
-  @OneToMany(() => MatchEntity, (match) => match.offer, { nullable: true })
+  @OneToMany(() => MatchEntity, (match) => match.offerId, { nullable: true })
   match: MatchEntity[];
 
   @ManyToOne(() => ClubEntity, (club) => club.offers, { nullable: true })
