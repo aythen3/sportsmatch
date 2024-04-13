@@ -42,4 +42,23 @@ export class PostController {
   public async remove(@Param('id') id: string) {
     return this.postService.remove(id);
   }
+
+  @Post(':postId/info-relation')
+  async findInfoRelation(
+    @Param('postId') postId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.postService.findInfoRelation(postId, relationsArray);
+  }
+
+  
 }

@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSportDto } from './dto/create-sport.dto';
 import { UpdateSportDto } from './dto/update-sport.dto';
 import { SportEntity } from './entities/sport.entity';
@@ -87,4 +87,47 @@ export class SportService {
       throw new HttpException('Error creating sport', 505);
     }
   }
+
+
+
+  async findInfoRelation(sportId: number, relations: string[]): Promise<any> {
+    try {
+     const validRelations = this.validateRelations(relations);
+ 
+     // Verificar si hay al menos una relación válida
+     if (validRelations.length === 0) {
+       throw new Error('No se han proporcionado relaciones válidas.');
+     }
+ 
+     // Construir objeto de opciones para la consulta
+     const options: any = { where: { id: sportId }, relations: validRelations };
+ console.log("options es", options)
+     // Realizar la consulta del post con las relaciones especificadas
+     const post = await this.sportRepository.findOne(options);
+ 
+     if (!post) {
+       throw new NotFoundException(`No se encontró ningún post con el ID ${sportId}.`);
+     }
+ 
+     return post;
+    } catch (error) {
+     console.log('este es el error ',error)
+    }
+   }
+ 
+   private validateRelations(relations: string[]): string[] {
+     const validRelations: string[] = [];
+ 
+     // Definir relaciones válidas permitidas en la entidad Match
+     const allowedRelations = ["club" , "positions" , "skill" , "sportman"]; // Agregar más según sea necesario
+ 
+     // Filtrar relaciones válidas
+     relations.forEach(relation => {
+       if (allowedRelations.includes(relation)) {
+         validRelations.push(relation);
+       }
+     });
+ 
+     return validRelations;
+   }
 }

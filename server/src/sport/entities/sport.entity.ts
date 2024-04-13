@@ -46,3 +46,4 @@ export class SportEntity extends BaseEntity {
   })
   club: ClubEntity | null;
 }
+

@@ -34,4 +34,25 @@ export class PositionController {
   ) {
     return this.positionService.update(id, updatePositionDto);
   }
+
+
+  @Post(':positionId/info-relation')
+  async findInfoRelation(
+    @Param('positionId') positionId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.positionService.findInfoRelation(positionId, relationsArray);
+  }
+
+
+
 }
