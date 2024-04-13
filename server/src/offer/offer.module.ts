@@ -34,7 +34,7 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       NotificationEntity,
     ])
   ],
-  exports: [OfferService],
+  exports: [OfferService,  TypeOrmModule.forFeature([OfferEntity])],
   controllers: [OfferController],
   providers: [
     OfferService,

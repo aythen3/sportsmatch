@@ -20,6 +20,7 @@ import { LikeModule } from './like/like.module';
 import { ChatModule } from './chat/chat.module';
 import { StripeModule } from './stripe/stripe.module';
 import { Auth0Module } from './auth0/auth0.module';
+import { InfoEntityModule } from './info-entity/info-entity.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { Auth0Module } from './auth0/auth0.module';
     LikeModule,
     ChatModule,
     StripeModule,
-    Auth0Module
+    Auth0Module,
+    InfoEntityModule
   ],
   controllers: [],
   providers: []

@@ -10,6 +10,7 @@ import { MessageService } from './service/message.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MessageEntity])],
+  exports:[TypeOrmModule.forFeature([MessageEntity])],
   controllers: [ChatController],
   providers: [ChatGateway, ChatService, MessageService]
 })

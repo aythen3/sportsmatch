@@ -17,4 +17,16 @@ export class NotificationEntity extends BaseEntity {
 
   @Column({ default: false })
   read: boolean;
+  // Propiedades flexibles
+  @Column({ type: 'json', nullable: true })
+  prop1: Record<string, any> | null;
+
+  @Column({ type: 'json', nullable: true })
+  prop2: Record<string, any> | null;
+
+  @Column({ type: 'simple-array', nullable: true })
+  prop3: string[] | null;
+
+  @Column({ type: 'simple-array', nullable: true })
+  prop4: string[] | null;
 }
