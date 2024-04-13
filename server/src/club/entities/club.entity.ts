@@ -1,10 +1,11 @@
 import { BaseEntity } from 'src/config/base.entity';
+import { MatchEntity } from 'src/match/entities/match.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'club' })
 export class ClubEntity extends BaseEntity {
@@ -51,6 +52,10 @@ export class ClubEntity extends BaseEntity {
     nullable: true
   })
   positions?: PositionEntity[];
+
+  @ManyToMany(() => MatchEntity)
+  @JoinTable()
+  matches: MatchEntity[];
 
   @OneToMany(() => SportEntity, (sport) => sport.club, {
     nullable: true
