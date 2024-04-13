@@ -36,7 +36,7 @@ export class OfferEntity extends BaseEntity {
   prop2: Record<string, any> | null;
 
   @Column({ type: 'simple-array', nullable: true })
-  prop3: string[] | null;
+  matches: string[] | null;
 
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
