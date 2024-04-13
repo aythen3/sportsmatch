@@ -113,27 +113,43 @@ export class OfferService {
     }
   }
 
-  public async update(id: string, updateOfferDto: UpdateOfferDto) {
-    const offer = await this.findOne(id);
-    const { offerData, positionId } = updateOfferDto;
+  // public async update(id: string, updateOfferDto: UpdateOfferDto) {
+  //   const offer = await this.findOne(id);
+  //   const { offerData, positionId } = updateOfferDto;
+
+  //   if (!offer) {
+  //     return(`Offer with id ${id} not found`);
+  //   }
+  //   for (const key in offerData) {
+  //     offer[key] = offerData[key];
+  //   }
+
+  //   if (positionId) {
+  //     // const position = await this.positionService.findOne(positionId);
+  //     const position = await this.positionRepository.findOne({where:{id:positionId}})
+  //     console.log("esto es positiion",position)
+  //     offer.position = position;
+  //   }
+  //   const updatedOffer = await this.offerRepository.save(offer);
+
+  //   return updatedOffer;
+  //   //return await this.offerRepository.save(offer);
+  // }
+
+  async update(id: string, updateOfferDto: UpdateOfferDto) {
+    const offer = await this.offerRepository.findOne({where:{id:id}});
 
     if (!offer) {
-      return(`Offer with id ${id} not found`);
-    }
-    for (const key in offerData) {
-      offer[key] = offerData[key];
+      throw new Error(`Offer with id ${id} not found`);
     }
 
-    if (positionId) {
-      // const position = await this.positionService.findOne(positionId);
-      const position = await this.positionRepository.findOne({where:{id:positionId}})
-      console.log("esto es positiion",position)
-      offer.position = position;
-    }
+    // Actualizar todas las propiedades que se le pasen en el DTO
+    Object.assign(offer, updateOfferDto);
+
+    // Guardar la oferta actualizada en la base de datos
     const updatedOffer = await this.offerRepository.save(offer);
 
     return updatedOffer;
-    //return await this.offerRepository.save(offer);
   }
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
