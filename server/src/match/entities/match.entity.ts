@@ -15,6 +15,8 @@ export class MatchEntity extends BaseEntity {
   @Column({ nullable: true })
   status: string;
 
+
+
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })
   prop1: Record<string, any> | null;
