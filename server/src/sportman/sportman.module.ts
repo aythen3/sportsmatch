@@ -25,7 +25,7 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       SportEntity
     ])
   ],
-  exports: [SportmanService],
+  exports: [SportmanService, TypeOrmModule.forFeature([SportmanEntity])],
   controllers: [SportmanController],
   providers: [SportmanService, UserService, ImgManagerService, SendMailService]
 })

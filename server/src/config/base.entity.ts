@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -21,6 +22,7 @@ export abstract class BaseEntity {
   })
   updatedAt: Date;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   isDelete: boolean;
+
 }

@@ -23,8 +23,10 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       LikeEntity
     ])
   ],
-  exports: [UserService],
-  controllers: [UserController],
+  exports: [
+    UserService,
+    TypeOrmModule.forFeature([UserEntity]) // Exporta TypeOrmModule.forFeature con UserEntity
+  ],  controllers: [UserController],
   providers: [UserService, JwtService, AuthJwtService, SendMailService]
 })
 export class UserModule {}

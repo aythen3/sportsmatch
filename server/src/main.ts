@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import * as morgan from 'morgan';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { CORS } from './config/cors';
-
+  
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(morgan('dev'));

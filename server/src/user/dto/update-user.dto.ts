@@ -6,4 +6,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsBoolean()
   @IsOptional()
   isDelete?: boolean;
+  
 }
