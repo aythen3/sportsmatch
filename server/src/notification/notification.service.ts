@@ -86,4 +86,46 @@ export class NotificationService {
   public async destroyService({ recipientId }) {
     return await this.notificationsRepository.delete({ recipientId });
   }
+
+
+  async findInfoRelation(notificationId: number, relations: string[]): Promise<any> {
+    try {
+     const validRelations = this.validateRelations(relations);
+ 
+     // Verificar si hay al menos una relación válida
+     if (validRelations.length === 0) {
+       throw new Error('No se han proporcionado relaciones válidas.');
+     }
+ 
+     // Construir objeto de opciones para la consulta
+     const options: any = { where: { id: notificationId }, relations: validRelations };
+ console.log("options es", options)
+     // Realizar la consulta del post con las relaciones especificadas
+     const notification = await this.notificationsRepository.findOne(options);
+ 
+     if (!notification) {
+       throw new NotFoundException(`No se encontró ningún post con el ID ${notificationId}.`);
+     }
+ 
+     return notification;
+    } catch (error) {
+     console.log('este es el error ',error)
+    }
+   }
+ 
+   private validateRelations(relations: string[]): string[] {
+     const validRelations: string[] = [];
+ 
+     // Definir relaciones válidas permitidas en la entidad Match
+     const allowedRelations = ["user", "club" , "offers" , "sportman" , "match" ]; // Agregar más según sea necesario
+ 
+     // Filtrar relaciones válidas
+     relations.forEach(relation => {
+       if (allowedRelations.includes(relation)) {
+         validRelations.push(relation);
+       }
+     });
+ 
+     return validRelations;
+   }
 }

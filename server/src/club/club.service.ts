@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubEntity } from './entities/club.entity';
@@ -136,4 +136,47 @@ export class ClubService {
     await this.clubRepository.update(id, { isDelete: true });
     return await this.findOne(id);
   }
+
+
+
+  async findInfoRelation(clubId: number, relations: string[]): Promise<any> {
+    try {
+     const validRelations = this.validateRelations(relations);
+ 
+     // Verificar si hay al menos una relación válida
+     if (validRelations.length === 0) {
+       throw new Error('No se han proporcionado relaciones válidas.');
+     }
+ 
+     // Construir objeto de opciones para la consulta
+     const options: any = { where: { id: clubId }, relations: validRelations };
+ console.log("options es", options)
+     // Realizar la consulta del post con las relaciones especificadas
+     const club = await this.clubRepository.findOne(options);
+ 
+     if (!club) {
+       throw new NotFoundException(`No se encontró ningún post con el ID ${clubId}.`);
+     }
+ 
+     return club;
+    } catch (error) {
+     console.log('este es el error ',error)
+    }
+   }
+ 
+   private validateRelations(relations: string[]): string[] {
+     const validRelations: string[] = [];
+ 
+     // Definir relaciones válidas permitidas en la entidad Match
+     const allowedRelations = ["sports", "positions" , "offers" , "sportman" , "user" ]; // Agregar más según sea necesario
+ 
+     // Filtrar relaciones válidas
+     relations.forEach(relation => {
+       if (allowedRelations.includes(relation)) {
+         validRelations.push(relation);
+       }
+     });
+ 
+     return validRelations;
+   }
 }

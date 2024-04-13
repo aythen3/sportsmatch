@@ -77,4 +77,25 @@ export class SportmanController {
   remove(@Param('id') id: string) {
     return this.sportmanService.remove(id);
   }
+
+
+  @Post(':sportmanId/info-relation')
+  async findInfoRelation(
+    @Param('sportmanId') sportmanId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.sportmanService.findInfoRelation(sportmanId, relationsArray);
+  }
+
+  
 }
+

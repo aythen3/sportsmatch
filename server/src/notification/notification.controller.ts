@@ -43,4 +43,23 @@ export class NotificationController {
   remove(@Param('id') id: string) {
     return this.notificationsService.deleteService(id);
   }
+//no hace falta implementar porque no tiene relaciones.
+  @Post(':notificationId/info-relation')
+  async findInfoRelation(
+    @Param('notificationId') notificationId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.notificationsService.findInfoRelation(notificationId, relationsArray);
+  }
+
+ 
 }

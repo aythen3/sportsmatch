@@ -79,4 +79,24 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
+
+  @Post(':userId/info-relation')
+  async findInfoRelation(
+    @Param('userId') userId: number, 
+    @Body() requestBody: { relations: string }
+  ): Promise<any[]> {
+    // Verificar si se proporcionaron relaciones
+    if (!requestBody.relations || typeof requestBody.relations !== 'string') {
+      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+    }
+  console.log(requestBody.relations)
+    // Convertir las relaciones en un array
+    const relationsArray = requestBody.relations.split(',');
+  
+    // Llamar al servicio para obtener la información relacionada
+    return this.userService.findInfoRelation(userId, relationsArray);
+  }
+
+  
+
 }

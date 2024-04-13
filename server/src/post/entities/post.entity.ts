@@ -39,3 +39,4 @@ export class PostEntity extends BaseEntity {
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
 }
+
