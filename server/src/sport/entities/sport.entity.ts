@@ -8,10 +8,11 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
-  @Column({ type:"string",unique: true })
+  @Column({ unique: true })
+  @IsString()
   name: string;
 
-  @Column({type:"string",nullable: true })
+  @Column({nullable: true })
   @IsString()
   img?: string;
 
