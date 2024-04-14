@@ -29,11 +29,19 @@ const EscogerDeporte1 = () => {
 
   return (
     <View style={styles.escogerDeporte}>
-      <Image
-        style={styles.perfilImage}
-        contentFit="cover"
-        source={{ uri: provisoryProfileImage }}
-      />
+      {provisoryProfileImage ? (
+        <Image
+          style={styles.perfilImage}
+          contentFit="cover"
+          source={{ uri: provisoryProfileImage }}
+        />
+      ) : (
+        <Image
+          style={styles.perfilImage}
+          contentFit="cover"
+          source={require('../../assets/avatarr.png')}
+        />
+      )}
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
         onPress={() => pickImage('profile')}
@@ -44,11 +52,31 @@ const EscogerDeporte1 = () => {
       </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
 
-      <Image
-        style={styles.portadaBg}
-        contentFit="cover"
-        source={{ uri: provisoryCoverImage }}
-      />
+      {provisoryCoverImage ? (
+        <Image
+          style={styles.portadaBg}
+          contentFit="cover"
+          source={{ uri: provisoryCoverImage }}
+        />
+      ) : (
+        <View
+          style={{
+            width: '100%',
+            height: 170,
+            backgroundColor: '#fff',
+            marginTop: 30,
+            borderRadius: 8,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Image
+            style={{ width: 130, height: 130 }}
+            contentFit="cover"
+            source={require('../../assets/imagePlaceholder.png')}
+          />
+        </View>
+      )}
       <TouchableOpacity
         style={[styles.rectangleView, styles.rectangleViewLayout]}
         onPress={() => pickImage('cover')}
@@ -126,9 +154,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   perfilImage: {
-    width: 150,
+    width: 120,
     height: 120,
-    borderRadius: 15
+    borderRadius: 100
   },
   sendText: {
     width: '100%',
@@ -137,7 +165,7 @@ const styles = StyleSheet.create({
   },
   portadaBg: {
     width: '100%',
-    height: 200,
+    height: 170,
     backgroundColor: 'white',
     marginTop: 30,
     borderRadius: 8
