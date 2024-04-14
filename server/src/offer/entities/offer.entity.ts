@@ -51,7 +51,7 @@ export class OfferEntity extends BaseEntity {
   club?: ClubEntity;
 
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-array', nullable: true })
   @IsArray()
   inscriptions: string[]; 
 }
