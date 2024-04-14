@@ -142,6 +142,19 @@ const HeaderPerfil = ({
             (match) => match.prop1.sportmanId === data.author.sportman.id
           ).length === 0 ? (
             <Pressable
+              onPress={() =>
+                dispatch(
+                  sendMatch({
+                    sportmanId: data.author.sportman.id,
+                    clubId: user.user.club.id,
+                    status: 'pending',
+                    prop1: {
+                      clubId: user.user.club.id,
+                      sportmanId: data.author.sportman.id
+                    }
+                  })
+                )
+              }
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
