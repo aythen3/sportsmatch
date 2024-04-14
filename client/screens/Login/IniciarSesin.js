@@ -73,14 +73,14 @@ const IniciarSesin = () => {
   const handleSubmit = () => {
     // console.log('on handleSubmit')
     if (valuesUser.email && valuesUser.password) {
-      // console.log('valuesuser: ', valuesUser)
+      console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload.user.type)
+          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
-          await AsyncStorage.setItem('userToken', response.payload.accesToken)
+          await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
         })
