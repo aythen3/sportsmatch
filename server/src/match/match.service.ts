@@ -24,81 +24,15 @@ export class MatchService {
     private readonly notificationServices: NotificationService
   ) {}
 
-  public async create(createMatchDto: CreateMatchDto) {
-    try {
-      const {
-        offerId,
-        sportmanId,
-        status,
-        clubId,
-        prop1,
-        prop2,
-        prop3,
-        prop4
-      } = createMatchDto;
-      // console.log(sportmanId);
-      // Buscar la oferta por su ID
-      const offer = await this.offerRepository
-        .createQueryBuilder('offer')
-        .where({ id: offerId })
-        .getOne();
-      // console.log(offer);
-      if (!offer) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Offer id: ${offerId} not found`
-        });
-      }
+  async create(createMatchDto: CreateMatchDto): Promise<MatchEntity> {
+    const newMatch = new MatchEntity();
 
-      const sportman = await this.sportmanRepository
-        .createQueryBuilder('sportman')
-        .where({ id: sportmanId })
-        .leftJoinAndSelect('sportman.user', 'user')
-        .getOne();
-      console.log(sportman);
-      if (!sportman) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Sportman id: ${sportmanId} not found`
-        });
-      }
+    Object.assign(newMatch, createMatchDto);
 
-      // Crear un match y asignar la oferta
-      const newMatch = new MatchEntity();
-      newMatch.offerId = offer;
-      newMatch.sportmenId = [sportman];
-      newMatch.status = status;
-      newMatch.prop1 = prop1;
-      newMatch.prop2 = prop2;
-      newMatch.prop3 = prop3;
-      newMatch.prop4 = prop4;
-      newMatch.clubId = clubId;
-      // Si la relación es muchos a muchos, necesitas agregar el deportista al arreglo de deportistas del match
-      sportman.matches = [newMatch];
+    return await this.matchRepository.save(newMatch);
 
-      // Guardar el match en la base de datos
-      const savedMatch = await this.matchRepository.save(newMatch);
-      if (!savedMatch) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Match not found`
-        });
-      }
-      await this.sportmanRepository.save(sportman);
-      const newNotification: CreateNotificationDto = {
-        title: 'Nuevo Match',
-        message: '',
-        date: new Date(),
-        recipientId: sportman?.user.id
-      };
-      console.log(newNotification);
-      const notificationCreated =
-        await this.notificationServices.createService(newNotification);
-      return { savedMatch, notificationCreated };
-    } catch (error) {
-      throw ErrorManager.createSignatureError(error.message);
-    }
   }
+
 
   public async findAll() {
     try {
