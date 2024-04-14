@@ -106,7 +106,9 @@ const SkillSeleccion = ({
             onSelectAñoNacimiento={handleSelectAñoNacimiento}
           />
           {selectedAñoNacimiento && (
-            <Text style={styles.atributoInner}>{selectedAñoNacimiento}</Text>
+            <Text style={styles.atributoInner}>
+              {selectedAñoNacimiento || 'Selecciona año de nacimiento'}
+            </Text>
           )}
         </Pressable>
       </View>
