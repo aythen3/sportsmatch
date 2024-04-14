@@ -212,8 +212,8 @@ const TodasLasOfertas = () => {
                           offerId: offer?.id,
                           userId: user?.user?.sportman?.id
                         })
-                      )
-                      dispatch(getAllOffers())
+                      ).then((data)=>dispatch(getAllOffers()))
+                      
                       navigation.goBack()
                     }
                   }}

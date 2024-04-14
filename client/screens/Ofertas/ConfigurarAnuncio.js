@@ -22,7 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomModal from '../../components/modals/CustomModal'
 import axiosInstance from '../../utils/apiBackend'
 import { getClub } from '../../redux/actions/club'
-import { setOffer, updateOffer } from '../../redux/actions/offers'
+import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -454,7 +454,8 @@ const ConfigurarAnuncio = () => {
                     clubId: club.id
                   }
                   console.log('data: ', data)
-                  await dispatch(setOffer(data))
+                  await dispatch(setOffer(data)).then((data)=>dispatch(getAllOffers()))
+                  
                   navigation.goBack()
                 } else {
                   const data = {

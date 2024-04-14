@@ -9,7 +9,7 @@ import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
-import { sendMatch } from '../redux/actions/matchs'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { updateOffer } from '../redux/actions/offers'
 import { current } from '@reduxjs/toolkit'
 
@@ -132,11 +132,10 @@ const MessagesChat = ({
                   prop1: {
                     clubId: user.user.club.id,
                     offerId,
-                    sportmanId,
-                    offerData: currentOffer
+                    sportmanId
                   }
                 })
-              )
+              ).then((data)=>dispatch(getAllMatchs()))
 
               dispatch(
                 updateOffer({

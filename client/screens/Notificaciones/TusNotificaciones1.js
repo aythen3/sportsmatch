@@ -38,14 +38,14 @@ const TusNotificaciones1 = () => {
     dispatch(getAllUsers())
   }, [])
 
-  useEffect(() => {
-    offers.forEach((offer) => {
-      axiosInstance.delete(`offer/${offer.id}`)
-    })
-    allMatchs.forEach((match) => {
-      axiosInstance.delete(`match/${match.id}`)
-    })
-  }, [])
+  // useEffect(() => {
+  //   offers.forEach((offer) => {
+  //     axiosInstance.delete(`offer/${offer.id}`)
+  //   })
+  //   allMatchs.forEach((match) => {
+  //     axiosInstance.delete(`match/${match.id}`)
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {

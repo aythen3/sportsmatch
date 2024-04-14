@@ -82,7 +82,7 @@ export class OfferService {
       }
 
       // Mapear los resultados para incluir el clubId
-      const offersWithClubId = offers.map((offer) => ({
+      const offersWithClubId = offers.map((offer) => ({        
         ...offer,
         clubId: offer.club.id // Agregar el clubId al objeto offer
       }));
