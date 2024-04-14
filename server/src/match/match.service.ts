@@ -26,7 +26,16 @@ export class MatchService {
 
   public async create(createMatchDto: CreateMatchDto) {
     try {
-      const { offerId, sportmanId } = createMatchDto;
+      const {
+        offerId,
+        sportmanId,
+        status,
+        clubId,
+        prop1,
+        prop2,
+        prop3,
+        prop4
+      } = createMatchDto;
       // console.log(sportmanId);
       // Buscar la oferta por su ID
       const offer = await this.offerRepository
@@ -54,15 +63,19 @@ export class MatchService {
         });
       }
 
-
-   
       // Crear un match y asignar la oferta
       const newMatch = new MatchEntity();
       newMatch.offerId = offer;
       newMatch.sportmenId = [sportman];
+      newMatch.status = status;
+      newMatch.prop1 = prop1;
+      newMatch.prop2 = prop2;
+      newMatch.prop3 = prop3;
+      newMatch.prop4 = prop4;
+      newMatch.clubId = clubId;
       // Si la relación es muchos a muchos, necesitas agregar el deportista al arreglo de deportistas del match
       sportman.matches = [newMatch];
-      
+
       // Guardar el match en la base de datos
       const savedMatch = await this.matchRepository.save(newMatch);
       if (!savedMatch) {
@@ -128,7 +141,7 @@ export class MatchService {
 
   public async update(id: string, updateMatchDto: UpdateMatchDto) {
     try {
-      console.log("hola")
+      console.log('hola');
       return `This action updates a #${updateMatchDto} match`;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -152,30 +165,34 @@ export class MatchService {
     }
   }
 
-
   async findInfoRelation(matchId: number, relations: string[]): Promise<any> {
-   try {
-    const validRelations = this.validateRelations(relations);
+    try {
+      const validRelations = this.validateRelations(relations);
 
-    // Verificar si hay al menos una relación válida
-    if (validRelations.length === 0) {
-      throw new Error('No se han proporcionado relaciones válidas.');
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = {
+        where: { id: matchId },
+        relations: validRelations
+      };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const match = await this.matchRepository.findOne(options);
+
+      if (!match) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${matchId}.`
+        );
+      }
+
+      return match;
+    } catch (error) {
+      console.log('este es el error ', error);
     }
-
-    // Construir objeto de opciones para la consulta
-    const options: any = { where: { id: matchId }, relations: validRelations };
-console.log("options es", options)
-    // Realizar la consulta del post con las relaciones especificadas
-    const match = await this.matchRepository.findOne(options);
-
-    if (!match) {
-      throw new NotFoundException(`No se encontró ningún post con el ID ${matchId}.`);
-    }
-
-    return match;
-   } catch (error) {
-    console.log('este es el error ',error)
-   }
   }
 
   private validateRelations(relations: string[]): string[] {
@@ -185,7 +202,7 @@ console.log("options es", options)
     const allowedRelations = ['offer', 'sportmen']; // Agregar más según sea necesario
 
     // Filtrar relaciones válidas
-    relations.forEach(relation => {
+    relations.forEach((relation) => {
       if (allowedRelations.includes(relation)) {
         validRelations.push(relation);
       }
@@ -193,7 +210,6 @@ console.log("options es", options)
 
     return validRelations;
   }
-
 
   async findAllByUserId(userId: string): Promise<MatchEntity[]> {
     const matches = await this.matchRepository
@@ -208,6 +224,4 @@ console.log("options es", options)
 
     return matches;
   }
-  
 }
-

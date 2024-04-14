@@ -10,6 +10,8 @@ import { Context } from '../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
 import { sendMatch } from '../redux/actions/matchs'
+import { updateOffer } from '../redux/actions/offers'
+import { current } from '@reduxjs/toolkit'
 
 const MessagesChat = ({
   name,
@@ -103,14 +105,38 @@ const MessagesChat = ({
         {applicant && (
           <Pressable
             onPress={() => {
+              const currentOffer = offers.filter(
+                (offer) =>
+                  offer.inscriptions && offer.inscriptions.includes(sportmanId)
+              )[0]
               const offerId = offers.filter(
                 (offer) =>
                   offer.inscriptions && offer.inscriptions.includes(sportmanId)
               )[0].id
+              console.log('offerId: ', offerId)
+              const newInscriptions = currentOffer.inscriptions.filter(
+                (applicant) => applicant !== sportmanId
+              )
+
+              console.log('newInscriptions: ', newInscriptions)
+              const actualMatches = currentOffer.matches || []
+              const newMatchs = [...actualMatches, sportmanId]
+              console.log('newMatchs: ', newMatchs)
+
               dispatch(
                 sendMatch({
                   offerId,
-                  sportmanId
+                  sportmanId,
+                  clubId: user.user.club.id,
+                  status: 'success',
+                  prop1: { clubId: user.user.club.id, offerId, sportmanId }
+                })
+              )
+
+              dispatch(
+                updateOffer({
+                  id: offerId,
+                  body: { inscriptions: newInscriptions, matches: newMatchs }
                 })
               )
             }}

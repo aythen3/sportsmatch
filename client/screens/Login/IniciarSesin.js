@@ -53,11 +53,12 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    console.log('token:', user.accesToken)
+    console.log('user.user', user.user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
       if (user?.user?.type === 'club') {
-        console.log('cluuuub')
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }

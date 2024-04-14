@@ -37,7 +37,8 @@ const TusNotificaciones1 = () => {
   }, [])
 
   useEffect(() => {
-    if (user && user?.user.type === 'club' && offers) {
+    if (user && user?.user?.type === 'club' && offers) {
+      console.log('offers: ', offers)
       const clubOffers = offers.filter(
         (offer) => offer.clubId === user.user.club.id
       )
