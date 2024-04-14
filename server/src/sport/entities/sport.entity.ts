@@ -8,7 +8,8 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
-  @Column({ unique: true })
+  
+  @Column({unique: true })
   @IsString()
   name: string;
 
