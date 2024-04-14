@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { PositionEntity } from 'src/position/entities/position.entity';
@@ -7,10 +8,11 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
-  @Column({ unique: true })
+  @Column({ type:"string",unique: true })
   name: string;
 
-  @Column({ nullable: true })
+  @Column({type:"string",nullable: true })
+  @IsString()
   img?: string;
 
   // Propiedades flexibles
