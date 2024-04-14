@@ -31,7 +31,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
     dispatch(getCommentByPost(body))
   }, [postId])
 
-  const sortedComments = postComments?.slice().sort((a, b) => {
+  const sortedComments = postComments && postComments?.slice().sort((a, b) => {
     const dateA = new Date(a.createdAt)
     const dateB = new Date(b.createdAt)
     return dateB - dateA

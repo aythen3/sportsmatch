@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
+import axiosInstance from '../../utils/apiBackend'
 
 const TusNotificaciones1 = () => {
   const isFocused = useIsFocused()
@@ -27,6 +28,7 @@ const TusNotificaciones1 = () => {
   const dispatch = useDispatch()
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
+  const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers } = useSelector((state) => state.users)
   const { offers } = useSelector((state) => state.offers)
 
@@ -36,8 +38,18 @@ const TusNotificaciones1 = () => {
     dispatch(getAllUsers())
   }, [])
 
+  // useEffect(() => {
+  //   offers.forEach((offer) => {
+  //     axiosInstance.delete(`offer/${offer.id}`)
+  //   })
+  //   allMatchs.forEach((match) => {
+  //     axiosInstance.delete(`match/${match.id}`)
+  //   })
+  // }, [])
+
   useEffect(() => {
-    if (user && user?.user.type === 'club' && offers) {
+    if (user && user?.user?.type === 'club' && offers) {
+      console.log('offers: ', offers)
       const clubOffers = offers.filter(
         (offer) => offer.clubId === user.user.club.id
       )

@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  ScrollView
+} from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
@@ -58,6 +65,33 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   const handleData = (key, value) => {
+    if (
+      key === 'attack' ||
+      key === 'defense' ||
+      key === 'speed' ||
+      key === 'prop1' ||
+      key === 'prop2' ||
+      key === 'prop3'
+    ) {
+      // Allow empty string or numbers between 0 and 100
+      if (
+        value === '' ||
+        (/^\d+$/.test(value) &&
+          parseInt(value, 10) >= 0 &&
+          parseInt(value, 10) <= 100)
+      ) {
+        if (!editable) {
+          const newData = {
+            ...data,
+            [key]: value
+          }
+          setData(newData)
+        } else {
+          setEditData({ ...editData, [key]: value })
+        }
+      }
+      return
+    }
     if (!editable) {
       const newData = {
         ...data,
@@ -81,7 +115,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   return (
-    <View style={styles.contenidoFormulariosboton}>
+    <ScrollView style={styles.contenidoFormulariosboton}>
       <View style={styles.campos}>
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Ataque</Text>
@@ -92,6 +126,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
+              value={data.attack !== undefined ? String(data.attack) : ''}
               onChangeText={(value) => handleData('attack', value)}
               maxLength={3}
             />
@@ -104,6 +139,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType="numeric"
+              value={data.defense !== undefined ? String(data.defense) : ''}
               style={styles.textInput}
               onChangeText={(value) => handleData('defense', value)}
               maxLength={3}
@@ -118,6 +154,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
+              value={data.speed !== undefined ? String(data.speed) : ''}
               onChangeText={(value) => handleData('speed', value)}
               maxLength={3}
             />
@@ -125,39 +162,42 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
         </View>
       </View>
       <View style={styles.formulariosInferiores}>
-        <Acordeon
-          title="Categoria"
-          placeholderText={
-            selectedCategoria ? selectedCategoria : 'Selecciona tu categoria'
-          }
-          isAccordeon={true}
-          open={openModal}
-        />
-        {modalVisible && (
-          <CustomModal
-            visible={modalVisible}
-            closeModal={closeModal}
-            onSelectItem={handleSelectCategoria}
-            options={opcionesCategoria}
+        <View style={{ position: 'relative', width: '100%' }}>
+          <Acordeon
+            title="Categoria"
+            placeholderText={
+              selectedCategoria ? selectedCategoria : 'Selecciona tu categoria'
+            }
+            isAccordeon={true}
+            open={openModal}
           />
-        )}
-
-        <Acordeon
-          title="Posicion Principal"
-          placeholderText={
-            selectedPosition ? selectedPosition : 'Selecciona tu posicion'
-          }
-          isAccordeon={true}
-          open={openPositionModal}
-        />
-        {positionModalVisible && (
-          <CustomModal
-            visible={positionModalVisible}
-            closeModal={closeModal}
-            onSelectItem={handleSelectPosition}
-            options={opcionesPosicion}
+          {modalVisible && (
+            <CustomModal
+              visible={modalVisible}
+              closeModal={closeModal}
+              onSelectItem={handleSelectCategoria}
+              options={opcionesCategoria}
+            />
+          )}
+        </View>
+        <View style={{ position: 'relative', width: '100%' }}>
+          <Acordeon
+            title="Posicion Principal"
+            placeholderText={
+              selectedPosition ? selectedPosition : 'Selecciona tu posicion'
+            }
+            isAccordeon={true}
+            open={openPositionModal}
           />
-        )}
+          {positionModalVisible && (
+            <CustomModal
+              visible={positionModalVisible}
+              closeModal={closeModal}
+              onSelectItem={handleSelectPosition}
+              options={opcionesPosicion}
+            />
+          )}
+        </View>
 
         <View style={styles.formularioCategoria}>
           <Text style={styles.atributo}>Altura</Text>
@@ -180,6 +220,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              value={data.prop1 !== undefined ? String(data.prop1) : ''}
               onChangeText={(value) => handleData('prop1', value)}
               maxLength={3}
             />
@@ -193,6 +234,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              value={data.prop2 !== undefined ? String(data.prop2) : ''}
               onChangeText={(value) => handleData('prop2', value)}
               maxLength={3}
             />
@@ -205,6 +247,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               style={styles.textInput}
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
+              value={data.prop3 !== undefined ? String(data.prop3) : ''}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop3', value)}
               maxLength={3}
@@ -219,7 +262,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           </Pressable>
         </View>
       )}
-    </View>
+    </ScrollView>
   )
 }
 
@@ -275,7 +318,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contenidoFormulariosboton: {
-    marginTop: 20
+    marginTop: 40
   },
   atributoContainer: {
     width: '26%'

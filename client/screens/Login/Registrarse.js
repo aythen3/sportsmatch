@@ -80,6 +80,7 @@ const Registrarse = () => {
           return
         }
         if (valuesUser.password === confirmPassword) {
+          console.log('valuesUser: ', valuesUser)
           dispatch(create(valuesUser))
           navigation.navigate('IniciarSesin', { isPlayer })
         } else {

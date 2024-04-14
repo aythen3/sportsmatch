@@ -10,13 +10,14 @@ import {
   Border,
   Padding
 } from '../../GlobalStyles'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const { isSportman } = useSelector((state) => state.users)
 
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
@@ -30,6 +31,10 @@ const LoginSwitch = () => {
     dispatch(setIsSpotMan(isEnabled))
     setIsPlayer(!isPlayer)
   }
+
+  useEffect(() => {
+    console.log('isSportman', isSportman)
+  }, [isSportman])
 
   return (
     <ScrollView style={styles.loginSwitch}>
