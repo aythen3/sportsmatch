@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contenidoFormulariosboton: {
-    marginTop: 20
+    marginTop: 40
   },
   atributoContainer: {
     width: '26%'

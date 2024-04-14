@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -21,14 +21,14 @@ import TusMatchsDetalle from '../TusMatchsDetalle'
 import { useSelector, useDispatch } from 'react-redux'
 import { getClubMatchs, getUserMatchs } from '../../redux/actions/matchs'
 import axiosInstance from '../../utils/apiBackend'
+import { Context } from '../../context/Context'
 
 const TusMatchs = () => {
   const [matchsData, setMatchsData] = useState([])
-  const { clubMatchs } = useSelector((state) => state.matchs)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
   const navigation = useNavigation()
   const dispatch = useDispatch()
-
+  const { clubMatches } = useContext(Context)
   const { userMatchs } = useSelector((state) => state.matchs)
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const TusMatchs = () => {
   const [details, setDetails] = useState(false)
 
   console.log('useramtchs: ', userMatchs)
-  console.log('clubMatchs', clubMatchs)
+  console.log('clubMatchs', clubMatches)
 
   const getOfferData = async (id) => {
     const { data } = await axiosInstance.get(`offer/${id}`)
@@ -180,61 +180,40 @@ const TusMatchs = () => {
         </View>
       )}
 
-      {user?.user?.type === 'club' && (
+      {user?.user?.type === 'club' && clubMatches?.length > 0 && (
         <View>
-          <View style={styles.targetaClub}>
-            <Pressable style={styles.fondoPastilla}>
-              <Image
-                style={styles.iconLayout}
-                contentFit="cover"
-                source={require('../../assets/fondo-pastilla.png')}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.texto}
-              onPress={() => {
-                setDetails(true)
-              }}
-            >
-              <View style={styles.escudo}>
-                <Image
-                  style={styles.logoUem21RemovebgPreview1Icon}
-                  contentFit="cover"
-                  source={require('../../assets/mask-group7.png')}
-                />
+          {clubMatches
+            .filter((match) => match.status === 'success')
+            .map((match) => (
+              <View style={styles.targetaClub}>
+                <Pressable style={styles.fondoPastilla}>
+                  <Image
+                    style={styles.iconLayout}
+                    contentFit="cover"
+                    source={require('../../assets/fondo-pastilla.png')}
+                  />
+                </Pressable>
+                <Pressable
+                  style={styles.texto}
+                  onPress={() => {
+                    setDetails(true)
+                  }}
+                >
+                  <View style={styles.escudo}>
+                    {/* <Image
+                      style={styles.logoUem21RemovebgPreview1Icon}
+                      contentFit="cover"
+                      source={require('../../assets/mask-group7.png')}
+                    /> */}
+                  </View>
+                  <Text style={styles.playerName}></Text>
+                </Pressable>
               </View>
-              <Text style={styles.playerName}>Jordi Espelt</Text>
-            </Pressable>
-          </View>
-
-          <View style={styles.targetaClub}>
-            <Pressable style={styles.fondoPastilla}>
-              <Image
-                style={styles.iconLayout}
-                contentFit="cover"
-                source={require('../../assets/fondo-pastilla.png')}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.texto}
-              onPress={() => {
-                setDetails(true)
-              }}
-            >
-              <View style={styles.escudo}>
-                <Image
-                  style={styles.logoUem21RemovebgPreview1Icon}
-                  contentFit="cover"
-                  source={require('../../assets/mask-group12.png')}
-                />
-              </View>
-              <Text style={styles.playerName}>Carles Mir</Text>
-            </Pressable>
-          </View>
+            ))}
         </View>
       )}
 
-      {user?.user?.type === 'club' && clubMatchs?.length === 0 && (
+      {user?.user?.type === 'club' && clubMatches?.length === 0 && (
         <View>
           <Text
             style={{

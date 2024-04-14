@@ -53,8 +53,8 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    console.log('token:', user.accesToken)
-    console.log('user.user', user.user)
+    console.log('token:', user?.accesToken)
+    console.log('user.user', user?.user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {

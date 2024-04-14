@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -28,6 +28,17 @@ const TodasLasOfertas = () => {
   const [modalVisible, setModalVisible] = useState(false)
 
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
+
+  useEffect(() => {
+    dispatch(getAllOffers())
+  }, [])
+
+  useEffect(() => {
+    console.log('offers: ', offers)
+  }, [offers])
+
+  console.log('user: ', user)
+  console.log('offers', offers)
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -178,7 +189,7 @@ const TodasLasOfertas = () => {
                   alignItems: 'center',
                   zIndex: 5,
                   backgroundColor: !offer?.inscriptions?.includes(
-                    user.user.sportman.id
+                    user?.user?.sportman?.id
                   )
                     ? Color.wHITESPORTSMATCH
                     : '#e1451e',
@@ -188,16 +199,18 @@ const TodasLasOfertas = () => {
                 <Text
                   // onPress={() => setModalVisible(true)}
                   disabled={offer?.inscriptions?.includes(
-                    user.user.sportman.id
+                    user?.user?.sportman?.id
                   )}
                   onPress={() => {
-                    if (!offer?.inscriptions?.includes(user.user.sportman.id)) {
+                    if (
+                      !offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                    ) {
                       console.log('offer', offer)
-                      console.log('sp id: ', user.user.sportman.id)
+                      console.log('sp id: ', user?.user?.sportman?.id)
                       dispatch(
                         signToOffer({
                           offerId: offer?.id,
-                          userId: user.user.sportman.id
+                          userId: user?.user?.sportman?.id
                         })
                       )
                       dispatch(getAllOffers())
@@ -205,7 +218,9 @@ const TodasLasOfertas = () => {
                     }
                   }}
                   style={{
-                    color: offer?.inscriptions?.includes(user.user.sportman.id)
+                    color: offer?.inscriptions?.includes(
+                      user?.user?.sportman?.id
+                    )
                       ? '#fff'
                       : Color.bLACK1SPORTSMATCH,
                     textAlign: 'center',
@@ -215,7 +230,7 @@ const TodasLasOfertas = () => {
                     fontSize: 17
                   }}
                 >
-                  {offer?.inscriptions?.includes(user.user.sportman.id)
+                  {offer?.inscriptions?.includes(user?.user?.sportman?.id)
                     ? 'Inscripto!'
                     : 'Inscríbete en la oferta'}
                 </Text>

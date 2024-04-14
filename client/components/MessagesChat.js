@@ -129,7 +129,12 @@ const MessagesChat = ({
                   sportmanId,
                   clubId: user.user.club.id,
                   status: 'success',
-                  prop1: { clubId: user.user.club.id, offerId, sportmanId }
+                  prop1: {
+                    clubId: user.user.club.id,
+                    offerId,
+                    sportmanId,
+                    offerData: currentOffer
+                  }
                 })
               )
 
