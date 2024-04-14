@@ -10,6 +10,8 @@ export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
   const dispatch = useDispatch()
+  const [clubMatches, setClubMatches] = useState([])
+  const [userMatches, setUserMatches] = useState([])
   const { allUsers } = useSelector((state) => state.users)
   const [provisoryProfileImage, setProvisoryProfileImage] = useState()
   const [provisoryCoverImage, setProvisoryCoverImage] = useState()
@@ -127,7 +129,7 @@ export const ContextProvider = ({ children }) => {
   }
   // https://api-sportsmatch.ay-cloud.com
   // http://192.168.0.8:3010
-  const socket = io('http://192.168.0.8:3010', {
+  const socket = io('http://192.168.0.9:3010', {
     transports: ['websocket']
     // auth: {
     //   autoConnect: true,
@@ -199,7 +201,11 @@ export const ContextProvider = ({ children }) => {
         setLibraryImage,
         transformHttpToHttps,
         leaveRoom,
-        getTimeFromDate
+        getTimeFromDate,
+        setClubMatches,
+        setUserMatches,
+        clubMatches,
+        userMatches
       }}
     >
       {children}

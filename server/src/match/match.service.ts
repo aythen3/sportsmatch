@@ -30,6 +30,7 @@ export class MatchService {
     Object.assign(newMatch, createMatchDto);
 
     return await this.matchRepository.save(newMatch);
+
   }
 
 
@@ -74,7 +75,7 @@ export class MatchService {
 
   public async update(id: string, updateMatchDto: UpdateMatchDto) {
     try {
-      console.log("hola")
+      console.log('hola');
       return `This action updates a #${updateMatchDto} match`;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -98,30 +99,34 @@ export class MatchService {
     }
   }
 
-
   async findInfoRelation(matchId: number, relations: string[]): Promise<any> {
-   try {
-    const validRelations = this.validateRelations(relations);
+    try {
+      const validRelations = this.validateRelations(relations);
 
-    // Verificar si hay al menos una relación válida
-    if (validRelations.length === 0) {
-      throw new Error('No se han proporcionado relaciones válidas.');
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = {
+        where: { id: matchId },
+        relations: validRelations
+      };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const match = await this.matchRepository.findOne(options);
+
+      if (!match) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${matchId}.`
+        );
+      }
+
+      return match;
+    } catch (error) {
+      console.log('este es el error ', error);
     }
-
-    // Construir objeto de opciones para la consulta
-    const options: any = { where: { id: matchId }, relations: validRelations };
-console.log("options es", options)
-    // Realizar la consulta del post con las relaciones especificadas
-    const match = await this.matchRepository.findOne(options);
-
-    if (!match) {
-      throw new NotFoundException(`No se encontró ningún post con el ID ${matchId}.`);
-    }
-
-    return match;
-   } catch (error) {
-    console.log('este es el error ',error)
-   }
   }
 
   private validateRelations(relations: string[]): string[] {
@@ -131,7 +136,7 @@ console.log("options es", options)
     const allowedRelations = ['offer', 'sportmen']; // Agregar más según sea necesario
 
     // Filtrar relaciones válidas
-    relations.forEach(relation => {
+    relations.forEach((relation) => {
       if (allowedRelations.includes(relation)) {
         validRelations.push(relation);
       }
@@ -139,7 +144,6 @@ console.log("options es", options)
 
     return validRelations;
   }
-
 
   async findAllByUserId(userId: string): Promise<MatchEntity[]> {
     const matches = await this.matchRepository
@@ -154,6 +158,4 @@ console.log("options es", options)
 
     return matches;
   }
-  
 }
-

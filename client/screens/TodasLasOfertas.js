@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -17,7 +17,7 @@ import MonetizarOfertaPRO from './MonetizarOfertaPRO'
 import FiltersSportman from '../components/FiltersSportman'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMatch } from '../redux/actions/matchs'
-import { signToOffer } from '../redux/actions/offers'
+import { getAllOffers, signToOffer } from '../redux/actions/offers'
 
 const TodasLasOfertas = () => {
   const dispatch = useDispatch()
@@ -28,6 +28,17 @@ const TodasLasOfertas = () => {
   const [modalVisible, setModalVisible] = useState(false)
 
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
+
+  useEffect(() => {
+    dispatch(getAllOffers())
+  }, [])
+
+  useEffect(() => {
+    console.log('offers: ', offers)
+  }, [offers])
+
+  console.log('user: ', user)
+  console.log('offers', offers)
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -167,23 +178,61 @@ const TodasLasOfertas = () => {
                 height: 90
               }}
             >
-              <Pressable style={[styles.aceptar, styles.aceptarBg]}>
+              <Pressable
+                style={{
+                  width: '70%',
+                  paddingHorizontal: Padding.p_mini,
+                  paddingVertical: Padding.p_8xs,
+                  justifyContent: 'center',
+                  borderRadius: Border.br_81xl,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  zIndex: 5,
+                  backgroundColor: !offer?.inscriptions?.includes(
+                    user?.user?.sportman?.id
+                  )
+                    ? Color.wHITESPORTSMATCH
+                    : '#e1451e',
+                  height: 45
+                }}
+              >
                 <Text
                   // onPress={() => setModalVisible(true)}
+                  disabled={offer?.inscriptions?.includes(
+                    user?.user?.sportman?.id
+                  )}
                   onPress={() => {
-                    console.log('offer', offer)
-                    console.log('sp id: ', user.user.sportman.id)
-                    dispatch(
-                      signToOffer({
-                        offerId: offer?.id,
-                        userId: user.user.sportman.id
-                      })
-                    )
-                    navigation.goBack()
+                    if (
+                      !offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                    ) {
+                      console.log('offer', offer)
+                      console.log('sp id: ', user?.user?.sportman?.id)
+                      dispatch(
+                        signToOffer({
+                          offerId: offer?.id,
+                          userId: user?.user?.sportman?.id
+                        })
+                      ).then((data)=>dispatch(getAllOffers()))
+                      
+                      navigation.goBack()
+                    }
                   }}
-                  style={[styles.verOferta, styles.verOfertaTypo]}
+                  style={{
+                    color: offer?.inscriptions?.includes(
+                      user?.user?.sportman?.id
+                    )
+                      ? '#fff'
+                      : Color.bLACK1SPORTSMATCH,
+                    textAlign: 'center',
+                    fontWeight: '700',
+                    lineHeight: 17,
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    fontSize: 17
+                  }}
                 >
-                  Inscríbete en la oferta 
+                  {offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                    ? 'Inscripto!'
+                    : 'Inscríbete en la oferta'}
                 </Text>
               </Pressable>
             </View>
@@ -233,285 +282,6 @@ const TodasLasOfertas = () => {
           <FiltersSportman onClose={() => setModalFilterSportman(false)} />
         </View>
       </Modal>
-
-      {/* <Text style={[styles.misOfertas, styles.ofertasTypo]}>Mis ofertas</Text>
-      <View style={[styles.contenido, styles.menuClubPosition]}>
-        <View style={[styles.menuClub, styles.menuClubPosition]}>
-          <Image
-            style={[styles.maskGroupIcon, styles.groupIconLayout]}
-            contentFit="cover"
-            source={require("../assets/mask-group7.png")}
-          />
-          <Image
-            style={[styles.maskGroupIcon1, styles.iconPosition]}
-            contentFit="cover"
-            source={require("../assets/mask-group7.png")}
-          />
-          <View style={[styles.menuClubChild, styles.groupChildPosition]} />
-          <View style={[styles.menuClubItem, styles.itemPosition]} />
-          <View style={[styles.menuClubInner, styles.borderBorder]} />
-          <Image
-            style={[styles.groupIcon, styles.groupIconLayout]}
-            contentFit="cover"
-            source={require("../assets/group-535.png")}
-          />
-          <Image
-            style={[styles.lineIcon, styles.lineIconLayout]}
-            contentFit="cover"
-            source={require("../assets/line-5.png")}
-          />
-          <Image
-            style={[styles.menuClubChild1, styles.lineIconLayout]}
-            contentFit="cover"
-            source={require("../assets/line-5.png")}
-          />
-          <View style={styles.groupParent}>
-            <Image
-              style={[styles.groupChild, styles.groupChildPosition]}
-              contentFit="cover"
-              source={require("../assets/group-5401.png")}
-            />
-            <Pressable
-              style={styles.wrapper}
-              onPress={() => navigation.navigate("TusMensajes")}
-            >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require("../assets/group-5391.png")}
-              />
-            </Pressable>
-          </View>
-          <Image
-            style={[styles.menuClubChild2, styles.menuClubChild2Layout]}
-            contentFit="cover"
-            source={require("../assets/group-593.png")}
-          />
-          <Image
-            style={[styles.maskGroupIcon2, styles.menuClubChild2Layout]}
-            contentFit="cover"
-            source={require("../assets/mask-group7.png")}
-          />
-          <Image
-            style={[styles.ellipseIcon, styles.iconPosition]}
-            contentFit="cover"
-            source={require("../assets/ellipse-83.png")}
-          />
-        </View>
-        <View style={styles.targetaContenido}>
-          <View style={[styles.targeta, styles.groupBorder]}>
-            <Image
-              style={styles.fondoImagenIcon}
-              contentFit="cover"
-              source={require("../assets/fondo-imagen.png")}
-            />
-            <View style={[styles.contenido1, styles.iphonePosition]}>
-              <View style={styles.modulos}>
-                <View style={[styles.masculino, styles.pivotLayout]}>
-                  <View style={[styles.sexoParent, styles.parentPosition]}>
-                    <Text style={[styles.sexo, styles.sexoTypo]}>Sexo</Text>
-                    <Text style={[styles.masculino1, styles.pvotTypo]}>
-                      Masculino
-                    </Text>
-                  </View>
-                </View>
-                <View style={[styles.senior, styles.pivotLayout]}>
-                  <View style={[styles.sexoParent, styles.parentPosition]}>
-                    <Text style={[styles.sexo, styles.sexoTypo]}>
-                      Categoría
-                    </Text>
-                    <Text style={[styles.masculino1, styles.pvotTypo]}>
-                      Sénior
-                    </Text>
-                  </View>
-                </View>
-                <View style={[styles.pivot, styles.pivotLayout]}>
-                  <View style={[styles.sexoParent, styles.parentPosition]}>
-                    <Text style={[styles.sexo, styles.sexoTypo]}>Posición</Text>
-                    <Text style={[styles.pvot, styles.pvotTypo]}>Pívot</Text>
-                  </View>
-                </View>
-                <View style={[styles.comarca, styles.pivotLayout]}>
-                  <View style={[styles.sexoParent, styles.parentPosition]}>
-                    <Text style={[styles.sexo, styles.sexoTypo]}>Comarca</Text>
-                    <Text style={[styles.pvot, styles.pvotTypo]}>Maresme</Text>
-                  </View>
-                </View>
-                <View style={[styles.urgencia, styles.pivotLayout]}>
-                  <View style={styles.rectangleParent}>
-                    <View style={[styles.groupItem, styles.groupBorder]} />
-                    <Text style={[styles.urgencia1, styles.sexoTypo]}>
-                      Urgencia
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.urgenciaChild}
-                    contentFit="cover"
-                    source={require("../assets/group-692.png")}
-                  />
-                </View>
-                <View style={[styles.retribucion, styles.pivotLayout]}>
-                  <View style={styles.rectangleParent}>
-                    <View style={[styles.groupItem, styles.groupBorder]} />
-                    <Text style={[styles.urgencia1, styles.sexoTypo]}>
-                      Retribución
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.urgenciaChild}
-                    contentFit="cover"
-                    source={require("../assets/group-692.png")}
-                  />
-                </View>
-                <View style={[styles.modulosChild, styles.frameBorder]} />
-              </View>
-              <Image
-                style={styles.contenidoChild}
-                contentFit="cover"
-                source={require("../assets/rectangle-250.png")}
-              />
-            </View>
-          </View>
-          <View style={styles.boton}>
-            <View style={[styles.aceptar, styles.aceptarBg]}>
-              <Text style={[styles.verOferta, styles.verOfertaTypo]}>
-                Inscríbete en la oferta 
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={[styles.menuContenido, styles.iphonePosition]}>
-        <View>
-          <Pressable onPress={() => navigation.navigate("TusMensajes")}>
-            <Text style={[styles.todasLaOfertas, styles.ofertasTypo]}>
-              Todas la ofertas
-            </Text>
-          </Pressable>
-          <Image
-            style={styles.menuChild}
-            contentFit="cover"
-            source={require("../assets/line-6.png")}
-          />
-        </View>
-      </View>
-      <View style={styles.cabezera}>
-        <View style={styles.cabezeraBuscarFiltros}>
-          <View style={[styles.cabezera1, styles.iphonePosition]}>
-            <Pressable
-              style={styles.coolicon}
-              onPress={() => navigation.goBack()}
-            >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require("../assets/coolicon3.png")}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.ofertas}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={[styles.ofertas1, styles.pvotTypo]}>Ofertas</Text>
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.buscarFiltrosDespliegue}>
-          <View style={styles.buscarPictograma}>
-            <View style={[styles.cabezera1, styles.iphonePosition]}>
-              <View
-                style={[styles.groupContainer, styles.groupContainerSpaceBlock]}
-              >
-                <Image
-                  style={styles.frameChild}
-                  contentFit="cover"
-                  source={require("../assets/group-428.png")}
-                />
-                <Text style={styles.posicnDeJuego}>
-                  Posicón de juego, población, club...
-                </Text>
-              </View>
-              <Image
-                style={styles.groupIcon1}
-                contentFit="cover"
-                source={require("../assets/group5.png")}
-              />
-            </View>
-          </View>
-          <View style={styles.despliegue}>
-            <View
-              style={[
-                styles.filtrosSugeridosParent,
-                styles.groupContainerSpaceBlock,
-              ]}
-            >
-              <Text style={[styles.filtrosSugeridos, styles.sexoTypo]}>
-                Filtros sugeridos
-              </Text>
-              <View style={[styles.frameItem, styles.frameBorder]} />
-              <View style={styles.porProximidadPicto}>
-                <View style={styles.porProximidadPicto1}>
-                  <Image
-                    style={styles.porProximidadPictoChild}
-                    contentFit="cover"
-                    source={require("../assets/vector-16.png")}
-                  />
-                  <View style={styles.porProximidadParent}>
-                    <Text style={[styles.porProximidad, styles.verOfertaTypo]}>
-                      Por proximidad
-                    </Text>
-                    <Image
-                      style={[styles.pictogramaIcon, styles.groupChildPosition]}
-                      contentFit="cover"
-                      source={require("../assets/pictograma.png")}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.frameInner, styles.frameBorder]} />
-              <View style={styles.porProximidadPicto}>
-                <View style={styles.groupGroup}>
-                  <Image
-                    style={[styles.groupIcon2, styles.groupChildPosition]}
-                    contentFit="cover"
-                    source={require("../assets/group6.png")}
-                  />
-                  <Text style={[styles.porProximidad, styles.verOfertaTypo]}>
-                    Por relevancia
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={[styles.uxIphone, styles.iphonePosition]}>
-        <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderBorder]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require("../assets/cap.png")}
-            />
-            <View style={[styles.capacity, styles.aceptarBg]} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require("../assets/wifi1.png")}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require("../assets/cellular-connection2.png")}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View> */}
     </View>
   )
 }
@@ -613,7 +383,7 @@ const styles = StyleSheet.create({
   verOfertaTypo: {
     lineHeight: 17,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t1TextSMALL_size
+    fontSize: 17
   },
   groupContainerSpaceBlock: {
     paddingVertical: Padding.p_4xs,
