@@ -115,25 +115,43 @@ export class OfferService {
     }
   }
 
-  public async update(id: string, updateOfferDto: Partial<CreateOfferDto>) {
-    try {
-      const offer = await this.offerRepository.findOne({ where: { id } });
-      if (!offer) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Offer with id ${id} not found`
-        });
-      }
+  // public async update(id: string, updateOfferDto: UpdateOfferDto) {
+  //   const offer = await this.findOne(id);
+  //   const { offerData, positionId } = updateOfferDto;
 
-      await this.offerRepository.update(id, updateOfferDto);
+  //   if (!offer) {
+  //     return(`Offer with id ${id} not found`);
+  //   }
+  //   for (const key in offerData) {
+  //     offer[key] = offerData[key];
+  //   }
 
-      const updatedOffer = await this.offerRepository.findOne({
-        where: { id }
-      });
-      return updatedOffer;
-    } catch (error) {
-      throw ErrorManager.createSignatureError(error.message);
+  //   if (positionId) {
+  //     // const position = await this.positionService.findOne(positionId);
+  //     const position = await this.positionRepository.findOne({where:{id:positionId}})
+  //     console.log("esto es positiion",position)
+  //     offer.position = position;
+  //   }
+  //   const updatedOffer = await this.offerRepository.save(offer);
+
+  //   return updatedOffer;
+  //   //return await this.offerRepository.save(offer);
+  // }
+
+  async update(id: string, updateOfferDto: UpdateOfferDto) {
+    const offer = await this.offerRepository.findOne({ where: { id: id } });
+
+    if (!offer) {
+      throw new Error(`Offer with id ${id} not found`);
     }
+
+    // Actualizar todas las propiedades que se le pasen en el DTO
+    Object.assign(offer, updateOfferDto);
+
+    // Guardar la oferta actualizada en la base de datos
+    const updatedOffer = await this.offerRepository.save(offer);
+
+    return updatedOffer;
   }
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
