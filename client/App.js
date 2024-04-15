@@ -73,6 +73,7 @@ const App = () => {
     'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
     'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
   })
+// asdasdsefsdfsdfsd
 
   const getUserAuth = () => {
     AsyncStorage.getItem('userToken').then((value) => {
@@ -81,6 +82,7 @@ const App = () => {
   }
 
   useEffect(() => {
+    console.log("hola")
     getUserAuth()
   }, [])
 
