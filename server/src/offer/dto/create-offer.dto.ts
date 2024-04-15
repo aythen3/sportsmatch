@@ -44,6 +44,11 @@ export class CreateOfferDto {
   @IsOptional()
   matchId?: string;
 
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  matches?: string[];
+
   @IsString()
   @IsOptional()
   clubId: string;

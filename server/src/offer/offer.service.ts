@@ -142,17 +142,32 @@ export class OfferService {
     const offer = await this.offerRepository.findOne({ where: { id: id } });
 
     if (!offer) {
-      throw new Error(`Offer with id ${id} not found`);
+        throw new Error(`Offer with id ${id} not found`);
     }
 
-    // Actualizar todas las propiedades que se le pasen en el DTO
-    Object.assign(offer, updateOfferDto);
+    // Verificar si cada propiedad existe en el DTO de actualización y actualizarla si es así
+
+    if (updateOfferDto.prop1 !== undefined) {
+        offer.prop1 = updateOfferDto.prop1;
+    }
+    if (updateOfferDto.prop2 !== undefined) {
+        offer.prop2 = updateOfferDto.prop2;
+    }
+    if (updateOfferDto.matches !== undefined) {
+        offer.matches = updateOfferDto.matches;
+    }
+    if (updateOfferDto.prop4 !== undefined) {
+        offer.prop4 = updateOfferDto.prop4;
+    }
+    if (updateOfferDto.inscriptions !== undefined) {
+        offer.inscriptions = updateOfferDto.inscriptions;
+    }
 
     // Guardar la oferta actualizada en la base de datos
     const updatedOffer = await this.offerRepository.save(offer);
 
     return updatedOffer;
-  }
+}
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
     return `This action updates a #${updateOfferDto} offer`;
