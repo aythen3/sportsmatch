@@ -3,6 +3,11 @@
     "version": ">= 7.6.0"
   },
   "build": {
+    "preview2": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
