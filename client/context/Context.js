@@ -131,7 +131,7 @@ export const ContextProvider = ({ children }) => {
   // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
   const socket = io(
-    'https://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+    'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
     {
       transports: ['websocket']
       // auth: {

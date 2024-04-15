@@ -278,6 +278,20 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
+                    console.log('data from match: ', data.payload)
+                    console.log('body to sendNotification: ', {
+                      title: 'Match',
+                      message: 'Has hecho match!',
+                      recipientId: data?.author?.id,
+                      prop1: {
+                        matchId: data?.payload?.id || '',
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...user?.user?.club
+                        }
+                      }
+                    })
                     dispatch(
                       sendNotification({
                         title: 'Solicitud',

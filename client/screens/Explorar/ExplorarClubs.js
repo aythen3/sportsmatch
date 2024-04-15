@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   // Pressable,
+  Text,
   ScrollView,
   Modal,
   TouchableWithoutFeedback,
@@ -87,7 +88,7 @@ const ExplorarClubs = () => {
                   color: Color.wHITESPORTSMATCH
                 }}
               >
-                No hay publicaciones
+                No hay publicaciones!
               </Text>
             </View>
           )}

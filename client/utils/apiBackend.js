@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const axiosInstance = axios.create({
   baseURL:
-    'https://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api'
+    'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/'
   // baseURL: 'http://192.168.0.8:3000/api/'
 })
 
