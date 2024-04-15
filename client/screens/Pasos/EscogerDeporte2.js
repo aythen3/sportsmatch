@@ -52,7 +52,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           <Input
             title="Ciudad"
             placeholderText="Ciudad"
-            isAccordeon={true}
+            isAccordeon={false}
             field="city"
             value={clubValues.city}
             onValues={handleValues}
@@ -62,7 +62,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           <Input
             title="Pais"
             placeholderText="España"
-            isAccordeon={true}
+            isAccordeon={false}
             field="country"
             value={clubValues.country}
             onValues={handleValues}
@@ -72,7 +72,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           <Input
             title="Nombre del estadio, campo o pavellón"
             placeholderText="Palau Municipal d’Esports Josep Mora"
-            isAccordeon={true}
+            isAccordeon={false}
             field="field"
             value={clubValues.field}
             onValues={handleValues}
@@ -82,7 +82,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           <Input
             title="Año de fundacion"
             placeholderText="1920"
-            isAccordeon={true}
+            isAccordeon={false}
             field="year"
             value={clubValues.year}
             onValues={handleValues}

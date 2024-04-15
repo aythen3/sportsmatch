@@ -344,6 +344,7 @@ const styles = StyleSheet.create({
   botonAtras: {
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
+    marginBottom: 40,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl
   },
   contenido: {
-    marginTop: 60,
+    marginTop: 20,
     height: '20%',
     alignItems: 'center'
   },

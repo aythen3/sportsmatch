@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
@@ -12,11 +12,10 @@ import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
-import { updateImgClub } from '../redux/actions/club'
-import { updateUserData } from '../redux/actions/users'
 import FeedSVG from './svg/FeedSVG'
 import StatsSVG from './svg/StatsSVG'
 import axiosInstance from '../utils/apiBackend'
+import { Context } from '../context/Context'
 
 const HeaderPerfil = ({
   name,
@@ -38,6 +37,7 @@ const HeaderPerfil = ({
   const navigation = useNavigation()
   const { isSportman, user } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
+  const { clubMatches, userMatches } = useContext(Context)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -58,6 +58,8 @@ const HeaderPerfil = ({
       }
     }
   }, [])
+
+  console.log('clubMatches', clubMatches)
 
   return (
     <View>
@@ -135,8 +137,24 @@ const HeaderPerfil = ({
               <Text style={[styles.ojear, styles.timeTypo]}>{'Seguir'}</Text>
             </Pressable>
           )}
-          {!isSportman ? (
+          {!isSportman &&
+          clubMatches.filter(
+            (match) => match.prop1.sportmanId === data.author.sportman.id
+          ).length === 0 ? (
             <Pressable
+              onPress={() =>
+                dispatch(
+                  sendMatch({
+                    sportmanId: data.author.sportman.id,
+                    clubId: user.user.club.id,
+                    status: 'pending',
+                    prop1: {
+                      clubId: user.user.club.id,
+                      sportmanId: data.author.sportman.id
+                    }
+                  })
+                )
+              }
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -159,7 +177,7 @@ const HeaderPerfil = ({
                   fontWeight: '700'
                 }}
               >
-                Pedir Match
+                {'Pedir match'}
               </Text>
               <View
                 style={{
@@ -180,6 +198,24 @@ const HeaderPerfil = ({
                 />
               </View>
             </Pressable>
+          ) : !isSportman &&
+            clubMatches.filter(
+              (match) => match.prop1.sportmanId === data.author.sportman.id
+            ).length > 0 ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ChatAbierto1', {
+                  receiverId: data.author.id,
+                  receiverName: data.author.nickname,
+                  profilePic: avatar
+                })
+              }
+              style={styles.leftButton}
+            >
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                Enviar mensaje
+              </Text>
+            </TouchableOpacity>
           ) : (
             <Pressable
               style={{

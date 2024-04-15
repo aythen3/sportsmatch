@@ -119,14 +119,16 @@ const StepsClub = () => {
   }
 
   return (
-    <View style={styles.escogerDeporte}>
+    <View style={{ ...styles.escogerDeporte }}>
       <ScrollView>
         <Image
-          style={styles.escogerDeporteChild}
+          style={{
+            ...styles.escogerDeporteChild
+          }}
           contentFit="cover"
           source={require('../../assets/group-2412.png')}
         />
-        <View style={styles.atrsParent}>
+        <View style={{ ...styles.atrsParent }}>
           <Image
             style={styles.coolicon}
             contentFit="cover"
@@ -203,10 +205,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    top: 60,
+    top: 0,
     justifyContent: 'flex-end',
-    right: 30,
-    marginBottom: 100
+    right: 20,
+    marginBottom: 50
   },
   escogerDeporteChild: {
     width: '100%',

@@ -41,9 +41,14 @@ const IconsMuro = ({ id, userId }) => {
     setModalVisible(false)
   }
 
-  if (!findedLike || !id) return null
+  // if (!findedLike || !id) return null
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flexDirection: 'row',
+        gap: 2
+      }}
+    >
       <TouchableOpacity
         style={styles.likeView}
         onPress={() => handleLike(id, userId)}
@@ -71,10 +76,6 @@ const IconsMuro = ({ id, userId }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    gap: 2
-  },
   likeView: {
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,

@@ -17,7 +17,7 @@ export class OfferService {
     private readonly offerRepository: Repository<OfferEntity>,
     private readonly clubService: ClubService,
     @InjectRepository(PositionEntity)
-    private readonly positionRepository: Repository<PositionEntity>,
+    private readonly positionRepository: Repository<PositionEntity>
   ) {}
 
   /**
@@ -30,21 +30,23 @@ export class OfferService {
       const { offerData, positionId, clubId } = createOfferDto;
 
       // const position = await this.positionService.findOne(positionId);
-      const position = await this.positionRepository.findOne({where:{id:positionId}})
+      const position = await this.positionRepository.findOne({
+        where: { id: positionId }
+      });
 
       if (!position) {
-         return(`position ${position} not found`);
+        return `position ${position} not found`;
       }
 
       const club = await this.clubService.findOne(clubId);
       if (!club) {
-      return (`club ${club} not found`);
+        return `club ${club} not found`;
       }
 
       const newOffer = await this.offerRepository.create({
         ...offerData,
         position: position,
-        
+
         club: club
       });
       const saveOffer = await this.offerRepository.save(newOffer);
@@ -80,7 +82,7 @@ export class OfferService {
       }
 
       // Mapear los resultados para incluir el clubId
-      const offersWithClubId = offers.map((offer) => ({
+      const offersWithClubId = offers.map((offer) => ({        
         ...offer,
         clubId: offer.club.id // Agregar el clubId al objeto offer
       }));
@@ -210,46 +212,49 @@ export class OfferService {
     await this.offerRepository.save(offer);
   }
 
-
-
   async findInfoRelation(offerId: number, relations: string[]): Promise<any> {
     try {
-     const validRelations = this.validateRelations(relations);
- 
-     // Verificar si hay al menos una relación válida
-     if (validRelations.length === 0) {
-       throw new Error('No se han proporcionado relaciones válidas.');
-     }
- 
-     // Construir objeto de opciones para la consulta
-     const options: any = { where: { id: offerId }, relations: validRelations };
- console.log("options es", options)
-     // Realizar la consulta del post con las relaciones especificadas
-     const offer = await this.offerRepository.findOne(options);
- 
-     if (!offer) {
-       throw new NotFoundException(`No se encontró ningún post con el ID ${offerId}.`);
-     }
- 
-     return offer;
+      const validRelations = this.validateRelations(relations);
+
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = {
+        where: { id: offerId },
+        relations: validRelations
+      };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const offer = await this.offerRepository.findOne(options);
+
+      if (!offer) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${offerId}.`
+        );
+      }
+
+      return offer;
     } catch (error) {
-     console.log('este es el error ',error)
+      console.log('este es el error ', error);
     }
-   }
- 
-   private validateRelations(relations: string[]): string[] {
-     const validRelations: string[] = [];
- 
-     // Definir relaciones válidas permitidas en la entidad Match
-     const allowedRelations = ["club" , "match" , "position" ]; // Agregar más según sea necesario
- 
-     // Filtrar relaciones válidas
-     relations.forEach(relation => {
-       if (allowedRelations.includes(relation)) {
-         validRelations.push(relation);
-       }
-     });
- 
-     return validRelations;
-   }
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['club', 'match', 'position']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidas
+    relations.forEach((relation) => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
 }
