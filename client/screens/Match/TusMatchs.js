@@ -120,80 +120,86 @@ const TusMatchs = () => {
         Nuevos matchs
       </Text>
 
-      {user?.user?.type === 'sportman' && userMatches.length > 0 && (
-        <View>
-          {userMatches.map((match, index) => (
-            <View key={index} style={{ marginTop: 14, width: '100%' }}>
-              <Pressable
-                onPress={() => {
-                  setDetails(true)
-                  setSelectedClubDetails(
-                    allUsers.filter(
-                      (user) => user.id === match.prop1.clubData.userId
-                    )[0]
-                  )
-                }}
-                style={styles.fondoPastilla}
-              >
-                <Image
-                  style={styles.iconLayout}
-                  contentFit="cover"
-                  source={require('../../assets/fondo-pastilla.png')}
-                />
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  setDetails(true)
-                  setSelectedClubDetails(
-                    allUsers.filter(
-                      (user) => user.id === match.prop1.clubData.userId
-                    )[0]
-                  )
-                }}
-                style={styles.texto}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    gap: 15,
-                    marginTop: 9,
-                    marginLeft: 15,
-                    height: '100%',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Image
-                    style={{ width: 40, height: 40, borderRadius: 50 }}
-                    contentFit="cover"
-                    source={{ uri: match?.prop1?.clubData?.profilePic }}
-                  />
-                  <Text style={styles.clubBasquetLametlla}>
-                    {match?.prop1?.clubData?.name}
-                  </Text>
+      {user?.user?.type === 'sportman' &&
+        userMatches.filter((match) => match.status === 'success').length >
+          0 && (
+          <View>
+            {userMatches
+              .filter((match) => match.status === 'success')
+              .map((match, index) => (
+                <View key={index} style={{ marginTop: 14, width: '100%' }}>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.fondoPastilla}
+                  >
+                    <Image
+                      style={styles.iconLayout}
+                      contentFit="cover"
+                      source={require('../../assets/fondo-pastilla.png')}
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.texto}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 15,
+                        marginTop: 9,
+                        marginLeft: 15,
+                        height: '100%',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40, borderRadius: 50 }}
+                        contentFit="cover"
+                        source={{ uri: match?.prop1?.clubData?.profilePic }}
+                      />
+                      <Text style={styles.clubBasquetLametlla}>
+                        {match?.prop1?.clubData?.name}
+                      </Text>
+                    </View>
+                  </Pressable>
                 </View>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-      )}
+              ))}
+          </View>
+        )}
 
-      {user?.user?.type === 'sportman' && userMatches.length === 0 && (
-        <View>
-          <Text
-            style={{
-              fontSize: 30,
-              marginTop: 40,
-              color: Color.wHITESPORTSMATCH,
-              fontWeight: '500',
-              alignSelf: 'center',
-              textAlign: 'left',
-              fontFamily: FontFamily.t4TEXTMICRO
-            }}
-          >
-            Aun no tienes matchs!
-          </Text>
-        </View>
-      )}
+      {user?.user?.type === 'sportman' &&
+        userMatches.filter((match) => match.status === 'success').length ===
+          0 && (
+          <View>
+            <Text
+              style={{
+                fontSize: 30,
+                marginTop: 40,
+                color: Color.wHITESPORTSMATCH,
+                fontWeight: '500',
+                alignSelf: 'center',
+                textAlign: 'left',
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Aun no tienes matchs!
+            </Text>
+          </View>
+        )}
 
       {user?.user?.type === 'club' && clubMatches?.length > 0 && (
         <View>
@@ -254,23 +260,25 @@ const TusMatchs = () => {
         </View>
       )}
 
-      {user?.user?.type === 'club' && clubMatches?.length === 0 && (
-        <View>
-          <Text
-            style={{
-              fontSize: 30,
-              marginTop: 40,
-              color: Color.wHITESPORTSMATCH,
-              fontWeight: '500',
-              alignSelf: 'center',
-              textAlign: 'left',
-              fontFamily: FontFamily.t4TEXTMICRO
-            }}
-          >
-            Aun no tienes matchs!
-          </Text>
-        </View>
-      )}
+      {user?.user?.type === 'club' &&
+        clubMatches.filter((match) => match.status === 'success').length ===
+          0 && (
+          <View>
+            <Text
+              style={{
+                fontSize: 30,
+                marginTop: 40,
+                color: Color.wHITESPORTSMATCH,
+                fontWeight: '500',
+                alignSelf: 'center',
+                textAlign: 'left',
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Aun no tienes matchs!
+            </Text>
+          </View>
+        )}
 
       <Modal visible={details} transparent={true} animationType="slide">
         <View

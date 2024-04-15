@@ -156,9 +156,12 @@ const InscritosAMisOfertas = () => {
                         console.log('body to sendNotification: ', {
                           title: 'Match',
                           message: 'Has hecho match!',
-                          recipientId: data?.author?.id,
+                          recipientId:
+                            data?.payload?.prop1?.sportManData?.userId,
+                          date: new Date(),
+                          read: false,
                           prop1: {
-                            matchId: data?.payload?.id || '',
+                            matchId: data?.payload?.id,
                             clubData: {
                               name: user?.user?.nickname,
                               userId: user.user.id,
@@ -170,9 +173,12 @@ const InscritosAMisOfertas = () => {
                           sendNotification({
                             title: 'Match',
                             message: 'Has hecho match!',
-                            recipientId: data?.author?.id,
+                            recipientId:
+                              data?.payload?.prop1?.sportManData?.userId,
+                            date: new Date(),
+                            read: false,
                             prop1: {
-                              matchId: data?.payload?.id || '',
+                              matchId: data?.payload?.id,
                               clubData: {
                                 name: user?.user?.nickname,
                                 userId: user.user.id,

@@ -140,16 +140,7 @@ const TusNotificaciones1 = () => {
             ).length > 0 ? (
               allNotifications
                 ?.filter((notification) => notification.recipientId === userId)
-                .map((notification) => (
-                  <Notifications
-                    key={notification.id}
-                    title={notification.title}
-                    text={notification.message}
-                    date={notification.date}
-                    read={notification.read}
-                    match={notification.title === 'Nuevo Match'}
-                  />
-                ))
+                .map((notification) => <Notifications data={notification} />)
             ) : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}

@@ -72,3 +72,17 @@ export const getAllMatchs = createAsyncThunk(
     }
   }
 )
+
+export const updateMatchById = createAsyncThunk(
+  'updateMatchById/matchs',
+  async ({ id, body }) => {
+    console.log('data from updatematch: ', id, body)
+    try {
+      const { data } = await axiosInstance.patch(`match/${id}`, body)
+      console.log('data from updatematch: ', data)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
