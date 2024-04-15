@@ -20,6 +20,7 @@ import {
 import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
 import { create, getAllUsers } from '../../redux/actions/users'
+import { AntDesign } from '@expo/vector-icons'
 
 const Registrarse = () => {
   const navigation = useNavigation()
@@ -158,9 +159,17 @@ const Registrarse = () => {
                       />
 
                       {!isEmailValid ? (
-                        <Text style={styles.errorEmail}>X</Text>
+                        <View
+                          style={{ position: 'absolute', right: 14, top: 9 }}
+                        >
+                          <AntDesign name="close" color={'#ff0000'} size={20} />
+                        </View>
                       ) : (
-                        <Text style={styles.successEmail}>✔</Text>
+                        <View
+                          style={{ position: 'absolute', right: 14, top: 9 }}
+                        >
+                          <AntDesign name="check" color={'#00ff00'} size={20} />
+                        </View>
                       )}
                     </View>
                   </View>
@@ -207,9 +216,7 @@ const Registrarse = () => {
                 </View>
               </View>
             </View>
-          </View>
-          <View style={styles.botonRegistrate}>
-            <View style={styles.loremPosition}>
+            <View style={{ height: 40, marginTop: 36, width: 360 }}>
               <TouchableOpacity
                 style={[styles.loremIpsum, styles.loremPosition]}
                 onPress={submit}
@@ -220,6 +227,7 @@ const Registrarse = () => {
               </TouchableOpacity>
             </View>
           </View>
+
           <Pressable
             style={styles.yaTenesUnaContainer}
             onPress={() => navigation.navigate('IniciarSesin')}

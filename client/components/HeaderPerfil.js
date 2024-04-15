@@ -79,23 +79,59 @@ const HeaderPerfil = ({
           source={{ uri: front }}
         />
       </TouchableOpacity>
-      <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-        <View style={styles.circleAvatar}>
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 20,
+          marginTop: -17,
+          justifyContent: 'flex-start',
+          maxWidth: '60%',
+          alignItems: 'center',
+          height: 120,
+          marginBottom: 10,
+          paddingHorizontal: 15
+        }}
+      >
+        <View style={{ position: 'relative' }}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: -5,
+              left: 2.5,
+              height: 105,
+              borderRadius: 100,
+              width: 105,
+              backgroundColor: Color.bALONCESTO
+            }}
+          />
           {isSportman ? (
             <Image
-              style={styles.perfilFeedVisualitzaciCluItem}
+              style={{
+                height: 110,
+                borderRadius: 100,
+                width: 110,
+                borderWidth: 3,
+                borderColor: '#000'
+              }}
               contentFit="cover"
               source={{ uri: avatar }}
             />
           ) : (
             <Image
-              style={styles.perfilFeedVisualitzaciCluItem}
+              style={{
+                height: 110,
+                borderRadius: 100,
+                width: 110,
+                borderWidth: 3,
+                borderColor: '#000'
+              }}
               contentFit="cover"
               source={{ uri: avatar }}
             />
           )}
         </View>
-        <View>
+
+        <View style={{ marginTop: 20 }}>
           <Text
             style={[styles.jordiEspeltPvotBaloncesto, styles.jugandoAlUniTypo]}
           >
@@ -198,6 +234,22 @@ const HeaderPerfil = ({
               </Text>
             </Pressable>
           )}
+          {isSportman && external && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ChatAbierto1', {
+                  receiverId: data.author.id,
+                  receiverName: data.author.nickname,
+                  profilePic: avatar
+                })
+              }
+              style={styles.leftButton}
+            >
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                Enviar mensaje
+              </Text>
+            </TouchableOpacity>
+          )}
           {!isSportman &&
           clubMatches?.filter(
             (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
@@ -225,8 +277,6 @@ const HeaderPerfil = ({
                     }
                   })
                 )
-                  .then((data) => dispatch(getAllMatchs()))
-                  .then((data) => getClubMatches())
                   .then((data) => {
                     dispatch(
                       sendNotification({
@@ -234,7 +284,7 @@ const HeaderPerfil = ({
                         message: 'Recibiste una solicitud de match!',
                         recipientId: data?.author?.id,
                         prop1: {
-                          matchId: data.payload.id,
+                          matchId: data?.payload?.id || '',
                           clubData: {
                             name: user?.user?.nickname,
                             userId: user.user.id,
@@ -244,6 +294,8 @@ const HeaderPerfil = ({
                       })
                     )
                   })
+                  .then((data) => dispatch(getAllMatchs()))
+                  .then((data) => getClubMatches())
               }
               style={{
                 flexDirection: 'row',
@@ -855,16 +907,6 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size
   },
-  jordiEspeltPvotBaloncestoWrapper: {
-    flexDirection: 'row',
-    gap: 20,
-    justifyContent: 'flex-start',
-    maxWidth: '60%',
-    alignItems: 'center',
-    height: 120,
-    paddingHorizontal: 15
-  },
-
   jordiEspeltPvotBaloncesto: {
     fontSize: FontSize.button_size,
     lineHeight: 20,
@@ -874,10 +916,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
-  },
-  perfilFeedVisualitzaciCluItem: {
-    height: 100,
-    width: 100
   },
   imgFront: {
     width: '100%',

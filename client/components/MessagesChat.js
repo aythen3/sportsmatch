@@ -187,7 +187,7 @@ const MessagesChat = ({
                         message: 'Has hecho match!',
                         recipientId: data?.author?.id,
                         prop1: {
-                          matchId: data.payload.id,
+                          matchId: data?.payload?.id || '',
                           clubData: {
                             name: user?.user?.nickname,
                             userId: user.user.id,

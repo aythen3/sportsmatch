@@ -128,17 +128,20 @@ export const ContextProvider = ({ children }) => {
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
     return `${formattedHours}:${formattedMinutes}`
   }
-  // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000
+  // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
-  const socket = io('http://192.168.0.8:3010', {
-    transports: ['websocket']
-    // auth: {
-    //   autoConnect: true,
-    //   forceNew: true,
-    //   addTrailingSlash: false,
-    //   withCredentials: true
-    // }
-  })
+  const socket = io(
+    'https://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+    {
+      transports: ['websocket']
+      // auth: {
+      //   autoConnect: true,
+      //   forceNew: true,
+      //   addTrailingSlash: false,
+      //   withCredentials: true
+      // }
+    }
+  )
 
   socket.on('connect', () => {
     console.log('Connected to server')
