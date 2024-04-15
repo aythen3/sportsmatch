@@ -45,6 +45,9 @@ const TusNotificaciones1 = () => {
   //   allMatchs.forEach((match) => {
   //     axiosInstance.delete(`match/${match.id}`)
   //   })
+  //   allNotifications.forEach((notification) => {
+  //     axiosInstance.delete(`notification/${notification.id}`)
+  //   })
   // }, [])
 
   useEffect(() => {

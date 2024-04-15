@@ -7,7 +7,6 @@ import MatchDetailsInfo from '../components/MatchDetailsInfo'
 
 const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
-  console.log('data: ', data)
 
   return (
     <Pressable style={styles.tusMatchsDetalle}>
@@ -29,75 +28,31 @@ const TusMatchsDetalle = ({ onClose, data }) => {
         <Image
           style={{ width: 45, height: 45, borderRadius: 50 }}
           contentFit="cover"
-          source={{ uri: data.img_perfil }}
+          source={{ uri: data.club.img_perfil }}
         />
 
         <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
-          {data.name}
+          {data.nickname}
         </Text>
       </View>
 
-      <MatchDetailsInfo title="Año de fundación" value={data.year} />
-      <MatchDetailsInfo title="Aforo" value={data.capacity} />
+      <MatchDetailsInfo title="Año de fundación" value={data.club.year} />
+      <MatchDetailsInfo title="Aforo" value={data.club.capacity} />
       <MatchDetailsInfo
         title="Nombre del estadio o pavellón"
-        value={data.field}
+        value={data.club.field}
       />
-      <MatchDetailsInfo title=" Población" value={data.city} />
-      <MatchDetailsInfo title=" País" value={data.country} />
+      <MatchDetailsInfo title=" Población" value={data.club.city} />
+      <MatchDetailsInfo title=" País" value={data.club.country} />
 
-      {/* <View style={styles.aoFundacion}>
-          <View style={styles.aoDeFundacinParent}>
-            <Text style={[styles.aoDeFundacin, styles.aforo1Layout]}>
-              Año de fundación
-            </Text>
-            <Text style={[styles.text, styles.textFlexBox]}>1920</Text>
-          </View>
-        </View>
-        <View style={styles.aforo}>
-          <View style={styles.paisItemLayout} />
-          <View style={styles.aforoParent}>
-            <Text style={[styles.aforo1, styles.textFlexBox]}>Aforo</Text>
-            <Text style={[styles.text, styles.textFlexBox]}>300</Text>
-          </View>
-        </View>
-        <View style={styles.aforo}>
-          <View style={styles.paisItemLayout} />
-          <View style={styles.frameParent}>
-            <View>
-              <Text style={[styles.nombreDelEstadio, styles.aforo1Layout]}>
-                Nombre del estadio o pavellón
-              </Text>
-            </View>
-            <Text style={[styles.text, styles.textFlexBox]}>{`Palau Municipals 
-d’Esports Josep Mora`}</Text>
-          </View>
-        </View>
-        <View style={styles.aforo}>
-          <View style={styles.paisItemLayout} />
-          <View tyle={styles.aforoParent} s>
-            <Text style={[styles.nombreDelEstadio, styles.textFlexBox]}>
-              Población
-            </Text>
-            <Text style={[styles.text, styles.textFlexBox]}>Mataró</Text>
-          </View>
-        </View>
-        <View style={styles.aforo}>
-          <View style={styles.paisItemLayout} />
-          <View style={styles.pasParent}>
-            <Text style={[styles.nombreDelEstadio, styles.pasTypo]}>País</Text>
-            <Text style={[styles.espaa, styles.textFlexBox]}>España</Text>
-          </View>
-          <View style={[styles.paisItem, styles.paisItemLayout]} />
-        </View> */}
       <Pressable
         style={[styles.aceptar, styles.aceptarFlexBox]}
         onPress={() => {
           onClose()
           navigation.navigate('ChatAbierto1', {
             receiverId: data.id,
-            receiverName: data.name,
-            profilePic: data.img_perfil
+            receiverName: data.nickname,
+            profilePic: data.club.img_perfil
           })
         }}
       >

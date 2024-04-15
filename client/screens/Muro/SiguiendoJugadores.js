@@ -25,8 +25,7 @@ import { getAllMatchs } from '../../redux/actions/matchs'
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-  const { joinRoom, sendMessage, setClubMatches, setUserMatches } =
-    useContext(Context)
+  const { getClubMatches, getUserMatches } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
@@ -61,28 +60,10 @@ const SiguiendoJugadores = () => {
     dispatch(getSportman(user?.user?.sportman?.id))
   }, [])
 
-  const getClubMatches = () => {
-    console.log('getting club matches')
-    console.log('allMatchs: ', allMatchs)
-    const clubMatches = allMatchs.filter(
-      (match) => match?.prop1?.clubId === user?.user?.club?.id
-    )
-    console.log('clubMatches: ', clubMatches)
-    setClubMatches(clubMatches)
-  }
-  const getUserMatches = () => {
-    console.log('getting user matches')
-    const userMatches = allMatchs.filter(
-      (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
-    )
-    console.log('userMatches: ', userMatches)
-    setUserMatches(userMatches)
-  }
-
   useEffect(() => {
     if (allMatchs) {
       console.log('before getting matches...')
-      if (user.user.type === 'club') {
+      if (user?.user?.type === 'club') {
         getClubMatches()
       } else {
         getUserMatches()

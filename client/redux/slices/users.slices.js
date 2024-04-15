@@ -67,6 +67,9 @@ const usersSlices = createSlice({
     },
     clearUser: (state) => {
       state.user = null
+    },
+    updateUser: (state, action) => {
+      state.user = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -142,18 +145,18 @@ const usersSlices = createSlice({
         state.error = action.error.message
       })
       // Update user data (CHECK BACKEND)
-      .addCase(updateUserData.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(updateUserData.fulfilled, (state, action) => {
-        state.loading = false
-        state.user = action.payload
-      })
-      .addCase(updateUserData.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.error.message
-      })
+      // .addCase(updateUserData.pending, (state) => {
+      //   state.loading = true
+      //   state.error = null
+      // })
+      // .addCase(updateUserData.fulfilled, (state, action) => {
+      //   state.loading = false
+      //   state.user = action.payload
+      // })
+      // .addCase(updateUserData.rejected, (state, action) => {
+      //   state.loading = false
+      //   state.error = action.error.message
+      // })
       // Delete specific user (CHECK BACKEND)
       .addCase(deleteUserById.pending, (state) => {
         state.loading = true
@@ -180,6 +183,7 @@ export const {
   setProfesionalType,
   setCategory,
   setPosition,
+  updateUser,
   clearUser
 } = usersSlices.actions
 

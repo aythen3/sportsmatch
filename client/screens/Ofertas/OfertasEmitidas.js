@@ -159,7 +159,11 @@ const OfertasEmitidas = () => {
               </View>
               <Pressable
                 style={styles.inscritos}
-                onPress={() => navigation.navigate('InscritosAMisOfertas')}
+                onPress={() =>
+                  navigation.navigate('InscritosAMisOfertas', {
+                    inscriptions: offer.inscriptions || []
+                  })
+                }
               >
                 <Text style={[styles.inscritos1, styles.pausar1Typo]}>
                   {offer.inscriptions
