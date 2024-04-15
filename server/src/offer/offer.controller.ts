@@ -38,10 +38,14 @@ export class OfferController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
-    return this.offerService.update(id, updateOfferDto);
+  async updateOffer(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
+    try {
+      const updatedOffer = await this.offerService.update(id, updateOfferDto);
+      return { message: 'Offer updated successfully', offer: updatedOffer };
+    } catch (error) {
+      // Manejar errores aquí
+    }
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.offerService.remove(id);
