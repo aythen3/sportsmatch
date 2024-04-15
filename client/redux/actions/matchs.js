@@ -12,13 +12,18 @@ export const sendMatch = createAsyncThunk(
         status,
         prop1
       })
-      const { data } = await axiosInstance.post('match', {
-        offerId,
-        sportmanId,
-        clubId,
-        status,
-        prop1
-      })
+
+      const body = !offerId
+        ? { sportmanId, clubId, status, prop1 }
+        : {
+            offerId,
+            sportmanId,
+            clubId,
+            status,
+            prop1
+          }
+      console.log('body: ', body)
+      const { data } = await axiosInstance.post('match', body)
       return data
     } catch (error) {
       throw new Error(error)
@@ -60,6 +65,7 @@ export const getAllMatchs = createAsyncThunk(
   async (id) => {
     try {
       const { data } = await axiosInstance.get('match')
+      console.log('data: ', data)
       return data
     } catch (error) {
       throw new Error(error)

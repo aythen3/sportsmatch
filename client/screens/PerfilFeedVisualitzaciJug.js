@@ -20,7 +20,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
   const data = router.params
-  console.log('data,', router.params)
+  // console.log('data,', router.params)
 
   function calculateAge(birthYear) {
     const birthYearNum =

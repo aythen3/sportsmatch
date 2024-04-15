@@ -10,18 +10,15 @@ export class MatchEntity extends BaseEntity {
   @JoinTable()
   sportmenId: SportmanEntity[];
 
-
   @ManyToMany(() => ClubEntity, (club) => club.matches)
   @JoinTable()
   clubId: SportmanEntity[];
 
-  @ManyToOne(() => OfferEntity, (offer) => offer.match)
+  @ManyToOne(() => OfferEntity, (offer) => offer.match, { nullable: true })
   offerId: OfferEntity;
 
   @Column({ nullable: true })
   status: string;
-
-
 
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })
@@ -36,4 +33,3 @@ export class MatchEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 }
-  

@@ -16,6 +16,10 @@ import FeedSVG from './svg/FeedSVG'
 import StatsSVG from './svg/StatsSVG'
 import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { updateUser } from '../redux/slices/users.slices'
+import { getAllUsers, updateUserData } from '../redux/actions/users'
+import { sendNotification } from '../redux/actions/notifications'
 
 const HeaderPerfil = ({
   name,
@@ -33,11 +37,12 @@ const HeaderPerfil = ({
   data,
   external
 }) => {
+  const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user } = useSelector((state) => state.users)
+  const { isSportman, user, allUsers } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
-  const { clubMatches, userMatches } = useContext(Context)
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -59,7 +64,11 @@ const HeaderPerfil = ({
     }
   }, [])
 
-  console.log('clubMatches', clubMatches)
+  useEffect(() => {
+    // console.log('user has changed: ', user)
+  }, [user])
+
+  const userFollowing = user?.user?.following || []
 
   return (
     <View>
@@ -133,27 +142,108 @@ const HeaderPerfil = ({
               <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
             </View>
           ) : (
-            <Pressable style={styles.leftButton}>
-              <Text style={[styles.ojear, styles.timeTypo]}>{'Seguir'}</Text>
+            <Pressable
+              onPress={() => {
+                let actualUser = _.cloneDeep(user)
+                console.log('atualUser: ', actualUser)
+                const actualFollowers =
+                  allUsers.filter((user) => user.id === data.author.id)[0]
+                    .followers || []
+                console.log('actual followers: ', actualFollowers)
+                const newFollowers = actualFollowers.includes(user?.user?.id)
+                  ? actualFollowers.filter(
+                      (follower) => follower !== user?.user?.id
+                    )
+                  : [...actualFollowers, user?.user?.id]
+
+                const newFollowingArray = userFollowing?.includes(
+                  data?.author?.id
+                )
+                  ? userFollowing.filter(
+                      (followed) => followed !== data?.author?.id
+                    )
+                  : [...userFollowing, data?.author?.id]
+                actualUser.user.following = newFollowingArray
+                console.log('user: ', actualUser?.user?.following)
+
+                console.log('setting other user followers to:', newFollowers)
+                dispatch(
+                  updateUserData({
+                    id: data.author.id,
+                    body: { followers: newFollowers }
+                  })
+                )
+                  .then((data) => {
+                    console.log('setting user following to:', newFollowingArray)
+                    dispatch(
+                      updateUserData({
+                        id: user.user.id,
+                        body: { following: newFollowingArray }
+                      })
+                    )
+                  })
+                  .then((data) => {
+                    dispatch(getAllUsers())
+                    dispatch(updateUser(actualUser))
+                  })
+              }}
+              style={{
+                ...styles.leftButton
+              }}
+            >
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                {userFollowing?.includes(data?.author?.id)
+                  ? 'Dejar de seguir'
+                  : 'Seguir'}
+              </Text>
             </Pressable>
           )}
           {!isSportman &&
-          clubMatches.filter(
-            (match) => match.prop1.sportmanId === data.author.sportman.id
-          ).length === 0 ? (
+          clubMatches?.filter(
+            (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
+          )?.length === 0 ? (
             <Pressable
               onPress={() =>
                 dispatch(
                   sendMatch({
-                    sportmanId: data.author.sportman.id,
-                    clubId: user.user.club.id,
+                    sportmanId: data?.author?.sportman?.id,
+                    clubId: user?.user?.club?.id,
                     status: 'pending',
                     prop1: {
-                      clubId: user.user.club.id,
-                      sportmanId: data.author.sportman.id
+                      clubId: user?.user?.club?.id,
+                      sportmanId: data?.author?.sportman?.id,
+                      sportManData: {
+                        userId: data?.author?.id,
+                        profilePic: data?.author?.info?.img_perfil || '',
+                        name: data?.author?.nickname
+                      },
+                      clubData: {
+                        userId: user?.user?.id,
+                        name: user?.user?.nickname,
+                        profilePic: user?.user?.club?.img_perfil
+                      }
                     }
                   })
                 )
+                  .then((data) => dispatch(getAllMatchs()))
+                  .then((data) => getClubMatches())
+                  .then((data) => {
+                    dispatch(
+                      sendNotification({
+                        title: 'Solicitud',
+                        message: 'Recibiste una solicitud de match!',
+                        recipientId: data?.author?.id,
+                        prop1: {
+                          matchId: data.payload.id,
+                          clubData: {
+                            name: user?.user?.nickname,
+                            userId: user.user.id,
+                            ...user?.user?.club
+                          }
+                        }
+                      })
+                    )
+                  })
               }
               style={{
                 flexDirection: 'row',
@@ -167,10 +257,10 @@ const HeaderPerfil = ({
             >
               <Text
                 style={{
-                  marginRight: 40,
+                  marginRight: 35,
                   width: '100%',
                   textAlign: 'right',
-                  fontSize: FontSize.t2TextSTANDARD_size,
+                  fontSize: 14,
                   color: '#E1451E',
                   fontSize: FontSize.t2TextSTANDARD_size,
                   fontFamily: FontFamily.t4TEXTMICRO,
@@ -200,7 +290,9 @@ const HeaderPerfil = ({
             </Pressable>
           ) : !isSportman &&
             clubMatches.filter(
-              (match) => match.prop1.sportmanId === data.author.sportman.id
+              (match) =>
+                match.prop1.sportmanId === data.author.sportman.id &&
+                match.status === 'success'
             ).length > 0 ? (
             <TouchableOpacity
               onPress={() =>
@@ -217,35 +309,56 @@ const HeaderPerfil = ({
               </Text>
             </TouchableOpacity>
           ) : (
-            <Pressable
-              style={{
-                flexDirection: 'row',
-                backgroundColor: button2
-                  ? Color.colorDimgray_100
-                  : Color.colorWhitesmoke,
-                borderRadius: Border.br_81xl,
-                height: 35,
-                width: 170,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-              onPress={() =>
-                navigation.navigate('ChatAbierto1', {
-                  receiverId: data.author.id,
-                  receiverName: data.author.nickname,
-                  profilePic: avatar
-                })
-              }
-            >
-              <Text
-                style={[
-                  button2 ? styles.ojear : styles.ojear2,
-                  styles.timeTypo
-                ]}
+            !isSportman &&
+            clubMatches.filter(
+              (match) =>
+                match.prop1.sportmanId === data.author.sportman.id &&
+                match.status === 'success'
+            ).length === 0 && (
+              <Pressable
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: '#7B2610',
+                  borderRadius: Border.br_81xl,
+                  height: 35,
+                  width: 170,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
               >
-                {'Enviar mensaje'}
-              </Text>
-            </Pressable>
+                <Text
+                  style={{
+                    marginLeft: 35,
+                    width: '100%',
+                    textAlign: 'left',
+                    fontSize: 14,
+                    color: '#E1451E',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    fontWeight: '700'
+                  }}
+                >
+                  {'Match solicitado'}
+                </Text>
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: Color.bALONCESTO,
+                    position: 'absolute',
+                    right: 0
+                  }}
+                >
+                  <Image
+                    style={styles.groupIcon}
+                    contentFit="cover"
+                    source={require('../assets/group13.png')}
+                  />
+                </View>
+              </Pressable>
+            )
           )}
         </View>
       ) : (
@@ -450,7 +563,9 @@ const HeaderPerfil = ({
           >
             Seguidores
           </Text>
-          <Text style={styles.numeroText}>24</Text>
+          <Text style={styles.numeroText}>
+            {user.user.followers ? user.user.followers.length : '0'}
+          </Text>
         </View>
       )}
       {external && data.author.type !== 'club' && (
@@ -473,9 +588,14 @@ const HeaderPerfil = ({
               fontFamily: FontFamily.t4TEXTMICRO
             }}
           >
-            Seguidores
+            {'Seguidores'}
           </Text>
-          <Text style={styles.numeroText}>24</Text>
+          <Text style={styles.numeroText}>
+            {allUsers.filter((user) => user.id === data.author.id)[0].followers
+              ? allUsers.filter((user) => user.id === data.author.id)[0]
+                  .followers.length
+              : '0'}
+          </Text>
         </View>
       )}
 
@@ -695,8 +815,8 @@ const styles = StyleSheet.create({
   groupIcon: {
     marginRight: 1,
     marginTop: 1,
-    height: 25,
-    width: 32,
+    height: 25 * 0.8,
+    width: 32 * 0.8,
     opacity: 0.9
   },
   timeTypo: {
