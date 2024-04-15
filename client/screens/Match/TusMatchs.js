@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -19,61 +19,88 @@ import {
 } from '../../GlobalStyles'
 import TusMatchsDetalle from '../TusMatchsDetalle'
 import { useSelector, useDispatch } from 'react-redux'
-import { getUserMatchs } from '../../redux/actions/matchs'
+import {
+  getAllMatchs,
+  getClubMatchs,
+  getuserMatches
+} from '../../redux/actions/matchs'
 import axiosInstance from '../../utils/apiBackend'
+import { Context } from '../../context/Context'
+import TusMatchsDetalle1 from '../TusMatchsDetalle1'
 
 const TusMatchs = () => {
   const [matchsData, setMatchsData] = useState([])
   const [selectedClubDetails, setSelectedClubDetails] = useState()
+  const [selectedUserDetails, setSelectedUserDetails] = useState()
   const navigation = useNavigation()
   const dispatch = useDispatch()
-
-  const { userMatchs } = useSelector((state) => state.matchs)
+  const { clubMatches, userMatches } = useContext(Context)
+  const { allUsers } = useSelector((state) => state.users)
 
   useEffect(() => {
-    if (user.user.type !== 'club') {
-      dispatch(getUserMatchs(user.user.sportman.id))
-    }
+    // if (user.user.type !== 'club') {
+    //   dispatch(getuserMatches(user.user.sportman?.id))
+    // }
+    // if (user.user.type === 'club') {
+    //   dispatch(getClubMatchs(user.user.club.id))
+    // }
+    dispatch(getAllMatchs())
   }, [])
 
   const [details, setDetails] = useState(false)
+  const [userDetails, setUserDetails] = useState(false)
+  console.log('useramatchs: ', userMatches)
+  console.log('clubMatchs', clubMatches)
 
-  console.log('useramtchs: ', userMatchs)
+  // const getOfferData = async (id) => {
+  //   const { data } = await axiosInstance.get(`offer/${id}`)
+  //   console.log('data from getOfferData', data)
+  //   setMatchsData([...matchsData, data])
+  // }
 
-  const getOfferData = async (id) => {
-    const { data } = await axiosInstance.get(`offer/${id}`)
-    console.log('data from getOfferData', data)
-    setMatchsData([...matchsData, data])
-  }
+  // const getMatchData = async (id) => {
+  //   const { data } = await axiosInstance.get(`match/${id}`)
+  //   getOfferData(data?.offer?.id)
+  // }
 
-  const getMatchData = async (id) => {
-    const { data } = await axiosInstance.get(`match/${id}`)
-    getOfferData(data?.offer?.id)
-  }
-
-  useEffect(() => {
-    if (userMatchs?.length > 0) {
-      userMatchs.forEach((match) => {
-        getMatchData(match.id)
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (userMatches?.length > 0) {
+  //     userMatches.forEach((match) => {
+  //       getMatchData(match?.id)
+  //     })
+  //   }
+  // }, [])
 
   const { user } = useSelector((state) => state.users)
 
   return (
     <View style={styles.tusMatchs}>
-      <View style={styles.topContainer}>
-        <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
+      <View
+        style={{
+          marginBottom: 42,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 15,
+          justifyContent: 'flex-start'
+        }}
+      >
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            style={[styles.icon1, styles.iconGroupLayout]}
+            style={{ width: 9, height: 15, marginTop: 2.5 }}
             contentFit="cover"
-            source={require('../../assets/coolicon4.png')}
+            source={require('../../assets/coolicon3.png')}
           />
-        </Pressable>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Text style={styles.tusMatchs2Typo}>Tus Matchs</Text>
-        </Pressable>
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: '#fff',
+            fontWeight: '500',
+            fontSize: 22,
+            fontFamily: FontFamily.t4TEXTMICRO
+          }}
+        >
+          Tus Matchs
+        </Text>
       </View>
 
       <View style={[styles.groupContainer, styles.groupContainerSpaceBlock]}>
@@ -93,14 +120,18 @@ const TusMatchs = () => {
         Nuevos matchs
       </Text>
 
-      {user?.user?.type === 'sportman' && matchsData.length > 0 && (
+      {user?.user?.type === 'sportman' && userMatches.length > 0 && (
         <View>
-          {matchsData.map((match, index) => (
-            <View key={index} style={styles.targetaClub}>
+          {userMatches.map((match, index) => (
+            <View key={index} style={{ marginTop: 14, width: '100%' }}>
               <Pressable
                 onPress={() => {
                   setDetails(true)
-                  setSelectedClubDetails(match.club)
+                  setSelectedClubDetails(
+                    allUsers.filter(
+                      (user) => user.id === match.prop1.clubData.userId
+                    )[0]
+                  )
                 }}
                 style={styles.fondoPastilla}
               >
@@ -113,7 +144,11 @@ const TusMatchs = () => {
               <Pressable
                 onPress={() => {
                   setDetails(true)
-                  setSelectedClubDetails(match.club)
+                  setSelectedClubDetails(
+                    allUsers.filter(
+                      (user) => user.id === match.prop1.clubData.userId
+                    )[0]
+                  )
                 }}
                 style={styles.texto}
               >
@@ -130,10 +165,10 @@ const TusMatchs = () => {
                   <Image
                     style={{ width: 40, height: 40, borderRadius: 50 }}
                     contentFit="cover"
-                    source={{ uri: match.club.img_perfil }}
+                    source={{ uri: match?.prop1?.clubData?.profilePic }}
                   />
                   <Text style={styles.clubBasquetLametlla}>
-                    {match.club.name}
+                    {match?.prop1?.clubData?.name}
                   </Text>
                 </View>
               </Pressable>
@@ -142,57 +177,98 @@ const TusMatchs = () => {
         </View>
       )}
 
-      {user.user.type === 'club' && (
+      {user?.user?.type === 'sportman' && userMatches.length === 0 && (
         <View>
-          <View style={styles.targetaClub}>
-            <Pressable style={styles.fondoPastilla}>
-              <Image
-                style={styles.iconLayout}
-                contentFit="cover"
-                source={require('../../assets/fondo-pastilla.png')}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.texto}
-              onPress={() => {
-                setDetails(true)
-              }}
-            >
-              <View style={styles.escudo}>
-                <Image
-                  style={styles.logoUem21RemovebgPreview1Icon}
-                  contentFit="cover"
-                  source={require('../../assets/mask-group7.png')}
-                />
-              </View>
-              <Text style={styles.playerName}>Jordi Espelt</Text>
-            </Pressable>
-          </View>
+          <Text
+            style={{
+              fontSize: 30,
+              marginTop: 40,
+              color: Color.wHITESPORTSMATCH,
+              fontWeight: '500',
+              alignSelf: 'center',
+              textAlign: 'left',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Aun no tienes matchs!
+          </Text>
+        </View>
+      )}
 
-          <View style={styles.targetaClub}>
-            <Pressable style={styles.fondoPastilla}>
-              <Image
-                style={styles.iconLayout}
-                contentFit="cover"
-                source={require('../../assets/fondo-pastilla.png')}
-              />
-            </Pressable>
-            <Pressable
-              style={styles.texto}
-              onPress={() => {
-                setDetails(true)
-              }}
-            >
-              <View style={styles.escudo}>
-                <Image
-                  style={styles.logoUem21RemovebgPreview1Icon}
-                  contentFit="cover"
-                  source={require('../../assets/mask-group12.png')}
-                />
+      {user?.user?.type === 'club' && clubMatches?.length > 0 && (
+        <View>
+          {clubMatches
+            .filter((match) => match.status === 'success')
+            .map((match, index) => (
+              <View key={index} style={{ marginTop: 14, width: '100%' }}>
+                <Pressable
+                  onPress={() => {
+                    setUserDetails(true)
+                    setSelectedUserDetails(
+                      allUsers.filter(
+                        (user) => user.id === match?.prop1?.sportManData?.userId
+                      )[0]
+                    )
+                  }}
+                  style={styles.fondoPastilla}
+                >
+                  <Image
+                    style={styles.iconLayout}
+                    contentFit="cover"
+                    source={require('../../assets/fondo-pastilla.png')}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setUserDetails(true)
+                    setSelectedUserDetails(
+                      allUsers.filter(
+                        (user) => user.id === match?.prop1?.sportManData?.userId
+                      )[0]
+                    )
+                  }}
+                  style={styles.texto}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 15,
+                      marginTop: 9,
+                      marginLeft: 15,
+                      height: '100%',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image
+                      style={{ width: 40, height: 40, borderRadius: 50 }}
+                      contentFit="cover"
+                      source={{ uri: match?.prop1?.sportManData?.profilePic }}
+                    />
+                    <Text style={styles.clubBasquetLametlla}>
+                      {match?.prop1?.sportManData?.name}
+                    </Text>
+                  </View>
+                </Pressable>
               </View>
-              <Text style={styles.playerName}>Carles Mir</Text>
-            </Pressable>
-          </View>
+            ))}
+        </View>
+      )}
+
+      {user?.user?.type === 'club' && clubMatches?.length === 0 && (
+        <View>
+          <Text
+            style={{
+              fontSize: 30,
+              marginTop: 40,
+              color: Color.wHITESPORTSMATCH,
+              fontWeight: '500',
+              alignSelf: 'center',
+              textAlign: 'left',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Aun no tienes matchs!
+          </Text>
         </View>
       )}
 
@@ -205,6 +281,18 @@ const TusMatchs = () => {
           <TusMatchsDetalle
             data={selectedClubDetails}
             onClose={() => setDetails(false)}
+          />
+        </View>
+      </Modal>
+      <Modal visible={userDetails} transparent={true} animationType="slide">
+        <View
+          style={{
+            flex: 1
+          }}
+        >
+          <TusMatchsDetalle1
+            data={selectedUserDetails}
+            onClose={() => setUserDetails(false)}
           />
         </View>
       </Modal>
@@ -257,6 +345,7 @@ const styles = StyleSheet.create({
   nuevosMatchs: {
     fontSize: FontSize.button_size,
     marginTop: 20,
+    marginBottom: 15,
     color: Color.wHITESPORTSMATCH,
     fontWeight: '500',
     fontFamily: FontFamily.t4TEXTMICRO
@@ -288,18 +377,10 @@ const styles = StyleSheet.create({
     height: 45
   },
   clubBasquetLametlla: {
-    fontSize: 15,
+    fontSize: 17,
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontWeight: '500'
-  },
-  playerName: {
-    marginLeft: 9,
-    fontSize: 19,
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    width: '40%',
-    height: 50
   },
   texto: {
     flexDirection: 'row',
@@ -308,11 +389,6 @@ const styles = StyleSheet.create({
     top: '50%',
     left: 0,
     transform: [{ translateY: -30 }]
-  },
-  targetaClub: {
-    marginTop: 14,
-    width: '100%',
-    position: 'relative'
   },
   icon1: {
     height: '100%',

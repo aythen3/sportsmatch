@@ -57,7 +57,6 @@ const IniciarSesin = () => {
       navigation.navigate('SiguiendoJugadores')
     } else {
       if (user?.user?.type === 'club') {
-        console.log('cluuuub')
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
@@ -173,17 +172,17 @@ const IniciarSesin = () => {
               >
                 <Text style={styles.aceptar}>Inicia sesión</Text>
               </TouchableOpacity>
-            </View>
-            {/* <Pressable
-              style={styles.noTenesUnaContainer}
-              onPress={() => navigation.navigate('LoginSwitch')}
-            >
-              <Text
-                style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
+              <Pressable
+                style={{ marginTop: 37 }}
+                onPress={() => navigation.navigate('LoginSwitch')}
               >
-                ¿No tíenes una cuenta? Regístrate
-              </Text>
-            </Pressable> */}
+                <Text
+                  style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
+                >
+                  ¿No tíenes una cuenta? Regístrate
+                </Text>
+              </Pressable>
+            </View>
           </View>
           <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
@@ -301,9 +300,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     textAlign: 'center',
     fontSize: FontSize.t2TextSTANDARD_size
-  },
-  noTenesUnaContainer: {
-    marginTop: 27
   },
   formulario: {
     flex: 1

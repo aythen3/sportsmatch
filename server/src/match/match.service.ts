@@ -72,14 +72,34 @@ export class MatchService {
     }
   }
 
-  public async update(id: string, updateMatchDto: UpdateMatchDto) {
-    try {
-      console.log("hola")
-      return `This action updates a #${updateMatchDto} match`;
-    } catch (error) {
-      throw ErrorManager.createSignatureError(error.message);
+  async update(id: string, updateMatchDto: UpdateMatchDto): Promise<MatchEntity> {
+    const match = await this.matchRepository.findOne({where: {id:id}});
+
+    if (!match) {
+      throw new Error('Match not found');
     }
+
+    // Actualizar las propiedades según los datos del DTO
+
+    if (updateMatchDto.status !== undefined) {
+      match.status = updateMatchDto.status;
+    if (updateMatchDto.prop1 !== undefined) {
+      match.prop1 = updateMatchDto.prop1;
+    }
+    if (updateMatchDto.prop2 !== undefined) {
+      match.prop2 = updateMatchDto.prop2;
+    }
+    if (updateMatchDto.prop3 !== undefined) {
+      match.prop3 = updateMatchDto.prop3;
+    }
+    if (updateMatchDto.prop4 !== undefined) {
+      match.prop4 = updateMatchDto.prop4;
+    }
+
+    // Guardar los cambios en la base de datos
+    return this.matchRepository.save(match);
   }
+}
 
   public async remove(id: string) {
     try {
@@ -156,4 +176,5 @@ console.log("options es", options)
   }
   
 }
+
 

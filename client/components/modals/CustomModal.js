@@ -5,7 +5,7 @@ import { Color } from '../../GlobalStyles'
 const CustomModal = ({ closeModal, onSelectItem, options }) => {
   return (
     <View style={styles.modalContainer}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.modalContent}>
           {options.map((item, index) => (
             <Pressable
@@ -27,26 +27,27 @@ const CustomModal = ({ closeModal, onSelectItem, options }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
     position: 'absolute',
     zIndex: 999999999999,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    backgroundColor: 'red',
-    borderWidth: 2,
-    borderColor: 'red',
-    width: '100%',
-    top: 40,
-    height: 200
+    backgroundColor: '#000',
+    width: '90%',
+    alignSelf: 'center',
+    top: 87,
+    borderRadius: 5
+    // maxHeight: 200, // Set a maximum height to allow scrolling
+    // flex: 1 // Ensure the modal container can expand to accommodate content
+  },
+  scrollContainer: {
+    flexGrow: 1
   },
   modalContent: {
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
-    // elevation: 5,
     alignItems: 'center',
     justifyContent: 'center'
   },
   optionButton: {
-    paddingVertical: 10,
+    paddingVertical: 8,
     width: '100%',
     alignItems: 'center',
     borderBottomWidth: 1,

@@ -6,19 +6,29 @@ import {
   View,
   Pressable,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import RegisteredOffers from '../components/RegisteredOffers'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Premium from './Premium'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { updateOffer } from '../redux/actions/offers'
+import { sendNotification } from '../redux/actions/notifications'
 
 const InscritosAMisOfertas = () => {
-  const { usersRegistered } = useSelector((state) => state.offers)
+  const dispatch = useDispatch()
+  const { offers } = useSelector((state) => state.offers)
+  const { allUsers, user } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [modalPremium, setModalPremium] = useState(false)
+  const route = useRoute()
 
+  const inscriptions = route.params.inscriptions
+
+  console.log('inscriptions', inscriptions)
   return (
     <View style={styles.inscritosAMisOfertas}>
       <View style={styles.inscritosParent}>
@@ -34,21 +44,171 @@ const InscritosAMisOfertas = () => {
           onPress={() => navigation.goBack()}
         >
           <Text style={[styles.inscritos1, styles.carlesMirTypo]}>
-            Inscritos
+            Inscriptos
           </Text>
         </Pressable>
       </View>
 
-      <View style={{ marginTop: 30 }}>
-        {usersRegistered.map((user) => (
-          <RegisteredOffers
-            key={user.id}
-            name={user.name}
-            image={user.image}
-            match={user.match}
-            modalPremium={() => setModalPremium(true)}
-          />
-        ))}
+      <View style={{ marginTop: 30, marginBottom: 20 }}>
+        {inscriptions.length > 0 ? (
+          <View>
+            {inscriptions.map((inscription, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '95%',
+                  height: 80,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#cecece'
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center'
+                  }}
+                >
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100 }}
+                    resizeMode="contain"
+                    source={{
+                      uri: allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscription)[0]
+                        .sportman.info.img_perfil
+                    }}
+                  />
+                  <Text
+                    style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                  >
+                    {
+                      allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscription)[0]
+                        .nickname
+                    }
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    const currentOffer = offers.filter(
+                      (offer) =>
+                        offer.inscriptions &&
+                        offer.inscriptions.includes(inscription)
+                    )[0]
+                    const offerId = offers.filter(
+                      (offer) =>
+                        offer.inscriptions &&
+                        offer.inscriptions.includes(inscription)
+                    )[0].id
+                    console.log('offerId: ', offerId)
+                    const newInscriptions = currentOffer.inscriptions.filter(
+                      (applicant) => applicant !== inscription
+                    )
+
+                    console.log('newInscriptions: ', newInscriptions)
+                    const actualMatches = currentOffer.matches || []
+                    const newMatchs = [...actualMatches, inscription]
+                    console.log('newMatchs: ', newMatchs)
+
+                    const sportmanUser = allUsers.filter(
+                      (user) => user?.sportman?.id === inscription
+                    )[0]
+                    console.log('sportmanUser', sportmanUser)
+
+                    console.log('club', user.user)
+
+                    dispatch(
+                      sendMatch({
+                        offerId,
+                        sportmanId: inscription,
+                        clubId: user.user.club.id,
+                        status: 'success',
+                        prop1: {
+                          clubId: user.user.club.id,
+                          offerId,
+                          sportmanId: inscription,
+                          sportManData: {
+                            userId: sportmanUser?.id,
+                            profilePic:
+                              sportmanUser?.sportman?.info?.img_perfil,
+                            name: sportmanUser?.nickname
+                          },
+                          clubData: {
+                            userId: user?.user?.id,
+                            name: user?.user?.nickname,
+                            profilePic: user?.user?.club?.img_perfil
+                          }
+                        }
+                      })
+                    )
+                      .then((data) => {
+                        console.log('data from sendMatch: ', data)
+                        dispatch(
+                          sendNotification({
+                            title: 'Match',
+                            message: 'Has hecho match!',
+                            recipientId: data?.author?.id,
+                            prop1: {
+                              matchId: data?.payload?.id || '',
+                              clubData: {
+                                name: user?.user?.nickname,
+                                userId: user.user.id,
+                                ...user?.user?.club
+                              }
+                            }
+                          })
+                        )
+                      })
+                      .then((data) => dispatch(getAllMatchs()))
+
+                    dispatch(
+                      updateOffer({
+                        id: offerId,
+                        body: {
+                          inscriptions: newInscriptions,
+                          matches: newMatchs
+                        }
+                      })
+                    )
+                  }}
+                >
+                  <Image
+                    style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                    resizeMode="contain"
+                    source={require('../assets/matchButton.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View
+            style={{ width: '95%', alignItems: 'center', alignSelf: 'center' }}
+          >
+            <Text
+              style={{
+                marginTop: 30,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: 500,
+                fontSize: FontSize.size_9xl,
+                color: Color.wHITESPORTSMATCH,
+                bottom: 4
+              }}
+            >
+              Aun no hay ningun inscripto en esta oferta!
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={[styles.textoSpaceBlock]}>

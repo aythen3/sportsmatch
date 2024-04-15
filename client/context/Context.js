@@ -10,7 +10,10 @@ export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
   const dispatch = useDispatch()
-  const { allUsers } = useSelector((state) => state.users)
+  const { allMatchs } = useSelector((state) => state.matchs)
+  const [clubMatches, setClubMatches] = useState([])
+  const [userMatches, setUserMatches] = useState([])
+  const { allUsers, user } = useSelector((state) => state.users)
   const [provisoryProfileImage, setProvisoryProfileImage] = useState()
   const [provisoryCoverImage, setProvisoryCoverImage] = useState()
   const [profileImage, setProfileImage] = useState()
@@ -125,17 +128,20 @@ export const ContextProvider = ({ children }) => {
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
     return `${formattedHours}:${formattedMinutes}`
   }
-  // https://api-sportsmatch.ay-cloud.com
+  // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
-  const socket = io('http://192.168.0.8:3010', {
-    transports: ['websocket']
-    // auth: {
-    //   autoConnect: true,
-    //   forceNew: true,
-    //   addTrailingSlash: false,
-    //   withCredentials: true
-    // }
-  })
+  const socket = io(
+    'https://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+    {
+      transports: ['websocket']
+      // auth: {
+      //   autoConnect: true,
+      //   forceNew: true,
+      //   addTrailingSlash: false,
+      //   withCredentials: true
+      // }
+    }
+  )
 
   socket.on('connect', () => {
     console.log('Connected to server')
@@ -179,6 +185,31 @@ export const ContextProvider = ({ children }) => {
     socket.emit('message', { message, sender, receiver })
   }
 
+  const getClubMatches = () => {
+    console.log('getting club matches')
+    console.log('allMatchs: ', allMatchs)
+    const clubMatches = allMatchs.filter(
+      (match) => match?.prop1?.clubId === user?.user?.club?.id
+    )
+    console.log('clubMatches: ', clubMatches)
+    setClubMatches(clubMatches)
+  }
+  const getUserMatches = () => {
+    console.log('getting user matches')
+    const userMatches = allMatchs.filter(
+      (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
+    )
+    console.log('userMatches: ', userMatches)
+    setUserMatches(userMatches)
+  }
+
+  function getUserAge(birthdate) {
+    const year = parseInt(birthdate)
+    const actualYear = new Date().getFullYear()
+    const age = actualYear - year
+    return age
+  }
+
   return (
     <Context.Provider
       value={{
@@ -191,6 +222,7 @@ export const ContextProvider = ({ children }) => {
         setProvisoryProfileImage,
         provisoryCoverImage,
         setProvisoryCoverImage,
+        getUserAge,
         joinRoom,
         sendMessage,
         roomId,
@@ -199,7 +231,13 @@ export const ContextProvider = ({ children }) => {
         setLibraryImage,
         transformHttpToHttps,
         leaveRoom,
-        getTimeFromDate
+        getTimeFromDate,
+        setClubMatches,
+        getClubMatches,
+        getUserMatches,
+        setUserMatches,
+        clubMatches,
+        userMatches
       }}
     >
       {children}
