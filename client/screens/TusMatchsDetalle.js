@@ -1,9 +1,16 @@
-import * as React from 'react'
+import React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Padding, Border } from '../GlobalStyles'
 import MatchDetailsInfo from '../components/MatchDetailsInfo'
+import { AntDesign } from '@expo/vector-icons'
 
 const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
@@ -30,7 +37,6 @@ const TusMatchsDetalle = ({ onClose, data }) => {
           contentFit="cover"
           source={{ uri: data.club.img_perfil }}
         />
-
         <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
           {data.nickname}
         </Text>

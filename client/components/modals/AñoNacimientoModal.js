@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
+    maxHeight: '60%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
     padding: 20,
     borderRadius: 10,
     elevation: 5,

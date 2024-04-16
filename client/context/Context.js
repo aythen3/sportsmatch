@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
 import { updateMessages } from '../redux/actions/chats'
+import axiosInstance from '../utils/apiBackend'
 
 export const Context = createContext()
 
@@ -131,7 +132,7 @@ export const ContextProvider = ({ children }) => {
   // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
   const socket = io(
-    'https://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+    'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
     {
       transports: ['websocket']
       // auth: {
@@ -187,20 +188,23 @@ export const ContextProvider = ({ children }) => {
 
   const getClubMatches = () => {
     console.log('getting club matches')
-    console.log('allMatchs: ', allMatchs)
-    const clubMatches = allMatchs.filter(
-      (match) => match?.prop1?.clubId === user?.user?.club?.id
-    )
-    console.log('clubMatches: ', clubMatches)
-    setClubMatches(clubMatches)
+    axiosInstance.get('match').then((data) => {
+      const clubMatches = data.data.filter(
+        (match) => match?.prop1?.clubId === user?.user?.club?.id
+      )
+      console.log('clubMatches: ', clubMatches)
+      setClubMatches(clubMatches)
+    })
   }
   const getUserMatches = () => {
     console.log('getting user matches')
-    const userMatches = allMatchs.filter(
-      (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
-    )
-    console.log('userMatches: ', userMatches)
-    setUserMatches(userMatches)
+    axiosInstance.get('match').then((data) => {
+      const userMatches = data.data.filter(
+        (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
+      )
+      console.log('userMatches: ', userMatches)
+      setUserMatches(userMatches)
+    })
   }
 
   function getUserAge(birthdate) {

@@ -42,6 +42,7 @@ const HeaderPerfil = ({
   const navigation = useNavigation()
   const { isSportman, user, allUsers } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
+  const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
 
   const getOffersById = async (id) => {
@@ -63,6 +64,10 @@ const HeaderPerfil = ({
       }
     }
   }, [])
+
+  useEffect(() => {}, [allMatchs])
+
+  useEffect(() => {}, [clubMatches])
 
   useEffect(() => {
     // console.log('user has changed: ', user)
@@ -266,7 +271,8 @@ const HeaderPerfil = ({
                       sportmanId: data?.author?.sportman?.id,
                       sportManData: {
                         userId: data?.author?.id,
-                        profilePic: data?.author?.info?.img_perfil || '',
+                        profilePic:
+                          data?.author?.sportman?.info?.img_perfil || '',
                         name: data?.author?.nickname
                       },
                       clubData: {
@@ -278,13 +284,31 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
+                    console.log('data from match: ', data.payload)
+                    console.log('body to sendNotification: ', {
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.payload?.sportManData?.userId,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...user?.user?.club
+                        }
+                      }
+                    })
                     dispatch(
                       sendNotification({
                         title: 'Solicitud',
                         message: 'Recibiste una solicitud de match!',
-                        recipientId: data?.author?.id,
+                        recipientId: data?.payload?.prop1?.sportManData?.userId,
+                        date: new Date(),
+                        read: false,
                         prop1: {
-                          matchId: data?.payload?.id || '',
+                          matchId: data?.payload?.id,
                           clubData: {
                             name: user?.user?.nickname,
                             userId: user.user.id,

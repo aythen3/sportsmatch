@@ -47,3 +47,15 @@ export const sendNotification = createAsyncThunk(
     }
   }
 )
+export const removeNotification = createAsyncThunk(
+  'removeNotification',
+  async (id) => {
+    console.log('id from removeNotification: ', id)
+    try {
+      const { data } = await axiosInstance.delete(`notification/${id}`)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
