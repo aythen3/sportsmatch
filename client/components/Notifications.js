@@ -10,9 +10,14 @@ import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
+import { useSelector } from 'react-redux'
+import TusMatchsDetalle from './../screens/TusMatchsDetalle'
 
 const Notifications = ({ data }) => {
   const [isMatch, setIsMatch] = useState(false)
+  const [details, setDetails] = useState(false)
+  const { allUsers } = useSelector((state) => state.users)
+  const [selectedClubDetails, setSelectedClubDetails] = useState()
 
   function formatDate(timestamp) {
     const date = new Date(timestamp)
@@ -35,6 +40,13 @@ const Notifications = ({ data }) => {
       onPress={() => {
         if (data.title === 'Solicitud') {
           setIsMatch(true)
+          return
+        }
+        if (data.title === 'Match') {
+          setDetails(true)
+          setSelectedClubDetails(
+            allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
+          )
         }
       }}
     >
@@ -82,6 +94,18 @@ const Notifications = ({ data }) => {
           }}
         >
           <NotificacinMatch data={data} onClose={() => setIsMatch(false)} />
+        </View>
+      </Modal>
+      <Modal visible={details} transparent={true} animationType="slide">
+        <View
+          style={{
+            flex: 1
+          }}
+        >
+          <TusMatchsDetalle
+            data={selectedClubDetails}
+            onClose={() => setDetails(false)}
+          />
         </View>
       </Modal>
     </Pressable>

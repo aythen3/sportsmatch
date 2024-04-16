@@ -102,7 +102,7 @@ const Paso1 = () => {
     }
   }
 
-  const handleNavigation = () => {
+  const handleNavigation = async () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
       if (stepsSportman === 1) {
@@ -121,10 +121,11 @@ const Paso1 = () => {
           userId: user.user.id
         }
 
-        console.log('body')
-        dispatch(createSportman(body))
-        setStepsSportman(0)
-        navigation.navigate('SiguiendoJugadores')
+        console.log('body', body)
+        await dispatch(createSportman(body)).then((data) => {
+          setStepsSportman(0)
+          navigation.navigate('SiguiendoJugadores')
+        })
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
@@ -153,64 +154,71 @@ const Paso1 = () => {
   }
 
   return (
-    <View style={styles.paso6}>
-      <Image
-        style={styles.imagenDeFondo}
-        contentFit="cover"
-        source={require('../../assets/imagen-de-fondo3.png')}
-      />
-      <View style={styles.contenido}>
-        <View>
-          <Pressable
-            style={styles.botonAtras}
-            onPress={() => navigation.goBack()}
-          >
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../../assets/coolicon1.png')}
-            />
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-          <View style={styles.stepseccion}>
-            <Text style={[styles.paso1, styles.atrsTypo]}>
-              {!sportman && !profesional && 'Paso 2'}
-              {sportman && stepsSportman === 0 && 'Paso 3'}
-              {stepsSportman === 1 && 'Paso 4'}
-              {profesional && stepsProfesional === 0 && 'Paso 3'}
-              {stepsProfesional === 1 && 'Paso 4'}
-            </Text>
-            <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
-              {!sportman && !profesional && 'Escoge tu rol'}
-              {sportman && stepsSportman === 0 && 'Define tus skills'}
-              {stepsSportman === 1 && 'Unos detalles sobre ti'}
-              {profesional && 'Unos detalles sobre ti'}
-            </Text>
-
-            <Lines
-              index={
-                !sportman && !profesional
-                  ? 2
-                  : (sportman && stepsSportman === 0) ||
-                      (profesional && stepsProfesional === 0)
-                    ? 3
-                    : stepsProfesional === 1 || stepsSportman
-                      ? 4
-                      : ''
-              }
-            />
-          </View>
-        </View>
-      </View>
-
+    <ScrollView>
       <View
         style={{
-          height: '73%'
+          flex: 1,
+          paddingBottom: 10,
+          paddingHorizontal: 15,
+          backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
-        <ScrollView>
+        <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/imagen-de-fondo3.png')}
+        />
+        <View style={{ marginTop: 15, alignItems: 'center' }}>
+          <View>
+            <Pressable
+              style={styles.botonAtras}
+              onPress={() => navigation.goBack()}
+            >
+              <Image
+                style={styles.coolicon}
+                contentFit="cover"
+                source={require('../../assets/coolicon1.png')}
+              />
+              <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+            </Pressable>
+            <View>
+              <Text style={[styles.paso1, styles.atrsTypo]}>
+                {!sportman && !profesional && 'Paso 2'}
+                {sportman && stepsSportman === 0 && 'Paso 3'}
+                {stepsSportman === 1 && 'Paso 4'}
+                {profesional && stepsProfesional === 0 && 'Paso 3'}
+                {stepsProfesional === 1 && 'Paso 4'}
+              </Text>
+              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
+                {!sportman && !profesional && 'Escoge tu rol'}
+                {sportman && stepsSportman === 0 && 'Define tus skills'}
+                {stepsSportman === 1 && 'Unos detalles sobre ti'}
+                {profesional && 'Unos detalles sobre ti'}
+              </Text>
+
+              <Lines
+                index={
+                  !sportman && !profesional
+                    ? 2
+                    : (sportman && stepsSportman === 0) ||
+                        (profesional && stepsProfesional === 0)
+                      ? 3
+                      : stepsProfesional === 1 || stepsSportman
+                        ? 4
+                        : ''
+                }
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={{ marginTop: -15 }}>
           {!sportman && !profesional && (
-            <View style={styles.container}>
+            <View
+              style={{
+                ...styles.container
+              }}
+            >
               <View style={styles.botonLayout1}>
                 <TouchableOpacity
                   style={[
@@ -295,9 +303,9 @@ const Paso1 = () => {
               <Text style={styles.siguiente1}>Siguiente</Text>
             </Pressable>
           </View>
-        </ScrollView>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -390,17 +398,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
-    borderRadius: Border.br_81xl
-  },
-  contenido: {
-    marginTop: 20,
-    height: '20%',
-    alignItems: 'center'
-  },
-  paso6: {
-    flex: 1,
-    paddingHorizontal: 15,
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    borderRadius: Border.br_81xl,
+    width: '90%',
+    alignSelf: 'center'
   },
   selectedBackground: {
     backgroundColor: Color.bALONCESTO
@@ -408,8 +408,7 @@ const styles = StyleSheet.create({
   container: {
     gap: 20,
     alignSelf: 'center',
-    justifyContent: 'center',
-    marginTop: 80
+    justifyContent: 'center'
   }
 })
 

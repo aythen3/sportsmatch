@@ -18,12 +18,12 @@ const SkillSeleccion = ({
   const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedGenero, setSelectedGenero] = useState(null)
+  const [selectedGenero, setSelectedGenero] = useState()
   const [añoNacimientoModalVisible, setAñoNacimientoModalVisible] =
     useState(false)
-  const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState(null)
+  const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState()
   const [cityModal, setCityModal] = useState(false)
-  const [selectedCity, setSelectedCity] = useState(null)
+  const [selectedCity, setSelectedCity] = useState()
 
   const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
   const opcionesResidencia = [
@@ -105,11 +105,12 @@ const SkillSeleccion = ({
             closeModal={closeAñoNacimientoModal}
             onSelectAñoNacimiento={handleSelectAñoNacimiento}
           />
-          {selectedAñoNacimiento && (
-            <Text style={styles.atributoInner}>
-              {selectedAñoNacimiento || 'Selecciona año de nacimiento'}
-            </Text>
-          )}
+
+          <Text style={styles.atributoInner}>
+            {selectedAñoNacimiento && selectedAñoNacimiento > 1933
+              ? selectedAñoNacimiento
+              : 'Selecciona año de nacimiento'}
+          </Text>
         </Pressable>
       </View>
 
