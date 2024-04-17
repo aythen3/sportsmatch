@@ -173,7 +173,7 @@ export class PostService {
      // Definir relaciones válidas permitidas en la entidad Match
      const allowedRelations = ["comments" , "authorType" , "author"]; // Agregar más según sea necesario
  
-     // Filtrar relaciones válidas
+     // Filtrar relaciones válidasimage:
      relations.forEach(relation => {
        if (allowedRelations.includes(relation)) {
          validRelations.push(relation);

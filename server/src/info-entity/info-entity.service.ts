@@ -99,6 +99,25 @@ export class InfoEntityService {
   }
   
 
+  async filterProperty(entity: string, property: string, filterValue: string) {
+    const repository = this.getRepositoryByEntity(entity);
+console.log("este es el repositorio", repository)
+    if (!repository) {
+      throw new NotFoundException('Entidad no encontrada');
+    }
+
+    const results = await repository.find({
+      where: {
+        [property]: {
+          $like: `%${filterValue}%` // Usar $like para realizar búsqueda parcial
+        }
+      }
+    });
+
+    return results;
+}
+
+
 
   private getRepositoryByEntity(entity: string): Repository<any> | null {
     console.log("entrando  a repositorios")
