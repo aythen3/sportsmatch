@@ -16,6 +16,7 @@ export const createSportman = createAsyncThunk(
 export const getSportman = createAsyncThunk('get/sportman', async (id) => {
   try {
     const { data } = await axiosInstance.get(`sportman/${id}`)
+    console.log(data,'sportman data')
     return data
   } catch (error) {
     throw new Error(error)

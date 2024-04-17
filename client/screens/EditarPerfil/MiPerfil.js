@@ -30,7 +30,7 @@ const MiPerfil = () => {
   const { user } = useSelector((state) => state.users)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
-
+console.log(sportman,"sportman")
   const renderContent = () => {
     if (selectedTab === 'Feed') {
       return <Feed />

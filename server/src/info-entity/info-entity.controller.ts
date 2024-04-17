@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InfoEntityService } from './info-entity.service';
 import { NotificationService } from 'src/notification/notification.service';
 
@@ -30,6 +30,22 @@ export class InfoEntityController {
       console.log("entrando a la ruta")
       const result = await this.infoEntityService.getInfo(entity, id, relation, property, nestedProperty);
       return { data: result };
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+
+
+  @Post('/:entity/:property/filter')
+  async filterProperty(
+    @Param('entity') entity: string,
+    @Param('property') property: string,
+    @Body() filterValue: { value: string }
+  ) {
+    try {
+      console.log("entra aca")
+      const results = await this.infoEntityService.filterProperty(entity, property, filterValue.value);
+      return { data: results };
     } catch (error) {
       return { error: error.message };
     }

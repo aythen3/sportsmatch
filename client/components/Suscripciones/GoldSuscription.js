@@ -10,12 +10,27 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import axios from 'axios'
+import axiosInstance from '../../utils/apiBackend'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
 
-const GoldSuscription = () => {
-  // const { user } = useSelector((state) => state.users)
+const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
+  const { user } = useSelector((state) => state.users)
 
-  const handleGetGold = () => {
-    console.log('handling gold plan...')
+  const handleGetGold = async () => {
+   console.log("entra")
+    const res = await axiosInstance.post('/user/create-subscription',{
+      priceId:"price_1P4cNLGmE60O5ob7O3hTmP9d",
+     
+      customerId:user.user.stripeId
+    })
+    if(res.data){
+      setPlanSelected("pro")
+      setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
+      // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+    }
+    console.log(user.user.stripeId,"user")
   }
 
   return (
