@@ -37,7 +37,7 @@ const LoginSwitch = () => {
   }, [isSportman])
 
   return (
-    <ScrollView style={styles.loginSwitch}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.loginSwitch}>
       <Image
         style={styles.loginSwitchChild}
         contentFit="cover"

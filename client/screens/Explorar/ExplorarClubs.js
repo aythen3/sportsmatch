@@ -47,7 +47,7 @@ const ExplorarClubs = () => {
 
   return (
     <View style={styles.explorarClubs}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderIcons />
 
         <FiltersHome

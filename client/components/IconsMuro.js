@@ -8,9 +8,12 @@ import { Color } from '../GlobalStyles'
 import { like } from '../redux/actions/post'
 import CommentSection from './modals/CommentSection'
 import { setFindedLikes } from '../redux/slices/post.slices'
+import { sendNotification } from '../redux/actions/notifications'
 
-const IconsMuro = ({ id, userId }) => {
+const IconsMuro = ({ id, userId, postUserId }) => {
   const dispatch = useDispatch()
+
+  const { user } = useSelector((state) => state.users)
 
   const { findedLike } = useSelector((state) => state.post)
 
@@ -24,12 +27,32 @@ const IconsMuro = ({ id, userId }) => {
       author: userId
     }
     const liked = findedLike.includes(id)
+    console.log('data: ', data)
+    console.log('liked: ', liked)
     await dispatch(
       setFindedLikes({
         ...data,
         liked
       })
     )
+    if (liked === false) {
+      console.log('sending like notification to: ', userId)
+      await dispatch(
+        sendNotification({
+          title: 'Like',
+          message: `A ${user.user.nickname} le gusta tu highlight`,
+          recipientId: postUserId,
+          date: new Date(),
+          read: false,
+          prop1: {
+            userId: user?.user?.id,
+            userData: {
+              ...user
+            }
+          }
+        })
+      )
+    }
     await dispatch(like(data))
   }
   // useEffect(() => {

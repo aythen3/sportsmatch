@@ -223,7 +223,24 @@ const HeaderPerfil = ({
                       })
                     )
                   })
-                  .then((data) => {
+                  .then((response) => {
+                    if (newFollowers.includes(user?.user?.id)) {
+                      dispatch(
+                        sendNotification({
+                          title: 'Follow',
+                          message: `${user.user.nickname} ha comenzado a seguirte`,
+                          recipientId: data?.author?.id,
+                          date: new Date(),
+                          read: false,
+                          prop1: {
+                            userId: user?.user?.id,
+                            userData: {
+                              ...user
+                            }
+                          }
+                        })
+                      )
+                    }
                     dispatch(getAllUsers())
                     dispatch(updateUser(actualUser))
                   })

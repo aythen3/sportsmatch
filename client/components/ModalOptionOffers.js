@@ -3,15 +3,16 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 
-const ModalOptionOffers = ({ onClose }) => {
+const ModalOptionOffers = ({ onClose, offerId }) => {
   const navigation = useNavigation()
 
   return (
     <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
       <Pressable
-        onPress={() =>
+        onPress={() => {
+          onClose()
           navigation.navigate('ConfigurarAnuncio', { editOffer: true })
-        }
+        }}
       >
         <View>
           <Text style={styles.editar}>Editar</Text>
@@ -19,7 +20,12 @@ const ModalOptionOffers = ({ onClose }) => {
       </Pressable>
 
       <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
-      <Pressable onPress={() => navigation.navigate('EliminarOferta')}>
+      <Pressable
+        onPress={() => {
+          onClose()
+          navigation.navigate('EliminarOferta', { offerId })
+        }}
+      >
         <Text style={styles.editar}>Eliminar</Text>
       </Pressable>
 

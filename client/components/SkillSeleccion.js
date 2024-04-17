@@ -115,8 +115,15 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   return (
-    <ScrollView style={styles.contenidoFormulariosboton}>
-      <View style={styles.campos}>
+    <ScrollView keyboardShouldPersistTaps={'always'}>
+      <View
+        style={{
+          height: 40,
+          flexDirection: 'row',
+          gap: 20,
+          justifyContent: 'center'
+        }}
+      >
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Ataque</Text>
           <View style={styles.rectangulo}>
@@ -162,7 +169,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
         </View>
       </View>
       <View style={styles.formulariosInferiores}>
-        <View style={{ position: 'relative', width: '100%' }}>
+        <View style={{ position: 'relative', width: '100%', marginTop: 10 }}>
           <Acordeon
             title="Categoria"
             placeholderText={
@@ -180,7 +187,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
             />
           )}
         </View>
-        <View style={{ position: 'relative', width: '100%' }}>
+        <View style={{ position: 'relative', width: '100%', marginTop: 10 }}>
           <Acordeon
             title="Posicion Principal"
             placeholderText={
@@ -290,12 +297,6 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     justifyContent: 'center'
   },
-  campos: {
-    height: 40,
-    flexDirection: 'row',
-    gap: 20,
-    justifyContent: 'center'
-  },
   atributo: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
@@ -316,9 +317,6 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  contenidoFormulariosboton: {
-    marginTop: 40
   },
   atributoContainer: {
     width: '26%'

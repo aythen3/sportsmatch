@@ -31,8 +31,7 @@ const SkillSeleccion = ({
     'Madrid',
     'Sevilla',
     'Valencia',
-    'Murcia',
-    'Toledo'
+    'Murcia'
   ]
 
   const openAñoNacimientoModal = () => {
@@ -114,20 +113,28 @@ const SkillSeleccion = ({
         </Pressable>
       </View>
 
-      <Acordeon
-        title="Lugar de residencia"
-        placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
-        isAccordeon={true}
-        open={openCityModal}
-      />
-      {cityModal && (
-        <CustomModal
-          visible={cityModal}
-          closeModal={closeModal}
-          onSelectItem={handleSelectCity}
-          options={opcionesResidencia}
+      <View
+        style={{
+          position: 'relative',
+          width: '100%',
+          marginTop: 10
+        }}
+      >
+        <Acordeon
+          title="Lugar de residencia"
+          placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
+          isAccordeon={true}
+          open={openCityModal}
         />
-      )}
+        {cityModal && (
+          <CustomModal
+            visible={cityModal}
+            closeModal={closeModal}
+            onSelectItem={handleSelectCity}
+            options={opcionesResidencia}
+          />
+        )}
+      </View>
 
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Club actual</Text>
@@ -222,7 +229,8 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    width: '90%'
+    width: '90%',
+    zIndex: -1000
   },
   formulariosInferiores: {
     marginTop: 20,

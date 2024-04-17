@@ -120,7 +120,10 @@ const ClubDetails = () => {
 
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-      <ScrollView style={styles.generalWrapper}>
+      <ScrollView
+        keyboardShouldPersistTaps={'always'}
+        style={styles.generalWrapper}
+      >
         <View style={styles.wrapperGap}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}

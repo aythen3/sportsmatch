@@ -4,8 +4,21 @@ import { Color } from '../../GlobalStyles'
 
 const CustomModal = ({ closeModal, onSelectItem, options }) => {
   return (
-    <View style={styles.modalContainer}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <View
+      style={{
+        position: 'absolute',
+        zIndex: 999999999999,
+        backgroundColor: '#000',
+        width: '90%',
+        alignSelf: 'center',
+        top: 72,
+        borderRadius: 5
+      }}
+    >
+      <ScrollView
+        keyboardShouldPersistTaps={'always'}
+        contentContainerStyle={styles.scrollContainer}
+      >
         <View style={styles.modalContent}>
           {options.map((item, index) => (
             <Pressable
@@ -26,17 +39,6 @@ const CustomModal = ({ closeModal, onSelectItem, options }) => {
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    position: 'absolute',
-    zIndex: 999999999999,
-    backgroundColor: '#000',
-    width: '90%',
-    alignSelf: 'center',
-    top: 87,
-    borderRadius: 5
-    // maxHeight: 200, // Set a maximum height to allow scrolling
-    // flex: 1 // Ensure the modal container can expand to accommodate content
-  },
   scrollContainer: {
     flexGrow: 1
   },

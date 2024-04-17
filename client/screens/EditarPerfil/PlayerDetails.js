@@ -92,6 +92,7 @@ const PlayerDetails = () => {
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
       <ScrollView
+        keyboardShouldPersistTaps={'always'}
         style={{
           width: '90%'
         }}

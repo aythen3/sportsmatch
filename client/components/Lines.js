@@ -6,7 +6,7 @@ const Lines = ({ index }) => {
   return (
     <View
       style={{
-        marginVertical: 30,
+        marginVertical: 15,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between'

@@ -14,7 +14,7 @@ function Acordeon({
     <View
       style={{
         width: '100%',
-        marginTop: 15,
+        marginTop: 0,
         paddingHorizontal: 15
       }}
     >

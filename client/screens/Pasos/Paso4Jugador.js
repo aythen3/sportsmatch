@@ -26,7 +26,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
   }
 
   return (
-    <ScrollView style={styles.paso6}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={{ height: '70%' }}>
       <View>
         <View style={{ marginBottom: 30 }}>
           <View style={styles.headersubirImagenesPerfil}>
@@ -112,15 +112,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     textAlign: 'center'
   },
-  paso6: {
-    flex: 1,
-    overflow: 'hidden',
-    width: '100%',
-    paddingHorizontal: 15
-  },
   headersubirImagenesPerfil: {
-    alignItems: 'center',
-    marginTop: '10%'
+    alignItems: 'center'
   },
   circuloIcon: {
     width: 117,

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
+  Dimensions,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -24,6 +25,7 @@ import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { createSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
+import { setInitialSportman } from '../../redux/slices/sportman.slices'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -102,6 +104,14 @@ const Paso1 = () => {
     }
   }
 
+  useEffect(() => {
+    console.log('sportman changed: ', sportman)
+  }, [sportman])
+
+  useEffect(() => {
+    console.log('stepsSportman changed: ', stepsSportman)
+  }, [stepsSportman])
+
   const handleNavigation = async () => {
     if (sportman) {
       setStepsSportman((prev) => prev + 1)
@@ -122,8 +132,14 @@ const Paso1 = () => {
         }
 
         console.log('body', body)
-        await dispatch(createSportman(body)).then((data) => {
-          setStepsSportman(0)
+        dispatch(createSportman(body)).then((response) => {
+          console.log('reponse: ')
+          dispatch(
+            setInitialSportman({
+              id: response.payload.id,
+              ...body.sportmanData
+            })
+          )
           navigation.navigate('SiguiendoJugadores')
         })
       }
@@ -154,10 +170,11 @@ const Paso1 = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps={'always'}>
       <View
         style={{
-          flex: 1,
+          height: Dimensions.get('window').height,
+
           paddingBottom: 10,
           paddingHorizontal: 15,
           backgroundColor: Color.bLACK1SPORTSMATCH
@@ -168,10 +185,16 @@ const Paso1 = () => {
           contentFit="cover"
           source={require('../../assets/imagen-de-fondo3.png')}
         />
-        <View style={{ marginTop: 15, alignItems: 'center' }}>
+        <View style={{ alignItems: 'center' }}>
           <View>
             <Pressable
-              style={styles.botonAtras}
+              style={{
+                paddingHorizontal: Padding.p_xl,
+                marginBottom: 10,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center'
+              }}
               onPress={() => navigation.goBack()}
             >
               <Image
@@ -179,17 +202,45 @@ const Paso1 = () => {
                 contentFit="cover"
                 source={require('../../assets/coolicon1.png')}
               />
-              <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  marginLeft: 5,
+                  textAlign: 'center',
+                  fontSize: FontSize.t2TextSTANDARD_size,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  textAlign: 'center'
+                }}
+              >
+                Atrás
+              </Text>
             </Pressable>
             <View>
-              <Text style={[styles.paso1, styles.atrsTypo]}>
+              <Text
+                style={{
+                  fontSize: FontSize.t1TextSMALL_size,
+                  color: Color.bALONCESTO,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  textAlign: 'center'
+                }}
+              >
                 {!sportman && !profesional && 'Paso 2'}
                 {sportman && stepsSportman === 0 && 'Paso 3'}
                 {stepsSportman === 1 && 'Paso 4'}
                 {profesional && stepsProfesional === 0 && 'Paso 3'}
                 {stepsProfesional === 1 && 'Paso 4'}
               </Text>
-              <Text style={[styles.escogeTuRol, styles.jugadorTypo1]}>
+              <Text
+                style={{
+                  fontSize: FontSize.size_9xl,
+                  color: Color.wHITESPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: '500',
+                  color: Color.wHITESPORTSMATCH
+                }}
+              >
                 {!sportman && !profesional && 'Escoge tu rol'}
                 {sportman && stepsSportman === 0 && 'Define tus skills'}
                 {stepsSportman === 1 && 'Unos detalles sobre ti'}
@@ -212,7 +263,7 @@ const Paso1 = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: -15 }}>
+        <View style={{ marginTop: 30 }}>
           {!sportman && !profesional && (
             <View
               style={{
@@ -310,10 +361,6 @@ const Paso1 = () => {
 }
 
 const styles = StyleSheet.create({
-  atrsTypo: {
-    fontFamily: FontFamily.t4TEXTMICRO,
-    textAlign: 'center'
-  },
   jugadorTypo1: {
     fontWeight: '500',
     color: Color.wHITESPORTSMATCH
@@ -342,25 +389,6 @@ const styles = StyleSheet.create({
   coolicon: {
     width: 9,
     height: 15
-  },
-  atrs: {
-    color: Color.gREY2SPORTSMATCH,
-    marginLeft: 5,
-    textAlign: 'center',
-    fontSize: FontSize.t2TextSTANDARD_size
-  },
-  botonAtras: {
-    paddingHorizontal: Padding.p_xl,
-    paddingVertical: 0,
-    marginBottom: 40,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  paso1: {
-    fontSize: FontSize.t1TextSMALL_size,
-    color: Color.bALONCESTO,
-    textAlign: 'center'
   },
   escogeTuRol: {
     fontSize: FontSize.size_9xl,

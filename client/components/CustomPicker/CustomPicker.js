@@ -48,6 +48,7 @@ const CustomPicker = ({
       </Text>
       {showModal && (
         <ScrollView
+          keyboardShouldPersistTaps={'always'}
           style={{
             position: 'absolute',
             top: 40,

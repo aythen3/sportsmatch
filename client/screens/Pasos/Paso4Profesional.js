@@ -25,7 +25,11 @@ const Paso4Profesional = () => {
   }
 
   return (
-    <ScrollView style={styles.paso6} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      keyboardShouldPersistTaps={'always'}
+      style={styles.paso6}
+      showsVerticalScrollIndicator={false}
+    >
       <View>
         <View style={styles.headersubirImagenesPerfil}>
           <Image
