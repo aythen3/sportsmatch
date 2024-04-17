@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -25,13 +27,17 @@
         "backgroundColor": "#000"
       },
       "package": "com.mauriidg.spotsmatch",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font", [
+      "expo-font",
+      [
         "expo-build-properties",
         {
           "android": {
@@ -48,9 +54,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
+        "projectId": "2e24e316-402e-462f-8799-ee82d86792bd"
       }
     },
-    "owner": "aythenapps"
+    "owner": "azschiaffino"
   }
 }

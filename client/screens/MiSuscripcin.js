@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -13,9 +13,53 @@ import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
 import SilverSuscription from '../components/Suscripciones/SilverSuscription'
 import GoldSuscription from '../components/Suscripciones/GoldSuscription'
 import StarSuscription from '../components/Suscripciones/StarSuscription'
+import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native';
+import axiosInstance from '../utils/apiBackend'
+import { useSelector } from 'react-redux'
 
 const MiSuscripcin = () => {
   const navigation = useNavigation()
+  const [clientSecret, setClientSecret] = useState(null)
+  const [planSelected, setPlanSelected] = useState(null)
+  const { user } = useSelector((state) => state.users)
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe(null);
+
+  React.useEffect( () => {
+    const initializePaymentSheet = async () => {
+      console.log(user,"userrrr")
+      const { error } = await initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName:"azul",
+        returnURL: 'stripe-example://payment-sheet',
+        // Set `allowsDelayedPaymentMethods` to true if your business handles
+        // delayed notification payment methods like US bank accounts.
+      });
+      if (error) {
+        // Handle error
+        console.log(error,"error")
+      }
+      else {
+      const {error} = await presentPaymentSheet()
+      if(error){
+        console.log(error,"error")
+      } else {
+      const updUser = await axiosInstance.patch(`user/${user.user.id}`,{
+        plan:planSelected
+      })
+      console.log(updUser, "upd")
+      }
+
+      }
+    };
+
+    if (
+      clientSecret
+    ) {
+      console.log("entra a la hoja")
+      initializePaymentSheet()
+    }
+  }, [clientSecret, initPaymentSheet]);
 
   return (
     <View style={styles.miSuscripcin}>
@@ -62,8 +106,8 @@ const MiSuscripcin = () => {
               Otros planes
             </Text>
           </View>
-          <GoldSuscription />
-          <StarSuscription />
+          <GoldSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />
+          <StarSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />
         </View>
       </ScrollView>
     </View>

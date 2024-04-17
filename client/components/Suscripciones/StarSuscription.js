@@ -9,11 +9,25 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import axiosInstance from '../../utils/apiBackend'
+import { useSelector } from 'react-redux'
 
-const GoldSuscription = () => {
-  const handleGetStar = () => {
-    console.log('handling star plan...')
-  }
+const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
+  const { user } = useSelector((state) => state.users)
+
+  const handleGetStar = async () => {
+    console.log("entra")
+     const res = await axiosInstance.post('/user/create-subscription',{
+       priceId:"price_1P4cOSGmE60O5ob7cqUBAyjk",
+       customerId:user.user.stripeId
+     })
+     if(res.data){
+      setPlanSelected("star")
+       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
+       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+     }
+     console.log(user.user.stripeId,"user")
+   }
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
