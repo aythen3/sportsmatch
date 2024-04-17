@@ -73,7 +73,7 @@ const App = () => {
     'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
     'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
   })
-// asdasdsefsdfsdfsd
+  // asdasdsefsdfsdfsd
 
   const getUserAuth = () => {
     AsyncStorage.getItem('userToken').then((value) => {
@@ -82,7 +82,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log("hola")
+    console.log('hola')
     getUserAuth()
   }, [])
 
@@ -93,7 +93,12 @@ const App = () => {
   // ======================= CHAT RELATED STUFF ============================
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#000', flex: 1 }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: '#000',
+        flex: 1
+      }}
+    >
       <StripeProvider
         publishableKey="pk_test_51OocYQGmE60O5ob7ydu8u1BLMhlWf9F5C6TCuSu75y47X5yBRO8wcbIssEjFc95AferGwyiHNkNGwT25ywIoZahB009vDgPuYd"
         urlScheme="com.android.app" // required for 3D Secure and bank redirects
@@ -120,7 +125,8 @@ const App = () => {
                         route.name !== 'Paso1' &&
                         route.name !== 'Paso3Profesional' &&
                         route.name !== 'Paso4Jugador' &&
-                        route.name !== 'Paso4Profesional'
+                        route.name !== 'Paso4Profesional' &&
+                        route.name !== 'stepsJugador'
                     )
                   })}
                 >

@@ -182,7 +182,7 @@ const TusNotificaciones1 = () => {
           </View>
         )}
         {selectedComponent === 'messages' && (
-          <ScrollView
+          <ScrollView keyboardShouldPersistTaps={'always'}
             style={{
               marginTop: 30
             }}

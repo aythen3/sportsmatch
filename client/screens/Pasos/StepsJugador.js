@@ -1,13 +1,15 @@
+import React, { useState } from 'react'
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   Image,
   TouchableOpacity,
   ScrollView
 } from 'react-native'
-import React, { useState } from 'react'
+import Paso2Jugador from './Paso2Jugador'
+import { useNavigation } from '@react-navigation/core'
+import Lines from '../../components/Lines'
 import {
   Border,
   Color,
@@ -15,9 +17,6 @@ import {
   FontSize,
   Padding
 } from '../../GlobalStyles'
-import Lines from '../../components/Lines'
-import Paso2Jugador from './Paso2Jugador'
-import { useNavigation } from '@react-navigation/core'
 
 const StepsJugador = () => {
   const navigation = useNavigation()
@@ -48,28 +47,74 @@ const StepsJugador = () => {
   }
 
   return (
-    <View style={styles.escogerDeporte}>
-      <ScrollView>
+    <View
+      style={{
+        flex: 1,
+        overflow: 'hidden',
+        backgroundColor: Color.bLACK1SPORTSMATCH,
+        paddingHorizontal: 15
+      }}
+    >
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <Image
-          style={styles.escogerDeporteChild}
+          style={{ width: '110%', height: '100%', position: 'absolute' }}
           contentFit="cover"
           source={require('../../assets/group-2412.png')}
         />
         <View>
           <View style={{ justifyContent: 'flex-start' }}>
-            <View style={styles.atrsParent}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
+                marginTop: 0,
+                paddingRight: 20,
+                justifyContent: 'flex-end'
+              }}
+            >
               <Image
-                style={styles.coolicon}
+                style={{ height: 15, width: 10, marginRight: 8 }}
                 contentFit="cover"
                 source={require('../../assets/coolicon.png')}
               />
               <Pressable onPress={() => hadleIndex('minus')}>
-                <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: Color.gREY2SPORTSMATCH,
+                    fontSize: FontSize.t2TextSTANDARD_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  Atrás
+                </Text>
               </Pressable>
             </View>
-            <View style={{ marginTop: 100 }}>
-              <Text style={styles.paso2}>Paso {stepsIndex}</Text>
-              <Text style={styles.detallesDelClub}>
+            <View style={{ marginTop: 20 }}>
+              <Text
+                style={{
+                  fontSize: FontSize.t1TextSMALL_size,
+                  lineHeight: 17,
+                  color: Color.bALONCESTO,
+                  width: '100%',
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                Paso {stepsIndex}
+              </Text>
+              <Text
+                style={{
+                  fontSize: FontSize.size_9xl,
+                  lineHeight: 32,
+                  fontWeight: '500',
+                  width: '100%',
+                  color: Color.wHITESPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
                 {stepsIndex === 1 && 'Escoge tu deporte'}
               </Text>
             </View>
@@ -79,82 +124,31 @@ const StepsJugador = () => {
           {ViewComponent(stepsIndex)}
 
           <TouchableOpacity
-            style={styles.touchable}
+            style={{
+              marginVertical: 60,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: Color.wHITESPORTSMATCH,
+              borderRadius: Border.br_81xl,
+              paddingHorizontal: Padding.p_81xl,
+              paddingVertical: Padding.p_3xs
+            }}
             onPress={() => hadleIndex('add')}
           >
-            <Text style={styles.nextText}>Siguiente</Text>
+            <Text
+              style={{
+                fontSize: FontSize.button_size,
+                fontWeight: '700',
+                color: Color.bLACK1SPORTSMATCH
+              }}
+            >
+              Siguiente
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  detallesDelClub: {
-    fontSize: FontSize.size_9xl,
-    lineHeight: 32,
-    fontWeight: '500',
-    width: '100%',
-    color: Color.wHITESPORTSMATCH,
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  paso2: {
-    fontSize: FontSize.t1TextSMALL_size,
-    lineHeight: 17,
-    color: Color.bALONCESTO,
-    width: '100%',
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  atrsTypo: {
-    fontFamily: FontFamily.t4TEXTMICRO,
-    textAlign: 'center'
-  },
-  atrs: {
-    textAlign: 'center',
-    color: Color.gREY2SPORTSMATCH,
-    fontSize: FontSize.t2TextSTANDARD_size
-  },
-  coolicon: {
-    height: 15,
-    width: 10,
-    marginRight: 8
-  },
-  atrsParent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    top: 60,
-    justifyContent: 'flex-end',
-    right: 30
-  },
-  escogerDeporteChild: {
-    width: '110%',
-    height: '100%',
-    position: 'absolute'
-  },
-  escogerDeporte: {
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    paddingHorizontal: 15
-  },
-  touchable: {
-    marginVertical: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Color.wHITESPORTSMATCH,
-    borderRadius: Border.br_81xl,
-    paddingHorizontal: Padding.p_81xl,
-    paddingVertical: Padding.p_3xs
-  },
-  nextText: {
-    fontSize: FontSize.button_size,
-    fontWeight: '700',
-    color: Color.bLACK1SPORTSMATCH
-  }
-})
 
 export default StepsJugador

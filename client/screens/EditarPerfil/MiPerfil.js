@@ -38,9 +38,13 @@ const MiPerfil = () => {
       return <FeedStats />
     }
   }
+  console.log('sportman: ', sportman)
 
   return (
-    <ScrollView style={styles.perfilDatosVisualitzaciMa}>
+    <ScrollView
+      keyboardShouldPersistTaps={'always'}
+      style={styles.perfilDatosVisualitzaciMa}
+    >
       <View style={styles.contenidoPerfil}>
         <Image
           style={styles.imagenPosition}

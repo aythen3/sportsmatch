@@ -19,7 +19,10 @@ const FeedStats = () => {
   const age = calculateAge(sportman?.info.birthdate)
 
   return (
-    <ScrollView style={styles.perfilDatosVisualitzaciMa}>
+    <ScrollView
+      keyboardShouldPersistTaps={'always'}
+      style={styles.perfilDatosVisualitzaciMa}
+    >
       <View style={styles.contenidoDatos}>
         <View style={styles.circulos}>
           <View style={styles.circuloLayout}>

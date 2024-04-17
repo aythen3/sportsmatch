@@ -11,7 +11,11 @@ const sportmanSlices = createSlice({
     sportman: {},
     loading: false
   },
-  reducers: {},
+  reducers: {
+    setInitialSportman: (state, action) => {
+      state.sportman = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Create player
@@ -58,5 +62,7 @@ const sportmanSlices = createSlice({
       })
   }
 })
+
+export const { setInitialSportman } = sportmanSlices.actions
 
 export default sportmanSlices.reducer

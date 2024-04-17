@@ -19,7 +19,7 @@ const MiSuscripcin = () => {
 
   return (
     <View style={styles.miSuscripcin}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <View
           style={{
             marginTop: 20,

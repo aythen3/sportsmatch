@@ -132,7 +132,7 @@ const TodasLasOfertas = () => {
       </View>
 
       {offers && offers.length > 0 ? (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps={'always'}>
           {offers.map((offer, index) => (
             <View
               key={index}

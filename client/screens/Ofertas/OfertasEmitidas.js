@@ -7,7 +7,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Pressable,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -38,6 +39,8 @@ const OfertasEmitidas = () => {
 
   const [modalVisible, setModalVisible] = useState(false)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
+
+  const [selectedOffer, setSelectedOffer] = useState()
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -90,7 +93,7 @@ const OfertasEmitidas = () => {
                 <TouchableOpacity
                   onPress={(event) => {
                     handleImageClick(event)
-                    dispatch(getOfferById(offer.id))
+                    setSelectedOffer(offer.id)
                   }}
                   style={styles.touchableImg}
                 >
@@ -186,7 +189,7 @@ const OfertasEmitidas = () => {
                       }}
                     >
                       <ModalOptionOffers
-                        offer={offerRedux}
+                        offerId={selectedOffer}
                         onClose={() => setModalVisible(false)}
                       />
                     </View>
@@ -288,10 +291,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     justifyContent: 'flex-start',
-    gap: 10
+    gap: 11
   },
   offers: {
-    width: 170,
+    width: (Dimensions.get('window').width * 0.9) / 2,
     marginTop: 20,
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: 8,

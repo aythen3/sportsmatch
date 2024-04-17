@@ -39,75 +39,71 @@ const CrearHighlight = () => {
   }
 
   return (
-    <SafeAreaView style={styles.crearHighlight}>
-      <View style={styles.container}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.crearHighlightChild}
-            contentFit="cover"
-            source={require('../../../assets/group-565.png')}
-          />
-        </Pressable>
-        <TouchableOpacity onPress={handleSubmit}>
-          <Text style={styles.siguiente}>Subir</Text>
-        </TouchableOpacity>
-      </View>
-      <Image
-        style={styles.codeBlockPersonaEnCanch}
-        contentFit="cover"
-        source={{ uri: image }}
-      />
-      <View style={styles.descriptionContainer}>
-        <TextInput
-          style={styles.descriptionText}
-          placeholder="Añade una descripción"
-          placeholderTextColor={Color.wHITESPORTSMATCH}
-          multiline={true}
-          onChangeText={(text) => setDescription(text)}
-          value={description}
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
+      <View
+        style={{
+          width: '90%',
+          alignSelf: 'center'
+        }}
+      >
+        <View
+          style={{
+            marginTop: 20,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              style={{ height: 15, width: 15 }}
+              contentFit="cover"
+              source={require('../../../assets/group-565.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSubmit}>
+            <Text style={styles.siguiente}>Subir</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          style={{
+            marginTop: 40,
+            marginBottom: 15,
+            borderRadius: 8,
+            height: 340
+          }}
+          contentFit="cover"
+          source={{ uri: image }}
         />
+        <View
+          style={{
+            height: 100,
+            borderWidth: 1,
+            borderRadius: 15,
+            borderColor: Color.wHITESPORTSMATCH,
+            marginTop: 20
+          }}
+        >
+          <TextInput
+            style={styles.descriptionText}
+            placeholder="Añade una descripción"
+            placeholderTextColor={Color.wHITESPORTSMATCH}
+            multiline={true}
+            onChangeText={(text) => setDescription(text)}
+            value={description}
+          />
+        </View>
       </View>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  crearHighlight: {
-    flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH
-  },
-  container: {
-    marginTop: 20,
-    paddingHorizontal: 15,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  crearHighlightChild: {
-    height: 15,
-    width: 15
-  },
   siguiente: {
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: 17,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: '700'
-  },
-  codeBlockPersonaEnCanch: {
-    marginTop: 20,
-    marginBottom: 15,
-    height: 340,
-    width: '95%',
-    left: '2.3%'
-  },
-  descriptionContainer: {
-    height: 70,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: Color.wHITESPORTSMATCH,
-    width: '98%',
-    left: '1%',
-    marginTop: '10%'
+    fontWeight: '500'
   },
   descriptionText: {
     fontFamily: FontFamily.t4TEXTMICRO,

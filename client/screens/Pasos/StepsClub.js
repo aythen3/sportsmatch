@@ -75,13 +75,12 @@ const StepsClub = () => {
               id: response.meta.arg.userId,
               data: response.meta.arg.clubData
             })
-          )
-            .then(() => {
-              navigation.navigate('SiguiendoJugadores')
-            })
-            .catch((error) => {
-              console.error('Error updating user club data:', error)
-            })
+          ).catch((error) => {
+            console.error('Error updating user club data:', error)
+          })
+        })
+        .then(() => {
+          navigation.navigate('SiguiendoJugadores')
         })
         .catch((error) => {
           console.error('Error creating club:', error)
@@ -120,7 +119,7 @@ const StepsClub = () => {
 
   return (
     <View style={{ ...styles.escogerDeporte }}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <Image
           style={{
             ...styles.escogerDeporteChild

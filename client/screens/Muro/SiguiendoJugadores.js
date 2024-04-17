@@ -96,7 +96,7 @@ const SiguiendoJugadores = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderIcons />
         <View
           style={{

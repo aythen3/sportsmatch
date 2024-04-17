@@ -94,7 +94,7 @@ function Carousel({
           }}
         >
           <Text style={styles.likes}>{likes} likes</Text>
-          <IconsMuro id={id} userId={userId} />
+          <IconsMuro postUserId={authorId} id={id} userId={userId} />
         </View>
         <Text style={styles.description}>{description}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>

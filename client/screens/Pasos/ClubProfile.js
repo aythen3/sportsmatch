@@ -26,7 +26,7 @@ const ClubProfile = () => {
         flex: 1
       }}
     >
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <View>
           <HeaderPerfil
             name={data?.author?.club?.name}
