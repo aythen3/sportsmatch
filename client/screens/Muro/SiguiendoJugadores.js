@@ -57,7 +57,7 @@ const SiguiendoJugadores = () => {
       type: user?.user?.type
     }
     dispatch(getUserChild(data))
-    dispatch(getSportman(user?.user?.sportman?.id))
+    // dispatch(getSportman(user?.user?.sportman?.id))
   }, [])
 
   useEffect(() => {

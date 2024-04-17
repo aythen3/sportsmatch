@@ -133,12 +133,15 @@ const Paso1 = () => {
 
         console.log('body', body)
         dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ', response)
-          dispatch(setInitialSportman(body.sportmanData)).then(() =>
-            navigation.navigate('SiguiendoJugadores')
+          console.log('reponse: ')
+          dispatch(
+            setInitialSportman({
+              id: response.payload.id,
+              ...body.sportmanData
+            })
           )
+          navigation.navigate('SiguiendoJugadores')
         })
-        setStepsSportman(0)
       }
     } else {
       setStepsProfesional((prev) => prev + 1)
