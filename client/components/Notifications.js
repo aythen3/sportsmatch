@@ -10,9 +10,15 @@ import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
+import { useSelector } from 'react-redux'
+import TusMatchsDetalle from './../screens/TusMatchsDetalle'
 
-const Notifications = ({ text, date, read, match }) => {
+const Notifications = ({ data }) => {
   const [isMatch, setIsMatch] = useState(false)
+  const [details, setDetails] = useState(false)
+  const { allUsers } = useSelector((state) => state.users)
+  const [selectedClubDetails, setSelectedClubDetails] = useState()
+
   function formatDate(timestamp) {
     const date = new Date(timestamp)
     // Extract the day, month, and year components
@@ -27,10 +33,22 @@ const Notifications = ({ text, date, read, match }) => {
     // Return the formatted date string
     return `${formattedDay}/${formattedMonth}/${year}`
   }
+
   return (
     <Pressable
       style={{ marginTop: 20 }}
-      onPress={() => (match ? setIsMatch(true) : '')}
+      onPress={() => {
+        if (data.title === 'Solicitud') {
+          setIsMatch(true)
+          return
+        }
+        if (data.title === 'Match') {
+          setDetails(true)
+          setSelectedClubDetails(
+            allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
+          )
+        }
+      }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
         <Image
@@ -38,7 +56,7 @@ const Notifications = ({ text, date, read, match }) => {
           contentFit="cover"
           source={require('../assets/avatar.png')}
         />
-        {match && (
+        {data.title === 'Match' && (
           <Text
             style={{
               color: Color.bALONCESTO,
@@ -49,12 +67,14 @@ const Notifications = ({ text, date, read, match }) => {
             .
           </Text>
         )}
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginLeft: 4 }}>
           <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
-            {match && '¡Has hecho un Match!'}
+            {data.message}
           </Text>
         </View>
-        <Text style={[styles.ayer, styles.ayerTypo]}>{formatDate(date)}</Text>
+        <Text style={[styles.ayer, styles.ayerTypo]}>
+          {formatDate(data.date)}
+        </Text>
       </View>
       <View
         style={{
@@ -73,7 +93,19 @@ const Notifications = ({ text, date, read, match }) => {
             backgroundColor: 'rgba(0, 0, 0, 0.8)'
           }}
         >
-          <NotificacinMatch onClose={() => setIsMatch(false)} />
+          <NotificacinMatch data={data} onClose={() => setIsMatch(false)} />
+        </View>
+      </Modal>
+      <Modal visible={details} transparent={true} animationType="slide">
+        <View
+          style={{
+            flex: 1
+          }}
+        >
+          <TusMatchsDetalle
+            data={selectedClubDetails}
+            onClose={() => setDetails(false)}
+          />
         </View>
       </Modal>
     </Pressable>

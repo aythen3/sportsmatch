@@ -298,8 +298,9 @@ const styles = StyleSheet.create({
     gap: 10
   },
   image: {
-    width: '100%',
-    height: '100%'
+    width: 117,
+    height: 117,
+    borderRadius: 100
   },
   profileImageContainer: {
     width: 117,

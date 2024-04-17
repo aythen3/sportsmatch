@@ -20,13 +20,14 @@ import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAllOffers } from '../../redux/actions/offers'
 import { getAllNotifications } from '../../redux/actions/notifications'
+import { getAllMatchs } from '../../redux/actions/matchs'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-
-  const { joinRoom, sendMessage } = useContext(Context)
+  const { getClubMatches, getUserMatches } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
+  const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
   const { user, allUsers } = useSelector((state) => state.users)
   const { allNotifications } = useSelector((state) => state.notifications)
@@ -60,9 +61,21 @@ const SiguiendoJugadores = () => {
   }, [])
 
   useEffect(() => {
+    if (allMatchs) {
+      console.log('before getting matches...')
+      if (user?.user?.type === 'club') {
+        getClubMatches()
+      } else {
+        getUserMatches()
+      }
+    }
+  }, [allMatchs])
+
+  useEffect(() => {
     console.log('useEffect triggering')
     dispatch(getAllOffers())
     dispatch(getAllPosts())
+    dispatch(getAllMatchs())
     dispatch(getAllLikes())
     dispatch(getAllNotifications())
   }, [post, comments])
@@ -85,26 +98,36 @@ const SiguiendoJugadores = () => {
       )}
       <ScrollView>
         <HeaderIcons />
-        {sortedPosts.map((publication, i) => (
-          <Carousel
-            key={publication.id}
-            name={publication?.author?.nickname}
-            description={publication?.description}
-            imgPerfil={
-              publication?.author?.sportman
-                ? publication?.author?.sportman?.info?.img_perfil
-                : publication?.author?.club?.img_perfil
-            }
-            image={publication?.image}
-            club={publication?.club === user?.user?.type}
-            likes={publication?.likes}
-            commentCount={publication.commentCount}
-            index={i}
-            userId={user?.user?.id}
-            authorId={publication.author.id}
-            data={publication}
-          />
-        ))}
+        <View
+          style={{
+            width: '95%',
+            alignSelf: 'center',
+            gap: 15,
+            paddingBottom: 20
+          }}
+        >
+          {sortedPosts?.map((publication, i) => (
+            <Carousel
+              key={publication.id}
+              name={publication?.author?.nickname}
+              description={publication?.description}
+              imgPerfil={
+                publication?.author?.sportman
+                  ? publication?.author?.sportman?.info?.img_perfil
+                  : publication?.author?.club?.img_perfil
+              }
+              image={publication?.image}
+              club={publication?.club === user?.user?.type}
+              likes={publication?.likes}
+              commentCount={publication?.commentCount}
+              index={i}
+              id={publication?.id}
+              userId={user?.user?.id}
+              authorId={publication.author.id}
+              data={publication}
+            />
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   )
