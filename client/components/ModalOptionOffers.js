@@ -11,7 +11,7 @@ const ModalOptionOffers = ({ onClose, offerId }) => {
       <Pressable
         onPress={() => {
           onClose()
-          navigation.navigate('ConfigurarAnuncio', { editOffer: true })
+          navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId })
         }}
       >
         <View>

@@ -80,7 +80,7 @@ const IniciarSesin = () => {
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
-          await AsyncStorage.setItem('user', response?.payload)
+          // await AsyncStorage.setItem('user', response?.payload)
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
         })
@@ -126,7 +126,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
-                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           value={valuesUser.email}
@@ -147,7 +153,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
-                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={true}
@@ -330,14 +342,6 @@ const styles = StyleSheet.create({
   iniciarSesin: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
-  },
-  nombre: {
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
-  },
-  eMailSpaceBlock: {
-    marginLeft: 10
   }
 })
 

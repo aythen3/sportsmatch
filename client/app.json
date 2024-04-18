@@ -15,22 +15,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aythenapps.sportsmatch"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/smiconmain.png",
         "backgroundColor": "#000"
       },
-      "package": "com.mauriidg.spotsmatch",
       "versionCode": 1,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.aythenapps.sportsmatch"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -54,9 +51,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2e24e316-402e-462f-8799-ee82d86792bd"
+        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
       }
     },
-    "owner": "azschiaffino"
+    "owner": "aythenapps"
   }
 }
