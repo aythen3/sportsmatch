@@ -52,7 +52,7 @@ const ConfigurarAnuncio = () => {
 
   const [clubData, setClubData] = useState()
   const { editOffer } = route.params || false
-  const { offerId } = route.params
+  const { offerId } = route.params || false
 
   const statesCleanUp = (stateToUpdate) => {
     const stateSetters = {
