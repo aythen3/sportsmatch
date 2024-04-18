@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   Pressable,
   Modal,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -18,20 +19,23 @@ import FiltersSportman from '../components/FiltersSportman'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMatch } from '../redux/actions/matchs'
 import { getAllOffers, signToOffer } from '../redux/actions/offers'
+import { Context } from '../context/Context'
 
 const TodasLasOfertas = () => {
   const dispatch = useDispatch()
+  const {userMatches} = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
   const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
-
+const [showPremiumModal,setShowPremiumModal]= useState(false)
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
 
   useEffect(() => {
     dispatch(getAllOffers())
   }, [])
+  console.log('userMatches: ',userMatches)
 
   useEffect(() => {
     console.log('offers: ', offers)
@@ -70,7 +74,7 @@ const TodasLasOfertas = () => {
           flexDirection: 'row',
           justifyContent: 'space-around',
           marginTop: 20,
-          marginBottom: 15
+          marginBottom: 5
         }}
       >
         <Pressable
@@ -131,9 +135,19 @@ const TodasLasOfertas = () => {
         </Pressable>
       </View>
 
-      {offers && offers.length > 0 ? (
+      {offers && offers.filter(offer=>{
+            const filteredUserMatches = userMatches.filter(match=>match.offerId !== offer.id)
+            if(filteredUserMatches.length > 0) {
+              return false
+            } return true
+          }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
-          {offers.map((offer, index) => (
+          {offers.filter(offer=>{
+            const filteredUserMatches = userMatches.filter(match=>match.offerId !== offer.id)
+            if(filteredUserMatches.length > 0) {
+              return false
+            } return true
+          }).slice(0,2).map((offer, index) => (
             <View
               key={index}
               style={{
@@ -270,8 +284,52 @@ const TodasLasOfertas = () => {
         </View>
       )}
 
+      {
+        offers.filter(offer=>{
+          const filteredUserMatches = userMatches.filter(match=>match.offerId !== offer.id)
+          if(filteredUserMatches.length > 0) {
+            return false
+          } return true
+        }).length>2 &&  <TouchableOpacity
+        style={{backgroundColor: Color.wHITESPORTSMATCH,
+          marginTop: 0,
+          width: '95%',
+          justifyContent: 'center',
+          paddingHorizontal: Padding.p_81xl,
+          paddingVertical: Padding.p_3xs,
+          alignSelf:'center',
+          zIndex: 3,
+          marginBottom: 10,
+          backgroundColor: Color.wHITESPORTSMATCH,
+          borderRadius: Border.br_81xl,
+          flexDirection: 'row',
+          alignItems: 'center'}}
+        onPress={() => setShowPremiumModal(true)}
+      >
+        <Text style={{fontSize: FontSize.button_size,
+    color: Color.bLACK1SPORTSMATCH,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontWeight: '700'}}>Ver mas ofertas</Text>
+      </TouchableOpacity>
+      }
+
       <Modal visible={modalVisible} transparent={true} animationType="slide">
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingHorizontal: 15
+            }}
+          >
+            <MonetizarOfertaPRO onClose={() => setModalVisible(false)} />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+      <Modal visible={showPremiumModal} transparent={true} animationType="slide">
+        <TouchableWithoutFeedback onPress={() => setShowPremiumModal(false)}>
           <View
             style={{
               flex: 1,
@@ -290,16 +348,23 @@ const TodasLasOfertas = () => {
         transparent={true}
         animationType="slide"
       >
-        <View
-          style={{
-            width: 200,
-            position: 'absolute',
-            right: 10,
-            top: 160
+       <TouchableWithoutFeedback onPress={() => setModalFilterSportman(false)}>
+       <View
+          // style={{
+          //   width: 200,
+          //   position: 'absolute',
+          //   right: 10,
+          //   top: 160
+          // }}
+          style={{            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'flex-end',paddingTop:132,
+            paddingHorizontal: 20
           }}
         >
           <FiltersSportman onClose={() => setModalFilterSportman(false)} />
         </View>
+       </TouchableWithoutFeedback>
       </Modal>
     </View>
   )

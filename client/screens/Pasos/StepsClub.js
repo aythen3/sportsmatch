@@ -149,7 +149,7 @@ const StepsClub = () => {
             {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
           </Text>
         </View>
-        <Lines index={stepsIndex} />
+        <Lines club={true} index={stepsIndex} />
 
         {ViewComponent(stepsIndex)}
 

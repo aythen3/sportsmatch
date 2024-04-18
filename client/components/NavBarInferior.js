@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
@@ -6,21 +6,24 @@ import HomeSVG from './svg/footerSVG/HomeSVG'
 import MessageSVG from './svg/footerSVG/MessageSVG'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
-import { Context } from '../context/Context'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSportman } from '../redux/actions/sportman'
 
 const NavBarInferior = () => {
   const navigation = useNavigation()
-
+const dispatch = useDispatch()
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
   const [activeIcon, setActiveIcon] = useState(null)
 
-  // useEffect(() => {
-  //   console.log('User form nav: ', user)
-  //   console.log('sportman from nav: ', sportman)
-  // }, [])
+  useEffect(() => {
+    console.log('User form nav: ', user)
+    console.log('sportman from nav: ', sportman)
+    if (Object.keys(sportman).length === 0) {
+      dispatch(getSportman(user?.user?.sportman?.id))
+    }
+  }, [])
 
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)

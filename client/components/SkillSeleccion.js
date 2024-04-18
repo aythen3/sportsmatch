@@ -115,7 +115,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={{ height: '70%' }}>
       <View
         style={{
           height: 40,

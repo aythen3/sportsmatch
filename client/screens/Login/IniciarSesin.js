@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -25,8 +25,15 @@ import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { Context } from '../../context/Context'
 
 const IniciarSesin = () => {
+  const {
+    setProvisoryProfileImage,
+    setProvisoryCoverImage,
+    setProfileImage,
+    setCoverImage
+  } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
 
@@ -71,6 +78,11 @@ const IniciarSesin = () => {
 
   const handleSubmit = () => {
     // console.log('on handleSubmit')
+    console.log('on handlesubmit')
+    setProvisoryProfileImage()
+    setProvisoryCoverImage()
+    setProfileImage()
+    setCoverImage()
     if (valuesUser.email && valuesUser.password) {
       console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
