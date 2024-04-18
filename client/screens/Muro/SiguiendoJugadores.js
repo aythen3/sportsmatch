@@ -29,6 +29,7 @@ const SiguiendoJugadores = () => {
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
+  const { sportman } = useSelector((state) => state.sportman)
   const { user, allUsers } = useSelector((state) => state.users)
   const { allNotifications } = useSelector((state) => state.notifications)
   const { comments } = useSelector((state) => state.comments)
@@ -57,7 +58,9 @@ const SiguiendoJugadores = () => {
       type: user?.user?.type
     }
     dispatch(getUserChild(data))
-    // dispatch(getSportman(user?.user?.sportman?.id))
+    if (Object.keys(sportman).length === 0) {
+      dispatch(getSportman(user?.user?.sportman?.id))
+    }
   }, [])
 
   useEffect(() => {

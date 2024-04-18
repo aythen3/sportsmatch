@@ -123,7 +123,6 @@ const ConfigurarAnuncio = () => {
     }
     fetchClubData()
   }, [])
-  console.log('allPositions: ', allPositions)
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -151,8 +150,8 @@ const ConfigurarAnuncio = () => {
           >
             <Text style={styles.inputText}>
               {selectedPosition
-                ? selectedPosition.name.charAt(0).toUpperCase() +
-                  selectedPosition.name.slice(1).toLowerCase()
+                ? selectedPosition?.name.charAt(0).toUpperCase() +
+                  selectedPosition?.name.slice(1).toLowerCase()
                 : 'Selecciona una posicion'}
             </Text>
             {showModal && (
@@ -169,10 +168,10 @@ const ConfigurarAnuncio = () => {
                 {allPositions
                   .filter(
                     (position) =>
-                      position.sport.name === clubData.sports[0].name
+                      position.sport?.name === clubData.sports[0]?.name
                   )
                   .map((position) => {
-                    return { name: position.name, id: position.id }
+                    return { name: position?.name, id: position.id }
                   })
                   .map((item, index) => (
                     <TouchableOpacity
@@ -197,11 +196,11 @@ const ConfigurarAnuncio = () => {
                             allPositions
                               .filter(
                                 (position) =>
-                                  position.sport.name ===
-                                  clubData.sports[0].name
+                                  position.sport?.name ===
+                                  clubData.sports[0]?.name
                               )
                               .map((position) => {
-                                return position.name
+                                return position?.name
                               }).length -
                               1
                               ? 1
@@ -210,8 +209,8 @@ const ConfigurarAnuncio = () => {
                           ...styles.optionText
                         }}
                       >
-                        {item.name.charAt(0).toUpperCase() +
-                          item.name.slice(1).toLowerCase()}
+                        {item?.name.charAt(0).toUpperCase() +
+                          item?.name.slice(1).toLowerCase()}
                       </Text>
                     </TouchableOpacity>
                   ))}

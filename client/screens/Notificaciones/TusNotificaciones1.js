@@ -63,7 +63,7 @@ const TusNotificaciones1 = () => {
   }, [offers])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
-
+// console.log('allusers: ', allUsers)
   const userId = user?.user?.id
   if (!allUsers)
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
