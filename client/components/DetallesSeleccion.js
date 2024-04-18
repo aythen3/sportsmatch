@@ -78,21 +78,31 @@ const SkillSeleccion = ({
 
   return (
     <View style={styles.formulariosInferiores}>
-      <Acordeon
-        title="Sexo"
-        placeholderText={selectedGenero ? selectedGenero : 'Selecciona tu sexo'}
-        isAccordeon={true}
-        open={openModal}
-      />
-      {modalVisible && (
-        <CustomModal
-          visible={modalVisible}
-          closeModal={closeModal}
-          onSelectItem={handleSelectGenero}
-          options={opcionesGenero}
+      <View
+        style={{
+          position: 'relative',
+          width: '100%',
+          marginTop: 10,
+          zIndex: 5000
+        }}
+      >
+        <Acordeon
+          title="Sexo"
+          placeholderText={
+            selectedGenero ? selectedGenero : 'Selecciona tu sexo'
+          }
+          isAccordeon={true}
+          open={openModal}
         />
-      )}
-
+        {modalVisible && (
+          <CustomModal
+            visible={modalVisible}
+            closeModal={closeModal}
+            onSelectItem={handleSelectGenero}
+            options={opcionesGenero}
+          />
+        )}
+      </View>
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Año de Nacimiento</Text>
         <Pressable

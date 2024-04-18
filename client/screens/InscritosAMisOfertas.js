@@ -17,6 +17,7 @@ import Premium from './Premium'
 import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { updateOffer } from '../redux/actions/offers'
 import { sendNotification } from '../redux/actions/notifications'
+import { BlurView } from 'expo-blur';
 
 const InscritosAMisOfertas = () => {
   const dispatch = useDispatch()
@@ -52,7 +53,7 @@ const InscritosAMisOfertas = () => {
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         {inscriptions.length > 0 ? (
           <View>
-            {inscriptions.map((inscription, index) => (
+            {inscriptions.slice(0,2).map((inscription, index) => (
               <View
                 key={index}
                 style={{
@@ -75,7 +76,7 @@ const InscritosAMisOfertas = () => {
                 >
                   <Image
                     style={{ width: 50, height: 50, borderRadius: 100 }}
-                    resizeMode="contain"
+                    contentFit="contain"
                     source={{
                       uri: allUsers
                         .filter(
@@ -203,7 +204,7 @@ const InscritosAMisOfertas = () => {
                 >
                   <Image
                     style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-                    resizeMode="contain"
+                    contentFit="contain"
                     source={require('../assets/matchButton.png')}
                   />
                 </TouchableOpacity>
@@ -228,6 +229,64 @@ const InscritosAMisOfertas = () => {
             </Text>
           </View>
         )}
+        
+         {inscriptions.length > 2 && <View                
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '95%',
+                  height: 80,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#cecece'
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center'
+                  }}
+                >
+                  {/* <View style={{borderRadius:100,overflow:'hidden'}}>
+                  <BlurView style={{zIndex:1000, borderRadius:100}} intensity={160}>
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100,zIndex:-1000 }}
+                    contentFit="contain"
+                    source={{
+                      uri: allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscriptions[2])[0]
+                        .sportman.info.img_perfil
+                    }}
+                  />
+                  </BlurView>
+                  </View> */}
+                  <View style={{position:'relative'}}>
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100 }}
+                    contentFit="contain"
+                    source={require('../assets/blurryProfile2.png')}
+                  />
+                 {inscriptions.length > 3 && <Image
+                    style={{ position:'absolute', top:4,left:7,width: 50, height: 50, borderRadius: 100 }}
+                    contentFit="contain"
+                    source={require('../assets/blurryProfile.png')}
+                  />}
+                  </View>
+                  
+                  <Text
+                    style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                  >
+                    {
+                    inscriptions.length > 3 ? `+ ${inscriptions.length-2} inscripciones más` : '+ 1 inscripción más'
+                    }
+                  </Text>
+                </View>
+              </View>}
       </View>
 
       <View style={[styles.textoSpaceBlock]}>
@@ -246,7 +305,17 @@ visualizar todas las inscripciones`}</Text>
           >{`¡Sube de nivel en tu cuenta para 
 visualizar todas las inscripciones!`}</Text>
           <Pressable
-            style={[styles.botonPremium, styles.capacityBg]}
+            style={{backgroundColor: Color.wHITESPORTSMATCH,
+              marginTop: 14,
+              width: '95%',
+              justifyContent: 'center',
+              paddingHorizontal: Padding.p_81xl,
+              paddingVertical: Padding.p_3xs,
+              zIndex: 3,
+              backgroundColor: Color.wHITESPORTSMATCH,
+              borderRadius: Border.br_81xl,
+              flexDirection: 'row',
+              alignItems: 'center'}}
             onPress={() => setModalPremium(true)}
           >
             <Text style={styles.textoBoton}>Hazte premium</Text>
@@ -316,10 +385,6 @@ const styles = StyleSheet.create({
   },
   textoSpaceBlock: {
     marginTop: 9
-  },
-  capacityBg: {
-    backgroundColor: Color.wHITESPORTSMATCH,
-    marginTop: 10
   },
   menuClubPosition: {
     left: '50%',

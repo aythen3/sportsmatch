@@ -114,7 +114,7 @@ const Paso1 = () => {
 
   const handleNavigation = async () => {
     if (sportman) {
-      setStepsSportman((prev) => prev + 1)
+      stepsSportman !== 1 && setStepsSportman((prev) => prev + 1)
       if (stepsSportman === 1) {
         const fullData = {
           ...sportmanValues,

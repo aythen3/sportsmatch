@@ -33,6 +33,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const {club} = useSelector(state=>state.clubs)
 
   const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
@@ -84,7 +85,7 @@ const OfertasEmitidas = () => {
             Aun no has creado ninguna oferta!
           </Text>
         ) : (
-          offers.map((offer, i) => (
+          offers.filter(offer=>offer.club.id === club.id).map((offer, i) => (
             <View key={offer.id} style={styles.offers}>
               <View style={styles.offerView}>
                 <Text style={[styles.oferta1, styles.sexo1Typo]}>

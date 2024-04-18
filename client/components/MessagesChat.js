@@ -20,6 +20,7 @@ const MessagesChat = ({
 }) => {
   const dispatch = useDispatch()
   const { offers } = useSelector((state) => state.offers)
+  const { club } = useSelector((state) => state.clubs)
   console.log('profilePic: ', profilePic)
   const isFocused = useIsFocused()
   const { getTimeFromDate, clubMatches, getClubMatches, userMatches } =
@@ -35,8 +36,9 @@ const MessagesChat = ({
     )
     setConvMessages(data)
   }
-  console.log('userMatches: ', userMatches)
 
+  // console.log('name:',name,'sportmanId: ', sportmanId)
+  
   useEffect(() => {
     getChatMessages()
   }, [])
@@ -190,8 +192,12 @@ const MessagesChat = ({
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
-              match.status === 'pending'
-          )?.length > 0 && (
+              match.status === 'success'
+          )?.length === 0 && offers.filter(
+            (offer) =>
+              offer.inscriptions &&
+              offer.inscriptions.includes(sportmanId) && offer.club.id === club.id
+          ).length > 0 && (
             <Pressable
               onPress={() => {
                 const currentOffer = offers.filter(
@@ -203,7 +209,7 @@ const MessagesChat = ({
                   (offer) =>
                     offer.inscriptions &&
                     offer.inscriptions.includes(sportmanId)
-                )[0].id
+                )[0]?.id
                 console.log('offerId: ', offerId)
                 const newInscriptions = currentOffer.inscriptions.filter(
                   (applicant) => applicant !== sportmanId
@@ -219,16 +225,16 @@ const MessagesChat = ({
                 )[0]
                 console.log('sportmanUser', sportmanUser)
 
-                console.log('club', user.user)
+                console.log('club', user?.user)
 
                 dispatch(
                   sendMatch({
                     offerId,
                     sportmanId,
-                    clubId: user.user.club.id,
+                    clubId: user?.user?.club?.id,
                     status: 'success',
                     prop1: {
-                      clubId: user.user.club.id,
+                      clubId: user?.user?.club?.id,
                       offerId,
                       sportmanId,
                       sportManData: {
@@ -272,7 +278,7 @@ const MessagesChat = ({
                           matchId: data?.payload?.id,
                           clubData: {
                             name: user?.user?.nickname,
-                            userId: user.user.id,
+                            userId: user?.user?.id,
                             ...user?.user?.club
                           }
                         }
@@ -301,7 +307,7 @@ const MessagesChat = ({
             >
               <Image
                 style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-                resizeMode="contain"
+                contentFit="contain"
                 source={require('../assets/matchButton.png')}
               />
             </Pressable>
