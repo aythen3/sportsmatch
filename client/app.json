@@ -16,7 +16,6 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aythenapps.sportsmatch"
@@ -53,10 +52,8 @@
     "extra": {
       "eas": {
         "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
-        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
       }
     },
-    "owner": "aythenapps"
     "owner": "aythenapps"
   }
 }
