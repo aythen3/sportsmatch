@@ -6,7 +6,8 @@ import {
   Text,
   Pressable,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native'
 import {
   Color,
@@ -51,7 +52,12 @@ const EliminarOferta = () => {
         flex: 1
       }}
     >
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
         <Text
           style={{
             fontSize: FontSize.h3TitleMEDIUM_size,
@@ -94,16 +100,31 @@ eliminar esta oferta?`}</Text>
         </View>
 
         {color && (
-          <View style={{ marginTop: 22 }}>
+          <View
+            style={{
+              marginTop: 22,
+              width: '100%'
+            }}
+          >
             <View>
-              <Text style={[styles.indcanosConQuin, styles.carlesMirTypo]}>
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  alignSelf: 'stretch',
+                  textAlign: 'left',
+                  lineHeight: 17,
+                  fontSize: FontSize.t1TextSMALL_size,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
                 Indícanos con quién has llegado a un acuerdo.
               </Text>
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{
                   marginTop: 5,
-                  maxHeight: 200
+                  maxHeight: 200,
+                  width: Dimensions.get('screen').width - 25
                 }}
               >
                 <View
@@ -243,16 +264,6 @@ const styles = StyleSheet.create({
   imagenIconLayout: {
     maxWidth: '100%',
     overflow: 'hidden'
-  },
-  indcanosConQuin: {
-    color: Color.gREY2SPORTSMATCH,
-    alignSelf: 'stretch'
-  },
-  carlesMirTypo: {
-    textAlign: 'left',
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    fontFamily: FontFamily.t4TEXTMICRO
   },
   botonLayout: {
     width: 360,

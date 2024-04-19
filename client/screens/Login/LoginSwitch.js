@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator
+} from 'react-native'
 import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -13,6 +21,15 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
+import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-auth-session/providers/google'
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential
+} from 'firebase/auth'
+import { auth } from '../../firebaseConfig'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -35,6 +52,57 @@ const LoginSwitch = () => {
   useEffect(() => {
     console.log('isSportman', isSportman)
   }, [isSportman])
+
+  const [userInfo, setUserInfo] = useState()
+  const [loading, setLoading] = useState(false)
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    iosClientId:
+      '981049209549-nvp257t5bs9kr6dmi2hmmi7giogt5r95.apps.googleusercontent.com',
+    androidClientId:
+      '981049209549-t4haotgorjpg38l5mbml8bebnnrpcotk.apps.googleusercontent.com'
+  })
+
+  const getLocalUser = async () => {
+    try {
+      setLoading(true)
+      const userJSON = await AsyncStorage.getItem('@user')
+      const userData = userJSON ? JSON.parse(userJSON) : null
+      setUserInfo(userData)
+    } catch (e) {
+      console.log(e, 'Error getting local user')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params
+      const credential = GoogleAuthProvider.credential(id_token)
+      signInWithCredential(auth, credential)
+    }
+  }, [response])
+
+  useEffect(() => {
+    getLocalUser()
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await AsyncStorage.setItem('@user', JSON.stringify(user))
+        console.log(JSON.stringify(user, null, 2))
+        setUserInfo(user)
+      } else {
+        console.log('user not authenticated')
+      }
+    })
+    return () => unsub()
+  }, [])
+
+  if (loading)
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    )
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.loginSwitch}>
@@ -106,7 +174,10 @@ const LoginSwitch = () => {
                 <View style={styles.frameGroup}>
                   <View style={styles.frameGroup}>
                     <View>
-                      <View style={styles.loremIpsumParent}>
+                      <TouchableOpacity
+                        onPress={promptAsync}
+                        style={styles.loremIpsumParent}
+                      >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Contínua con Google
@@ -118,7 +189,7 @@ const LoginSwitch = () => {
                           contentFit="cover"
                           source={require('../../assets/group-236.png')}
                         />
-                      </View>
+                      </TouchableOpacity>
                       <View style={styles.loremIpsumGroup}>
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>

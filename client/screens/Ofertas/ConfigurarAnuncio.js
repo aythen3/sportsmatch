@@ -52,6 +52,7 @@ const ConfigurarAnuncio = () => {
 
   const [clubData, setClubData] = useState()
   const { editOffer } = route.params || false
+  const { offerId } = route.params || false
 
   const statesCleanUp = (stateToUpdate) => {
     const stateSetters = {
@@ -447,28 +448,54 @@ const ConfigurarAnuncio = () => {
                       sexo: selectedGender,
                       category: selectedCategory,
                       urgency: selectedPriority,
-                      retribution: selectedRemuneration === 'Si' ? true : false
+                      retribution:
+                        selectedRemuneration === 'Si'
+                          ? true
+                          : selectedRemuneration === 'No'
+                            ? false
+                            : null
                     },
-                    positionId: selectedPosition.id,
-                    clubId: club.id
+                    positionId: selectedPosition?.id,
+                    clubId: club?.id
                   }
                   console.log('data: ', data)
-                  await dispatch(setOffer(data)).then((data)=>dispatch(getAllOffers()))
-                  
+                  await dispatch(setOffer(data)).then((data) =>
+                    dispatch(getAllOffers())
+                  )
+
                   navigation.goBack()
                 } else {
+                  // const data = {
+                  //   offerData: {
+                  //     ...(selectedGender && { sexo: selectedGender }),
+                  //     ...(selectedCategory && { category: selectedCategory }),
+                  //     ...(selectedPriority && { urgency: selectedPriority }),
+                  //     ...(selectedRemuneration && {
+                  //       retribution:
+                  //         selectedRemuneration === 'Si' ? true : false
+                  //     })
+                  //   },
+                  //   ...(selectedPosition && {
+                  //     positionId: selectedPosition.id
+                  //   }),
+                  //   ...(club && { clubId: club.id })
+                  // }
                   const data = {
-                    offerData: {
-                      sexo: selectedGender,
-                      category: selectedCategory,
-                      urgency: selectedPriority,
-                      retribution: selectedRemuneration
-                    },
-                    positionId: selectedPosition.id,
-                    clubId: club.id
+                    ...(selectedGender && { sexo: selectedGender }),
+                    ...(selectedCategory && { category: selectedCategory }),
+                    ...(selectedPriority && { urgency: selectedPriority }),
+                    ...(selectedRemuneration && {
+                      retribution: selectedRemuneration === 'Si' ? true : false
+                    }),
+                    ...(selectedPosition && {
+                      positionId: selectedPosition.id
+                    })
                   }
-                  console.log('data from offer: ', data)
-                  await dispatch(updateOffer(data))
+                  console.log('data: ', data)
+                  await dispatch(updateOffer({ id: offerId, body: data })).then(
+                    (data) => dispatch(getAllOffers())
+                  )
+
                   navigation.goBack()
                 }
               }}

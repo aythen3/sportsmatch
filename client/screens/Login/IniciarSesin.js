@@ -28,10 +28,12 @@ import { setIsSpotMan } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 
 const IniciarSesin = () => {
-  const { setProvisoryProfileImage,
+  const {
+    setProvisoryProfileImage,
     setProvisoryCoverImage,
     setProfileImage,
-    setCoverImage} = useContext(Context)
+    setCoverImage
+  } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
 
@@ -136,10 +138,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
-                            style={{color: Color.wHITESPORTSMATCH,
-                              fontFamily: FontFamily.t4TEXTMICRO,
-                              fontSize: FontSize.t2TextSTANDARD_size,
-                              marginLeft: 10, width:'80%'}}
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           value={valuesUser.email}
@@ -160,10 +165,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
-                          style={{color: Color.wHITESPORTSMATCH,
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10, width:'80%'}}
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={true}
@@ -346,7 +354,7 @@ const styles = StyleSheet.create({
   iniciarSesin: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
-  },
+  }
 })
 
 export default IniciarSesin
