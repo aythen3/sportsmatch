@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -25,8 +25,21 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
     await pickImage(type)
   }
 
+  const [scrolledHeight, setScrolledHeight] = useState(0)
+
+  const handleScroll = (event) => {
+    const { contentOffset } = event.nativeEvent
+    const height = contentOffset.y // Get the scrolled height
+    console.log('height: ', height)
+    setScrolledHeight(height)
+  }
+
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'} style={{ height: '70%' }}>
+    <ScrollView
+      onScroll={handleScroll}
+      keyboardShouldPersistTaps={'always'}
+      style={{ height: '70%' }}
+    >
       <View>
         <View style={{ marginBottom: 30 }}>
           <View style={styles.headersubirImagenesPerfil}>
@@ -99,6 +112,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
         </View>
 
         <DetallesSeleccion
+          scrolledHeight={scrolledHeight}
           sportmanValues={sportmanValues}
           setSportmanValues={setSportmanValues}
         />

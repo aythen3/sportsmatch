@@ -29,7 +29,7 @@ import {
   signInWithCredential
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -59,7 +59,7 @@ const LoginSwitch = () => {
     iosClientId:
       '981049209549-nvp257t5bs9kr6dmi2hmmi7giogt5r95.apps.googleusercontent.com',
     androidClientId:
-      '981049209549-t4haotgorjpg38l5mbml8bebnnrpcotk.apps.googleusercontent.com'
+      '981049209549-b2d80rtev22jklna06n2j7ingp6tfjo1.apps.googleusercontent.com'
   })
 
   const getLocalUser = async () => {
@@ -175,7 +175,7 @@ const LoginSwitch = () => {
                   <View style={styles.frameGroup}>
                     <View>
                       <TouchableOpacity
-                        onPress={promptAsync}
+                        onPress={() => promptAsync()}
                         style={styles.loremIpsumParent}
                       >
                         <View style={styles.loremIpsum2}>
