@@ -12,7 +12,10 @@ export class OfferEntity extends BaseEntity {
     type: 'enum',
     enum: ['Male', 'Female', 'Otro']
   })
-  sexo: 'Male' | 'Female' | 'Otro';
+
+  @Column()
+  @IsString()
+  sexo: string;
 
   @Column()
   @IsString()

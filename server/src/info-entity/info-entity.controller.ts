@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseArrayPipe, Post, Query } from '@nestjs/common';
 import { InfoEntityService } from './info-entity.service';
 import { NotificationService } from 'src/notification/notification.service';
+import { Info } from './info.interface';
 
 @Controller('info-entity')
 export class InfoEntityController {
@@ -50,4 +51,37 @@ export class InfoEntityController {
       return { error: error.message };
     }
   }
+
+
+
+//buscar parcialmente un string dentro de una propiedad, de una entidad
+  @Get('/:entity')
+  async filterEntity(
+    @Param('entity') entity: string,
+    @Query('filters', new ParseArrayPipe({ items: String})) filters: string[]
+  ) {
+    const filterObject = {};
+    filters.forEach(filter => {
+      const [key, value] = filter.split(':');
+      filterObject[key] = value;
+    });
+
+    try {
+      const results = await this.infoEntityService.dynamicFilter(entity, filterObject);
+      return { data: results };
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+
+// buscar
+@Post('filter')
+async filterInfo(@Body() info: Info, @Body() filter: Info) {
+  try {
+    const matches = this.infoEntityService.filterInfo(info, filter);
+    return { data: matches };
+  } catch (error) {
+    return { error: error.message };
+  }
+}
 }

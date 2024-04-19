@@ -15,6 +15,7 @@ import { CreateSportmanDto } from './dto/create-sportman.dto';
 import { UpdateSportmanDto } from './dto/update-sportman.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';
+import { SportmanEntity } from './entities/sportman.entity';
 
 @Controller('sportman')
 export class SportmanController {
@@ -96,6 +97,12 @@ export class SportmanController {
     return this.sportmanService.findInfoRelation(sportmanId, relationsArray);
   }
 
+  @Post('filter')
+  async filterSportmen(@Body() filters: any): Promise<SportmanEntity[]> {
+    const sportmen = await this.sportmanService.filterSportmen(filters);
+    return sportmen;
+  }
+  
   
 }
 

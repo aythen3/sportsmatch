@@ -27,7 +27,7 @@ export class OfferService {
    */
   public async create(createOfferDto: CreateOfferDto) {
     try {
-      const { offerData, positionId, clubId } = createOfferDto;
+      const { offerData, position:positionId, clubId } = createOfferDto;
 
       // const position = await this.positionService.findOne(positionId);
       const position = await this.positionRepository.findOne({where:{id:positionId}})
@@ -138,34 +138,50 @@ export class OfferService {
 
   async update(id: string, updateOfferDto: UpdateOfferDto) {
     const offer = await this.offerRepository.findOne({ where: { id: id } });
-
+  
     if (!offer) {
-        throw new Error(`Offer with id ${id} not found`);
+      throw new Error(`Offer with id ${id} not found`);
     }
-
-    // Verificar si cada propiedad existe en el DTO de actualización y actualizarla si es así
-
+  
+    if (updateOfferDto.sexo !== undefined) {
+      offer.sexo = updateOfferDto.sexo;
+    }
+    if (updateOfferDto.category !== undefined) {
+      offer.category = updateOfferDto.category;
+    }
+    if (updateOfferDto.urgency !== undefined) {
+      offer.urgency = updateOfferDto.urgency;
+    }
+    if (updateOfferDto.retribution !== undefined) {
+      offer.retribution = updateOfferDto.retribution;
+    }
     if (updateOfferDto.prop1 !== undefined) {
-        offer.prop1 = updateOfferDto.prop1;
+      offer.prop1 = updateOfferDto.prop1;
     }
     if (updateOfferDto.prop2 !== undefined) {
-        offer.prop2 = updateOfferDto.prop2;
+      offer.prop2 = updateOfferDto.prop2;
     }
     if (updateOfferDto.matches !== undefined) {
-        offer.matches = updateOfferDto.matches;
+      offer.matches = updateOfferDto.matches;
     }
     if (updateOfferDto.prop4 !== undefined) {
-        offer.prop4 = updateOfferDto.prop4;
+      offer.prop4 = updateOfferDto.prop4;
+    }
+    if (updateOfferDto.position !== undefined) {
+      offer.position = updateOfferDto.position;
+    }
+    if (updateOfferDto.club !== undefined) {
+      offer.club = updateOfferDto.club;
     }
     if (updateOfferDto.inscriptions !== undefined) {
-        offer.inscriptions = updateOfferDto.inscriptions;
+      offer.inscriptions = updateOfferDto.inscriptions;
     }
-
-    // Guardar la oferta actualizada en la base de datos
+  
     const updatedOffer = await this.offerRepository.save(offer);
-
+  
     return updatedOffer;
-}
+  }
+  
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
     return `This action updates a #${updateOfferDto} offer`;
