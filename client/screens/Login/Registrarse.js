@@ -120,14 +120,33 @@ const Registrarse = () => {
                 </Text>
                 <View style={styles.campos}>
                   <View style={styles.campo1}>
-                    <View style={styles.campo1Frame}>
+                    <View
+                      style={{
+                        gap: 5,
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: Padding.p_mini,
+                        borderColor: Color.gREY2SPORTSMATCH,
+                        borderWidth: 1,
+                        borderRadius: Border.br_81xl,
+                        flexDirection: 'row',
+                        height: 40
+                      }}
+                    >
                       <Image
                         style={styles.simboloIcon1}
                         contentFit="cover"
                         source={require('../../assets/simbolo4.png')}
                       />
                       <TextInput
-                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        style={{
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: FontSize.t2TextSTANDARD_size,
+                          marginLeft: 10,
+                          textAlign: 'left',
+                          width: '80%'
+                        }}
                         placeholder="Nombre"
                         placeholderTextColor="#999"
                         value={valuesUser.nickname}
@@ -139,14 +158,33 @@ const Registrarse = () => {
                     </View>
                   </View>
                   <View style={styles.campo2}>
-                    <View style={[styles.campo2Frame, styles.framePosition]}>
+                    <View
+                      style={{
+                        gap: 5,
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: Padding.p_mini,
+                        borderColor: Color.gREY2SPORTSMATCH,
+                        borderWidth: 1,
+                        borderRadius: Border.br_81xl,
+                        flexDirection: 'row',
+                        height: 40
+                      }}
+                    >
                       <Image
                         style={styles.vectorIcon}
                         contentFit="cover"
                         source={require('../../assets/vector4.png')}
                       />
                       <TextInput
-                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        style={{
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: FontSize.t2TextSTANDARD_size,
+                          marginLeft: 10,
+                          textAlign: 'left',
+                          width: '80%'
+                        }}
                         placeholder="E-mail"
                         placeholderTextColor="#999"
                         autoCapitalize="none"
@@ -181,7 +219,14 @@ const Registrarse = () => {
                         source={require('../../assets/simbolo3.png')}
                       />
                       <TextInput
-                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        style={{
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: FontSize.t2TextSTANDARD_size,
+                          marginLeft: 10,
+                          textAlign: 'left',
+                          width: '90%'
+                        }}
                         placeholder="Contraseña"
                         placeholderTextColor="#999"
                         secureTextEntry={true}
@@ -202,7 +247,14 @@ const Registrarse = () => {
                         source={require('../../assets/simbolo3.png')}
                       />
                       <TextInput
-                        style={[styles.nombre, styles.eMailSpaceBlock]}
+                        style={{
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: FontSize.t2TextSTANDARD_size,
+                          marginLeft: 10,
+                          textAlign: 'left',
+                          width: '90%'
+                        }}
                         placeholder="Confirmar contraseña"
                         placeholderTextColor="#999"
                         secureTextEntry={true}
@@ -341,16 +393,15 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t2TextSTANDARD_size
   },
   campo1Frame: {
-    paddingTop: Padding.p_2xs,
-    paddingBottom: Padding.p_2xs,
-    paddingRight: Padding.p_12xs,
-    paddingLeft: Padding.p_mini,
+    gap: 5,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: Padding.p_mini,
     borderColor: Color.gREY2SPORTSMATCH,
     borderWidth: 1,
-    borderStyle: 'solid',
     borderRadius: Border.br_81xl,
     flexDirection: 'row',
-    overflow: 'hidden'
+    height: 40
   },
   campo1: {
     width: 359,
@@ -365,7 +416,7 @@ const styles = StyleSheet.create({
   },
   campo2: {
     height: 38,
-    marginTop: 15,
+    marginTop: 11,
     width: 360
   },
   simboloIcon2: {

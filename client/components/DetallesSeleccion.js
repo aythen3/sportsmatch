@@ -7,11 +7,13 @@ import AñoNacimientoModal from './modals/AñoNacimientoModal'
 import Acordeon from './Acordeon'
 import { useDispatch } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
+import ScrollableModal from './modals/ScrollableModal'
 
 const SkillSeleccion = ({
   editable,
   setEditable,
   sportmanValues,
+  scrolledHeight,
   setSportmanValues
 }) => {
   const navigation = useNavigation()
@@ -76,8 +78,18 @@ const SkillSeleccion = ({
     }))
   }
 
+  const [cityTop, setCityTop] = useState(0)
+
   return (
-    <View style={styles.formulariosInferiores}>
+    <View
+      style={{
+        marginTop: 20,
+        width: '100%',
+        gap: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
       <View
         style={{
           position: 'relative',
@@ -103,7 +115,13 @@ const SkillSeleccion = ({
           />
         )}
       </View>
-      <View style={styles.formularioCategoria}>
+      <View
+        style={{
+          width: '100%',
+          zIndex: -1000,
+          paddingHorizontal: 15
+        }}
+      >
         <Text style={styles.atributo}>Año de Nacimiento</Text>
         <Pressable
           onPress={openAñoNacimientoModal}
@@ -124,10 +142,16 @@ const SkillSeleccion = ({
       </View>
 
       <View
+        collapsable={false}
+        onLayout={(event) => {
+          event.target.measure((x, y, width, height, pageX, pageY) => {
+            console.log(pageY)
+            setCityTop(pageY)
+          })
+        }}
         style={{
           position: 'relative',
-          width: '100%',
-          marginTop: 10
+          width: '100%'
         }}
       >
         <Acordeon
@@ -137,7 +161,9 @@ const SkillSeleccion = ({
           open={openCityModal}
         />
         {cityModal && (
-          <CustomModal
+          <ScrollableModal
+            scrollHeight={scrolledHeight}
+            parentTop={cityTop}
             visible={cityModal}
             closeModal={closeModal}
             onSelectItem={handleSelectCity}
@@ -146,7 +172,7 @@ const SkillSeleccion = ({
         )}
       </View>
 
-      <View style={styles.formularioCategoria}>
+      <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
         <Text style={styles.atributo}>Club actual</Text>
         <View style={styles.rectanguloBorder}>
           <TextInput
@@ -158,7 +184,7 @@ const SkillSeleccion = ({
           />
         </View>
       </View>
-      <View style={styles.formularioCategoria}>
+      <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
         <Text style={styles.atributo}>Como te defines como jugador</Text>
         <View style={styles.rectanguloBorder2}>
           <TextInput
@@ -194,7 +220,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
     borderRadius: Border.br_81xl,
-    height: 40,
+    height: 45,
     borderStyle: 'solid',
     justifyContent: 'center'
     // width: '96%'
@@ -237,17 +263,6 @@ const styles = StyleSheet.create({
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     left: '5%'
-  },
-  formularioCategoria: {
-    width: '90%',
-    zIndex: -1000
-  },
-  formulariosInferiores: {
-    marginTop: 20,
-    width: '100%',
-    gap: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   contenidoFormulariosboton: {
     marginTop: 20

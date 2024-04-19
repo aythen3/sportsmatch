@@ -13,9 +13,12 @@
       "backgroundColor": "#000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aythenapps.sportsmatch"
@@ -26,7 +29,9 @@
         "backgroundColor": "#000"
       },
       "versionCode": 1,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.aythenapps.sportsmatch"
     },
     "web": {

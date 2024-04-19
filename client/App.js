@@ -61,7 +61,7 @@ import ClubDetails from './screens/EditarPerfil/ClubDetails'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlayerDetails from './screens/EditarPerfil/PlayerDetails'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'react-native'
+import { AppRegistry, StatusBar } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 
 const App = () => {
