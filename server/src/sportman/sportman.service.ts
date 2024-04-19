@@ -185,4 +185,30 @@ export class SportmanService {
  
      return validRelations;
    }
+
+   async filterSportmen(filters: any): Promise<SportmanEntity[]> {
+    // Obtener todas las entradas de la tabla Sportman
+    const allSportmen = await this.sportmanRepository.find();
+
+    // Filtrar las entradas basadas en los filtros proporcionados
+    const filteredSportmen = allSportmen.filter(sportman => {
+      // Inicializar un contador para el número de coincidencias
+      let matches = 0;
+
+      // Recorrer todas las propiedades en el objeto de filtros
+      for (const key of Object.keys(filters)) {
+        // Verificar si la propiedad actual existe en la entrada del Sportman
+        if (sportman.info[key] === filters[key]) {
+          // Incrementar el contador de coincidencias si los valores coinciden
+          matches++;
+        }
+      }
+
+      // La entrada del Sportman se incluirá en los resultados solo si todas las propiedades coinciden
+      return matches === Object.keys(filters).length;
+    });
+
+    return filteredSportmen;
+  }
+  
 }

@@ -38,7 +38,12 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
-  positionId: string;
+  position: any;
+
+
+  @IsString()
+  @IsOptional()
+  sexo: string;
 
   @IsString()
   @IsOptional()

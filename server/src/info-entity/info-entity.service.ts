@@ -15,7 +15,8 @@ import { PostEntity } from './../post/entities/post.entity';
 import { CommentEntity } from './../comment/entities/comment.entity';
 import { LikeEntity } from './../like/entities/like.entity';
 import { MessageEntity } from './../chat/entities/message.entity';
-
+import { Info } from './info.interface';
+import { ILike } from 'typeorm';
 @Injectable()
 export class InfoEntityService {
   constructor(
@@ -99,25 +100,81 @@ export class InfoEntityService {
   }
   
 
-  async filterProperty(entity: string, property: string, filterValue: string) {
-    const repository = this.getRepositoryByEntity(entity);
-console.log("este es el repositorio", repository)
-    if (!repository) {
-      throw new NotFoundException('Entidad no encontrada');
-    }
+ 
+async filterProperty(entity: string, property: string, filterValue: string) {
+  const repository = this.getRepositoryByEntity(entity);
+  if (!repository) {
+    throw new NotFoundException('Entidad no encontrada');
+  }
 
-    const results = await repository.find({
-      where: {
-        [property]: {
-          $like: `%${filterValue}%` // Usar $like para realizar búsqueda parcial
-        }
+  try {
+    const results = await repository
+      .createQueryBuilder()
+      .select()
+      .where(`${property} ILIKE :filterValue`, { filterValue: `%${filterValue}%` })
+      .getMany();
+
+    return results;
+  } catch (error) {
+    throw new Error('Error al realizar la consulta');
+  }
+}
+  
+
+async dynamicFilter(entity: string, filters: any) {
+  const repository = this.getRepositoryByEntity(entity);
+  if (!repository) {
+    throw new NotFoundException('Entidad no encontrada');
+  }
+
+  try {
+    let queryBuilder = repository.createQueryBuilder('entity');
+
+    // Construir la cláusula WHERE dinámicamente
+    Object.entries(filters).forEach(([key, value]) => {
+      if (typeof value === 'string' && value.toLowerCase() === 'true') {
+        // Si el valor es una cadena "true", convertirlo a booleano
+        value = true;
+      } else if (typeof value === 'string' && value.toLowerCase() === 'false') {
+        // Si el valor es una cadena "false", convertirlo a booleano
+        value = false;
+      }
+      
+      // Agregar la condición al queryBuilder según el tipo de valor
+      if (typeof value === 'boolean') {
+        queryBuilder = queryBuilder.andWhere(`entity.${key} = :${key}`, { [key]: value });
+      } else if (typeof value === 'string') {
+        queryBuilder = queryBuilder.andWhere(`entity.${key} ILIKE :${key}`, { [key]: `%${value}%` });
+      } else if (typeof value === 'number') {
+        queryBuilder = queryBuilder.andWhere(`entity.${key} > :${key}`, { [key]: value });
       }
     });
 
+    // Ejecutar la consulta y devolver los resultados
+    const results = await queryBuilder.getMany();
     return results;
+  } catch (error) {
+    throw new Error('Error al realizar la consulta');
+  }
 }
 
 
+
+filterInfo(info: Info, filter: Info): string[] {
+  const matches: string[] = [];
+
+  // Iteramos sobre las propiedades del objeto Info
+  for (const key in info) {
+    if (info.hasOwnProperty(key)) {
+      // Verificamos si la propiedad existe en el filtro y si sus valores coinciden
+      if (filter.hasOwnProperty(key) && info[key] === filter[key]) {
+        matches.push(key);
+      }
+    }
+  }
+
+  return matches;
+}
 
   private getRepositoryByEntity(entity: string): Repository<any> | null {
     console.log("entrando  a repositorios")
