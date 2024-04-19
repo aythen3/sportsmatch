@@ -22,7 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomModal from '../../components/modals/CustomModal'
 import axiosInstance from '../../utils/apiBackend'
 import { getClub } from '../../redux/actions/club'
-import { setOffer, updateOffer } from '../../redux/actions/offers'
+import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -52,6 +52,7 @@ const ConfigurarAnuncio = () => {
 
   const [clubData, setClubData] = useState()
   const { editOffer } = route.params || false
+  const { offerId } = route.params || false
 
   const statesCleanUp = (stateToUpdate) => {
     const stateSetters = {
@@ -123,7 +124,6 @@ const ConfigurarAnuncio = () => {
     }
     fetchClubData()
   }, [])
-  console.log('allPositions: ', allPositions)
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -151,8 +151,8 @@ const ConfigurarAnuncio = () => {
           >
             <Text style={styles.inputText}>
               {selectedPosition
-                ? selectedPosition.name.charAt(0).toUpperCase() +
-                  selectedPosition.name.slice(1).toLowerCase()
+                ? selectedPosition?.name.charAt(0).toUpperCase() +
+                  selectedPosition?.name.slice(1).toLowerCase()
                 : 'Selecciona una posicion'}
             </Text>
             {showModal && (
@@ -169,10 +169,10 @@ const ConfigurarAnuncio = () => {
                 {allPositions
                   .filter(
                     (position) =>
-                      position.sport.name === clubData.sports[0].name
+                      position.sport?.name === clubData.sports[0]?.name
                   )
                   .map((position) => {
-                    return { name: position.name, id: position.id }
+                    return { name: position?.name, id: position.id }
                   })
                   .map((item, index) => (
                     <TouchableOpacity
@@ -197,11 +197,11 @@ const ConfigurarAnuncio = () => {
                             allPositions
                               .filter(
                                 (position) =>
-                                  position.sport.name ===
-                                  clubData.sports[0].name
+                                  position.sport?.name ===
+                                  clubData.sports[0]?.name
                               )
                               .map((position) => {
-                                return position.name
+                                return position?.name
                               }).length -
                               1
                               ? 1
@@ -210,8 +210,8 @@ const ConfigurarAnuncio = () => {
                           ...styles.optionText
                         }}
                       >
-                        {item.name.charAt(0).toUpperCase() +
-                          item.name.slice(1).toLowerCase()}
+                        {item?.name.charAt(0).toUpperCase() +
+                          item?.name.slice(1).toLowerCase()}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -448,27 +448,54 @@ const ConfigurarAnuncio = () => {
                       sexo: selectedGender,
                       category: selectedCategory,
                       urgency: selectedPriority,
-                      retribution: selectedRemuneration === 'Si' ? true : false
+                      retribution:
+                        selectedRemuneration === 'Si'
+                          ? true
+                          : selectedRemuneration === 'No'
+                            ? false
+                            : null
                     },
-                    positionId: selectedPosition.id,
-                    clubId: club.id
+                    positionId: selectedPosition?.id,
+                    clubId: club?.id
                   }
                   console.log('data: ', data)
-                  await dispatch(setOffer(data))
+                  await dispatch(setOffer(data)).then((data) =>
+                    dispatch(getAllOffers())
+                  )
+
                   navigation.goBack()
                 } else {
+                  // const data = {
+                  //   offerData: {
+                  //     ...(selectedGender && { sexo: selectedGender }),
+                  //     ...(selectedCategory && { category: selectedCategory }),
+                  //     ...(selectedPriority && { urgency: selectedPriority }),
+                  //     ...(selectedRemuneration && {
+                  //       retribution:
+                  //         selectedRemuneration === 'Si' ? true : false
+                  //     })
+                  //   },
+                  //   ...(selectedPosition && {
+                  //     positionId: selectedPosition.id
+                  //   }),
+                  //   ...(club && { clubId: club.id })
+                  // }
                   const data = {
-                    offerData: {
-                      sexo: selectedGender,
-                      category: selectedCategory,
-                      urgency: selectedPriority,
-                      retribution: selectedRemuneration
-                    },
-                    positionId: selectedPosition.id,
-                    clubId: club.id
+                    ...(selectedGender && { sexo: selectedGender }),
+                    ...(selectedCategory && { category: selectedCategory }),
+                    ...(selectedPriority && { urgency: selectedPriority }),
+                    ...(selectedRemuneration && {
+                      retribution: selectedRemuneration === 'Si' ? true : false
+                    }),
+                    ...(selectedPosition && {
+                      positionId: selectedPosition.id
+                    })
                   }
-                  console.log('data from offer: ', data)
-                  await dispatch(updateOffer(data))
+                  console.log('data: ', data)
+                  await dispatch(updateOffer({ id: offerId, body: data })).then(
+                    (data) => dispatch(getAllOffers())
+                  )
+
                   navigation.goBack()
                 }
               }}

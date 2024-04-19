@@ -52,12 +52,16 @@ export const deleteOffer = createAsyncThunk('deleteOffer', async (id) => {
   }
 })
 
-export const updateOffer = createAsyncThunk('updateOffer', async (offer) => {
-  try {
-    const { id, body } = offer
-    const { data } = await axiosInstance.patch(`offer/${id}`, body)
-    return data
-  } catch (error) {
-    throw new Error(error)
+export const updateOffer = createAsyncThunk(
+  'updateOffer',
+  async ({ id, body }) => {
+    try {
+      console.log('id, body :', id, body)
+      const { data } = await axiosInstance.patch(`offer/${id}`, body)
+      console.log('data from updateOffer: ', data)
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
   }
-})
+)

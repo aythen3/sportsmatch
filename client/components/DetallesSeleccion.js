@@ -18,12 +18,12 @@ const SkillSeleccion = ({
   const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedGenero, setSelectedGenero] = useState(null)
+  const [selectedGenero, setSelectedGenero] = useState()
   const [añoNacimientoModalVisible, setAñoNacimientoModalVisible] =
     useState(false)
-  const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState(null)
+  const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState()
   const [cityModal, setCityModal] = useState(false)
-  const [selectedCity, setSelectedCity] = useState(null)
+  const [selectedCity, setSelectedCity] = useState()
 
   const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
   const opcionesResidencia = [
@@ -31,8 +31,7 @@ const SkillSeleccion = ({
     'Madrid',
     'Sevilla',
     'Valencia',
-    'Murcia',
-    'Toledo'
+    'Murcia'
   ]
 
   const openAñoNacimientoModal = () => {
@@ -79,21 +78,31 @@ const SkillSeleccion = ({
 
   return (
     <View style={styles.formulariosInferiores}>
-      <Acordeon
-        title="Sexo"
-        placeholderText={selectedGenero ? selectedGenero : 'Selecciona tu sexo'}
-        isAccordeon={true}
-        open={openModal}
-      />
-      {modalVisible && (
-        <CustomModal
-          visible={modalVisible}
-          closeModal={closeModal}
-          onSelectItem={handleSelectGenero}
-          options={opcionesGenero}
+      <View
+        style={{
+          position: 'relative',
+          width: '100%',
+          marginTop: 10,
+          zIndex: 5000
+        }}
+      >
+        <Acordeon
+          title="Sexo"
+          placeholderText={
+            selectedGenero ? selectedGenero : 'Selecciona tu sexo'
+          }
+          isAccordeon={true}
+          open={openModal}
         />
-      )}
-
+        {modalVisible && (
+          <CustomModal
+            visible={modalVisible}
+            closeModal={closeModal}
+            onSelectItem={handleSelectGenero}
+            options={opcionesGenero}
+          />
+        )}
+      </View>
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Año de Nacimiento</Text>
         <Pressable
@@ -105,26 +114,37 @@ const SkillSeleccion = ({
             closeModal={closeAñoNacimientoModal}
             onSelectAñoNacimiento={handleSelectAñoNacimiento}
           />
-          {selectedAñoNacimiento && (
-            <Text style={styles.atributoInner}>{selectedAñoNacimiento}</Text>
-          )}
+
+          <Text style={styles.atributoInner}>
+            {selectedAñoNacimiento && selectedAñoNacimiento > 1933
+              ? selectedAñoNacimiento
+              : 'Selecciona año de nacimiento'}
+          </Text>
         </Pressable>
       </View>
 
-      <Acordeon
-        title="Lugar de residencia"
-        placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
-        isAccordeon={true}
-        open={openCityModal}
-      />
-      {cityModal && (
-        <CustomModal
-          visible={cityModal}
-          closeModal={closeModal}
-          onSelectItem={handleSelectCity}
-          options={opcionesResidencia}
+      <View
+        style={{
+          position: 'relative',
+          width: '100%',
+          marginTop: 10
+        }}
+      >
+        <Acordeon
+          title="Lugar de residencia"
+          placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
+          isAccordeon={true}
+          open={openCityModal}
         />
-      )}
+        {cityModal && (
+          <CustomModal
+            visible={cityModal}
+            closeModal={closeModal}
+            onSelectItem={handleSelectCity}
+            options={opcionesResidencia}
+          />
+        )}
+      </View>
 
       <View style={styles.formularioCategoria}>
         <Text style={styles.atributo}>Club actual</Text>
@@ -219,7 +239,8 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   formularioCategoria: {
-    width: '90%'
+    width: '90%',
+    zIndex: -1000
   },
   formulariosInferiores: {
     marginTop: 20,

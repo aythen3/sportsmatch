@@ -120,7 +120,10 @@ const ClubDetails = () => {
 
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-      <ScrollView style={styles.generalWrapper}>
+      <ScrollView
+        keyboardShouldPersistTaps={'always'}
+        style={styles.generalWrapper}
+      >
         <View style={styles.wrapperGap}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
@@ -298,8 +301,9 @@ const styles = StyleSheet.create({
     gap: 10
   },
   image: {
-    width: '100%',
-    height: '100%'
+    width: 117,
+    height: 117,
+    borderRadius: 100
   },
   profileImageContainer: {
     width: 117,

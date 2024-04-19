@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/core'
 import * as MediaLibrary from 'expo-media-library'
 import { Context } from '../../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Dimensions } from 'react-native'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage } = useContext(Context)
@@ -45,14 +46,28 @@ const SeleccionarImagen = () => {
 
   const renderizarImagenes = () => {
     return (
-      <ScrollView>
-        <View style={styles.galleryContainer}>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
+        <View
+          style={{
+            gap: 8,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start'
+          }}
+        >
           {imagenes.map((imagen, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => handleSeleccionarImagen(imagen)}
             >
-              <Image source={{ uri: imagen.uri }} style={styles.gallery} />
+              <Image
+                source={{ uri: imagen.uri }}
+                style={{
+                  width: (Dimensions.get('window').width * 0.9 - 16) / 3,
+                  height: (Dimensions.get('window').width * 0.9 + 25) / 3,
+                  borderRadius: 4
+                }}
+              />
             </TouchableOpacity>
           ))}
         </View>
@@ -62,29 +77,31 @@ const SeleccionarImagen = () => {
 
   return (
     <SafeAreaView style={styles.crearHighlight}>
-      <View style={styles.container}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.crearHighlightChild}
-            contentFit="cover"
-            source={require('../../../assets/group-565.png')}
-          />
-        </Pressable>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('CrearHighlight', { image: libraryImage })
-          }}
-          disabled={!libraryImage}
-        >
-          <Text style={styles.siguiente}>Siguiente</Text>
-        </TouchableOpacity>
+      <View style={{ width: '90%', alignSelf: 'center' }}>
+        <View style={styles.container}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.crearHighlightChild}
+              contentFit="cover"
+              source={require('../../../assets/group-565.png')}
+            />
+          </Pressable>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('CrearHighlight', { image: libraryImage })
+            }}
+            disabled={!libraryImage}
+          >
+            <Text style={styles.siguiente}>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          style={styles.codeBlockPersonaEnCanch}
+          contentFit="cover"
+          source={{ uri: selectedImage?.uri }}
+        />
+        {renderizarImagenes()}
       </View>
-      <Image
-        style={styles.codeBlockPersonaEnCanch}
-        contentFit="cover"
-        source={{ uri: selectedImage?.uri }}
-      />
-      {renderizarImagenes()}
     </SafeAreaView>
   )
 }
@@ -96,7 +113,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 20,
-    paddingHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center'
@@ -107,30 +123,15 @@ const styles = StyleSheet.create({
   },
   siguiente: {
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.t2TextSTANDARD_size,
+    fontSize: 17,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: '700'
+    fontWeight: '500'
   },
   codeBlockPersonaEnCanch: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 30,
     height: 300,
-    width: '95%',
-    left: '2.3%'
-  },
-  galleryContainer: {
-    gap: 3,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginVertical: 3,
-    width: '100%',
-    justifyContent: 'center'
-  },
-  gallery: {
-    height: 109,
-    width: 109,
-    margin: 3
+    borderRadius: 8
   }
 })
 

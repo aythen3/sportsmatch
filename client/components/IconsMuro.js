@@ -8,9 +8,12 @@ import { Color } from '../GlobalStyles'
 import { like } from '../redux/actions/post'
 import CommentSection from './modals/CommentSection'
 import { setFindedLikes } from '../redux/slices/post.slices'
+import { sendNotification } from '../redux/actions/notifications'
 
-const IconsMuro = ({ id, userId }) => {
+const IconsMuro = ({ id, userId, postUserId }) => {
   const dispatch = useDispatch()
+
+  const { user } = useSelector((state) => state.users)
 
   const { findedLike } = useSelector((state) => state.post)
 
@@ -24,12 +27,32 @@ const IconsMuro = ({ id, userId }) => {
       author: userId
     }
     const liked = findedLike.includes(id)
+    console.log('data: ', data)
+    console.log('liked: ', liked)
     await dispatch(
       setFindedLikes({
         ...data,
         liked
       })
     )
+    if (liked === false) {
+      console.log('sending like notification to: ', userId)
+      await dispatch(
+        sendNotification({
+          title: 'Like',
+          message: `A ${user.user.nickname} le gusta tu highlight`,
+          recipientId: postUserId,
+          date: new Date(),
+          read: false,
+          prop1: {
+            userId: user?.user?.id,
+            userData: {
+              ...user
+            }
+          }
+        })
+      )
+    }
     await dispatch(like(data))
   }
   // useEffect(() => {
@@ -41,9 +64,14 @@ const IconsMuro = ({ id, userId }) => {
     setModalVisible(false)
   }
 
-  if (!findedLike || !id) return null
+  // if (!findedLike || !id) return null
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flexDirection: 'row',
+        gap: 2
+      }}
+    >
       <TouchableOpacity
         style={styles.likeView}
         onPress={() => handleLike(id, userId)}
@@ -71,10 +99,6 @@ const IconsMuro = ({ id, userId }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    gap: 2
-  },
   likeView: {
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,

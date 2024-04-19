@@ -27,7 +27,7 @@ const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) =>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Selecciona tu año de nacimiento</Text>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps={'always'}>
             {años.map((año, index) => (
               <Pressable
                 key={index}
@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
+    maxHeight: '60%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
     padding: 20,
     borderRadius: 10,
     elevation: 5,

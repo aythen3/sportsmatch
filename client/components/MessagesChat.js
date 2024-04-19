@@ -4,12 +4,12 @@ import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/core'
-import { getChatHistory } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
-import { sendMatch } from '../redux/actions/matchs'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { updateOffer } from '../redux/actions/offers'
+import { sendNotification } from '../redux/actions/notifications'
 
 const MessagesChat = ({
   name,
@@ -20,14 +20,16 @@ const MessagesChat = ({
 }) => {
   const dispatch = useDispatch()
   const { offers } = useSelector((state) => state.offers)
+  const { club } = useSelector((state) => state.clubs)
   console.log('profilePic: ', profilePic)
   const isFocused = useIsFocused()
-  const { getTimeFromDate } = useContext(Context)
+  const { getTimeFromDate, clubMatches, getClubMatches, userMatches } =
+    useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState()
   const [lastMessage, setLastMessage] = useState()
-  const { user } = useSelector((state) => state.users)
-  console.log('applicant: ', applicant)
+  const { user, allUsers } = useSelector((state) => state.users)
+
   const getChatMessages = async () => {
     const { data } = await axiosInstance.get(
       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
@@ -35,6 +37,8 @@ const MessagesChat = ({
     setConvMessages(data)
   }
 
+  // console.log('name:',name,'sportmanId: ', sportmanId)
+  
   useEffect(() => {
     getChatMessages()
   }, [])
@@ -68,15 +72,31 @@ const MessagesChat = ({
           })
         }}
       >
-        <View style={styles.topContainer}>
+        <View style={{ flexDirection: 'row', gap: 15, width: '80%' }}>
           <Image
-            style={[styles.groupIconLayout]}
+            style={{ height: 35, borderRadius: 50, width: 35 }}
             contentFit="cover"
             source={{ uri: profilePic }}
           />
           <View style={{ alignSelf: 'flex-start' }}>
-            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>{name}</Text>
-            <Text style={[styles.hasHechoUn, styles.ayerTypo]}>
+            <Text
+              style={{
+                fontWeight: '700',
+                color: Color.wHITESPORTSMATCH,
+                fontSize: FontSize.t1TextSMALL_size,
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              {name}
+            </Text>
+            <Text
+              style={{
+                fontWeight: '700',
+                color: Color.wHITESPORTSMATCH,
+                fontSize: FontSize.t1TextSMALL_size,
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
               {lastMessage
                 ? lastMessage?.message?.message?.length >= 35
                   ? lastMessage?.message?.message.slice(0, 35).concat('...')
@@ -86,156 +106,222 @@ const MessagesChat = ({
           </View>
         </View>
 
-        {!applicant && (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center'
-            }}
-          >
-            <Text style={[styles.ayer, styles.ayerTypo]}>
-              {lastMessage
-                ? getTimeFromDate(lastMessage?.message?.createdAt)
-                : ''}
-            </Text>
-          </View>
-        )}
-        {applicant && (
-          <Pressable
-            onPress={() => {
-              const offerId = offers.filter(
-                (offer) =>
-                  offer.inscriptions && offer.inscriptions.includes(sportmanId)
-              )[0].id
-              dispatch(
-                sendMatch({
-                  offerId,
-                  sportmanId
-                })
-              )
-            }}
-            style={{
-              backgroundColor: Color.colorMaroon,
-              width: 100,
-              height: 40,
-              position: 'absolute',
-              right: 10,
-              zIndex: 10000,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: Border.br_81xl
-            }}
-          >
-            <Text
+        {user.user.type === 'club' &&
+          clubMatches?.filter(
+            (match) =>
+              match?.prop1?.sportmanId === sportmanId &&
+              match.status === 'pending'
+          )?.length === 0 && (
+            <View
               style={{
-                marginLeft: 20,
-                color: Color.bALONCESTO,
-                fontWeight: 600,
-                fontFamily: FontFamily.t4TEXTMICRO,
-                fontSize: FontSize.t2TextSTANDARD_size
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 5
               }}
             >
-              Match
-            </Text>
-            <View style={styles.match}>
-              <Image
-                style={styles.image}
-                contentFit="cover"
-                source={require('../assets/group9.png')}
-              />
+              {clubMatches?.filter(
+                (match) =>
+                  match?.prop1?.sportmanId === sportmanId &&
+                  match.status === 'success'
+              )?.length > 0 && (
+                <View
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: 100,
+                    backgroundColor: Color.bALONCESTO
+                  }}
+                />
+              )}
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  fontSize: FontSize.t1TextSMALL_size,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                {lastMessage
+                  ? getTimeFromDate(lastMessage?.message?.createdAt)
+                  : ''}
+              </Text>
             </View>
-          </Pressable>
-        )}
+          )}
+        {user.user.type !== 'club' &&
+          userMatches?.filter(
+            (match) =>
+              match?.prop1?.clubData.userId === selectedUserId &&
+              match.status === 'pending'
+          )?.length === 0 && (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 5
+              }}
+            >
+              {userMatches?.filter(
+                (match) =>
+                  match?.prop1?.clubData.userId === selectedUserId &&
+                  match.status === 'success'
+              )?.length > 0 && (
+                <View
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: 100,
+                    backgroundColor: Color.bALONCESTO
+                  }}
+                />
+              )}
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  fontSize: FontSize.t1TextSMALL_size,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                {lastMessage
+                  ? getTimeFromDate(lastMessage?.message?.createdAt)
+                  : ''}
+              </Text>
+            </View>
+          )}
+        {user.user.type === 'club' &&
+          clubMatches?.filter(
+            (match) =>
+              match?.prop1?.sportmanId === sportmanId &&
+              match.status === 'success'
+          )?.length === 0 && offers.filter(
+            (offer) =>
+              offer.inscriptions &&
+              offer.inscriptions.includes(sportmanId) && offer.club.id === club.id
+          ).length > 0 && (
+            <Pressable
+              onPress={() => {
+                const currentOffer = offers.filter(
+                  (offer) =>
+                    offer.inscriptions &&
+                    offer.inscriptions.includes(sportmanId)
+                )[0]
+                const offerId = offers.filter(
+                  (offer) =>
+                    offer.inscriptions &&
+                    offer.inscriptions.includes(sportmanId)
+                )[0]?.id
+                console.log('offerId: ', offerId)
+                const newInscriptions = currentOffer.inscriptions.filter(
+                  (applicant) => applicant !== sportmanId
+                )
+
+                console.log('newInscriptions: ', newInscriptions)
+                const actualMatches = currentOffer.matches || []
+                const newMatchs = [...actualMatches, sportmanId]
+                console.log('newMatchs: ', newMatchs)
+
+                const sportmanUser = allUsers.filter(
+                  (user) => user?.sportman?.id === sportmanId
+                )[0]
+                console.log('sportmanUser', sportmanUser)
+
+                console.log('club', user?.user)
+
+                dispatch(
+                  sendMatch({
+                    offerId,
+                    sportmanId,
+                    clubId: user?.user?.club?.id,
+                    status: 'success',
+                    prop1: {
+                      clubId: user?.user?.club?.id,
+                      offerId,
+                      sportmanId,
+                      sportManData: {
+                        userId: sportmanUser?.id,
+                        profilePic: sportmanUser?.sportman?.info?.img_perfil,
+                        name: sportmanUser?.nickname
+                      },
+                      clubData: {
+                        userId: user?.user?.id,
+                        name: user?.user?.nickname,
+                        profilePic: user?.user?.club?.img_perfil
+                      }
+                    }
+                  })
+                )
+                  .then((data) => {
+                    console.log('data from match: ', data.payload)
+                    console.log('body to sendNotification: ', {
+                      title: 'Match',
+                      message: 'Has hecho match!',
+                      recipientId: data?.payload?.prop1?.sportManData?.userId,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...user?.user?.club
+                        }
+                      }
+                    })
+                    dispatch(
+                      sendNotification({
+                        title: 'Match',
+                        message: 'Has hecho match!',
+                        recipientId: data?.payload?.prop1?.sportManData?.userId,
+                        date: new Date(),
+                        read: false,
+                        prop1: {
+                          matchId: data?.payload?.id,
+                          clubData: {
+                            name: user?.user?.nickname,
+                            userId: user?.user?.id,
+                            ...user?.user?.club
+                          }
+                        }
+                      })
+                    )
+                  })
+                  .then((data) => dispatch(getAllMatchs()))
+                  .then((data) => getClubMatches())
+
+                dispatch(
+                  updateOffer({
+                    id: offerId,
+                    body: { inscriptions: newInscriptions, matches: newMatchs }
+                  })
+                )
+              }}
+              style={{
+                height: 40,
+                position: 'absolute',
+                right: 0,
+                zIndex: 10000,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: Border.br_81xl
+              }}
+            >
+              <Image
+                style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                contentFit="contain"
+                source={require('../assets/matchButton.png')}
+              />
+            </Pressable>
+          )}
       </Pressable>
-      <View style={styles.line} />
+      <View
+        style={{
+          borderWidth: 0.5,
+          borderColor: Color.colorDimgray_100,
+          marginVertical: 10
+        }}
+      />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  imageContainer: {
-    height: 35,
-    width: 35,
-    backgroundColor: Color.wHITESPORTSMATCH,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  groupIconLayout: {
-    height: 35,
-    borderRadius: 50,
-    width: 35
-  },
-  topContainer: {
-    flexDirection: 'row',
-    gap: 15,
-    width: '80%'
-  },
-  match: {
-    marginLeft: 20,
-    color: Color.bALONCESTO,
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  timeTypo: {
-    fontSize: FontSize.t2TextSTANDARD_size
-  },
-  hasHechoUn: {
-    fontWeight: '700',
-    color: Color.wHITESPORTSMATCH
-  },
-  ayerTypo: {
-    fontSize: FontSize.t1TextSMALL_size,
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  ayer: {
-    color: Color.gREY2SPORTSMATCH
-  },
-  point: {
-    fontSize: 45,
-    top: -2.5,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    color: Color.bALONCESTO
-  },
-  pressable: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 5
-  },
-  line: {
-    borderWidth: 0.5,
-    borderColor: Color.colorDimgray_100,
-    marginVertical: 10
-  },
-  matchContainer: {
-    backgroundColor: Color.colorMaroon,
-    width: 100,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: Border.br_81xl,
-    marginRight: 20
-  },
-  match: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    backgroundColor: Color.bALONCESTO,
-    position: 'absolute',
-    left: -12,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  image: {
-    width: 30,
-    height: 23
-  },
-  textView: {
-    width: '20%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'baseline'
-  }
-})
 
 export default MessagesChat

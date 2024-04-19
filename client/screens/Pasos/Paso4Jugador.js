@@ -26,9 +26,9 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
   }
 
   return (
-    <ScrollView style={styles.paso6}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={{ height: '70%' }}>
       <View>
-        <View>
+        <View style={{ marginBottom: 30 }}>
           <View style={styles.headersubirImagenesPerfil}>
             <Image
               style={styles.circuloIcon}
@@ -36,7 +36,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
               source={
                 provisoryProfileImage
                   ? { uri: provisoryProfileImage }
-                  : require('../../assets/circulo.png')
+                  : require('../../assets/avatarr.png')
               }
             />
             <TouchableOpacity
@@ -53,15 +53,37 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
             </Text>
           </View>
           <View style={styles.rectangulobotonpesoMaximo}>
-            <Image
-              style={styles.rectangulo}
-              contentFit="cover"
-              source={
-                provisoryProfileImage
-                  ? { uri: provisoryCoverImage }
-                  : require('../../assets/circulo.png')
-              }
-            />
+            {provisoryCoverImage ? (
+              <Image
+                style={{
+                  width: '100%',
+                  height: 170,
+                  backgroundColor: 'white',
+                  marginTop: 30,
+                  borderRadius: 8
+                }}
+                contentFit="cover"
+                source={{ uri: provisoryCoverImage }}
+              />
+            ) : (
+              <View
+                style={{
+                  width: '100%',
+                  height: 170,
+                  backgroundColor: '#fff',
+                  marginTop: 30,
+                  borderRadius: 8,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Image
+                  style={{ width: 130, height: 130 }}
+                  contentFit="cover"
+                  source={require('../../assets/imagePlaceholder.png')}
+                />
+              </View>
+            )}
             <TouchableOpacity
               style={styles.botonSubirImagen}
               onPress={() => handlePickImage('cover')}
@@ -90,18 +112,12 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     textAlign: 'center'
   },
-  paso6: {
-    flex: 1,
-    overflow: 'hidden',
-    width: '100%',
-    paddingHorizontal: 15
-  },
   headersubirImagenesPerfil: {
-    alignItems: 'center',
-    marginTop: '10%'
+    alignItems: 'center'
   },
   circuloIcon: {
     width: 117,
+    borderRadius: 100,
     height: 117
   },
   botonSubirImagen: {
@@ -133,11 +149,11 @@ const styles = StyleSheet.create({
   },
   rectangulobotonpesoMaximo: {
     height: 199,
-    marginTop: 21,
     alignItems: 'center'
   },
   rectangulo: {
-    borderRadius: Border.br_10xs,
+    borderRadius: 5,
+    overflow: 'hidden',
     backgroundColor: Color.colorGainsboro,
     width: 380,
     height: 120

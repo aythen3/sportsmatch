@@ -28,7 +28,7 @@ const PerfilDatosPropioClub = () => {
         paddingBottom: 30
       }}
     >
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <View>
           <HeaderPerfil
             name={isSportman ? '' : club?.name}

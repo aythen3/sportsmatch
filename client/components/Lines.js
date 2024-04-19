@@ -2,11 +2,11 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Color } from '../GlobalStyles'
 
-const Lines = ({ index }) => {
+const Lines = ({ index,club }) => {
   return (
     <View
       style={{
-        marginVertical: 30,
+        marginVertical: 15,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -16,7 +16,7 @@ const Lines = ({ index }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 1 ? Color.bALONCESTO : Color.colorDimgray_100,
-          width: 80,
+          width: club ? '28%': 80 ,
           marginTop: 10
         }}
       />
@@ -24,7 +24,7 @@ const Lines = ({ index }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 2 ? Color.bALONCESTO : Color.colorDimgray_100,
-          width: 80,
+          width:club ? '28%': 80 ,
           marginTop: 10
         }}
       />
@@ -32,18 +32,18 @@ const Lines = ({ index }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 3 ? Color.bALONCESTO : Color.colorDimgray_100,
-          width: 80,
+          width: club ? '28%': 80 ,
           marginTop: 10
         }}
       />
-      <View
+      {!club && <View
         style={{
           borderWidth: 2,
           borderColor: index === 4 ? Color.bALONCESTO : Color.colorDimgray_100,
-          width: 80,
+          width: 80 ,
           marginTop: 10
         }}
-      />
+      />}
     </View>
   )
 }

@@ -17,7 +17,7 @@ const EditarSkills = () => {
   const [editable, setEditable] = useState(true)
 
   return (
-    <ScrollView style={styles.paso6}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <View style={styles.cooliconParent}>
         <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
           <Image

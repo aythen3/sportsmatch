@@ -1,12 +1,24 @@
-import * as React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text, StyleSheet, Pressable, View } from 'react-native'
-import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, Color, FontSize, Padding, Border } from '../GlobalStyles'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateMatchById } from '../redux/actions/matchs'
+import {
+  getAllNotifications,
+  removeNotification
+} from '../redux/actions/notifications'
+import { Context } from '../context/Context'
 
-const NotificacinMatch = ({ onClose }) => {
+const NotificacinMatch = ({ onClose, data }) => {
+  const { getUserMatches } = useContext(Context)
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const { allUsers } = useSelector((state) => state.users)
+  const { allNotifications } = useSelector((state) => state.notifications)
+
+  useEffect(() => {}, [allNotifications])
 
   return (
     <LinearGradient
@@ -24,8 +36,7 @@ const NotificacinMatch = ({ onClose }) => {
           >{`¡Has hecho un Match!`}</Text>
           <Text
             style={[styles.pareceQueUni, styles.seguirTypo1]}
-          >{`¡Parece que Unió esportíva Mataró
-Se interesa por ti! `}</Text>
+          >{`¡Parece que ${data?.prop1?.clubData?.name} se interesa por ti! `}</Text>
         </View>
 
         <View style={[styles.botones, styles.botonesLayout]}>
@@ -35,7 +46,19 @@ Se interesa por ti! `}</Text>
                 style={styles.aceptarFlexBox}
                 onPress={() => {
                   onClose()
-                  navigation.navigate('ChatAbierto1')
+                  try {
+                    dispatch(
+                      updateMatchById({
+                        id: data?.prop1?.matchId,
+                        body: { status: 'success' }
+                      })
+                    )
+                      .then((response) => dispatch(removeNotification(data.id)))
+                      .then((res) => dispatch(getAllNotifications()))
+                      .then((data) => getUserMatches())
+                  } catch (error) {
+                    console.log('Error updating match', data?.prop1?.matchId)
+                  }
                 }}
               >
                 <Text style={[styles.verOferta, styles.hanTypo]}>
@@ -46,10 +69,10 @@ Se interesa por ti! `}</Text>
                 style={[styles.verPerfil, styles.aceptarFlexBox]}
                 onPress={() => {
                   onClose()
-                  navigation.navigate('PerfilFeedVisualitzaciJug', {
-                    club: true,
-                    name: 'Club Atletico Boca Junios',
-                    description: 'Presidente: Cristian Perez'
+                  navigation.navigate('ClubProfile', {
+                    author: allUsers.filter(
+                      (user) => user.id === data.prop1.clubData.userId
+                    )[0]
                   })
                 }}
               >

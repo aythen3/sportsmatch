@@ -5,9 +5,9 @@ import {
   Text,
   View,
   StyleSheet,
-  Pressable,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Keyboard
 } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily } from '../../GlobalStyles'
@@ -31,14 +31,19 @@ const CommentSection = ({ visible, closeModal, postId }) => {
     dispatch(getCommentByPost(body))
   }, [postId])
 
-  const sortedComments = postComments?.slice().sort((a, b) => {
-    const dateA = new Date(a.createdAt)
-    const dateB = new Date(b.createdAt)
-    return dateB - dateA
-  })
+  const sortedComments =
+    postComments &&
+    postComments?.slice().sort((a, b) => {
+      const dateA = new Date(a.createdAt)
+      const dateB = new Date(b.createdAt)
+      return dateB - dateA
+    })
 
   return (
-    <GestureRecognizer onSwipeDown={closeModal}>
+    <GestureRecognizer
+      keyboardShouldPersistTaps="always"
+      onSwipeDown={closeModal}
+    >
       <Modal
         animationType="slide"
         transparent={true}
@@ -46,12 +51,25 @@ const CommentSection = ({ visible, closeModal, postId }) => {
         onRequestClose={closeModal}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Pressable onPress={closeModal} style={styles.topContainer}>
+          <View
+            style={{
+              backgroundColor: Color.bLACK1SPORTSMATCH,
+              borderRadius: 10,
+              elevation: 5,
+              paddingTop: 10,
+              height: '85%',
+              alignSelf: 'flex-end',
+              width: '100%',
+              paddingHorizontal: 10,
+              borderWidth: 0.5,
+              borderColor: Color.wHITESPORTSMATCH
+            }}
+          >
+            <TouchableOpacity onPress={closeModal} style={styles.topContainer}>
               <View style={styles.modalTop} />
               <Text style={styles.text}>Comentarios</Text>
               <View style={styles.line} />
-            </Pressable>
+            </TouchableOpacity>
             {postComments?.length > 0 ? (
               sortedComments?.map((comment) => (
                 <View key={comment.id} style={styles.commentContainer}>
@@ -81,8 +99,29 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               </Text>
             )}
 
-            <View style={styles.inputContainer}>
-              <View style={styles.inputBox}>
+            <View
+              style={{
+                width: '100%',
+                left: 10,
+                height: 70,
+                justifyContent: 'space-between',
+                position: 'absolute',
+                bottom: 10,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+            >
+              <View
+                style={{
+                  borderRadius: 13,
+                  borderWidth: 0.5,
+                  borderColor: Color.wHITESPORTSMATCH,
+                  width: '80%',
+                  height: '100%',
+                  justifyContent: 'flex-start',
+                  paddingHorizontal: 8
+                }}
+              >
                 <TextInput
                   placeholder="Escribe un comentario..."
                   placeholderTextColor={Color.wHITESPORTSMATCH}
@@ -93,11 +132,26 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                 />
               </View>
               <TouchableOpacity
-                onPress={() =>
+                style={{
+                  zIndex: 9999999
+                }}
+                onPress={() => {
+                  Keyboard.dismiss()
                   handleSubmit({ comment, user, postId, dispatch, setComment })
-                }
+                }}
               >
-                <Text style={styles.submitText}>Publicar</Text>
+                <Text
+                  style={{
+                    color: Color.wHITESPORTSMATCH,
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    fontSize: 16,
+                    fontWeight: '700',
+                    marginLeft: 15,
+                    zIndex: 5000
+                  }}
+                >
+                  Publicar
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -110,22 +164,12 @@ const CommentSection = ({ visible, closeModal, postId }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center'
-  },
-  modalContent: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    padding: 20,
-    borderRadius: 10,
-    elevation: 5,
-    height: '95%',
-    width: '100%',
-    borderWidth: 0.5,
-    borderColor: Color.wHITESPORTSMATCH
   },
   topContainer: {
     alignItems: 'center',
-    gap: 13
+    gap: 10
   },
   modalTop: {
     height: 6,
@@ -146,25 +190,6 @@ const styles = StyleSheet.create({
     backgroundColor: Color.wHITESPORTSMATCH,
     marginTop: 7
   },
-  inputContainer: {
-    width: '100%',
-    height: '10%',
-    paddingLeft: 10,
-    justifyContent: 'space-between',
-    position: 'absolute',
-    bottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  inputBox: {
-    borderRadius: 15,
-    borderWidth: 0.5,
-    borderColor: Color.wHITESPORTSMATCH,
-    width: '80%',
-    height: '90%',
-    justifyContent: 'center',
-    paddingHorizontal: 10
-  },
   input: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
@@ -175,13 +200,6 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 15
-  },
-  submitText: {
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 15
   },
   commentContainer: {
     padding: 5,

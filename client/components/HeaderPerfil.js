@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
@@ -12,11 +12,14 @@ import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
-import { updateImgClub } from '../redux/actions/club'
-import { updateUserData } from '../redux/actions/users'
 import FeedSVG from './svg/FeedSVG'
 import StatsSVG from './svg/StatsSVG'
 import axiosInstance from '../utils/apiBackend'
+import { Context } from '../context/Context'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { updateUser } from '../redux/slices/users.slices'
+import { getAllUsers, updateUserData } from '../redux/actions/users'
+import { sendNotification } from '../redux/actions/notifications'
 
 const HeaderPerfil = ({
   name,
@@ -34,10 +37,13 @@ const HeaderPerfil = ({
   data,
   external
 }) => {
+  const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user } = useSelector((state) => state.users)
+  const { isSportman, user, allUsers } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
+  const { allMatchs } = useSelector((state) => state.matchs)
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -59,6 +65,16 @@ const HeaderPerfil = ({
     }
   }, [])
 
+  useEffect(() => {}, [allMatchs])
+
+  useEffect(() => {}, [clubMatches])
+
+  useEffect(() => {
+    // console.log('user has changed: ', user)
+  }, [user])
+
+  const userFollowing = user?.user?.following || []
+
   return (
     <View>
       <TouchableOpacity>
@@ -68,23 +84,59 @@ const HeaderPerfil = ({
           source={{ uri: front }}
         />
       </TouchableOpacity>
-      <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-        <View style={styles.circleAvatar}>
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 20,
+          marginTop: -17,
+          justifyContent: 'flex-start',
+          maxWidth: '60%',
+          alignItems: 'center',
+          height: 120,
+          marginBottom: 10,
+          paddingHorizontal: 15
+        }}
+      >
+        <View style={{ position: 'relative' }}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: -5,
+              left: 2.5,
+              height: 105,
+              borderRadius: 100,
+              width: 105,
+              backgroundColor: Color.bALONCESTO
+            }}
+          />
           {isSportman ? (
             <Image
-              style={styles.perfilFeedVisualitzaciCluItem}
+              style={{
+                height: 110,
+                borderRadius: 100,
+                width: 110,
+                borderWidth: 3,
+                borderColor: '#000'
+              }}
               contentFit="cover"
               source={{ uri: avatar }}
             />
           ) : (
             <Image
-              style={styles.perfilFeedVisualitzaciCluItem}
+              style={{
+                height: 110,
+                borderRadius: 100,
+                width: 110,
+                borderWidth: 3,
+                borderColor: '#000'
+              }}
               contentFit="cover"
               source={{ uri: avatar }}
             />
           )}
         </View>
-        <View>
+
+        <View style={{ marginTop: 20 }}>
           <Text
             style={[styles.jordiEspeltPvotBaloncesto, styles.jugandoAlUniTypo]}
           >
@@ -131,12 +183,161 @@ const HeaderPerfil = ({
               <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
             </View>
           ) : (
-            <Pressable style={styles.leftButton}>
-              <Text style={[styles.ojear, styles.timeTypo]}>{'Seguir'}</Text>
+            <Pressable
+              onPress={() => {
+                let actualUser = _.cloneDeep(user)
+                console.log('atualUser: ', actualUser)
+                const actualFollowers =
+                  allUsers.filter((user) => user.id === data.author.id)[0]
+                    .followers || []
+                console.log('actual followers: ', actualFollowers)
+                const newFollowers = actualFollowers.includes(user?.user?.id)
+                  ? actualFollowers.filter(
+                      (follower) => follower !== user?.user?.id
+                    )
+                  : [...actualFollowers, user?.user?.id]
+
+                const newFollowingArray = userFollowing?.includes(
+                  data?.author?.id
+                )
+                  ? userFollowing.filter(
+                      (followed) => followed !== data?.author?.id
+                    )
+                  : [...userFollowing, data?.author?.id]
+                actualUser.user.following = newFollowingArray
+                console.log('user: ', actualUser?.user?.following)
+
+                console.log('setting other user followers to:', newFollowers)
+                dispatch(
+                  updateUserData({
+                    id: data.author.id,
+                    body: { followers: newFollowers }
+                  })
+                )
+                  .then((data) => {
+                    console.log('setting user following to:', newFollowingArray)
+                    dispatch(
+                      updateUserData({
+                        id: user.user.id,
+                        body: { following: newFollowingArray }
+                      })
+                    )
+                  })
+                  .then((response) => {
+                    if (newFollowers.includes(user?.user?.id)) {
+                      dispatch(
+                        sendNotification({
+                          title: 'Follow',
+                          message: `${user.user.nickname} ha comenzado a seguirte`,
+                          recipientId: data?.author?.id,
+                          date: new Date(),
+                          read: false,
+                          prop1: {
+                            userId: user?.user?.id,
+                            userData: {
+                              ...user
+                            }
+                          }
+                        })
+                      )
+                    }
+                    dispatch(getAllUsers())
+                    dispatch(updateUser(actualUser))
+                  })
+              }}
+              style={{
+                ...styles.leftButton
+              }}
+            >
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                {userFollowing?.includes(data?.author?.id)
+                  ? 'Dejar de seguir'
+                  : 'Seguir'}
+              </Text>
             </Pressable>
           )}
-          {!isSportman ? (
+          {isSportman && external && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ChatAbierto1', {
+                  receiverId: data.author.id,
+                  receiverName: data.author.nickname,
+                  profilePic: avatar
+                })
+              }
+              style={styles.leftButton}
+            >
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                Enviar mensaje
+              </Text>
+            </TouchableOpacity>
+          )}
+          {!isSportman &&
+          clubMatches?.filter(
+            (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
+          )?.length === 0 ? (
             <Pressable
+              onPress={() =>
+                dispatch(
+                  sendMatch({
+                    sportmanId: data?.author?.sportman?.id,
+                    clubId: user?.user?.club?.id,
+                    status: 'pending',
+                    prop1: {
+                      clubId: user?.user?.club?.id,
+                      sportmanId: data?.author?.sportman?.id,
+                      sportManData: {
+                        userId: data?.author?.id,
+                        profilePic:
+                          data?.author?.sportman?.info?.img_perfil || '',
+                        name: data?.author?.nickname
+                      },
+                      clubData: {
+                        userId: user?.user?.id,
+                        name: user?.user?.nickname,
+                        profilePic: user?.user?.club?.img_perfil
+                      }
+                    }
+                  })
+                )
+                  .then((data) => {
+                    console.log('data from match: ', data.payload)
+                    console.log('body to sendNotification: ', {
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.payload?.sportManData?.userId,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...user?.user?.club
+                        }
+                      }
+                    })
+                    dispatch(
+                      sendNotification({
+                        title: 'Solicitud',
+                        message: 'Recibiste una solicitud de match!',
+                        recipientId: data?.payload?.prop1?.sportManData?.userId,
+                        date: new Date(),
+                        read: false,
+                        prop1: {
+                          matchId: data?.payload?.id,
+                          clubData: {
+                            name: user?.user?.nickname,
+                            userId: user.user.id,
+                            ...user?.user?.club
+                          }
+                        }
+                      })
+                    )
+                  })
+                  .then((data) => dispatch(getAllMatchs()))
+                  .then((data) => getClubMatches())
+              }
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -149,17 +350,17 @@ const HeaderPerfil = ({
             >
               <Text
                 style={{
-                  marginRight: 40,
+                  marginRight: 35,
                   width: '100%',
                   textAlign: 'right',
-                  fontSize: FontSize.t2TextSTANDARD_size,
+                  fontSize: 14,
                   color: '#E1451E',
                   fontSize: FontSize.t2TextSTANDARD_size,
                   fontFamily: FontFamily.t4TEXTMICRO,
                   fontWeight: '700'
                 }}
               >
-                Pedir Match
+                {'Pedir match'}
               </Text>
               <View
                 style={{
@@ -180,19 +381,13 @@ const HeaderPerfil = ({
                 />
               </View>
             </Pressable>
-          ) : (
-            <Pressable
-              style={{
-                flexDirection: 'row',
-                backgroundColor: button2
-                  ? Color.colorDimgray_100
-                  : Color.colorWhitesmoke,
-                borderRadius: Border.br_81xl,
-                height: 35,
-                width: 170,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
+          ) : !isSportman &&
+            clubMatches.filter(
+              (match) =>
+                match.prop1.sportmanId === data.author.sportman.id &&
+                match.status === 'success'
+            ).length > 0 ? (
+            <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data.author.id,
@@ -200,16 +395,63 @@ const HeaderPerfil = ({
                   profilePic: avatar
                 })
               }
+              style={styles.leftButton}
             >
-              <Text
-                style={[
-                  button2 ? styles.ojear : styles.ojear2,
-                  styles.timeTypo
-                ]}
-              >
-                {'Enviar mensaje'}
+              <Text style={[styles.ojear, styles.timeTypo]}>
+                Enviar mensaje
               </Text>
-            </Pressable>
+            </TouchableOpacity>
+          ) : (
+            !isSportman &&
+            clubMatches.filter(
+              (match) =>
+                match.prop1.sportmanId === data.author.sportman.id &&
+                match.status === 'success'
+            ).length === 0 && (
+              <Pressable
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: '#7B2610',
+                  borderRadius: Border.br_81xl,
+                  height: 35,
+                  width: 170,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 35,
+                    width: '100%',
+                    textAlign: 'left',
+                    fontSize: 14,
+                    color: '#E1451E',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    fontWeight: '700'
+                  }}
+                >
+                  {'Match solicitado'}
+                </Text>
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: Color.bALONCESTO,
+                    position: 'absolute',
+                    right: 0
+                  }}
+                >
+                  <Image
+                    style={styles.groupIcon}
+                    contentFit="cover"
+                    source={require('../assets/group13.png')}
+                  />
+                </View>
+              </Pressable>
+            )
           )}
         </View>
       ) : (
@@ -414,7 +656,9 @@ const HeaderPerfil = ({
           >
             Seguidores
           </Text>
-          <Text style={styles.numeroText}>24</Text>
+          <Text style={styles.numeroText}>
+            {user.user.followers ? user.user.followers.length : '0'}
+          </Text>
         </View>
       )}
       {external && data.author.type !== 'club' && (
@@ -437,9 +681,14 @@ const HeaderPerfil = ({
               fontFamily: FontFamily.t4TEXTMICRO
             }}
           >
-            Seguidores
+            {'Seguidores'}
           </Text>
-          <Text style={styles.numeroText}>24</Text>
+          <Text style={styles.numeroText}>
+            {allUsers.filter((user) => user.id === data.author.id)[0].followers
+              ? allUsers.filter((user) => user.id === data.author.id)[0]
+                  .followers.length
+              : '0'}
+          </Text>
         </View>
       )}
 
@@ -659,8 +908,8 @@ const styles = StyleSheet.create({
   groupIcon: {
     marginRight: 1,
     marginTop: 1,
-    height: 25,
-    width: 32,
+    height: 25 * 0.8,
+    width: 32 * 0.8,
     opacity: 0.9
   },
   timeTypo: {
@@ -699,16 +948,6 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size
   },
-  jordiEspeltPvotBaloncestoWrapper: {
-    flexDirection: 'row',
-    gap: 20,
-    justifyContent: 'flex-start',
-    maxWidth: '60%',
-    alignItems: 'center',
-    height: 120,
-    paddingHorizontal: 15
-  },
-
   jordiEspeltPvotBaloncesto: {
     fontSize: FontSize.button_size,
     lineHeight: 20,
@@ -718,10 +957,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
-  },
-  perfilFeedVisualitzaciCluItem: {
-    height: 100,
-    width: 100
   },
   imgFront: {
     width: '100%',

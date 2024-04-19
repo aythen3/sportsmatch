@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
@@ -17,7 +17,15 @@ const Paso2Jugador = () => {
   }
 
   return (
-    <View style={styles.paso6}>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        marginTop: 15,
+        gap: 15
+      }}
+    >
       {sports.map((sport) => (
         <DeportesSeleccion
           key={sport.id}
@@ -29,14 +37,5 @@ const Paso2Jugador = () => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  paso6: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 15
-  }
-})
 
 export default Paso2Jugador

@@ -6,19 +6,30 @@ import {
   View,
   Pressable,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import RegisteredOffers from '../components/RegisteredOffers'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Premium from './Premium'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { updateOffer } from '../redux/actions/offers'
+import { sendNotification } from '../redux/actions/notifications'
+import { BlurView } from 'expo-blur';
 
 const InscritosAMisOfertas = () => {
-  const { usersRegistered } = useSelector((state) => state.offers)
+  const dispatch = useDispatch()
+  const { offers } = useSelector((state) => state.offers)
+  const { allUsers, user } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [modalPremium, setModalPremium] = useState(false)
+  const route = useRoute()
 
+  const inscriptions = route.params.inscriptions
+
+  console.log('inscriptions', inscriptions)
   return (
     <View style={styles.inscritosAMisOfertas}>
       <View style={styles.inscritosParent}>
@@ -34,21 +45,248 @@ const InscritosAMisOfertas = () => {
           onPress={() => navigation.goBack()}
         >
           <Text style={[styles.inscritos1, styles.carlesMirTypo]}>
-            Inscritos
+            Inscriptos
           </Text>
         </Pressable>
       </View>
 
-      <View style={{ marginTop: 30 }}>
-        {usersRegistered.map((user) => (
-          <RegisteredOffers
-            key={user.id}
-            name={user.name}
-            image={user.image}
-            match={user.match}
-            modalPremium={() => setModalPremium(true)}
-          />
-        ))}
+      <View style={{ marginTop: 30, marginBottom: 20 }}>
+        {inscriptions.length > 0 ? (
+          <View>
+            {inscriptions.slice(0,2).map((inscription, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '95%',
+                  height: 80,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#cecece'
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center'
+                  }}
+                >
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100 }}
+                    contentFit="contain"
+                    source={{
+                      uri: allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscription)[0]
+                        .sportman.info.img_perfil
+                    }}
+                  />
+                  <Text
+                    style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                  >
+                    {
+                      allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscription)[0]
+                        .nickname
+                    }
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    const currentOffer = offers.filter(
+                      (offer) =>
+                        offer.inscriptions &&
+                        offer.inscriptions.includes(inscription)
+                    )[0]
+                    const offerId = offers.filter(
+                      (offer) =>
+                        offer.inscriptions &&
+                        offer.inscriptions.includes(inscription)
+                    )[0].id
+                    console.log('offerId: ', offerId)
+                    const newInscriptions = currentOffer.inscriptions.filter(
+                      (applicant) => applicant !== inscription
+                    )
+
+                    console.log('newInscriptions: ', newInscriptions)
+                    const actualMatches = currentOffer.matches || []
+                    const newMatchs = [...actualMatches, inscription]
+                    console.log('newMatchs: ', newMatchs)
+
+                    const sportmanUser = allUsers.filter(
+                      (user) => user?.sportman?.id === inscription
+                    )[0]
+                    console.log('sportmanUser', sportmanUser)
+
+                    console.log('club', user.user)
+
+                    dispatch(
+                      sendMatch({
+                        offerId,
+                        sportmanId: inscription,
+                        clubId: user.user.club.id,
+                        status: 'success',
+                        prop1: {
+                          clubId: user.user.club.id,
+                          offerId,
+                          sportmanId: inscription,
+                          sportManData: {
+                            userId: sportmanUser?.id,
+                            profilePic:
+                              sportmanUser?.sportman?.info?.img_perfil,
+                            name: sportmanUser?.nickname
+                          },
+                          clubData: {
+                            userId: user?.user?.id,
+                            name: user?.user?.nickname,
+                            profilePic: user?.user?.club?.img_perfil
+                          }
+                        }
+                      })
+                    )
+                      .then((data) => {
+                        console.log('data from sendMatch: ', data)
+                        console.log('body to sendNotification: ', {
+                          title: 'Match',
+                          message: 'Has hecho match!',
+                          recipientId:
+                            data?.payload?.prop1?.sportManData?.userId,
+                          date: new Date(),
+                          read: false,
+                          prop1: {
+                            matchId: data?.payload?.id,
+                            clubData: {
+                              name: user?.user?.nickname,
+                              userId: user.user.id,
+                              ...user?.user?.club
+                            }
+                          }
+                        })
+                        dispatch(
+                          sendNotification({
+                            title: 'Match',
+                            message: 'Has hecho match!',
+                            recipientId:
+                              data?.payload?.prop1?.sportManData?.userId,
+                            date: new Date(),
+                            read: false,
+                            prop1: {
+                              matchId: data?.payload?.id,
+                              clubData: {
+                                name: user?.user?.nickname,
+                                userId: user.user.id,
+                                ...user?.user?.club
+                              }
+                            }
+                          })
+                        )
+                      })
+                      .then((data) => dispatch(getAllMatchs()))
+
+                    dispatch(
+                      updateOffer({
+                        id: offerId,
+                        body: {
+                          inscriptions: newInscriptions,
+                          matches: newMatchs
+                        }
+                      })
+                    )
+                  }}
+                >
+                  <Image
+                    style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                    contentFit="contain"
+                    source={require('../assets/matchButton.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View
+            style={{ width: '95%', alignItems: 'center', alignSelf: 'center' }}
+          >
+            <Text
+              style={{
+                marginTop: 30,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: 500,
+                fontSize: FontSize.size_9xl,
+                color: Color.wHITESPORTSMATCH,
+                bottom: 4
+              }}
+            >
+              Aun no hay ningun inscripto en esta oferta!
+            </Text>
+          </View>
+        )}
+        
+         {inscriptions.length > 2 && <View                
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '95%',
+                  height: 80,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#cecece'
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center'
+                  }}
+                >
+                  {/* <View style={{borderRadius:100,overflow:'hidden'}}>
+                  <BlurView style={{zIndex:1000, borderRadius:100}} intensity={160}>
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100,zIndex:-1000 }}
+                    contentFit="contain"
+                    source={{
+                      uri: allUsers
+                        .filter(
+                          (user) => user.type === 'sportman' && user.sportman
+                        )
+                        .filter((user) => user.sportman.id === inscriptions[2])[0]
+                        .sportman.info.img_perfil
+                    }}
+                  />
+                  </BlurView>
+                  </View> */}
+                  <View style={{position:'relative'}}>
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 100 }}
+                    contentFit="contain"
+                    source={require('../assets/blurryProfile2.png')}
+                  />
+                 {inscriptions.length > 3 && <Image
+                    style={{ position:'absolute', top:4,left:7,width: 50, height: 50, borderRadius: 100 }}
+                    contentFit="contain"
+                    source={require('../assets/blurryProfile.png')}
+                  />}
+                  </View>
+                  
+                  <Text
+                    style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                  >
+                    {
+                    inscriptions.length > 3 ? `+ ${inscriptions.length-2} inscripciones más` : '+ 1 inscripción más'
+                    }
+                  </Text>
+                </View>
+              </View>}
       </View>
 
       <View style={[styles.textoSpaceBlock]}>
@@ -67,7 +305,17 @@ visualizar todas las inscripciones`}</Text>
           >{`¡Sube de nivel en tu cuenta para 
 visualizar todas las inscripciones!`}</Text>
           <Pressable
-            style={[styles.botonPremium, styles.capacityBg]}
+            style={{backgroundColor: Color.wHITESPORTSMATCH,
+              marginTop: 14,
+              width: '95%',
+              justifyContent: 'center',
+              paddingHorizontal: Padding.p_81xl,
+              paddingVertical: Padding.p_3xs,
+              zIndex: 3,
+              backgroundColor: Color.wHITESPORTSMATCH,
+              borderRadius: Border.br_81xl,
+              flexDirection: 'row',
+              alignItems: 'center'}}
             onPress={() => setModalPremium(true)}
           >
             <Text style={styles.textoBoton}>Hazte premium</Text>
@@ -137,10 +385,6 @@ const styles = StyleSheet.create({
   },
   textoSpaceBlock: {
     marginTop: 9
-  },
-  capacityBg: {
-    backgroundColor: Color.wHITESPORTSMATCH,
-    marginTop: 10
   },
   menuClubPosition: {
     left: '50%',

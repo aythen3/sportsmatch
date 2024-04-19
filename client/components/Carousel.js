@@ -14,6 +14,7 @@ import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
 import CommentSection from './modals/CommentSection'
 import { Context } from '../context/Context'
+import { useSelector } from 'react-redux'
 
 function Carousel({
   name,
@@ -28,6 +29,7 @@ function Carousel({
   authorId,
   data
 }) {
+  const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -62,25 +64,37 @@ function Carousel({
         </View> */}
       </PagerView>
       <View style={{ padding: 5 }}>
-        <LinearGradient
-          style={styles.botonPromocionarPublicacion}
-          locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
-          colors={[
-            '#e6b300',
-            '#bd9710',
-            '#ebc02a',
-            '#e6b300',
-            '#bd9710',
-            '#ebc02a'
-          ]}
+        {authorId === user?.user?.id && (
+          <TouchableOpacity onPress={() => navigation.navigate('MiSuscripcin')}>
+            <LinearGradient
+              style={styles.botonPromocionarPublicacion}
+              locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+              colors={[
+                '#e6b300',
+                '#bd9710',
+                '#ebc02a',
+                '#e6b300',
+                '#bd9710',
+                '#ebc02a'
+              ]}
+            >
+              <Text style={[styles.jordiEspeltMireu, styles.jordiTypo]}>
+                Promocionar publicación
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 10,
+            marginBottom: 10,
+            alignItems: 'center'
+          }}
         >
-          <Text style={[styles.jordiEspeltMireu, styles.jordiTypo]}>
-            Promocionar publicación
-          </Text>
-        </LinearGradient>
-        <View style={styles.iconsLikes}>
           <Text style={styles.likes}>{likes} likes</Text>
-          <IconsMuro id={id} userId={userId} />
+          <IconsMuro postUserId={authorId} id={id} userId={userId} />
         </View>
         <Text style={styles.description}>{description}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -156,13 +170,6 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size
-  },
-  iconsLikes: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 10,
-    alignItems: 'center'
   },
   container: {
     width: '100%'

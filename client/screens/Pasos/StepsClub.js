@@ -75,13 +75,12 @@ const StepsClub = () => {
               id: response.meta.arg.userId,
               data: response.meta.arg.clubData
             })
-          )
-            .then(() => {
-              navigation.navigate('SiguiendoJugadores')
-            })
-            .catch((error) => {
-              console.error('Error updating user club data:', error)
-            })
+          ).catch((error) => {
+            console.error('Error updating user club data:', error)
+          })
+        })
+        .then(() => {
+          navigation.navigate('SiguiendoJugadores')
         })
         .catch((error) => {
           console.error('Error creating club:', error)
@@ -119,14 +118,16 @@ const StepsClub = () => {
   }
 
   return (
-    <View style={styles.escogerDeporte}>
-      <ScrollView>
+    <View style={{ ...styles.escogerDeporte }}>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <Image
-          style={styles.escogerDeporteChild}
+          style={{
+            ...styles.escogerDeporteChild
+          }}
           contentFit="cover"
           source={require('../../assets/group-2412.png')}
         />
-        <View style={styles.atrsParent}>
+        <View style={{ ...styles.atrsParent }}>
           <Image
             style={styles.coolicon}
             contentFit="cover"
@@ -148,7 +149,7 @@ const StepsClub = () => {
             {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
           </Text>
         </View>
-        <Lines index={stepsIndex} />
+        <Lines club={true} index={stepsIndex} />
 
         {ViewComponent(stepsIndex)}
 
@@ -203,10 +204,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    top: 60,
+    top: 0,
     justifyContent: 'flex-end',
-    right: 30,
-    marginBottom: 100
+    right: 20,
+    marginBottom: 50
   },
   escogerDeporteChild: {
     width: '100%',

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   // Pressable,
+  Text,
   ScrollView,
   Modal,
   TouchableWithoutFeedback,
@@ -46,7 +47,7 @@ const ExplorarClubs = () => {
 
   return (
     <View style={styles.explorarClubs}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderIcons />
 
         <FiltersHome
@@ -87,7 +88,7 @@ const ExplorarClubs = () => {
                   color: Color.wHITESPORTSMATCH
                 }}
               >
-                No hay publicaciones
+                No hay publicaciones!
               </Text>
             </View>
           )}

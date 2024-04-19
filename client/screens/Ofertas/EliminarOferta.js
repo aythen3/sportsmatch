@@ -5,7 +5,9 @@ import {
   View,
   Text,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
+  Dimensions
 } from 'react-native'
 import {
   Color,
@@ -16,13 +18,16 @@ import {
 } from '../../GlobalStyles'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
 import { deleteOffer, getAllOffers } from '../../redux/actions/offers'
 
 const EliminarOferta = () => {
   const navigation = useNavigation()
 
+  const route = useRoute()
+
   const dispatch = useDispatch()
+  const { allUsers } = useSelector((state) => state.users)
 
   const { offer } = useSelector((state) => state.offers)
 
@@ -32,20 +37,47 @@ const EliminarOferta = () => {
   const [check2, setCheck2] = useState(false)
 
   const handleDelete = () => {
-    dispatch(deleteOffer(offer.id))
+    dispatch(deleteOffer(route.params.offerId))
     dispatch(getAllOffers())
     navigation.goBack()
   }
 
   return (
-    <View style={styles.eliminarOferta3}>
-      <View style={styles.container}>
-        <Text style={styles.estsSeguroDe}>{`¿Estás seguro de que quieres 
+    <View
+      style={{
+        backgroundColor: '#1D1D1D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        flex: 1
+      }}
+    >
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Text
+          style={{
+            fontSize: FontSize.h3TitleMEDIUM_size,
+            lineHeight: 26,
+            fontWeight: '500',
+            textAlign: 'center',
+            fontFamily: FontFamily.t4TEXTMICRO,
+            color: Color.wHITESPORTSMATCH
+          }}
+        >{`¿Estás seguro de que quieres 
 eliminar esta oferta?`}</Text>
 
-        <View style={styles.middleContainer}>
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}
+        >
           <Text
-            onPress={() => setColor(!color)}
+            onPress={() => {
+              setColor2(false)
+              setColor(!color)
+            }}
             style={{
               height: 45,
               lineHeight: 40,
@@ -68,61 +100,91 @@ eliminar esta oferta?`}</Text>
         </View>
 
         {color && (
-          <View style={styles.opcionesPerfilesFrame}>
-            <View style={styles.textoperfiles}>
-              <Text style={[styles.indcanosConQuin, styles.carlesMirTypo]}>
+          <View
+            style={{
+              marginTop: 22,
+              width: '100%'
+            }}
+          >
+            <View>
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  alignSelf: 'stretch',
+                  textAlign: 'left',
+                  lineHeight: 17,
+                  fontSize: FontSize.t1TextSMALL_size,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
                 Indícanos con quién has llegado a un acuerdo.
               </Text>
-              <View>
-                <View style={styles.imageContainer}>
-                  <View style={styles.imageName}>
-                    <Image
-                      style={styles.image}
-                      source={require('../../assets/mask-group13.png')}
-                    />
-                    <Text style={[styles.carlesMir, styles.carlesMirTypo]}>
-                      Jordi Espelt
-                    </Text>
-                  </View>
-                  <Pressable
-                    style={[styles.circle, check1 && styles.checkedCircle]}
-                    onPress={() => setCheck1(!check1)}
-                  >
-                    {check1 && (
-                      <Ionicons name="checkmark" size={10} color="white" />
-                    )}
-                  </Pressable>
-                </View>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                  marginTop: 5,
+                  maxHeight: 200,
+                  width: Dimensions.get('screen').width - 25
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1
+                  }}
+                >
+                  {allUsers
+                    .filter((user) => user.type === 'sportman' && user.sportman)
+                    .map((player, index) => (
+                      <View key={index}>
+                        <View style={styles.imageContainer}>
+                          <View style={styles.imageName}>
+                            <Image
+                              style={styles.image}
+                              source={{ uri: player.sportman.info.img_perfil }}
+                            />
+                            <Text
+                              style={[styles.carlesMir, styles.carlesMirTypo]}
+                            >
+                              {player.nickname}
+                            </Text>
+                          </View>
+                          <Pressable
+                            style={[
+                              styles.circle,
+                              check1 === index && styles.checkedCircle
+                            ]}
+                            onPress={() => setCheck1(index)}
+                          >
+                            {check1 === index && (
+                              <Ionicons
+                                name="checkmark"
+                                size={10}
+                                color="white"
+                              />
+                            )}
+                          </Pressable>
+                        </View>
 
-                <View style={styles.line} />
-
-                <View style={styles.imageContainer}>
-                  <View style={styles.imageName}>
-                    <Image
-                      style={styles.image}
-                      source={require('../../assets/mask-group12.png')}
-                    />
-                    <Text style={[styles.carlesMir, styles.carlesMirTypo]}>
-                      Carles Mir
-                    </Text>
-                  </View>
-                  <Pressable
-                    style={[styles.circle, check2 && styles.checkedCircle]}
-                    onPress={() => setCheck2(!check2)}
-                  >
-                    {check2 && (
-                      <Ionicons name="checkmark" size={10} color="white" />
-                    )}
-                  </Pressable>
+                        {index !== allUsers.length - 1 && (
+                          <View style={styles.line} />
+                        )}
+                      </View>
+                    ))}
                 </View>
-              </View>
+              </ScrollView>
             </View>
           </View>
         )}
 
-        <View style={styles.middleContainer}>
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}
+        >
           <Text
-            onPress={() => setColor2(!color2)}
+            onPress={() => {
+              setColor(false)
+              setCheck1()
+              setColor2(!color2)
+            }}
             style={{
               height: 45,
               lineHeight: 40, // Igual al height
@@ -148,12 +210,13 @@ eliminar esta oferta?`}</Text>
         style={{
           width: '100%',
           position: 'absolute',
-          bottom: 100
+          bottom: 70
         }}
       >
         <TouchableOpacity
           style={{
             width: '95%',
+            marginTop: 30,
             height: 40,
             alignItems: 'center',
             alignSelf: 'center',
@@ -179,10 +242,6 @@ eliminar esta oferta?`}</Text>
 }
 
 const styles = StyleSheet.create({
-  contenidoPosition: {
-    left: 0,
-    position: 'absolute'
-  },
   circle: {
     width: 24,
     height: 24,
@@ -206,42 +265,9 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     overflow: 'hidden'
   },
-  imagenIcon: {
-    height: '160%',
-    width: '34.68%',
-    top: '-0.67%',
-    right: '65.54%',
-    bottom: '-59.33%',
-    left: '-0.22%',
-    maxHeight: '100%',
-    position: 'absolute'
-  },
-  indcanosConQuin: {
-    color: Color.gREY2SPORTSMATCH,
-    alignSelf: 'stretch'
-  },
-  carlesMirTypo: {
-    textAlign: 'left',
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
-  opcionesPerfilesFrame: {
-    marginTop: 22
-  },
   botonLayout: {
     width: 360,
     height: 40
-  },
-  sYaHeTypo: {
-    color: Color.gREY2SPORTSMATCH,
-    lineHeight: 17,
-    fontSize: FontSize.t1TextSMALL_size,
-    left: 3,
-    top: 11,
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO,
-    position: 'absolute'
   },
   rectanguloLayout: {},
 
@@ -251,36 +277,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  fondoPopup: {
-    backgroundColor: Color.bLACK2SPORTMATCH,
-    height: 843,
-    width: 390,
-    left: 0,
-    top: 0,
-    position: 'absolute'
-  },
-  estsSeguroDe: {
-    fontSize: FontSize.h3TitleMEDIUM_size,
-    lineHeight: 26,
-    fontWeight: '500',
-    // height: 22,
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO,
-    color: Color.wHITESPORTSMATCH
-    // width: 390
-  },
   sYaHe: {
     width: 354
-  },
-  rectangulo: {
-    borderStyle: 'solid',
-    borderColor: Color.gREY2SPORTSMATCH,
-    borderWidth: 1,
-    height: 40,
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    borderRadius: Border.br_81xl
   },
   boton1: {
     height: 40
@@ -328,28 +326,6 @@ const styles = StyleSheet.create({
     marginTop: 250,
     alignItems: 'center'
   },
-  contenido: {
-    top: 239,
-    alignItems: 'center',
-    left: 0,
-    position: 'absolute'
-  },
-  eliminarOferta3: {
-    backgroundColor: '#1D1D1D',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    flex: 1
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  middleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 30
-  },
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -363,7 +339,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 50,
-    height: 50
+    height: 50,
+    borderRadius: 100
   },
   line: {
     height: 1,

@@ -20,7 +20,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
   const data = router.params
-  console.log('data,', router.params)
+  // console.log('data,', router.params)
 
   function calculateAge(birthYear) {
     const birthYearNum =
@@ -35,7 +35,7 @@ const PerfilFeedVisualitzaciJug = () => {
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'} >
         <HeaderPerfil
           name={data.author.nickname}
           sport={
@@ -75,7 +75,10 @@ const PerfilFeedVisualitzaciJug = () => {
         )}
 
         {selectComponents === 'estadisticas' && (
-          <ScrollView style={styles.perfilDatosVisualitzaciMa}>
+          <ScrollView
+            keyboardShouldPersistTaps={'always'}
+            style={styles.perfilDatosVisualitzaciMa}
+          >
             <View style={styles.contenidoDatos}>
               <View style={styles.circulos}>
                 <View style={styles.circuloLayout}>

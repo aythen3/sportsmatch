@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -25,8 +25,15 @@ import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { Context } from '../../context/Context'
 
 const IniciarSesin = () => {
+  const {
+    setProvisoryProfileImage,
+    setProvisoryCoverImage,
+    setProfileImage,
+    setCoverImage
+  } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
 
@@ -57,7 +64,6 @@ const IniciarSesin = () => {
       navigation.navigate('SiguiendoJugadores')
     } else {
       if (user?.user?.type === 'club') {
-        console.log('cluuuub')
         if (user?.accesToken) {
           navigation.navigate('stepsClub')
         }
@@ -72,6 +78,11 @@ const IniciarSesin = () => {
 
   const handleSubmit = () => {
     // console.log('on handleSubmit')
+    console.log('on handlesubmit')
+    setProvisoryProfileImage()
+    setProvisoryCoverImage()
+    setProfileImage()
+    setCoverImage()
     if (valuesUser.email && valuesUser.password) {
       console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
@@ -81,7 +92,7 @@ const IniciarSesin = () => {
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
-          await AsyncStorage.setItem('user', response?.payload)
+          // await AsyncStorage.setItem('user', response?.payload)
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
         })
@@ -127,7 +138,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
-                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           value={valuesUser.email}
@@ -148,7 +165,13 @@ const IniciarSesin = () => {
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
-                          style={[styles.nombre, styles.eMailSpaceBlock]}
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            width: '80%'
+                          }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={true}
@@ -174,17 +197,17 @@ const IniciarSesin = () => {
               >
                 <Text style={styles.aceptar}>Inicia sesión</Text>
               </TouchableOpacity>
-            </View>
-            {/* <Pressable
-              style={styles.noTenesUnaContainer}
-              onPress={() => navigation.navigate('LoginSwitch')}
-            >
-              <Text
-                style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
+              <Pressable
+                style={{ marginTop: 37 }}
+                onPress={() => navigation.navigate('LoginSwitch')}
               >
-                ¿No tíenes una cuenta? Regístrate
-              </Text>
-            </Pressable> */}
+                <Text
+                  style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
+                >
+                  ¿No tíenes una cuenta? Regístrate
+                </Text>
+              </Pressable>
+            </View>
           </View>
           <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
@@ -303,9 +326,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: FontSize.t2TextSTANDARD_size
   },
-  noTenesUnaContainer: {
-    marginTop: 27
-  },
   formulario: {
     flex: 1
   },
@@ -334,14 +354,6 @@ const styles = StyleSheet.create({
   iniciarSesin: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
-  },
-  nombre: {
-    color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
-  },
-  eMailSpaceBlock: {
-    marginLeft: 10
   }
 })
 
