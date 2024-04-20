@@ -198,9 +198,9 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           style={{ position: 'relative', width: '100%', marginTop: 10 }}
         >
           <Acordeon
-            title="Categoria"
+            title="Categoría"
             placeholderText={
-              selectedCategoria ? selectedCategoria : 'Selecciona tu categoria'
+              selectedCategoria ? selectedCategoria : 'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}

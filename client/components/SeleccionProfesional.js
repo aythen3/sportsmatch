@@ -96,7 +96,7 @@ const SeleccionProfesional = () => {
           </View>
         </View>
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Como te defines como profesional</Text>
+          <Text style={styles.atributo}>Cómo te defines como profesional</Text>
           <View style={styles.rectanguloBorder2}>
             <TextInput
               style={styles.textInput}

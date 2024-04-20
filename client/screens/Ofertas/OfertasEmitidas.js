@@ -120,7 +120,7 @@ const OfertasEmitidas = () => {
 
                   <View>
                     <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Categoria
+                      Categoría
                     </Text>
                     <Text style={[styles.masculino, styles.timeTypo]}>
                       {offer.category}

@@ -218,7 +218,7 @@ const LoginSwitch = () => {
                       </View>
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
-                      — o contínuar con el e-mail —
+                      — o continuar con el e-mail —
                     </Text>
                   </View>
                   <Pressable
@@ -253,12 +253,12 @@ const LoginSwitch = () => {
                   <Text
                     style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
                   >
-                    ¿Ya tíenes una cuenta? Inicia sesión
+                    ¿Ya tienes una cuenta? Inicia sesión
                   </Text>
                 </Pressable>
               </View>
               <Text style={[styles.alContnuarAceptas, styles.contnuarTypo]}>
-                Al contínuar, aceptas automátícamente nuestras Condiciones,{' '}
+                Al continuar, aceptas automáticamente nuestras Condiciones,{' '}
                 {'\n'}
                 Polítíca de privacidad y Polítíca de cookies
               </Text>

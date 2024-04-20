@@ -285,7 +285,7 @@ const Registrarse = () => {
             onPress={() => navigation.navigate('IniciarSesin')}
           >
             <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
-              ¿Ya tíenes una cuenta? Inicia sesión
+              ¿Ya tienes una cuenta? Inicia sesión
             </Text>
           </Pressable>
 
@@ -303,7 +303,7 @@ const Registrarse = () => {
             </View>
             <View style={styles.textoLegalFrame}>
               <Text style={[styles.textoInferior, styles.textoTypo]}>
-                Al contínuar, aceptas automátícamente nuestras Condiciones,
+                Al continuar, aceptas automáticamente nuestras Condiciones,
                 Polítíca de privacidad y Polítíca de cookies
               </Text>
             </View>

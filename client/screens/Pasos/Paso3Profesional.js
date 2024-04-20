@@ -114,7 +114,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
         value={profesionalValues.actualClub}
       />
       <Input
-        title="Como te defines como profesional"
+        title="Cómo te defines como profesional"
         placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
         isMultiLine={true}
         field="description"
