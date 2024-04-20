@@ -281,7 +281,7 @@ const ConfigurarAnuncio = () => {
             style={{ zIndex: 8000, ...styles.containerBox }}
           >
             <Text style={styles.inputText}>
-              {selectedCategory || 'Selecciona una categoria'}
+              {selectedCategory || 'Selecciona una categoría'}
             </Text>
             {showCategoryModal && (
               <View

@@ -204,14 +204,14 @@ const IniciarSesin = () => {
                 <Text
                   style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
                 >
-                  ¿No tíenes una cuenta? Regístrate
+                  ¿No tienes una cuenta? Regístrate
                 </Text>
               </Pressable>
             </View>
           </View>
           <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
-              Al contínuar, aceptas automátícamente nuestras Condiciones,
+              Al continuar, aceptas automáticamente nuestras Condiciones,
               Polítíca de privacidad y Polítíca de cookies
             </Text>
           </View>

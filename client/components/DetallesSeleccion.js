@@ -185,7 +185,7 @@ const SkillSeleccion = ({
         </View>
       </View>
       <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
-        <Text style={styles.atributo}>Como te defines como jugador</Text>
+        <Text style={styles.atributo}>Cómo te defines como jugador</Text>
         <View style={styles.rectanguloBorder2}>
           <TextInput
             style={styles.textInput}

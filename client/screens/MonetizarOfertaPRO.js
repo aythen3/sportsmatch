@@ -145,7 +145,7 @@ las ofertas deportívas de forma ilimitada!`}</Text>
                             }
                           >
                             <Text style={[styles.aceptar3, styles.aceptarTypo]}>
-                              Contínuar
+                              Continuar
                             </Text>
                           </Pressable>
                         </LinearGradient>
