@@ -205,6 +205,7 @@ const PlayerDetails = () => {
               </Text>
               <CustomPicker
                 zIndex={8000}
+                cities={true}
                 array={cities}
                 placeholder={'Lugar de residencia'}
                 state={city}

@@ -17,7 +17,12 @@ import {
 import DetallesSeleccion from '../../components/DetallesSeleccion'
 import { Context } from '../../context/Context'
 
-const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
+const Paso4Jugador = ({
+  sportmanValues,
+  setSportmanValues,
+  setSelectedCity,
+  selectedCity
+}) => {
   const { pickImage, provisoryProfileImage, provisoryCoverImage } =
     useContext(Context)
 
@@ -115,6 +120,7 @@ const Paso4Jugador = ({ sportmanValues, setSportmanValues }) => {
           scrolledHeight={scrolledHeight}
           sportmanValues={sportmanValues}
           setSportmanValues={setSportmanValues}
+          setSelectedCity={setSelectedCity}
         />
       </View>
     </ScrollView>

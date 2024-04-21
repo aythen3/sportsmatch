@@ -30,6 +30,7 @@ import {
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create, loginWithGoogle } from '../../redux/actions/users'
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -88,8 +89,14 @@ const LoginSwitch = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
-        console.log(JSON.stringify(user, null, 2))
         setUserInfo(user)
+        dispatch(
+          create({
+            nickname: user.displayName,
+            email: user.email,
+            googleId: user.uid
+          })
+        )
       } else {
         console.log('user not authenticated')
       }

@@ -10,7 +10,8 @@ const CustomPicker = ({
   setShowModal,
   placeholder,
   array,
-  zIndex
+  zIndex,
+  cities
 }) => {
   console.log('array: ', array)
   return (
@@ -87,7 +88,9 @@ const CustomPicker = ({
                   ? 'Mujer'
                   : item === 'Male'
                     ? 'Hombre'
-                    : item}
+                    : cities
+                      ? item?.city
+                      : item}
               </Text>
             </TouchableOpacity>
           ))}
