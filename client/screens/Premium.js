@@ -86,7 +86,7 @@ const Premium = () => {
         </Text>
         <View style={styles.botonesInferiores}>
           <View style={[styles.botonContinuar, styles.botonFlexBox]}>
-            <Text style={[styles.texto2, styles.timeClr]}>Contínuar</Text>
+            <Text style={[styles.texto2, styles.timeClr]}>Continuar</Text>
           </View>
           <View style={styles.botonFlexBox}>
             <Text style={[styles.taxto, styles.aoTypo]}>No, gracias</Text>

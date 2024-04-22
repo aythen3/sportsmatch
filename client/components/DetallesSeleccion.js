@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
@@ -7,12 +7,17 @@ import AñoNacimientoModal from './modals/AñoNacimientoModal'
 import Acordeon from './Acordeon'
 import { useDispatch } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
+import ScrollableModal from './modals/ScrollableModal'
+import { cities } from '../utils/cities'
 
 const SkillSeleccion = ({
   editable,
   setEditable,
   sportmanValues,
-  setSportmanValues
+  scrolledHeight,
+  setSportmanValues,
+  setSelectedCity,
+  selectedCity
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -23,16 +28,10 @@ const SkillSeleccion = ({
     useState(false)
   const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState()
   const [cityModal, setCityModal] = useState(false)
-  const [selectedCity, setSelectedCity] = useState()
+  const [pickedCity, setPickedCity] = useState()
 
   const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
-  const opcionesResidencia = [
-    'Barcelona',
-    'Madrid',
-    'Sevilla',
-    'Valencia',
-    'Murcia'
-  ]
+  const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openAñoNacimientoModal = () => {
     setAñoNacimientoModalVisible(true)
@@ -61,12 +60,17 @@ const SkillSeleccion = ({
     setSelectedGenero(genero)
   }
 
+  useEffect(() => {
+    console.log('selectedCity changed: ', selectedCity)
+  }, [selectedCity])
   const openCityModal = () => {
     setCityModal(!cityModal)
   }
   const handleSelectCity = (city) => {
-    dispatch(setCity(city))
+    console.log('city: ', city)
     setSelectedCity(city)
+    setPickedCity(city)
+    dispatch(setCity(city))
   }
 
   const descriptionSportMan = (field, value) => {
@@ -76,8 +80,18 @@ const SkillSeleccion = ({
     }))
   }
 
+  const [cityTop, setCityTop] = useState(0)
+
   return (
-    <View style={styles.formulariosInferiores}>
+    <View
+      style={{
+        marginTop: 20,
+        width: '100%',
+        gap: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
       <View
         style={{
           position: 'relative',
@@ -103,7 +117,13 @@ const SkillSeleccion = ({
           />
         )}
       </View>
-      <View style={styles.formularioCategoria}>
+      <View
+        style={{
+          width: '100%',
+          zIndex: -1000,
+          paddingHorizontal: 15
+        }}
+      >
         <Text style={styles.atributo}>Año de Nacimiento</Text>
         <Pressable
           onPress={openAñoNacimientoModal}
@@ -124,20 +144,28 @@ const SkillSeleccion = ({
       </View>
 
       <View
+        collapsable={false}
+        onLayout={(event) => {
+          event.target.measure((x, y, width, height, pageX, pageY) => {
+            console.log(pageY)
+            setCityTop(pageY)
+          })
+        }}
         style={{
           position: 'relative',
-          width: '100%',
-          marginTop: 10
+          width: '100%'
         }}
       >
         <Acordeon
           title="Lugar de residencia"
-          placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
+          placeholderText={pickedCity ? pickedCity : 'Lugar de residencia'}
           isAccordeon={true}
           open={openCityModal}
         />
         {cityModal && (
-          <CustomModal
+          <ScrollableModal
+            scrollHeight={scrolledHeight}
+            parentTop={cityTop}
             visible={cityModal}
             closeModal={closeModal}
             onSelectItem={handleSelectCity}
@@ -146,7 +174,7 @@ const SkillSeleccion = ({
         )}
       </View>
 
-      <View style={styles.formularioCategoria}>
+      <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
         <Text style={styles.atributo}>Club actual</Text>
         <View style={styles.rectanguloBorder}>
           <TextInput
@@ -158,8 +186,8 @@ const SkillSeleccion = ({
           />
         </View>
       </View>
-      <View style={styles.formularioCategoria}>
-        <Text style={styles.atributo}>Como te defines como jugador</Text>
+      <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
+        <Text style={styles.atributo}>Cómo te defines como jugador</Text>
         <View style={styles.rectanguloBorder2}>
           <TextInput
             style={styles.textInput}
@@ -194,7 +222,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
     borderRadius: Border.br_81xl,
-    height: 40,
+    height: 45,
     borderStyle: 'solid',
     justifyContent: 'center'
     // width: '96%'
@@ -237,17 +265,6 @@ const styles = StyleSheet.create({
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     left: '5%'
-  },
-  formularioCategoria: {
-    width: '90%',
-    zIndex: -1000
-  },
-  formulariosInferiores: {
-    marginTop: 20,
-    width: '100%',
-    gap: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   contenidoFormulariosboton: {
     marginTop: 20

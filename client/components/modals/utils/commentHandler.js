@@ -25,33 +25,22 @@ export const handleSubmit = async ({
 }
 
 // Handler de tiempo del post
-export const formatDateDifference = (createdAt) => {
-  const fechaCreacion = new Date(createdAt) // Fecha de creación en UTC
-  const fechaActual = new Date() // Fecha actual en la zona horaria local del dispositivo
+export const formatDateDifference = (date) => {
+  const fecha = new Date(date)
+  const ahora = new Date()
+  const milisegundosDiferencia = ahora - fecha
+  const segundosDiferencia = Math.floor(milisegundosDiferencia / 1000)
+  const minutosDiferencia = Math.floor(segundosDiferencia / 60)
+  const horasDiferencia = Math.floor(minutosDiferencia / 60)
 
-  // Ajuste para la diferencia de zona horaria entre UTC y la zona horaria local
-  const diferenciaHorasZonaHorariaLocal = fechaActual.getTimezoneOffset() / 60
-
-  // Obtener la diferencia en milisegundos y ajustar por la diferencia de zona horaria
-  const diferenciaMilisegundos =
-    fechaActual.getTime() -
-    fechaCreacion.getTime() +
-    diferenciaHorasZonaHorariaLocal * 60 * 60 * 1000
-
-  const diferenciaMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60))
-
-  const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60))
-
-  // Si la diferencia es menor a 24 horas, muestra la diferencia en horas
-  if (diferenciaHoras < 24) {
-    if (diferenciaHoras === 0) {
-      return `Hace ${diferenciaMinutos} minuto${diferenciaMinutos === 1 ? '' : 's'}`
+  if (horasDiferencia < 24) {
+    if (horasDiferencia === 0) {
+      return `Hace ${minutosDiferencia} minuto${minutosDiferencia === 1 ? '' : 's'}`
     } else {
-      return `Hace ${diferenciaHoras} hora${diferenciaHoras === 1 ? '' : 's'}`
+      return `Hace ${horasDiferencia} hora${horasDiferencia === 1 ? '' : 's'}`
     }
   } else {
-    // Si la diferencia es mayor o igual a 24 horas, muestra la diferencia en días
-    const diferenciaDias = Math.floor(diferenciaHoras / 24)
-    return `Hace ${diferenciaDias} día${diferenciaDias === 1 ? '' : 's'}`
+    const diasDiferencia = Math.floor(horasDiferencia / 24)
+    return `Hace ${diasDiferencia} día${diasDiferencia === 1 ? '' : 's'}`
   }
 }

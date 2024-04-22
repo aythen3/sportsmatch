@@ -42,6 +42,15 @@ function Carousel({
       <Pressable
         style={styles.topContainer}
         onPress={() => {
+          if(data.author.id === user.user.id) {
+            if (user.user.type !== 'club') {
+              navigation.navigate('MiPerfil')
+              return
+            } else {
+              navigation.navigate('PerfilDatosPropioClub')
+              return
+            }
+          }
           if (data.author.type === 'club') {
             navigation.navigate('ClubProfile', data)
           } else {

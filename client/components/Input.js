@@ -51,6 +51,7 @@ function Input({
               borderWidth: 1,
               borderColor: Color.gREY2SPORTSMATCH,
               borderStyle: 'solid',
+              paddingTop: isMultiLine && 5,
               borderRadius: isMultiLine ? 20 : Border.br_81xl,
               position: 'relative',
               backgroundColor: changeColor ? 'red' : 'transparent',

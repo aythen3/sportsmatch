@@ -13,7 +13,8 @@
       "backgroundColor": "#000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -55,6 +56,8 @@
       }
     },
     "owner": "aythenapps",
-    "scheme": "sportsmatch"
+    "scheme": ["sportsmatch", "fb955537832791728"]
   }
 }
+
+// https://com.aythenapps.sportsmatch/expo-development-client/?url=http%3A%2F%2F192.168.0.8%3A8081

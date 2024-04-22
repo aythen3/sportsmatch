@@ -48,6 +48,7 @@ const Paso1 = () => {
   const [selectedRole, setSelectedRole] = useState(null)
   const [sportman, setSportman] = useState(false)
   const [stepsSportman, setStepsSportman] = useState(0)
+  const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [sportmanValues, setSportmanValues] = useState({
@@ -103,7 +104,6 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
-
   useEffect(() => {
     console.log('sportman changed: ', sportman)
   }, [sportman])
@@ -120,7 +120,9 @@ const Paso1 = () => {
           ...sportmanValues,
           img_perfil: profileImage,
           img_front: coverImage,
-          ...data
+          ...data,
+          nickname: user?.user?.nickname || '',
+          city: selectedCity || ''
         }
         const body = {
           sportmanData: {
@@ -130,8 +132,7 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-
-        console.log('body', body)
+        console.log('final body: ', body)
         dispatch(createSportman(body)).then((response) => {
           console.log('reponse: ')
           dispatch(
@@ -149,7 +150,9 @@ const Paso1 = () => {
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
-          img_front: coverImage
+          img_front: coverImage,
+          nickname: user?.user?.nickname || '',
+          city: selectedCity || ''
         }
         const body = {
           sportmanData: {
@@ -159,6 +162,7 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
+        console.log('final body: ', body)
         dispatch(createSportman(body))
       }
 
@@ -325,6 +329,8 @@ const Paso1 = () => {
 
           {sportman && stepsSportman === 1 && (
             <Paso4Jugador
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
               sportmanValues={sportmanValues}
               setSportmanValues={setSportmanValues}
             />

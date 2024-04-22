@@ -29,7 +29,11 @@ import {
   signInWithCredential
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create } from '../../redux/actions/users'
+import * as Facebook from 'expo-auth-session/providers/facebook'
+
+WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
   const dispatch = useDispatch()
@@ -55,11 +59,12 @@ const LoginSwitch = () => {
 
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
+
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     iosClientId:
       '981049209549-nvp257t5bs9kr6dmi2hmmi7giogt5r95.apps.googleusercontent.com',
     androidClientId:
-      '981049209549-t4haotgorjpg38l5mbml8bebnnrpcotk.apps.googleusercontent.com'
+      '981049209549-b2d80rtev22jklna06n2j7ingp6tfjo1.apps.googleusercontent.com'
   })
 
   const getLocalUser = async () => {
@@ -88,14 +93,58 @@ const LoginSwitch = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
-        console.log(JSON.stringify(user, null, 2))
         setUserInfo(user)
+        dispatch(
+          create({
+            nickname: user.displayName,
+            email: user.email,
+            googleId: user.uid
+          })
+        )
       } else {
         console.log('user not authenticated')
       }
     })
     return () => unsub()
   }, [])
+
+  // =========================================================
+  const [user, setUser] = useState(null)
+  const [req, res, prompt] = Facebook.useAuthRequest({
+    clientId: '955537832791728'
+  })
+
+  useEffect(() => {
+    if (res && res.type === 'success' && res.authentication) {
+      ;(async () => {
+        const userInfoResponse = await fetch(
+          `https://graph.facebook.com/me?access_token=${res.authentication.accessToken}&fields=id,name,picture.type(large)`
+        )
+        const userInfo = await userInfoResponse.json()
+        console.log('userInfo: ', userInfo)
+        console.log('accessToken: ', res.params.access_token)
+        setUser(userInfo)
+        dispatch(
+          create({
+            nickname: userInfo.name,
+            facebookAccessToken: res.params.access_token
+          })
+        )
+
+        //         {"id": "10229138853848687", "name": "Alejo Sada", "picture": {"data": {"height": 200,
+        // "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10229138853848687&height=200&width=200&ext=1716313330&hash=AbbVkV53n6HBYUSIilnf2iX0", "width": 200}}}
+        console.log(JSON.stringify(res, null, 2))
+      })()
+    }
+  }, [res])
+
+  const handlePressAsync = async () => {
+    const result = await prompt()
+    if (result.type !== 'success') {
+      alert('Uh oh, something went wrong')
+      return
+    }
+  }
 
   if (loading)
     return (
@@ -175,7 +224,7 @@ const LoginSwitch = () => {
                   <View style={styles.frameGroup}>
                     <View>
                       <TouchableOpacity
-                        onPress={promptAsync}
+                        onPress={() => promptAsync()}
                         style={styles.loremIpsumParent}
                       >
                         <View style={styles.loremIpsum2}>
@@ -190,7 +239,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group-236.png')}
                         />
                       </TouchableOpacity>
-                      <View style={styles.loremIpsumGroup}>
+                      <TouchableOpacity style={styles.loremIpsumGroup}>
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Contínua con Apple
@@ -202,8 +251,11 @@ const LoginSwitch = () => {
                           contentFit="cover"
                           source={require('../../assets/group-237.png')}
                         />
-                      </View>
-                      <View style={styles.loremIpsumGroup}>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={handlePressAsync}
+                        style={styles.loremIpsumGroup}
+                      >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Continua con Facebook
@@ -215,10 +267,10 @@ const LoginSwitch = () => {
                           contentFit="cover"
                           source={require('../../assets/group12.png')}
                         />
-                      </View>
+                      </TouchableOpacity>
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
-                      — o contínuar con el e-mail —
+                      — o continuar con el e-mail —
                     </Text>
                   </View>
                   <Pressable
@@ -253,12 +305,12 @@ const LoginSwitch = () => {
                   <Text
                     style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
                   >
-                    ¿Ya tíenes una cuenta? Inicia sesión
+                    ¿Ya tienes una cuenta? Inicia sesión
                   </Text>
                 </Pressable>
               </View>
               <Text style={[styles.alContnuarAceptas, styles.contnuarTypo]}>
-                Al contínuar, aceptas automátícamente nuestras Condiciones,{' '}
+                Al continuar, aceptas automáticamente nuestras Condiciones,{' '}
                 {'\n'}
                 Polítíca de privacidad y Polítíca de cookies
               </Text>

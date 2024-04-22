@@ -33,7 +33,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const {club} = useSelector(state=>state.clubs)
+  const { club } = useSelector((state) => state.clubs)
 
   const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
@@ -71,7 +71,8 @@ const OfertasEmitidas = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        {offers.length === 0 ? (
+        {offers.length === 0 ||
+        offers.filter((offer) => offer.club.id === club.id).length === 0 ? (
           <Text
             style={{
               marginTop: 30,
@@ -85,120 +86,124 @@ const OfertasEmitidas = () => {
             Aun no has creado ninguna oferta!
           </Text>
         ) : (
-          offers.filter(offer=>offer.club.id === club.id).map((offer, i) => (
-            <View key={offer.id} style={styles.offers}>
-              <View style={styles.offerView}>
-                <Text style={[styles.oferta1, styles.sexo1Typo]}>
-                  Oferta {i + 1}
-                </Text>
-                <TouchableOpacity
-                  onPress={(event) => {
-                    handleImageClick(event)
-                    setSelectedOffer(offer.id)
-                  }}
-                  style={styles.touchableImg}
-                >
-                  <Image
-                    style={styles.titularChild}
-                    contentFit="cover"
-                    source={require('../../assets/frame-957.png')}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View>
-                <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                  </Text>
-                </View>
-
-                <View style={styles.innerLine} />
-
-                <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                    Categoria
-                  </Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>
-                    {offer.category}
-                  </Text>
-                </View>
-
-                <View style={styles.innerLine} />
-
-                <View>
-                  <Text style={[styles.sexo1, styles.sexo1Typo]}>Posicion</Text>
-                  <Text style={[styles.masculino, styles.timeTypo]}>
-                    {/* {offer.position} */} Posicion
-                  </Text>
-                </View>
-
-                <View style={styles.innerLine} />
-
+          offers
+            .filter((offer) => offer.club.id === club.id)
+            .map((offer, i) => (
+              <View key={offer.id} style={styles.offers}>
                 <View style={styles.offerView}>
-                  <View>
-                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Urgencia
-                    </Text>
-                    <Text style={[styles.masculino, styles.timeTypo]}>
-                      {offer.urgency}/10
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Retribucion
-                    </Text>
-                    <Text style={[styles.masculino, styles.timeTypo]}>
-                      {offer && offer.retribution ? 'Si' : 'No'}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.botonPausar}>
-                <View style={[styles.pausar, styles.pausarFlexBox]}>
-                  <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                    Pausar
+                  <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                    Oferta {i + 1}
                   </Text>
+                  <TouchableOpacity
+                    onPress={(event) => {
+                      handleImageClick(event)
+                      setSelectedOffer(offer.id)
+                    }}
+                    style={styles.touchableImg}
+                  >
+                    <Image
+                      style={styles.titularChild}
+                      contentFit="cover"
+                      source={require('../../assets/frame-957.png')}
+                    />
+                  </TouchableOpacity>
                 </View>
-              </View>
-              <Pressable
-                style={styles.inscritos}
-                onPress={() =>
-                  navigation.navigate('InscritosAMisOfertas', {
-                    inscriptions: offer.inscriptions || []
-                  })
-                }
-              >
-                <Text style={[styles.inscritos1, styles.pausar1Typo]}>
-                  {offer.inscriptions
-                    ? `${offer.inscriptions.length} inscriptos`
-                    : '0 inscriptos'}
-                </Text>
-              </Pressable>
-              <Modal visible={modalVisible} transparent={true}>
-                <TouchableWithoutFeedback
-                  onPress={() => setModalVisible(false)}
-                >
-                  <View style={{ flex: 1 }}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: modalPosition.y,
-                        left: modalPosition.x,
-                        padding: 20,
-                        borderRadius: 8
-                      }}
-                    >
-                      <ModalOptionOffers
-                        offerId={selectedOffer}
-                        onClose={() => setModalVisible(false)}
-                      />
+                <View>
+                  <View>
+                    <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
+                    <Text style={[styles.masculino, styles.timeTypo]}>
+                      {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                    </Text>
+                  </View>
+
+                  <View style={styles.innerLine} />
+
+                  <View>
+                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                      Categoría
+                    </Text>
+                    <Text style={[styles.masculino, styles.timeTypo]}>
+                      {offer.category}
+                    </Text>
+                  </View>
+
+                  <View style={styles.innerLine} />
+
+                  <View>
+                    <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                      Posicion
+                    </Text>
+                    <Text style={[styles.masculino, styles.timeTypo]}>
+                      {/* {offer.position} */} Posicion
+                    </Text>
+                  </View>
+
+                  <View style={styles.innerLine} />
+
+                  <View style={styles.offerView}>
+                    <View>
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Urgencia
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        {offer.urgency}/10
+                      </Text>
+                    </View>
+                    <View>
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Retribucion
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        {offer && offer.retribution ? 'Si' : 'No'}
+                      </Text>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </Modal>
-            </View>
-          ))
+                </View>
+                <View style={styles.botonPausar}>
+                  <View style={[styles.pausar, styles.pausarFlexBox]}>
+                    <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                      Pausar
+                    </Text>
+                  </View>
+                </View>
+                <Pressable
+                  style={styles.inscritos}
+                  onPress={() =>
+                    navigation.navigate('InscritosAMisOfertas', {
+                      inscriptions: offer.inscriptions || []
+                    })
+                  }
+                >
+                  <Text style={[styles.inscritos1, styles.pausar1Typo]}>
+                    {offer.inscriptions
+                      ? `${offer.inscriptions.length} inscriptos`
+                      : '0 inscriptos'}
+                  </Text>
+                </Pressable>
+                <Modal visible={modalVisible} transparent={true}>
+                  <TouchableWithoutFeedback
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <View style={{ flex: 1 }}>
+                      <View
+                        style={{
+                          position: 'absolute',
+                          top: modalPosition.y,
+                          left: modalPosition.x,
+                          padding: 20,
+                          borderRadius: 8
+                        }}
+                      >
+                        <ModalOptionOffers
+                          offerId={selectedOffer}
+                          onClose={() => setModalVisible(false)}
+                        />
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </Modal>
+              </View>
+            ))
         )}
       </View>
     </SafeAreaView>

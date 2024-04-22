@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Text,
@@ -14,6 +14,7 @@ import CustomModal from './modals/CustomModal'
 import Acordeon from './Acordeon'
 import { setCategory, setPosition } from '../redux/slices/users.slices'
 import { updateSportman } from '../redux/actions/sportman'
+import ScrollableModal from './modals/ScrollableModal'
 
 const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   const navigation = useNavigation()
@@ -114,8 +115,25 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
     dispatch(updateSportman(body))
   }
 
+  const [categoryTop, setCategoryTop] = useState(0)
+  const [positionTop, setPositionTop] = useState(0)
+  const [scrolledHeight, setScrolledHeight] = useState(0)
+
+  useEffect(() => {}, [])
+
+  const handleScroll = (event) => {
+    const { contentOffset } = event.nativeEvent
+    const height = contentOffset.y // Get the scrolled height
+    console.log('height: ', height)
+    setScrolledHeight(height)
+  }
+
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'} style={{ height: '70%' }}>
+    <ScrollView
+      onScroll={handleScroll}
+      keyboardShouldPersistTaps={'always'}
+      style={{ height: '70%' }}
+    >
       <View
         style={{
           height: 40,
@@ -169,17 +187,28 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
         </View>
       </View>
       <View style={styles.formulariosInferiores}>
-        <View style={{ position: 'relative', width: '100%', marginTop: 10 }}>
+        <View
+          collapsable={false}
+          onLayout={(event) => {
+            event.target.measure((x, y, width, height, pageX, pageY) => {
+              console.log(pageY)
+              setCategoryTop(pageY)
+            })
+          }}
+          style={{ position: 'relative', width: '100%', marginTop: 10 }}
+        >
           <Acordeon
-            title="Categoria"
+            title="Categoría"
             placeholderText={
-              selectedCategoria ? selectedCategoria : 'Selecciona tu categoria'
+              selectedCategoria ? selectedCategoria : 'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
           />
           {modalVisible && (
-            <CustomModal
+            <ScrollableModal
+              scrollHeight={scrolledHeight}
+              parentTop={categoryTop}
               visible={modalVisible}
               closeModal={closeModal}
               onSelectItem={handleSelectCategoria}
@@ -187,7 +216,16 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
             />
           )}
         </View>
-        <View style={{ position: 'relative', width: '100%', marginTop: 10 }}>
+        <View
+          collapsable={false}
+          onLayout={(event) => {
+            event.target.measure((x, y, width, height, pageX, pageY) => {
+              console.log(pageY)
+              setPositionTop(pageY)
+            })
+          }}
+          style={{ position: 'relative', width: '100%', marginTop: 10 }}
+        >
           <Acordeon
             title="Posicion Principal"
             placeholderText={
@@ -197,7 +235,9 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
             open={openPositionModal}
           />
           {positionModalVisible && (
-            <CustomModal
+            <ScrollableModal
+              scrollHeight={scrolledHeight}
+              parentTop={positionTop}
               visible={positionModalVisible}
               closeModal={closeModal}
               onSelectItem={handleSelectPosition}
