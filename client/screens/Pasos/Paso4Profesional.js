@@ -30,7 +30,7 @@ const Paso4Profesional = () => {
       style={styles.paso6}
       showsVerticalScrollIndicator={false}
     >
-      <View>
+      <View style={{flex:1}}>
         <View style={styles.headersubirImagenesPerfil}>
           <Image
             style={styles.circuloIcon}
@@ -87,8 +87,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   paso6: {
-    flex: 1,
-    overflow: 'hidden',
     width: '100%'
   },
   headersubirImagenesPerfil: {
