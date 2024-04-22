@@ -18,6 +18,20 @@ export const getUserData = createAsyncThunk('getUserData/users', async (id) => {
     throw new Error(error)
   }
 })
+
+export const loginWithGoogle = createAsyncThunk(
+  'users/loginWithGoogle',
+  async (body) => {
+    console.log('data from google login: ', body)
+    try {
+      // const { data } = await axiosInstance.patch(`/users/${id}`, body)
+      return body
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const updateUserClubData = createAsyncThunk(
   'updateUserClubData/users',
   async ({ id, data }) => {
@@ -68,6 +82,7 @@ export const deleteUserById = createAsyncThunk(
 )
 
 export const create = createAsyncThunk('create/user', async (body) => {
+  console.log('body from create', body)
   try {
     const { data } = await axiosInstance.post('user/', body)
     return data

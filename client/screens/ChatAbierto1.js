@@ -6,7 +6,10 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Touchable,
+  Modal,
+  TouchableWithoutFeedback
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -22,14 +25,21 @@ import { Context } from '../context/Context'
 import axiosInstance from '../utils/apiBackend'
 import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
+import { getAllUsers, updateUserData } from '../redux/actions/users'
+import { updateUser } from '../redux/slices/users.slices'
+import { sendNotification } from '../redux/actions/notifications'
 
 const ChatAbierto1 = () => {
+  const _ = require('lodash')
+  const [selectedUserDetails, setSelectedUserDetails]=useState()
+  const [showOptionsModal, setShowOptionsModal] = useState(false)
+  const [showDeletePopUp, setShowDeletePopUp]= useState(false)
   const isFocused = useIsFocused()
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
-  const { user } = useSelector((state) => state.users)
+  const { user, allUsers } = useSelector((state) => state.users)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -39,6 +49,16 @@ const ChatAbierto1 = () => {
     setMessage()
   }
 
+ useEffect(()=>{
+  setSelectedUserDetails(
+    allUsers.filter(
+      (user) => user.id === route.params.receiverId
+    )[0]
+  )
+  console.log('userData', allUsers.filter(
+    (user) => user.id === route.params.receiverId
+  )[0])
+ },[])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
     dispatch(
@@ -67,11 +87,125 @@ const ChatAbierto1 = () => {
     }
   }, [allMessages])
 
-  return (
+  const userFollowing = user?.user?.following || []
+
+  const handleFollow = () => {
+    setShowOptionsModal(false)
+    let actualUser = _.cloneDeep(user)
+    console.log('atualUser: ', actualUser)
+    const actualFollowers =
+      allUsers.filter((user) => user.id === selectedUserDetails.id)[0]
+        .followers || []
+    console.log('actual followers: ', actualFollowers)
+    const newFollowers = actualFollowers.includes(user?.user?.id)
+      ? actualFollowers.filter(
+          (follower) => follower !== user?.user?.id
+        )
+      : [...actualFollowers, user?.user?.id]
+
+    const newFollowingArray = userFollowing?.includes(
+      selectedUserDetails.id
+    )
+      ? userFollowing.filter(
+          (followed) => followed !== selectedUserDetails.id
+        )
+      : [...userFollowing, selectedUserDetails.id]
+    actualUser.user.following = newFollowingArray
+    console.log('user: ', actualUser?.user?.following)
+
+    console.log('setting other user followers to:', newFollowers)
+    dispatch(
+      updateUserData({
+        id: selectedUserDetails.id,
+        body: { followers: newFollowers }
+      })
+    )
+      .then((data) => {
+        console.log('setting user following to:', newFollowingArray)
+        dispatch(
+          updateUserData({
+            id: user.user.id,
+            body: { following: newFollowingArray }
+          })
+        )
+      })
+      .then((response) => {
+        if (newFollowers.includes(user?.user?.id)) {
+          dispatch(
+            sendNotification({
+              title: 'Follow',
+              message: `${user.user.nickname} ha comenzado a seguirte`,
+              recipientId: selectedUserDetails.id,
+              date: new Date(),
+              read: false,
+              prop1: {
+                userId: user?.user?.id,
+                userData: {
+                  ...user
+                }
+              }
+            })
+          )
+        }
+        dispatch(getAllUsers())
+        dispatch(updateUser(actualUser))
+      })
+  }
+
+  const handleRemoveChat = () => {
+    setShowDeletePopUp(false)
+    console.log('removing chat...')
+  }
+
+  if (selectedUserDetails) return (
     <SafeAreaView style={styles.chatAbierto}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
+      {showOptionsModal && <Modal visible={showOptionsModal}  transparent={true}>
+        <TouchableWithoutFeedback onPress={()=>setShowOptionsModal(false)}>
+<View style={{flex:1, marginTop:45,paddingRight:15, alignItems:'flex-end'}}>
+  <View style={{backgroundColor:'#252525', borderRadius: 8, width:170}}>
+   {selectedUserDetails.type !== 'club' && <TouchableOpacity  onPress={handleFollow}
+               style={{height:35,width:'100%',borderBottomWidth:1,borderBottomColor:'#505050',justifyContent:'center',alignItems:'center'}}>
+      <Text style={{color:'#fff',fontSize:14}}>{userFollowing?.includes(selectedUserDetails.id)
+                  ? 'Dejar de seguir'
+                  : 'Seguir'}</Text>
+    </TouchableOpacity>}
+    <TouchableOpacity onPress={() => {
+      setShowOptionsModal(false)
+          if (selectedUserDetails?.type === 'club') {
+            navigation.navigate('ClubProfile', {author:selectedUserDetails})
+          } else {
+            navigation.navigate('PerfilFeedVisualitzaciJug', {author:selectedUserDetails})
+          }
+        }} style={{height:35,width:'100%',borderBottomWidth:1,borderBottomColor:'#505050',justifyContent:'center',alignItems:'center'}}>
+      <Text style={{color:'#fff',fontSize:14}}>Ver perfil</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={()=>{
+      setShowOptionsModal(false)
+      setShowDeletePopUp(true)
+    }} style={{height:35,width:'100%',justifyContent:'center',alignItems:'center'}}>
+      <Text style={{color:'#fff',fontSize:14}}>Eliminar conversación</Text>
+    </TouchableOpacity>
+  </View>
+</View>
+        </TouchableWithoutFeedback>
+        </Modal>}
+
+        {showDeletePopUp && <Modal visible={showDeletePopUp}  transparent={true}>
+        <TouchableWithoutFeedback onPress={()=>setShowDeletePopUp(false)}>
+<View style={{flex:1, alignItems:'center', justifyContent:'center', marginBottom:100}}>
+ <View style={{backgroundColor:'#252525', borderRadius: 8, width:'55%', paddingVertical:20,gap:25,justifyContent:'space-around', alignItems:'center'}}>
+  <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}><Text style={{color:'#fff',fontSize:20,fontWeight:400}}>Está seguro?</Text></View>
+  <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%'}}>
+    <TouchableOpacity onPress={()=>setShowDeletePopUp(false)} style={{borderRadius:5,height:33,width:'35%',justifyContent:'center',alignItems:'center',backgroundColor:'#E1451E'}}><Text style={{color:'#fff',fontSize:15,fontWeight:400}}>Cancelar</Text></TouchableOpacity>
+    <TouchableOpacity onPress={handleRemoveChat} style={{borderRadius:5,height:33,width:'35%',justifyContent:'center',alignItems:'center',backgroundColor:'#E1451E'}}><Text style={{color:'#fff',fontSize:15,fontWeight:400}}>Aceptar</Text></TouchableOpacity>
+  </View>
+ </View>
+</View>
+        </TouchableWithoutFeedback>
+        </Modal>}
       <View
         style={{
           flexDirection: 'row',
@@ -90,19 +224,27 @@ const ChatAbierto1 = () => {
             />
           </Pressable>
 
-          <Image
-            style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
-            contentFit="cover"
-            source={{ uri: route.params.profilePic }}
-          />
-          <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
-            {route.params.receiverName}
-          </Text>
+          <TouchableOpacity onPress={() => {
+          if (selectedUserDetails?.type === 'club') {
+            navigation.navigate('ClubProfile', {author:selectedUserDetails})
+          } else {
+            navigation.navigate('PerfilFeedVisualitzaciJug', {author:selectedUserDetails})
+          }
+        }} style={{flexDirection:'row',alignItems:'center'}}>
+            <Image
+              style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
+              contentFit="cover"
+              source={{ uri: route.params.profilePic }}
+            />
+            <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
+              {route.params.receiverName}
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        <View>
+        <TouchableOpacity onPress={()=>setShowOptionsModal(true)}>
           <ThreePointsSVG />
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View

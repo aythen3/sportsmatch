@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
@@ -8,13 +8,16 @@ import Acordeon from './Acordeon'
 import { useDispatch } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
 import ScrollableModal from './modals/ScrollableModal'
+import { cities } from '../utils/cities'
 
 const SkillSeleccion = ({
   editable,
   setEditable,
   sportmanValues,
   scrolledHeight,
-  setSportmanValues
+  setSportmanValues,
+  setSelectedCity,
+  selectedCity
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -25,16 +28,10 @@ const SkillSeleccion = ({
     useState(false)
   const [selectedAñoNacimiento, setSelectedAñoNacimiento] = useState()
   const [cityModal, setCityModal] = useState(false)
-  const [selectedCity, setSelectedCity] = useState()
+  const [pickedCity, setPickedCity] = useState()
 
   const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
-  const opcionesResidencia = [
-    'Barcelona',
-    'Madrid',
-    'Sevilla',
-    'Valencia',
-    'Murcia'
-  ]
+  const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openAñoNacimientoModal = () => {
     setAñoNacimientoModalVisible(true)
@@ -63,12 +60,17 @@ const SkillSeleccion = ({
     setSelectedGenero(genero)
   }
 
+  useEffect(() => {
+    console.log('selectedCity changed: ', selectedCity)
+  }, [selectedCity])
   const openCityModal = () => {
     setCityModal(!cityModal)
   }
   const handleSelectCity = (city) => {
-    dispatch(setCity(city))
+    console.log('city: ', city)
     setSelectedCity(city)
+    setPickedCity(city)
+    dispatch(setCity(city))
   }
 
   const descriptionSportMan = (field, value) => {
@@ -156,7 +158,7 @@ const SkillSeleccion = ({
       >
         <Acordeon
           title="Lugar de residencia"
-          placeholderText={selectedCity ? selectedCity : 'Lugar de residencia'}
+          placeholderText={pickedCity ? pickedCity : 'Lugar de residencia'}
           isAccordeon={true}
           open={openCityModal}
         />
