@@ -12,6 +12,16 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  googleId: string;
+  @IsNotEmpty()
+  @IsString()
+  facebookId: string;
+  @IsNotEmpty()
+  @IsString()
+  appleId: string;
+
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
   stripeId: any;

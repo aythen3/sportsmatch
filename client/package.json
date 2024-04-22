@@ -55,7 +55,8 @@
     "expo-auth-session": "~5.4.0",
     "expo-crypto": "~12.8.1",
     "expo-web-browser": "~12.8.2",
-    "expo-application": "~5.8.4"
+    "expo-application": "~5.8.4",
+    "@react-native-picker/picker": "2.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

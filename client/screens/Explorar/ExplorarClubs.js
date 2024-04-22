@@ -20,6 +20,8 @@ import ExplorarClubsConFiltroPrem from './ExplorarClubsConFiltroPrem'
 import FiltersSportman from '../../components/FiltersSportman'
 // import { getAllUsers } from '../redux/actions/users'
 import { getAllPosts } from '../../redux/actions/post'
+import axiosInstance from '../../utils/apiBackend'
+import { useNavigation } from '@react-navigation/core'
 
 const ExplorarClubs = () => {
   // const navigation = useNavigation()
@@ -28,13 +30,31 @@ const ExplorarClubs = () => {
 
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
+  const [searchUsers, setSearchUsers] = useState([])
+  const [searchPosition, setSearchPosition] = useState([])
+  const [searchCity, setSearchCity] = useState([])
+
+  const [searchClubes, setSearchClubes] = useState([])
+  const [filter, setFilter] = useState({
+    gender:"",
+    category:"",
+    position:"",
+    attack:false,
+    defense:false,
+    speed:false
+  })
+
 
   const [modalFilters, setModalFilters] = useState(false)
+  const [textValue, setTextValue] = useState("")
+
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
+  const navigation = useNavigation()
 
   useEffect(() => {
     // dispatch(getAllUsers())
     dispatch(getAllPosts())
+    console.log(allPosts, "allpost")
   }, [])
 
   const onFilterSportman = () => {
@@ -45,14 +65,30 @@ const ExplorarClubs = () => {
     setModalFilters(true)
   }
 
+  const handleSearch = async () => {
+    const users = await axiosInstance.post('sportman/filter', { nickname: textValue })
+    setSearchUsers(users.data)
+    const positions = await axiosInstance.post('sportman/filter', { position: textValue })
+    setSearchPosition(positions.data)
+    const city = await axiosInstance.post('sportman/filter', { city: textValue })
+    setSearchCity(city.data)
+    const clubes = await axiosInstance.post('info-entity/club/name/filter', { value: textValue })
+    setSearchClubes(clubes.data.data)
+    console.log(clubes, "usuarios estado")
+
+  }
+
   return (
     <View style={styles.explorarClubs}>
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderIcons />
 
         <FiltersHome
+          textValue={textValue}
+          setTextValue={setTextValue}
           modalActive={onFilters}
           modalSportmanActive={onFilterSportman}
+          action={handleSearch}
         />
 
         <View
@@ -66,8 +102,66 @@ const ExplorarClubs = () => {
             flexWrap: 'wrap'
           }}
         >
-          {allPosts?.length > 0 ? (
-            allPosts?.map((post, index) => (
+          {textValue && (
+            <View style={{ flexDirection: "column", gap: 10 }}>
+              {textValue && searchUsers.length > 0 && (
+                <View style={{ flexDirection: "column", gap: 10 }}>
+                  <Text style={{ color: "white" }}>Usuarios</Text>
+
+                  {searchUsers.length > 0 && searchUsers.map((user, i) => (
+                    <TouchableOpacity onPress={() => navigation.navigate("PerfilFeedVisualitzaciJug", { author: { nickname: user.info.nickname, sportman: user } })} key={i} >
+                      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                        <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{
+                          uri: user.info.img_front
+                        }}></Image>
+                        <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{user.info.nickname}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+              {textValue && searchClubes.length > 0 && (
+                <View style={{ flexDirection: "column", gap: 10 }}>
+                  <Text style={{ color: "white" }}>Clubes</Text>
+                  {searchClubes.length > 0 && searchClubes.map((club, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("ClubProfile", { author: {type:"club", nickname: club.name, club } })} >
+                      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                        <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{ uri: club.img_perfil }}></Image>
+                        <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{club.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+              {textValue && searchPosition.length > 0 && (
+    <View style={{ flexDirection: "column", gap: 10 }}>
+      <Text style={{ color: "white" }}>Posiciones</Text>
+      {searchPosition.map((position, i) => (
+        <TouchableOpacity key={i} onPress={() => {/* Acción cuando se selecciona una posición */}}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{position}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  )}
+  {textValue && searchCity.length > 0 && (
+    <View style={{ flexDirection: "column", gap: 10 }}>
+      <Text style={{ color: "white" }}>Ciudades</Text>
+      {searchCity.map((city, i) => (
+        <TouchableOpacity key={i} onPress={() => {/* Acción cuando se selecciona una ciudad */}}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{city}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  )}
+            </View>
+          )}
+          {!textValue && allPosts?.length > 0 && (
+            allPosts?.map((post,
+              index) => (
               <TouchableOpacity key={post.id}>
                 <Image
                   style={styles.iconLayout}
@@ -76,21 +170,6 @@ const ExplorarClubs = () => {
                 />
               </TouchableOpacity>
             ))
-          ) : (
-            <View
-              style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
-            >
-              <Text
-                style={{
-                  fontSize: 30,
-                  fontWeight: '600',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  color: Color.wHITESPORTSMATCH
-                }}
-              >
-                No hay publicaciones!
-              </Text>
-            </View>
           )}
         </View>
       </ScrollView>
@@ -98,7 +177,7 @@ const ExplorarClubs = () => {
         <TouchableWithoutFeedback onPress={() => setModalFilters(false)}>
           <View style={{ flex: 1 }} />
         </TouchableWithoutFeedback>
-        <ExplorarClubsConFiltroPrem onClose={() => setModalFilters(false)} />
+        <ExplorarClubsConFiltroPrem setTextValue={setTextValue} filter={filter} setSearchUsers={setSearchUsers} setFilter={setFilter} onClose={() => setModalFilters(false)} />
       </Modal>
 
       <Modal
@@ -107,7 +186,7 @@ const ExplorarClubs = () => {
         animationType="slide"
       >
         <View style={styles.modal}>
-          <FiltersSportman onClose={() => setModalFilterSportman(false)} />
+          <FiltersSportman  onClose={() => setModalFilterSportman(false)} />
         </View>
       </Modal>
     </View>

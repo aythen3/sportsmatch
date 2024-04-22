@@ -38,6 +38,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cloudinary": "^2.0.3",
+    "firebase-admin": "^12.1.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nestjs-stripe": "^1.0.0",

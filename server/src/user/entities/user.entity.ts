@@ -14,6 +14,13 @@ export class UserEntity extends BaseEntity {
 
   @Column({ unique: true })
   email: string;
+
+  @Column({ unique: true })
+  googleId: string;
+  @Column({ unique: true })
+  facebookId: string;
+  @Column({ unique: true })
+  appleId: string;
   @Column({default:""})
   stripeId: string;
 

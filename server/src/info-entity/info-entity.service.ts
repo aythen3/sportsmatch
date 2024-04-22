@@ -116,6 +116,7 @@ async filterProperty(entity: string, property: string, filterValue: string) {
 
     return results;
   } catch (error) {
+    console.log(error)
     throw new Error('Error al realizar la consulta');
   }
 }

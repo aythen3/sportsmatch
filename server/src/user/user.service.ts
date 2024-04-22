@@ -9,6 +9,7 @@ import { hash } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
+import admin from 'firebase-admin';
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
@@ -123,6 +124,40 @@ export class UserService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
+
+// Método para crear usuario con Firebase
+public async createUserWithFirebase(createUserDto: CreateUserDto) {
+  try {
+    // Verificar si el usuario ya existe en Firebase Authentication
+    const userRecord = await admin.auth().getUserByEmail(createUserDto.email);
+
+    // Si el usuario ya existe, lanzar una excepción
+    if (userRecord) {
+      throw new ErrorManager({
+        type: 'BAD_REQUEST',
+        message: 'The email is already registered in Firebase Authentication'
+      });
+    }
+
+    // Guardar el nuevo perfil del usuario en tu base de datos
+    const newProfile: UserEntity = await this.userRepository.save(createUserDto);
+
+    // Si no se pudo crear el nuevo perfil, lanzar una excepción
+    if (!newProfile) {
+      throw new ErrorManager({
+        type: 'BAD_REQUEST',
+        message: 'The new profile is not created'
+      });
+    }
+
+    // Devolver el nuevo perfil del usuario
+    await this.sendMailService.sendRegistrationNotification(newProfile.email);
+    return newProfile;
+  } catch (error) {
+    throw ErrorManager.createSignatureError(error.message);
+  }
+}
+
 
   public async findChild(id: string, type: string) {
     let user: UserEntity | undefined;

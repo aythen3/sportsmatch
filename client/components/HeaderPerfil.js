@@ -684,10 +684,11 @@ const HeaderPerfil = ({
             {'Seguidores'}
           </Text>
           <Text style={styles.numeroText}>
-            {allUsers.filter((user) => user.id === data.author.id)[0].followers
+            {allUsers.filter((user) => user.id === data.author.id)[0]?.followers
               ? allUsers.filter((user) => user.id === data.author.id)[0]
-                  .followers.length
+                  .followers?.length
               : '0'}
+              {/* Solucionar tema de seguidores */}
           </Text>
         </View>
       )}

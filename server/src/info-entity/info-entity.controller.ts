@@ -36,6 +36,7 @@ export class InfoEntityController {
     }
   }
 
+//buscar parcialmente un string dentro de una propiedad, de una entidad
 
   @Post('/:entity/:property/filter')
   async filterProperty(
@@ -54,7 +55,6 @@ export class InfoEntityController {
 
 
 
-//buscar parcialmente un string dentro de una propiedad, de una entidad
   @Get('/:entity')
   async filterEntity(
     @Param('entity') entity: string,
