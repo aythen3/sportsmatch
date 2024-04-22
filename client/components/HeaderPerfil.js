@@ -88,7 +88,7 @@ const HeaderPerfil = ({
         style={{
           flexDirection: 'row',
           gap: 20,
-          marginTop: -17,
+          marginTop: -14,
           justifyContent: 'flex-start',
           maxWidth: '60%',
           alignItems: 'center',
