@@ -6,7 +6,8 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Touchable
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -24,12 +25,13 @@ import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
 
 const ChatAbierto1 = () => {
+  const [selectedUserDetails, setSelectedUserDetails]=useState()
   const isFocused = useIsFocused()
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
-  const { user } = useSelector((state) => state.users)
+  const { user, allUsers } = useSelector((state) => state.users)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -39,6 +41,16 @@ const ChatAbierto1 = () => {
     setMessage()
   }
 
+ useEffect(()=>{
+  setSelectedUserDetails(
+    allUsers.filter(
+      (user) => user.id === route.params.receiverId
+    )[0]
+  )
+  console.log('userData', allUsers.filter(
+    (user) => user.id === route.params.receiverId
+  )[0])
+ },[])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
     dispatch(
@@ -67,7 +79,7 @@ const ChatAbierto1 = () => {
     }
   }, [allMessages])
 
-  return (
+  if (selectedUserDetails) return (
     <SafeAreaView style={styles.chatAbierto}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
@@ -90,14 +102,22 @@ const ChatAbierto1 = () => {
             />
           </Pressable>
 
-          <Image
-            style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
-            contentFit="cover"
-            source={{ uri: route.params.profilePic }}
-          />
-          <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
-            {route.params.receiverName}
-          </Text>
+          <TouchableOpacity onPress={() => {
+          if (selectedUserDetails?.type === 'club') {
+            navigation.navigate('ClubProfile', {author:selectedUserDetails})
+          } else {
+            navigation.navigate('PerfilFeedVisualitzaciJug', {author:selectedUserDetails})
+          }
+        }} style={{flexDirection:'row',alignItems:'center'}}>
+            <Image
+              style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
+              contentFit="cover"
+              source={{ uri: route.params.profilePic }}
+            />
+            <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
+              {route.params.receiverName}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View>

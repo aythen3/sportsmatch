@@ -58,7 +58,7 @@ const Feed = ({ externalId }) => {
                 color: Color.wHITESPORTSMATCH
               }}
             >
-              No tienes publicaciones
+              {externalId ?'El usuario aun no tiene publicaciones' :'No tienes publicaciones'}
             </Text>
           </View>
         )}

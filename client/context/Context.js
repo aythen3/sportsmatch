@@ -30,7 +30,37 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  const pickImageFromCamera = async (source, imageUri) => {
+    if(source && imageUri) {
+      source === 'profile'
+      ? setProvisoryProfileImage(imageUri)
+      : setProvisoryCoverImage(imageUri)
+      const profileImageData = {
+        uri: imageUri,
+        type: 'image/jpg',
+        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
+      }
+
+      const profileImageForm = new FormData()
+      profileImageForm.append('file', profileImageData)
+      profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
+      profileImageForm.append('cloud_name', 'dnewfuuv0')
+
+      await fetch('https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload', {
+        method: 'post',
+        body: profileImageForm
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('setting', source, 'image to:',data.url)
+          source === 'profile' ? setProfileImage(transformHttpToHttps(data.url)) : setCoverImage(transformHttpToHttps(data.url))
+        })
+    }
+  }
+
   const pickImage = async (source, imageUri) => {
+    console.log('source: ',source)
+    console.log('imageUri:', imageUri)
     if (imageUri) {
       const profileImageData = {
         uri: imageUri,
@@ -49,7 +79,7 @@ export const ContextProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          // console.log('dataUrl from uriImg:', data.url)
+         console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(transformHttpToHttps(data.url))
         })
     } else {
@@ -240,6 +270,7 @@ export const ContextProvider = ({ children }) => {
         getClubMatches,
         getUserMatches,
         setUserMatches,
+        pickImageFromCamera,
         clubMatches,
         userMatches
       }}

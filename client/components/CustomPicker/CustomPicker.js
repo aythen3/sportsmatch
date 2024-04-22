@@ -13,7 +13,6 @@ const CustomPicker = ({
   zIndex,
   cities
 }) => {
-  console.log('array: ', array)
   return (
     <TouchableOpacity
       onPress={() => {

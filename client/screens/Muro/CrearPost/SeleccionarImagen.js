@@ -138,7 +138,8 @@ const SeleccionarImagen = () => {
               onPress={() => setShowCamera(false)}
             >
               <Image
-                style={styles.crearHighlightChild}
+                style={{height: 15,
+                  width: 15}}
                 contentFit="cover"
                 source={require('../../../assets/group-565.png')}
               />
@@ -186,7 +187,8 @@ const SeleccionarImagen = () => {
           <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                style={styles.crearHighlightChild}
+                style={{height: 15,
+                  width: 15}}
                 contentFit="cover"
                 source={require('../../../assets/group-565.png')}
               />
@@ -273,10 +275,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  crearHighlightChild: {
-    height: 15,
-    width: 15
   },
   codeBlockPersonaEnCanch: {
     marginTop: 30,
