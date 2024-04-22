@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, TextInput, Pressable } from 'react-native'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 
-const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
+const FiltersHome = ({ modalActive, text, modalSportmanActive , textValue , setTextValue ,action}) => {
   const navigation = useNavigation()
 
   const { isSportman } = useSelector((state) => state.users)
@@ -13,13 +13,17 @@ const FiltersHome = ({ modalActive, text, modalSportmanActive }) => {
     <View style={styles.container}>
       <View style={[styles.groupContainer, styles.groupContainerSpaceBlock]}>
         <Image
+
           style={styles.frameChild1}
           contentFit="cover"
           source={require('../assets/group-428.png')}
         />
         <TextInput
+          onBlur={action ? action : console.log("blur")}
           style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
           placeholderTextColor={Color.gREY2SPORTSMATCH}
+          value={textValue}
+          onChangeText={(e)=> setTextValue(e)}
           placeholder={text ? text : 'Posición de juego, población, club...'}
         />
       </View>
@@ -52,7 +56,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: Padding.p_2xs,
     borderStyle: 'solid',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width:"84%"
   },
   groupContainerSpaceBlock: {
     paddingVertical: Padding.p_4xs

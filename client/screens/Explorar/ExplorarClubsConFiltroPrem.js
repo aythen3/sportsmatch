@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { Picker } from '@react-native-picker/picker';
 import {
   FontFamily,
   FontSize,
@@ -10,13 +11,35 @@ import {
   Color
 } from '../../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons'
+import axiosInstance from '../../utils/apiBackend';
 
-const ExplorarClubsConFiltroPrem = ({ onClose }) => {
+const ExplorarClubsConFiltroPrem = ({ onClose, filter, setFilter , setSearchUsers,setTextValue }) => {
   const navigation = useNavigation()
 
   const [checkedAttack, setCheckedAttack] = useState(false)
   const [checkedSpeed, setCheckedSpeed] = useState(false)
   const [checkedDefense, setCheckedDefense] = useState(false)
+  const [selectedValue, setSelectedValue] = useState("valor1");
+
+const submit = async()=> {
+    const filteredFilter = {};
+
+    for (const key in filter) {
+        if (filter.hasOwnProperty(key)) {
+            // Verificar si el valor de la propiedad es verdadero o no una cadena vacía
+            if (filter[key] || filter[key] === 0) {
+                filteredFilter[key] = filter[key];
+            }
+        }
+    }
+
+
+  console.log(filteredFilter,"asi se envia")
+  const res = await axiosInstance.post("sportman/filter",filteredFilter)
+  setSearchUsers(res.data)
+  setTextValue(" ")
+  console.log(res.data,"Esto es")
+}
 
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
@@ -38,23 +61,35 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
           <View style={styles.campo1}>
             <Text style={[styles.sexo, styles.sexoTypo]}>Sexo</Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-              <Text style={[styles.masculino, styles.sexoTypo]}>Masculino</Text>
+              {/* <Text style={[styles.masculino, styles.sexoTypo]}>Masculino</Text>
               <Image
                 style={styles.coolicon}
                 contentFit="cover"
                 source={require('../../assets/coolicon5.png')}
-              />
+              /> */}
+              <Picker
+                style={{ color: "white",width:"100%",height:"100%" }}
+
+                selectedValue={filter["gender"]}
+                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["gender"]:itemValue})}
+              >
+                <Picker.Item label="Masculino" value="Masculino" />
+                <Picker.Item label="Femenino" value="Femenino" />
+              </Picker>
             </View>
           </View>
           <View style={styles.campo2}>
             <Text style={[styles.sexo, styles.sexoTypo]}>Categoría</Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-              <Text style={[styles.snior, styles.sexoTypo]}>Sénior</Text>
-              <Image
-                style={styles.coolicon}
-                contentFit="cover"
-                source={require('../../assets/coolicon2.png')}
-              />
+            <Picker
+                style={{ color: "white",width:"100%",height:"100%" }}
+                selectedValue={filter["category"]}
+                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["category"]:itemValue})}
+              >
+                <Picker.Item label="Prebenjamín (6-8 años)" value="Prebenjamín (6-8 años)" />
+                <Picker.Item label="Cadete (14-16 años)" value="Cadete (14-16 años)" />
+                <Picker.Item label="Benjamín (8-10 años)" value="Benjamín (8-10 años)" />
+              </Picker>
             </View>
           </View>
           <View style={styles.campo2}>
@@ -62,12 +97,15 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
               Posición principal
             </Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-              <Text style={[styles.snior, styles.sexoTypo]}>Pívot</Text>
-              <Image
-                style={styles.coolicon}
-                contentFit="cover"
-                source={require('../../assets/coolicon2.png')}
-              />
+            <Picker
+                style={{ color: "white",width:"100%",height:"100%" }}
+
+                selectedValue={filter["position"]}
+                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["position"]:itemValue})}
+              >
+                <Picker.Item label="Disparo" value="Disparo" />
+                <Picker.Item label="Resistencia" value="Resistencia" />
+              </Picker>
             </View>
           </View>
         </View>
@@ -75,10 +113,10 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
           <View style={styles.ataqueFrame}>
             <Text style={[styles.ataque, styles.sexoTypo]}>Ataque</Text>
             <Pressable
-              style={[styles.circle, checkedAttack && styles.checkedCircle]}
-              onPress={() => setCheckedAttack(!checkedAttack)}
+              style={[styles.circle, filter.attack && styles.checkedCircle]}
+              onPress={() => setFilter({...filter,["attack"]: !filter["attack"]})}
             >
-              {checkedAttack && (
+              {filter.attack && (
                 <Ionicons name="checkmark" size={10} color="white" />
               )}
             </Pressable>
@@ -88,10 +126,10 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
           <View style={styles.ataqueFrame}>
             <Text style={[styles.ataque, styles.sexoTypo]}>Defensa</Text>
             <Pressable
-              style={[styles.circle, checkedDefense && styles.checkedCircle]}
-              onPress={() => setCheckedDefense(!checkedDefense)}
+              style={[styles.circle, filter.defense && styles.checkedCircle]}
+              onPress={() => setFilter({...filter,["defense"]: !filter["defense"]})}
             >
-              {checkedDefense && (
+              {filter.defense  && (
                 <Ionicons name="checkmark" size={10} color="white" />
               )}
             </Pressable>
@@ -101,10 +139,10 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
           <View style={styles.ataqueFrame}>
             <Text style={[styles.ataque, styles.sexoTypo]}>Velocidad</Text>
             <Pressable
-              style={[styles.circle, checkedSpeed && styles.checkedCircle]}
-              onPress={() => setCheckedSpeed(!checkedSpeed)}
+              style={[styles.circle, filter.speed && styles.checkedCircle]}
+              onPress={() => setFilter({...filter,["speed"]: !filter["speed"]})}
             >
-              {checkedSpeed && (
+              {filter.speed && (
                 <Ionicons name="checkmark" size={10} color="white" />
               )}
             </Pressable>
@@ -112,9 +150,11 @@ const ExplorarClubsConFiltroPrem = ({ onClose }) => {
         </View>
       </View>
       <View style={styles.botonesInferiores}>
+        <TouchableOpacity onPress={()=> submit()}>
         <View style={[styles.aplicar, styles.aplicarBg]}>
           <Text style={[styles.aceptar, styles.clubs1Typo]}>Aplicar</Text>
         </View>
+        </TouchableOpacity>
 
         <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
           Quitar filtros
@@ -299,7 +339,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     overflow: 'hidden',
     width: 361,
-    position: 'absolute'
+    position: 'absolute',
+    height:50
   },
   campo1: {
     height: 61,

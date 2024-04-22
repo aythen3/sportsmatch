@@ -26,8 +26,12 @@ export class UserController {
   // Método para crear un usuario
   @PublicAccess()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    // if (createUserDto.googleId) {
+    //   return this.userService.createUserWithFirebase(createUserDto);
+    // } else {
+      return this.userService.create(createUserDto);
+    // }
   }
   // Método para encontrar todos los usuarios
   @Get()

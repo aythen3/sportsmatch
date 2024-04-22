@@ -20,7 +20,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
   const data = router.params
-  // console.log('data,', router.params)
+  console.log('data,', router.params)
 
   function calculateAge(birthYear) {
     const birthYearNum =
@@ -66,7 +66,7 @@ const PerfilFeedVisualitzaciJug = () => {
               ? data.author.club.img_front
               : data.author.sportman.info.img_front
           }
-          data={data}
+          data={data ? data : null}
           external={true}
         />
 

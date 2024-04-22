@@ -10,7 +10,11 @@ export class CreateUserDto {
   @IsString()
   email: string;
 
-  @IsNotEmpty()
+  googleId?: string | null;
+    facebookId?: string | null;
+    appleId?: string | null;
+
+ 
   @IsString()
   password: string;
 

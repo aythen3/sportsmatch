@@ -103,6 +103,11 @@ export class SportmanController {
     return sportmen;
   }
   
+  @Post('filterNoParcial')
+  async filterSportmenNoParcial(@Body() filters: any): Promise<SportmanEntity[]> {
+    const sportmen = await this.sportmanService.filterSportmenNoParcial(filters);
+    return sportmen;
+  }
   
 }
 
