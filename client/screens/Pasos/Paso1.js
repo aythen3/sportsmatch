@@ -145,8 +145,10 @@ const Paso1 = () => {
         })
       }
     } else {
+      
       setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
+        console.log("estoy en el antesss")
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -167,6 +169,7 @@ const Paso1 = () => {
       }
 
       if (stepsProfesional === 1) {
+        console.log("estoy en el final")
         setStepsProfesional(0)
         navigation.navigate('SiguiendoJugadores')
       }

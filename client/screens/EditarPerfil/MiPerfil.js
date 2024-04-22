@@ -91,7 +91,7 @@ console.log(sportman,"sportman")
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
                 <Text style={styles.textTypo}>{sportman?.info?.position}</Text>
-                <Text style={styles.textTypo}>{sportman?.info?.sport}</Text>
+                <Text style={styles.textTypo}>{typeof sportman?.info?.sport === "object" ? sportman?.info?.sport.name  : sportman?.info?.sport }</Text>
               </View>
               <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>
                 {sportman?.info?.actualClub?.length > 0
@@ -216,7 +216,8 @@ const styles = StyleSheet.create({
   },
   informacion: {
     marginLeft: 15,
-    alignSelf:'flex-end'
+    alignSelf:'flex-end',
+    paddingTop:20
   },
   imagenInformacion1: {
     flexDirection: 'row',
