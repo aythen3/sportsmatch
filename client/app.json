@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "1.0.0",
     "name": "Sportsmatch",
-    "slug": "sportsmatch",
+    "slug": "sportmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -16,7 +16,9 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aythenapps.sportsmatch"
@@ -27,7 +29,9 @@
         "backgroundColor": "#000"
       },
       "versionCode": 1,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.aythenapps.sportsmatch"
     },
     "web": {
@@ -52,12 +56,13 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
+        "projectId": "2e24e316-402e-462f-8799-ee82d86792bd"
       }
     },
-    "owner": "aythenapps",
-    "scheme": ["sportsmatch", "fb955537832791728"]
+    "owner": "azschiaffino",
+    "scheme": [
+      "sportsmatch",
+      "fb955537832791728"
+    ]
   }
 }
-
-// https://com.aythenapps.sportsmatch/expo-development-client/?url=http%3A%2F%2F192.168.0.8%3A8081

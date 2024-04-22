@@ -15,18 +15,21 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
-  googleId: string;
-  @Column({ unique: true })
-  facebookId: string;
-  @Column({ unique: true })
-  appleId: string;
+  @Column({ nullable: true, unique: true })
+  googleId: string | null = null;
+
+  @Column({ nullable: true, unique: true })
+  facebookId: string | null = null;
+
+  @Column({ nullable: true, unique: true })
+  appleId: string | null = null;
+
   @Column({default:""})
   stripeId: string;
 
-  @Exclude()
-  @Column()
-  password: string;
+ 
+  @Column({ nullable: true })
+    password: string;
 
   
   @Column({

@@ -36,12 +36,12 @@ const ExplorarClubs = () => {
 
   const [searchClubes, setSearchClubes] = useState([])
   const [filter, setFilter] = useState({
-    gender:"",
-    category:"",
-    position:"",
-    attack:false,
-    defense:false,
-    speed:false
+    gender: "",
+    category: "",
+    position: "",
+    attack: false,
+    defense: false,
+    speed: false
   })
 
 
@@ -68,8 +68,9 @@ const ExplorarClubs = () => {
   const handleSearch = async () => {
     const users = await axiosInstance.post('sportman/filter', { nickname: textValue })
     setSearchUsers(users.data)
-    const positions = await axiosInstance.post('sportman/filter', { position: textValue })
-    setSearchPosition(positions.data)
+    const position = await axiosInstance.post('sportman/filter', { position: textValue })
+    console.log(position.data, "esto es el data")
+    setSearchPosition(position.data)
     const city = await axiosInstance.post('sportman/filter', { city: textValue })
     setSearchCity(city.data)
     const clubes = await axiosInstance.post('info-entity/club/name/filter', { value: textValue })
@@ -124,7 +125,7 @@ const ExplorarClubs = () => {
                 <View style={{ flexDirection: "column", gap: 10 }}>
                   <Text style={{ color: "white" }}>Clubes</Text>
                   {searchClubes.length > 0 && searchClubes.map((club, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("ClubProfile", { author: {type:"club", nickname: club.name, club } })} >
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("ClubProfile", { author: { type: "club", nickname: club.name, club } })} >
                       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                         <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{ uri: club.img_perfil }}></Image>
                         <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{club.name}</Text>
@@ -134,29 +135,33 @@ const ExplorarClubs = () => {
                 </View>
               )}
               {textValue && searchPosition.length > 0 && (
-    <View style={{ flexDirection: "column", gap: 10 }}>
-      <Text style={{ color: "white" }}>Posiciones</Text>
-      {searchPosition.map((position, i) => (
-        <TouchableOpacity key={i} onPress={() => {/* Acción cuando se selecciona una posición */}}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{position}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View>
-  )}
-  {textValue && searchCity.length > 0 && (
-    <View style={{ flexDirection: "column", gap: 10 }}>
-      <Text style={{ color: "white" }}>Ciudades</Text>
-      {searchCity.map((city, i) => (
-        <TouchableOpacity key={i} onPress={() => {/* Acción cuando se selecciona una ciudad */}}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{city}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View>
-  )}
+                <View style={{ flexDirection: "column", gap: 10 }}>
+                  <Text style={{ color: "white" }}>Posiciones</Text>
+                  {searchPosition.map((position, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("PerfilFeedVisualitzaciJug", { author: { nickname: position.info.nickname, sportman: position } })} >
+                      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                      <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{ uri: position.info.img_front}}></Image>
+
+                        <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{position.info.nickname}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+              {textValue && searchCity.length > 0 && (
+                <View style={{ flexDirection: "column", gap: 10 }}>
+                  <Text style={{ color: "white" }}>Ciudades</Text>
+                  {searchCity.map((city, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("PerfilFeedVisualitzaciJug", { author: { nickname: city.info.nickname, sportman: city } })}>
+                      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                      <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{ uri: city.info.img_front }}></Image>
+
+                        <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>{city.info.nickname}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
             </View>
           )}
           {!textValue && allPosts?.length > 0 && (
@@ -186,7 +191,7 @@ const ExplorarClubs = () => {
         animationType="slide"
       >
         <View style={styles.modal}>
-          <FiltersSportman  onClose={() => setModalFilterSportman(false)} />
+          <FiltersSportman onClose={() => setModalFilterSportman(false)} />
         </View>
       </Modal>
     </View>
