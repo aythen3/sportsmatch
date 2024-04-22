@@ -58,13 +58,35 @@ console.log(sportman,"sportman")
           }}
         >
           <View style={styles.imagenInformacion1}>
+            <View style={{position:'relative'}}>
             <Image
-              style={styles.imagenIcon}
+              style={{
+                height: 110,
+                borderRadius: 100,
+                width: 110,
+                zIndex:1000,
+                borderWidth: 3,
+                borderColor: '#000'
+              }}
               contentFit="cover"
               source={{
                 uri: sportman?.info?.img_perfil
               }}
             />
+            <View
+            style={{
+              position: 'absolute',
+              bottom: -5,
+              left: 2.5,
+              height: 105,
+              zIndex: -1000,
+              borderRadius: 100,
+              width: 105,
+              backgroundColor: Color.bALONCESTO
+            }}
+          />
+            </View>
+            
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
@@ -188,22 +210,18 @@ const styles = StyleSheet.create({
     height: 150
     // width: '100%'
   },
-  imagenIcon: {
-    height: 120,
-    width: 113,
-    borderRadius: 120 / 2
-  },
   jugandoAlUni: {
     width: '70%',
     marginTop: 2
   },
   informacion: {
-    marginLeft: 15
+    marginLeft: 15,
+    alignSelf:'flex-end'
   },
   imagenInformacion1: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '2%'
+    marginTop: -14
   },
   botonEditarPerfilChild: {
     backgroundColor: Color.colorDimgray_100,
