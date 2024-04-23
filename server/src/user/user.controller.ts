@@ -29,6 +29,7 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto) {
     console.log("esto es createUserDto", createUserDto)
     if (createUserDto.googleId) {
+      console.log("entra con google")
       return this.userService.createUserAuth(createUserDto);
     } else {
       return this.userService.create(createUserDto);
