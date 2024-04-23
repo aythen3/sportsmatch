@@ -296,7 +296,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
-                      {/* <AppleAuthentication.AppleAuthenticationButton
+                      <AppleAuthentication.AppleAuthenticationButton
                         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                         buttonStyle={{backgroundColor:"black"}}
                         
@@ -324,7 +324,7 @@ const LoginSwitch = () => {
                             }
                           }
                         }}
-                      /> */}
+                      />
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
