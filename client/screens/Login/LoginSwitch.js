@@ -36,7 +36,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend';
 import { create, login } from '../../redux/actions/users'
-import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 
 WebBrowser.maybeCompleteAuthSession()

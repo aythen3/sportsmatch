@@ -12,8 +12,8 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   nickname: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Column({ nullable: true,unique: true })
+  email: string | null = null;
 
   @Column({ nullable: true, unique: true })
   googleId: string | null = null;
@@ -29,7 +29,7 @@ export class UserEntity extends BaseEntity {
 
  
   @Column({ nullable: true })
-    password: string;
+    password: string | null = null;
 
   
   @Column({
