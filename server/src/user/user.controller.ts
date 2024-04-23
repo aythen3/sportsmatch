@@ -27,6 +27,7 @@ export class UserController {
   @PublicAccess()
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
+    console.log("esto es createUserDto", createUserDto)
     if (createUserDto.googleId) {
       return this.userService.createUserAuth(createUserDto);
     } else {
