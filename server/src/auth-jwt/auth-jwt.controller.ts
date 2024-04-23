@@ -10,14 +10,34 @@ export class AuthJwtController {
   ) {}
 
   // Método para manejar las solicitudes POST en la ruta '/auth/login'
-  @Post('login')
-  // Método asíncrono que maneja las solicitudes de inicio de sesión
-  async login(@Body() body: { email: string; password: string }) {
-    // Obtiene el usuario correspondiente al correo electrónico proporcionado
-    const user = await this.userService.getByEmail(body.email);
-    // Valida las credenciales del usuario y genera un token JWT si son válidas
-    return this.authJwtService.loginValidate(user, body.password);
+  // Método para manejar las solicitudes POST en la ruta '/auth/login'
+@Post('login')
+// Método asíncrono que maneja las solicitudes de inicio de sesión
+async login(@Body() body: { email?: string; password?: string; googleId?: string; appleId?: string; facebookId?: string }) {
+  try {
+    let user;
+
+    // Si se proporciona googleId, appleId o facebookId en el cuerpo de la solicitud,
+    // buscar al usuario por esos identificadores únicos
+    if (body.googleId) {
+      user = await this.userService.getByGoogleId(body.googleId);
+    } else if (body.appleId) {
+      user = await this.userService.getByAppleId(body.appleId);
+    } else if (body.facebookId) {
+      user = await this.userService.getByFacebookId(body.facebookId);
+    } else {
+      // Si no se proporcionan identificadores únicos, buscar al usuario por correo electrónico y contraseña
+      user = await this.userService.findByEmailAndPassword(body.email, body.password);
+    }
+
+    // Validar las credenciales del usuario y generar un token JWT si son válidas
+    return user
+  } catch (error) {
+    // Manejar errores
+   return ({"error": error})
   }
+}
+
 
   @Post('google-login')
   // Método asíncrono que maneja las solicitudes de inicio de sesión
