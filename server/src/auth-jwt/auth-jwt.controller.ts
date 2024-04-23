@@ -14,6 +14,7 @@ export class AuthJwtController {
 @Post('login')
 // Método asíncrono que maneja las solicitudes de inicio de sesión
 async login(@Body() body: { email?: string; password?: string; googleId?: string; appleId?: string; facebookId?: string }) {
+  console.log(body,"body login")
   try {
     let user;
 
