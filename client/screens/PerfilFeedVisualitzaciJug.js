@@ -41,12 +41,12 @@ const PerfilFeedVisualitzaciJug = () => {
           sport={
             data.author.type === 'club'
               ? null
-              : data?.author?.sportman?.info?.sport
+              :data?.author?.sportman?.type === 'coach' ? data?.author?.sportman?.info?.sport?.name : data?.author?.sportman?.info?.sport
           }
           position={
             data.author.type === 'club'
               ? null
-              : data?.author?.sportman?.info?.position
+              : data?.author?.sportman?.type === 'coach' ? data?.author?.sportman?.info?.rol : data?.author?.sportman?.info?.position
           }
           description={
             data.author.type === 'club'
@@ -79,7 +79,7 @@ const PerfilFeedVisualitzaciJug = () => {
             keyboardShouldPersistTaps={'always'}
             style={styles.perfilDatosVisualitzaciMa}
           >
-            <View style={styles.contenidoDatos}>
+            { data?.author?.sportman?.type !== 'coach' ?<View style={styles.contenidoDatos}>
               <View style={styles.circulos}>
                 <View style={styles.circuloLayout}>
                   <CircularStat value={data?.author?.sportman?.info.attack} />
@@ -234,7 +234,47 @@ const PerfilFeedVisualitzaciJug = () => {
                   {data?.author?.sportman?.info.description}
                 </Text>
               </View>
+            </View> : <View style={{alignSelf:'center', marginTop:20}}>
+          <View style={styles.circulos}>
+            <View style={styles.moduloSpaceBlock}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Lugar de residencia</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {data.author.sportman.info.city}
+              </Text>
             </View>
+            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Años de expereiencia</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>{data.author.sportman.info.yearsOfExperience}</Text>
+            </View>
+          </View>
+          <View style={styles.modulosMedio}>
+            <View style={styles.moduloSpaceBlock}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Deporte</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {data.author.sportman?.info.sport.name}
+              </Text>
+            </View>
+            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>
+                Rol
+              </Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {data.author.sportman?.info.rol}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.masDetalles}>
+                <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
+                  Más detalles sobre mí
+                </Text>
+                <Text
+                  style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}
+                >
+                  {data?.author?.sportman?.info.description}
+                </Text>
+              </View>
+        </View>}
           </ScrollView>
         )}
       </ScrollView>
@@ -371,9 +411,8 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   masDetalles: {
-    width: 367,
-    height: 130,
-    marginTop: 30
+    width: '100%',
+    marginTop: 20,paddingBottom:20
   },
   contenidoDatos: {
     marginTop: 21,

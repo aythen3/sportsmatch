@@ -24,6 +24,7 @@ import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential
@@ -31,11 +32,12 @@ import {
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from '../../redux/actions/users'
-import * as Facebook from 'expo-auth-session/providers/facebook'
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
+  
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman } = useSelector((state) => state.users)
@@ -92,15 +94,29 @@ const LoginSwitch = () => {
     getLocalUser()
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log('providerData: ',user.providerData[0])
+        console.log('photo: ', user.photoURL)
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
-        dispatch(
-          create({
-            nickname: user.displayName,
-            email: user.email,
-            googleId: user.uid
-          })
-        )
+        if(user.providerData[0].providerId === 'google.com') {
+          dispatch(
+            create({
+              nickname: user.displayName,
+              email: user.email,
+              googleId: user.uid
+            })
+          )
+          return
+        } else {
+          dispatch(
+            create({
+              nickname: user.displayName,
+               email: user.providerData[0].email,
+              facebookId: user.uid
+            })
+          )
+        }
+        
       } else {
         console.log('user not authenticated')
       }
@@ -108,43 +124,22 @@ const LoginSwitch = () => {
     return () => unsub()
   }, [])
 
-  // =========================================================
-  const [user, setUser] = useState(null)
-  const [req, res, prompt] = Facebook.useAuthRequest({
-    clientId: '955537832791728'
-  })
+  // =========================FACEBOOK================================
 
-  useEffect(() => {
-    if (res && res.type === 'success' && res.authentication) {
-      ;(async () => {
-        const userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?access_token=${res.authentication.accessToken}&fields=id,name,picture.type(large)`
-        )
-        const userInfo = await userInfoResponse.json()
-        console.log('userInfo: ', userInfo)
-        console.log('accessToken: ', res.params.access_token)
-        setUser(userInfo)
-        dispatch(
-          create({
-            nickname: userInfo.name,
-            facebookAccessToken: res.params.access_token
-          })
-        )
-
-        //         {"id": "10229138853848687", "name": "Alejo Sada", "picture": {"data": {"height": 200,
-        // "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10229138853848687&height=200&width=200&ext=1716313330&hash=AbbVkV53n6HBYUSIilnf2iX0", "width": 200}}}
-        console.log(JSON.stringify(res, null, 2))
-      })()
-    }
-  }, [res])
-
-  const handlePressAsync = async () => {
-    const result = await prompt()
-    if (result.type !== 'success') {
-      alert('Uh oh, something went wrong')
-      return
+  const signInWithFacebook = async()=> {
+    try {
+      await LoginManager.logInWithPermissions(['public_profile','email'])
+      const data = await AccessToken.getCurrentAccessToken()
+      if(!data){
+        return
+      }
+      const facebookCredential = FacebookAuthProvider.credential(data.accessToken)
+      await signInWithCredential(auth,facebookCredential)
+    } catch (error) {
+      console.log('error: ',error)
     }
   }
+
 
   if (loading)
     return (
@@ -253,7 +248,7 @@ const LoginSwitch = () => {
                         />
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={handlePressAsync}
+                        onPress={signInWithFacebook}
                         style={styles.loremIpsumGroup}
                       >
                         <View style={styles.loremIpsum2}>

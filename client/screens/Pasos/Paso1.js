@@ -145,10 +145,11 @@ const Paso1 = () => {
         })
       }
     } else {
-      
-      setStepsProfesional((prev) => prev + 1)
+      console.log('stepsProfesional:',stepsProfesional)
+      stepsProfesional !== 1 && setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
-        console.log("estoy en el antesss")
+        console.log("profesional")
+        console.log('selectedRole: ',selectedRole)
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -165,13 +166,16 @@ const Paso1 = () => {
           userId: user.user.id
         }
         console.log('final body: ', body)
-        dispatch(createSportman(body))
-      }
-
-      if (stepsProfesional === 1) {
-        console.log("estoy en el final")
-        setStepsProfesional(0)
-        navigation.navigate('SiguiendoJugadores')
+        dispatch(createSportman(body)).then((response) => {
+          console.log('reponse: ',response.payload)
+          dispatch(
+            setInitialSportman({
+              id: response.payload.id,
+              ...body.sportmanData
+            })
+          )
+          navigation.navigate('SiguiendoJugadores')
+        })
       }
     }
   }
@@ -340,6 +344,8 @@ const Paso1 = () => {
           )}
           {profesional && stepsProfesional === 0 && (
             <Paso3Profesional
+            selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
               profesionalValues={profesionalValues}
               setProfesionalValues={setProfesionalValues}
             />

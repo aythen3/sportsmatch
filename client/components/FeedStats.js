@@ -10,6 +10,11 @@ const FeedStats = () => {
   const navigation = useNavigation()
 
   const { sportman } = useSelector((state) => state.sportman)
+  const {user}= useSelector((state) => state.users)
+
+  console.log('user: ',sportman.type)
+
+
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -18,13 +23,13 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info.birthdate)
 
-  return (
+  if(user)return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
       style={styles.perfilDatosVisualitzaciMa}
     >
       <View style={styles.contenidoDatos}>
-        <View style={styles.circulos}>
+       {sportman?.type !== 'coach' && <View style={styles.circulos}>
           <View style={styles.circuloLayout}>
             <CircularStat value={sportman?.info.attack} />
             <View
@@ -58,9 +63,9 @@ const FeedStats = () => {
               <Text style={[styles.ataque, styles.ataqueClr]}>Velocidad</Text>
             </View>
           </View>
-        </View>
+        </View>}
 
-        <View style={styles.barras}>
+        {sportman?.type !== 'coach' && <View style={styles.barras}>
           <View style={styles.barra1}>
             <View>
               <Text style={[styles.concepto, styles.ataqueClr]}>Bote</Text>
@@ -92,8 +97,8 @@ const FeedStats = () => {
               {sportman?.info.prop3}
             </Text>
           </View>
-        </View>
-        <View style={styles.barras}>
+        </View>}
+        {sportman?.type !== 'coach' ?<View style={styles.barras}>
           <View style={styles.circulos}>
             <View style={styles.moduloSpaceBlock}>
               <Text style={[styles.concepto, styles.ataqueClr]}>Sexo</Text>
@@ -138,7 +143,36 @@ const FeedStats = () => {
               </Text>
             </View>
           </View>
-        </View>
+        </View>:<View>
+          <View style={styles.circulos}>
+            <View style={styles.moduloSpaceBlock}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Lugar de residencia</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {sportman.info.city}
+              </Text>
+            </View>
+            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Años de expereiencia</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>{sportman.info.yearsOfExperience}</Text>
+            </View>
+          </View>
+          <View style={styles.modulosMedio}>
+            <View style={styles.moduloSpaceBlock}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>Deporte</Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {sportman?.info.sport.name}
+              </Text>
+            </View>
+            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+              <Text style={[styles.concepto, styles.ataqueClr]}>
+                Rol
+              </Text>
+              <Text style={[styles.masculino, styles.text1Typo]}>
+                {sportman?.info.rol}
+              </Text>
+            </View>
+          </View>
+        </View>}
         <View style={styles.masDetalles}>
           <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
             Más detalles sobre mí

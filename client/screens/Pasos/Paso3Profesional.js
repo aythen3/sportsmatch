@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   Color,
@@ -15,25 +15,22 @@ import CustomModal from '../../components/modals/CustomModal'
 import Acordeon from '../../components/Acordeon'
 import { useDispatch } from 'react-redux'
 import { setCity, setProfesionalType } from '../../redux/slices/users.slices'
+import { cities } from '../../utils/cities'
+import ScrollableModal from '../../components/modals/ScrollableModal'
 
-const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
+const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCity, setSelectedCity}) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedProfesional, setSelectedProfesional] = useState(null)
   const [cityModal, setCityModal] = useState(false)
-  const [selectedCity, setSelectedCity] = useState(null)
 
-  const opcionesProfesional = ['Entrenador', 'Masajista', 'Ayudante de campo']
-  const opcionesResidencia = [
-    'Barcelona',
-    'Madrid',
-    'Sevilla',
-    'Valencia',
-    'Murcia',
-    'Toledo'
-  ]
+  const [cityTop, setCityTop] = useState(0)
+  const [pickedCity, setPickedCity] = useState()
+
+  const opcionesProfesional = ['Jugador','Entrenador', 'Masajista', 'Ayudante de campo']
+  const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openModal = () => {
     setModalVisible(!modalVisible)
@@ -54,8 +51,19 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
   }
 
   const handleSelectCity = (city) => {
-    dispatch(setCity(city))
+    console.log('city: ', city)
     setSelectedCity(city)
+    setPickedCity(city)
+    dispatch(setCity(city))
+  }
+
+  const [scrolledHeight, setScrolledHeight] = useState(0)
+
+  const handleScroll = (event) => {
+    const { contentOffset } = event.nativeEvent
+    const height = contentOffset.y 
+    console.log('height: ', height)
+    setScrolledHeight(height)
   }
 
   const handlesValues = (field, value) => {
@@ -66,7 +74,8 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
   }
 
   return (
-    <View style={styles.paso6}>
+   <ScrollView onScroll={handleScroll}>
+     <View style={styles.paso6}>
       <Acordeon
         title="Tipo de profesional"
         placeholderText={
@@ -91,21 +100,36 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
         value={profesionalValues.yearsOfExperience}
         keyboardType="numeric"
       />
-      <Acordeon
-        title="Lugar de residencia"
-        placeholderText={profesionalValues.city}
-        isAccordeon={true}
-        open={openCityModal}
-      />
-      {cityModal && (
-        <CustomModal
-          visible={cityModal}
-          closeModal={closeModal}
-          onSelectItem={handleSelectCity}
-          title="Selecciona tu opción"
-          options={opcionesResidencia}
+      <View
+        collapsable={false}
+        onLayout={(event) => {
+          event.target.measure((x, y, width, height, pageX, pageY) => {
+            console.log(pageY)
+            setCityTop(pageY)
+          })
+        }}
+        style={{
+          position: 'relative',
+          width: '100%'
+        }}
+      >
+        <Acordeon
+          title="Lugar de residencia"
+          placeholderText={pickedCity ? pickedCity : 'Lugar de residencia'}
+          isAccordeon={true}
+          open={openCityModal}
         />
-      )}
+        {cityModal && (
+          <ScrollableModal
+            scrollHeight={scrolledHeight}
+            parentTop={cityTop}
+            visible={cityModal}
+            closeModal={closeModal}
+            onSelectItem={handleSelectCity}
+            options={opcionesResidencia}
+          />
+        )}
+      </View>
       <Input
         title="Club actual"
         placeholderText="Rellena solo si estas en algun club"
@@ -122,6 +146,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues }) => {
         value={profesionalValues.description}
       />
     </View>
+   </ScrollView>
   )
 }
 
