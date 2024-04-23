@@ -1,7 +1,6 @@
-import { Exclude } from 'class-transformer';
+import { BaseEntity } from 'src/config/base.entity';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
-import { BaseEntity } from 'src/config/base.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
@@ -12,37 +11,33 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   nickname: string;
 
-  @Column({ nullable: true,unique: true })
+  @Column({ unique: true })
   email: string | null = null;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true })
   googleId: string | null = null;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true })
   facebookId: string | null = null;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true })
   appleId: string | null = null;
 
   @Column({default:""})
   stripeId: string;
 
- 
-  @Column({ nullable: true })
-    password: string | null = null;
+  @Column()
+  password: string | null = null;
 
-  
   @Column({
     type: 'enum',
     enum: ['sportman', 'club']
   })
   type: 'sportman' | 'club';
 
-
   @Column({ default: 'basic' })
   plan: string;
 
-  // Propiedades flexibles
   @Column({ type: 'json', nullable: true })
   prop1: Record<string, any> | null;
 
@@ -61,7 +56,6 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-
   @OneToOne(() => ClubEntity, { nullable: true })
   @JoinColumn()
   club: ClubEntity | null;
@@ -73,9 +67,9 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => PostEntity, (post) => post.author)
   posts: PostEntity[];
 
-  @OneToMany(() => CommentEntity, (post) => post.author)
+  @OneToMany(() => CommentEntity, (comment) => comment.author)
   comments: CommentEntity[];
 
-  @OneToMany(() => LikeEntity, (post) => post.author)
+  @OneToMany(() => LikeEntity, (like) => like.author)
   likes: LikeEntity[];
 }
