@@ -31,8 +31,9 @@ import {
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from '../../redux/actions/users'
+import { create, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
+import { setClub } from '../../redux/slices/club.slices'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -94,8 +95,6 @@ const LoginSwitch = () => {
     getLocalUser()
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log('providerData: ',user.providerData[0])
-        console.log('photo: ', user.photoURL)
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
         if(user.providerData[0].providerId === 'google.com') {
@@ -103,16 +102,42 @@ const LoginSwitch = () => {
             create({
               nickname: user.displayName,
               email: user.email,
-              googleId: user.uid
+              googleId: user.uid,
+              type: isSportman === true ? 'sportman' : 'club'
             })
-          )
+          ).then(async (data) => {
+            console.log('data from back:', data);
+            try {
+              const response = await dispatch(login({ googleId: user.uid }));
+              console.log('response:', response.payload);
+              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+              await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+              await AsyncStorage.setItem('userType', response.payload.user.type);
+              dispatch(setClub(response));
+            } catch (error) {
+              console.log('Error:', error);
+            }
+          })
           return
         } else {
           dispatch(
             create({
               nickname: user.displayName,
-               email: user.providerData[0].email,
-              facebookId: user.uid
+              email: user.providerData[0].email,
+              facebookId: user.uid,
+              type: isSportman === true ? 'sportman' : 'club'
+            }).then(async (data) => {
+              console.log('data from back:', data);
+              try {
+                const response = await dispatch(login({ facebookId: user.uid }));
+                console.log('response:', response.payload);
+                dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+                await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+                await AsyncStorage.setItem('userType', response.payload.user.type);
+                dispatch(setClub(response));
+              } catch (error) {
+                console.log('Error:', error);
+              }
             })
           )
         }
