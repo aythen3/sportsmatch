@@ -36,7 +36,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend';
 import { create, login } from '../../redux/actions/users'
-// import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 
 WebBrowser.maybeCompleteAuthSession()
@@ -102,22 +102,23 @@ const LoginSwitch = () => {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
         if(user.providerData[0].providerId === 'google.com') {
-          dispatch(
+        dispatch(
             create({
               nickname: user.displayName,
               email: user.email,
               googleId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
-            })
-          ).then(async (data) => {
+            })).then(async (data) => {
             console.log('data from back:', data);
             try {
-              const response = await dispatch(login({ googleId: user.uid }));
-              console.log('response:', response.payload);
-              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+              const response = await dispatch(login({ googleId: user.uid }));              
+             if(response?.payload){
+              console.log('response:', response?.payload);
+              dispatch(setIsSpotMan(response?.payload?.user?.type === 'club' ? false : true));
               await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
-              await AsyncStorage.setItem('userType', response.payload.user.type);
+              await AsyncStorage.setItem('userType', response?.payload?.user?.type);
               dispatch(setClub(response));
+             }
             } catch (error) {
               console.log('Error:', error);
             }
@@ -130,20 +131,22 @@ const LoginSwitch = () => {
               email: user.providerData[0].email,
               facebookId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
-            }).then(async (data) => {
-              console.log('data from back:', data);
-              try {
-                const response = await dispatch(login({ facebookId: user.uid }));
-                console.log('response:', response.payload);
-                dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-                await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
-                await AsyncStorage.setItem('userType', response.payload.user.type);
-                dispatch(setClub(response));
-              } catch (error) {
-                console.log('Error:', error);
-              }
             })
-          )
+          ).then(async (data) => {
+            console.log('data from back:', data);
+            try {
+              const response = await dispatch(login({ facebookId: user.uid }));
+              console.log('response:', response?.payload);
+            if(response?.payload){
+              dispatch(setIsSpotMan(response?.payload?.user?.type === 'club' ? false : true));
+              await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+              await AsyncStorage.setItem('userType', response?.payload?.user?.type);
+              dispatch(setClub(response));
+            }
+            } catch (error) {
+              console.log('Error:', error);
+            }
+          })
         }
         
       } else {
@@ -293,7 +296,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
-                      <AppleAuthentication.AppleAuthenticationButton
+                      {/* <AppleAuthentication.AppleAuthenticationButton
                         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                         buttonStyle={{backgroundColor:"black"}}
                         
@@ -321,7 +324,7 @@ const LoginSwitch = () => {
                             }
                           }
                         }}
-                      />
+                      /> */}
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
