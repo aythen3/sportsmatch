@@ -386,7 +386,7 @@ const PlayerDetails = () => {
               <CustomPicker
                 zIndex={8000}
                 cities={true}
-                array={cities}
+                array={cities.map((city) => city.city).sort()}
                 placeholder={'Lugar de residencia'}
                 state={city}
                 setState={setCity}

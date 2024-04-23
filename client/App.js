@@ -63,6 +63,7 @@ import PlayerDetails from './screens/EditarPerfil/PlayerDetails'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AppRegistry, StatusBar } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
+import ProDetails from './screens/EditarPerfil/ProDetails'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -153,6 +154,11 @@ const App = () => {
                   <Stack.Screen
                     name="PlayerDetails"
                     component={PlayerDetails}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ProDetails"
+                    component={ProDetails}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
