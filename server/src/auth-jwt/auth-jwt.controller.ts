@@ -14,6 +14,7 @@ export class AuthJwtController {
 @Post('login')
 // Método asíncrono que maneja las solicitudes de inicio de sesión
 async login(@Body() body: { email?: string; password?: string; googleId?: string; appleId?: string; facebookId?: string }) {
+  console.log(body,"body login")
   try {
     let user;
 
@@ -32,8 +33,9 @@ async login(@Body() body: { email?: string; password?: string; googleId?: string
       return user
     } else {
       // Si no se proporcionan identificadores únicos, buscar al usuario por correo electrónico y contraseña
-      user = await this.userService.findByEmailAndPassword(body.email, body.password);
-      return this.authJwtService.loginValidate(user, body.password);
+      const user = await this.userService.getByEmail(body.email);
+    // Valida las credenciales del usuario y genera un token JWT si son válidas
+       return this.authJwtService.loginValidate(user, body.password);
     }
 
     // Validar las credenciales del usuario y generar un token JWT si son válidas
