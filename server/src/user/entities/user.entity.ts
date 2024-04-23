@@ -14,14 +14,14 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string | null 
 
-  @Column({ unique: true })
+  @Column({ unique: true,nullable:true ,default:null} )
   googleId: string | null 
 
-  @Column({ unique: true })
+  @Column({ unique: true ,nullable:true ,default:null})
   facebookId: string | null
 
-  @Column({ unique: true })
-  appleId: string | null 
+  @Column({ unique: true ,nullable:true ,default:null})
+  appleId: string | null
 
   @Column({default:""})
   stripeId: string;
