@@ -31,7 +31,7 @@ import {
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from '../../redux/actions/users'
+import { create, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 
