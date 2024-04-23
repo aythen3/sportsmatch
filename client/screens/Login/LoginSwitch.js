@@ -95,8 +95,6 @@ const LoginSwitch = () => {
     getLocalUser()
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log('providerData: ',user.providerData[0])
-        console.log('photo: ', user.photoURL)
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
         if(user.providerData[0].providerId === 'google.com') {
