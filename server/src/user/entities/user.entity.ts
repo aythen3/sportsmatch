@@ -26,7 +26,7 @@ export class UserEntity extends BaseEntity {
   @Column({default:""})
   stripeId: string;
 
-  @Column()
+  @Column({nullable:true})
   password: string | null
 
   @Column({
