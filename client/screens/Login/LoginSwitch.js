@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import * as AppleAuthentication from 'expo-apple-authentication';
+
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -32,6 +34,7 @@ import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from '../../redux/actions/users'
 import * as Facebook from 'expo-auth-session/providers/facebook'
+import axiosInstance from '../../utils/apiBackend';
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -116,7 +119,7 @@ const LoginSwitch = () => {
 
   useEffect(() => {
     if (res && res.type === 'success' && res.authentication) {
-      ;(async () => {
+      ; (async () => {
         const userInfoResponse = await fetch(
           `https://graph.facebook.com/me?access_token=${res.authentication.accessToken}&fields=id,name,picture.type(large)`
         )
@@ -239,7 +242,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group-236.png')}
                         />
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.loremIpsumGroup}>
+                      {/* <TouchableOpacity style={styles.loremIpsumGroup}>
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Contínua con Apple
@@ -251,7 +254,8 @@ const LoginSwitch = () => {
                           contentFit="cover"
                           source={require('../../assets/group-237.png')}
                         />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
+                   
                       <TouchableOpacity
                         onPress={handlePressAsync}
                         style={styles.loremIpsumGroup}
@@ -268,6 +272,35 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
+                      <AppleAuthentication.AppleAuthenticationButton
+                        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                        buttonStyle={{backgroundColor:"black"}}
+                        
+                        cornerRadius={5}
+                        style={{width:"auto",height:44,borderRadius:100,marginTop:10,overflow:"hidden"}}
+                        onPress={async () => {
+                          try {
+                            const credential = await AppleAuthentication.signInAsync({
+                              requestedScopes: [
+
+                                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                                AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                                
+                              ],
+                            });
+                            // LOGICA PARA LOGEARSE VA ACA
+                            console.log(credential,"credddd")
+                            // axiosInstance.post('user',credential)
+                            // signed in
+                          } catch (e) {
+                            if (e.code === 'ERR_REQUEST_CANCELED') {
+                              // handle that the user canceled the sign-in flow
+                            } else {
+                              // handle other errors
+                            }
+                          }
+                        }}
+                      />
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —

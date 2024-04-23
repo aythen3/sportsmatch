@@ -21,7 +21,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aythenapps.sportsmatch"
+      "bundleIdentifier": "com.aythenapps.sportsmatch",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -39,6 +40,7 @@
     },
     "plugins": [
       "expo-font",
+      ["expo-apple-authentication"],
       [
         "expo-build-properties",
         {
