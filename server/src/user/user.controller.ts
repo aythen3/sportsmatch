@@ -27,11 +27,11 @@ export class UserController {
   @PublicAccess()
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    // if (createUserDto.googleId) {
-    //   return this.userService.createUserWithFirebase(createUserDto);
-    // } else {
+    if (createUserDto.googleId) {
+      return this.userService.createUserAuth(createUserDto);
+    } else {
       return this.userService.create(createUserDto);
-    // }
+    }
   }
   // Método para encontrar todos los usuarios
   @Get()

@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { hash } from 'bcrypt';
+import { hash , compare} from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
@@ -126,34 +126,45 @@ export class UserService {
   }
 
 // Método para crear usuario con Firebase
-public async createUserWithFirebase(createUserDto: CreateUserDto) {
+public async createUserAuth(createUserDto: CreateUserDto) {
   try {
-    // Verificar si el usuario ya existe en Firebase Authentication
-    const userRecord = await admin.auth().getUserByEmail(createUserDto.email);
+    let existingUser: UserEntity | undefined;
+
+    // Verificar si el usuario ya existe en tu base de datos local
+    if (createUserDto.googleId) {
+      existingUser = await this.userRepository.findOne({ where: { googleId: createUserDto.googleId } });
+    } else if (createUserDto.appleId) {
+      existingUser = await this.userRepository.findOne({ where: { appleId: createUserDto.appleId } });
+    } else if (createUserDto.facebookId) {
+      existingUser = await this.userRepository.findOne({ where: { facebookId: createUserDto.facebookId } });
+    }
 
     // Si el usuario ya existe, lanzar una excepción
-    if (userRecord) {
+    if (existingUser) {
       throw new ErrorManager({
         type: 'BAD_REQUEST',
-        message: 'The email is already registered in Firebase Authentication'
+        message: 'User with provided ID already exists'
       });
     }
 
-    // Guardar el nuevo perfil del usuario en tu base de datos
+    // Crear el nuevo perfil del usuario en tu base de datos
     const newProfile: UserEntity = await this.userRepository.save(createUserDto);
 
     // Si no se pudo crear el nuevo perfil, lanzar una excepción
     if (!newProfile) {
       throw new ErrorManager({
         type: 'BAD_REQUEST',
-        message: 'The new profile is not created'
+        message: 'Failed to create new user profile'
       });
     }
 
-    // Devolver el nuevo perfil del usuario
+    // Enviar notificación de registro por correo electrónico
     await this.sendMailService.sendRegistrationNotification(newProfile.email);
+
+    // Devolver el nuevo perfil del usuario
     return newProfile;
   } catch (error) {
+    // Manejar errores
     throw ErrorManager.createSignatureError(error.message);
   }
 }
@@ -349,4 +360,34 @@ public async createUserWithFirebase(createUserDto: CreateUserDto) {
      return validRelations;
    }
 
+
+
+
+
+   async getByGoogleId(googleId: string): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne({where: {googleId: googleId }});
+  }
+
+  async getByAppleId(appleId: string): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne({where: {appleId: appleId }});
+  }
+
+  async getByFacebookId(facebookId: string): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne({where: {facebookId: facebookId }});
+  }
+
+ 
+
+
+  async findByEmailAndPassword(email: string, password: string): Promise<UserEntity | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return undefined;
+    }
+
+    const passwordMatch = await compare(password, user.password);
+
+    return passwordMatch ? user : undefined;
+  }
 }
