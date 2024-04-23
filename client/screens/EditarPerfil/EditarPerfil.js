@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 const EditarPerfil = () => {
   const navigation = useNavigation()
   const { user } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
 
   return (
     <View style={styles.editarPerfil}>
@@ -45,13 +46,13 @@ const EditarPerfil = () => {
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() =>
               navigation.navigate(
-                user.user.type === 'club' ? 'ClubDetails' : 'PlayerDetails'
+                user.user.type === 'club' ? 'ClubDetails': sportman.type === 'coach' ? 'ProDetails' : 'PlayerDetails'
               )
             }
           >
             {user.user.type === 'club'
               ? 'Detalles del club'
-              : 'Detalles del usuario'}
+              : sportman.type === 'coach' ? 'Detalles del profesional' :'Detalles del usuario'}
           </Text>
           <View style={styles.frameChild} />
           <Text

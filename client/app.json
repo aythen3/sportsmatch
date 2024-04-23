@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "1.0.0",
     "name": "Sportsmatch",
-    "slug": "sportmatch",
+    "slug": "sportsmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -16,12 +16,11 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aythenapps.sportsmatch"
+      "bundleIdentifier": "com.aythenapps.sportsmatch",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -29,9 +28,7 @@
         "backgroundColor": "#000"
       },
       "versionCode": 1,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.aythenapps.sportsmatch"
     },
     "web": {
@@ -39,6 +36,7 @@
     },
     "plugins": [
       "expo-font",
+      ["expo-apple-authentication"],
       [
         "expo-build-properties",
         {
@@ -52,17 +50,24 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "2654178301415308",
+          "clientToken": "46f145a4cdcb17184273c6be90fc6ec3",
+          "displayName": "Sportsmatch"
+        }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "2e24e316-402e-462f-8799-ee82d86792bd"
+        "projectId": "251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
       }
     },
-    "owner": "azschiaffino",
-    "scheme": [
-      "sportsmatch",
-      "fb955537832791728"
-    ]
+    "owner": "aythenapps",
+    "scheme": ["sportsmatch", "fb2654178301415308"]
   }
 }
+
+// https://com.aythenapps.sportsmatch/expo-development-client/?url=http%3A%2F%2F192.168.0.8%3A8081

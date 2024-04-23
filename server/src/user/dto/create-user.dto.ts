@@ -2,22 +2,27 @@ import { Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 export class CreateUserDto {
+
+
   @IsNotEmpty()
   @IsString()
   nickname: string;
 
-  @IsNotEmpty()
   @IsString()
   email: string;
 
+  @IsOptional()
   googleId?: string | null;
-    facebookId?: string | null;
-    appleId?: string | null;
+  @IsOptional()
+  facebookId?: string | null;
+  @IsOptional()
+  appleId?: string | null;
 
- 
+  @IsOptional()
   @IsString()
   password: string;
 
+  @IsOptional()
   stripeId: any;
 
   @IsNotEmpty()

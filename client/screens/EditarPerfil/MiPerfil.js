@@ -90,7 +90,7 @@ console.log(sportman,"sportman")
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                <Text style={styles.textTypo}>{sportman?.info?.position}</Text>
+                <Text style={styles.textTypo}>{sportman?.type === 'coach'? sportman?.info?.rol : sportman?.info?.position}</Text>
                 <Text style={styles.textTypo}>{typeof sportman?.info?.sport === "object" ? sportman?.info?.sport.name  : sportman?.info?.sport }</Text>
               </View>
               <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>

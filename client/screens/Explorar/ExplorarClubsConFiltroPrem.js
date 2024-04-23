@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, View, Text, Pressable, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TouchableOpacity,Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Picker } from '@react-native-picker/picker';
 import {
@@ -43,13 +43,13 @@ const submit = async()=> {
 
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
-      <View>
+      <View style={{flexDirection:"column"}}>
         <View style={styles.cerrarFiltros}>
           <Image
             style={styles.cerrarFiltrosChild}
             contentFit="cover"
             source={require('../../assets/line-66.png')}
-          />
+          /> 
           <Text
             style={[styles.cerrarFiltros1, styles.sexoTypo]}
             onPress={onClose}
@@ -68,7 +68,7 @@ const submit = async()=> {
                 source={require('../../assets/coolicon5.png')}
               /> */}
               <Picker
-                style={{ color: "white",width:"100%",height:"100%" }}
+                style={{ color: "white",width:"100%",height:"auto",backgroundColor:Platform.OS === "ios"?"gray":""}}
 
                 selectedValue={filter["gender"]}
                 onValueChange={(itemValue, itemIndex) => setFilter({...filter,["gender"]:itemValue})}
@@ -82,13 +82,14 @@ const submit = async()=> {
             <Text style={[styles.sexo, styles.sexoTypo]}>Categoría</Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
             <Picker
-                style={{ color: "white",width:"100%",height:"100%" }}
+                style={{ color: "white",width:"100%",height:"auto",backgroundColor:Platform.OS === "ios"?"gray":"" }}
                 selectedValue={filter["category"]}
+                
                 onValueChange={(itemValue, itemIndex) => setFilter({...filter,["category"]:itemValue})}
               >
                 <Picker.Item label="Prebenjamín (6-8 años)" value="Prebenjamín (6-8 años)" />
-                <Picker.Item label="Cadete (14-16 años)" value="Cadete (14-16 años)" />
                 <Picker.Item label="Benjamín (8-10 años)" value="Benjamín (8-10 años)" />
+                <Picker.Item label="Cadete (14-16 años)" value="Cadete (14-16 años)" />
               </Picker>
             </View>
           </View>
@@ -98,7 +99,8 @@ const submit = async()=> {
             </Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
             <Picker
-                style={{ color: "white",width:"100%",height:"100%" }}
+                style={{ color: "white",width:"100%",height:"auto" ,backgroundColor:Platform.OS === "ios"?"gray":""
+              }}
 
                 selectedValue={filter["position"]}
                 onValueChange={(itemValue, itemIndex) => setFilter({...filter,["position"]:itemValue})}
@@ -197,7 +199,6 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     borderRadius: Border.br_81xl,
     alignItems: 'center',
-    left: 0,
     flexDirection: 'row'
   },
   aplicarBg: {
@@ -334,12 +335,9 @@ const styles = StyleSheet.create({
   campoFrame: {
     top: 23,
     borderColor: Color.gREY2SPORTSMATCH,
-    paddingHorizontal: Padding.p_lg,
-    borderWidth: 1,
+    borderWidth: Platform.OS === 'ios' ? 0 : 1,
     borderStyle: 'solid',
     overflow: 'hidden',
-    width: 361,
-    position: 'absolute',
     height:50
   },
   campo1: {
@@ -354,13 +352,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   campo2: {
-    height: 50,
+    height: 61,
     marginTop: 21,
     width: 361
   },
   camposIniciales: {
-    marginTop: 30,
+    paddingTop: 30,
     alignItems: 'center'
+
   },
   ataque: {
     textAlign: 'left',
@@ -673,6 +672,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: Border.br_21xl,
     // height: 844,
     // overflow: 'hidden',
+
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',

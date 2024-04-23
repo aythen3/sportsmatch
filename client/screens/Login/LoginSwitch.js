@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import * as AppleAuthentication from 'expo-apple-authentication';
+
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -24,18 +26,23 @@ import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from '../../redux/actions/users'
 import * as Facebook from 'expo-auth-session/providers/facebook'
+import axiosInstance from '../../utils/apiBackend';
+import { create, login } from '../../redux/actions/users'
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
+import { setClub } from '../../redux/slices/club.slices'
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
+  
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman } = useSelector((state) => state.users)
@@ -94,13 +101,51 @@ const LoginSwitch = () => {
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
-        dispatch(
-          create({
-            nickname: user.displayName,
-            email: user.email,
-            googleId: user.uid
+        if(user.providerData[0].providerId === 'google.com') {
+          dispatch(
+            create({
+              nickname: user.displayName,
+              email: user.email,
+              googleId: user.uid,
+              type: isSportman === true ? 'sportman' : 'club'
+            })
+          ).then(async (data) => {
+            console.log('data from back:', data);
+            try {
+              const response = await dispatch(login({ googleId: user.uid }));
+              console.log('response:', response.payload);
+              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+              await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+              await AsyncStorage.setItem('userType', response.payload.user.type);
+              dispatch(setClub(response));
+            } catch (error) {
+              console.log('Error:', error);
+            }
           })
-        )
+          return
+        } else {
+          dispatch(
+            create({
+              nickname: user.displayName,
+              email: user.providerData[0].email,
+              facebookId: user.uid,
+              type: isSportman === true ? 'sportman' : 'club'
+            }).then(async (data) => {
+              console.log('data from back:', data);
+              try {
+                const response = await dispatch(login({ facebookId: user.uid }));
+                console.log('response:', response.payload);
+                dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+                await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+                await AsyncStorage.setItem('userType', response.payload.user.type);
+                dispatch(setClub(response));
+              } catch (error) {
+                console.log('Error:', error);
+              }
+            })
+          )
+        }
+        
       } else {
         console.log('user not authenticated')
       }
@@ -108,43 +153,22 @@ const LoginSwitch = () => {
     return () => unsub()
   }, [])
 
-  // =========================================================
-  const [user, setUser] = useState(null)
-  const [req, res, prompt] = Facebook.useAuthRequest({
-    clientId: '955537832791728'
-  })
+  // =========================FACEBOOK================================
 
-  useEffect(() => {
-    if (res && res.type === 'success' && res.authentication) {
-      ;(async () => {
-        const userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?access_token=${res.authentication.accessToken}&fields=id,name,picture.type(large)`
-        )
-        const userInfo = await userInfoResponse.json()
-        console.log('userInfo: ', userInfo)
-        console.log('accessToken: ', res.params.access_token)
-        setUser(userInfo)
-        dispatch(
-          create({
-            nickname: userInfo.name,
-            facebookAccessToken: res.params.access_token
-          })
-        )
-
-        //         {"id": "10229138853848687", "name": "Alejo Sada", "picture": {"data": {"height": 200,
-        // "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10229138853848687&height=200&width=200&ext=1716313330&hash=AbbVkV53n6HBYUSIilnf2iX0", "width": 200}}}
-        console.log(JSON.stringify(res, null, 2))
-      })()
-    }
-  }, [res])
-
-  const handlePressAsync = async () => {
-    const result = await prompt()
-    if (result.type !== 'success') {
-      alert('Uh oh, something went wrong')
-      return
+  const signInWithFacebook = async()=> {
+    try {
+      await LoginManager.logInWithPermissions(['public_profile','email'])
+      const data = await AccessToken.getCurrentAccessToken()
+      if(!data){
+        return
+      }
+      const facebookCredential = FacebookAuthProvider.credential(data.accessToken)
+      await signInWithCredential(auth,facebookCredential)
+    } catch (error) {
+      console.log('error: ',error)
     }
   }
+
 
   if (loading)
     return (
@@ -239,7 +263,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group-236.png')}
                         />
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.loremIpsumGroup}>
+                      {/* <TouchableOpacity style={styles.loremIpsumGroup}>
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Contínua con Apple
@@ -251,9 +275,10 @@ const LoginSwitch = () => {
                           contentFit="cover"
                           source={require('../../assets/group-237.png')}
                         />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
+                   
                       <TouchableOpacity
-                        onPress={handlePressAsync}
+                        onPress={signInWithFacebook}
                         style={styles.loremIpsumGroup}
                       >
                         <View style={styles.loremIpsum2}>
@@ -268,6 +293,35 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
+                      <AppleAuthentication.AppleAuthenticationButton
+                        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                        buttonStyle={{backgroundColor:"black"}}
+                        
+                        cornerRadius={5}
+                        style={{width:"auto",height:44,borderRadius:100,marginTop:10,overflow:"hidden"}}
+                        onPress={async () => {
+                          try {
+                            const credential = await AppleAuthentication.signInAsync({
+                              requestedScopes: [
+
+                                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                                AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                                
+                              ],
+                            });
+                            // LOGICA PARA LOGEARSE VA ACA
+                            console.log(credential,"credddd")
+                            // axiosInstance.post('user',credential)
+                            // signed in
+                          } catch (e) {
+                            if (e.code === 'ERR_REQUEST_CANCELED') {
+                              // handle that the user canceled the sign-in flow
+                            } else {
+                              // handle other errors
+                            }
+                          }
+                        }}
+                      />
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
