@@ -90,4 +90,26 @@ export class AuthJwtService {
       throw new UnauthorizedException('Invalid login');
     }
   }
+
+
+  /**
+   * Inicia sesión firmando un JWT con el ID del usuario y el secreto proporcionado.
+   * @param user - El usuario que iniciará sesión.
+   * @returns Una promesa que resuelve al token de acceso y la información del usuario.
+   */
+  public async loginTerceros(user: UserEntity) {
+    try {
+      if (user.isDelete) return ('El usuario no existe');
+      return {
+        accesToken: this.signJWT({
+          payload: { id: user.id },
+          secret: process.env.JWT_SECRET,
+          expires: '7d'
+        }),
+        user
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid login');
+    }
+  }
 }
