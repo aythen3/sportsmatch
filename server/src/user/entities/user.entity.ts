@@ -12,22 +12,22 @@ export class UserEntity extends BaseEntity {
   nickname: string;
 
   @Column({ unique: true })
-  email: string | null = null;
+  email: string | null 
 
   @Column({ unique: true })
-  googleId: string | null = null;
+  googleId: string | null 
 
   @Column({ unique: true })
-  facebookId: string | null = null;
+  facebookId: string | null
 
   @Column({ unique: true })
-  appleId: string | null = null;
+  appleId: string | null 
 
   @Column({default:""})
   stripeId: string;
 
   @Column()
-  password: string | null = null;
+  password: string | null
 
   @Column({
     type: 'enum',
