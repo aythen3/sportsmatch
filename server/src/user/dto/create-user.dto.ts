@@ -9,14 +9,18 @@ export class CreateUserDto {
   @IsString()
   email: string;
 
+  @IsOptional()
   googleId?: string | null;
+  @IsOptional()
     facebookId?: string | null;
+    @IsOptional()
     appleId?: string | null;
 
  
   @IsString()
   password: string;
 
+  @IsOptional()
   stripeId: any;
 
   @IsNotEmpty()
