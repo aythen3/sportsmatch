@@ -12,16 +12,16 @@ export class UserEntity extends BaseEntity {
   @Column()
   nickname: string;
 
-  @Column()
-  email: string | null 
+  @Column({nullable:true})
+  email: string
 
-  @Column({ unique: true,nullable:true ,default:null} )
+  @Column({nullable:true ,default:null} )
   googleId: string | null 
 
-  @Column({ unique: true ,nullable:true ,default:null})
+  @Column({ nullable:true ,default:null})
   facebookId: string | null
 
-  @Column({ unique: true ,nullable:true ,default:null})
+  @Column({ nullable:true ,default:null})
   appleId: string | null
 
   @Column({default:""})
