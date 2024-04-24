@@ -147,8 +147,9 @@ export class UserService {
       }
 
       // Crear el nuevo perfil del usuario en tu base de datos
+      createUserDto.club = null
+      createUserDto.sportman = null
       const newProfile: UserEntity = await this.userRepository.save(createUserDto);
-
       // Si no se pudo crear el nuevo perfil, lanzar una excepción
       if (!newProfile) {
         throw new ErrorManager({
