@@ -367,8 +367,13 @@ export class UserService {
 
 
 
-  async getByGoogleId(googleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { googleId: googleId }, relations: ['club', 'sportman'] });
+  async getByGoogleId(googleId: string): Promise<UserEntity> {
+
+    const user = await this.userRepository.findOne({
+      where: { googleId: googleId },
+      relations: ['club', 'sportman']
+    });
+    return user
   }
 
   async getByAppleId(appleId: string): Promise<UserEntity | undefined> {

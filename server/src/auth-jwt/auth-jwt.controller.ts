@@ -22,6 +22,7 @@ async login(@Body() body: { email?: string; password?: string; googleId?: string
     // buscar al usuario por esos identificadores únicos
     if (body.googleId) {
       user = await this.userService.getByGoogleId(body.googleId);
+      console.log(user,"usuario de google")
       return  await this.authJwtService.loginTerceros(user)
 
     } else if (body.appleId) {
