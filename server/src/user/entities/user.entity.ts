@@ -8,19 +8,20 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
-  @Column({ unique: true })
+
+  @Column()
   nickname: string;
 
-  @Column({ unique: true })
-  email: string | null 
+  @Column({nullable:true})
+  email: string
 
-  @Column({ unique: true,nullable:true ,default:null} )
+  @Column({nullable:true ,default:null} )
   googleId: string | null 
 
-  @Column({ unique: true ,nullable:true ,default:null})
+  @Column({ nullable:true ,default:null})
   facebookId: string | null
 
-  @Column({ unique: true ,nullable:true ,default:null})
+  @Column({ nullable:true ,default:null})
   appleId: string | null
 
   @Column({default:""})
