@@ -368,15 +368,15 @@ export class UserService {
 
 
   async getByGoogleId(googleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { googleId: googleId } });
+    return this.userRepository.findOne({ where: { googleId: googleId }, relations: ['club', 'sportman'] });
   }
 
   async getByAppleId(appleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { appleId: appleId } });
+    return this.userRepository.findOne({ where: { appleId: appleId } ,  relations: ['club', 'sportman'] });
   }
 
   async getByFacebookId(facebookId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { facebookId: facebookId } });
+    return this.userRepository.findOne({ where: { facebookId: facebookId },   relations: ['club', 'sportman'] });
   }
 
 
