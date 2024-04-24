@@ -18,8 +18,6 @@ const dispatch = useDispatch()
   const [activeIcon, setActiveIcon] = useState(null)
 
   useEffect(() => {
-    console.log('User form nav: ', user)
-    console.log('sportman from nav: ', sportman)
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
