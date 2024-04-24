@@ -143,7 +143,7 @@ export class UserService {
 
       // Si el usuario ya existe, lanzar una excepción
       if (existingUser) {
-     return {user:existingUser,message:"el usuario existe"}
+       return {user:existingUser,message:"el usuario existe"}
       }
 
       // Crear el nuevo perfil del usuario en tu base de datos
