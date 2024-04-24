@@ -9,7 +9,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
 import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
@@ -102,26 +103,30 @@ const LoginSwitch = () => {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
         if(user.providerData[0].providerId === 'google.com') {
-          dispatch(
+          console.log("entra")
+         const res = await dispatch(
             create({
               nickname: user.displayName,
-              email: user.email,
+              email:"",
               googleId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
-            console.log('data from back:', data);
+            console.log('data from bac2222k:', data);
             try {
-              const response = await dispatch(login({ googleId: user.uid }));
+              const response = await dispatch(login({ googleId: user.uid  }));
               console.log('response:', response.payload);
               dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-              await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+              await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
               await AsyncStorage.setItem('userType', response.payload.user.type);
               dispatch(setClub(response));
+              // navigation.navigate('SiguiendoJugadores')
+
             } catch (error) {
               console.log('Error:', error);
             }
           })
+          console.log(res,"aca pasaa")
           return
         } else {
           dispatch(
@@ -136,7 +141,7 @@ const LoginSwitch = () => {
                 const response = await dispatch(login({ facebookId: user.uid }));
                 console.log('response:', response.payload);
                 dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-                await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+                await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
                 await AsyncStorage.setItem('userType', response.payload.user.type);
                 dispatch(setClub(response));
               } catch (error) {
@@ -151,7 +156,7 @@ const LoginSwitch = () => {
       }
     })
     return () => unsub()
-  }, [])
+  }, [response])
 
   // =========================FACEBOOK================================
 
@@ -293,7 +298,8 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
-                      <AppleAuthentication.AppleAuthenticationButton
+                    {Platform.OS === "ios" && (
+                        <AppleAuthentication.AppleAuthenticationButton
                         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                         buttonStyle={{backgroundColor:"black"}}
                         
@@ -322,6 +328,7 @@ const LoginSwitch = () => {
                           }
                         }}
                       />
+                    )}
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
