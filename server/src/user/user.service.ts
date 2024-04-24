@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { hash , compare} from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
@@ -16,14 +16,16 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    
+
     private readonly sendMailService: SendMailService,
-    
-    
-  ) { this.stripe = new Stripe(
-    'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et',
-  )}
-  
+
+
+  ) {
+    this.stripe = new Stripe(
+      'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et',
+    )
+  }
+
   /**
    * Método para crear un nuevo usuario
    * @param {CreateUserDto} createUserDto - Los datos del usuario a crear
@@ -125,49 +127,49 @@ export class UserService {
     }
   }
 
-// Método para crear usuario con Firebase
-public async createUserAuth(createUserDto: CreateUserDto) {
-  try {
-    let existingUser: UserEntity | undefined;
+  // Método para crear usuario con Firebase
+  public async createUserAuth(createUserDto: CreateUserDto) {
+    try {
+      let existingUser: any;
 
-    // Verificar si el usuario ya existe en tu base de datos local
-    if (createUserDto.googleId) {
-      existingUser = await this.userRepository.findOne({ where: { googleId: createUserDto.googleId } });
-    } else if (createUserDto.appleId) {
-      existingUser = await this.userRepository.findOne({ where: { appleId: createUserDto.appleId } });
-    } else if (createUserDto.facebookId) {
-      existingUser = await this.userRepository.findOne({ where: { facebookId: createUserDto.facebookId } });
+      // Verificar si el usuario ya existe en tu base de datos local
+      if (createUserDto.googleId) {
+        existingUser = await this.userRepository.findOne({ where: { googleId: createUserDto.googleId } });
+      } else if (createUserDto.appleId) {
+        existingUser = await this.userRepository.findOne({ where: { appleId: createUserDto.appleId } });
+      } else if (createUserDto.facebookId) {
+        existingUser = await this.userRepository.findOne({ where: { facebookId: createUserDto.facebookId } });
+      }
+
+      // Si el usuario ya existe, lanzar una excepción
+      if (existingUser) {
+     return {user:existingUser,message:"el usuario existe"}
+      }
+
+      // Crear el nuevo perfil del usuario en tu base de datos
+      const newProfile: UserEntity = await this.userRepository.save(createUserDto);
+
+      // Si no se pudo crear el nuevo perfil, lanzar una excepción
+      if (!newProfile) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Failed to create new user profile'
+        });
+      }
+
+      // Enviar notificación de registro por correo electrónico
+      // if (newProfile.email) {
+      //   await this.sendMailService.sendRegistrationNotification(newProfile.email);
+      //   console.log(newProfile, "new profile")
+      // }
+      // Devolver el nuevo perfil del usuario
+      return newProfile;
+    } catch (error) {
+      console.log(error)
+      // Manejar errores
+      throw ErrorManager.createSignatureError(error.message);
     }
-
-    // Si el usuario ya existe, lanzar una excepción
-    if (existingUser) {
-      throw new ErrorManager({
-        type: 'BAD_REQUEST',
-        message: 'User with provided ID already exists'
-      });
-    }
-
-    // Crear el nuevo perfil del usuario en tu base de datos
-    const newProfile: UserEntity = await this.userRepository.save(createUserDto);
-
-    // Si no se pudo crear el nuevo perfil, lanzar una excepción
-    if (!newProfile) {
-      throw new ErrorManager({
-        type: 'BAD_REQUEST',
-        message: 'Failed to create new user profile'
-      });
-    }
-
-    // Enviar notificación de registro por correo electrónico
-    await this.sendMailService.sendRegistrationNotification(newProfile.email);
-
-    // Devolver el nuevo perfil del usuario
-    return newProfile;
-  } catch (error) {
-    // Manejar errores
-    throw ErrorManager.createSignatureError(error.message);
   }
-}
 
 
   public async findChild(id: string, type: string) {
@@ -321,62 +323,62 @@ public async createUserAuth(createUserDto: CreateUserDto) {
 
   async findInfoRelation(userId: number, relations: string[]): Promise<any> {
     try {
-     const validRelations = this.validateRelations(relations);
- 
-     // Verificar si hay al menos una relación válida
-     if (validRelations.length === 0) {
-       throw new Error('No se han proporcionado relaciones válidas.');
-     }
- 
-     // Construir objeto de opciones para la consulta
-     const options: any = { where: { id: userId }, relations: validRelations };
- console.log("options es", options)
-     // Realizar la consulta del post con las relaciones especificadas
-     const user = await this.userRepository.findOne(options);
- 
-     if (!user) {
-       throw new NotFoundException(`No se encontró ningún post con el ID ${userId}.`);
-     }
- 
-     return user;
+      const validRelations = this.validateRelations(relations);
+
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = { where: { id: userId }, relations: validRelations };
+      console.log("options es", options)
+      // Realizar la consulta del post con las relaciones especificadas
+      const user = await this.userRepository.findOne(options);
+
+      if (!user) {
+        throw new NotFoundException(`No se encontró ningún post con el ID ${userId}.`);
+      }
+
+      return user;
     } catch (error) {
-     console.log('este es el error ',error)
+      console.log('este es el error ', error)
     }
-   }
- 
-   private validateRelations(relations: string[]): string[] {
-     const validRelations: string[] = [];
- 
-     // Definir relaciones válidas permitidas en la entidad Match
-     const allowedRelations = ['likes', 'club','sportman', 'posts','comments']; // Agregar más según sea necesario
- 
-     // Filtrar relaciones válidas
-     relations.forEach(relation => {
-       if (allowedRelations.includes(relation)) {
-         validRelations.push(relation);
-       }
-     });
- 
-     return validRelations;
-   }
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['likes', 'club', 'sportman', 'posts', 'comments']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidas
+    relations.forEach(relation => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
 
 
 
 
 
-   async getByGoogleId(googleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({where: {googleId: googleId }});
+  async getByGoogleId(googleId: string): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne({ where: { googleId: googleId } });
   }
 
   async getByAppleId(appleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({where: {appleId: appleId }});
+    return this.userRepository.findOne({ where: { appleId: appleId } });
   }
 
   async getByFacebookId(facebookId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({where: {facebookId: facebookId }});
+    return this.userRepository.findOne({ where: { facebookId: facebookId } });
   }
 
- 
+
 
 
   async findByEmailAndPassword(email: string, password: string): Promise<UserEntity | undefined> {
