@@ -84,7 +84,8 @@ export const deleteUserById = createAsyncThunk(
 export const create = createAsyncThunk('create/user', async (body) => {
   console.log('body from create', body)
   try {
-    const { data } = await axiosInstance.post('user/', body)
+    const { data } = await axiosInstance.post('user', body)
+
     return data
   } catch (error) {
     throw new Error(error)
