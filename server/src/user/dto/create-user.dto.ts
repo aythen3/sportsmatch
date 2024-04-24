@@ -25,6 +25,12 @@ export class CreateUserDto {
   @IsOptional()
   stripeId: any;
 
+  @IsOptional()
+  club: any;
+
+  @IsOptional()
+  sportman: any;
+
   @IsNotEmpty()
   @IsString()
   type: 'sportman' | 'club';
@@ -47,4 +53,6 @@ export class CreateUserDto {
   @IsArray()
   @IsString({ each: true })
   prop4?: string[];
+
+  
 }
