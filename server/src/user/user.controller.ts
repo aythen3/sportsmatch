@@ -29,7 +29,7 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto) {
  try {
   console.log("esto es createUserDto", createUserDto)
-  if (createUserDto.googleId || createUserDto.appleId) {
+  if (createUserDto.googleId || createUserDto.appleId || createUserDto.facebookId) {
     console.log("entra con google")
     return this.userService.createUserAuth(createUserDto);
   } else {
