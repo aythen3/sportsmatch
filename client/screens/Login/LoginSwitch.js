@@ -9,7 +9,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
 import { Switch } from 'react-native-switch'
 import { useNavigation } from '@react-navigation/native'
@@ -38,11 +39,12 @@ import axiosInstance from '../../utils/apiBackend';
 import { create, login } from '../../redux/actions/users'
 // import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
+import axios from 'axios';
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
-  
+
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman } = useSelector((state) => state.users)
@@ -92,6 +94,7 @@ const LoginSwitch = () => {
       const { id_token } = response.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
+      console.log("deberia crear el usuario")
     }
   }, [response])
 
@@ -101,27 +104,30 @@ const LoginSwitch = () => {
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
-        if(user.providerData[0].providerId === 'google.com') {
+        if (user.providerData[0].providerId === 'google.com') {
           dispatch(
             create({
               nickname: user.displayName,
-              email: user.email,
+              email:"",
               googleId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
-            console.log('data from back:', data);
+            console.log('data from bac2222k:', data);
             try {
-              const response = await dispatch(login({ googleId: user.uid }));
+              const response = await dispatch(login({ googleId: user.uid  }));
               console.log('response:', response.payload);
               dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-              await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+              await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
               await AsyncStorage.setItem('userType', response.payload.user.type);
               dispatch(setClub(response));
+              // navigation.navigate('SiguiendoJugadores')
+
             } catch (error) {
               console.log('Error:', error);
             }
           })
+          console.log(res,"aca pasaa")
           return
         } else {
           dispatch(
@@ -136,7 +142,7 @@ const LoginSwitch = () => {
                 const response = await dispatch(login({ facebookId: user.uid }));
                 console.log('response:', response.payload);
                 dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-                await AsyncStorage.setItem('userToken', response?.payload?.accessToken);
+                await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
                 await AsyncStorage.setItem('userType', response.payload.user.type);
                 dispatch(setClub(response));
               } catch (error) {
@@ -145,30 +151,37 @@ const LoginSwitch = () => {
             })
           )
         }
-        
+
       } else {
         console.log('user not authenticated')
       }
     })
     return () => unsub()
-  }, [])
+  }, [response])
 
   // =========================FACEBOOK================================
 
-  const signInWithFacebook = async()=> {
+  const signInWithFacebook = async () => {
     try {
-      await LoginManager.logInWithPermissions(['public_profile','email'])
+      await LoginManager.logInWithPermissions(['public_profile', 'email'])
       const data = await AccessToken.getCurrentAccessToken()
-      if(!data){
+      if (!data) {
         return
       }
       const facebookCredential = FacebookAuthProvider.credential(data.accessToken)
-      await signInWithCredential(auth,facebookCredential)
+      await signInWithCredential(auth, facebookCredential)
     } catch (error) {
-      console.log('error: ',error)
+      console.log('error: ', error)
     }
   }
-
+  const handleIos = async (user) => {
+    try {
+      const res = await axiosInstance.post("user", user)
+      return res.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   if (loading)
     return (
@@ -276,7 +289,7 @@ const LoginSwitch = () => {
                           source={require('../../assets/group-237.png')}
                         />
                       </TouchableOpacity> */}
-                   
+
                       <TouchableOpacity
                         onPress={signInWithFacebook}
                         style={styles.loremIpsumGroup}
@@ -293,12 +306,13 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
-                      <AppleAuthentication.AppleAuthenticationButton
+                    {Platform.OS === "ios" && (
+                        <AppleAuthentication.AppleAuthenticationButton
                         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                        buttonStyle={{backgroundColor:"black"}}
-                        
+                        buttonStyle={{ backgroundColor: "black" }}
+
                         cornerRadius={5}
-                        style={{width:"auto",height:44,borderRadius:100,marginTop:10,overflow:"hidden"}}
+                        style={{ width: "auto", height: 44, borderRadius: 100, marginTop: 10, overflow: "hidden" }}
                         onPress={async () => {
                           try {
                             const credential = await AppleAuthentication.signInAsync({
@@ -306,22 +320,40 @@ const LoginSwitch = () => {
 
                                 AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
                                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                                
+
                               ],
                             });
                             // LOGICA PARA LOGEARSE VA ACA
-                            console.log(credential,"credddd")
-                            // axiosInstance.post('user',credential)
-                            // signed in
+                            const { identityToken, fullName } = credential;
+
+                            // Construcción del objeto a enviar en el post
+                            const postData = {
+                              email: " ",
+                              type: isSportman === true ? 'sportman' : 'club',
+
+                              nickname: fullName.givenName + ' ' + fullName.familyName,
+                              appleId: identityToken, // Se utiliza el identityToken como el valor del appleId
+                            };
+
+                            // Envío del objeto postData al servidor
+                            const response2 = await handleIos(postData)
+                            console.log("console", response2)
+
+                            navigation.navigate('EscogerDeporte1')
+                            // Registro de la respuesta del servidor en la consola
+
                           } catch (e) {
+                            console.log(e, "entra al catch")
                             if (e.code === 'ERR_REQUEST_CANCELED') {
                               // handle that the user canceled the sign-in flow
                             } else {
+                              console.log("llegue al final")
                               // handle other errors
                             }
                           }
                         }}
                       />
+                    )}
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
