@@ -17,10 +17,36 @@ import {
 } from '../../GlobalStyles'
 import { useDispatch } from 'react-redux'
 import { clearUser } from '../../redux/slices/users.slices'
+// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { LoginManager } from 'react-native-fbsdk-next';
+import { auth } from '../../firebaseConfig'
+import { signOut } from 'firebase/auth'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const firebaseLogout = () => {
+    signOut(auth)
+  }
+  // const signOutGoogle = async () => {
+  //   console.log('sign out google')
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //     // Perform any additional clean-up or navigation logic as needed
+  //   } catch (error) {
+  //     console.error('Error signing out from Google: ', error);
+  //   }
+  // };
+  const signOutFacebook = async () => {
+    console.log('sign out fb')
+    try {
+      await LoginManager.logOut();
+      // Perform any additional clean-up or navigation logic as needed
+    } catch (error) {
+      console.error('Error signing out from Facebook: ', error);
+    }
+  };
 
   return (
     <View style={styles.cerrarSesin}>
@@ -68,7 +94,9 @@ quieres `}</Text>
                 style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
                 onPress={() => {
                   navigation.navigate('LoginSwitch')
+                 firebaseLogout()
                   dispatch(clearUser())
+                  
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

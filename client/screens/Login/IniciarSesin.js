@@ -60,6 +60,7 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    console.log('user from normal login useEffect: ', user.user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
