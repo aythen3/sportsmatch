@@ -63,19 +63,22 @@ const Grilla = ({ group, img1, img2, img3 }) => {
         flexDirection: "row", 
         alignItems: "center", gap: 7
       }} >
-        <TouchableOpacity style={{ height: "100%", borderRadius: Border.br_10xs, overflow: "hidden" }} >
-          <Image
-            style={{ width: itemSize2 - 100, height: "100%", objectFit: "contain" }}
-            contentFit="cover"
-            source={{ uri: group[4].image[0] }}
-          />
-        </TouchableOpacity>
+      {  group[3]?.image[0] && (
+         <TouchableOpacity style={{ height: "100%", borderRadius: Border.br_10xs, overflow: "hidden" }} >
+         <Image
+           style={{ width: itemSize2 - 100, height: "100%", objectFit: "contain" }}
+           contentFit="cover"
+           source={{ uri: group[3]?.image[0] ? group[3].image[0] : "" }}
+         />
+       </TouchableOpacity>
+      )}
+       
         <View style={{ flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
           <TouchableOpacity >
             <Image
               style={styles.iconLayout}
               contentFit="cover"
-              source={{ uri: group[4].image[0] }}
+              source={{ uri: group[4]?.image[0] }}
             />
           </TouchableOpacity>
           <TouchableOpacity >
@@ -235,7 +238,7 @@ const ExplorarClubs = () => {
   ];
 
   // Combinamos los objetos originales y adicionales
-  const allPosts2 = [...allPosts];
+  const allPosts2 = [...allPosts,...additionalPosts];
 
   // Ahora dividimos el array en grupos de 6
   const groupedPosts = [];
@@ -344,10 +347,14 @@ const ExplorarClubs = () => {
           )} */}
           {!textValue && groupedPosts?.length > 0 && (
             groupedPosts.map((group,
-              index) => (
-              <Grilla group={group}></Grilla>
-            ))
-          )}
+              index) => {
+                if(group.length === 6){
+                  return(
+                    <Grilla group={group}></Grilla>
+                  )
+                }
+              })
+          )}  
         </View>
       </ScrollView>
       <Modal visible={modalFilters} transparent={true} animationType="slide">

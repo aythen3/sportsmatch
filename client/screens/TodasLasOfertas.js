@@ -279,7 +279,6 @@ const TodasLasOfertas = () => {
                             })
                           ).then((data) => dispatch(getAllOffers()))
 
-                          navigation.goBack()
                         }
                       }}
                       style={{

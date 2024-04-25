@@ -22,15 +22,19 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
    console.log("entra")
     const res = await axiosInstance.post('/user/create-subscription',{
       priceId:"price_1P4cNLGmE60O5ob7O3hTmP9d",
-     
       customerId:user.user.stripeId
     })
+
     if(res.data){
+
       setPlanSelected("pro")
       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+
     }
+
     console.log(user.user.stripeId,"user")
+    
   }
 
   return (
