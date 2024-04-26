@@ -69,3 +69,11 @@ export const updateListLikes = createAsyncThunk(
     }
   }
 )
+export const filterPost = (posts) => {
+  try {
+    return posts
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+

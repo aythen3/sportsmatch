@@ -31,9 +31,9 @@ import { sendNotification } from '../redux/actions/notifications'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
-  const [selectedUserDetails, setSelectedUserDetails]=useState()
+  const [selectedUserDetails, setSelectedUserDetails] = useState()
   const [showOptionsModal, setShowOptionsModal] = useState(false)
-  const [showDeletePopUp, setShowDeletePopUp]= useState(false)
+  const [showDeletePopUp, setShowDeletePopUp] = useState(false)
   const isFocused = useIsFocused()
   const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
@@ -49,16 +49,16 @@ const ChatAbierto1 = () => {
     setMessage()
   }
 
- useEffect(()=>{
-  setSelectedUserDetails(
-    allUsers.filter(
+  useEffect(() => {
+    setSelectedUserDetails(
+      allUsers.filter(
+        (user) => user.id === route.params.receiverId
+      )[0]
+    )
+    console.log('userData', allUsers.filter(
       (user) => user.id === route.params.receiverId
-    )[0]
-  )
-  console.log('userData', allUsers.filter(
-    (user) => user.id === route.params.receiverId
-  )[0])
- },[])
+    )[0])
+  }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
     dispatch(
@@ -99,16 +99,16 @@ const ChatAbierto1 = () => {
     console.log('actual followers: ', actualFollowers)
     const newFollowers = actualFollowers.includes(user?.user?.id)
       ? actualFollowers.filter(
-          (follower) => follower !== user?.user?.id
-        )
+        (follower) => follower !== user?.user?.id
+      )
       : [...actualFollowers, user?.user?.id]
 
     const newFollowingArray = userFollowing?.includes(
       selectedUserDetails.id
     )
       ? userFollowing.filter(
-          (followed) => followed !== selectedUserDetails.id
-        )
+        (followed) => followed !== selectedUserDetails.id
+      )
       : [...userFollowing, selectedUserDetails.id]
     actualUser.user.following = newFollowingArray
     console.log('user: ', actualUser?.user?.following)
@@ -162,50 +162,50 @@ const ChatAbierto1 = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      {showOptionsModal && <Modal visible={showOptionsModal}  transparent={true}>
-        <TouchableWithoutFeedback onPress={()=>setShowOptionsModal(false)}>
-<View style={{flex:1, marginTop:45,paddingRight:15, alignItems:'flex-end'}}>
-  <View style={{backgroundColor:'#252525', borderRadius: 8, width:170}}>
-   {selectedUserDetails.type !== 'club' && <TouchableOpacity  onPress={handleFollow}
-               style={{height:35,width:'100%',borderBottomWidth:1,borderBottomColor:'#505050',justifyContent:'center',alignItems:'center'}}>
-      <Text style={{color:'#fff',fontSize:14}}>{userFollowing?.includes(selectedUserDetails.id)
+      {showOptionsModal && <Modal visible={showOptionsModal} transparent={true}>
+        <TouchableWithoutFeedback onPress={() => setShowOptionsModal(false)}>
+          <View style={{ flex: 1, marginTop: 45, paddingRight: 15, alignItems: 'flex-end' }}>
+            <View style={{ backgroundColor: '#252525', borderRadius: 8, width: 170 }}>
+              {selectedUserDetails.type !== 'club' && <TouchableOpacity onPress={handleFollow}
+                style={{ height: 35, width: '100%', borderBottomWidth: 1, borderBottomColor: '#505050', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: '#fff', fontSize: 14 }}>{userFollowing?.includes(selectedUserDetails.id)
                   ? 'Dejar de seguir'
                   : 'Seguir'}</Text>
-    </TouchableOpacity>}
-    <TouchableOpacity onPress={() => {
-      setShowOptionsModal(false)
-          if (selectedUserDetails?.type === 'club') {
-            navigation.navigate('ClubProfile', {author:selectedUserDetails})
-          } else {
-            navigation.navigate('PerfilFeedVisualitzaciJug', {author:selectedUserDetails})
-          }
-        }} style={{height:35,width:'100%',borderBottomWidth:1,borderBottomColor:'#505050',justifyContent:'center',alignItems:'center'}}>
-      <Text style={{color:'#fff',fontSize:14}}>Ver perfil</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={()=>{
-      setShowOptionsModal(false)
-      setShowDeletePopUp(true)
-    }} style={{height:35,width:'100%',justifyContent:'center',alignItems:'center'}}>
-      <Text style={{color:'#fff',fontSize:14}}>Eliminar conversación</Text>
-    </TouchableOpacity>
-  </View>
-</View>
+              </TouchableOpacity>}
+              <TouchableOpacity onPress={() => {
+                setShowOptionsModal(false)
+                if (selectedUserDetails?.type === 'club') {
+                  navigation.navigate('ClubProfile', { author: selectedUserDetails })
+                } else {
+                  navigation.navigate('PerfilFeedVisualitzaciJug', { author: selectedUserDetails })
+                }
+              }} style={{ height: 35, width: '100%', borderBottomWidth: 1, borderBottomColor: '#505050', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: '#fff', fontSize: 14 }}>Ver perfil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                setShowOptionsModal(false)
+                setShowDeletePopUp(true)
+              }} style={{ height: 35, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: '#fff', fontSize: 14 }}>Eliminar conversación</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </TouchableWithoutFeedback>
-        </Modal>}
+      </Modal>}
 
-        {showDeletePopUp && <Modal visible={showDeletePopUp}  transparent={true}>
-        <TouchableWithoutFeedback onPress={()=>setShowDeletePopUp(false)}>
-<View style={{flex:1, alignItems:'center', justifyContent:'center', marginBottom:100}}>
- <View style={{backgroundColor:'#252525', borderRadius: 8, width:'55%', paddingVertical:20,gap:25,justifyContent:'space-around', alignItems:'center'}}>
-  <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}><Text style={{color:'#fff',fontSize:20,fontWeight:400}}>Está seguro?</Text></View>
-  <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%'}}>
-    <TouchableOpacity onPress={()=>setShowDeletePopUp(false)} style={{borderRadius:5,height:33,width:'35%',justifyContent:'center',alignItems:'center',backgroundColor:'#E1451E'}}><Text style={{color:'#fff',fontSize:15,fontWeight:400}}>Cancelar</Text></TouchableOpacity>
-    <TouchableOpacity onPress={handleRemoveChat} style={{borderRadius:5,height:33,width:'35%',justifyContent:'center',alignItems:'center',backgroundColor:'#E1451E'}}><Text style={{color:'#fff',fontSize:15,fontWeight:400}}>Aceptar</Text></TouchableOpacity>
-  </View>
- </View>
-</View>
+      {showDeletePopUp && <Modal visible={showDeletePopUp} transparent={true}>
+        <TouchableWithoutFeedback onPress={() => setShowDeletePopUp(false)}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 100 }}>
+            <View style={{ backgroundColor: '#252525', borderRadius: 8, width: '55%', paddingVertical: 20, gap: 25, justifyContent: 'space-around', alignItems: 'center' }}>
+              <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 400 }}>Está seguro?</Text></View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
+                <TouchableOpacity onPress={() => setShowDeletePopUp(false)} style={{ borderRadius: 5, height: 33, width: '35%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E1451E' }}><Text style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}>Cancelar</Text></TouchableOpacity>
+                <TouchableOpacity onPress={handleRemoveChat} style={{ borderRadius: 5, height: 33, width: '35%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E1451E' }}><Text style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}>Aceptar</Text></TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </TouchableWithoutFeedback>
-        </Modal>}
+      </Modal>}
       <View
         style={{
           flexDirection: 'row',
@@ -225,12 +225,12 @@ const ChatAbierto1 = () => {
           </Pressable>
 
           <TouchableOpacity onPress={() => {
-          if (selectedUserDetails?.type === 'club') {
-            navigation.navigate('ClubProfile', {author:selectedUserDetails})
-          } else {
-            navigation.navigate('PerfilFeedVisualitzaciJug', {author:selectedUserDetails})
-          }
-        }} style={{flexDirection:'row',alignItems:'center'}}>
+            if (selectedUserDetails?.type === 'club') {
+              navigation.navigate('ClubProfile', { author: selectedUserDetails })
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', { author: selectedUserDetails })
+            }
+          }} style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
               style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
               contentFit="cover"
@@ -242,7 +242,7 @@ const ChatAbierto1 = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={()=>setShowOptionsModal(true)}>
+        <TouchableOpacity onPress={() => setShowOptionsModal(true)}>
           <ThreePointsSVG />
         </TouchableOpacity>
       </View>
@@ -282,6 +282,7 @@ const ChatAbierto1 = () => {
           style={{
             flex: 1,
             paddingLeft: 15,
+            paddingRight:50,
             fontSize: 16,
             color: '#fff'
           }}

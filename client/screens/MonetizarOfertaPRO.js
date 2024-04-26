@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, Border, FontSize, Padding } from '../GlobalStyles'
 
-const MonetizarOfertaPRO = ({ onClose }) => {
+const MonetizarOfertaPRO = ({ onClose , handle }) => {
   const navigation = useNavigation()
 
   return (
@@ -63,7 +63,9 @@ const MonetizarOfertaPRO = ({ onClose }) => {
           deportívas de forma ilimitada!
         </Text>
 
+        <TouchableOpacity onPress={()=> handle() }> 
         <LinearGradient
+          
           style={styles.loremIpsum1}
           locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
           colors={[
@@ -75,8 +77,9 @@ const MonetizarOfertaPRO = ({ onClose }) => {
             '#ebc02a'
           ]}
         >
-          <Text style={[styles.pro, styles.proTypo]}>Continuar</Text>
+        <Text style={[styles.pro, styles.proTypo]}>Continuar</Text>
         </LinearGradient>
+        </TouchableOpacity>
         <Pressable style={[styles.pressableFlexBox]} onPress={onClose}>
           <Text style={[styles.aceptar4, styles.aceptarTypo]}>No, gracias</Text>
         </Pressable>

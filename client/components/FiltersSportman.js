@@ -2,8 +2,18 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Color, FontFamily } from '../GlobalStyles'
 import { Image } from 'expo-image'
+import { useDispatch } from 'react-redux'
+import { filterPost } from '../redux/actions/post'
+import { setFilterPost } from '../redux/slices/post.slices'
 
-const FiltersSportman = ({ onClose }) => {
+const FiltersSportman = ({ onClose ,allPosts}) => {
+  const copy = [...allPosts]
+  const change = copy.sort((a, b) => b.likes - a.likes);
+ 
+  const change2 = copy.sort((a, b) => b.commentCount - a.commentCount);
+
+
+ const dispatch = useDispatch()
   return (
     <View
       style={{
@@ -45,7 +55,7 @@ const FiltersSportman = ({ onClose }) => {
             color: Color.colorWhitesmoke,
             fontFamily: FontFamily.openSansSemiBold
           }}
-          onPress={() => onClose()}
+          onPress={() => dispatch(setFilterPost(change))}
         >
           Por proximidad
         </Text>
@@ -77,7 +87,7 @@ const FiltersSportman = ({ onClose }) => {
             color: Color.colorWhitesmoke,
             fontFamily: FontFamily.openSansSemiBold
           }}
-          onPress={() => onClose()}
+          onPress={() => dispatch(setFilterPost(change2))}
         >
           Por relevancia
         </Text>

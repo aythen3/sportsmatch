@@ -11,11 +11,13 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
     dispatch(getSportById(sport.id))
   }
 
+
+
   return (
     <View style={styles.frameParent}>
       <TouchableOpacity onPress={handlePress}>
         <View>
-          {sport?.name === 'Futbol' && (
+          {sport?.name === 'Fútbol' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
@@ -26,7 +28,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          {sport?.name === 'Basquetbol' && (
+          {sport?.name === 'Básquetbol' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
@@ -37,7 +39,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          {sport?.name === 'Futbol de Salon' && (
+          {sport?.name === 'Fútbol de Salon' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"

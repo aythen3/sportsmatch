@@ -23,6 +23,9 @@ import { Context } from '../context/Context'
 import { updateUser } from '../redux/slices/users.slices'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
 import { FontAwesome } from '@expo/vector-icons'
+import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native';
+import axiosInstance from '../utils/apiBackend'
+
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -35,6 +38,9 @@ const TodasLasOfertas = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
+  const [clientSecret, setClientSecret] = useState("")
+  const [planSelected, setPlanSelected] = useState("")
+
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -42,7 +48,7 @@ const TodasLasOfertas = () => {
   console.log('userMatches: ', userMatches)
 
   useEffect(() => {
-     console.log('selectOfferComponent: ', selectOfferComponent)
+    console.log('selectOfferComponent: ', selectOfferComponent)
   }, [selectOfferComponent])
 
   // console.log('user: ', user)
@@ -52,7 +58,68 @@ const TodasLasOfertas = () => {
     setModalFilterSportman(true)
   }
 
- const actualFavoriteOffers = user?.user?.prop1 && user?.user?.prop1?.favoriteOffers ? user?.user?.prop1?.favoriteOffers : []
+
+
+  const handleGetGold = async () => {
+    console.log("entra")
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: "price_1P4cNLGmE60O5ob7O3hTmP9d",
+      customerId: user.user.stripeId
+    })
+
+    if (res.data) {
+
+      setPlanSelected("pro")
+      setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
+      // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+
+    }
+
+    console.log(user.user.stripeId, "user")
+
+  }
+
+  const actualFavoriteOffers = user?.user?.prop1 && user?.user?.prop1?.favoriteOffers ? user?.user?.prop1?.favoriteOffers : []
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe(null);
+
+  React.useEffect( () => {
+    const initializePaymentSheet = async () => {
+      console.log(user,"userrrr")
+      const { error } = await initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName:"azul",
+        returnURL: 'stripe-example://payment-sheet',
+        // Set `allowsDelayedPaymentMethods` to true if your business handles
+        // delayed notification payment methods like US bank accounts.
+      });
+      if (error) {
+        // Handle error
+        console.log(error,"error")
+      }
+      else {
+      const {error} = await presentPaymentSheet()
+      if(error){
+        console.log(error,"error")
+      } else {
+      const updUser = await axiosInstance.patch(`user/${user.user.id}`,{
+        plan:planSelected
+      })
+      console.log(updUser, "upd")
+      }
+
+      }
+    };
+
+    if (
+      clientSecret
+    ) {
+      console.log("entra a la hoja")
+      initializePaymentSheet()
+    }
+  }, [clientSecret, initPaymentSheet]);
+
+
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -142,15 +209,15 @@ const TodasLasOfertas = () => {
       </View>
 
       {selectOfferComponent === 'todas' && offers &&
-      offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        return true
-      }).length > 0 ? (
+        offers.filter((offer) => {
+          const filteredUserMatches = userMatches.filter(
+            (match) => match.offerId && match.offerId !== offer.id
+          )
+          if (filteredUserMatches.length > 0) {
+            return false
+          }
+          return true
+        }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {offers
             .filter((offer) => {
@@ -175,33 +242,33 @@ const TodasLasOfertas = () => {
                   opacity: 0.7
                 }}
               >
-                <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
-                let actualUser = _.cloneDeep(user)
-                console.log('atualUser: ', actualUser)
-                const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
-                      (favorite) => favorite !== offer.id
-                    )
-                  : [...actualFavoriteOffers, offer.id]
-                  console.log('newFavoriteOffersArray: ',newFavoriteOffersArray)
+                <TouchableOpacity style={{ position: 'absolute', right: 20, top: 10, zIndex: 3000 }} onPress={() => {
+                  let actualUser = _.cloneDeep(user)
+                  console.log('atualUser: ', actualUser)
+                  const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
+                    (favorite) => favorite !== offer.id
+                  )
+                    : [...actualFavoriteOffers, offer.id]
+                  console.log('newFavoriteOffersArray: ', newFavoriteOffersArray)
                   if (!actualUser.user.prop1) {
                     actualUser.user.prop1 = {};
-                }
-                actualUser.user.prop1.favoriteOffers = newFavoriteOffersArray
-                console.log('userFavs: ', actualUser?.user?.prop1?.favoriteOffers)
+                  }
+                  actualUser.user.prop1.favoriteOffers = newFavoriteOffersArray
+                  console.log('userFavs: ', actualUser?.user?.prop1?.favoriteOffers)
 
-                console.log('setting user favorites to:', newFavoriteOffersArray)
-                dispatch(
-                  updateUserData({
-                    id: user.user.id,
-                    body: { prop1: {...user.user.prop1,favoriteOffers: newFavoriteOffersArray} }
-                  })
-                ).then((data)=>{
-                  dispatch(getAllUsers())
+                  console.log('setting user favorites to:', newFavoriteOffersArray)
+                  dispatch(
+                    updateUserData({
+                      id: user.user.id,
+                      body: { prop1: { ...user.user.prop1, favoriteOffers: newFavoriteOffersArray } }
+                    })
+                  ).then((data) => {
+                    dispatch(getAllUsers())
                     dispatch(updateUser(actualUser))
-                })
-              }}
-             >
-              <FontAwesome name={actualFavoriteOffers.includes(offer.id)?'heart':'heart-o'} color='#E1451E' size={30}/>
+                  })
+                }}
+                >
+                  <FontAwesome name={actualFavoriteOffers.includes(offer.id) ? 'heart' : 'heart-o'} color='#E1451E' size={30} />
 
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -333,98 +400,98 @@ const TodasLasOfertas = () => {
         </View>
       )}
 
-      
+
 
       {selectOfferComponent === 'todas' && offers.filter((offer) => {
         const filteredUserMatches = userMatches.filter(
-          (match) =>match.offerId && match.offerId !== offer.id
+          (match) => match.offerId && match.offerId !== offer.id
         )
         if (filteredUserMatches.length > 0) {
           return false
         }
         return true
       }).length > 2 && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: Color.wHITESPORTSMATCH,
-            marginTop: 0,
-            width: '95%',
-            justifyContent: 'center',
-            paddingHorizontal: Padding.p_81xl,
-            paddingVertical: Padding.p_3xs,
-            alignSelf: 'center',
-            zIndex: 3,
-            marginBottom: 10,
-            backgroundColor: Color.wHITESPORTSMATCH,
-            borderRadius: Border.br_81xl,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}
-          onPress={() => setShowPremiumModal(true)}
-        >
-          <Text
+          <TouchableOpacity
             style={{
-              fontSize: FontSize.button_size,
-              color: Color.bLACK1SPORTSMATCH,
-              textAlign: 'center',
-              fontFamily: FontFamily.t4TEXTMICRO,
-              fontWeight: '700'
+              backgroundColor: Color.wHITESPORTSMATCH,
+              marginTop: 0,
+              width: '95%',
+              justifyContent: 'center',
+              paddingHorizontal: Padding.p_81xl,
+              paddingVertical: Padding.p_3xs,
+              alignSelf: 'center',
+              zIndex: 3,
+              marginBottom: 10,
+              backgroundColor: Color.wHITESPORTSMATCH,
+              borderRadius: Border.br_81xl,
+              flexDirection: 'row',
+              alignItems: 'center'
             }}
+            onPress={() => setShowPremiumModal(true)}
           >
-            Ver mas ofertas
-          </Text>
-        </TouchableOpacity>
-      )}
-{ /* ============================ FAVORITE OFFERS ============================ */ }
-{selectOfferComponent !== 'todas' && offers &&
-      offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
+            <Text
+              style={{
+                fontSize: FontSize.button_size,
+                color: Color.bLACK1SPORTSMATCH,
+                textAlign: 'center',
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: '700'
+              }}
+            >
+              Ver mas ofertas
+            </Text>
+          </TouchableOpacity>
+        )}
+      { /* ============================ FAVORITE OFFERS ============================ */}
+      {selectOfferComponent !== 'todas' && offers &&
+        offers.filter((offer) => {
+          const filteredUserMatches = userMatches.filter(
+            (match) => match.offerId && match.offerId !== offer.id
+          )
+          if (filteredUserMatches.length > 0) {
+            return false
+          }
+          if (actualFavoriteOffers.includes(offer.id)) {
+            return true
+          }
           return false
-        }
-        if(actualFavoriteOffers.includes(offer.id)){
-          return true
-        }
-        return false
-        
-      }).length > 0 ? (
+
+        }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
-          { offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        if(actualFavoriteOffers.includes(offer.id)){
-          return true
-        }
-        return false
-        
-      }).map((offer, index) => (
-              <View
-                key={index}
-                style={{
-                  marginTop: 20,
-                  padding: 10,
-                  flex: 1,
-                  backgroundColor: Color.bLACK2SPORTMATCH,
-                  alignItems: 'center',
-                  opacity: 0.7
-                }}
-              >
-                <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
+          {offers.filter((offer) => {
+            const filteredUserMatches = userMatches.filter(
+              (match) => match.offerId && match.offerId !== offer.id
+            )
+            if (filteredUserMatches.length > 0) {
+              return false
+            }
+            if (actualFavoriteOffers.includes(offer.id)) {
+              return true
+            }
+            return false
+
+          }).map((offer, index) => (
+            <View
+              key={index}
+              style={{
+                marginTop: 20,
+                padding: 10,
+                flex: 1,
+                backgroundColor: Color.bLACK2SPORTMATCH,
+                alignItems: 'center',
+                opacity: 0.7
+              }}
+            >
+              <TouchableOpacity style={{ position: 'absolute', right: 20, top: 10, zIndex: 3000 }} onPress={() => {
                 let actualUser = _.cloneDeep(user)
                 console.log('atualUser: ', actualUser)
                 const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
-                      (favorite) => favorite !== offer.id
-                    )
+                  (favorite) => favorite !== offer.id
+                )
                   : [...actualFavoriteOffers, offer.id]
-                  console.log('newFavoriteOffersArray: ',newFavoriteOffersArray)
-                  if (!actualUser.user.prop1) {
-                    actualUser.user.prop1 = {};
+                console.log('newFavoriteOffersArray: ', newFavoriteOffersArray)
+                if (!actualUser.user.prop1) {
+                  actualUser.user.prop1 = {};
                 }
                 actualUser.user.prop1.favoriteOffers = newFavoriteOffersArray
                 console.log('userFavs: ', actualUser?.user?.prop1?.favoriteOffers)
@@ -433,127 +500,127 @@ const TodasLasOfertas = () => {
                 dispatch(
                   updateUserData({
                     id: user.user.id,
-                    body: { prop1: {...user.user.prop1,favoriteOffers: newFavoriteOffersArray} }
+                    body: { prop1: { ...user.user.prop1, favoriteOffers: newFavoriteOffersArray } }
                   })
-                ).then((data)=>{
+                ).then((data) => {
                   dispatch(getAllUsers())
-                    dispatch(updateUser(actualUser))
+                  dispatch(updateUser(actualUser))
                 })
               }}
-             >
-              <FontAwesome name={actualFavoriteOffers.includes(offer.id)?'heart':'heart-o'} color='#E1451E' size={30}/>
+              >
+                <FontAwesome name={actualFavoriteOffers.includes(offer.id) ? 'heart' : 'heart-o'} color='#E1451E' size={30} />
 
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Sexo"
-                    value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                  />
-                  <CardInfoOffers text="Categoría" value={offer.category} />
-                </View>
+              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                <CardInfoOffers
+                  text="Sexo"
+                  value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                />
+                <CardInfoOffers text="Categoría" value={offer.category} />
+              </View>
 
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Posicion"
-                    value={`${offer.urgency}/10`}
-                  />
-                  <CardInfoOffers text="Ubicacion" value="Random" />
-                </View>
+              <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                <CardInfoOffers
+                  text="Posicion"
+                  value={`${offer.urgency}/10`}
+                />
+                <CardInfoOffers text="Ubicacion" value="Random" />
+              </View>
 
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers text="Urgencia" value={offer.urgency} />
-                  <CardInfoOffers
-                    text="Retribucion"
-                    value={offer.retribution ? 'Si' : 'No'}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 30,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex: 10,
-                    borderWidth: 2,
-                    borderColor: Color.bLACK3SPORTSMATCH,
-                    height: 90
-                  }}
-                >
-                  <Pressable
-                    style={{
-                      width: '70%',
-                      paddingHorizontal: Padding.p_mini,
-                      paddingVertical: Padding.p_8xs,
-                      justifyContent: 'center',
-                      borderRadius: Border.br_81xl,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      zIndex: 5,
-                      backgroundColor: !offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                        ? Color.wHITESPORTSMATCH
-                        : '#e1451e',
-                      height: 45
-                    }}
-                  >
-                    <Text
-                      // onPress={() => setModalVisible(true)}
-                      disabled={offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )}
-                      onPress={() => {
-                        if (
-                          !offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                        ) {
-                          console.log('offer', offer)
-                          console.log('sp id: ', user?.user?.sportman?.id)
-                          dispatch(
-                            signToOffer({
-                              offerId: offer?.id,
-                              userId: user?.user?.sportman?.id
-                            })
-                          ).then((data) => dispatch(getAllOffers()))
-
-                          navigation.goBack()
-                        }
-                      }}
-                      style={{
-                        color: offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
-                        )
-                          ? '#fff'
-                          : Color.bLACK1SPORTSMATCH,
-                        textAlign: 'center',
-                        fontWeight: '700',
-                        lineHeight: 17,
-                        fontFamily: FontFamily.t4TEXTMICRO,
-                        fontSize: 17
-                      }}
-                    >
-                      {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                        ? 'Inscripto!'
-                        : 'Inscríbete en la oferta'}
-                    </Text>
-                  </Pressable>
-                </View>
-                <Image
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 1,
-                    borderRadius: 8,
-                    overflow: 'hidden'
-                  }}
-                  source={require('../assets/group-4891.png')}
+              <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                <CardInfoOffers text="Urgencia" value={offer.urgency} />
+                <CardInfoOffers
+                  text="Retribucion"
+                  value={offer.retribution ? 'Si' : 'No'}
                 />
               </View>
-            ))}
+
+              <View
+                style={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 30,
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  zIndex: 10,
+                  borderWidth: 2,
+                  borderColor: Color.bLACK3SPORTSMATCH,
+                  height: 90
+                }}
+              >
+                <Pressable
+                  style={{
+                    width: '70%',
+                    paddingHorizontal: Padding.p_mini,
+                    paddingVertical: Padding.p_8xs,
+                    justifyContent: 'center',
+                    borderRadius: Border.br_81xl,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    zIndex: 5,
+                    backgroundColor: !offer?.inscriptions?.includes(
+                      user?.user?.sportman?.id
+                    )
+                      ? Color.wHITESPORTSMATCH
+                      : '#e1451e',
+                    height: 45
+                  }}
+                >
+                  <Text
+                    // onPress={() => setModalVisible(true)}
+                    disabled={offer?.inscriptions?.includes(
+                      user?.user?.sportman?.id
+                    )}
+                    onPress={() => {
+                      if (
+                        !offer?.inscriptions?.includes(
+                          user?.user?.sportman?.id
+                        )
+                      ) {
+                        console.log('offer', offer)
+                        console.log('sp id: ', user?.user?.sportman?.id)
+                        dispatch(
+                          signToOffer({
+                            offerId: offer?.id,
+                            userId: user?.user?.sportman?.id
+                          })
+                        ).then((data) => dispatch(getAllOffers()))
+
+                        navigation.goBack()
+                      }
+                    }}
+                    style={{
+                      color: offer?.inscriptions?.includes(
+                        user?.user?.sportman?.id
+                      )
+                        ? '#fff'
+                        : Color.bLACK1SPORTSMATCH,
+                      textAlign: 'center',
+                      fontWeight: '700',
+                      lineHeight: 17,
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontSize: 17
+                    }}
+                  >
+                    {offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                      ? 'Inscripto!'
+                      : 'Inscríbete en la oferta'}
+                  </Text>
+                </Pressable>
+              </View>
+              <Image
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 1,
+                  borderRadius: 8,
+                  overflow: 'hidden'
+                }}
+                source={require('../assets/group-4891.png')}
+              />
+            </View>
+          ))}
         </ScrollView>
       ) : selectOfferComponent !== 'todas' && (
         <View
@@ -607,7 +674,7 @@ const TodasLasOfertas = () => {
               paddingHorizontal: 15
             }}
           >
-            <MonetizarOfertaPRO onClose={() => setShowPremiumModal(false)} />
+            <MonetizarOfertaPRO handle={handleGetGold} onClose={() => setShowPremiumModal(false)} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
