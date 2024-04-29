@@ -12,6 +12,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@expo/webpack-config": "~19.0.1",
     "@react-native-async-storage/async-storage": "1.21.0",
+    "@react-native-google-signin/google-signin": "^11.0.1",
     "@react-native-picker/picker": "^2.7.5",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/core": "^6.2.1",
@@ -27,6 +28,7 @@
     "@stripe/stripe-react-native": "^0.37.2",
     "axios": "^1.6.7",
     "expo": "~50.0.14",
+    "expo-apple-authentication": "~6.3.0",
     "expo-application": "~5.8.4",
     "expo-auth-session": "~5.4.0",
     "expo-blur": "~12.9.2",
@@ -61,8 +63,7 @@
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
     "react-redux": "^9.1.0",
-    "socket.io-client": "^4.7.5",
-    "expo-apple-authentication": "~6.3.0"
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

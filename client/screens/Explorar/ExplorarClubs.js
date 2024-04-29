@@ -397,11 +397,15 @@ const ExplorarClubs = () => {
       <Modal
         visible={modalFilterSportman}
         transparent={true}
-        animationType="slide"
       >
-        <View style={styles.modal}>
-          <FiltersSportman onClose={() => setModalFilterSportman(false)} />
-        </View>
+        <TouchableWithoutFeedback onPress={() => setModalFilterSportman(false)}>
+
+         <View style={{flex:1}}>
+           <View style={styles.modal}>
+             <FiltersSportman onClose={() => setModalFilterSportman(false)} />
+           </View>
+         </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   )
