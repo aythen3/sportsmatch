@@ -37,7 +37,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend';
 import { create, login } from '../../redux/actions/users'
-// import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios';
 
@@ -47,7 +47,7 @@ const LoginSwitch = () => {
 
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman } = useSelector((state) => state.users)
+  const { isSportman, user } = useSelector((state) => state.users)
 
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
@@ -99,12 +99,30 @@ const LoginSwitch = () => {
   }, [response])
 
   useEffect(() => {
+    if (user?.user?.club || user?.user?.sportman) {
+      navigation.navigate('SiguiendoJugadores')
+    } else {
+      if (user?.user?.type === 'club') {
+        if (user?.accesToken) {
+          navigation.navigate('stepsClub')
+        }
+      } else {
+        if (user?.accesToken) {
+          console.log('jugador')
+          navigation.navigate('stepsJugador')
+        }
+      }
+    }
+  }, [user])
+
+  useEffect(() => {
     getLocalUser()
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
         if (user.providerData[0].providerId === 'google.com') {
+          console.log('=====LOGIN WITH GOOGLE=====')
           dispatch(
             create({
               nickname: user.displayName,
@@ -113,46 +131,44 @@ const LoginSwitch = () => {
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
-            console.log('data from bac2222k:', data);
+            // console.log('data from back:', data);
             try {
               const response = await dispatch(login({ googleId: user.uid  }));
-              console.log('response:', response.payload);
+              console.log('response google:', response.payload);
               dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
               await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
               await AsyncStorage.setItem('userType', response.payload.user.type);
               dispatch(setClub(response));
-              // navigation.navigate('SiguiendoJugadores')
 
             } catch (error) {
               console.log('Error:', error);
             }
           })
-          console.log(res,"aca pasaa")
           return
         } else {
+          console.log('=====LOGIN WITH FACEBOOK=====')
           dispatch(
             create({
               nickname: user.displayName,
-              email: user.providerData[0].email,
+              email: '',
               facebookId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
-            }).then(async (data) => {
-              console.log('data from back:', data);
-              try {
-                const response = await dispatch(login({ facebookId: user.uid }));
-                console.log('response:', response.payload);
-                dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-                await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
-                await AsyncStorage.setItem('userType', response.payload.user.type);
-                dispatch(setClub(response));
-              } catch (error) {
-                console.log('Error:', error);
-              }
             })
-          )
+          ).then(async (data) => {
+            // console.log('data from back fb:', data);
+            try {
+              const response = await dispatch(login({ facebookId: user.uid }));
+              console.log('response facebook:', response.payload);
+              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+              await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
+              await AsyncStorage.setItem('userType', response.payload.user.type);
+              dispatch(setClub(response));
+            } catch (error) {
+              console.log('Error:', error);
+            }
+          })
         }
-
-      } else {
+        } else {
         console.log('user not authenticated')
       }
     })
@@ -175,12 +191,23 @@ const LoginSwitch = () => {
     }
   }
   const handleIos = async (user) => {
-    try {
-      const res = await axiosInstance.post("user", user)
-      return res.data
-    } catch (error) {
-      console.log(error)
-    }
+    console.log('=====LOGIN WITH APPLE=====')
+    dispatch(
+      create(user)
+    ).then(async (data) => {
+      try {
+        const response = await dispatch(login({ appleId: user.appleId  }));
+        console.log('response google:', response.payload);
+        dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
+        await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
+        await AsyncStorage.setItem('userType', response.payload.user.type);
+        dispatch(setClub(response));
+
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    })
+    return
   }
 
   if (loading)
@@ -328,19 +355,14 @@ const LoginSwitch = () => {
 
                             // Construcción del objeto a enviar en el post
                             const postData = {
-                              email: " ",
+                              email: "",
                               type: isSportman === true ? 'sportman' : 'club',
-
                               nickname: fullName.givenName + ' ' + fullName.familyName,
                               appleId: identityToken, // Se utiliza el identityToken como el valor del appleId
                             };
 
                             // Envío del objeto postData al servidor
                             const response2 = await handleIos(postData)
-                            console.log("console", response2)
-
-                            navigation.navigate('EscogerDeporte1')
-                            // Registro de la respuesta del servidor en la consola
 
                           } catch (e) {
                             console.log(e, "entra al catch")
