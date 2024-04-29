@@ -234,7 +234,7 @@ const SeleccionarImagen = () => {
                   fontWeight: '500'
                 }}
               >
-                Recientes
+                Galeria
               </Text>
               <Entypo size={20} color={'#fff'} name="chevron-small-down" />
             </View>

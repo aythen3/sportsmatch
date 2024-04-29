@@ -237,8 +237,8 @@ const styles = StyleSheet.create({
     height: 20
   },
   tuBuznParent: {
-    marginTop: 50,
-    height: '90%'
+    marginTop: 10,
+    height: '100%'
   },
   backButton: {
     flexDirection: 'row',

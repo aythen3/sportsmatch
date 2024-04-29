@@ -20,12 +20,13 @@ const Chat = ({ text, isMy, read, hour }) => {
         flexWrap: 'wrap'
       }}
     >
-      <Text style={styles.jordiEspeltTypo}>{text}</Text>
+      <Text style={{...styles.jordiEspeltTypo,maxWidth: '80%'}}>{text}</Text>
 
       <View
         style={{
           flexDirection: 'row',
           gap: 3,
+          margin:1,
           justifyContent: 'flex-end',
           alignItems: 'center'
         }}
