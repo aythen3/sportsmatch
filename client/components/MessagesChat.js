@@ -21,12 +21,11 @@ const MessagesChat = ({
   const dispatch = useDispatch()
   const { offers } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
-  console.log('profilePic: ', profilePic)
   const isFocused = useIsFocused()
   const { getTimeFromDate, clubMatches, getClubMatches, userMatches } =
     useContext(Context)
   const navigation = useNavigation()
-  const [convMessages, setConvMessages] = useState()
+  const [convMessages, setConvMessages] = useState([])
   const [lastMessage, setLastMessage] = useState()
   const { user, allUsers } = useSelector((state) => state.users)
 
