@@ -21,7 +21,7 @@ import { sendMatch } from '../redux/actions/matchs'
 import { getAllOffers, signToOffer } from '../redux/actions/offers'
 import { Context } from '../context/Context'
 import { updateUser } from '../redux/slices/users.slices'
-import { getAllUsers, updateUserData } from '../redux/actions/users'
+import { getAllUsers, getUserData, updateUserData } from '../redux/actions/users'
 import { FontAwesome } from '@expo/vector-icons'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native';
 import axiosInstance from '../utils/apiBackend'
@@ -51,8 +51,8 @@ const TodasLasOfertas = () => {
     console.log('selectOfferComponent: ', selectOfferComponent)
   }, [selectOfferComponent])
 
-  // console.log('user: ', user)
-  // console.log('offers', offers)
+  console.log('user: ', user)
+  console.log('offers', offers)
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -104,7 +104,9 @@ const TodasLasOfertas = () => {
       } else {
       const updUser = await axiosInstance.patch(`user/${user.user.id}`,{
         plan:planSelected
-      })
+      }).then(()=> dispatch(getUserData(user.user.id)))
+      
+      setShowPremiumModal(false)
       console.log(updUser, "upd")
       }
 
@@ -229,7 +231,7 @@ const TodasLasOfertas = () => {
               }
               return true
             })
-            .slice(0, 2)
+            .slice(0, user?.user?.plan === 'pro' || user?.user?.plan === 'star' ? 100 : 2)
             .map((offer, index) => (
               <View
                 key={index}
@@ -410,7 +412,7 @@ const TodasLasOfertas = () => {
           return false
         }
         return true
-      }).length > 2 && (
+      }).length > 2 && user.user.plan === "basic" && (
           <TouchableOpacity
             style={{
               backgroundColor: Color.wHITESPORTSMATCH,
@@ -427,7 +429,7 @@ const TodasLasOfertas = () => {
               flexDirection: 'row',
               alignItems: 'center'
             }}
-            onPress={() => setShowPremiumModal(true)}
+            onPress={() => user.user.plan === 'pro' || user.user.plan === 'star' ?  null :setShowPremiumModal(true) }
           >
             <Text
               style={{

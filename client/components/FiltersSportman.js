@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Color, FontFamily } from '../GlobalStyles'
 import { Image } from 'expo-image'
@@ -6,14 +6,15 @@ import { useDispatch } from 'react-redux'
 import { filterPost } from '../redux/actions/post'
 import { setFilterPost } from '../redux/slices/post.slices'
 
-const FiltersSportman = ({ onClose ,allPosts}) => {
-  const copy = [...allPosts]
+const FiltersSportman = ({ posts, onClose, allPosts, setPosts }) => {
+
+  const copy = [...posts]
   const change = copy.sort((a, b) => b.likes - a.likes);
- 
+
   const change2 = copy.sort((a, b) => b.commentCount - a.commentCount);
 
 
- const dispatch = useDispatch()
+  const dispatch = useDispatch()
   return (
     <View
       style={{
@@ -42,7 +43,14 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
         }}
       />
 
-      <View
+      <TouchableOpacity
+           onPress={() => {
+            // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+            const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+            // Actualiza el estado de los posts con la nueva copia ordenada
+            setPosts(sortedPosts);
+          }}
+
         style={{
           flexDirection: 'row',
           gap: 8,
@@ -55,7 +63,6 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
             color: Color.colorWhitesmoke,
             fontFamily: FontFamily.openSansSemiBold
           }}
-          onPress={() => dispatch(setFilterPost(change))}
         >
           Por proximidad
         </Text>
@@ -64,7 +71,7 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
           contentFit="cover"
           source={require('../assets/pictograma.png')}
         />
-      </View>
+      </TouchableOpacity>
 
       <View
         style={{
@@ -74,7 +81,14 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
           width: '100%'
         }}
       />
-      <View
+      <TouchableOpacity
+         onPress={() => {
+          // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+          const sortedPosts = [...posts].sort((a, b) => b.commentCount - a.commentCount);
+          // Actualiza el estado de los posts con la nueva copia ordenada
+          setPosts(sortedPosts);
+        }}
+
         style={{
           flexDirection: 'row',
           gap: 8,
@@ -87,7 +101,6 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
             color: Color.colorWhitesmoke,
             fontFamily: FontFamily.openSansSemiBold
           }}
-          onPress={() => dispatch(setFilterPost(change2))}
         >
           Por relevancia
         </Text>
@@ -96,7 +109,7 @@ const FiltersSportman = ({ onClose ,allPosts}) => {
           contentFit="cover"
           source={require('../assets/group6.png')}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }

@@ -50,6 +50,8 @@ const ExplorarClubs = () => {
 
   const [modalFilters, setModalFilters] = useState(false)
   const [textValue, setTextValue] = useState("")
+  const [posts, setPosts] = useState([])
+
 
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
   const navigation = useNavigation()
@@ -59,6 +61,11 @@ const ExplorarClubs = () => {
     dispatch(getAllPosts())
     console.log(allPosts, "allpost")
   }, [])
+
+  useEffect(() => {
+    setPosts(allPosts)
+  }, [allPosts])
+
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -84,7 +91,7 @@ const ExplorarClubs = () => {
 
 
   const renderItem = ({ item, index }) => (
-    <TouchableOpacity style={{width:"100%",flex:2}} key={index}>
+    <TouchableOpacity style={{ width: "100%", flex: 2 }} key={index}>
       <Image
         style={styles.iconLayout}
         resizeMode="cover"
@@ -201,14 +208,12 @@ const ExplorarClubs = () => {
           )} */}
           {!textValue && allPosts?.length > 0 && (
             <FlatList
-
-              data={allPosts}
+              data={posts}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
               numColumns={2}
-              columnWrapperStyle={{justifyContent:"space-between",marginBottom:10,gap :10}}
+              columnWrapperStyle={{ justifyContent: "space-between", marginBottom: 10, gap: 10 }}
               contentContainerStyle={{ paddingHorizontal: 5 }}>
-
             </FlatList>
           )}
         </View>
@@ -228,7 +233,7 @@ const ExplorarClubs = () => {
 
           <View style={{ flex: 1 }}>
             <View style={styles.modal}>
-              <FiltersSportman allPosts={allPosts} onClose={() => setModalFilterSportman(false)} />
+              <FiltersSportman posts={posts} setPosts={setPosts} allPosts={allPosts} onClose={() => setModalFilterSportman(false)} />
             </View>
           </View>
         </TouchableWithoutFeedback>
