@@ -26,15 +26,27 @@ export const handleSubmit = async ({
 
 // Handler de tiempo del post
 export const formatDateDifference = (date) => {
-  const fecha = new Date(date)
   const ahora = new Date()
+  const fecha = new Date(date) 
   const milisegundosDiferencia = ahora - fecha
   const segundosDiferencia = Math.floor(milisegundosDiferencia / 1000)
   const minutosDiferencia = Math.floor(segundosDiferencia / 60)
   const horasDiferencia = Math.floor(minutosDiferencia / 60)
 
+  console.log('ahora: ', ahora)
+  console.log('fecha: ',fecha)
+  console.log('segundosDiferencia: ',segundosDiferencia)
+  console.log('minutosDiferencia: ',minutosDiferencia)
+  
+
   if (horasDiferencia < 24) {
+    if(horasDiferencia < 0) {
+      return 'Hace 1 segundo'
+    }
     if (horasDiferencia === 0) {
+      if(minutosDiferencia === 0) {
+        return `Hace ${segundosDiferencia} segundos`
+      }
       return `Hace ${minutosDiferencia} minuto${minutosDiferencia === 1 ? '' : 's'}`
     } else {
       return `Hace ${horasDiferencia} hora${horasDiferencia === 1 ? '' : 's'}`
