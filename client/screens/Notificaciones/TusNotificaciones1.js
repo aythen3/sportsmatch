@@ -21,22 +21,40 @@ import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
 
-const TusNotificaciones1 = () => {
+const TusNotificaciones1 = () => {  
+  const [value,setValue] = useState('')
   const isFocused = useIsFocused()
   const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
   const dispatch = useDispatch()
+  const [usersWithMessages, setUsersWithMessages] = useState([])
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers } = useSelector((state) => state.users)
   const { offers } = useSelector((state) => state.offers)
+  const userId = user?.user?.id
 
   useEffect(() => {}, [allUsers])
 
   useEffect(() => {
     dispatch(getAllUsers())
   }, [])
+
+  const sortUsers = (userA, userB) => {
+    const isInMessagesB = usersWithMessages.filter(user=>user.id === userA.id).length > 0
+    const isInMessagesA = usersWithMessages.filter(user=>user.id === userB.id).length > 0
+
+    if (isInMessagesA && !isInMessagesB) {
+      return -1; // userA has messages, should come before userB
+    } else if (!isInMessagesA && isInMessagesB) {
+      return 1; // userB has messages, should come before userA
+    } else {
+      return 0; // maintain current order if both have messages or neither have messages
+    }
+  };
+
+  const filteredUsers = allUsers.filter(user => user.nickname.toLowerCase()?.includes(value.toLowerCase())).sort(sortUsers).reverse();
 
   // useEffect(() => {
   //   offers.forEach((offer) => {
@@ -49,6 +67,59 @@ const TusNotificaciones1 = () => {
   //     axiosInstance.delete(`notification/${notification.id}`)
   //   })
   // }, [])
+
+  // const getAllUsersMessages = async () => {
+  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
+  //   filteredUsers.map(async user=>{
+  //     const { data } = await axiosInstance.get(
+  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
+  //     )
+  //     console.log('convmessages data from noti: ',data)
+  //   })
+  // }
+  // useEffect(()=>{
+  //   getAllUsersMessages()
+  // },[])
+
+  useEffect(() => {
+    const getConvMessages = async (user) => {
+      try {
+        const { data } = await axiosInstance.get(
+          `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
+        );
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
+    };
+
+    Promise.all(
+      allUsers
+        ?.filter((user) => user?.id !== userId)
+        .map(async (user) => ({
+          user,
+          data: await getConvMessages(user),
+        }))
+    )
+      .then((filteredUsers) => {
+        const usersWithMessages = filteredUsers.filter(
+        (user) => user?.data && user?.data.length > 0
+        );
+
+        const sortedUsersWithMessages = usersWithMessages.sort(
+          (a, b) => new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
+        );
+
+        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user));
+      })
+      .catch((error) => {
+        console.error('Error fetching messages for users:', error);
+      });
+  }, [userId, allUsers]);
+
+
+
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
@@ -64,7 +135,7 @@ const TusNotificaciones1 = () => {
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
   // console.log('allusers: ', allUsers)
-  const userId = user?.user?.id
+  
   if (!allUsers)
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
   return (
@@ -178,6 +249,8 @@ const TusNotificaciones1 = () => {
               placeholder="Buscar"
               placeholderTextColor={Color.gREY2SPORTSMATCH}
               style={styles.searchText}
+              value={value}
+              onChangeText={(text)=>setValue(text)}
             />
           </View>
         )}
@@ -188,9 +261,7 @@ const TusNotificaciones1 = () => {
               marginTop: 30
             }}
           >
-            {allUsers
-              ?.filter((user) => user?.id !== userId)
-              .map((user) => (
+            {value === '' && usersWithMessages.length === 0 ? <View style={{width:'100%', alignItems:'center'}}><Text style={{fontSize:14,fontWeight:400,color:'#fff'}}>Inicia una conversación!</Text></View> : value === '' && usersWithMessages?.map((user) => (
                 <MessagesChat
                   key={user.id}
                   name={user.nickname}
@@ -201,9 +272,21 @@ const TusNotificaciones1 = () => {
                       : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
-                  applicant={applicants.includes(user.sportman?.id)}
+                  applicant={applicants?.includes(user.sportman?.id)}
                 />
               ))}
+              {
+                value !== '' && filteredUsers.map(user=><MessagesChat key={user.id}
+                  name={user.nickname}
+                  sportmanId={user.sportman?.id}
+                  profilePic={
+                    user?.type === 'club'
+                      ? user?.club?.img_perfil
+                      : user?.sportman?.info?.img_perfil
+                  }
+                  selectedUserId={user.id}
+                  applicant={applicants?.includes(user.sportman?.id)}/>)
+              }
           </ScrollView>
         )}
       </View>
@@ -237,8 +320,8 @@ const styles = StyleSheet.create({
     height: 20
   },
   tuBuznParent: {
-    marginTop: 50,
-    height: '90%'
+    marginTop: 10,
+    height: '100%'
   },
   backButton: {
     flexDirection: 'row',

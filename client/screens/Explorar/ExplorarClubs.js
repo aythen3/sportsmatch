@@ -25,6 +25,111 @@ import { getAllPosts } from '../../redux/actions/post'
 import axiosInstance from '../../utils/apiBackend'
 import { useNavigation } from '@react-navigation/core'
 
+const Grilla = ({ group, img1, img2, img3 }) => {
+  const navigation = useNavigation()
+  
+  return (
+    <View style={{ width: "100%", height: 320, paddingHorizontal: 2, gap: 6 }}>
+      <View style={{
+        flexDirection: "row", 
+        alignItems: "center", gap: 7
+      }} >
+          <View style={{ flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
+          <TouchableOpacity onPress={()=>{
+            if (group[0].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[0])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[0])
+            }
+          }}>
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={{ uri: group[0]?.image[0] }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            if (group[1].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[1])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[1])
+            }
+          }}>
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={{ uri: group[1]?.image[0] }}
+            />
+          </TouchableOpacity>
+
+        </View>
+        <TouchableOpacity onPress={()=>{
+            if (group[2].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[2])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[2])
+            }
+          }} style={{ height: "100%", borderRadius: Border.br_10xs, overflow: "hidden" }} >
+          <Image
+            style={{ width: itemSize2 - 100, height: "100%", objectFit: "contain" }}
+            contentFit="cover"
+            source={{ uri: group[2]?.image[0] }}
+          />
+        </TouchableOpacity>
+      
+
+      </View>
+      <View style={{
+        flexDirection: "row", 
+        alignItems: "center", gap: 7
+      }} >
+        <TouchableOpacity onPress={()=>{
+            if (group[4].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[4])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
+            }
+          }} style={{ height: "100%", borderRadius: Border.br_10xs, overflow: "hidden" }} >
+          <Image
+            style={{ width: itemSize2 - 100, height: "100%", objectFit: "contain" }}
+            contentFit="cover"
+            source={{ uri: group[4]?.image[0] }}
+          />
+        </TouchableOpacity>
+        <View style={{ flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
+          <TouchableOpacity onPress={()=>{
+            if (group[4].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[4])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
+            }
+          }}>
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={{ uri: group[4]?.image[0] }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            if (group[5].author.type === 'club') {
+              navigation.navigate('ClubProfile', group[5])
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', group[5])
+            }
+          }}>
+            <Image
+              style={styles.iconLayout}
+              contentFit="cover"
+              source={{ uri: group[5]?.image[0] }}
+            />
+          </TouchableOpacity>
+
+        </View>
+
+      </View>
+    </View>
+  )
+}
 
 const ExplorarClubs = () => {
   // const navigation = useNavigation()

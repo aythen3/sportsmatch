@@ -282,7 +282,7 @@ const ChatAbierto1 = () => {
           style={{
             flex: 1,
             paddingLeft: 15,
-            paddingRight:50,
+            maxWidth:'85%',
             fontSize: 16,
             color: '#fff'
           }}
