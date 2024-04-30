@@ -54,7 +54,7 @@ const TusNotificaciones1 = () => {
     }
   };
 
-  const filteredUsers = allUsers.filter(user => user.nickname.toLowerCase().includes(value.toLowerCase())).sort(sortUsers).reverse();
+  const filteredUsers = allUsers.filter(user => user.nickname.toLowerCase()?.includes(value.toLowerCase())).sort(sortUsers).reverse();
 
   // useEffect(() => {
   //   offers.forEach((offer) => {
@@ -104,7 +104,7 @@ const TusNotificaciones1 = () => {
     )
       .then((filteredUsers) => {
         const usersWithMessages = filteredUsers.filter(
-          (user) => user?.data && user?.data.length > 0
+        (user) => user?.data && user?.data.length > 0
         );
 
         const sortedUsersWithMessages = usersWithMessages.sort(
@@ -272,7 +272,7 @@ const TusNotificaciones1 = () => {
                       : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
-                  applicant={applicants.includes(user.sportman?.id)}
+                  applicant={applicants?.includes(user.sportman?.id)}
                 />
               ))}
               {
@@ -285,7 +285,7 @@ const TusNotificaciones1 = () => {
                       : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
-                  applicant={applicants.includes(user.sportman?.id)}/>)
+                  applicant={applicants?.includes(user.sportman?.id)}/>)
               }
           </ScrollView>
         )}

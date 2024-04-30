@@ -87,10 +87,12 @@ const SeleccionarImagen = () => {
 
   const renderizarImagenes = () => {
     return (
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView style={{height:'100%'}} keyboardShouldPersistTaps={'always'}>
         <View
           style={{
             gap: 8,
+            paddingBottom:8,
+            overflow:'hidden',
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'flex-start'
@@ -183,7 +185,7 @@ const SeleccionarImagen = () => {
           </View>
         </Camera>
       ) : (
-        <View style={{ width: '90%', alignSelf: 'center' }}>
+        <View style={{ width: '90%', alignSelf: 'center', flex:1 }}>
           <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
@@ -258,7 +260,9 @@ const SeleccionarImagen = () => {
               </TouchableOpacity>
             )}
           </View>
+          
           {renderizarImagenes()}
+         
         </View>
       )}
     </SafeAreaView>

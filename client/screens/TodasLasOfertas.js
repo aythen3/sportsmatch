@@ -135,7 +135,7 @@ const TodasLasOfertas = () => {
                 styles.ofertasTypo
               ]}
             >
-              Ofertas favoritas
+              Inscripciones
             </Text>
           </View>
         </Pressable>
@@ -146,7 +146,11 @@ const TodasLasOfertas = () => {
         const filteredUserMatches = userMatches.filter(
           (match) => match.offerId && match.offerId !== offer.id
         )
+        const alreadyJoined = offer?.inscriptions?.includes(user?.user?.sportman?.id)
         if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if(alreadyJoined) {
           return false
         }
         return true
@@ -157,7 +161,11 @@ const TodasLasOfertas = () => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
               )
+              const alreadyJoined = offer?.inscriptions?.includes(user?.user?.sportman?.id)
               if (filteredUserMatches.length > 0) {
+                return false
+              }
+              if(alreadyJoined) {
                 return false
               }
               return true
@@ -175,7 +183,7 @@ const TodasLasOfertas = () => {
                   opacity: 0.7
                 }}
               >
-                <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
+                {/* <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
                 let actualUser = _.cloneDeep(user)
                 console.log('atualUser: ', actualUser)
                 const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
@@ -203,7 +211,7 @@ const TodasLasOfertas = () => {
              >
               <FontAwesome name={actualFavoriteOffers.includes(offer.id)?'heart':'heart-o'} color='#E1451E' size={30}/>
 
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
                   <CardInfoOffers
                     text="Sexo"
@@ -323,8 +331,8 @@ const TodasLasOfertas = () => {
             style={{
               marginTop: 30,
               fontFamily: FontFamily.t4TEXTMICRO,
-              fontWeight: 500,
-              fontSize: FontSize.size_9xl,
+              fontWeight: 400,
+              fontSize: 14,
               color: Color.wHITESPORTSMATCH,
               bottom: 4
             }}
@@ -340,7 +348,11 @@ const TodasLasOfertas = () => {
         const filteredUserMatches = userMatches.filter(
           (match) =>match.offerId && match.offerId !== offer.id
         )
+        const alreadyJoined = offer?.inscriptions?.includes(user?.user?.sportman?.id)
         if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if(alreadyJoined){
           return false
         }
         return true
@@ -372,39 +384,37 @@ const TodasLasOfertas = () => {
               fontWeight: '700'
             }}
           >
-            Ver mas ofertas
+            Ver más ofertas
           </Text>
         </TouchableOpacity>
       )}
 { /* ============================ FAVORITE OFFERS ============================ */ }
 {selectOfferComponent !== 'todas' && offers &&
-      offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        if(actualFavoriteOffers.includes(offer.id)){
-          return true
-        }
-        return false
-        
-      }).length > 0 ? (
+     offers
+     .filter((offer) => {
+       const filteredUserMatches = userMatches.filter(
+         (match) => match.offerId && match.offerId !== offer.id
+       )
+       if (filteredUserMatches.length > 0) {
+         return false
+       }
+       return true
+     }).length > 0  ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
-          { offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        if(actualFavoriteOffers.includes(offer.id)){
-          return true
-        }
-        return false
-        
-      }).map((offer, index) => (
+          {  offers
+     .filter((offer) => {
+       const filteredUserMatches = userMatches.filter(
+         (match) => match.offerId && match.offerId !== offer.id
+       )
+       const alreadyJoined = offer?.inscriptions?.includes(user?.user?.sportman?.id)
+       if (filteredUserMatches.length > 0) {
+         return false
+       }
+       if(alreadyJoined) {
+        return true
+       }
+       return false
+     }).map((offer, index) => (
               <View
                 key={index}
                 style={{
@@ -416,7 +426,7 @@ const TodasLasOfertas = () => {
                   opacity: 0.7
                 }}
               >
-                <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
+                {/* <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
                 let actualUser = _.cloneDeep(user)
                 console.log('atualUser: ', actualUser)
                 const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
@@ -444,7 +454,7 @@ const TodasLasOfertas = () => {
              >
               <FontAwesome name={actualFavoriteOffers.includes(offer.id)?'heart':'heart-o'} color='#E1451E' size={30}/>
 
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
                   <CardInfoOffers
                     text="Sexo"
@@ -564,13 +574,13 @@ const TodasLasOfertas = () => {
             style={{
               marginTop: 30,
               fontFamily: FontFamily.t4TEXTMICRO,
-              fontWeight: 500,
-              fontSize: FontSize.size_9xl,
+              fontWeight: 400,
+              fontSize: 15,
               color: Color.wHITESPORTSMATCH,
               bottom: 4
             }}
           >
-            Aun no tienes ofertas favoritas!
+            Aun no te has inscripto en ninguna oferta!
           </Text>
         </View>
       )}
