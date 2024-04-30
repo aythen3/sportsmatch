@@ -35,11 +35,9 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="sportsmatch"/>
+        <data android:scheme="fb2654178301415308"/>
         <data android:scheme="com.aythenapps.sportsmatch"/>
         <data android:scheme="exp+sportsmatch"/>
-        <data android:scheme="fb955537832791728"/>
-        <data android:scheme="exp+sportmatch"/>
-        <data android:scheme="fb2654178301415308"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

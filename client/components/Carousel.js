@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Pressable,
   StyleSheet,
@@ -14,7 +14,11 @@ import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
 import CommentSection from './modals/CommentSection'
 import { Context } from '../context/Context'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import DoubleTap from "@memrearal/react-native-doubletap";
+import { setFindedLikes } from '../redux/slices/post.slices'
+import { like } from '../redux/actions/post'
+import { sendNotification } from '../redux/actions/notifications'
 
 function Carousel({
   name,
@@ -29,20 +33,82 @@ function Carousel({
   authorId,
   data
 }) {
+  const dispatch = useDispatch()
+
   const { user } = useSelector((state) => state.users)
+  const { findedLike } = useSelector((state) => state.post)
+
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
+
+  const [doubleTap, setDoubleTap] = useState(false);
+  const [liked, setLiked] = useState(false); // Estado para controlar si se ha dado like
+
+  useEffect(() => {
+    // Actualizar el estado de liked cuando se reciba la lista de likes del post
+    setLiked(findedLike.includes(id));
+  }, [findedLike, id]);
+
+
+  const handleDoubleTap = () => {
+    setDoubleTap(true); // Marcar que se ha hecho doble clic en la imagen
+    // Lógica adicional si es necesaria
+  };
+
+  const resetDoubleTap = () => {
+    setTimeout(() => {
+      setDoubleTap(false); // Reiniciar el estado de doubleTap después de un tiempo
+    }, 300); // Puedes ajustar el tiempo según tus necesidades
+  };
 
   const closeModal = () => {
     setModalVisible(false)
   }
+
+  const handleLike = async () => {
+    // Invertir el estado de liked
+    setLiked(!liked);
+
+    const data = {
+      post: id,
+      author: userId
+    };
+
+    await dispatch(
+      setFindedLikes({
+        ...data,
+        liked: !liked // Invertir el estado del like
+      })
+    );
+
+    if (!liked) {
+      await dispatch(
+        sendNotification({
+          title: 'Like',
+          message: `A ${user.user.nickname} le gusta tu highlight`,
+          recipientId: authorId,
+          date: new Date(),
+          read: false,
+          prop1: {
+            userId: user?.user?.id,
+            userData: {
+              ...user
+            }
+          }
+        })
+      );
+    }
+
+    await dispatch(like(data));
+  };
+
 
   return (
     <View style={{ ...styles.container }}>
       <Pressable
         style={styles.topContainer}
         onPress={() => {
-          if(data.author.id === user.user.id) {
+          if (data.author.id === user.user.id) {
             if (user.user.type !== 'club') {
               navigation.navigate('MiPerfil')
               return
@@ -63,7 +129,17 @@ function Carousel({
       </Pressable>
       <PagerView style={styles.postContainer} initialPage={0}>
         <View key={id}>
-          <Image style={styles.postImage} source={image} />
+          <DoubleTap
+          
+          onDoubleTap={() => {
+              console.log("doble pressss2222")
+              handleLike()
+              // handleDoubleTap(); // Llama a la función de manejar el doble clic
+              // resetDoubleTap(); // Reinicia el estado de doubleTap
+            }}
+          >
+            <Image style={styles.postImage} source={image} />
+          </DoubleTap>
         </View>
         {/* <View key={index + 1}>
           <Image
@@ -103,7 +179,14 @@ function Carousel({
           }}
         >
           <Text style={styles.likes}>{likes} likes</Text>
-          <IconsMuro postUserId={authorId} id={id} userId={userId} />
+          <IconsMuro
+            id={id}
+            userId={userId}
+            postUserId={authorId}
+            image={image} // Pasa la imagen del post como prop
+            doubleTap={doubleTap}
+            description={description} // Pasa la descripción del post como prop
+          />
         </View>
         <Text style={styles.description}>{description}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>

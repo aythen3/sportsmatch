@@ -73,11 +73,16 @@ const dispatch = useDispatch()
         <HomeSVG isActive={activeIcon === 'post'} />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handleIconPress('message')}
-        style={activeIcon === 'message' ? styles.selected : styles.deselected}
-      >
-        <MessageSVG isActive={activeIcon === 'message'} />
-      </TouchableOpacity>
+  onPress={() => handleIconPress('message')}
+  style={activeIcon === 'message' ? styles.selected : styles.deselected}
+>
+  <View style={styles.iconContainer}>
+    <MessageSVG
+      isActive={activeIcon === 'message'}
+      style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
+    />
+  </View>
+</TouchableOpacity>
       <TouchableOpacity
         onPress={handleNavigation}
         style={activeIcon === 'profile' ? styles.selected : styles.deselected}
@@ -122,7 +127,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderTopColor: Color.bALONCESTO,
     borderTopWidth: 3
-  }
+  },
+  iconContainer: {
+    width: '18.4%',
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+  },
+  iconActive: {
+    marginTop: -5, // Ajusta este valor según sea necesario para elevar la imagen
+  },
 })
 
 export default NavBarInferior

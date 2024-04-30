@@ -187,10 +187,10 @@ const TusMatchs = () => {
           <View>
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 14,
                 marginTop: 40,
                 color: Color.wHITESPORTSMATCH,
-                fontWeight: '500',
+                fontWeight: '400',
                 alignSelf: 'center',
                 textAlign: 'left',
                 fontFamily: FontFamily.t4TEXTMICRO

@@ -15,13 +15,16 @@ import GoldSuscription from '../components/Suscripciones/GoldSuscription'
 import StarSuscription from '../components/Suscripciones/StarSuscription'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native';
 import axiosInstance from '../utils/apiBackend'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserData } from '../redux/actions/users'
 
 const MiSuscripcin = () => {
   const navigation = useNavigation()
   const [clientSecret, setClientSecret] = useState(null)
   const [planSelected, setPlanSelected] = useState(null)
   const { user } = useSelector((state) => state.users)
+
+  const dispatch = useDispatch()
 
   const { initPaymentSheet, presentPaymentSheet } = useStripe(null);
 
@@ -46,7 +49,7 @@ const MiSuscripcin = () => {
       } else {
       const updUser = await axiosInstance.patch(`user/${user.user.id}`,{
         plan:planSelected
-      })
+      }).then(()=> dispatch(getUserData(user.user.id)))
       console.log(updUser, "upd")
       }
 
@@ -100,14 +103,20 @@ const MiSuscripcin = () => {
         </View>
 
         <View style={{ marginTop: 30, gap: 30 }}>
-          <SilverSuscription />
+         {user.user.plan === "basic" &&  <SilverSuscription />}
+         {user.user.plan === "pro" &&  <GoldSuscription />}
+         {user.user.plan === "star" &&  <StarSuscription />}
+
           <View>
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Otros planes
             </Text>
           </View>
-          <GoldSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />
-          <StarSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />
+        {user.user.plan === "star" &&  <SilverSuscription/>}  
+        {user.user.plan === "pro" &&  <SilverSuscription/>}  
+
+        {user.user.plan !== "pro" &&  <GoldSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />}
+        {user.user.plan !== "star" &&    <StarSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />}        
         </View>
       </ScrollView>
     </View>

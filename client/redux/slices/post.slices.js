@@ -5,7 +5,8 @@ import {
   getAllPosts,
   like,
   listLikes,
-  updateLike
+  updateLike,
+  filterPost
 } from '../actions/post'
 
 const postSlices = createSlice({
@@ -18,6 +19,12 @@ const postSlices = createSlice({
     loading: false
   },
   reducers: {
+    setFilterPost: (state, action) => {
+      return {
+        ...state,
+        allPosts: action.payload
+      }
+    },
     setFindedLikes: (state, action) => {
       const updateLikesById = (array, id, action) => {
         return array.map((obj) => {
@@ -128,7 +135,21 @@ const postSlices = createSlice({
         state.loading = false
         state.error = true
       })
+    // edit post
+    // .addCase(filterPost.pending, (state) => {
+    //   state.loading = true
+    //   state.error = false
+    // })
+    // .addCase(filterPost.fulfilled, (state, action) => {
+    //   state.loading = false
+    //   state.allPosts = action.payload
+    //   state.error = false
+    // })
+    // .addCase(filterPost.rejected, (state) => {
+    //   state.loading = false
+    //   state.error = true
+    // })
   }
 })
-export const { setFindedLikes } = postSlices.actions
+export const { setFindedLikes ,setFilterPost} = postSlices.actions
 export default postSlices.reducer

@@ -4,9 +4,9 @@ import { Svg, Rect, Path } from 'react-native-svg'
 const MessageSVG = ({ isActive }) => {
   return (
     <Svg
-      width="34"
-      height="23"
-      viewBox="0 0 34 23"
+      width="40"
+      height="40"
+      viewBox="0 2 34 23"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

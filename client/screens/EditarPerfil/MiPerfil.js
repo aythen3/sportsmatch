@@ -93,7 +93,7 @@ console.log(sportman,"sportman")
                 <Text style={styles.textTypo}>{sportman?.type === 'coach'? sportman?.info?.rol : sportman?.info?.position}</Text>
                 <Text style={styles.textTypo}>{typeof sportman?.info?.sport === "object" ? sportman?.info?.sport.name  : sportman?.info?.sport }</Text>
               </View>
-              <Text style={[styles.jugandoAlUni, styles.seguidoresTypo]}>
+              <Text style={[styles.jugandoAlUni, styles.seguidoresTypo,{ width: '100%' }]}>
                 {sportman?.info?.actualClub?.length > 0
                   ? `Jugando en ${sportman?.info?.actualClub}`
                   : 'Sin club actualmente'}

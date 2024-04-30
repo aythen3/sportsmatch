@@ -218,8 +218,8 @@ const TusNotificaciones1 = () => {
               >
                 <Text
                   style={{
-                    fontSize: 30,
-                    fontWeight: '600',
+                    fontSize: 14,
+                    fontWeight: '400',
                     fontFamily: FontFamily.t4TEXTMICRO,
                     color: Color.wHITESPORTSMATCH
                   }}
