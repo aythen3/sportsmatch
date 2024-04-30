@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { Svg, Path } from 'react-native-svg'
 import { useSelector } from 'react-redux'
 
-const LikeSVG = ({ id }) => {
+const LikeSVG = ({ id , doubleTap }) => {
   const { findedLike } = useSelector((state) => state.post)
   useEffect(() => {
-    // console.log('like changed: ', findedLike?.includes(id))
+    console.log('like changed: ', findedLike?.includes(id))
   }, [findedLike])
   return (
     <Svg

@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@expo/webpack-config": "~19.0.1",
+    "@memrearal/react-native-doubletap": "^1.0.3",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-native-google-signin/google-signin": "^11.0.1",
     "@react-native-picker/picker": "^2.7.5",
@@ -43,6 +44,7 @@
     "expo-media-library": "^15.9.2",
     "expo-permissions": "^14.4.0",
     "expo-random": "~13.6.0",
+    "expo-sharing": "~11.10.0",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.12",
     "expo-web-browser": "~12.8.2",

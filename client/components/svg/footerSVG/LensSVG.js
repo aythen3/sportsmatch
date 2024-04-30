@@ -4,9 +4,9 @@ import { Svg, Circle, Path } from 'react-native-svg'
 const LensSVG = ({ isActive }) => {
   return (
     <Svg
-      width="31"
-      height="31"
-      viewBox="0 0 31 31"
+      width="38"
+      height="38"
+      viewBox="0 3 31 31"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

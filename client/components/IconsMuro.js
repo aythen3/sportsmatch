@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Share, View, StyleSheet, TouchableOpacity } from 'react-native'
 import CommentSVG from './svg/CommentSVG'
 import ShareSVG from './svg/ShareSVG'
 import LikeSVG from './svg/LikeSVG'
@@ -10,7 +10,10 @@ import CommentSection from './modals/CommentSection'
 import { setFindedLikes } from '../redux/slices/post.slices'
 import { sendNotification } from '../redux/actions/notifications'
 
-const IconsMuro = ({ id, userId, postUserId }) => {
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+
+const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -18,25 +21,56 @@ const IconsMuro = ({ id, userId, postUserId }) => {
   const { findedLike } = useSelector((state) => state.post)
 
   const [modalVisible, setModalVisible] = useState(false)
+  const [liked, setLiked] = useState(false); // Estado para controlar si se ha dado like
 
-  useEffect(() => {}, [findedLike])
+  useEffect(() => {
+    // Actualizar el estado de liked cuando se reciba la lista de likes del post
+    setLiked(findedLike.includes(id));
+  }, [findedLike, id]);
 
-  const handleLike = async (id, userId) => {
+ 
+const handleShare = async () => {
+  try {
+    // Descargar el archivo desde la URL remota
+    const localUri = `${FileSystem.cacheDirectory}image.jpg`;
+    const downloadResult = await FileSystem.downloadAsync(image[0], localUri);
+
+    if (downloadResult.status === 200) {
+      // Obtener información sobre el archivo descargado
+      const fileInfo = await FileSystem.getInfoAsync(localUri);
+
+      // Compartir el archivo si existe
+      if (fileInfo.exists) {
+        await Sharing.shareAsync(localUri);
+      } else {
+        console.log('El archivo no existe.');
+      }
+    } else {
+      console.log('Error al descargar el archivo.');
+    }
+  } catch (error) {
+    console.error('Error al compartir:', error.message);
+  }
+  };
+
+ 
+  const handleLike = async () => {
+    // Invertir el estado de liked
+    setLiked(!liked);
+
     const data = {
       post: id,
       author: userId
-    }
-    const liked = findedLike.includes(id)
-    console.log('data: ', data)
-    console.log('liked: ', liked)
+    };
+
     await dispatch(
       setFindedLikes({
         ...data,
-        liked
+        liked: !liked // Invertir el estado del like
       })
-    )
-    if (liked === false) {
-      console.log('sending like notification to: ', userId)
+    );
+
+    if (!liked) {
       await dispatch(
         sendNotification({
           title: 'Like',
@@ -51,10 +85,13 @@ const IconsMuro = ({ id, userId, postUserId }) => {
             }
           }
         })
-      )
+      );
     }
-    await dispatch(like(data))
-  }
+
+    await dispatch(like(data));
+  };
+
+ 
   // useEffect(() => {
   //   console.log('findedLike', findedLike)
   //   console.log('id: ', id)
@@ -76,11 +113,13 @@ const IconsMuro = ({ id, userId, postUserId }) => {
         style={styles.likeView}
         onPress={() => handleLike(id, userId)}
       >
-        <LikeSVG id={id} />
-      </TouchableOpacity>
+        <LikeSVG id={id} doubleTap={doubleTap} />
+      </TouchableOpacity >
       <View style={styles.shareView}>
+      <TouchableOpacity style={styles.shareView} onPress={handleShare}>
         <ShareSVG />
-      </View>
+      </TouchableOpacity>
+            </View>
       <TouchableOpacity
         style={styles.commentView}
         onPress={() => setModalVisible(true)}

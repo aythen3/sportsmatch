@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   input: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 15,
+    fontSize: 12,
     marginTop: 10
   },
   input2: {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   commentContainer: {
-    padding: 5,
+    padding: 15,
     gap: 2,
     top: 10
   },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 12,
+    fontSize: 10,
     color: Color.gREY2SPORTSMATCH
   }
 })

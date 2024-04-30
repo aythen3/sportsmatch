@@ -52,7 +52,7 @@ const Feed = ({ externalId }) => {
           <View style={{ marginTop: 30, width: '100%', alignItems: 'center' }}>
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 14,
                 fontWeight: '600',
                 fontFamily: FontFamily.t4TEXTMICRO,
                 color: Color.wHITESPORTSMATCH
