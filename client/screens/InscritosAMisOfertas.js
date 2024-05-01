@@ -225,7 +225,7 @@ const InscritosAMisOfertas = () => {
                 bottom: 4
               }}
             >
-              Aun no hay ningun inscripto en esta oferta!
+              Aun no hay ningun inscrito en esta oferta!
             </Text>
           </View>
         )}

@@ -30,7 +30,7 @@ const FeedStats = () => {
     >
       <View style={styles.contenidoDatos}>
        {sportman?.type !== 'coach' && <View style={styles.circulos}>
-          <View style={styles.circuloLayout}>
+          <View style={[styles.circuloLayout,]}>
             <CircularStat value={sportman?.info.attack} />
             <View
               style={[styles.informacionCirculo, styles.grupoTextoPosition]}
@@ -98,6 +98,7 @@ const FeedStats = () => {
             </Text>
           </View>
         </View>}
+        
         {sportman?.type !== 'coach' ?<View style={styles.barras}>
           <View style={styles.circulos}>
             <View style={styles.moduloSpaceBlock}>

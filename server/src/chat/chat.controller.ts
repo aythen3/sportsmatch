@@ -1,4 +1,4 @@
-import { Controller, Param, Put } from '@nestjs/common';
+import { Body, Controller, Delete, InternalServerErrorException, Param, Post, Put, Req } from '@nestjs/common';
 import { ChatService } from './service/chat.service';
 import { MessageService } from './service/message.service';
 import { Get, Query } from '@nestjs/common';
@@ -11,15 +11,53 @@ export class ChatController {
     private readonly messageService: MessageService
   ) {}
 
-  @Get('/room')
-  public async getChat(@Query() query: any) {
-    const { senderId, receiverId, createdAt, limit } = query;
-    const room = this.chatService.roomIdGenerator(senderId, receiverId);
-    return await this.messageService.getMessagesForRoom(room, createdAt, limit);
-  }
+  @Post('/marcarMensajesComoEliminados')
+async marcarMensajesComoEliminados(@Body() body: { senderId: string, receiverId: string, room: string }) {
+    try {
+        await this.messageService.marcarMensajesComoEliminados(body.senderId, body.receiverId, body.room);
+        return { message: 'Mensajes marcados como eliminados exitosamente.' };
+    } catch (error) {
+        console.error('Error al marcar mensajes como eliminados:', error);
+        throw new InternalServerErrorException('Error interno del servidor.');
+    }
+}
+
+@Get('/room')
+public async getChat(@Req() req: any) {
+  const { senderId, receiverId, createdAt, limit } = req.query;
+  const room = this.chatService.roomIdGenerator(senderId, receiverId);
+  return await this.messageService.getMessagesForRoom(room, senderId, receiverId, createdAt, limit);
+}
 
   @Put('readed/:id')
   async markAsRead(@Param('id') id: string): Promise<MessageEntity> {
     return this.messageService.markAsRead(id);
   }
+
+//   @Get('/visible-messages/:senderId/:receiverId')
+// async getVisibleMessages(
+//   @Param('senderId') senderId: string,
+//   @Param('receiverId') receiverId: string
+// ): Promise<MessageEntity[]> {
+//   try {
+//     return await this.messageService.getVisibleMessages(senderId, receiverId);
+//   } catch (error) {
+//     throw new Error('Failed to fetch visible messages.');
+//   }
+// }
+
+
+
+//   @Delete('/user/:senderId/messages/:receiverId')
+// async deleteMessagesBetweenUsers(
+//   @Param('senderId') senderId: string,
+//   @Param('receiverId') receiverId: string
+// ): Promise<{ message: string }> {
+//   try {
+//     await this.messageService.deleteMessagesBetweenUsers(senderId, receiverId);
+//     return { message: 'Messages deleted successfully.' };
+//   } catch (error) {
+//     throw new Error('Failed to delete messages.');
+//   }
+// }
 }

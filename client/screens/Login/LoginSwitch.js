@@ -218,12 +218,13 @@ const LoginSwitch = () => {
     )
 
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.loginSwitch}>
-      <Image
-        style={styles.loginSwitchChild}
+<View  style={{ backgroundColor: 'black' }}>
+
+    <Image
+        style={[styles.loginSwitchChild]}
         contentFit="cover"
         source={require('../../assets/fondo-inicial.png')}
-      />
+        />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -264,7 +265,7 @@ const LoginSwitch = () => {
                   style={
                     !isEnabled ? styles.clubScouting : styles.clubScouting2
                   }
-                >
+                  >
                   Club / Scouting
                 </Text>
               </View>
@@ -293,7 +294,7 @@ const LoginSwitch = () => {
                       >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                            Contínua con Google
+                            Continua con Google
                           </Text>
                         </View>
 
@@ -305,7 +306,7 @@ const LoginSwitch = () => {
                       </TouchableOpacity>
                       {/* <TouchableOpacity style={styles.loremIpsumGroup}>
                         <View style={styles.loremIpsum2}>
-                          <Text style={[styles.aceptar, styles.aceptarTypo]}>
+                        <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Contínua con Apple
                           </Text>
                         </View>
@@ -314,13 +315,13 @@ const LoginSwitch = () => {
                           style={[styles.groupInner, styles.groupPosition1]}
                           contentFit="cover"
                           source={require('../../assets/group-237.png')}
-                        />
-                      </TouchableOpacity> */}
+                          />
+                        </TouchableOpacity> */}
 
                       <TouchableOpacity
                         onPress={signInWithFacebook}
                         style={styles.loremIpsumGroup}
-                      >
+                        >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Continua con Facebook
@@ -388,7 +389,7 @@ const LoginSwitch = () => {
                         isPlayer
                       })
                     }
-                  >
+                    >
                     <View style={styles.loremIpsum2}>
                       <Text style={[styles.aceptar, styles.aceptarTypo]}>
                         Regístrate con el e-mail
@@ -399,7 +400,7 @@ const LoginSwitch = () => {
                       style={[styles.groupChild1, styles.groupPosition]}
                       contentFit="cover"
                       source={require('../../assets/group-238.png')}
-                    />
+                      />
                   </Pressable>
                 </View>
                 <Pressable
@@ -409,7 +410,7 @@ const LoginSwitch = () => {
                       isPlayer
                     })
                   }
-                >
+                  >
                   <Text
                     style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
                   >
@@ -426,7 +427,7 @@ const LoginSwitch = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+          </View>
   )
 }
 
@@ -473,14 +474,16 @@ const styles = StyleSheet.create({
     // bottom: '15%'
   },
   loginSwitchChild: {
+    marginBottom: 0, // o el modo de ajuste que prefieras
     // backgroundColor: 'red',
     width: '150%',
-    height: '40%',
+    height: '50%',
     top: '-20%',
     // bottom: '75%',
     position: 'absolute',
-    left: '-45%',
-    zIndex: 0
+    left: '-15%',
+    zIndex: 0,
+    transform: [{ scale: 0.60 }] // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
     height: 40,
@@ -620,6 +623,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     width: '100%',
+    marginEnd : 250,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
