@@ -176,8 +176,8 @@ const OfertasEmitidas = () => {
                 >
                   <Text style={[styles.inscritos1, styles.pausar1Typo]}>
                     {offer.inscriptions
-                      ? `${offer.inscriptions.length} inscriptos`
-                      : '0 inscriptos'}
+                      ? `${offer.inscriptions.length} inscritos`
+                      : '0 inscritos'}
                   </Text>
                 </Pressable>
                 <Modal visible={modalVisible} transparent={true}>

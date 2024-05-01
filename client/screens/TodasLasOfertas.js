@@ -637,7 +637,7 @@ const TodasLasOfertas = () => {
               bottom: 4
             }}
           >
-            Aun no te has inscripto en ninguna oferta!
+            Aun no te has inscrito en ninguna oferta!
           </Text>
         </View>
       )}
