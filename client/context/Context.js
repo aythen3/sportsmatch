@@ -21,6 +21,7 @@ export const ContextProvider = ({ children }) => {
   const [coverImage, setCoverImage] = useState()
   const [roomId, setRoomId] = useState()
   const [libraryImage, setLibraryImage] = useState()
+  const userId = user?.user?.id
 
   function transformHttpToHttps(url) {
     if (url.startsWith('http://')) {
@@ -152,13 +153,34 @@ export const ContextProvider = ({ children }) => {
   }, [])
 
   function getTimeFromDate(dateString) {
-    const date = new Date(dateString)
-    const hours = date.getUTCHours()
-    const minutes = date.getUTCMinutes()
-    const formattedHours = hours < 10 ? '0' + hours : hours
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
-    return `${formattedHours}:${formattedMinutes}`
-  }
+    // Create a new Date object from the UTC string
+    const utcDate = new Date(dateString);
+
+    // Get the local time zone offset in minutes
+    const localOffsetMinutes = new Date().getTimezoneOffset();
+
+    // Convert the local offset to milliseconds and adjust for the sign
+    const localOffsetMs = localOffsetMinutes * 60000;
+
+    // Calculate the local time by adding the local offset to the UTC time
+    const localTime = utcDate.getTime() + localOffsetMs;
+
+    // Create a new Date object representing the local time
+    const localDate = new Date(localTime);
+
+    // Extract local hours and minutes
+    const hours = localDate.getHours();
+    const minutes = localDate.getMinutes();
+
+    // Format hours and minutes
+    const formattedHours = hours < 10 ? '0' + hours : hours;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    // Return formatted time
+    return `${formattedHours}:${formattedMinutes}`;
+}
+
+
   // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
   const socket = io(
@@ -188,7 +210,7 @@ export const ContextProvider = ({ children }) => {
   })
 
   socket.on('joinedRoom', (room) => {
-    // console.log('Joined to room: ', room)
+     console.log('Joined to room: ', room)
     setRoomId(room)
   })
 
@@ -247,9 +269,64 @@ export const ContextProvider = ({ children }) => {
     return age
   }
 
+  const [usersWithMessages,setUsersWithMessages] = useState([])
+
+  const getUsersMessages = () => {
+    const getConvMessages = async (user) => {
+      try {
+        const { data } = await axiosInstance.get(
+          `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
+        );
+        const filterByDelete = data.filter(message=>{
+          const senderOrReceiver = message.senderId === userId ? 'sender' : 'receiver'
+          if(senderOrReceiver === 'sender') {
+            if(message.senderDelete === true){
+              return false
+            }
+            return true
+          }
+          if(senderOrReceiver === 'receiver') {
+            if(message.receiverDelete === true){
+              return false
+            }
+            return true
+          }
+        })
+        return filterByDelete;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
+    };
+    Promise.all(
+      allUsers
+        ?.filter((user) => user?.id !== userId)
+        .map(async (user) => ({
+          user,
+          data: await getConvMessages(user),
+        }))
+    )
+      .then((filteredUsers) => {
+        const usersWithMessages = filteredUsers.filter(
+        (user) => user?.data && user?.data.length > 0
+        );
+
+        const sortedUsersWithMessages = usersWithMessages.sort(
+          (a, b) => new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
+        );
+
+        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user));
+      })
+      .catch((error) => {
+        console.error('Error fetching messages for users:', error);
+      });
+  }
+
   return (
     <Context.Provider
       value={{
+        getUsersMessages,
+        setUsersWithMessages,usersWithMessages,
         pickImage,
         coverImage,
         setCoverImage,

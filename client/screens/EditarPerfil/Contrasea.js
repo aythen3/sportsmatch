@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View } from 'react-native'
+import { StyleSheet, Pressable, Text, View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   FontFamily,
@@ -10,9 +10,26 @@ import {
   Padding
 } from '../../GlobalStyles'
 import Input from '../../components/Input'
+import { useSelector } from 'react-redux'
+import axiosInstance from '../../utils/apiBackend'
 
 const Contrasea = () => {
+  const {user} = useSelector(state=>state.users)
   const navigation = useNavigation()
+  const [password,setPassword] = useState('')
+  const [newPassword,setNewPassword] = useState('')
+  const [repeatNewPassword,setRepeatNewPassword] = useState('')
+
+  const handleChangePassword = () => {
+    if(newPassword === repeatNewPassword) {
+      const body = {
+        email: user.user.email,
+        password: password,
+        newPassword: newPassword
+      }
+      axiosInstance.post(`user/change-password/${user.user.id}`,body).then(()=>navigation.navigate('SiguiendoJugadores'))
+    }
+  }
 
   return (
     <View style={styles.contrasea}>
@@ -38,16 +55,16 @@ const Contrasea = () => {
       </View>
 
       <View View style={{ marginTop: 30 }}>
-        <Input title="Contraseña" placeholderText="***********" />
-        <Input title="Nueva contraseña" />
-        <Input title="Repetir nueva contraseña" />
+        <Input state={password} setState={setPassword} type={'password'} title="Contraseña" placeholderText="*****" />
+        <Input state={newPassword} setState={setNewPassword}  type={'newPassword'} title="Nueva contraseña" />
+        <Input state={repeatNewPassword} setState={setRepeatNewPassword} type={'repeatNewPassword'} title="Repetir nueva contraseña" />
       </View>
 
-      <View style={styles.boton}>
+      <TouchableOpacity disabled={password.length <= 0 || newPassword.length <= 0 ||repeatNewPassword.length <= 0} onPress={handleChangePassword} style={styles.boton}>
         <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
           <Text style={styles.aceptar}>Aceptar</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }

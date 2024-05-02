@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 
 const CircularStat = ({ value }) => {
@@ -12,21 +12,21 @@ const CircularStat = ({ value }) => {
 
   return (
     <View>
-      <Svg width={radius * 2} height={radius * 2}>
+      <Svg width={Dimensions.get('screen').width * 0.8/3} height={Dimensions.get('screen').width * 0.8/3}>
         <Defs>
           <LinearGradient id="grad" x1="0" y1="0" x2="100%" y2="0">
             <Stop offset="100%" stopColor="#e1451e" />
           </LinearGradient>
         </Defs>
         <Circle
-          cx={radius}
-          cy={radius}
-          r={radius - strokeWidth / 2}
+          cx={(Dimensions.get('screen').width * 0.8/3)/2}
+          cy={(Dimensions.get('screen').width * 0.8/3)/2}
+          r={(Dimensions.get('screen').width * 0.8/3)/2 - strokeWidth / 2}
           fill="none"
           stroke="url(#grad)"
           strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
+          strokeDasharray={2 * Math.PI * (Dimensions.get('screen').width * 0.8/3)/2}
+          strokeDashoffset={(2 * Math.PI * (Dimensions.get('screen').width * 0.8/3)/2)* (1 - value / 100)}
         />
       </Svg>
     </View>

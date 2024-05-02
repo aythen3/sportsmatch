@@ -1,13 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily } from '../GlobalStyles'
 
-const CardInfoOffers = ({ text, value }) => {
+const CardInfoOffers = ({ text, value ,category}) => {
+  const [first, setFirst] = useState("")
+  const [second, setSecond] = useState("")
+
+  const getSeparatedCategory = (value) => {
+    let str = value
+let matches = str.match(/(.*?)\((.*)\)/);
+
+if (matches) {
+  let firstPart = matches[1].trim(); // "Hello"
+  let secondPart = "(" + matches[2].trim() + ")"; // "(Hello testing)"
+  setFirst(firstPart)
+  setSecond(secondPart)
+  return
+} else {
+  console.log("No match found.");
+}
+  }
+
+  useEffect(()=>{
+    if(category){
+      getSeparatedCategory(value)
+    }
+  },[])
   return (
     <View style={styles.card}>
       <Text style={[styles.text]}>{text}</Text>
       {text !== 'Urgencia' && text !== 'Retribucion' ? (
-        <Text style={styles.taxto1Clr}>{value}</Text>
+        <View>
+          {category && <Text style={styles.taxto1Clr}>{first}</Text>}
+          <Text style={styles.taxto1Clr}>{category ? second : value}</Text>
+        </View>
       ) : (
         <View
           style={{

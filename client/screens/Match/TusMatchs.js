@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   Modal,
+  TouchableWithoutFeedback,
   TouchableOpacity
 } from 'react-native'
 import { Image } from 'expo-image'
@@ -281,28 +282,32 @@ const TusMatchs = () => {
         )}
 
       <Modal visible={details} transparent={true} animationType="slide">
-        <View
-          style={{
-            flex: 1
-          }}
+        <TouchableWithoutFeedback
+          onPress={() => setDetails(false)}
         >
+          <View style={{
+            flex: 1
+          }}>
           <TusMatchsDetalle
             data={selectedClubDetails}
             onClose={() => setDetails(false)}
           />
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <Modal visible={userDetails} transparent={true} animationType="slide">
-        <View
-          style={{
-            flex: 1
-          }}
+        <TouchableWithoutFeedback
+          onPress={() => setUserDetails(false)}
         >
-          <TusMatchsDetalle1
+         <View style={{
+            flex: 1
+          }}>
+         <TusMatchsDetalle1
             data={selectedUserDetails}
             onClose={() => setUserDetails(false)}
           />
-        </View>
+         </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   )
