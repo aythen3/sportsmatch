@@ -11,7 +11,7 @@ export class ChatController {
     private readonly messageService: MessageService
   ) {}
 
-  @Post('/marcarMensajesComoEliminados')
+  @Post('/deleteAllMessageChat')
 async marcarMensajesComoEliminados(@Body() body: { senderId: string, receiverId: string, room: string }) {
     try {
         await this.messageService.marcarMensajesComoEliminados(body.senderId, body.receiverId, body.room);

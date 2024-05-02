@@ -398,4 +398,27 @@ export class UserService {
 
     return passwordMatch ? user : undefined;
   }
+
+
+
+  public async changePassword(id: string, newPassword: string): Promise<any> {
+    try {
+      // Encriptar la nueva contraseña
+      const hashedPassword = await hash(newPassword, +process.env.HASH_SALT);
+
+      // Actualizar la contraseña en la base de datos
+      const result = await this.userRepository.update(id, { password: hashedPassword });
+
+      // Verificar si la actualización fue exitosa
+      if (result.affected === 0) {
+        return { message: 'Error al cambiar la clave' };
+
+      }
+
+      return { message: 'Clave modificada con éxito' };
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
 }

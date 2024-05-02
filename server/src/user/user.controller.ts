@@ -8,7 +8,9 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards
+  UseGuards,
+  HttpException,
+  HttpStatus
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -107,6 +109,27 @@ export class UserController {
     return this.userService.findInfoRelation(userId, relationsArray);
   }
 
-  
+  @Post('change-password/:id')
+  async changePassword(
+    @Param('id') id: string,
+    @Body('email') email: string,
+    @Body('password') password: string,
+    @Body('newPassword') newPassword: string
+  ) {
+    try {
+      // Verificar si el usuario existe y las credenciales son válidas
+      const user = await this.userService.findByEmailAndPassword(email, password);
+      if (!user) {
+        return { message: 'Error al cambiar la clave' };
+      }
+
+      // Cambiar la contraseña
+      await this.userService.changePassword(id, newPassword);
+
+      return { message: 'Clave modificada con éxito' };
+    } catch (error) {
+      return { message: 'Catch' };
+    }
+  }
 
 }
