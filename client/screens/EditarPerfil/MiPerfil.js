@@ -43,9 +43,10 @@ console.log(sportman,"sportman")
   return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
-      style={styles.perfilDatosVisualitzaciMa}
+      style={{backgroundColor: Color.bLACK1SPORTSMATCH,
+        overflow: 'hidden'}}
     >
-      <View style={styles.contenidoPerfil}>
+      <View>
         <Image
           style={styles.imagenPosition}
           contentFit="cover"
@@ -274,12 +275,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: '5%'
   },
-
-  perfilDatosVisualitzaciMa: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    overflow: 'hidden'
-    // width: '100%'
-  }
 })
 
 export default MiPerfil

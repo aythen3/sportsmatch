@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -20,6 +20,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
+import { Context } from '../../context/Context'
 
 const TusNotificaciones1 = () => {  
   const [value,setValue] = useState('')
@@ -27,15 +28,16 @@ const TusNotificaciones1 = () => {
   const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
   const dispatch = useDispatch()
-  const [usersWithMessages, setUsersWithMessages] = useState([])
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers } = useSelector((state) => state.users)
   const { offers } = useSelector((state) => state.offers)
+const {getUsersMessages,usersWithMessages} = useContext(Context)
+
   const userId = user?.user?.id
 
-  useEffect(() => {}, [allUsers])
+  useEffect(() => {}, [allUsers, usersWithMessages])
 
   useEffect(() => {
     dispatch(getAllUsers())
@@ -80,43 +82,13 @@ const TusNotificaciones1 = () => {
   // useEffect(()=>{
   //   getAllUsersMessages()
   // },[])
+  
+
+  
 
   useEffect(() => {
-    const getConvMessages = async (user) => {
-      try {
-        const { data } = await axiosInstance.get(
-          `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-        );
-        return data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-      }
-    };
-
-    Promise.all(
-      allUsers
-        ?.filter((user) => user?.id !== userId)
-        .map(async (user) => ({
-          user,
-          data: await getConvMessages(user),
-        }))
-    )
-      .then((filteredUsers) => {
-        const usersWithMessages = filteredUsers.filter(
-        (user) => user?.data && user?.data.length > 0
-        );
-
-        const sortedUsersWithMessages = usersWithMessages.sort(
-          (a, b) => new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
-        );
-
-        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user));
-      })
-      .catch((error) => {
-        console.error('Error fetching messages for users:', error);
-      });
-  }, [userId, allUsers]);
+    getUsersMessages()   
+  }, []);
 
 
 

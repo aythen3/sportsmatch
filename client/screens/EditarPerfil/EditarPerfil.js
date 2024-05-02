@@ -57,13 +57,6 @@ const EditarPerfil = () => {
           <View style={styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('CorreoElectrnico')}
-          >
-            E–mail
-          </Text>
-          <View style={styles.frameChild} />
-          <Text
-            style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() => navigation.navigate('Contrasea')}
           >
             Contraseña

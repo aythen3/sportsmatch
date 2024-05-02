@@ -16,7 +16,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
 
   return (
-    <Pressable style={styles.tusMatchsDetalle}>
+    <View style={styles.tusMatchsDetalle}>
       <Image
         style={[styles.fondoColorIcon, styles.iconGroupLayout]}
         contentFit="cover"
@@ -64,7 +64,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
       >
         <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
       </Pressable>
-    </Pressable>
+    </View>
   )
 }
 

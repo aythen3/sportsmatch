@@ -97,8 +97,8 @@ const MessagesChat = ({
               }}
             >
               {lastMessage
-                ? lastMessage?.message?.message?.length >= 35
-                  ? lastMessage?.message?.message.slice(0, 35).concat('...')
+                ? lastMessage?.message?.message?.length >= 20
+                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
                   : lastMessage?.message?.message
                 : 'Inicia una conversacion!'}
             </Text>

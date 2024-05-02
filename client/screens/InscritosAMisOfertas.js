@@ -45,7 +45,7 @@ const InscritosAMisOfertas = () => {
           onPress={() => navigation.goBack()}
         >
           <Text style={[styles.inscritos1, styles.carlesMirTypo]}>
-            Inscriptos
+            Inscritos
           </Text>
         </Pressable>
       </View>
