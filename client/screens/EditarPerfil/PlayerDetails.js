@@ -94,8 +94,8 @@ const PlayerDetails = () => {
   }
 
   const [showCamera, setShowCamera] = useState(false)
-    const [selectedPicture, setSelectedPicture] = useState()
-    const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedPicture, setSelectedPicture] = useState()
+  const [selectedImage, setSelectedImage] = useState(null)
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
 
   const handlePickImage = async (type) => {
@@ -106,7 +106,7 @@ const PlayerDetails = () => {
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
@@ -144,73 +144,74 @@ const PlayerDetails = () => {
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
       {showCamera && (
-        <Modal  animationType="slide"
-        transparent={true}
-        visible={showCamera}
-        onRequestClose={()=>setShowCamera(false)}>
-          <Camera
-          style={{
-            flex: 1
-          }}
-          type={Camera.Constants.Type.back}
-          ref={(ref) => setCameraRef(ref)}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showCamera}
+          onRequestClose={() => setShowCamera(false)}
         >
-          <View
+          <Camera
             style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row'
+              flex: 1
             }}
+            type={Camera.Constants.Type.back}
+            ref={(ref) => setCameraRef(ref)}
           >
-            <TouchableOpacity
-              style={{ position: 'absolute', top: 22, left: 18 }}
-              onPress={() => setShowCamera(false)}
-            >
-              <Image
-                style={{height: 15,
-                  width: 15}}
-                contentFit="cover"
-                source={require('../../assets/group-565.png')}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
+            <View
               style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                width: '100%',
-                marginBottom: 10,
-                position: 'relative'
+                flex: 1,
+                backgroundColor: 'transparent',
+                flexDirection: 'row'
               }}
             >
               <TouchableOpacity
-                onPress={takePicture}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 100,
-                  backgroundColor: '#cecece',
+                style={{ position: 'absolute', top: 22, left: 18 }}
+                onPress={() => setShowCamera(false)}
+              >
+                <Image
+                  style={{ height: 15, width: 15 }}
+                  contentFit="cover"
+                  source={require('../../assets/group-565.png')}
+                />
+              </TouchableOpacity>
 
-                  color: 'white'
-                }}
-              ></TouchableOpacity>
               <TouchableOpacity
-                onPress={changePictureMode}
                 style={{
-                  position: 'absolute',
-                  right: 20,
-                  color: 'white',
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginBottom: 10,
+                  position: 'relative'
                 }}
               >
-                <Entypo name="cycle" color={'#fff'} size={25} />
+                <TouchableOpacity
+                  onPress={takePicture}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 100,
+                    backgroundColor: '#cecece',
+
+                    color: 'white'
+                  }}
+                ></TouchableOpacity>
+                <TouchableOpacity
+                  onPress={changePictureMode}
+                  style={{
+                    position: 'absolute',
+                    right: 20,
+                    color: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Entypo name="cycle" color={'#fff'} size={25} />
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        </Camera>
+            </View>
+          </Camera>
         </Modal>
       )}
       <ScrollView
@@ -236,31 +237,33 @@ const PlayerDetails = () => {
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
           {/* =========================================================== */}
-          <View style={{ width: '100%',
-    gap: 5,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    borderRadius: 5,}}>
+          <View
+            style={{
+              width: '100%',
+              gap: 5,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              borderRadius: 5
+            }}
+          >
             <View style={styles.profileImageContainer}>
               {sportman?.info?.img_perfil && (
                 <Image
-                  style={{width: '100%',
-                  height: '100%',
-                  borderRadius:100}}
+                  style={{ width: '100%', height: '100%', borderRadius: 100 }}
                   contentFit="cover"
                   source={{
                     uri: provisoryProfileImage || sportman?.info?.img_perfil
                   }}
                 />
               )}
-               <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
                   setSelectedPicture('profile')
                   setShowCamera(true)
                 }}
                 style={{
                   right: 0,
-                  position:"absolute",
+                  position: 'absolute',
                   width: 35,
                   height: 35,
                   borderRadius: 100,
@@ -287,33 +290,34 @@ const PlayerDetails = () => {
           {/* =========================================================== */}
           {/* ======================== COVER PIC ======================== */}
           {/* =========================================================== */}
-          <View style={{ width: '100%',
-    gap: 5,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    borderRadius: 5,
-    }}>
+          <View
+            style={{
+              width: '100%',
+              gap: 5,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              borderRadius: 5
+            }}
+          >
             <View style={styles.coverImageContainer}>
               {sportman?.info?.img_front && (
                 <Image
-                  style={{width: '100%',
-                  height: '100%',
-                  borderRadius:8}}
+                  style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"
                   source={{
                     uri: provisoryCoverImage || sportman?.info?.img_front
                   }}
                 />
               )}
-               <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
                   setSelectedPicture('cover')
                   setShowCamera(true)
                 }}
                 style={{
                   right: 0,
-                  position:"absolute",
-                  top:-17,
+                  position: 'absolute',
+                  top: -17,
                   width: 35,
                   height: 35,
                   borderRadius: 100,
@@ -482,13 +486,13 @@ const styles = StyleSheet.create({
     width: 117,
     height: 117,
     borderRadius: 100,
-    marginBottom: 8,
+    marginBottom: 8
   },
   coverImageContainer: {
     width: '100%',
     height: 138,
     marginBottom: 8,
-    borderRadius:8
+    borderRadius: 8
   },
   topWrapper: {
     marginBottom: 42,

@@ -145,11 +145,11 @@ const Paso1 = () => {
         })
       }
     } else {
-      console.log('stepsProfesional:',stepsProfesional)
+      console.log('stepsProfesional:', stepsProfesional)
       stepsProfesional !== 1 && setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
-        console.log("profesional")
-        console.log('selectedRole: ',selectedRole)
+        console.log('profesional')
+        console.log('selectedRole: ', selectedRole)
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -167,7 +167,7 @@ const Paso1 = () => {
         }
         console.log('final body: ', body)
         dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ',response.payload)
+          console.log('reponse: ', response.payload)
           dispatch(
             setInitialSportman({
               id: response.payload.id,
@@ -244,6 +244,8 @@ const Paso1 = () => {
               </Text>
               <Text
                 style={{
+                  marginTop: -5,
+                  marginBottom: -3,
                   fontSize: FontSize.size_9xl,
                   color: Color.wHITESPORTSMATCH,
                   textAlign: 'center',
@@ -344,7 +346,7 @@ const Paso1 = () => {
           )}
           {profesional && stepsProfesional === 0 && (
             <Paso3Profesional
-            selectedCity={selectedCity}
+              selectedCity={selectedCity}
               setSelectedCity={setSelectedCity}
               profesionalValues={profesionalValues}
               setProfesionalValues={setProfesionalValues}

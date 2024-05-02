@@ -132,7 +132,10 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
     <ScrollView
       onScroll={handleScroll}
       keyboardShouldPersistTaps={'always'}
-      style={{ height: '70%' }}
+      style={{
+        height: '70%',
+        marginTop: -20
+      }}
     >
       <View
         style={{
@@ -186,7 +189,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           </View>
         </View>
       </View>
-      <View style={styles.formulariosInferiores}>
+      <View style={{ ...styles.formulariosInferiores }}>
         <View
           collapsable={false}
           onLayout={(event) => {
@@ -195,7 +198,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               setCategoryTop(pageY)
             })
           }}
-          style={{ position: 'relative', width: '100%', marginTop: 10 }}
+          style={{ position: 'relative', width: '100%', marginTop: 20 }}
         >
           <Acordeon
             title="Categoría"
@@ -224,12 +227,12 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               setPositionTop(pageY)
             })
           }}
-          style={{ position: 'relative', width: '100%', marginTop: 10 }}
+          style={{ position: 'relative', width: '100%', marginTop: 15 }}
         >
           <Acordeon
-            title="Posicion Principal"
+            title="Posición Principal"
             placeholderText={
-              selectedPosition ? selectedPosition : 'Selecciona tu posicion'
+              selectedPosition ? selectedPosition : 'Selecciona tu posición '
             }
             isAccordeon={true}
             open={openPositionModal}

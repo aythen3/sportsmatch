@@ -91,7 +91,7 @@ const StepsJugador = () => {
                 </Text>
               </Pressable>
             </View>
-            <View style={{ marginTop: 20 }}>
+            <View style={{ marginTop: 10 }}>
               <Text
                 style={{
                   fontSize: FontSize.t1TextSMALL_size,
@@ -125,7 +125,7 @@ const StepsJugador = () => {
 
           <TouchableOpacity
             style={{
-              marginVertical: 60,
+              marginVertical: 30,
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: Color.wHITESPORTSMATCH,

@@ -229,6 +229,9 @@ export const ContextProvider = ({ children }) => {
   const getUserMatches = () => {
     console.log('getting user matches')
     axiosInstance.get('match').then((data) => {
+
+
+      
       const userMatches = data.data.filter(
         (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
       )

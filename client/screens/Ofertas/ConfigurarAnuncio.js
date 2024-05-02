@@ -153,7 +153,7 @@ const ConfigurarAnuncio = () => {
               {selectedPosition
                 ? selectedPosition?.name.charAt(0).toUpperCase() +
                   selectedPosition?.name.slice(1).toLowerCase()
-                : 'Selecciona una posicion'}
+                : 'Selecciona una posición'}
             </Text>
             {showModal && (
               <View

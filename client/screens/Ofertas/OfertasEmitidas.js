@@ -131,10 +131,10 @@ const OfertasEmitidas = () => {
 
                   <View>
                     <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                      Posicion
+                      Posición
                     </Text>
                     <Text style={[styles.masculino, styles.timeTypo]}>
-                      {/* {offer.position} */} Posicion
+                      {/* {offer.position} */} Posición
                     </Text>
                   </View>
 
