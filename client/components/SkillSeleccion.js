@@ -151,7 +151,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
-              value={data.attack !== undefined ? String(data.attack) : ''}
+              value={data?.attack !== undefined ? String(data?.attack) : editData?.attack ? editData?.attack :''}
               onChangeText={(value) => handleData('attack', value)}
               maxLength={3}
             />
@@ -164,7 +164,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType="numeric"
-              value={data.defense !== undefined ? String(data.defense) : ''}
+              value={data?.defense !== undefined ? String(data?.defense) : editData?.defense ? editData?.defense :''}
               style={styles.textInput}
               onChangeText={(value) => handleData('defense', value)}
               maxLength={3}
@@ -179,7 +179,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
-              value={data.speed !== undefined ? String(data.speed) : ''}
+              value={data?.speed !== undefined ? String(data?.speed) : editData?.speed ? editData?.speed :''}
               onChangeText={(value) => handleData('speed', value)}
               maxLength={3}
             />
@@ -267,7 +267,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
-              value={data.prop1 !== undefined ? String(data.prop1) : ''}
+              value={data?.prop1 !== undefined ? String(data?.prop1) : editData?.prop1 ? editData?.prop1 : '' }
               onChangeText={(value) => handleData('prop1', value)}
               maxLength={3}
             />
@@ -281,7 +281,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
-              value={data.prop2 !== undefined ? String(data.prop2) : ''}
+              value={data?.prop2 !== undefined ? String(data?.prop2) :editData?.prop2 ? editData?.prop2 : ''}
               onChangeText={(value) => handleData('prop2', value)}
               maxLength={3}
             />
@@ -294,7 +294,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
               style={styles.textInput}
               placeholder="0 - 100"
               placeholderTextColor={'#999'}
-              value={data.prop3 !== undefined ? String(data.prop3) : ''}
+              value={data?.prop3 !== undefined ? String(data?.prop3) : editData?.prop3 ? editData?.prop3 : ''}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop3', value)}
               maxLength={3}

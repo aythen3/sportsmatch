@@ -51,8 +51,6 @@ const TodasLasOfertas = () => {
     console.log('selectOfferComponent: ', selectOfferComponent)
   }, [selectOfferComponent])
 
-  console.log('user: ', user)
-  console.log('offers', offers)
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -111,8 +109,7 @@ const TodasLasOfertas = () => {
       }
 
       }
-    };
-
+    }
     if (
       clientSecret
     ) {
@@ -286,7 +283,7 @@ const TodasLasOfertas = () => {
                     text="Sexo"
                     value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
                   />
-                  <CardInfoOffers text="Categoría" value={offer.category} />
+                  <CardInfoOffers category={true} text="Categoría" value={offer.category} />
                 </View>
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -442,21 +439,27 @@ const TodasLasOfertas = () => {
               alignItems: 'center'
             }}
             onPress={() => user.user.plan === 'pro' || user.user.plan === 'star' ?  null :setShowPremiumModal(true) } >
+            <Text>
             Ver más ofertas
+            </Text>
         </TouchableOpacity>
       )}
 { /* ============================ FAVORITE OFFERS ============================ */ }
 {selectOfferComponent !== 'todas' && offers &&
-     offers
-     .filter((offer) => {
-       const filteredUserMatches = userMatches.filter(
-         (match) => match.offerId && match.offerId !== offer.id
-       )
-       if (filteredUserMatches.length > 0) {
-         return false
-       }
-       return true
-     }).length > 0  ? (
+      offers
+      .filter((offer) => {
+        const filteredUserMatches = userMatches.filter(
+          (match) => match.offerId && match.offerId !== offer.id
+        )
+        const alreadyJoined = offer?.inscriptions?.includes(user?.user?.sportman?.id)
+        if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if(alreadyJoined) {
+         return true
+        }
+        return false
+      }).length > 0  ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {  offers
      .filter((offer) => {
@@ -517,7 +520,7 @@ const TodasLasOfertas = () => {
                     text="Sexo"
                     value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
                   />
-                  <CardInfoOffers text="Categoría" value={offer.category} />
+                  <CardInfoOffers text="Categoría" category={true} value={offer.category} />
                 </View>
 
               <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -625,7 +628,7 @@ const TodasLasOfertas = () => {
         </ScrollView>
       ) : selectOfferComponent !== 'todas' && (
         <View
-          style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
+          style={{ width: '100%', alignSelf: 'center', alignItems: 'center'}}
         >
           <Text
             style={{

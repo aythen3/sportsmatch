@@ -14,7 +14,9 @@ function Input({
   open,
   inputRef,
   onSubmit,
-  keyboardType
+  keyboardType,
+  type,
+  state,setState
 }) {
   return (
     <View
@@ -57,10 +59,11 @@ function Input({
               backgroundColor: changeColor ? 'red' : 'transparent',
               textAlignVertical: isMultiLine ? 'top' : 'center'
             }}
-            value={value}
-            onChangeText={(value) => onValues(field, value)}
+            value={type ? state : value}
+            onChangeText={(value) => type ? setState(value) : onValues(field, value)}
             ref={inputRef}
             onSubmitEditing={onSubmit}
+            secureTextEntry={type ? true : false}
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
           />
           {isAccordeon && (

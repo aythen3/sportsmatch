@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -9,7 +9,8 @@ import {
   StatusBar,
   Touchable,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -28,6 +29,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
 import { updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
+import axios from 'axios'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
@@ -35,7 +37,7 @@ const ChatAbierto1 = () => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showDeletePopUp, setShowDeletePopUp] = useState(false)
   const isFocused = useIsFocused()
-  const { joinRoom, leaveRoom, sendMessage, getTimeFromDate } =
+  const { joinRoom, getUsersMessages,roomId,leaveRoom, sendMessage, getTimeFromDate } =
     useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
@@ -43,6 +45,7 @@ const ChatAbierto1 = () => {
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const scrollViewRef = useRef();
 
   const handleSendMessage = () => {
     sendMessage(message, user.user.id, route.params.receiverId)
@@ -154,7 +157,10 @@ const ChatAbierto1 = () => {
 
   const handleRemoveChat = () => {
     setShowDeletePopUp(false)
-    console.log('removing chat...')
+    const body = { senderId: user?.user?.id.toString() , receiverId: route.params.receiverId.toString(), room: roomId }
+    console.log('removing chat...',body)
+    axiosInstance.post('chat/marcarMensajesComoEliminados',body)
+
   }
 
   if (selectedUserDetails) return (
@@ -212,11 +218,13 @@ const ChatAbierto1 = () => {
           width: '100%',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingHorizontal: 15
+          paddingHorizontal: 15,paddingBottom:5,
         }}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Pressable onPress={() => navigation.goBack()}>
+        <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+          <Pressable onPress={() => {         
+            getUsersMessages()
+            navigation.goBack()}}>
             <Image
               style={{ width: 9, height: 18, marginRight: 12, marginTop: 2.5 }}
               contentFit="cover"
@@ -247,24 +255,26 @@ const ChatAbierto1 = () => {
         </TouchableOpacity>
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
-          paddingRight: 10,
-          paddingLeft: 10
-        }}
-      >
-        {allMessages?.map((chat) => (
-          <Chat
-            hour={getTimeFromDate(chat.createdAt)}
-            key={chat.id}
-            text={chat.message}
-            isMy={chat.senderId === user.user.id}
-            read={chat.isReaded}
-          />
-        ))}
-      </View>
+     <ScrollView ref={scrollViewRef}  onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
+       <View
+         style={{
+           flex: 1,
+           flexDirection: 'column-reverse',
+           paddingRight: 10,
+           paddingLeft: 10,overflow:'hidden'
+         }}
+       >
+         {allMessages?.map((chat) => (
+           <Chat
+             hour={getTimeFromDate(chat.createdAt)}
+             key={chat.id}
+             text={chat.message}
+             isMy={chat.senderId === user.user.id}
+             read={chat.isReaded}
+           />
+         ))}
+       </View>
+     </ScrollView>
       <View
         style={{
           height: 50,
