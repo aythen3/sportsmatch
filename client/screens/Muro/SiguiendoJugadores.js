@@ -34,6 +34,19 @@ const SiguiendoJugadores = () => {
   const { allNotifications } = useSelector((state) => state.notifications)
   const { comments } = useSelector((state) => state.comments)
 
+  const getUserAuth = async () => {
+    const normalUserAuth = await AsyncStorage.getItem('userAuth')
+    const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
+    const googleUserAuth = await AsyncStorage.getItem('googleAuth')
+    console.log('normalUserAuth from sj : ', normalUserAuth)
+    console.log('facebookUserAuth from sj : ', facebookUserAuth)
+    console.log('googleUserAuth from sj : ', googleUserAuth)
+  }
+
+  useEffect(() => {
+    getUserAuth()
+  }, [])
+
   // const getUserId = async () => {
   //   const userId = await AsyncStorage.getItem('userId')
   //   return userId

@@ -74,18 +74,6 @@ const App = () => {
     'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
     'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
   })
-  // asdasdsefsdfsdfsd
-
-  const getUserAuth = () => {
-    AsyncStorage.getItem('userToken').then((value) => {
-      // console.log('value: ', value)
-    })
-  }
-
-  useEffect(() => {
-    console.log('hola')
-    getUserAuth()
-  }, [])
 
   if (!fontsLoaded && !error) {
     return null

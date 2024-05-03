@@ -18,9 +18,10 @@ import {
 import { useDispatch } from 'react-redux'
 import { clearUser } from '../../redux/slices/users.slices'
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { LoginManager } from 'react-native-fbsdk-next';
+import { LoginManager } from 'react-native-fbsdk-next'
 import { auth } from '../../firebaseConfig'
 import { signOut } from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -41,12 +42,12 @@ const CerrarSesin = () => {
   const signOutFacebook = async () => {
     console.log('sign out fb')
     try {
-      await LoginManager.logOut();
+      await LoginManager.logOut()
       // Perform any additional clean-up or navigation logic as needed
     } catch (error) {
-      console.error('Error signing out from Facebook: ', error);
+      console.error('Error signing out from Facebook: ', error)
     }
-  };
+  }
 
   return (
     <View style={styles.cerrarSesin}>
@@ -92,11 +93,21 @@ quieres `}</Text>
             <View style={styles.boton}>
               <TouchableOpacity
                 style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
-                onPress={() => {
+                onPress={async () => {
                   navigation.navigate('LoginSwitch')
-                 firebaseLogout()
+                  firebaseLogout()
+                  const normalUserAuth = await AsyncStorage.getItem('userAuth')
+                  const facebookUserAuth =
+                    await AsyncStorage.getItem('facebookAuth')
+                  const googleUserAuth =
+                    await AsyncStorage.getItem('googleAuth')
+                  console.log('normalUserAuth from cs : ', normalUserAuth)
+                  console.log('facebookUserAuth from cs : ', facebookUserAuth)
+                  console.log('googleUserAuth from cs : ', googleUserAuth)
+                  AsyncStorage.removeItem('userAuth')
+                  AsyncStorage.removeItem('googleAuth')
+                  AsyncStorage.removeItem('facebookAuth')
                   dispatch(clearUser())
-                  
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

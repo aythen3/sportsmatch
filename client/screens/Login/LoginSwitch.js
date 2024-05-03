@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import * as AppleAuthentication from 'expo-apple-authentication';
+import * as AppleAuthentication from 'expo-apple-authentication'
 
 import { Image } from 'expo-image'
 import {
@@ -35,22 +35,74 @@ import {
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
-import axiosInstance from '../../utils/apiBackend';
+import axiosInstance from '../../utils/apiBackend'
 import { create, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
-import axios from 'axios';
+import axios from 'axios'
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
-
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman, user } = useSelector((state) => state.users)
 
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
+
+  const getUserAuth = async () => {
+    const normalUserAuth = await AsyncStorage.getItem('userAuth')
+    const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
+    const googleUserAuth = await AsyncStorage.getItem('googleAuth')
+    console.log('normalUserAuth from app : ', normalUserAuth)
+    console.log('facebookUserAuth from app : ', facebookUserAuth)
+    console.log('googleUserAuth from app : ', googleUserAuth)
+    if (googleUserAuth) {
+      console.log('login with google...')
+      const googleId = await JSON.parse(googleUserAuth)
+      const response = await dispatch(login({ googleId }))
+      dispatch(
+        setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+      )
+      await AsyncStorage.setItem('googleAuth', user.uid)
+      await AsyncStorage.setItem('userType', response.payload.user.type)
+      dispatch(setClub(response))
+      return
+    }
+    if (facebookUserAuth) {
+      console.log('login with facebook...')
+      const facebookId = await JSON.parse(facebookUserAuth)
+      const response = await dispatch(login({ facebookId }))
+      dispatch(
+        setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+      )
+      dispatch(setClub(response))
+      return
+    }
+    if (normalUserAuth) {
+      console.log('login with normal user...')
+      const valuesUser = await JSON.parse(normalUserAuth)
+      console.log('valuesuser: ', valuesUser)
+      dispatch(login(valuesUser))
+        .then(async (response) => {
+          console.log('response: ', response.payload)
+          dispatch(
+            setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+          )
+          dispatch(setClub(response))
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+      return
+    }
+  }
+
+  useEffect(() => {
+    console.log('hola')
+    getUserAuth()
+  }, [])
 
   useEffect(() => {
     dispatch(getAll())
@@ -94,7 +146,7 @@ const LoginSwitch = () => {
       const { id_token } = response.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
-      console.log("deberia crear el usuario")
+      console.log('deberia crear el usuario')
     }
   }, [response])
 
@@ -126,22 +178,29 @@ const LoginSwitch = () => {
           dispatch(
             create({
               nickname: user.displayName,
-              email:"",
+              email: '',
               googleId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
             // console.log('data from back:', data);
             try {
-              const response = await dispatch(login({ googleId: user.uid  }));
-              console.log('response google:', response.payload);
-              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-              await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
-              await AsyncStorage.setItem('userType', response.payload.user.type);
-              dispatch(setClub(response));
-
+              const response = await dispatch(login({ googleId: user.uid }))
+              console.log('response google:', response.payload)
+              dispatch(
+                setIsSpotMan(
+                  response.payload.user.type === 'club' ? false : true
+                )
+              )
+              // await AsyncStorage.setItem(
+              //   'userToken',
+              //   response?.payload?.accesToken
+              // )
+              await AsyncStorage.setItem('googleAuth', user.uid)
+              await AsyncStorage.setItem('userType', response.payload.user.type)
+              dispatch(setClub(response))
             } catch (error) {
-              console.log('Error:', error);
+              console.log('Error:', error)
             }
           })
           return
@@ -157,18 +216,26 @@ const LoginSwitch = () => {
           ).then(async (data) => {
             // console.log('data from back fb:', data);
             try {
-              const response = await dispatch(login({ facebookId: user.uid }));
-              console.log('response facebook:', response.payload);
-              dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-              await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
-              await AsyncStorage.setItem('userType', response.payload.user.type);
-              dispatch(setClub(response));
+              const response = await dispatch(login({ facebookId: user.uid }))
+              console.log('response facebook:', response.payload)
+              dispatch(
+                setIsSpotMan(
+                  response.payload.user.type === 'club' ? false : true
+                )
+              )
+              // await AsyncStorage.setItem(
+              //   'userToken',
+              //   response?.payload?.accesToken
+              // )
+              await AsyncStorage.setItem('facebookAuth', user.uid)
+              await AsyncStorage.setItem('userType', response.payload.user.type)
+              dispatch(setClub(response))
             } catch (error) {
-              console.log('Error:', error);
+              console.log('Error:', error)
             }
           })
         }
-        } else {
+      } else {
         console.log('user not authenticated')
       }
     })
@@ -184,7 +251,9 @@ const LoginSwitch = () => {
       if (!data) {
         return
       }
-      const facebookCredential = FacebookAuthProvider.credential(data.accessToken)
+      const facebookCredential = FacebookAuthProvider.credential(
+        data.accessToken
+      )
       await signInWithCredential(auth, facebookCredential)
     } catch (error) {
       console.log('error: ', error)
@@ -192,19 +261,18 @@ const LoginSwitch = () => {
   }
   const handleIos = async (user) => {
     console.log('=====LOGIN WITH APPLE=====')
-    dispatch(
-      create(user)
-    ).then(async (data) => {
+    dispatch(create(user)).then(async (data) => {
       try {
-        const response = await dispatch(login({ appleId: user.appleId  }));
-        console.log('response google:', response.payload);
-        dispatch(setIsSpotMan(response.payload.user.type === 'club' ? false : true));
-        await AsyncStorage.setItem('userToken', response?.payload?.accesToken);
-        await AsyncStorage.setItem('userType', response.payload.user.type);
-        dispatch(setClub(response));
-
+        const response = await dispatch(login({ appleId: user.appleId }))
+        console.log('response google:', response.payload)
+        dispatch(
+          setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+        )
+        await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
+        await AsyncStorage.setItem('userType', response.payload.user.type)
+        dispatch(setClub(response))
       } catch (error) {
-        console.log('Error:', error);
+        console.log('Error:', error)
       }
     })
     return
@@ -218,13 +286,12 @@ const LoginSwitch = () => {
     )
 
   return (
-<View  style={{ backgroundColor: 'black' }}>
-
-    <Image
+    <View style={{ backgroundColor: 'black' }}>
+      <Image
         style={[styles.loginSwitchChild]}
         contentFit="cover"
         source={require('../../assets/fondo-inicial.png')}
-        />
+      />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -265,7 +332,7 @@ const LoginSwitch = () => {
                   style={
                     !isEnabled ? styles.clubScouting : styles.clubScouting2
                   }
-                  >
+                >
                   Club / Scouting
                 </Text>
               </View>
@@ -321,7 +388,7 @@ const LoginSwitch = () => {
                       <TouchableOpacity
                         onPress={signInWithFacebook}
                         style={styles.loremIpsumGroup}
-                        >
+                      >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
                             Continua con Facebook
@@ -334,49 +401,60 @@ const LoginSwitch = () => {
                           source={require('../../assets/group12.png')}
                         />
                       </TouchableOpacity>
-                    {Platform.OS === "ios" && (
+                      {Platform.OS === 'ios' && (
                         <AppleAuthentication.AppleAuthenticationButton
-                        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                        buttonStyle={{ backgroundColor: "black" }}
-
-                        cornerRadius={5}
-                        style={{ width: "auto", height: 44, borderRadius: 100, marginTop: 10, overflow: "hidden" }}
-                        onPress={async () => {
-                          try {
-                            const credential = await AppleAuthentication.signInAsync({
-                              requestedScopes: [
-
-                                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                                AppleAuthentication.AppleAuthenticationScope.EMAIL,
-
-                              ],
-                            });
-                            // LOGICA PARA LOGEARSE VA ACA
-                            const { identityToken, fullName } = credential;
-
-                            // Construcción del objeto a enviar en el post
-                            const postData = {
-                              email: "",
-                              type: isSportman === true ? 'sportman' : 'club',
-                              nickname: fullName.givenName + ' ' + fullName.familyName,
-                              appleId: identityToken, // Se utiliza el identityToken como el valor del appleId
-                            };
-
-                            // Envío del objeto postData al servidor
-                            const response2 = await handleIos(postData)
-
-                          } catch (e) {
-                            console.log(e, "entra al catch")
-                            if (e.code === 'ERR_REQUEST_CANCELED') {
-                              // handle that the user canceled the sign-in flow
-                            } else {
-                              console.log("llegue al final")
-                              // handle other errors
-                            }
+                          buttonType={
+                            AppleAuthentication.AppleAuthenticationButtonType
+                              .SIGN_IN
                           }
-                        }}
-                      />
-                    )}
+                          buttonStyle={{ backgroundColor: 'black' }}
+                          cornerRadius={5}
+                          style={{
+                            width: 'auto',
+                            height: 44,
+                            borderRadius: 100,
+                            marginTop: 10,
+                            overflow: 'hidden'
+                          }}
+                          onPress={async () => {
+                            try {
+                              const credential =
+                                await AppleAuthentication.signInAsync({
+                                  requestedScopes: [
+                                    AppleAuthentication.AppleAuthenticationScope
+                                      .FULL_NAME,
+                                    AppleAuthentication.AppleAuthenticationScope
+                                      .EMAIL
+                                  ]
+                                })
+                              // LOGICA PARA LOGEARSE VA ACA
+                              const { identityToken, fullName } = credential
+
+                              // Construcción del objeto a enviar en el post
+                              const postData = {
+                                email: '',
+                                type: isSportman === true ? 'sportman' : 'club',
+                                nickname:
+                                  fullName.givenName +
+                                  ' ' +
+                                  fullName.familyName,
+                                appleId: identityToken // Se utiliza el identityToken como el valor del appleId
+                              }
+
+                              // Envío del objeto postData al servidor
+                              const response2 = await handleIos(postData)
+                            } catch (e) {
+                              console.log(e, 'entra al catch')
+                              if (e.code === 'ERR_REQUEST_CANCELED') {
+                                // handle that the user canceled the sign-in flow
+                              } else {
+                                console.log('llegue al final')
+                                // handle other errors
+                              }
+                            }
+                          }}
+                        />
+                      )}
                     </View>
                     <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
                       — o continuar con el e-mail —
@@ -389,7 +467,7 @@ const LoginSwitch = () => {
                         isPlayer
                       })
                     }
-                    >
+                  >
                     <View style={styles.loremIpsum2}>
                       <Text style={[styles.aceptar, styles.aceptarTypo]}>
                         Regístrate con el e-mail
@@ -400,7 +478,7 @@ const LoginSwitch = () => {
                       style={[styles.groupChild1, styles.groupPosition]}
                       contentFit="cover"
                       source={require('../../assets/group-238.png')}
-                      />
+                    />
                   </Pressable>
                 </View>
                 <Pressable
@@ -410,7 +488,7 @@ const LoginSwitch = () => {
                       isPlayer
                     })
                   }
-                  >
+                >
                   <Text
                     style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
                   >
@@ -427,7 +505,7 @@ const LoginSwitch = () => {
           </View>
         </View>
       </View>
-          </View>
+    </View>
   )
 }
 
@@ -483,7 +561,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '-15%',
     zIndex: 0,
-    transform: [{ scale: 0.60 }] // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
+    transform: [{ scale: 0.6 }] // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
     height: 40,
@@ -623,7 +701,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     width: '100%',
-    marginEnd : 250,
+    marginEnd: 250,
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
