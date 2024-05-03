@@ -22,7 +22,7 @@ const Paso2Jugador = () => {
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        marginTop: 15,
+        marginTop: 10,
         gap: 15
       }}
     >

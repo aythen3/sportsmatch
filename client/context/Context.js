@@ -32,10 +32,10 @@ export const ContextProvider = ({ children }) => {
   }
 
   const pickImageFromCamera = async (source, imageUri) => {
-    if(source && imageUri) {
+    if (source && imageUri) {
       source === 'profile'
-      ? setProvisoryProfileImage(imageUri)
-      : setProvisoryCoverImage(imageUri)
+        ? setProvisoryProfileImage(imageUri)
+        : setProvisoryCoverImage(imageUri)
       const profileImageData = {
         uri: imageUri,
         type: 'image/jpg',
@@ -53,14 +53,16 @@ export const ContextProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log('setting', source, 'image to:',data.url)
-          source === 'profile' ? setProfileImage(transformHttpToHttps(data.url)) : setCoverImage(transformHttpToHttps(data.url))
+          console.log('setting', source, 'image to:', data.url)
+          source === 'profile'
+            ? setProfileImage(transformHttpToHttps(data.url))
+            : setCoverImage(transformHttpToHttps(data.url))
         })
     }
   }
 
   const pickImage = async (source, imageUri) => {
-    console.log('source: ',source)
+    console.log('source: ', source)
     console.log('imageUri:', imageUri)
     if (imageUri) {
       const profileImageData = {
@@ -80,7 +82,7 @@ export const ContextProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-         console.log('dataUrl from uriImg:', data.url)
+          console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(transformHttpToHttps(data.url))
         })
     } else {
@@ -154,32 +156,29 @@ export const ContextProvider = ({ children }) => {
 
   function getTimeFromDate(dateString) {
     // Create a new Date object from the UTC string
-    const utcDate = new Date(dateString);
+    console.log('dateString:', dateString)
+    const utcDate = new Date(dateString)
 
-    // Get the local time zone offset in minutes
-    const localOffsetMinutes = new Date().getTimezoneOffset();
+    // // Get the local time zone offset in milliseconds
+    // const localOffsetMilliseconds = new Date().getTimezoneOffset() * 60000
 
-    // Convert the local offset to milliseconds and adjust for the sign
-    const localOffsetMs = localOffsetMinutes * 60000;
-
-    // Calculate the local time by adding the local offset to the UTC time
-    const localTime = utcDate.getTime() + localOffsetMs;
+    // Convert the UTC time to local time by adding the offset
+    const localTime = utcDate
 
     // Create a new Date object representing the local time
-    const localDate = new Date(localTime);
+    const localDate = new Date(localTime)
 
     // Extract local hours and minutes
-    const hours = localDate.getHours();
-    const minutes = localDate.getMinutes();
+    const hours = localDate.getHours()
+    const minutes = localDate.getMinutes()
 
     // Format hours and minutes
-    const formattedHours = hours < 10 ? '0' + hours : hours;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const formattedHours = hours < 10 ? '0' + hours : hours
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
 
     // Return formatted time
-    return `${formattedHours}:${formattedMinutes}`;
-}
-
+    return `${formattedHours}:${formattedMinutes}`
+  }
 
   // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
   // http://192.168.0.8:3010
@@ -210,7 +209,7 @@ export const ContextProvider = ({ children }) => {
   })
 
   socket.on('joinedRoom', (room) => {
-     console.log('Joined to room: ', room)
+    console.log('Joined to room: ', room)
     setRoomId(room)
   })
 
@@ -266,64 +265,67 @@ export const ContextProvider = ({ children }) => {
     return age
   }
 
-  const [usersWithMessages,setUsersWithMessages] = useState([])
+  const [usersWithMessages, setUsersWithMessages] = useState([])
 
   const getUsersMessages = () => {
     const getConvMessages = async (user) => {
       try {
         const { data } = await axiosInstance.get(
           `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-        );
-        const filterByDelete = data.filter(message=>{
-          const senderOrReceiver = message.senderId === userId ? 'sender' : 'receiver'
-          if(senderOrReceiver === 'sender') {
-            if(message.senderDelete === true){
+        )
+        const filterByDelete = data.filter((message) => {
+          const senderOrReceiver =
+            message.senderId === userId ? 'sender' : 'receiver'
+          if (senderOrReceiver === 'sender') {
+            if (message.senderDelete === true) {
               return false
             }
             return true
           }
-          if(senderOrReceiver === 'receiver') {
-            if(message.receiverDelete === true){
+          if (senderOrReceiver === 'receiver') {
+            if (message.receiverDelete === true) {
               return false
             }
             return true
           }
         })
-        return filterByDelete;
+        return filterByDelete
       } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+        console.error('Error fetching data:', error)
+        return []
       }
-    };
+    }
     Promise.all(
       allUsers
         ?.filter((user) => user?.id !== userId)
         .map(async (user) => ({
           user,
-          data: await getConvMessages(user),
+          data: await getConvMessages(user)
         }))
     )
       .then((filteredUsers) => {
         const usersWithMessages = filteredUsers.filter(
-        (user) => user?.data && user?.data.length > 0
-        );
+          (user) => user?.data && user?.data.length > 0
+        )
 
         const sortedUsersWithMessages = usersWithMessages.sort(
-          (a, b) => new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
-        );
+          (a, b) =>
+            new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
+        )
 
-        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user));
+        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
       })
       .catch((error) => {
-        console.error('Error fetching messages for users:', error);
-      });
+        console.error('Error fetching messages for users:', error)
+      })
   }
 
   return (
     <Context.Provider
       value={{
         getUsersMessages,
-        setUsersWithMessages,usersWithMessages,
+        setUsersWithMessages,
+        usersWithMessages,
         pickImage,
         coverImage,
         setCoverImage,

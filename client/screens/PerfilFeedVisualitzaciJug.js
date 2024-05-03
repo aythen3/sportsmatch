@@ -20,7 +20,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
   const data = router.params
-  console.log('data,', router.params)
+  //console.log('data,', router.params)
 
   function calculateAge(birthYear) {
     const birthYearNum =
@@ -35,18 +35,22 @@ const PerfilFeedVisualitzaciJug = () => {
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
-      <ScrollView keyboardShouldPersistTaps={'always'} >
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderPerfil
           name={data.author.nickname}
           sport={
             data.author.type === 'club'
               ? null
-              :data?.author?.sportman?.type === 'coach' ? data?.author?.sportman?.info?.sport?.name : data?.author?.sportman?.info?.sport
+              : data?.author?.sportman?.type === 'coach'
+                ? data?.author?.sportman?.info?.sport?.name
+                : data?.author?.sportman?.info?.sport
           }
           position={
             data.author.type === 'club'
               ? null
-              : data?.author?.sportman?.type === 'coach' ? data?.author?.sportman?.info?.rol : data?.author?.sportman?.info?.position
+              : data?.author?.sportman?.type === 'coach'
+                ? data?.author?.sportman?.info?.rol
+                : data?.author?.sportman?.info?.position
           }
           description={
             data.author.type === 'club'
@@ -79,202 +83,214 @@ const PerfilFeedVisualitzaciJug = () => {
             keyboardShouldPersistTaps={'always'}
             style={styles.perfilDatosVisualitzaciMa}
           >
-            { data?.author?.sportman?.type !== 'coach' ?<View style={styles.contenidoDatos}>
-              <View style={styles.circulos}>
-                <View style={styles.circuloLayout}>
-                  <CircularStat value={data?.author?.sportman?.info.attack} />
-                  <View
-                    style={[
-                      styles.informacionCirculo,
-                      styles.grupoTextoPosition
-                    ]}
-                  >
-                    <Text style={[styles.text1, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.attack}
+            {data?.author?.sportman?.type !== 'coach' ? (
+              <View style={styles.contenidoDatos}>
+                <View style={styles.circulos}>
+                  <View style={styles.circuloLayout}>
+                    <CircularStat value={data?.author?.sportman?.info.attack} />
+                    <View
+                      style={[
+                        styles.informacionCirculo,
+                        styles.grupoTextoPosition
+                      ]}
+                    >
+                      <Text style={[styles.text1, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.attack}
+                      </Text>
+                      <Text style={[styles.ataque, styles.ataqueClr]}>
+                        Ataque
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.circulo2, styles.circuloLayout]}>
+                    <CircularStat
+                      value={data?.author?.sportman?.info.defense}
+                    />
+                    <View
+                      style={[
+                        styles.informacionCirculo,
+                        styles.grupoTextoPosition
+                      ]}
+                    >
+                      <Text style={[styles.text1, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.defense}
+                      </Text>
+                      <Text style={[styles.ataque, styles.ataqueClr]}>
+                        Defensa
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.circulo2, styles.circuloLayout]}>
+                    <CircularStat value={data?.author?.sportman?.info.speed} />
+                    <View
+                      style={[
+                        styles.informacionCirculo,
+                        styles.grupoTextoPosition
+                      ]}
+                    >
+                      <Text style={[styles.text1, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.speed}
+                      </Text>
+                      <Text style={[styles.ataque, styles.ataqueClr]}>
+                        Velocidad
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.barras}>
+                  <View style={styles.barra1}>
+                    <View>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Bote
+                      </Text>
+                      <BarStatSVG value={data?.author?.sportman?.info.prop1} />
+                    </View>
+                    <Text style={[styles.numero1, styles.numeroTypo]}>
+                      {data?.author?.sportman?.info.prop1}
                     </Text>
-                    <Text style={[styles.ataque, styles.ataqueClr]}>
-                      Ataque
+                  </View>
+
+                  <View style={styles.barra2}>
+                    <View>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Lanzamiento
+                      </Text>
+                      <BarStatSVG value={data?.author?.sportman?.info.prop2} />
+                    </View>
+                    <Text style={[styles.numero1, styles.numeroTypo]}>
+                      {data?.author?.sportman?.info.prop2}
+                    </Text>
+                  </View>
+
+                  <View style={styles.barra2}>
+                    <View>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Dribling
+                      </Text>
+                      <BarStatSVG value={data?.author?.sportman?.info.prop3} />
+                    </View>
+                    <Text style={[styles.numero1, styles.numeroTypo]}>
+                      {data?.author?.sportman?.info.prop3}
                     </Text>
                   </View>
                 </View>
-                <View style={[styles.circulo2, styles.circuloLayout]}>
-                  <CircularStat value={data?.author?.sportman?.info.defense} />
-                  <View
-                    style={[
-                      styles.informacionCirculo,
-                      styles.grupoTextoPosition
-                    ]}
-                  >
-                    <Text style={[styles.text1, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.defense}
-                    </Text>
-                    <Text style={[styles.ataque, styles.ataqueClr]}>
-                      Defensa
-                    </Text>
+                <View style={styles.barras}>
+                  <View style={styles.circulos}>
+                    <View style={styles.moduloSpaceBlock}>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Sexo
+                      </Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.gender}
+                      </Text>
+                    </View>
+                    <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Edad
+                      </Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {calculateAge(data?.author?.sportman?.info?.birthdate)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.modulosMedio}>
+                    <View style={styles.moduloSpaceBlock}>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Categoría
+                      </Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.category}
+                      </Text>
+                    </View>
+                    <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Posición principal
+                      </Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.position}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.modulosMedio}>
+                    <View style={styles.moduloSpaceBlock}>
+                      <Text style={[styles.concepto, styles.ataqueClr]}>
+                        Altura
+                      </Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.height}cm
+                      </Text>
+                    </View>
+                    <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                      <Text
+                        style={[styles.concepto, styles.ataqueClr]}
+                      >{`Lugar de residencia `}</Text>
+                      <Text style={[styles.masculino, styles.text1Typo]}>
+                        {data?.author?.sportman?.info.city}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-                <View style={[styles.circulo2, styles.circuloLayout]}>
-                  <CircularStat value={data?.author?.sportman?.info.speed} />
-                  <View
-                    style={[
-                      styles.informacionCirculo,
-                      styles.grupoTextoPosition
-                    ]}
+                <View style={styles.masDetalles}>
+                  <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
+                    Más detalles sobre mí
+                  </Text>
+                  <Text
+                    style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}
                   >
-                    <Text style={[styles.text1, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.speed}
-                    </Text>
-                    <Text style={[styles.ataque, styles.ataqueClr]}>
-                      Velocidad
-                    </Text>
-                  </View>
+                    {data?.author?.sportman?.info.description}
+                  </Text>
                 </View>
               </View>
-
-              <View style={styles.barras}>
-                <View style={styles.barra1}>
-                  <View>
-                    <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Bote
-                    </Text>
-                    <BarStatSVG value={data?.author?.sportman?.info.prop1} />
-                  </View>
-                  <Text style={[styles.numero1, styles.numeroTypo]}>
-                    {data?.author?.sportman?.info.prop1}
-                  </Text>
-                </View>
-
-                <View style={styles.barra2}>
-                  <View>
-                    <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Lanzamiento
-                    </Text>
-                    <BarStatSVG value={data?.author?.sportman?.info.prop2} />
-                  </View>
-                  <Text style={[styles.numero1, styles.numeroTypo]}>
-                    {data?.author?.sportman?.info.prop2}
-                  </Text>
-                </View>
-
-                <View style={styles.barra2}>
-                  <View>
-                    <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Dribling
-                    </Text>
-                    <BarStatSVG value={data?.author?.sportman?.info.prop3} />
-                  </View>
-                  <Text style={[styles.numero1, styles.numeroTypo]}>
-                    {data?.author?.sportman?.info.prop3}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.barras}>
+            ) : (
+              <View style={{ alignSelf: 'center', marginTop: 20 }}>
                 <View style={styles.circulos}>
                   <View style={styles.moduloSpaceBlock}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Sexo
+                      Lugar de residencia
                     </Text>
                     <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.gender}
+                      {data.author.sportman.info.city}
                     </Text>
                   </View>
                   <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Edad
+                      Años de expereiencia
                     </Text>
                     <Text style={[styles.masculino, styles.text1Typo]}>
-                      {calculateAge(data?.author?.sportman?.info?.birthdate)}
+                      {data.author.sportman.info.yearsOfExperience}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.modulosMedio}>
                   <View style={styles.moduloSpaceBlock}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Categoría
+                      Deporte
                     </Text>
                     <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.category}
+                      {data.author.sportman?.info.sport.name}
                     </Text>
                   </View>
                   <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-                    <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Posición principal
-                    </Text>
+                    <Text style={[styles.concepto, styles.ataqueClr]}>Rol</Text>
                     <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.position}
+                      {data.author.sportman?.info.rol}
                     </Text>
                   </View>
                 </View>
-                <View style={styles.modulosMedio}>
-                  <View style={styles.moduloSpaceBlock}>
-                    <Text style={[styles.concepto, styles.ataqueClr]}>
-                      Altura
-                    </Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.height}cm
-                    </Text>
-                  </View>
-                  <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-                    <Text
-                      style={[styles.concepto, styles.ataqueClr]}
-                    >{`Lugar de residencia `}</Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.city}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.masDetalles}>
-                <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
-                  Más detalles sobre mí
-                </Text>
-                <Text
-                  style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}
-                >
-                  {data?.author?.sportman?.info.description}
-                </Text>
-              </View>
-            </View> : <View style={{alignSelf:'center', marginTop:20}}>
-          <View style={styles.circulos}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Lugar de residencia</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {data.author.sportman.info.city}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Años de expereiencia</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>{data.author.sportman.info.yearsOfExperience}</Text>
-            </View>
-          </View>
-          <View style={styles.modulosMedio}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Deporte</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {data.author.sportman?.info.sport.name}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>
-                Rol
-              </Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {data.author.sportman?.info.rol}
-              </Text>
-            </View>
-          </View>
 
-          <View style={styles.masDetalles}>
-                <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
-                  Más detalles sobre mí
-                </Text>
-                <Text
-                  style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}
-                >
-                  {data?.author?.sportman?.info.description}
-                </Text>
+                <View style={styles.masDetalles}>
+                  <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
+                    Más detalles sobre mí
+                  </Text>
+                  <Text
+                    style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}
+                  >
+                    {data?.author?.sportman?.info.description}
+                  </Text>
+                </View>
               </View>
-        </View>}
+            )}
           </ScrollView>
         )}
       </ScrollView>
@@ -412,7 +428,8 @@ const styles = StyleSheet.create({
   },
   masDetalles: {
     width: '100%',
-    marginTop: 20,paddingBottom:20
+    marginTop: 20,
+    paddingBottom: 20
   },
   contenidoDatos: {
     marginTop: 21,

@@ -70,7 +70,7 @@ const OfertasEmitidas = () => {
           <Text style={styles.addText}>+</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView contentContainerStyle={{paddingBottom:15}}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 15 }}>
         <View style={styles.container}>
           {offers.length === 0 ||
           offers.filter((offer) => offer.club.id === club.id).length === 0 ? (
@@ -116,9 +116,9 @@ const OfertasEmitidas = () => {
                         {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
                       </Text>
                     </View>
-        
+
                     <View style={styles.innerLine} />
-        
+
                     <View>
                       <Text style={[styles.sexo1, styles.sexo1Typo]}>
                         Categoría
@@ -127,9 +127,9 @@ const OfertasEmitidas = () => {
                         {offer.category}
                       </Text>
                     </View>
-        
+
                     <View style={styles.innerLine} />
-        
+
                     <View>
                       <Text style={[styles.sexo1, styles.sexo1Typo]}>
                         Posicion
@@ -138,9 +138,9 @@ const OfertasEmitidas = () => {
                         {/* {offer.position} */} Posicion
                       </Text>
                     </View>
-        
+
                     <View style={styles.innerLine} />
-        
+
                     <View style={styles.offerView}>
                       <View>
                         <Text style={[styles.sexo1, styles.sexo1Typo]}>

@@ -68,7 +68,12 @@ function Input({
           />
           {isAccordeon && (
             <Image
-              style={{ width: 12, height: 12, position: 'absolute', right: 20 }}
+              style={{
+                width: 12,
+                height: 12,
+                position: 'absolute',
+                right: 20
+              }}
               contentFit="cover"
               source={require('../assets/coolicon2.png')}
             />

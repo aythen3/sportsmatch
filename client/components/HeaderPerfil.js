@@ -301,22 +301,22 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
-                    console.log('data from match: ', data.payload)
-                    console.log('body to sendNotification: ', {
-                      title: 'Solicitud',
-                      message: 'Recibiste una solicitud de match!',
-                      recipientId: data?.payload?.sportManData?.userId,
-                      date: new Date(),
-                      read: false,
-                      prop1: {
-                        matchId: data?.payload?.id,
-                        clubData: {
-                          name: user?.user?.nickname,
-                          userId: user.user.id,
-                          ...user?.user?.club
-                        }
-                      }
-                    })
+                    // console.log('data from match: ', data.payload)
+                    // console.log('body to sendNotification: ', {
+                    //   title: 'Solicitud',
+                    //   message: 'Recibiste una solicitud de match!',
+                    //   recipientId: data?.payload?.sportManData?.userId,
+                    //   date: new Date(),
+                    //   read: false,
+                    //   prop1: {
+                    //     matchId: data?.payload?.id,
+                    //     clubData: {
+                    //       name: user?.user?.nickname,
+                    //       userId: user.user.id,
+                    //       ...user?.user?.club
+                    //     }
+                    //   }
+                    // })
                     dispatch(
                       sendNotification({
                         title: 'Solicitud',
@@ -688,7 +688,7 @@ const HeaderPerfil = ({
               ? allUsers.filter((user) => user.id === data.author.id)[0]
                   .followers?.length
               : '0'}
-              {/* Solucionar tema de seguidores */}
+            {/* Solucionar tema de seguidores */}
           </Text>
         </View>
       )}

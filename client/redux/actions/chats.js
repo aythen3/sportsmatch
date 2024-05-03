@@ -18,7 +18,7 @@ export const getChatHistory = createAsyncThunk(
         const { data } = await axiosInstance.get(
           `chat/room?limit=${limit || 10}&createdAt=${date || ts}&senderId=${sender}&receiverId=${receiver}`
         )
-        console.log('data: ', data)
+        //console.log('data: ', data)
         return data
       }
     } catch (error) {

@@ -153,7 +153,7 @@ const ConfigurarAnuncio = () => {
               {selectedPosition
                 ? selectedPosition?.name.charAt(0).toUpperCase() +
                   selectedPosition?.name.slice(1).toLowerCase()
-                : 'Selecciona una posicion'}
+                : 'Selecciona una posición'}
             </Text>
             {showModal && (
               <View
@@ -458,7 +458,7 @@ const ConfigurarAnuncio = () => {
                     positionId: selectedPosition?.id,
                     clubId: club?.id
                   }
-                  console.log('data: ', data)
+                  // console.log('data: ', data)
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
@@ -491,7 +491,7 @@ const ConfigurarAnuncio = () => {
                       positionId: selectedPosition.id
                     })
                   }
-                  console.log('data: ', data)
+                  // console.log('data: ', data)
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
                     (data) => dispatch(getAllOffers())
                   )

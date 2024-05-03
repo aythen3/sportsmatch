@@ -62,7 +62,7 @@ const StepsClub = () => {
         clubData: clubValues,
         sportId: sport.id
       }
-      console.log('data from handleRegister: ', data)
+      // console.log('data from handleRegister: ', data)
       await dispatch(createClub(data))
         .then((response) => {
           console.log(
