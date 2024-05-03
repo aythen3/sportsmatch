@@ -19,6 +19,8 @@ import DoubleTap from "@memrearal/react-native-doubletap";
 import { setFindedLikes } from '../redux/slices/post.slices'
 import { like } from '../redux/actions/post'
 import { sendNotification } from '../redux/actions/notifications'
+import Like2SVG from './svg/Like2SVG'
+
 
 function Carousel({
   name,
@@ -42,7 +44,25 @@ function Carousel({
   const [modalVisible, setModalVisible] = useState(false)
 
   const [doubleTap, setDoubleTap] = useState(false);
+  const [doubleTapHeart, setDoubleTapHeart] = useState(false);
+
   const [liked, setLiked] = useState(false); // Estado para controlar si se ha dado like
+
+  useEffect(() => {
+    let timeoutId;
+    if (doubleTapHeart) {
+      // Cambia el estado a true
+      setDoubleTapHeart(true);
+
+      // Después de 2 segundos, vuelve a poner en false
+      timeoutId = setTimeout(() => {
+        setDoubleTapHeart(false);
+      }, 2000);
+    }
+
+    // Limpia el timeout si el componente se desmonta antes de que el timeout ocurra
+    return () => clearTimeout(timeoutId);
+  }, [doubleTapHeart]);
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
@@ -128,17 +148,29 @@ function Carousel({
         <Text style={styles.nameText}>{name}</Text>
       </Pressable>
       <PagerView style={styles.postContainer} initialPage={0}>
-        <View key={id}>
+        <View style={{ width: "100%", height: "100%" }} key={id}>
           <DoubleTap
-          
-          onDoubleTap={() => {
+
+            onDoubleTap={() => {
               console.log("doble pressss2222")
               handleLike()
+              setDoubleTapHeart(true)
               // handleDoubleTap(); // Llama a la función de manejar el doble clic
               // resetDoubleTap(); // Reinicia el estado de doubleTap
             }}
           >
-            <Image style={styles.postImage} source={image} />
+            <View style={{ width: "100%", height: "100%", position: "relative" }}>
+
+              {doubleTapHeart && liked && (
+                <TouchableOpacity style={{ position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center", zIndex: 999 }}>
+                  <Like2SVG id={id}></Like2SVG>
+                </TouchableOpacity>
+
+              )}
+
+              <Image style={{ ...styles.postImage,zIndex:990}} source={image} />
+            </View>
+
           </DoubleTap>
         </View>
         {/* <View key={index + 1}>

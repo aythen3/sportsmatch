@@ -41,7 +41,8 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
         >
           <LinearGradient
             style={styles.gradient}
-            locations={[0, 0.8]}
+            start={{ x: 0, y: 1 }} // Punto de inicio (esquina superior derecha)
+            end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
             colors={['#FF00E6', '#1FFFBC']}
           >
             <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>

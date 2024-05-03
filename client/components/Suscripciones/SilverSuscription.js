@@ -8,21 +8,20 @@ import {
   FontSize,
   Padding
 } from '../../GlobalStyles'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const SilverSuscription = () => {
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
-        <View
-          style={{
-            width: '100%',
-            height: 42,
-            backgroundColor: Color.colorSilver,
-            justifyContent: 'center'
-          }}
-        >
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>FREEMIUM</Text>
-        </View>
+      <LinearGradient
+            style={styles.gradient}
+            start={{ x: 0, y: 1 }} // Punto de inicio (esquina superior derecha)
+            end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
+            colors={['gray', '#b3b1b1']}
+          >
+            <Text style={[styles.freemium2, styles.ofertasTypo]}>FREEMIUM</Text>
+          </LinearGradient>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
@@ -117,6 +116,12 @@ const SilverSuscription = () => {
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    width:"100%",
+    height: 42,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   goldSpaceBlock: {
     paddingBottom: Padding.p_11xl,
     borderRadius: Border.br_mini,
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   freemium2: {
+    width:"100%",
     zIndex: 1,
     textAlign: 'center',
     color: Color.wHITESPORTSMATCH,

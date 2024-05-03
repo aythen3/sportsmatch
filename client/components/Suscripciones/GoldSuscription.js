@@ -15,17 +15,17 @@ import axiosInstance from '../../utils/apiBackend'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
-const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
+const GoldSuscription = ({ setClientSecret, setPlanSelected }) => {
   const { user } = useSelector((state) => state.users)
 
   const handleGetGold = async () => {
-   console.log("entra")
-    const res = await axiosInstance.post('/user/create-subscription',{
-      priceId:"price_1P4cNLGmE60O5ob7O3hTmP9d",
-      customerId:user.user.stripeId
+    console.log("entra")
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: "price_1P4cNLGmE60O5ob7O3hTmP9d",
+      customerId: user.user.stripeId
     })
 
-    if(res.data){
+    if (res.data) {
 
       setPlanSelected("pro")
       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
@@ -33,8 +33,8 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
 
     }
 
-    console.log(user.user.stripeId,"user")
-    
+    console.log(user.user.stripeId, "user")
+
   }
 
   return (
@@ -43,7 +43,8 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
         <View style={styles.container}>
           <LinearGradient
             style={styles.gradient}
-            locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+            start={{ x: 0, y: 1 }} // Punto de inicio (esquina superior derecha)
+            end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
             colors={[
               '#e6b300',
               '#bd9710',
@@ -78,7 +79,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Creación gratis del perfil del jugador/a o profesional 
+                  Creación gratis del perfil del jugador/a o profesional
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -94,7 +95,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Acceso a la red social 
+                  Acceso a la red social
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -110,7 +111,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Acceso al buscador de ofertas deportivas de los clubes 
+                  Acceso al buscador de ofertas deportivas de los clubes
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -126,7 +127,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected}) => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Posibilidad de hacer Match con cualquier club 
+                  Posibilidad de hacer Match con cualquier club
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -253,6 +254,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   gradient: {
+    width:"100%",
     height: 42,
     justifyContent: 'center',
     alignItems: 'center'

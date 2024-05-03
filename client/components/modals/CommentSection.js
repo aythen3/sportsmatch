@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily } from '../../GlobalStyles'
@@ -62,7 +63,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               width: '100%',
               paddingHorizontal: 10,
               borderWidth: 0.5,
-              borderColor: Color.wHITESPORTSMATCH
+              borderColor: Color.wHITESPORTSMATCH,
+              paddingBottom:85
             }}
           >
             <TouchableOpacity onPress={closeModal} style={styles.topContainer}>
@@ -70,7 +72,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               <Text style={styles.text}>Comentarios</Text>
               <View style={styles.line} />
             </TouchableOpacity>
-            {postComments?.length > 0 ? (
+           <ScrollView>
+           {postComments?.length > 0 ? (
               sortedComments?.map((comment) => (
                 <View key={comment.id} style={styles.commentContainer}>
                   <View style={styles.authorContainer}>
@@ -99,6 +102,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               </Text>
             )}
 
+           </ScrollView>
             <View
               style={{
                 width: '100%',
@@ -108,7 +112,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                 position: 'absolute',
                 bottom: 10,
                 flexDirection: 'row',
-                alignItems: 'center'
+                alignItems: 'center',
+                backgroundColor:"black"
               }}
             >
               <View
@@ -119,6 +124,8 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                   width: '80%',
                   height: '100%',
                   justifyContent: 'flex-start',
+                  flexDirection: 'column',
+                  display: 'flex',
                   paddingHorizontal: 8
                 }}
               >
@@ -199,7 +206,8 @@ const styles = StyleSheet.create({
   input2: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 15
+    fontSize: 15,
+    alignItems: "center"
   },
   commentContainer: {
     padding: 15,

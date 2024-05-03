@@ -14,8 +14,9 @@ import NotificacinMatch from '../screens/NotificacinMatch'
 import { useDispatch, useSelector } from 'react-redux'
 import TusMatchsDetalle from './../screens/TusMatchsDetalle'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
-import { sendNotification } from '../redux/actions/notifications'
+import { getAllNotifications, sendNotification } from '../redux/actions/notifications'
 import { updateUser } from '../redux/slices/users.slices'
+import axiosInstance from '../utils/apiBackend'
 
 const Notifications = ({ data }) => {
   const _ = require('lodash')
@@ -24,7 +25,7 @@ const Notifications = ({ data }) => {
   const { allUsers, user } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
   const dispatch = useDispatch()
-
+  console.log(data, "data")
   function formatDate(timestamp) {
     const date = new Date(timestamp)
     // Extract the day, month, and year components
@@ -43,9 +44,12 @@ const Notifications = ({ data }) => {
   const userFollowing = user?.user?.following || []
 
   return (
-    <Pressable
+    <TouchableOpacity
       style={{ marginTop: 20 }}
-      onPress={() => {
+      onPress={async () => {
+        if (!data.read) {
+          await axiosInstance.patch(`notification/${data.id}`, { read: true }).then(async (res) => await dispatch(getAllNotifications()));
+        }
         if (data.title === 'Solicitud') {
           setIsMatch(true)
           return
@@ -56,6 +60,7 @@ const Notifications = ({ data }) => {
             allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
           )
         }
+
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
@@ -66,12 +71,12 @@ const Notifications = ({ data }) => {
             source={require('../assets/avatar.png')}
           />
         )}
-        {data.title === 'Match' && (
+        {!data.read && (
           <Text
             style={{
               color: Color.bALONCESTO,
               fontSize: 35,
-              top: -20
+              top: -12
             }}
           >
             .
@@ -112,16 +117,16 @@ const Notifications = ({ data }) => {
                 console.log('actual followers: ', actualFollowers)
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
+                    (follower) => follower !== user?.user?.id
+                  )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data.prop1.userId
                 )
                   ? userFollowing.filter(
-                      (followed) => followed !== data.prop1.userId
-                    )
+                    (followed) => followed !== data.prop1.userId
+                  )
                   : [...userFollowing, data.prop1.userId]
                 actualUser.user.following = newFollowingArray
                 console.log('user: ', actualUser?.user?.following)
@@ -227,7 +232,7 @@ const Notifications = ({ data }) => {
           />
         </View>
       </Modal>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

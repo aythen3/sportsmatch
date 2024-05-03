@@ -29,29 +29,32 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
   }, [findedLike, id]);
 
  
-const handleShare = async () => {
-  try {
-    // Descargar el archivo desde la URL remota
-    const localUri = `${FileSystem.cacheDirectory}image.jpg`;
-    const downloadResult = await FileSystem.downloadAsync(image[0], localUri);
-
-    if (downloadResult.status === 200) {
-      // Obtener información sobre el archivo descargado
-      const fileInfo = await FileSystem.getInfoAsync(localUri);
-
-      // Compartir el archivo si existe
-      if (fileInfo.exists) {
-        await Sharing.shareAsync(localUri);
+  const handleShare = async () => {
+    try {
+      // Descargar el archivo desde la URL remota
+      const localUri = `${FileSystem.cacheDirectory}image.jpg`;
+      const downloadResult = await FileSystem.downloadAsync(image[0], localUri);
+  
+      if (downloadResult.status === 200) {
+        // Obtener información sobre el archivo descargado
+        const fileInfo = await FileSystem.getInfoAsync(localUri);
+  
+        // Compartir el archivo si existe
+        if (fileInfo.exists) {
+          // Esperar un segundo antes de llamar a Sharing.shareAsync()
+          await Sharing.shareAsync(localUri);
+         
+        } else {
+          console.log('El archivo no existe.');
+        }
       } else {
-        console.log('El archivo no existe.');
+        console.log('Error al descargar el archivo.');
       }
-    } else {
-      console.log('Error al descargar el archivo.');
+    } catch (error) {
+      console.error('Error al compartir:', error.message);
     }
-  } catch (error) {
-    console.error('Error al compartir:', error.message);
-  }
   };
+  
 
  
   const handleLike = async () => {
