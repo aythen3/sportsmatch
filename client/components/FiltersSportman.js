@@ -8,7 +8,7 @@ import { setFilterPost } from '../redux/slices/post.slices'
 
 const FiltersSportman = ({ posts, onClose, allPosts, setPosts }) => {
 
-  const copy = [...posts]
+  const copy = posts ? [...posts] : []
   const change = copy.sort((a, b) => b.likes - a.likes);
 
   const change2 = copy.sort((a, b) => b.commentCount - a.commentCount);

@@ -14,7 +14,9 @@ function Input({
   open,
   inputRef,
   onSubmit,
-  keyboardType
+  keyboardType,
+  type,
+  state,setState
 }) {
   return (
     <View
@@ -57,15 +59,21 @@ function Input({
               backgroundColor: changeColor ? 'red' : 'transparent',
               textAlignVertical: isMultiLine ? 'top' : 'center'
             }}
-            value={value}
-            onChangeText={(value) => onValues(field, value)}
+            value={type ? state : value}
+            onChangeText={(value) => type ? setState(value) : onValues(field, value)}
             ref={inputRef}
             onSubmitEditing={onSubmit}
+            secureTextEntry={type ? true : false}
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
           />
           {isAccordeon && (
             <Image
-              style={{ width: 12, height: 12, position: 'absolute', right: 20 }}
+              style={{
+                width: 12,
+                height: 12,
+                position: 'absolute',
+                right: 20
+              }}
               contentFit="cover"
               source={require('../assets/coolicon2.png')}
             />

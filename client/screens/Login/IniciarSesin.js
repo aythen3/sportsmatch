@@ -60,7 +60,6 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    console.log('user from normal login useEffect: ', user.user)
     if (user?.user?.club || user?.user?.sportman) {
       navigation.navigate('SiguiendoJugadores')
     } else {
@@ -93,7 +92,7 @@ const IniciarSesin = () => {
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
-          // await AsyncStorage.setItem('user', response?.payload)
+          await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
         })

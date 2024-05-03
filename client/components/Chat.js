@@ -16,11 +16,12 @@ const Chat = ({ text, isMy, read, hour }) => {
         maxWidth: '80%',
         minWidth: 100,
         flexDirection: 'column',
-        marginTop: 20,
-        flexWrap: 'wrap'
+        marginTop: 5,
       }}
     >
-      <Text style={{...styles.jordiEspeltTypo,maxWidth: '80%'}}>{text}</Text>
+      <Text style={{ fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t1TextSMALL_size,
+    color: Color.wHITESPORTSMATCH}}>{text}</Text>
 
       <View
         style={{
@@ -57,13 +58,5 @@ const Chat = ({ text, isMy, read, hour }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  jordiEspeltTypo: {
-    fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t1TextSMALL_size,
-    color: Color.wHITESPORTSMATCH
-  }
-})
 
 export default Chat

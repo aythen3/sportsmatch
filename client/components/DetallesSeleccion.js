@@ -135,7 +135,15 @@ const SkillSeleccion = ({
             onSelectAñoNacimiento={handleSelectAñoNacimiento}
           />
 
-          <Text style={styles.atributoInner}>
+          <Text
+            style={{
+              textAlign: 'left',
+              color: Color.gREY2SPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO,
+              fontSize: FontSize.t2TextSTANDARD_size,
+              left: '5%'
+            }}
+          >
             {selectedAñoNacimiento && selectedAñoNacimiento > 1933
               ? selectedAñoNacimiento
               : 'Selecciona año de nacimiento'}
@@ -190,7 +198,7 @@ const SkillSeleccion = ({
         <Text style={styles.atributo}>Cómo te defines como jugador</Text>
         <View style={styles.rectanguloBorder2}>
           <TextInput
-            style={styles.textInput}
+            style={styles.multiLineTextInput}
             placeholder="Describe tu juego, tu condición física, 
               tu personalidad en el campo..."
             placeholderTextColor={'#999'}
@@ -258,7 +266,8 @@ const styles = StyleSheet.create({
   atributo: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
+    fontSize: FontSize.t2TextSTANDARD_size,
+    marginBottom: 5
   },
   atributoInner: {
     textAlign: 'left',
@@ -277,8 +286,18 @@ const styles = StyleSheet.create({
     left: 10,
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t2TextSTANDARD_size,
     width: '90%',
     height: 50
+  },
+  multiLineTextInput: {
+    left: 10,
+    paddingTop: 5,
+    color: Color.gREY2SPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: FontSize.t2TextSTANDARD_size,
+    width: '90%',
+    textAlignVertical: 'top'
   },
   buttonContainer: {
     alignItems: 'center',

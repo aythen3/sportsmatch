@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Border, Color, Padding } from '../GlobalStyles'
 import CircularStat from '../components/svg/CircularStatSVG'
@@ -26,25 +26,41 @@ const FeedStats = () => {
   if(user)return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
-      style={styles.perfilDatosVisualitzaciMa}
+      style={{backgroundColor: Color.bLACK1SPORTSMATCH,
+        width: '100%'}}
     >
-      <View style={styles.contenidoDatos}>
-       {sportman?.type !== 'coach' && <View style={styles.circulos}>
-          <View style={[styles.circuloLayout,]}>
+      <View style={{ marginTop: 21,
+    alignSelf: 'center',
+    width: '95%',
+    alignItems: 'center'}}>
+       {sportman?.type !== 'coach' && <View style={{flexDirection: 'row',width:'100%',justifyContent:'space-around'}}>
+          <View style={{height: Dimensions.get('screen').width * 0.8/3,
+    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
             <CircularStat value={sportman?.info.attack} />
             <View
-              style={[styles.informacionCirculo, styles.grupoTextoPosition]}
+              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
+                left: 0,
+                height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
             >
-              <Text style={[styles.text1, styles.text1Typo]}>
+              <Text style={{lineHeight: 40,
+    fontSize: FontSize.h2TITLEBIG_size,
+    alignSelf: 'stretch',
+    flex: 1,  color: Color.bALONCESTO,
+    fontWeight: '500',
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO}}>
                 {sportman?.info.attack}
               </Text>
               <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
             </View>
           </View>
-          <View style={[styles.circulo2, styles.circuloLayout]}>
+          <View style={{height: Dimensions.get('screen').width * 0.8/3,
+    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
             <CircularStat value={sportman?.info.defense} />
             <View
-              style={[styles.informacionCirculo, styles.grupoTextoPosition]}
+              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
+              left: 0,
+              height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
             >
               <Text style={[styles.text1, styles.text1Typo]}>
                 {sportman?.info.defense}
@@ -52,10 +68,13 @@ const FeedStats = () => {
               <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
             </View>
           </View>
-          <View style={[styles.circulo2, styles.circuloLayout]}>
+          <View style={{height: Dimensions.get('screen').width * 0.8/3,
+    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
             <CircularStat value={sportman?.info.speed} />
             <View
-              style={[styles.informacionCirculo, styles.grupoTextoPosition]}
+              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
+              left: 0,
+              height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
             >
               <Text style={[styles.text1, styles.text1Typo]}>
                 {sportman?.info.speed}
@@ -246,9 +265,6 @@ const styles = StyleSheet.create({
     left: 1,
     height: 63
   },
-  circulo2: {
-    marginLeft: 15
-  },
   circulos: {
     flexDirection: 'row'
   },
@@ -310,19 +326,8 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   masDetalles: {
-    width: 367,
-    height: 130,
-    marginTop: 30
-  },
-  contenidoDatos: {
-    marginTop: 21,
-    alignSelf: 'center',
-    width: '95%',
-    alignItems: 'center'
-  },
-  perfilDatosVisualitzaciMa: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
-    width: '100%'
+    width:'95%',
+    marginTop: 30,
   }
 })
 

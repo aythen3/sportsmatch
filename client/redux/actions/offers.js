@@ -58,7 +58,7 @@ export const updateOffer = createAsyncThunk(
     try {
       console.log('id, body :', id, body)
       const { data } = await axiosInstance.patch(`offer/${id}`, body)
-      console.log('data from updateOffer: ', data)
+      // console.log('data from updateOffer: ', data)
       return data
     } catch (error) {
       throw new Error(error)

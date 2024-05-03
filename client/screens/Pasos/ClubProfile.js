@@ -17,7 +17,7 @@ const ClubProfile = () => {
   const { user } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
-  console.log('data: ', data)
+  //console.log('data: ', data)
   return (
     <View
       style={{

@@ -37,7 +37,7 @@ const MessagesChat = ({
   }
 
   // console.log('name:',name,'sportmanId: ', sportmanId)
-  
+
   useEffect(() => {
     getChatMessages()
   }, [])
@@ -97,8 +97,8 @@ const MessagesChat = ({
               }}
             >
               {lastMessage
-                ? lastMessage?.message?.message?.length >= 35
-                  ? lastMessage?.message?.message.slice(0, 35).concat('...')
+                ? lastMessage?.message?.message?.length >= 20
+                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
                   : lastMessage?.message?.message
                 : 'Inicia una conversacion!'}
             </Text>
@@ -192,10 +192,12 @@ const MessagesChat = ({
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
               match.status === 'success'
-          )?.length === 0 && offers.filter(
+          )?.length === 0 &&
+          offers.filter(
             (offer) =>
               offer.inscriptions &&
-              offer.inscriptions.includes(sportmanId) && offer.club.id === club.id
+              offer.inscriptions.includes(sportmanId) &&
+              offer.club.id === club.id
           ).length > 0 && (
             <Pressable
               onPress={() => {
@@ -250,22 +252,22 @@ const MessagesChat = ({
                   })
                 )
                   .then((data) => {
-                    console.log('data from match: ', data.payload)
-                    console.log('body to sendNotification: ', {
-                      title: 'Match',
-                      message: 'Has hecho match!',
-                      recipientId: data?.payload?.prop1?.sportManData?.userId,
-                      date: new Date(),
-                      read: false,
-                      prop1: {
-                        matchId: data?.payload?.id,
-                        clubData: {
-                          name: user?.user?.nickname,
-                          userId: user.user.id,
-                          ...user?.user?.club
-                        }
-                      }
-                    })
+                    // console.log('data from match: ', data.payload)
+                    // console.log('body to sendNotification: ', {
+                    //   title: 'Match',
+                    //   message: 'Has hecho match!',
+                    //   recipientId: data?.payload?.prop1?.sportManData?.userId,
+                    //   date: new Date(),
+                    //   read: false,
+                    //   prop1: {
+                    //     matchId: data?.payload?.id,
+                    //     clubData: {
+                    //       name: user?.user?.nickname,
+                    //       userId: user.user.id,
+                    //       ...user?.user?.club
+                    //     }
+                    //   }
+                    // })
                     dispatch(
                       sendNotification({
                         title: 'Match',

@@ -5,13 +5,13 @@ export const sendMatch = createAsyncThunk(
   'sendMatch/matchs',
   async ({ offerId, sportmanId, clubId, status, prop1 }) => {
     try {
-      console.log('data from sendMatch:', {
-        offerId,
-        sportmanId,
-        clubId,
-        status,
-        prop1
-      })
+      // console.log('data from sendMatch:', {
+      //   offerId,
+      //   sportmanId,
+      //   clubId,
+      //   status,
+      //   prop1
+      // })
 
       const body = !offerId
         ? { sportmanId, clubId, status, prop1 }
@@ -40,7 +40,7 @@ export const getClubMatchs = createAsyncThunk(
       const { data } = await axiosInstance.post(`club/${id}/info-relation`, {
         relation: ['matches']
       })
-      console.log('data response from getClubMatchs: ', data)
+      //console.log('data response from getClubMatchs: ', data)
       return data
     } catch (error) {
       throw new Error(error)
@@ -65,7 +65,7 @@ export const getAllMatchs = createAsyncThunk(
   async (id) => {
     try {
       const { data } = await axiosInstance.get('match')
-      console.log('data: ', data)
+      // console.log('data: ', data)
       return data
     } catch (error) {
       throw new Error(error)
