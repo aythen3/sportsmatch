@@ -76,9 +76,9 @@ const OfertasEmitidas = () => {
           offers.filter((offer) => offer.club.id === club.id).length === 0 ? (
             <Text
               style={{
-                marginTop: 30,
+                marginTop: 14,
                 fontFamily: FontFamily.t4TEXTMICRO,
-                fontWeight: 500,
+                fontWeight: 400,
                 fontSize: FontSize.size_9xl,
                 color: Color.wHITESPORTSMATCH,
                 bottom: 4
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     gap: 11
   },
   offers: {
-    width: (Dimensions.get('window').width * 0.9) / 2,
+    width: (Dimensions.get('window').width * 0.89) / 2,
     marginTop: 20,
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: 8,
@@ -350,8 +350,8 @@ const styles = StyleSheet.create({
   },
   addText: {
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.size_21xl,
-    bottom: 8.5
+    fontSize: 26,
+    bottom: 2
   },
   touchableImg: {
     width: 24,
