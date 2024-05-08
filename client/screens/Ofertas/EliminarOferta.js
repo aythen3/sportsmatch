@@ -29,16 +29,22 @@ const EliminarOferta = () => {
   const dispatch = useDispatch()
   const { allUsers } = useSelector((state) => state.users)
 
-  const { offer } = useSelector((state) => state.offers)
+  const { offer, offers } = useSelector((state) => state.offers)
 
   const [color, setColor] = useState(false)
   const [color2, setColor2] = useState(false)
   const [check1, setCheck1] = useState(false)
   const [check2, setCheck2] = useState(false)
 
-  const handleDelete = () => {
-    dispatch(deleteOffer(route.params.offerId))
-    dispatch(getAllOffers())
+  const filteredOffer = offers?.filter(
+    (offer) => offer.id === route.params.offerId
+  )
+
+  const offerIncriptions = filteredOffer[0]?.inscriptions || []
+
+  const handleDelete = async () => {
+    await dispatch(deleteOffer(route.params.offerId))
+    await dispatch(getAllOffers())
     navigation.goBack()
   }
 
@@ -60,8 +66,8 @@ const EliminarOferta = () => {
       >
         <Text
           style={{
-            fontSize: FontSize.h3TitleMEDIUM_size,
-            lineHeight: 26,
+            fontSize: 21,
+            lineHeight: 21,
             fontWeight: '500',
             textAlign: 'center',
             fontFamily: FontFamily.t4TEXTMICRO,
@@ -70,34 +76,40 @@ const EliminarOferta = () => {
         >{`¿Estás seguro de que quieres 
 eliminar esta oferta?`}</Text>
 
-        <View
-          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}
-        >
-          <Text
-            onPress={() => {
-              setColor2(false)
-              setColor(!color)
-            }}
+        {offerIncriptions.length > 0 && (
+          <View
             style={{
-              height: 45,
-              lineHeight: 40,
-              color: Color.gREY2SPORTSMATCH,
-              paddingHorizontal: 15,
-              fontFamily: FontFamily.t4TEXTMICRO,
-              fontSize: FontSize.t2TextSTANDARD_size,
-              borderWidth: 1,
-              width: '95%',
-              alignSelf: 'center',
-              borderColor: Color.gREY2SPORTSMATCH,
-              borderStyle: 'solid',
-              borderRadius: Border.br_81xl,
-              textAlign: 'center',
-              backgroundColor: color ? Color.colorGainsboro : 'transparent'
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 30
             }}
           >
-            "Sí, he encontrado a mi jugador/a o profesional."
-          </Text>
-        </View>
+            <Text
+              onPress={() => {
+                setColor2(false)
+                setColor(!color)
+              }}
+              style={{
+                height: 40,
+                lineHeight: 40,
+                color: Color.gREY2SPORTSMATCH,
+                paddingHorizontal: 15,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontSize: 15,
+                borderWidth: 1,
+                width: '95%',
+                alignSelf: 'center',
+                borderColor: Color.gREY2SPORTSMATCH,
+                borderStyle: 'solid',
+                borderRadius: Border.br_81xl,
+                textAlign: 'center',
+                backgroundColor: color ? Color.colorGainsboro : 'transparent'
+              }}
+            >
+              "Sí, he encontrado a mi jugador/a o profesional."
+            </Text>
+          </View>
+        )}
 
         {color && (
           <View
@@ -177,7 +189,7 @@ eliminar esta oferta?`}</Text>
         )}
 
         <View
-          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}
         >
           <Text
             onPress={() => {
@@ -186,12 +198,12 @@ eliminar esta oferta?`}</Text>
               setColor2(!color2)
             }}
             style={{
-              height: 45,
+              height: 40,
               lineHeight: 40, // Igual al height
               color: Color.gREY2SPORTSMATCH,
               paddingHorizontal: 15,
               fontFamily: FontFamily.t4TEXTMICRO,
-              fontSize: FontSize.t2TextSTANDARD_size,
+              fontSize: 15,
               borderWidth: 1,
               width: '95%',
               alignSelf: 'center',
@@ -210,7 +222,7 @@ eliminar esta oferta?`}</Text>
         style={{
           width: '100%',
           position: 'absolute',
-          bottom: 70
+          bottom: 50
         }}
       >
         <TouchableOpacity
