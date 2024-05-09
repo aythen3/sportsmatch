@@ -11,8 +11,6 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
     dispatch(getSportById(sport.id))
   }
 
-
-
   return (
     <View style={styles.frameParent}>
       <TouchableOpacity onPress={handlePress}>
@@ -83,7 +81,13 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          <Text style={styles.ftbolTypo}>{sport?.name}</Text>
+          <Text style={styles.ftbolTypo}>
+            {sport?.name === 'Básquetbol'
+              ? 'Baloncesto'
+              : sport?.name === 'Fútbol de salón'
+                ? 'Futbol sala'
+                : sport?.name}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>

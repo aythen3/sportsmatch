@@ -4,6 +4,7 @@ import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import SkillSeleccion from '../../components/SkillSeleccion'
 import { Color, FontFamily, FontSize } from '../../GlobalStyles'
+import { useSelector } from 'react-redux'
 
 const EditarSkills = () => {
   const navigation = useNavigation()
@@ -12,7 +13,13 @@ const EditarSkills = () => {
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <View style={styles.cooliconParent}>
-        <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
+        <Pressable
+          style={styles.coolicon}
+          onPress={() => {
+            console.log('ES')
+            navigation.goBack()
+          }}
+        >
           <Image
             style={styles.icon}
             contentFit="cover"
@@ -21,7 +28,10 @@ const EditarSkills = () => {
         </Pressable>
         <Pressable
           style={styles.editarPerfil1}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            console.log('ES')
+            navigation.goBack()
+          }}
         >
           <Text style={styles.editarPerfil2}>Define tus Skills</Text>
         </Pressable>
@@ -35,7 +45,8 @@ const styles = StyleSheet.create({
   cooliconParent: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 20,
+    marginBottom: 40,
     left: 15
   },
   coolicon: {

@@ -13,7 +13,12 @@ const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
           source={require('../assets/grafico-terreno-juego.png')}
         />
         <View style={styles.textoLateral}>
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable
+            onPress={() => {
+              console.log('triggered pfpc')
+              navigation.goBack()
+            }}
+          >
             <Text style={[styles.estadio, styles.taxto1Clr]}>Estadio</Text>
           </Pressable>
           <View style={styles.bloqueInformacion}>

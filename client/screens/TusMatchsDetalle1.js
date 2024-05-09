@@ -22,7 +22,10 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
       <View style={styles.matchParent}>
         <Pressable
           style={[styles.match, styles.framePosition]}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            console.log('TMD1')
+            navigation.goBack()
+          }}
         >
           <Text style={styles.match1Typo}>Match</Text>
         </Pressable>

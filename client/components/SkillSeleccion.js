@@ -18,10 +18,9 @@ import ScrollableModal from './modals/ScrollableModal'
 
 const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
   const navigation = useNavigation()
-
   const dispatch = useDispatch()
-
   const { sportman } = useSelector((state) => state.sportman)
+  console.log('sportmann: ', sportman)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
@@ -150,11 +149,17 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <View style={styles.rectangulo}>
             <TextInput
               key={'attack'}
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.attack?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
-              value={data?.attack !== undefined ? String(data?.attack) : editData?.attack ? editData?.attack :''}
+              value={
+                data?.attack !== undefined
+                  ? String(data?.attack)
+                  : editData?.attack
+                    ? editData?.attack
+                    : ''
+              }
               onChangeText={(value) => handleData('attack', value)}
               maxLength={3}
             />
@@ -164,10 +169,16 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <Text style={styles.defensa}>Defensa</Text>
           <View style={styles.rectangulo}>
             <TextInput
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.defense?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType="numeric"
-              value={data?.defense !== undefined ? String(data?.defense) : editData?.defense ? editData?.defense :''}
+              value={
+                data?.defense !== undefined
+                  ? String(data?.defense)
+                  : editData?.defense
+                    ? editData?.defense
+                    : ''
+              }
               style={styles.textInput}
               onChangeText={(value) => handleData('defense', value)}
               maxLength={3}
@@ -178,11 +189,17 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <Text style={styles.defensa}>Velocidad</Text>
           <View style={styles.rectangulo}>
             <TextInput
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.speed?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType="numeric"
               style={styles.textInput}
-              value={data?.speed !== undefined ? String(data?.speed) : editData?.speed ? editData?.speed :''}
+              value={
+                data?.speed !== undefined
+                  ? String(data?.speed)
+                  : editData?.speed
+                    ? editData?.speed
+                    : ''
+              }
               onChangeText={(value) => handleData('speed', value)}
               maxLength={3}
             />
@@ -203,7 +220,10 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <Acordeon
             title="Categoría"
             placeholderText={
-              selectedCategoria ? selectedCategoria : 'Selecciona tu categoría'
+              selectedCategoria
+                ? selectedCategoria
+                : sportman?.info?.category?.toString() ||
+                  'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
@@ -232,7 +252,10 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <Acordeon
             title="Posición Principal"
             placeholderText={
-              selectedPosition ? selectedPosition : 'Selecciona tu posición '
+              selectedPosition
+                ? selectedPosition
+                : sportman?.info?.position?.toString() ||
+                  'Selecciona tu posición '
             }
             isAccordeon={true}
             open={openPositionModal}
@@ -254,7 +277,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder="1.80m"
+              placeholder={sportman?.info?.height?.toString() || '1.80m'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('height', value)}
@@ -267,10 +290,16 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.prop1?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
-              value={data?.prop1 !== undefined ? String(data?.prop1) : editData?.prop1 ? editData?.prop1 : '' }
+              value={
+                data?.prop1 !== undefined
+                  ? String(data?.prop1)
+                  : editData?.prop1
+                    ? editData?.prop1
+                    : ''
+              }
               onChangeText={(value) => handleData('prop1', value)}
               maxLength={3}
             />
@@ -281,10 +310,16 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.prop2?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
-              value={data?.prop2 !== undefined ? String(data?.prop2) :editData?.prop2 ? editData?.prop2 : ''}
+              value={
+                data?.prop2 !== undefined
+                  ? String(data?.prop2)
+                  : editData?.prop2
+                    ? editData?.prop2
+                    : ''
+              }
               onChangeText={(value) => handleData('prop2', value)}
               maxLength={3}
             />
@@ -295,9 +330,15 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder="0 - 100"
+              placeholder={sportman?.info?.prop3?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
-              value={data?.prop3 !== undefined ? String(data?.prop3) : editData?.prop3 ? editData?.prop3 : ''}
+              value={
+                data?.prop3 !== undefined
+                  ? String(data?.prop3)
+                  : editData?.prop3
+                    ? editData?.prop3
+                    : ''
+              }
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('prop3', value)}
               maxLength={3}

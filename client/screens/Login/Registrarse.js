@@ -23,8 +23,7 @@ import { create, getAllUsers } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 
 const Registrarse = () => {
-
-  const [nombreError, setNombreError] = useState('');
+  const [nombreError, setNombreError] = useState('')
   const navigation = useNavigation()
 
   const route = useRoute()
@@ -53,9 +52,14 @@ const Registrarse = () => {
   }, [])
 
   const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.(?:com|net|org|edu|gov|mil|biz|info|name|museum|us|ca|uk|fr|au|de)$/i.test(
-      email
-    )
+    const alreadyTaken = allUsers?.map((user) => user.email).includes(email)
+    if (!alreadyTaken) {
+      return /^[^\s@]+@[^\s@]+\.(?:com|net|org|edu|gov|mil|biz|info|name|museum|us|ca|uk|fr|au|de)$/i.test(
+        email
+      )
+    } else {
+      return false
+    }
   }
 
   const seterValues = (field, value) => {
@@ -120,7 +124,7 @@ const Registrarse = () => {
                 <Text style={[styles.titular, styles.titularLayout]}>
                   Regístrate
                 </Text>
-                
+
                 <View style={styles.campos}>
                   <View style={styles.campo1}>
                     <View
@@ -156,28 +160,27 @@ const Registrarse = () => {
                         onChangeText={(value) => {
                           if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
                             // Si la entrada coincide con la expresión regular o está vacía, actualizar el estado y limpiar el mensaje de error
-                            seterValues('nickname', value);
-                            setNombreError('');
+                            seterValues('nickname', value)
+                            setNombreError('')
                           } else {
                             // Si la entrada no coincide con la expresión regular, establecer el mensaje de error apropiado
-                            setNombreError('Nombre no puede contener números ni caracteres especiales');
+                            setNombreError(
+                              'Nombre no puede contener números ni caracteres especiales'
+                            )
                           }
-                      
+
                           // Verificar si se excedió el máximo de caracteres
                           if (value.length > 60) {
                             // Si se excede el máximo de caracteres, establecer el mensaje de error correspondiente
-                            setNombreError('Caracteres excedidos');
+                            setNombreError('Caracteres excedidos')
                           }
                         }}
                         onSubmitEditing={() => {
-                          emailInputRef.current.focus();
+                          emailInputRef.current.focus()
                         }}
                         maxLength={60}
                       />
-                      
-                      
                     </View>
-                   
                   </View>
                   <View style={styles.campo2}>
                     <View
@@ -291,38 +294,47 @@ const Registrarse = () => {
               </View>
             </View>
             <View style={{ height: 40, marginTop: 36, width: 360 }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 5 }}>
-  {nombreError !== '' && (
-    <Text style={{ color: 'red', fontWeight: '400' }}>
-      {nombreError}
-    </Text>
-  )}
-</View>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: 5
+                }}
+              >
+                {nombreError !== '' && (
+                  <Text style={{ color: 'red', fontWeight: '400' }}>
+                    {nombreError}
+                  </Text>
+                )}
+              </View>
 
-              <View style={[styles.botonRegistrate, { marginTop: nombreError ? 20 : 36 }]}>
-  <TouchableOpacity
-    style={[styles.loremIpsum, styles.loremPosition]}
-    onPress={submit}
-  >
-    <View style={styles.loremIpsum1}>
-      <Text style={styles.aceptar}>Regístrate</Text>
-    </View>
-  </TouchableOpacity>
-</View>
-
+              <View
+                style={[
+                  styles.botonRegistrate,
+                  { marginTop: nombreError ? 20 : 36 }
+                ]}
+              >
+                <TouchableOpacity
+                  style={[styles.loremIpsum, styles.loremPosition]}
+                  onPress={submit}
+                >
+                  <View style={styles.loremIpsum1}>
+                    <Text style={styles.aceptar}>Regístrate</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
           <View style={[{ marginTop: nombreError ? 40 : 36 }]}>
-
-          <Pressable
-            style={styles.yaTenesUnaContainer}
-            onPress={() => navigation.navigate('IniciarSesin')}
-          >
-            <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
-              ¿Ya tienes una cuenta? Inicia sesión
-            </Text>
-          </Pressable>
-</View>
+            <Pressable
+              style={styles.yaTenesUnaContainer}
+              onPress={() => navigation.navigate('IniciarSesin')}
+            >
+              <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
+                ¿Ya tienes una cuenta? Inicia sesión
+              </Text>
+            </Pressable>
+          </View>
           <View style={styles.textoLegal}>
             <View style={styles.textoLegalFrame}>
               <CheckBox
@@ -494,7 +506,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
     width: 360,
-    
+
     borderRadius: Border.br_81xl,
     alignItems: 'center',
     flexDirection: 'row'
@@ -550,7 +562,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '-25%',
     zIndex: 0,
-    transform: [{ scale: 0.70 }] //
+    transform: [{ scale: 0.7 }] //
   },
   registrarse: {
     overflow: 'hidden',
