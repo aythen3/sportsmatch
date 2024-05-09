@@ -484,8 +484,6 @@ const ExplorarClubs = () => {
               columnWrapperStyle={{
                 justifyContent: 'space-between',
                 marginBottom: 10,
-                borderWidth: 2,
-                borderColor: 'red',
                 gap: 10
               }}
               contentContainerStyle={{ paddingHorizontal: 5 }}
@@ -542,8 +540,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     flexDirection: 'row',
     aligse: 'center',
-    borderWidth: 2,
-    borderColor: 'red',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
