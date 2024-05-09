@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation, useRoute } from '@react-navigation/core'
-import { createPost } from '../../../redux/actions/post'
+import { createPost, getAllPosts } from '../../../redux/actions/post'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CrearHighlight = () => {
@@ -34,7 +34,7 @@ const CrearHighlight = () => {
       authorType: user.user.type,
       author: user.user.id
     }
-    dispatch(createPost(data))
+    dispatch(createPost(data)).then((data) => dispatch(getAllPosts()))
     navigation.navigate('SiguiendoJugadores')
   }
 
@@ -54,7 +54,12 @@ const CrearHighlight = () => {
             alignItems: 'center'
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('CH')
+              navigation.goBack()
+            }}
+          >
             <Image
               style={{ height: 15, width: 15 }}
               contentFit="cover"

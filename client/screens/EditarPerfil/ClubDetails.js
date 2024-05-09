@@ -18,7 +18,6 @@ import { updateClubData } from '../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
 
-
 const ClubDetails = () => {
   const dispatch = useDispatch()
   const [clubName, setClubName] = useState()
@@ -43,47 +42,48 @@ const ClubDetails = () => {
   const { user } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
+  console.log('club:', club)
 
   const inputs = [
     {
       title: 'Nombre del club',
       type: 'text',
-      placeHolder: 'Nombre del club...',
+      placeHolder: club.name || 'Nombre del club...',
       state: clubName,
       setState: setClubName
     },
     {
       title: 'Población',
       type: 'text',
-      placeHolder: 'Población...',
+      placeHolder: club.city || 'Población...',
       state: city,
       setState: setCity
     },
     {
       title: 'País',
       type: 'text',
-      placeHolder: 'País...',
+      placeHolder: club.country || 'País...',
       state: country,
       setState: setCountry
     },
     {
       title: 'Nombre del estadio, campo o pavellón',
       type: 'text',
-      placeHolder: 'Nombre del estadio...',
+      placeHolder: club.field || 'Nombre del estadio...',
       state: stadiumName,
       setState: setStadiumName
     },
     {
       title: 'Año de fundación',
       type: 'number',
-      placeHolder: 'Año de fundación...',
+      placeHolder: club.year.toString() || 'Año de fundación...',
       state: foundationDate,
       setState: setFoundationDate
     },
     {
       title: 'Aforo',
       type: 'number',
-      placeHolder: 'Aforo...',
+      placeHolder: club.capacity.toString() || 'Aforo...',
       state: capacity,
       setState: setCapacity
     },
@@ -91,6 +91,7 @@ const ClubDetails = () => {
       title: 'Describe tu club',
       type: 'text',
       placeHolder:
+        club.description ||
         'Habla de aquello que sea más relevante de tu club. Campeonatos ganados, categorías, anécdotas, etc.',
       state: description,
       setState: setDescription,
@@ -126,121 +127,122 @@ const ClubDetails = () => {
   const [showCamera, setShowCamera] = useState(false)
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
-const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
+  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
 
-const handlePickImage = async (type) => {
-  await pickImage(type)
-}
-
-const [hasPermission, setHasPermission] = useState(null)
-const [cameraRef, setCameraRef] = useState(null)
-
-useEffect(() => {
-  (async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync()
-    setHasPermission(status === 'granted')
-  })()
-}, [])
-
-const changePictureMode = async () => {
-  console.log(
-    'setting camera mode to: ',
-    cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-  )
-  setCameraType(
-    cameraType === Camera.Constants.Type.back
-      ? Camera.Constants.Type.front
-      : Camera.Constants.Type.back
-  )
-}
-
-useEffect(() => {
-  console.log('selectedImage changed', selectedImage)
-  console.log('selectedPicture changed', selectedPicture)
-}, [selectedImage, selectedPicture])
-
-const takePicture = async () => {
-  console.log('on takePicture!')
-  if (cameraRef) {
-    const photo = await cameraRef.takePictureAsync()
-    console.log(photo)
-    setSelectedImage(photo)
-    pickImageFromCamera(selectedPicture, photo.uri)
-    setShowCamera(false)
-    // You can handle the taken photo here, such as displaying it or saving it.
+  const handlePickImage = async (type) => {
+    await pickImage(type)
   }
-}
+
+  const [hasPermission, setHasPermission] = useState(null)
+  const [cameraRef, setCameraRef] = useState(null)
+
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync()
+      setHasPermission(status === 'granted')
+    })()
+  }, [])
+
+  const changePictureMode = async () => {
+    console.log(
+      'setting camera mode to: ',
+      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
+    )
+    setCameraType(
+      cameraType === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    )
+  }
+
+  useEffect(() => {
+    console.log('selectedImage changed', selectedImage)
+    console.log('selectedPicture changed', selectedPicture)
+  }, [selectedImage, selectedPicture])
+
+  const takePicture = async () => {
+    console.log('on takePicture!')
+    if (cameraRef) {
+      const photo = await cameraRef.takePictureAsync()
+      console.log(photo)
+      setSelectedImage(photo)
+      pickImageFromCamera(selectedPicture, photo.uri)
+      setShowCamera(false)
+      // You can handle the taken photo here, such as displaying it or saving it.
+    }
+  }
 
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-        {showCamera && (
-        <Modal  animationType="slide"
-        transparent={true}
-        visible={showCamera}
-        onRequestClose={()=>setShowCamera(false)}>
-          <Camera
-          style={{
-            flex: 1
-          }}
-          type={Camera.Constants.Type.back}
-          ref={(ref) => setCameraRef(ref)}
+      {showCamera && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showCamera}
+          onRequestClose={() => setShowCamera(false)}
         >
-          <View
+          <Camera
             style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row'
+              flex: 1
             }}
+            type={Camera.Constants.Type.back}
+            ref={(ref) => setCameraRef(ref)}
           >
-            <TouchableOpacity
-              style={{ position: 'absolute', top: 22, left: 18 }}
-              onPress={() => setShowCamera(false)}
-            >
-              <Image
-                style={{height: 15,
-                  width: 15}}
-                contentFit="cover"
-                source={require('../../assets/group-565.png')}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
+            <View
               style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                width: '100%',
-                marginBottom: 10,
-                position: 'relative'
+                flex: 1,
+                backgroundColor: 'transparent',
+                flexDirection: 'row'
               }}
             >
               <TouchableOpacity
-                onPress={takePicture}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 100,
-                  backgroundColor: '#cecece',
+                style={{ position: 'absolute', top: 22, left: 18 }}
+                onPress={() => setShowCamera(false)}
+              >
+                <Image
+                  style={{ height: 15, width: 15 }}
+                  contentFit="cover"
+                  source={require('../../assets/group-565.png')}
+                />
+              </TouchableOpacity>
 
-                  color: 'white'
-                }}
-              ></TouchableOpacity>
               <TouchableOpacity
-                onPress={changePictureMode}
                 style={{
-                  position: 'absolute',
-                  right: 20,
-                  color: 'white',
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginBottom: 10,
+                  position: 'relative'
                 }}
               >
-                <Entypo name="cycle" color={'#fff'} size={25} />
+                <TouchableOpacity
+                  onPress={takePicture}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 100,
+                    backgroundColor: '#cecece',
+
+                    color: 'white'
+                  }}
+                ></TouchableOpacity>
+                <TouchableOpacity
+                  onPress={changePictureMode}
+                  style={{
+                    position: 'absolute',
+                    right: 20,
+                    color: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Entypo name="cycle" color={'#fff'} size={25} />
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        </Camera>
+            </View>
+          </Camera>
         </Modal>
       )}
       <ScrollView
@@ -260,7 +262,12 @@ const takePicture = async () => {
               justifyContent: 'flex-start'
             }}
           >
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('CD')
+                navigation.goBack()
+              }}
+            >
               <Image
                 style={{ width: 9, height: 15, marginTop: 2.5 }}
                 contentFit="cover"
@@ -292,14 +299,14 @@ const takePicture = async () => {
                   }}
                 />
               )}
-                <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
                   setSelectedPicture('profile')
                   setShowCamera(true)
                 }}
                 style={{
                   right: 0,
-                  position:"absolute",
+                  position: 'absolute',
                   width: 35,
                   height: 35,
                   borderRadius: 100,
@@ -330,14 +337,14 @@ const takePicture = async () => {
             <View style={styles.coverImageContainer}>
               {user?.user?.club?.img_front && (
                 <Image
-                  style={{width:'100%',height:'100%', borderRadius:8}}
+                  style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"
                   source={{
                     uri: provisoryCoverImage || user?.user?.club?.img_front
                   }}
                 />
               )}
-                <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
                   setSelectedPicture('cover')
                   setShowCamera(true)
@@ -345,7 +352,7 @@ const takePicture = async () => {
                 style={{
                   right: 0,
                   top: -17,
-                  position:"absolute",
+                  position: 'absolute',
                   width: 35,
                   height: 35,
                   borderRadius: 100,
@@ -454,7 +461,7 @@ const styles = StyleSheet.create({
     gap: 5,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    borderRadius: 8,
+    borderRadius: 8
   },
   orangeButton: {
     backgroundColor: '#E1451E',
@@ -483,7 +490,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 138,
     marginBottom: 8,
-    backgroundColor: '#fff', borderRadius:8
+    backgroundColor: '#fff',
+    borderRadius: 8
   },
   generalWrapper: {
     width: '90%'

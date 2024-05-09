@@ -31,7 +31,7 @@ const MessagesChat = ({
 
   const getChatMessages = async () => {
     const { data } = await axiosInstance.get(
-      `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
+      `chat/room?limit=${99999999999}&senderId=${user.user.id}&receiverId=${selectedUserId}`
     )
     setConvMessages(data)
   }

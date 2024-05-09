@@ -44,6 +44,7 @@ const HeaderPerfil = ({
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
+  const [matchSended, setMatchSended] = useState(false)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -272,12 +273,57 @@ const HeaderPerfil = ({
               </Text>
             </TouchableOpacity>
           )}
-          {!isSportman &&
-          clubMatches?.filter(
-            (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
-          )?.length === 0 ? (
+          {matchSended === true ? (
             <Pressable
-              onPress={() =>
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#7B2610',
+                borderRadius: Border.br_81xl,
+                height: 35,
+                width: 170,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  marginLeft: 35,
+                  width: '100%',
+                  textAlign: 'left',
+                  fontSize: 14,
+                  color: '#E1451E',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: '700'
+                }}
+              >
+                {'Match solicitado'}
+              </Text>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: Color.bALONCESTO,
+                  position: 'absolute',
+                  right: 0
+                }}
+              >
+                <Image
+                  style={styles.groupIcon}
+                  contentFit="cover"
+                  source={require('../assets/group13.png')}
+                />
+              </View>
+            </Pressable>
+          ) : !isSportman &&
+            clubMatches?.filter(
+              (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
+            )?.length === 0 ? (
+            <Pressable
+              onPress={() => {
+                setMatchSended(true)
                 dispatch(
                   sendMatch({
                     sportmanId: data?.author?.sportman?.id,
@@ -337,7 +383,7 @@ const HeaderPerfil = ({
                   })
                   .then((data) => dispatch(getAllMatchs()))
                   .then((data) => getClubMatches())
-              }
+              }}
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',

@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   FontFamily,
@@ -14,20 +20,22 @@ import { useSelector } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
 
 const Contrasea = () => {
-  const {user} = useSelector(state=>state.users)
+  const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
-  const [password,setPassword] = useState('')
-  const [newPassword,setNewPassword] = useState('')
-  const [repeatNewPassword,setRepeatNewPassword] = useState('')
+  const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [repeatNewPassword, setRepeatNewPassword] = useState('')
 
   const handleChangePassword = () => {
-    if(newPassword === repeatNewPassword) {
+    if (newPassword === repeatNewPassword) {
       const body = {
         email: user.user.email,
         password: password,
         newPassword: newPassword
       }
-      axiosInstance.post(`user/change-password/${user.user.id}`,body).then(()=>navigation.navigate('SiguiendoJugadores'))
+      axiosInstance
+        .post(`user/change-password/${user.user.id}`, body)
+        .then(() => navigation.navigate('SiguiendoJugadores'))
     }
   }
 
@@ -37,7 +45,10 @@ const Contrasea = () => {
         <View style={styles.loremIpsumFlexBox}>
           <Pressable
             style={styles.coolicon}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('CTSNA')
+              navigation.goBack()
+            }}
           >
             <Image
               style={styles.icon}
@@ -55,12 +66,36 @@ const Contrasea = () => {
       </View>
 
       <View View style={{ marginTop: 30 }}>
-        <Input state={password} setState={setPassword} type={'password'} title="Contraseña" placeholderText="*****" />
-        <Input state={newPassword} setState={setNewPassword}  type={'newPassword'} title="Nueva contraseña" />
-        <Input state={repeatNewPassword} setState={setRepeatNewPassword} type={'repeatNewPassword'} title="Repetir nueva contraseña" />
+        <Input
+          state={password}
+          setState={setPassword}
+          type={'password'}
+          title="Contraseña"
+          placeholderText="*****"
+        />
+        <Input
+          state={newPassword}
+          setState={setNewPassword}
+          type={'newPassword'}
+          title="Nueva contraseña"
+        />
+        <Input
+          state={repeatNewPassword}
+          setState={setRepeatNewPassword}
+          type={'repeatNewPassword'}
+          title="Repetir nueva contraseña"
+        />
       </View>
 
-      <TouchableOpacity disabled={password.length <= 0 || newPassword.length <= 0 ||repeatNewPassword.length <= 0} onPress={handleChangePassword} style={styles.boton}>
+      <TouchableOpacity
+        disabled={
+          password.length <= 0 ||
+          newPassword.length <= 0 ||
+          repeatNewPassword.length <= 0
+        }
+        onPress={handleChangePassword}
+        style={styles.boton}
+      >
         <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
           <Text style={styles.aceptar}>Aceptar</Text>
         </View>

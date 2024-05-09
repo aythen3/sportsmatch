@@ -37,15 +37,21 @@ const ChatAbierto1 = () => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showDeletePopUp, setShowDeletePopUp] = useState(false)
   const isFocused = useIsFocused()
-  const { joinRoom, getUsersMessages,roomId,leaveRoom, sendMessage, getTimeFromDate } =
-    useContext(Context)
+  const {
+    joinRoom,
+    getUsersMessages,
+    roomId,
+    leaveRoom,
+    sendMessage,
+    getTimeFromDate
+  } = useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
   const { user, allUsers } = useSelector((state) => state.users)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const scrollViewRef = useRef();
+  const scrollViewRef = useRef()
 
   const handleSendMessage = () => {
     sendMessage(message, user.user.id, route.params.receiverId)
@@ -54,13 +60,12 @@ const ChatAbierto1 = () => {
 
   useEffect(() => {
     setSelectedUserDetails(
-      allUsers.filter(
-        (user) => user.id === route.params.receiverId
-      )[0]
+      allUsers.filter((user) => user.id === route.params.receiverId)[0]
     )
-    console.log('userData', allUsers.filter(
-      (user) => user.id === route.params.receiverId
-    )[0])
+    console.log(
+      'userData',
+      allUsers.filter((user) => user.id === route.params.receiverId)[0]
+    )
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
@@ -101,17 +106,11 @@ const ChatAbierto1 = () => {
         .followers || []
     console.log('actual followers: ', actualFollowers)
     const newFollowers = actualFollowers.includes(user?.user?.id)
-      ? actualFollowers.filter(
-        (follower) => follower !== user?.user?.id
-      )
+      ? actualFollowers.filter((follower) => follower !== user?.user?.id)
       : [...actualFollowers, user?.user?.id]
 
-    const newFollowingArray = userFollowing?.includes(
-      selectedUserDetails.id
-    )
-      ? userFollowing.filter(
-        (followed) => followed !== selectedUserDetails.id
-      )
+    const newFollowingArray = userFollowing?.includes(selectedUserDetails.id)
+      ? userFollowing.filter((followed) => followed !== selectedUserDetails.id)
       : [...userFollowing, selectedUserDetails.id]
     actualUser.user.following = newFollowingArray
     console.log('user: ', actualUser?.user?.following)
@@ -153,173 +152,337 @@ const ChatAbierto1 = () => {
         dispatch(getAllUsers())
         dispatch(updateUser(actualUser))
       })
+    return
   }
 
   const handleRemoveChat = () => {
     setShowDeletePopUp(false)
-    const body = { senderId: user?.user?.id.toString() , receiverId: route.params.receiverId.toString(), room: roomId }
-    console.log('removing chat...',body)
-    axiosInstance.post('chat/marcarMensajesComoEliminados',body)
-
+    const body = {
+      senderId: user?.user?.id.toString(),
+      receiverId: route.params.receiverId.toString(),
+      room: roomId
+    }
+    console.log('removing chat...', body)
+    axiosInstance.post('chat/marcarMensajesComoEliminados', body)
   }
 
-  if (selectedUserDetails) return (
-    <SafeAreaView style={styles.chatAbierto}>
-      {isFocused && (
-        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
-      )}
-      {showOptionsModal && <Modal visible={showOptionsModal} transparent={true}>
-        <TouchableWithoutFeedback onPress={() => setShowOptionsModal(false)}>
-          <View style={{ flex: 1, marginTop: 45, paddingRight: 15, alignItems: 'flex-end' }}>
-            <View style={{ backgroundColor: '#252525', borderRadius: 8, width: 170 }}>
-              {selectedUserDetails.type !== 'club' && <TouchableOpacity onPress={handleFollow}
-                style={{ height: 35, width: '100%', borderBottomWidth: 1, borderBottomColor: '#505050', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: '#fff', fontSize: 14 }}>{userFollowing?.includes(selectedUserDetails.id)
-                  ? 'Dejar de seguir'
-                  : 'Seguir'}</Text>
-              </TouchableOpacity>}
-              <TouchableOpacity onPress={() => {
-                setShowOptionsModal(false)
-                if (selectedUserDetails?.type === 'club') {
-                  navigation.navigate('ClubProfile', { author: selectedUserDetails })
-                } else {
-                  navigation.navigate('PerfilFeedVisualitzaciJug', { author: selectedUserDetails })
-                }
-              }} style={{ height: 35, width: '100%', borderBottomWidth: 1, borderBottomColor: '#505050', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: '#fff', fontSize: 14 }}>Ver perfil</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                setShowOptionsModal(false)
-                setShowDeletePopUp(true)
-              }} style={{ height: 35, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: '#fff', fontSize: 14 }}>Eliminar conversación</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>}
+  console.log('allMessages.length', allMessages.length)
 
-      {showDeletePopUp && <Modal visible={showDeletePopUp} transparent={true}>
-        <TouchableWithoutFeedback onPress={() => setShowDeletePopUp(false)}>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 100 }}>
-            <View style={{ backgroundColor: '#252525', borderRadius: 8, width: '55%', paddingVertical: 20, gap: 25, justifyContent: 'space-around', alignItems: 'center' }}>
-              <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 400 }}>Está seguro?</Text></View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
-                <TouchableOpacity onPress={() => setShowDeletePopUp(false)} style={{ borderRadius: 5, height: 33, width: '35%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E1451E' }}><Text style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}>Cancelar</Text></TouchableOpacity>
-                <TouchableOpacity onPress={handleRemoveChat} style={{ borderRadius: 5, height: 33, width: '35%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E1451E' }}><Text style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}>Aceptar</Text></TouchableOpacity>
+  if (selectedUserDetails)
+    return (
+      <SafeAreaView style={styles.chatAbierto}>
+        {isFocused && (
+          <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+        )}
+        {showOptionsModal && (
+          <Modal visible={showOptionsModal} transparent={true}>
+            <TouchableWithoutFeedback
+              onPress={() => setShowOptionsModal(false)}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: 45,
+                  paddingRight: 15,
+                  alignItems: 'flex-end'
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#252525',
+                    borderRadius: 8,
+                    width: 170
+                  }}
+                >
+                  {selectedUserDetails.type !== 'club' && (
+                    <Pressable
+                      onPress={handleFollow}
+                      style={{
+                        height: 35,
+                        width: '100%',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#505050',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Text style={{ color: '#fff', fontSize: 14 }}>
+                        {userFollowing?.includes(selectedUserDetails.id)
+                          ? 'Dejar de seguir'
+                          : 'Seguir'}
+                      </Text>
+                    </Pressable>
+                  )}
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowOptionsModal(false)
+                      if (selectedUserDetails?.type === 'club') {
+                        navigation.navigate('ClubProfile', {
+                          author: selectedUserDetails
+                        })
+                      } else {
+                        navigation.navigate('PerfilFeedVisualitzaciJug', {
+                          author: selectedUserDetails
+                        })
+                      }
+                    }}
+                    style={{
+                      height: 35,
+                      width: '100%',
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#505050',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Ver perfil
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowOptionsModal(false)
+                      setShowDeletePopUp(true)
+                    }}
+                    style={{
+                      height: 35,
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Eliminar conversación
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>}
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: 15,paddingBottom:5,
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-          <Pressable onPress={() => {         
-            getUsersMessages()
-            navigation.goBack()}}>
-            <Image
-              style={{ width: 9, height: 18, marginRight: 12, marginTop: 2.5 }}
-              contentFit="cover"
-              source={require('../assets/coolicon4.png')}
-            />
-          </Pressable>
+            </TouchableWithoutFeedback>
+          </Modal>
+        )}
 
-          <TouchableOpacity onPress={() => {
-            if (selectedUserDetails?.type === 'club') {
-              navigation.navigate('ClubProfile', { author: selectedUserDetails })
-            } else {
-              navigation.navigate('PerfilFeedVisualitzaciJug', { author: selectedUserDetails })
-            }
-          }} style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
-              style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
-              contentFit="cover"
-              source={{ uri: route.params.profilePic }}
-            />
-            <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
-              {route.params.receiverName}
-            </Text>
+        {showDeletePopUp && (
+          <Modal visible={showDeletePopUp} transparent={true}>
+            <TouchableWithoutFeedback onPress={() => setShowDeletePopUp(false)}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 100
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#252525',
+                    borderRadius: 8,
+                    width: '55%',
+                    paddingVertical: 20,
+                    gap: 25,
+                    justifyContent: 'space-around',
+                    alignItems: 'center'
+                  }}
+                >
+                  <View
+                    style={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text
+                      style={{ color: '#fff', fontSize: 20, fontWeight: 400 }}
+                    >
+                      Está seguro?
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      width: '100%'
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => setShowDeletePopUp(false)}
+                      style={{
+                        borderRadius: 5,
+                        height: 33,
+                        width: '35%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#E1451E'
+                      }}
+                    >
+                      <Text
+                        style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}
+                      >
+                        Cancelar
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={handleRemoveChat}
+                      style={{
+                        borderRadius: 5,
+                        height: 33,
+                        width: '35%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#E1451E'
+                      }}
+                    >
+                      <Text
+                        style={{ color: '#fff', fontSize: 15, fontWeight: 400 }}
+                      >
+                        Aceptar
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 15,
+            paddingBottom: 5
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Pressable
+              onPress={() => {
+                console.log('triggered CA1')
+                getUsersMessages()
+                navigation.goBack()
+              }}
+            >
+              <Image
+                style={{
+                  width: 9,
+                  height: 18,
+                  marginRight: 12,
+                  marginTop: 2.5
+                }}
+                contentFit="cover"
+                source={require('../assets/coolicon4.png')}
+              />
+            </Pressable>
+
+            <TouchableOpacity
+              onPress={() => {
+                if (selectedUserDetails?.type === 'club') {
+                  navigation.navigate('ClubProfile', {
+                    author: selectedUserDetails
+                  })
+                } else {
+                  navigation.navigate('PerfilFeedVisualitzaciJug', {
+                    author: selectedUserDetails
+                  })
+                }
+              }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <Image
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 50,
+                  marginRight: 10
+                }}
+                contentFit="cover"
+                source={{ uri: route.params.profilePic }}
+              />
+              <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
+                {route.params.receiverName}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={{
+              width: 50,
+              alignItems: 'flex-end'
+            }}
+            onPress={() => setShowOptionsModal(true)}
+          >
+            <ThreePointsSVG />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => setShowOptionsModal(true)}>
-          <ThreePointsSVG />
-        </TouchableOpacity>
-      </View>
-
-     <ScrollView ref={scrollViewRef}  onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
-       <View
-         style={{
-           flex: 1,
-           flexDirection: 'column-reverse',
-           paddingRight: 10,
-           paddingLeft: 10,overflow:'hidden'
-         }}
-       >
-         {allMessages?.map((chat) => (
-           <Chat
-             hour={getTimeFromDate(chat.createdAt)}
-             key={chat.id}
-             text={chat.message}
-             isMy={chat.senderId === user.user.id}
-             read={chat.isReaded}
-           />
-         ))}
-       </View>
-     </ScrollView>
-      <View
-        style={{
-          height: 50,
-          margin: 10,
-          borderRadius: 50,
-          borderWidth: 2,
-          borderColor: '#fff'
-        }}
-      >
-        <TextInput
-          value={message}
-          onChangeText={setMessage}
-          placeholder="Escribe tu mensaje..."
-          placeholderTextColor="#fff"
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({ animated: true })
+          }
+        >
+          <View
+            style={{
+              flexDirection: 'column-reverse',
+              paddingRight: 10,
+              paddingLeft: 10
+            }}
+          >
+            {allMessages?.map((chat) => (
+              <Chat
+                hour={getTimeFromDate(chat.createdAt)}
+                key={chat.id}
+                text={chat.message}
+                isMy={chat.senderId === user.user.id}
+                read={chat.isReaded}
+              />
+            ))}
+          </View>
+        </ScrollView>
+        <View
           style={{
-            flex: 1,
-            paddingLeft: 15,
-            maxWidth:'85%',
-            fontSize: 16,
-            color: '#fff'
-          }}
-        />
-        <TouchableOpacity
-          disabled={message ? false : true}
-          onPress={handleSendMessage}
-          style={{
-            width: 25,
-            position: 'absolute',
-            right: 5,
-            top: 12,
-            right: 10
+            height: 50,
+            margin: 10,
+            borderRadius: 50,
+            borderWidth: 2,
+            borderColor: '#fff'
           }}
         >
-          <Image
-            source={contact}
+          <TextInput
+            value={message}
+            onChangeText={setMessage}
+            placeholder="Escribe tu mensaje..."
+            placeholderTextColor="#fff"
             style={{
-              tintColor: message ? '#fff' : '#cecece',
-              width: 22,
-              height: 22
+              flex: 1,
+              paddingLeft: 15,
+              maxWidth: '85%',
+              fontSize: 16,
+              color: '#fff'
             }}
           />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  )
+          <TouchableOpacity
+            disabled={message ? false : true}
+            onPress={handleSendMessage}
+            style={{
+              width: 25,
+              position: 'absolute',
+              right: 5,
+              top: 12,
+              right: 10
+            }}
+          >
+            <Image
+              source={contact}
+              style={{
+                tintColor: message ? '#fff' : '#cecece',
+                width: 22,
+                height: 22
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({

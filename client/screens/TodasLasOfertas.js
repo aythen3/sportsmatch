@@ -113,7 +113,6 @@ const TodasLasOfertas = () => {
       }
     }
     if (clientSecret) {
-      console.log('entra a la hoja')
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
@@ -124,7 +123,9 @@ const TodasLasOfertas = () => {
         <View style={styles.cabezera1}>
           <Pressable
             style={styles.coolicon}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack()
+            }}
           >
             <Image
               style={styles.icon}
@@ -380,7 +381,7 @@ const TodasLasOfertas = () => {
                       }}
                     >
                       {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                        ? 'Inscripto!'
+                        ? 'Inscrito!'
                         : 'Inscríbete en la oferta'}
                     </Text>
                   </Pressable>
@@ -420,7 +421,7 @@ const TodasLasOfertas = () => {
         )
       )}
 
-      {selectOfferComponent === 'todas' &&
+      {/* {selectOfferComponent === 'todas' &&
         offers.filter((offer) => {
           const filteredUserMatches = userMatches.filter(
             (match) => match.offerId && match.offerId !== offer.id
@@ -459,11 +460,11 @@ const TodasLasOfertas = () => {
                 : setShowPremiumModal(true)
             }
           >
-            Ver más ofertas
+            <Text>Ver más ofertas</Text>
           </TouchableOpacity>
-        )}
+        )} */}
       {/* ============================ FAVORITE OFFERS ============================ */}
-      {selectOfferComponent !== 'todas' &&
+      {/* {selectOfferComponent !== 'todas' &&
       offers &&
       offers.filter((offer) => {
         const filteredUserMatches = userMatches.filter(
@@ -503,35 +504,6 @@ const TodasLasOfertas = () => {
                   opacity: 0.7
                 }}
               >
-                {/* <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
-                let actualUser = _.cloneDeep(user)
-                console.log('atualUser: ', actualUser)
-                const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
-                  (favorite) => favorite !== offer.id
-                )
-                  : [...actualFavoriteOffers, offer.id]
-                console.log('newFavoriteOffersArray: ', newFavoriteOffersArray)
-                if (!actualUser.user.prop1) {
-                  actualUser.user.prop1 = {};
-                }
-                actualUser.user.prop1.favoriteOffers = newFavoriteOffersArray
-                console.log('userFavs: ', actualUser?.user?.prop1?.favoriteOffers)
-
-                console.log('setting user favorites to:', newFavoriteOffersArray)
-                dispatch(
-                  updateUserData({
-                    id: user.user.id,
-                    body: { prop1: { ...user.user.prop1, favoriteOffers: newFavoriteOffersArray } }
-                  })
-                ).then((data) => {
-                  dispatch(getAllUsers())
-                  dispatch(updateUser(actualUser))
-                })
-              }}
-              >
-                <FontAwesome name={actualFavoriteOffers.includes(offer.id) ? 'heart' : 'heart-o'} color='#E1451E' size={30} />
-
-                </TouchableOpacity> */}
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
                   <CardInfoOffers
                     text="Sexo"
@@ -651,7 +623,7 @@ const TodasLasOfertas = () => {
             Aun no hay ofertas activas!
           </Text>
         )
-      )}
+      )} */}
 
       {selectOfferComponent === 'todas' &&
         offers.filter((offer) => {
@@ -798,7 +770,6 @@ const TodasLasOfertas = () => {
                     value={offer.retribution ? 'Si' : 'No'}
                   />
                 </View>
-
                 <View
                   style={{
                     width: '100%',
@@ -867,7 +838,7 @@ const TodasLasOfertas = () => {
                       }}
                     >
                       {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                        ? 'Inscripto!'
+                        ? 'Inscrito!'
                         : 'Inscríbete en la oferta'}
                     </Text>
                   </Pressable>
@@ -889,7 +860,13 @@ const TodasLasOfertas = () => {
       ) : (
         selectOfferComponent !== 'todas' && (
           <View
-            style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
+            style={{
+              width: '100%',
+              top: -100,
+              alignSelf: 'flex-start',
+              alignItems: 'center',
+              flex: 1
+            }}
           >
             <Text
               style={{

@@ -134,6 +134,7 @@ const ConfigurarAnuncio = () => {
           <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
           <Text
             onPress={() => {
+              console.log('CA')
               statesCleanUp()
               navigation.goBack()
             }}
@@ -488,7 +489,7 @@ const ConfigurarAnuncio = () => {
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
-
+                  console.log('CA')
                   navigation.goBack()
                 } else {
                   // const data = {

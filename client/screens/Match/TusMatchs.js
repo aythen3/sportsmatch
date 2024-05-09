@@ -86,7 +86,12 @@ const TusMatchs = () => {
           justifyContent: 'flex-start'
         }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('TM')
+            navigation.goBack()
+          }}
+        >
           <Image
             style={{ width: 9, height: 15, marginTop: 2.5 }}
             contentFit="cover"

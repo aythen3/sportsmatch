@@ -76,10 +76,12 @@ const OfertasEmitidas = () => {
           offers.filter((offer) => offer.club.id === club.id).length === 0 ? (
             <Text
               style={{
+                width: '100%',
                 marginTop: 14,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: 400,
-                fontSize: FontSize.size_9xl,
+                fontSize: 14,
+                textAlign: 'center',
                 color: Color.wHITESPORTSMATCH,
                 bottom: 4
               }}

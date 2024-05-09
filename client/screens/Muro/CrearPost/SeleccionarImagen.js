@@ -87,12 +87,15 @@ const SeleccionarImagen = () => {
 
   const renderizarImagenes = () => {
     return (
-      <ScrollView style={{height:'100%'}} keyboardShouldPersistTaps={'always'}>
+      <ScrollView
+        style={{ height: '100%' }}
+        keyboardShouldPersistTaps={'always'}
+      >
         <View
           style={{
             gap: 8,
-            paddingBottom:8,
-            overflow:'hidden',
+            paddingBottom: 8,
+            overflow: 'hidden',
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'flex-start'
@@ -140,8 +143,7 @@ const SeleccionarImagen = () => {
               onPress={() => setShowCamera(false)}
             >
               <Image
-                style={{height: 15,
-                  width: 15}}
+                style={{ height: 15, width: 15 }}
                 contentFit="cover"
                 source={require('../../../assets/group-565.png')}
               />
@@ -185,12 +187,17 @@ const SeleccionarImagen = () => {
           </View>
         </Camera>
       ) : (
-        <View style={{ width: '90%', alignSelf: 'center', flex:1 }}>
+        <View style={{ width: '90%', alignSelf: 'center', flex: 1 }}>
           <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              o
+              onPress={() => {
+                console.log('SIMG')
+                navigation.goBack()
+              }}
+            >
               <Image
-                style={{height: 15,
-                  width: 15}}
+                style={{ height: 15, width: 15 }}
                 contentFit="cover"
                 source={require('../../../assets/group-565.png')}
               />
@@ -260,9 +267,8 @@ const SeleccionarImagen = () => {
               </TouchableOpacity>
             )}
           </View>
-          
+
           {renderizarImagenes()}
-         
         </View>
       )}
     </SafeAreaView>
