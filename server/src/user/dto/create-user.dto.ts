@@ -26,6 +26,9 @@ export class CreateUserDto {
   stripeId: any;
 
   @IsOptional()
+  planId: any;
+
+  @IsOptional()
   club: any;
 
   @IsOptional()

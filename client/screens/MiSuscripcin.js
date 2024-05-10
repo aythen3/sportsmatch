@@ -22,6 +22,11 @@ const MiSuscripcin = () => {
   const navigation = useNavigation()
   const [clientSecret, setClientSecret] = useState(null)
   const [planSelected, setPlanSelected] = useState(null)
+  const [planSelectedId, setPlanSelectedId] = useState("")
+  const [deletePlan, setDeletePlan] = useState(false )
+
+
+
   const { user } = useSelector((state) => state.users)
 
   const dispatch = useDispatch()
@@ -30,6 +35,7 @@ const MiSuscripcin = () => {
 
   React.useEffect(() => {
     const initializePaymentSheet = async () => {
+      setDeletePlan(false)
       console.log(user, 'userrrr')
       const { error } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
@@ -48,7 +54,9 @@ const MiSuscripcin = () => {
         } else {
           const updUser = await axiosInstance
             .patch(`user/${user.user.id}`, {
-              plan: planSelected
+              plan: planSelected,
+              planId:planSelectedId
+
             })
             .then(() => dispatch(getUserData(user.user.id)))
           console.log(updUser, 'upd')
@@ -61,6 +69,28 @@ const MiSuscripcin = () => {
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
+
+  const handleCancelSuscription = async ()=>{
+
+  try {
+    const {data} = await axiosInstance.post("user/cancel-subscription",{planId:user.user.planId})
+    console.log(data,"datita")
+    if(data){
+      setDeletePlan(false)
+      const updUser = await axiosInstance
+      .patch(`user/${user.user.id}`, {
+        plan: "basic",
+        planId:""
+
+      })
+      .then(() => dispatch(getUserData(user.user.id)))
+      return data
+    }
+  } catch (error) {
+    console.log(error,"error")
+  }
+
+  }
 
   return (
     <View style={styles.miSuscripcin}>
@@ -107,8 +137,8 @@ const MiSuscripcin = () => {
 
         <View style={{ marginTop: 30, gap: 30 }}>
           {user.user.plan === 'basic' && <SilverSuscription />}
-          {user.user.plan === 'pro' && <GoldSuscription />}
-          {user.user.plan === 'star' && <StarSuscription />}
+          {user.user.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+          {user.user.plan === 'star' && <StarSuscription handleCancelSuscription={handleCancelSuscription}  myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
 
           <View>
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
@@ -122,12 +152,14 @@ const MiSuscripcin = () => {
             <GoldSuscription
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}
+              setPlanSelectedId={setPlanSelectedId}
             />
           )}
           {user.user.plan !== 'star' && (
             <StarSuscription
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}
+              setPlanSelectedId={setPlanSelectedId}
             />
           )}
         </View>
