@@ -39,6 +39,9 @@ export class UserEntity extends BaseEntity {
   @Column({ default: 'basic' })
   plan: string;
 
+  @Column({ default: '',nullable: true })
+  planId: string;
+
   @Column({ type: 'json', nullable: true })
   prop1: Record<string, any> | null;
 
