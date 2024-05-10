@@ -46,9 +46,9 @@ const TusNotificaciones1 = () => {
 
   const sortUsers = (userA, userB) => {
     const isInMessagesB =
-      usersWithMessages.filter((user) => user.id === userA.id).length > 0
+      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
     const isInMessagesA =
-      usersWithMessages.filter((user) => user.id === userB.id).length > 0
+      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
 
     if (isInMessagesA && !isInMessagesB) {
       return -1 // userA has messages, should come before userB
@@ -60,7 +60,7 @@ const TusNotificaciones1 = () => {
   }
 
   const filteredUsers = allUsers
-    .filter((user) =>
+    ?.filter((user) =>
       user.nickname.toLowerCase()?.includes(value.toLowerCase())
     )
     .sort(sortUsers)
@@ -98,7 +98,7 @@ const TusNotificaciones1 = () => {
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
       console.log('offers: ', offers)
-      const clubOffers = offers.filter(
+      const clubOffers = offers?.filter(
         (offer) => offer.clubId === user.user.club.id
       )
       const postulants = clubOffers.map((offer) => offer.inscriptions)

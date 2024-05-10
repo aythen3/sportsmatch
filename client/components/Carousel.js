@@ -15,12 +15,11 @@ import { LinearGradient } from 'expo-linear-gradient'
 import CommentSection from './modals/CommentSection'
 import { Context } from '../context/Context'
 import { useDispatch, useSelector } from 'react-redux'
-import DoubleTap from "@memrearal/react-native-doubletap";
+import DoubleTap from '@memrearal/react-native-doubletap'
 import { setFindedLikes } from '../redux/slices/post.slices'
 import { like } from '../redux/actions/post'
 import { sendNotification } from '../redux/actions/notifications'
 import Like2SVG from './svg/Like2SVG'
-
 
 function Carousel({
   name,
@@ -43,43 +42,42 @@ function Carousel({
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
 
-  const [doubleTap, setDoubleTap] = useState(false);
-  const [doubleTapHeart, setDoubleTapHeart] = useState(false);
+  const [doubleTap, setDoubleTap] = useState(false)
+  const [doubleTapHeart, setDoubleTapHeart] = useState(false)
 
-  const [liked, setLiked] = useState(false); // Estado para controlar si se ha dado like
+  const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
   useEffect(() => {
-    let timeoutId;
+    let timeoutId
     if (doubleTapHeart) {
       // Cambia el estado a true
-      setDoubleTapHeart(true);
+      setDoubleTapHeart(true)
 
       // Después de 2 segundos, vuelve a poner en false
       timeoutId = setTimeout(() => {
-        setDoubleTapHeart(false);
-      }, 2000);
+        setDoubleTapHeart(false)
+      }, 2000)
     }
 
     // Limpia el timeout si el componente se desmonta antes de que el timeout ocurra
-    return () => clearTimeout(timeoutId);
-  }, [doubleTapHeart]);
+    return () => clearTimeout(timeoutId)
+  }, [doubleTapHeart])
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike.includes(id));
-  }, [findedLike, id]);
-
+    setLiked(findedLike.includes(id))
+  }, [findedLike, id])
 
   const handleDoubleTap = () => {
-    setDoubleTap(true); // Marcar que se ha hecho doble clic en la imagen
+    setDoubleTap(true) // Marcar que se ha hecho doble clic en la imagen
     // Lógica adicional si es necesaria
-  };
+  }
 
   const resetDoubleTap = () => {
     setTimeout(() => {
-      setDoubleTap(false); // Reiniciar el estado de doubleTap después de un tiempo
-    }, 300); // Puedes ajustar el tiempo según tus necesidades
-  };
+      setDoubleTap(false) // Reiniciar el estado de doubleTap después de un tiempo
+    }, 300) // Puedes ajustar el tiempo según tus necesidades
+  }
 
   const closeModal = () => {
     setModalVisible(false)
@@ -87,19 +85,19 @@ function Carousel({
 
   const handleLike = async () => {
     // Invertir el estado de liked
-    setLiked(!liked);
+    setLiked(!liked)
 
     const data = {
       post: id,
       author: userId
-    };
+    }
 
     await dispatch(
       setFindedLikes({
         ...data,
         liked: !liked // Invertir el estado del like
       })
-    );
+    )
 
     if (!liked) {
       await dispatch(
@@ -116,12 +114,11 @@ function Carousel({
             }
           }
         })
-      );
+      )
     }
 
-    await dispatch(like(data));
-  };
-
+    await dispatch(like(data))
+  }
 
   return (
     <View style={{ ...styles.container }}>
@@ -148,29 +145,39 @@ function Carousel({
         <Text style={styles.nameText}>{name}</Text>
       </Pressable>
       <PagerView style={styles.postContainer} initialPage={0}>
-        <View style={{ width: "100%", height: "100%" }} key={id}>
+        <View style={{ width: '100%', height: '100%' }} key={id}>
           <DoubleTap
-
             onDoubleTap={() => {
-              console.log("doble pressss2222")
+              console.log('doble pressss2222')
               handleLike()
               setDoubleTapHeart(true)
               // handleDoubleTap(); // Llama a la función de manejar el doble clic
               // resetDoubleTap(); // Reinicia el estado de doubleTap
             }}
           >
-            <View style={{ width: "100%", height: "100%", position: "relative" }}>
-
+            <View
+              style={{ width: '100%', height: '100%', position: 'relative' }}
+            >
               {doubleTapHeart && liked && (
-                <TouchableOpacity style={{ position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center", zIndex: 999 }}>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999
+                  }}
+                >
                   <Like2SVG id={id}></Like2SVG>
                 </TouchableOpacity>
-
               )}
 
-              <Image style={{ ...styles.postImage,zIndex:990}} source={image} />
+              <Image
+                style={{ ...styles.postImage, zIndex: 990 }}
+                source={image}
+              />
             </View>
-
           </DoubleTap>
         </View>
         {/* <View key={index + 1}>
@@ -185,6 +192,8 @@ function Carousel({
           <TouchableOpacity onPress={() => navigation.navigate('MiSuscripcin')}>
             <LinearGradient
               style={styles.botonPromocionarPublicacion}
+              start={{ x: 0, y: 1 }} // Cambiado de x: 1 a x: 0
+              end={{ x: 1, y: 0 }} // Cambiado de y: 0 a x: 1
               locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
               colors={[
                 '#e6b300',
