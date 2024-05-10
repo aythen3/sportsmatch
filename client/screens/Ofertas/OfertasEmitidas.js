@@ -34,6 +34,7 @@ const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { club } = useSelector((state) => state.clubs)
+  const { allPositions } = useSelector((state) => state.positions)
 
   const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
@@ -55,6 +56,8 @@ const OfertasEmitidas = () => {
 
     setModalVisible(true)
   }
+
+  console.log('allpos: ', allPositions)
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -137,7 +140,9 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {/* {offer.position} */} Posicion
+                        {offer?.position ||
+                          allPositions[i > allPositions.length - 1 ? 3 : i]
+                            ?.name}
                       </Text>
                     </View>
 

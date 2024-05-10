@@ -66,6 +66,7 @@ export const ContextProvider = ({ children }) => {
     console.log('source: ', source)
     console.log('imageUri:', imageUri)
     if (imageUri) {
+      setProvisoryProfileImage(imageUri)
       const profileImageData = {
         uri: imageUri,
         type: 'image/jpg',

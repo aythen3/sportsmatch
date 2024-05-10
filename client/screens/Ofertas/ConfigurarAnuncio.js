@@ -172,10 +172,6 @@ const ConfigurarAnuncio = () => {
                   }}
                 >
                   {allPositions
-                    .filter(
-                      (position) =>
-                        position.sport?.name === clubData.sports[0]?.name
-                    )
                     .map((position) => {
                       return { name: position?.name, id: position.id }
                     })
@@ -199,15 +195,9 @@ const ConfigurarAnuncio = () => {
                             textAlign: 'center',
                             borderBottomWidth:
                               index !==
-                              allPositions
-                                .filter(
-                                  (position) =>
-                                    position.sport?.name ===
-                                    clubData.sports[0]?.name
-                                )
-                                .map((position) => {
-                                  return position?.name
-                                }).length -
+                              allPositions.map((position) => {
+                                return position?.name
+                              }).length -
                                 1
                                 ? 1
                                 : 0,
@@ -483,7 +473,12 @@ const ConfigurarAnuncio = () => {
                             : null
                     },
                     positionId: selectedPosition?.id,
-                    clubId: club?.id
+                    clubId: club?.id,
+                    prop1: {
+                      position: selectedPosition.name,
+                      positionId: selectedPosition?.id,
+                      paused: false
+                    }
                   }
                   // console.log('data: ', data)
                   await dispatch(setOffer(data)).then((data) =>

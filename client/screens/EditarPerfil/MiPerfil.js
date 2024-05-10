@@ -30,7 +30,7 @@ const MiPerfil = () => {
   const { user } = useSelector((state) => state.users)
 
   const [selectedTab, setSelectedTab] = useState('Feed')
-console.log(sportman,"sportman")
+  console.log(sportman, 'sportman')
   const renderContent = () => {
     if (selectedTab === 'Feed') {
       return <Feed />
@@ -43,8 +43,7 @@ console.log(sportman,"sportman")
   return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
-      style={{backgroundColor: Color.bLACK1SPORTSMATCH,
-        overflow: 'hidden'}}
+      style={{ backgroundColor: Color.bLACK1SPORTSMATCH, overflow: 'hidden' }}
     >
       <View>
         <Image
@@ -59,42 +58,56 @@ console.log(sportman,"sportman")
           }}
         >
           <View style={styles.imagenInformacion1}>
-            <View style={{position:'relative'}}>
-            <Image
-              style={{
-                height: 110,
-                borderRadius: 100,
-                width: 110,
-                zIndex:1000,
-                borderWidth: 3,
-                borderColor: '#000'
-              }}
-              contentFit="cover"
-              source={{
-                uri: sportman?.info?.img_perfil
-              }}
-            />
-            <View
-            style={{
-              position: 'absolute',
-              bottom: -5,
-              left: 2.5,
-              height: 105,
-              zIndex: -1000,
-              borderRadius: 100,
-              width: 105,
-              backgroundColor: Color.bALONCESTO
-            }}
-          />
+            <View style={{ position: 'relative' }}>
+              <Image
+                style={{
+                  height: 110,
+                  borderRadius: 100,
+                  width: 110,
+                  zIndex: 1000,
+                  borderWidth: 3,
+                  borderColor: '#000'
+                }}
+                contentFit="cover"
+                source={{
+                  uri: sportman?.info?.img_perfil
+                }}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -5,
+                  left: 2.5,
+                  height: 105,
+                  zIndex: -1000,
+                  borderRadius: 100,
+                  width: 105,
+                  backgroundColor: Color.bALONCESTO
+                }}
+              />
             </View>
-            
+
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                <Text style={styles.textTypo}>{sportman?.type === 'coach'? sportman?.info?.rol : sportman?.info?.position}</Text>
-                <Text style={styles.textTypo}>{typeof sportman?.info?.sport === "object" ? sportman?.info?.sport.name  : sportman?.info?.sport }</Text>
+                <Text style={styles.textTypo}>
+                  {sportman?.type === 'coach'
+                    ? sportman?.info?.rol
+                    : sportman?.info?.position}
+                </Text>
+                <Text style={styles.textTypo}>
+                  {typeof sportman?.info?.sport === 'object'
+                    ? sportman?.info?.sport.name
+                    : sportman?.info?.sport}
+                </Text>
               </View>
-              <Text style={[styles.jugandoAlUni, styles.seguidoresTypo,{ width: '100%' }]}>
+              <Text
+                style={[
+                  styles.jugandoAlUni,
+                  styles.seguidoresTypo,
+                  { width: '100%' }
+                ]}
+              >
                 {sportman?.info?.actualClub?.length > 0
                   ? `Jugando en ${sportman?.info?.actualClub}`
                   : 'Sin club actualmente'}
@@ -217,8 +230,8 @@ const styles = StyleSheet.create({
   },
   informacion: {
     marginLeft: 15,
-    alignSelf:'flex-end',
-    paddingTop:20
+    alignSelf: 'flex-end',
+    paddingTop: 20
   },
   imagenInformacion1: {
     flexDirection: 'row',
@@ -274,7 +287,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_8xs,
     overflow: 'hidden',
     marginTop: '5%'
-  },
+  }
 })
 
 export default MiPerfil

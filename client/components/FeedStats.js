@@ -10,11 +10,9 @@ const FeedStats = () => {
   const navigation = useNavigation()
 
   const { sportman } = useSelector((state) => state.sportman)
-  const {user}= useSelector((state) => state.users)
+  const { user } = useSelector((state) => state.users)
 
-  console.log('user: ',sportman.type)
-
-
+  console.log('user: ', sportman.type)
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -23,187 +21,338 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info.birthdate)
 
-  if(user)return (
-    <ScrollView
-      keyboardShouldPersistTaps={'always'}
-      style={{backgroundColor: Color.bLACK1SPORTSMATCH,
-        width: '100%'}}
-    >
-      <View style={{ marginTop: 21,
-    alignSelf: 'center',
-    width: '95%',
-    alignItems: 'center'}}>
-       {sportman?.type !== 'coach' && <View style={{flexDirection: 'row',width:'100%',justifyContent:'space-around'}}>
-          <View style={{height: Dimensions.get('screen').width * 0.8/3,
-    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
-            <CircularStat value={sportman?.info.attack} />
+  if (user)
+    return (
+      <ScrollView
+        keyboardShouldPersistTaps={'always'}
+        style={{
+          backgroundColor: Color.bLACK1SPORTSMATCH,
+          width: '100%'
+        }}
+      >
+        <View
+          style={{
+            marginTop: 21,
+            alignSelf: 'center',
+            width: '95%',
+            alignItems: 'center'
+          }}
+        >
+          {sportman?.type !== 'coach' && (
             <View
-              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
-                left: 0,
-                height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-around'
+              }}
             >
-              <Text style={{lineHeight: 40,
-    fontSize: FontSize.h2TITLEBIG_size,
-    alignSelf: 'stretch',
-    flex: 1,  color: Color.bALONCESTO,
-    fontWeight: '500',
-    textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO}}>
-                {sportman?.info.attack}
-              </Text>
-              <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
-            </View>
-          </View>
-          <View style={{height: Dimensions.get('screen').width * 0.8/3,
-    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
-            <CircularStat value={sportman?.info.defense} />
-            <View
-              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
-              left: 0,
-              height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
-            >
-              <Text style={[styles.text1, styles.text1Typo]}>
-                {sportman?.info.defense}
-              </Text>
-              <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
-            </View>
-          </View>
-          <View style={{height: Dimensions.get('screen').width * 0.8/3,
-    width:Dimensions.get('screen').width * 0.8/3, borderWidth:2}}>
-            <CircularStat value={sportman?.info.speed} />
-            <View
-              style={{ top:((Dimensions.get('screen').width * 0.8/3)-(Dimensions.get('screen').width * 0.45/3))/2,position:'absolute',justifyContent:'center',alignItems:'center',
-              left: 0,
-              height: Dimensions.get('screen').width * 0.45/3,zIndex: 1}}
-            >
-              <Text style={[styles.text1, styles.text1Typo]}>
-                {sportman?.info.speed}
-              </Text>
-              <Text style={[styles.ataque, styles.ataqueClr]}>Velocidad</Text>
-            </View>
-          </View>
-        </View>}
+              <View
+                style={{
+                  height: (Dimensions.get('screen').width * 0.8) / 3,
+                  width: (Dimensions.get('screen').width * 0.8) / 3,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                  <CircularStat value={sportman?.info.attack} />
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
 
-        {sportman?.type !== 'coach' && <View style={styles.barras}>
-          <View style={styles.barra1}>
-            <View>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Bote</Text>
-              <BarStatSVG value={sportman?.info.prop1} />
+                    height: (Dimensions.get('screen').width * 0.45) / 3,
+                    zIndex: 1
+                  }}
+                >
+                  <Text
+                    style={{
+                      lineHeight: 40,
+                      fontSize: FontSize.h2TITLEBIG_size,
+                      alignSelf: 'stretch',
+                      flex: 1,
+                      color: Color.bALONCESTO,
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      fontFamily: FontFamily.t4TEXTMICRO
+                    }}
+                  >
+                    {sportman?.info.attack}
+                  </Text>
+                  <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  height: (Dimensions.get('screen').width * 0.8) / 3,
+                  width: (Dimensions.get('screen').width * 0.8) / 3,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                  <CircularStat value={sportman?.info.defense} />
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: (Dimensions.get('screen').width * 0.45) / 3,
+                    zIndex: 1
+                  }}
+                >
+                  <Text style={[styles.text1, styles.text1Typo]}>
+                    {sportman?.info.defense}
+                  </Text>
+                  <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  height: (Dimensions.get('screen').width * 0.8) / 3,
+                  width: (Dimensions.get('screen').width * 0.8) / 3,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                  <CircularStat value={sportman?.info.speed} />
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: (Dimensions.get('screen').width * 0.45) / 3,
+                    zIndex: 1
+                  }}
+                >
+                  <Text style={[styles.text1, styles.text1Typo]}>
+                    {sportman?.info.speed}
+                  </Text>
+                  <Text style={[styles.ataque, styles.ataqueClr]}>
+                    Velocidad
+                  </Text>
+                </View>
+              </View>
             </View>
-            <Text style={[styles.numero1, styles.numeroTypo]}>
-              {sportman?.info.prop1}
+          )}
+
+          {sportman?.type !== 'coach' && (
+            <View
+              style={{
+                marginTop: 30,
+                width: '95%'
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      lineHeight: 14,
+                      marginBottom: 2,
+                      fontSize: 13,
+                      textAlign: 'left',
+                      color: Color.gREY2SPORTSMATCH,
+                      fontFamily: FontFamily.t4TEXTMICRO
+                    }}
+                  >
+                    Bote
+                  </Text>
+                  <BarStatSVG value={sportman?.info.prop1} />
+                </View>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: Color.gREY2SPORTSMATCH,
+                    fontSize: FontSize.t2TextSTANDARD_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  {sportman?.info.prop1}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 8,
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      lineHeight: 14,
+                      marginBottom: 2,
+                      fontSize: 13,
+                      textAlign: 'left',
+                      color: Color.gREY2SPORTSMATCH,
+                      fontFamily: FontFamily.t4TEXTMICRO
+                    }}
+                  >
+                    Lanzamiento
+                  </Text>
+                  <BarStatSVG value={sportman?.info.prop2} />
+                </View>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: Color.gREY2SPORTSMATCH,
+                    fontSize: FontSize.t2TextSTANDARD_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  {sportman?.info.prop2}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 8,
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      lineHeight: 14,
+                      marginBottom: 2,
+                      fontSize: 13,
+                      textAlign: 'left',
+                      color: Color.gREY2SPORTSMATCH,
+                      fontFamily: FontFamily.t4TEXTMICRO
+                    }}
+                  >
+                    Dribling
+                  </Text>
+                  <BarStatSVG value={sportman?.info.prop3} />
+                </View>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: Color.gREY2SPORTSMATCH,
+                    fontSize: FontSize.t2TextSTANDARD_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  {sportman?.info.prop3}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {sportman?.type !== 'coach' ? (
+            <View style={styles.barras}>
+              <View style={styles.circulos}>
+                <View style={styles.moduloSpaceBlock}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>Sexo</Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.gender}
+                  </Text>
+                </View>
+                <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>Edad</Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {age}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modulosMedio}>
+                <View style={styles.moduloSpaceBlock}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Categoría
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.category}
+                  </Text>
+                </View>
+                <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Posición principal
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.position}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modulosMedio}>
+                <View style={styles.moduloSpaceBlock}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Altura
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.height}cm
+                  </Text>
+                </View>
+                <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                  <Text
+                    style={[styles.concepto, styles.ataqueClr]}
+                  >{`Lugar de residencia `}</Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.city}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View>
+              <View style={styles.circulos}>
+                <View style={styles.moduloSpaceBlock}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Lugar de residencia
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman.info.city}
+                  </Text>
+                </View>
+                <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Años de expereiencia
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman.info.yearsOfExperience}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modulosMedio}>
+                <View style={styles.moduloSpaceBlock}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>
+                    Deporte
+                  </Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.sport.name}
+                  </Text>
+                </View>
+                <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
+                  <Text style={[styles.concepto, styles.ataqueClr]}>Rol</Text>
+                  <Text style={[styles.masculino, styles.text1Typo]}>
+                    {sportman?.info.rol}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+          <View style={styles.masDetalles}>
+            <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
+              Más detalles sobre mí
+            </Text>
+            <Text style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}>
+              {sportman?.info.description}
             </Text>
           </View>
-
-          <View style={styles.barra2}>
-            <View>
-              <Text style={[styles.concepto, styles.ataqueClr]}>
-                Lanzamiento
-              </Text>
-              <BarStatSVG value={sportman?.info.prop2} />
-            </View>
-            <Text style={[styles.numero1, styles.numeroTypo]}>
-              {sportman?.info.prop2}
-            </Text>
-          </View>
-
-          <View style={styles.barra2}>
-            <View>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Dribling</Text>
-              <BarStatSVG value={sportman?.info.prop3} />
-            </View>
-            <Text style={[styles.numero1, styles.numeroTypo]}>
-              {sportman?.info.prop3}
-            </Text>
-          </View>
-        </View>}
-        
-        {sportman?.type !== 'coach' ?<View style={styles.barras}>
-          <View style={styles.circulos}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Sexo</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.gender}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Edad</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>{age}</Text>
-            </View>
-          </View>
-          <View style={styles.modulosMedio}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Categoría</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.category}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>
-                Posición principal
-              </Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.position}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.modulosMedio}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Altura</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.height}cm
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text
-                style={[styles.concepto, styles.ataqueClr]}
-              >{`Lugar de residencia `}</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.city}
-              </Text>
-            </View>
-          </View>
-        </View>:<View>
-          <View style={styles.circulos}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Lugar de residencia</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman.info.city}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Años de expereiencia</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>{sportman.info.yearsOfExperience}</Text>
-            </View>
-          </View>
-          <View style={styles.modulosMedio}>
-            <View style={styles.moduloSpaceBlock}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>Deporte</Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.sport.name}
-              </Text>
-            </View>
-            <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
-              <Text style={[styles.concepto, styles.ataqueClr]}>
-                Rol
-              </Text>
-              <Text style={[styles.masculino, styles.text1Typo]}>
-                {sportman?.info.rol}
-              </Text>
-            </View>
-          </View>
-        </View>}
-        <View style={styles.masDetalles}>
-          <Text style={[styles.msDetallesSobre, styles.ataqueClr]}>
-            Más detalles sobre mí
-          </Text>
-          <Text style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}>
-            {sportman?.info.description}
-          </Text>
         </View>
-      </View>
-    </ScrollView>
-  )
+      </ScrollView>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -236,7 +385,6 @@ const styles = StyleSheet.create({
   },
   moduloSpaceBlock: {
     paddingVertical: Padding.p_7xs,
-    paddingHorizontal: 0,
     height: 80,
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: Border.br_8xs,
@@ -290,7 +438,8 @@ const styles = StyleSheet.create({
   barra2: {
     marginTop: 8,
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    justifyContent: 'space-between'
   },
   barras: {
     marginTop: 30,
@@ -326,8 +475,8 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   masDetalles: {
-    width:'95%',
-    marginTop: 30,
+    width: '95%',
+    marginTop: 30
   }
 })
 
