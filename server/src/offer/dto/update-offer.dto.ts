@@ -5,10 +5,17 @@ import { Type } from 'class-transformer';
 import { ClubEntity } from 'src/club/entities/club.entity';
 
 export class UpdateOfferDto extends PartialType(CreateOfferDto) {
+
+  
  
+
+  @IsOptional()
+  @IsBoolean()
+  paused:boolean; 
+
   @IsString()
   @IsOptional()
-  position: any;
+  position:string;
 
   @IsString()
   @IsOptional()
