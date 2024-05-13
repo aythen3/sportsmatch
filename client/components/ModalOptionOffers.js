@@ -29,17 +29,17 @@ const ModalOptionOffers = ({ onClose, offerId }) => {
         <Text style={styles.editar}>Eliminar</Text>
       </Pressable>
 
-      <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+      {/* <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
       <Pressable onPress={onClose}>
         <Text style={styles.editar2}>Promocionar</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   despliegueOpciones: {
-    height: 110,
+    height: 80,
     width: 150,
     marginTop: 30,
     backgroundColor: Color.bLACK3SPORTSMATCH,
