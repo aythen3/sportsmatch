@@ -78,14 +78,20 @@ const TusMatchs = () => {
     <View style={styles.tusMatchs}>
       <View
         style={{
-          marginBottom: 42,
+          marginBottom: 15,
           flexDirection: 'row',
           alignItems: 'center',
           gap: 15,
+          marginTop: 15,
           justifyContent: 'flex-start'
         }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('TM')
+            navigation.goBack()
+          }}
+        >
           <Image
             style={{ width: 9, height: 15, marginTop: 2.5 }}
             contentFit="cover"
@@ -267,10 +273,10 @@ const TusMatchs = () => {
           <View>
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 14,
                 marginTop: 40,
                 color: Color.wHITESPORTSMATCH,
-                fontWeight: '500',
+                fontWeight: '400',
                 alignSelf: 'center',
                 textAlign: 'left',
                 fontFamily: FontFamily.t4TEXTMICRO
@@ -282,31 +288,31 @@ const TusMatchs = () => {
         )}
 
       <Modal visible={details} transparent={true} animationType="slide">
-        <TouchableWithoutFeedback
-          onPress={() => setDetails(false)}
-        >
-          <View style={{
-            flex: 1
-          }}>
-          <TusMatchsDetalle
-            data={selectedClubDetails}
-            onClose={() => setDetails(false)}
-          />
+        <TouchableWithoutFeedback onPress={() => setDetails(false)}>
+          <View
+            style={{
+              flex: 1
+            }}
+          >
+            <TusMatchsDetalle
+              data={selectedClubDetails}
+              onClose={() => setDetails(false)}
+            />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
       <Modal visible={userDetails} transparent={true} animationType="slide">
-        <TouchableWithoutFeedback
-          onPress={() => setUserDetails(false)}
-        >
-         <View style={{
-            flex: 1
-          }}>
-         <TusMatchsDetalle1
-            data={selectedUserDetails}
-            onClose={() => setUserDetails(false)}
-          />
-         </View>
+        <TouchableWithoutFeedback onPress={() => setUserDetails(false)}>
+          <View
+            style={{
+              flex: 1
+            }}
+          >
+            <TusMatchsDetalle1
+              data={selectedUserDetails}
+              onClose={() => setUserDetails(false)}
+            />
+          </View>
         </TouchableWithoutFeedback>
       </Modal>
     </View>

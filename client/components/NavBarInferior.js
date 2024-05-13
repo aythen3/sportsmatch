@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
@@ -8,14 +8,17 @@ import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSportman } from '../redux/actions/sportman'
+import { Context } from '../context/Context'
 
 const NavBarInferior = () => {
+  const { activeIcon, setActiveIcon } = useContext(Context)
   const navigation = useNavigation()
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
-  const [activeIcon, setActiveIcon] = useState(null)
+
+  useEffect(() => {}, [activeIcon])
 
   useEffect(() => {
     if (Object.keys(sportman).length === 0) {
@@ -73,16 +76,16 @@ const dispatch = useDispatch()
         <HomeSVG isActive={activeIcon === 'post'} />
       </TouchableOpacity>
       <TouchableOpacity
-  onPress={() => handleIconPress('message')}
-  style={activeIcon === 'message' ? styles.selected : styles.deselected}
->
-  <View style={styles.iconContainer}>
-    <MessageSVG
-      isActive={activeIcon === 'message'}
-      style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
-    />
-  </View>
-</TouchableOpacity>
+        onPress={() => handleIconPress('message')}
+        style={activeIcon === 'message' ? styles.selected : styles.deselected}
+      >
+        <View style={styles.iconContainer}>
+          <MessageSVG
+            isActive={activeIcon === 'message'}
+            style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
+          />
+        </View>
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={handleNavigation}
         style={activeIcon === 'profile' ? styles.selected : styles.deselected}
@@ -132,15 +135,15 @@ export const styles = StyleSheet.create({
     width: '18.4%',
     height: 70,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   icon: {
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   iconActive: {
-    marginTop: -5, // Ajusta este valor según sea necesario para elevar la imagen
-  },
+    marginTop: -5 // Ajusta este valor según sea necesario para elevar la imagen
+  }
 })
 
 export default NavBarInferior

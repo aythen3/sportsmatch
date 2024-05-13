@@ -12,7 +12,10 @@ const TusNotificaciones = () => {
       <View style={styles.cabezeraMenuNotificacion}>
         <Pressable
           style={styles.cooliconParent}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            console.log('TN')
+            navigation.goBack()
+          }}
         >
           <View style={styles.coolicon}>
             <Image

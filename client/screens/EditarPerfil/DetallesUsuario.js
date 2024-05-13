@@ -19,7 +19,13 @@ const EditarSkills = () => {
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <View style={styles.cooliconParent}>
-        <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
+        <Pressable
+          style={styles.coolicon}
+          onPress={() => {
+            console.log('DU')
+            navigation.goBack()
+          }}
+        >
           <Image
             style={styles.icon}
             contentFit="cover"

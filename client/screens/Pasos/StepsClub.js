@@ -143,7 +143,7 @@ const StepsClub = () => {
             <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
           </Pressable>
         </View>
-        <View>
+        <View style={{ marginTop: -30 }}>
           <Text style={styles.paso2}>Paso {stepsIndex}</Text>
           <Text style={styles.detallesDelClub}>
             {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}

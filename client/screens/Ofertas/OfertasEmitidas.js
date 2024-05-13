@@ -34,6 +34,7 @@ const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { club } = useSelector((state) => state.clubs)
+  const { allPositions } = useSelector((state) => state.positions)
 
   const { offers, offer: offerRedux } = useSelector((state) => state.offers)
   // const { positions } = useSelector((state) => state.sports)
@@ -56,6 +57,8 @@ const OfertasEmitidas = () => {
     setModalVisible(true)
   }
 
+  console.log('allpos: ', allPositions)
+
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
       <View style={styles.topContainer}>
@@ -76,10 +79,12 @@ const OfertasEmitidas = () => {
           offers.filter((offer) => offer.club.id === club.id).length === 0 ? (
             <Text
               style={{
-                marginTop: 30,
+                width: '100%',
+                marginTop: 14,
                 fontFamily: FontFamily.t4TEXTMICRO,
-                fontWeight: 500,
-                fontSize: FontSize.size_9xl,
+                fontWeight: 400,
+                fontSize: 14,
+                textAlign: 'center',
                 color: Color.wHITESPORTSMATCH,
                 bottom: 4
               }}
@@ -135,7 +140,9 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {/* {offer.position} */} Posicion
+                        {offer?.position ||
+                          allPositions[i > allPositions.length - 1 ? 3 : i]
+                            ?.name}
                       </Text>
                     </View>
 
@@ -302,7 +309,7 @@ const styles = StyleSheet.create({
     gap: 11
   },
   offers: {
-    width: (Dimensions.get('window').width * 0.9) / 2,
+    width: (Dimensions.get('window').width * 0.89) / 2,
     marginTop: 20,
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: 8,
@@ -350,8 +357,8 @@ const styles = StyleSheet.create({
   },
   addText: {
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.size_21xl,
-    bottom: 8.5
+    fontSize: 26,
+    bottom: 2
   },
   touchableImg: {
     width: 24,

@@ -134,6 +134,7 @@ const ConfigurarAnuncio = () => {
           <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
           <Text
             onPress={() => {
+              console.log('CA')
               statesCleanUp()
               navigation.goBack()
             }}
@@ -143,38 +144,105 @@ const ConfigurarAnuncio = () => {
           </Text>
         </View>
         <View style={styles.innerContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setShowModal(!showModal)
-            }}
-            style={{ zIndex: 10000, ...styles.containerBox }}
-          >
-            <Text style={styles.inputText}>
-              {selectedPosition
-                ? selectedPosition?.name.charAt(0).toUpperCase() +
-                  selectedPosition?.name.slice(1).toLowerCase()
-                : 'Selecciona una posición'}
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Posición
             </Text>
-            {showModal && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 40,
-                  width: '100%',
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  backgroundColor: Color.bLACK1SPORTSMATCH
-                }}
-              >
-                {allPositions
-                  .filter(
-                    (position) =>
-                      position.sport?.name === clubData.sports[0]?.name
-                  )
-                  .map((position) => {
-                    return { name: position?.name, id: position.id }
-                  })
-                  .map((item, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                setShowModal(!showModal)
+              }}
+              style={{ zIndex: 10000, ...styles.containerBox }}
+            >
+              <Text style={styles.inputText}>
+                {selectedPosition
+                  ? selectedPosition?.name.charAt(0).toUpperCase() +
+                    selectedPosition?.name.slice(1).toLowerCase()
+                  : 'Selecciona una posición'}
+              </Text>
+              {showModal && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    width: '100%',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    backgroundColor: Color.bLACK1SPORTSMATCH
+                  }}
+                >
+                  {allPositions
+                    .map((position) => {
+                      return { name: position?.name, id: position.id }
+                    })
+                    .map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={{
+                          paddingVertical: 3,
+                          width: '100%',
+                          alignItems: 'center'
+                        }}
+                        onPress={() => {
+                          setSelectedPosition(item)
+                          setShowModal(false)
+                        }}
+                      >
+                        <Text
+                          style={{
+                            width: 200,
+                            paddingBottom: 5,
+                            textAlign: 'center',
+                            borderBottomWidth:
+                              index !==
+                              allPositions.map((position) => {
+                                return position?.name
+                              }).length -
+                                1
+                                ? 1
+                                : 0,
+                            borderBottomColor: '#ccc',
+                            ...styles.optionText
+                          }}
+                        >
+                          {item?.name.charAt(0).toUpperCase() +
+                            item?.name.slice(1).toLowerCase()}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Sexo
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShowGenderModal(!showGenderModal)
+              }}
+              style={{ zIndex: 9000, ...styles.containerBox }}
+            >
+              <Text style={styles.inputText}>
+                {!selectedGender
+                  ? 'Selecciona un género'
+                  : selectedGender === 'Female'
+                    ? 'Mujer'
+                    : 'Hombre'}
+              </Text>
+              {showGenderModal && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    width: '100%',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    backgroundColor: Color.bLACK1SPORTSMATCH
+                  }}
+                >
+                  {['Male', 'Female'].map((item, index) => (
                     <TouchableOpacity
                       key={index}
                       style={{
@@ -183,8 +251,64 @@ const ConfigurarAnuncio = () => {
                         alignItems: 'center'
                       }}
                       onPress={() => {
-                        setSelectedPosition(item)
-                        setShowModal(false)
+                        setSelectedGender(item)
+                        setShowGenderModal(false)
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: 200,
+                          paddingBottom: 5,
+                          textAlign: 'center',
+                          borderBottomWidth: index !== 1 ? 1 : 0,
+                          borderBottomColor: '#ccc',
+                          ...styles.optionText
+                        }}
+                      >
+                        {item === 'Female' ? 'Mujer' : 'Hombre'}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Categoría
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShowCategoryModal(!showCategoryModal)
+              }}
+              style={{ zIndex: 8000, ...styles.containerBox }}
+            >
+              <Text style={styles.inputText}>
+                {selectedCategory || 'Selecciona una categoría'}
+              </Text>
+              {showCategoryModal && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    width: '100%',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    backgroundColor: Color.bLACK1SPORTSMATCH
+                  }}
+                >
+                  {categories.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        paddingVertical: 3,
+                        width: '100%',
+                        alignItems: 'center'
+                      }}
+                      onPress={() => {
+                        setSelectedCategory(item)
+                        setShowCategoryModal(false)
                       }}
                     >
                       <Text
@@ -193,242 +317,135 @@ const ConfigurarAnuncio = () => {
                           paddingBottom: 5,
                           textAlign: 'center',
                           borderBottomWidth:
-                            index !==
-                            allPositions
-                              .filter(
-                                (position) =>
-                                  position.sport?.name ===
-                                  clubData.sports[0]?.name
-                              )
-                              .map((position) => {
-                                return position?.name
-                              }).length -
-                              1
-                              ? 1
-                              : 0,
+                            index !== categories.length - 1 ? 1 : 0,
                           borderBottomColor: '#ccc',
                           ...styles.optionText
                         }}
                       >
-                        {item?.name.charAt(0).toUpperCase() +
-                          item?.name.slice(1).toLowerCase()}
+                        {item}
                       </Text>
                     </TouchableOpacity>
                   ))}
-              </View>
-            )}
-          </TouchableOpacity>
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            onPress={() => {
-              setShowGenderModal(!showGenderModal)
-            }}
-            style={{ zIndex: 9000, ...styles.containerBox }}
-          >
-            <Text style={styles.inputText}>
-              {!selectedGender
-                ? 'Selecciona un genero'
-                : selectedGender === 'Female'
-                  ? 'Mujer'
-                  : 'Hombre'}
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Urgencia
             </Text>
-            {showGenderModal && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 40,
-                  width: '100%',
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  backgroundColor: Color.bLACK1SPORTSMATCH
-                }}
-              >
-                {['Male', 'Female'].map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      paddingVertical: 3,
-                      width: '100%',
-                      alignItems: 'center'
-                    }}
-                    onPress={() => {
-                      setSelectedGender(item)
-                      setShowGenderModal(false)
-                    }}
-                  >
-                    <Text
+            <TouchableOpacity
+              onPress={() => {
+                setShowPriorityModal(!showPriorityModal)
+              }}
+              style={{ zIndex: 7000, ...styles.containerBox }}
+            >
+              <Text style={styles.inputText}>
+                {selectedPriority || 'Seleccione el nivel de urgencia'}
+              </Text>
+              {showPriorityModal && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    width: '100%',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    backgroundColor: Color.bLACK1SPORTSMATCH
+                  }}
+                >
+                  {numbers.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
                       style={{
-                        width: 200,
-                        paddingBottom: 5,
-                        textAlign: 'center',
-                        borderBottomWidth: index !== 1 ? 1 : 0,
-                        borderBottomColor: '#ccc',
-                        ...styles.optionText
+                        paddingVertical: 3,
+                        width: '100%',
+                        alignItems: 'center'
+                      }}
+                      onPress={() => {
+                        setSelectedPriority(item)
+                        setShowPriorityModal(false)
                       }}
                     >
-                      {item === 'Female' ? 'Mujer' : 'Hombre'}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </TouchableOpacity>
+                      <Text
+                        style={{
+                          width: 200,
+                          paddingBottom: 5,
+                          textAlign: 'center',
+                          borderBottomWidth:
+                            index !== numbers.length - 1 ? 1 : 0,
+                          borderBottomColor: '#ccc',
+                          ...styles.optionText
+                        }}
+                      >
+                        {item}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            onPress={() => {
-              setShowCategoryModal(!showCategoryModal)
-            }}
-            style={{ zIndex: 8000, ...styles.containerBox }}
-          >
-            <Text style={styles.inputText}>
-              {selectedCategory || 'Selecciona una categoría'}
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Retribución
             </Text>
-            {showCategoryModal && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 40,
-                  width: '100%',
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  backgroundColor: Color.bLACK1SPORTSMATCH
-                }}
-              >
-                {categories.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      paddingVertical: 3,
-                      width: '100%',
-                      alignItems: 'center'
-                    }}
-                    onPress={() => {
-                      setSelectedCategory(item)
-                      setShowCategoryModal(false)
-                    }}
-                  >
-                    <Text
+            <TouchableOpacity
+              onPress={() => {
+                setShowRemunerationModal(!showRemunerationModal)
+              }}
+              style={{ zIndex: 6000, ...styles.containerBox }}
+            >
+              <Text style={styles.inputText}>
+                {selectedRemuneration || 'Seleccione retribución'}
+              </Text>
+              {showRemunerationModal && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    width: '100%',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    backgroundColor: Color.bLACK1SPORTSMATCH
+                  }}
+                >
+                  {remunerationData.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
                       style={{
-                        width: 200,
-                        paddingBottom: 5,
-                        textAlign: 'center',
-                        borderBottomWidth:
-                          index !== categories.length - 1 ? 1 : 0,
-                        borderBottomColor: '#ccc',
-                        ...styles.optionText
+                        paddingVertical: 3,
+                        width: '100%',
+                        alignItems: 'center'
+                      }}
+                      onPress={() => {
+                        setSelectedRemuneration(item)
+                        setShowRemunerationModal(false)
                       }}
                     >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              setShowPriorityModal(!showPriorityModal)
-            }}
-            style={{ zIndex: 7000, ...styles.containerBox }}
-          >
-            <Text style={styles.inputText}>
-              {selectedPriority || 'Seleccione el nivel de urgencia'}
-            </Text>
-            {showPriorityModal && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 40,
-                  width: '100%',
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  backgroundColor: Color.bLACK1SPORTSMATCH
-                }}
-              >
-                {numbers.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      paddingVertical: 3,
-                      width: '100%',
-                      alignItems: 'center'
-                    }}
-                    onPress={() => {
-                      setSelectedPriority(item)
-                      setShowPriorityModal(false)
-                    }}
-                  >
-                    <Text
-                      style={{
-                        width: 200,
-                        paddingBottom: 5,
-                        textAlign: 'center',
-                        borderBottomWidth: index !== numbers.length - 1 ? 1 : 0,
-                        borderBottomColor: '#ccc',
-                        ...styles.optionText
-                      }}
-                    >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              setShowRemunerationModal(!showRemunerationModal)
-            }}
-            style={{ zIndex: 6000, ...styles.containerBox }}
-          >
-            <Text style={styles.inputText}>
-              {selectedRemuneration || 'Seleccione remuneracion'}
-            </Text>
-            {showRemunerationModal && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 40,
-                  width: '100%',
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  backgroundColor: Color.bLACK1SPORTSMATCH
-                }}
-              >
-                {remunerationData.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      paddingVertical: 3,
-                      width: '100%',
-                      alignItems: 'center'
-                    }}
-                    onPress={() => {
-                      setSelectedRemuneration(item)
-                      setShowRemunerationModal(false)
-                    }}
-                  >
-                    <Text
-                      style={{
-                        width: 200,
-                        paddingBottom: 5,
-                        textAlign: 'center',
-                        borderBottomWidth:
-                          index !== remunerationData.length - 1 ? 1 : 0,
-                        borderBottomColor: '#ccc',
-                        ...styles.optionText
-                      }}
-                    >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </TouchableOpacity>
+                      <Text
+                        style={{
+                          width: 200,
+                          paddingBottom: 5,
+                          textAlign: 'center',
+                          borderBottomWidth:
+                            index !== remunerationData.length - 1 ? 1 : 0,
+                          borderBottomColor: '#ccc',
+                          ...styles.optionText
+                        }}
+                      >
+                        {item}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
+
         <TouchableOpacity
           style={styles.botonsOferta}
           onPress={() => navigation.navigate('SiguiendoJugadores')}
@@ -456,13 +473,18 @@ const ConfigurarAnuncio = () => {
                             : null
                     },
                     positionId: selectedPosition?.id,
-                    clubId: club?.id
+                    clubId: club?.id,
+                    prop1: {
+                      position: selectedPosition.name,
+                      positionId: selectedPosition?.id,
+                      paused: false
+                    }
                   }
                   // console.log('data: ', data)
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
-
+                  console.log('CA')
                   navigation.goBack()
                 } else {
                   // const data = {
@@ -592,7 +614,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignItems: 'center',
     paddingHorizontal: 15,
-    gap: 20
+    gap: 15
   },
   inputText: {
     marginLeft: 20,

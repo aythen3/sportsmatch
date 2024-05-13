@@ -15,7 +15,7 @@ import axiosInstance from '../../utils/apiBackend'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
-const GoldSuscription = ({ setClientSecret, setPlanSelected }) => {
+const GoldSuscription = ({ setClientSecret, setPlanSelected, setPlanSelectedId, myPlan, handleCancelSuscription,deletePlan ,setDeletePlan}) => {
   const { user } = useSelector((state) => state.users)
 
   const handleGetGold = async () => {
@@ -29,7 +29,7 @@ const GoldSuscription = ({ setClientSecret, setPlanSelected }) => {
 
       setPlanSelected("pro")
       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
-      // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+      setPlanSelectedId(res.data.subscription.subscriptionId)
 
     }
 
@@ -146,8 +146,29 @@ const GoldSuscription = ({ setClientSecret, setPlanSelected }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={handleGetGold}
+       {!deletePlan && !myPlan && (
+         <TouchableOpacity
+         onPress={ handleGetGold}
+
+
+         style={{
+           width: '95%',
+           borderWidth: 1,
+           alignSelf: 'center',
+           marginTop: 25,
+           borderColor: '#000',
+           borderRadius: 100,
+           height: 30,
+           alignItems: 'center',
+           justifyContent: 'center'
+         }}
+       >
+         <Text style={styles.ofertasTypo}>{ "Seleccionar este plan" }</Text>
+       </TouchableOpacity>
+       )}
+       {myPlan && !deletePlan && (
+          <TouchableOpacity
+          onPress={()=> setDeletePlan(true)}
           style={{
             width: '95%',
             borderWidth: 1,
@@ -160,8 +181,52 @@ const GoldSuscription = ({ setClientSecret, setPlanSelected }) => {
             justifyContent: 'center'
           }}
         >
-          <Text style={styles.ofertasTypo}>Seleccionar este plan</Text>
+           <Text style={styles.ofertasTypo}>Cancelar suscripcion</Text>
         </TouchableOpacity>
+        )}
+       {deletePlan && (
+        <View style={{paddingTop:20,width:"100%"}}>
+          <Text style={{textAlign:"center"}}>Seguro quieres cancelar?</Text>
+          <TouchableOpacity
+         onPress={()=> setDeletePlan(false)}
+
+         style={{
+           width: '95%',
+           borderWidth: 1,
+           alignSelf: 'center',
+           marginTop: 14,
+           borderColor: '#000',
+           borderRadius: 100,
+           height: 30,
+           alignItems: 'center',
+           justifyContent: 'center'
+         }}
+       >
+         <Text style={styles.ofertasTypo}>Volver</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         onPress={()=> handleCancelSuscription()}
+
+         style={{
+           width: '95%',
+           borderWidth: 1,
+           alignSelf: 'center',
+           marginTop: 14,
+           borderColor: '#000',
+           backgroundColor:"red",
+           color:"white",
+           borderRadius: 100,
+           height: 30,
+           alignItems: 'center',
+           justifyContent: 'center'
+         }}
+       >
+         <Text style={{...styles.ofertasTypo,color:"white"}}>Confirmar</Text>
+       </TouchableOpacity>
+        </View>
+       )}
+
+        
       </View>
     </View>
   )
@@ -254,7 +319,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   gradient: {
-    width:"100%",
+    width: "100%",
     height: 42,
     justifyContent: 'center',
     alignItems: 'center'

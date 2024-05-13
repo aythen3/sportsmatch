@@ -16,7 +16,10 @@ const EditarPerfil = () => {
         <View style={[styles.cooliconParent, styles.starusPosition]}>
           <Pressable
             style={styles.coolicon}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('EP')
+              navigation.goBack()
+            }}
           >
             <Image
               style={styles.icon}
@@ -26,7 +29,10 @@ const EditarPerfil = () => {
           </Pressable>
           <Pressable
             style={styles.editarPerfil1}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('EP')
+              navigation.goBack()
+            }}
           >
             <Text style={styles.editarPerfil2}>Editar perfil</Text>
           </Pressable>
@@ -46,13 +52,19 @@ const EditarPerfil = () => {
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() =>
               navigation.navigate(
-                user.user.type === 'club' ? 'ClubDetails': sportman.type === 'coach' ? 'ProDetails' : 'PlayerDetails'
+                user.user.type === 'club'
+                  ? 'ClubDetails'
+                  : sportman.type === 'coach'
+                    ? 'ProDetails'
+                    : 'PlayerDetails'
               )
             }
           >
             {user.user.type === 'club'
               ? 'Detalles del club'
-              : sportman.type === 'coach' ? 'Detalles del profesional' :'Detalles del usuario'}
+              : sportman.type === 'coach'
+                ? 'Detalles del profesional'
+                : 'Detalles del usuario'}
           </Text>
           <View style={styles.frameChild} />
           <Text

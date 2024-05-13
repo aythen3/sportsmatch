@@ -10,7 +10,8 @@ import {
   Touchable,
   Modal,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -170,7 +171,19 @@ const ChatAbierto1 = () => {
 
   if (selectedUserDetails)
     return (
-      <SafeAreaView style={styles.chatAbierto}>
+      <View
+        style={{
+          flex: 1,
+          overflow: 'hidden',
+          paddingTop: 10,
+          paddingHorizontal: 5,
+          width: '100%',
+          backgroundColor: Color.bLACK1SPORTSMATCH,
+          borderWidth: 3,
+          borderColor: 'red',
+          justifyContent: 'space-between'
+        }}
+      >
         {isFocused && (
           <StatusBar barStyle={'light-content'} backgroundColor="#000" />
         )}
@@ -415,8 +428,19 @@ const ChatAbierto1 = () => {
         </View>
 
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
           ref={scrollViewRef}
+          contentContainerStyle={{
+            justifyContent: 'flex-start'
+          }}
+          style={{
+            position: 'absolute',
+            bottom: 65,
+            width: '100%',
+            overflow: 'hidden',
+            borderWidth: 2,
+            height: Dimensions.get('screen').height - 235,
+            borderColor: 'green'
+          }}
           onContentSizeChange={() =>
             scrollViewRef.current.scrollToEnd({ animated: true })
           }
@@ -425,7 +449,10 @@ const ChatAbierto1 = () => {
             style={{
               flexDirection: 'column-reverse',
               paddingRight: 10,
-              paddingLeft: 10
+              paddingLeft: 10,
+              borderWidth: 3,
+              borderColor: 'magenta',
+              bottom: 0
             }}
           >
             {allMessages?.map((chat) => (
@@ -482,7 +509,7 @@ const ChatAbierto1 = () => {
             />
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     )
 }
 
@@ -867,14 +894,7 @@ const styles = StyleSheet.create({
     width: 148,
     maxHeight: '100%'
   },
-  chatAbierto: {
-    flex: 1,
-    overflow: 'hidden',
-    paddingTop: 10,
-    paddingHorizontal: 5,
-    width: '100%',
-    backgroundColor: Color.bLACK1SPORTSMATCH
-  }
+  chatAbierto: {}
 })
 
 export default ChatAbierto1

@@ -224,7 +224,12 @@ const PlayerDetails = () => {
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
           <View style={styles.topWrapper}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('PROD')
+                navigation.goBack()
+              }}
+            >
               <Image
                 style={styles.icon}
                 contentFit="cover"
