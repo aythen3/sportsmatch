@@ -24,9 +24,9 @@ async marcarMensajesComoEliminados(@Body() body: { senderId: string, receiverId:
 
 @Get('/room')
 public async getChat(@Req() req: any) {
-  const { senderId, receiverId, createdAt, limit } = req.query;
+  const { senderId, receiverId, createdAt } = req.query;
   const room = this.chatService.roomIdGenerator(senderId, receiverId);
-  return await this.messageService.getMessagesForRoom(room, senderId, receiverId, createdAt, limit);
+  return await this.messageService.getMessagesForRoom(room, senderId, receiverId, createdAt);
 }
 
   @Put('readed/:id')
