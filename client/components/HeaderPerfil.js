@@ -44,6 +44,7 @@ const HeaderPerfil = ({
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
+  const [matchSended, setMatchSended] = useState(false)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -94,7 +95,8 @@ const HeaderPerfil = ({
           alignItems: 'center',
           height: 120,
           marginBottom: 10,
-          paddingHorizontal: 15
+          paddingLeft: 15,
+          paddingRight: 5
         }}
       >
         <View style={{ position: 'relative' }}>
@@ -136,7 +138,12 @@ const HeaderPerfil = ({
           )}
         </View>
 
-        <View style={{ marginTop: 20 }}>
+        <View
+          style={{
+            marginTop: 20,
+            width: '100%'
+          }}
+        >
           <Text
             style={[styles.jordiEspeltPvotBaloncesto, styles.jugandoAlUniTypo]}
           >
@@ -162,7 +169,18 @@ const HeaderPerfil = ({
               {sport}
             </Text>
           )}
-          <Text style={[styles.description, styles.seguidoresLayout]}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO,
+              marginTop: 3,
+              lineHeight: 14,
+              fontSize: FontSize.t4TEXTMICRO_size,
+              overflow: 'hidden'
+            }}
+          >
             {description}
           </Text>
         </View>
@@ -186,7 +204,6 @@ const HeaderPerfil = ({
             <Pressable
               onPress={() => {
                 let actualUser = _.cloneDeep(user)
-                console.log('atualUser: ', actualUser)
                 const actualFollowers =
                   allUsers.filter((user) => user.id === data.author.id)[0]
                     .followers || []
@@ -272,12 +289,57 @@ const HeaderPerfil = ({
               </Text>
             </TouchableOpacity>
           )}
-          {!isSportman &&
-          clubMatches?.filter(
-            (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
-          )?.length === 0 ? (
+          {matchSended === true ? (
             <Pressable
-              onPress={() =>
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#7B2610',
+                borderRadius: Border.br_81xl,
+                height: 35,
+                width: 170,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  marginLeft: 35,
+                  width: '100%',
+                  textAlign: 'left',
+                  fontSize: 14,
+                  color: '#E1451E',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: '700'
+                }}
+              >
+                {'Match solicitado'}
+              </Text>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: Color.bALONCESTO,
+                  position: 'absolute',
+                  right: 0
+                }}
+              >
+                <Image
+                  style={styles.groupIcon}
+                  contentFit="cover"
+                  source={require('../assets/group13.png')}
+                />
+              </View>
+            </Pressable>
+          ) : !isSportman &&
+            clubMatches?.filter(
+              (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
+            )?.length === 0 ? (
+            <Pressable
+              onPress={() => {
+                setMatchSended(true)
                 dispatch(
                   sendMatch({
                     sportmanId: data?.author?.sportman?.id,
@@ -337,7 +399,7 @@ const HeaderPerfil = ({
                   })
                   .then((data) => dispatch(getAllMatchs()))
                   .then((data) => getClubMatches())
-              }
+              }}
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -942,8 +1004,7 @@ const styles = StyleSheet.create({
   description: {
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    marginTop: 3,
-    width: '80%'
+    marginTop: 3
   },
   seguidoresLayout: {
     lineHeight: 14,

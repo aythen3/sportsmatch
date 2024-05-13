@@ -71,6 +71,11 @@ export class UserController {
     }
   }
 
+  @Post('cancel-subscription')
+  async cancelSubscription(@Body() cancelSubscriptionDto: UpdateUserDto) {
+    return this.userService.cancelSubscription(cancelSubscriptionDto.planId);
+  }
+
   @Get('/child/:id')
   findChild(@Param('id') id: string, @Query('type') type: string) {
     return this.userService.findChild(id, type);

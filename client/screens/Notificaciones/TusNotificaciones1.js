@@ -22,8 +22,8 @@ import { useDispatch } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
 
-const TusNotificaciones1 = () => {  
-  const [value,setValue] = useState('')
+const TusNotificaciones1 = () => {
+  const [value, setValue] = useState('')
   const isFocused = useIsFocused()
   const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
@@ -33,7 +33,8 @@ const TusNotificaciones1 = () => {
   const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers } = useSelector((state) => state.users)
   const { offers } = useSelector((state) => state.offers)
-const {getUsersMessages,usersWithMessages} = useContext(Context)
+  const { getUsersMessages, usersWithMessages, setActiveIcon } =
+    useContext(Context)
 
   const userId = user?.user?.id
 
@@ -44,19 +45,26 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
   }, [])
 
   const sortUsers = (userA, userB) => {
-    const isInMessagesB = usersWithMessages.filter(user=>user.id === userA.id).length > 0
-    const isInMessagesA = usersWithMessages.filter(user=>user.id === userB.id).length > 0
+    const isInMessagesB =
+      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
+    const isInMessagesA =
+      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
 
     if (isInMessagesA && !isInMessagesB) {
-      return -1; // userA has messages, should come before userB
+      return -1 // userA has messages, should come before userB
     } else if (!isInMessagesA && isInMessagesB) {
-      return 1; // userB has messages, should come before userA
+      return 1 // userB has messages, should come before userA
     } else {
-      return 0; // maintain current order if both have messages or neither have messages
+      return 0 // maintain current order if both have messages or neither have messages
     }
-  };
+  }
 
-  const filteredUsers = allUsers.filter(user => user.nickname.toLowerCase()?.includes(value.toLowerCase())).sort(sortUsers).reverse();
+  const filteredUsers = allUsers
+    ?.filter((user) =>
+      user.nickname.toLowerCase()?.includes(value.toLowerCase())
+    )
+    .sort(sortUsers)
+    .reverse()
 
   // useEffect(() => {
   //   offers.forEach((offer) => {
@@ -82,21 +90,15 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
   // useEffect(()=>{
   //   getAllUsersMessages()
   // },[])
-  
-
-  
 
   useEffect(() => {
-    getUsersMessages()   
-  }, []);
-
-
-
+    getUsersMessages()
+  }, [])
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
       console.log('offers: ', offers)
-      const clubOffers = offers.filter(
+      const clubOffers = offers?.filter(
         (offer) => offer.clubId === user.user.club.id
       )
       const postulants = clubOffers.map((offer) => offer.inscriptions)
@@ -107,7 +109,7 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
   // console.log('allusers: ', allUsers)
-  
+
   if (!allUsers)
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
   return (
@@ -124,7 +126,13 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
             justifyContent: 'flex-start'
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('TN1')
+              setActiveIcon('diary')
+              navigation.navigate('SiguiendoJugadores')
+            }}
+          >
             <Image
               style={{ width: 9, height: 15, marginTop: 2.5 }}
               contentFit="cover"
@@ -222,7 +230,7 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
               placeholderTextColor={Color.gREY2SPORTSMATCH}
               style={styles.searchText}
               value={value}
-              onChangeText={(text)=>setValue(text)}
+              onChangeText={(text) => setValue(text)}
             />
           </View>
         )}
@@ -233,7 +241,31 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
               marginTop: 30
             }}
           >
-            {value === '' && usersWithMessages.length === 0 ? <View style={{width:'100%', alignItems:'center'}}><Text style={{fontSize:14,fontWeight:400,color:'#fff'}}>Inicia una conversación!</Text></View> : value === '' && usersWithMessages?.map((user) => (
+            {value === '' && usersWithMessages.length === 0 ? (
+              <View style={{ width: '100%', alignItems: 'center' }}>
+                <Text style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}>
+                  Inicia una conversación!
+                </Text>
+              </View>
+            ) : (
+              value === '' &&
+              usersWithMessages?.map((user) => (
+                <MessagesChat
+                  key={user.id}
+                  name={user.nickname}
+                  sportmanId={user.sportman?.id}
+                  profilePic={
+                    user?.type === 'club'
+                      ? user?.club?.img_perfil
+                      : user?.sportman?.info?.img_perfil
+                  }
+                  selectedUserId={user.id}
+                  applicant={applicants?.includes(user.sportman?.id)}
+                />
+              ))
+            )}
+            {value !== '' &&
+              filteredUsers.map((user) => (
                 <MessagesChat
                   key={user.id}
                   name={user.nickname}
@@ -247,18 +279,6 @@ const {getUsersMessages,usersWithMessages} = useContext(Context)
                   applicant={applicants?.includes(user.sportman?.id)}
                 />
               ))}
-              {
-                value !== '' && filteredUsers.map(user=><MessagesChat key={user.id}
-                  name={user.nickname}
-                  sportmanId={user.sportman?.id}
-                  profilePic={
-                    user?.type === 'club'
-                      ? user?.club?.img_perfil
-                      : user?.sportman?.info?.img_perfil
-                  }
-                  selectedUserId={user.id}
-                  applicant={applicants?.includes(user.sportman?.id)}/>)
-              }
           </ScrollView>
         )}
       </View>

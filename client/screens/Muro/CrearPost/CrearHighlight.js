@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -12,8 +12,9 @@ import {
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation, useRoute } from '@react-navigation/core'
-import { createPost } from '../../../redux/actions/post'
+import { createPost, getAllPosts } from '../../../redux/actions/post'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Context } from '../../../context/Context'
 
 const CrearHighlight = () => {
   const navigation = useNavigation()
@@ -23,9 +24,15 @@ const CrearHighlight = () => {
   const route = useRoute()
 
   const { image } = route.params || {}
+  const { provisoryProfileImage } = useContext(Context)
   const { user } = useSelector((state) => state.users)
 
   const [description, setDescription] = useState('')
+
+  useEffect(() => {
+    console.log('image changed: ', image)
+    console.log('provisoryProfileImage changed: ', provisoryProfileImage)
+  }, [image, provisoryProfileImage])
 
   const handleSubmit = () => {
     const data = {
@@ -34,7 +41,7 @@ const CrearHighlight = () => {
       authorType: user.user.type,
       author: user.user.id
     }
-    dispatch(createPost(data))
+    dispatch(createPost(data)).then((data) => dispatch(getAllPosts()))
     navigation.navigate('SiguiendoJugadores')
   }
 
@@ -54,7 +61,12 @@ const CrearHighlight = () => {
             alignItems: 'center'
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('CH')
+              navigation.goBack()
+            }}
+          >
             <Image
               style={{ height: 15, width: 15 }}
               contentFit="cover"
@@ -73,7 +85,7 @@ const CrearHighlight = () => {
             height: 340
           }}
           contentFit="cover"
-          source={{ uri: image }}
+          source={{ uri: image ? image : provisoryProfileImage }}
         />
         <View
           style={{

@@ -13,7 +13,7 @@ import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
 import SilverSuscription from '../components/Suscripciones/SilverSuscription'
 import GoldSuscription from '../components/Suscripciones/GoldSuscription'
 import StarSuscription from '../components/Suscripciones/StarSuscription'
-import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native';
+import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
 import axiosInstance from '../utils/apiBackend'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData } from '../redux/actions/users'
@@ -22,47 +22,75 @@ const MiSuscripcin = () => {
   const navigation = useNavigation()
   const [clientSecret, setClientSecret] = useState(null)
   const [planSelected, setPlanSelected] = useState(null)
+  const [planSelectedId, setPlanSelectedId] = useState("")
+  const [deletePlan, setDeletePlan] = useState(false )
+
+
+
   const { user } = useSelector((state) => state.users)
 
   const dispatch = useDispatch()
 
-  const { initPaymentSheet, presentPaymentSheet } = useStripe(null);
+  const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     const initializePaymentSheet = async () => {
-      console.log(user,"userrrr")
+      setDeletePlan(false)
+      console.log(user, 'userrrr')
       const { error } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
-        merchantDisplayName:"azul",
-        returnURL: 'stripe-example://payment-sheet',
+        merchantDisplayName: 'azul',
+        returnURL: 'stripe-example://payment-sheet'
         // Set `allowsDelayedPaymentMethods` to true if your business handles
         // delayed notification payment methods like US bank accounts.
-      });
+      })
       if (error) {
         // Handle error
-        console.log(error,"error")
-      }
-      else {
-      const {error} = await presentPaymentSheet()
-      if(error){
-        console.log(error,"error")
+        console.log(error, 'error')
       } else {
-      const updUser = await axiosInstance.patch(`user/${user.user.id}`,{
-        plan:planSelected
-      }).then(()=> dispatch(getUserData(user.user.id)))
-      console.log(updUser, "upd")
-      }
+        const { error } = await presentPaymentSheet()
+        if (error) {
+          console.log(error, 'error')
+        } else {
+          const updUser = await axiosInstance
+            .patch(`user/${user.user.id}`, {
+              plan: planSelected,
+              planId:planSelectedId
 
+            })
+            .then(() => dispatch(getUserData(user.user.id)))
+          console.log(updUser, 'upd')
+        }
       }
-    };
+    }
 
-    if (
-      clientSecret
-    ) {
-      console.log("entra a la hoja")
+    if (clientSecret) {
+      console.log('entra a la hoja')
       initializePaymentSheet()
     }
-  }, [clientSecret, initPaymentSheet]);
+  }, [clientSecret, initPaymentSheet])
+
+  const handleCancelSuscription = async ()=>{
+
+  try {
+    const {data} = await axiosInstance.post("user/cancel-subscription",{planId:user.user.planId})
+    console.log(data,"datita")
+    if(data){
+      setDeletePlan(false)
+      const updUser = await axiosInstance
+      .patch(`user/${user.user.id}`, {
+        plan: "basic",
+        planId:""
+
+      })
+      .then(() => dispatch(getUserData(user.user.id)))
+      return data
+    }
+  } catch (error) {
+    console.log(error,"error")
+  }
+
+  }
 
   return (
     <View style={styles.miSuscripcin}>
@@ -77,7 +105,12 @@ const MiSuscripcin = () => {
             justifyContent: 'flex-start'
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('triggered MS')
+              navigation.goBack()
+            }}
+          >
             <Image
               style={{ width: 9, height: 15, marginTop: 2.5 }}
               contentFit="cover"
@@ -103,20 +136,32 @@ const MiSuscripcin = () => {
         </View>
 
         <View style={{ marginTop: 30, gap: 30 }}>
-         {user.user.plan === "basic" &&  <SilverSuscription />}
-         {user.user.plan === "pro" &&  <GoldSuscription />}
-         {user.user.plan === "star" &&  <StarSuscription />}
+          {user.user.plan === 'basic' && <SilverSuscription />}
+          {user.user.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+          {user.user.plan === 'star' && <StarSuscription handleCancelSuscription={handleCancelSuscription}  myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
 
           <View>
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Otros planes
             </Text>
           </View>
-        {user.user.plan === "star" &&  <SilverSuscription/>}  
-        {user.user.plan === "pro" &&  <SilverSuscription/>}  
+          {user.user.plan === 'star' && <SilverSuscription />}
+          {user.user.plan === 'pro' && <SilverSuscription />}
 
-        {user.user.plan !== "pro" &&  <GoldSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />}
-        {user.user.plan !== "star" &&    <StarSuscription setPlanSelected={setPlanSelected} setClientSecret={setClientSecret} />}        
+          {user.user.plan !== 'pro' && (
+            <GoldSuscription
+              setPlanSelected={setPlanSelected}
+              setClientSecret={setClientSecret}
+              setPlanSelectedId={setPlanSelectedId}
+            />
+          )}
+          {user.user.plan !== 'star' && (
+            <StarSuscription
+              setPlanSelected={setPlanSelected}
+              setClientSecret={setClientSecret}
+              setPlanSelectedId={setPlanSelectedId}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

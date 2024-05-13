@@ -36,6 +36,12 @@ export class CreateOfferDto {
   @ValidateNested()
   offerData: OfferData;
 
+
+
+  @IsOptional()
+  @IsBoolean()
+  paused:boolean; 
+
   @IsString()
   @IsOptional()
   posit: string;
@@ -43,11 +49,6 @@ export class CreateOfferDto {
   @IsString()
   @IsOptional()
   position: any;
-
-  @IsString()
-  @IsOptional()
-  paused: boolean;
-
   
 
   @IsString()

@@ -21,7 +21,10 @@ const EliminarCuenta = () => {
             <View style={styles.cooliconParent}>
               <Pressable
                 style={styles.coolicon}
-                onPress={() => navigation.goBack()}
+                onPress={() => {
+                  console.log('EC')
+                  navigation.goBack()
+                }}
               >
                 <Image
                   style={styles.icon}
@@ -31,7 +34,10 @@ const EliminarCuenta = () => {
               </Pressable>
               <Pressable
                 style={styles.cerrarSesin1}
-                onPress={() => navigation.goBack()}
+                onPress={() => {
+                  console.log('EC')
+                  navigation.goBack()
+                }}
               >
                 <Text style={[styles.cerrarSesin2, styles.cerrarSesin2Typo]}>
                   Mi suscripcion

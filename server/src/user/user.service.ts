@@ -52,6 +52,15 @@ export class UserService {
     }
   }
 
+  async cancelSubscription(subscriptionId: string) {
+    try {
+      const deletedSubscription = await this.stripe.subscriptions.cancel(subscriptionId);
+      return deletedSubscription;
+    } catch (error) {
+      throw new Error('Failed to cancel subscription.');
+    }
+  }
+
   async createCustomer(email: string, name: string): Promise<any> {
     try {
       const customer = await this.stripe.customers.create({

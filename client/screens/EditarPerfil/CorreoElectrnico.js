@@ -20,7 +20,10 @@ const CorreoElectrnico = () => {
         <View style={styles.loremIpsumFlexBox}>
           <Pressable
             style={styles.coolicon}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('CORREO')
+              navigation.goBack()
+            }}
           >
             <Image
               style={styles.icon}

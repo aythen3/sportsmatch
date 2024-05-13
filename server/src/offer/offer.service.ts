@@ -27,7 +27,7 @@ export class OfferService {
    */
   public async create(createOfferDto: CreateOfferDto) {
     try {
-      const { offerData, position:positionId, clubId } = createOfferDto;
+      const { offerData, position: positionId, clubId } = createOfferDto;
 
       // const position = await this.positionService.findOne(positionId);
       const position = await this.positionRepository.findOne({
@@ -140,11 +140,11 @@ export class OfferService {
 
   async update(id: string, updateOfferDto: UpdateOfferDto) {
     const offer = await this.offerRepository.findOne({ where: { id: id } });
-  
+
     if (!offer) {
       throw new Error(`Offer with id ${id} not found`);
     }
-  
+
     if (updateOfferDto.sexo !== undefined) {
       offer.sexo = updateOfferDto.sexo;
     }
@@ -178,14 +178,13 @@ export class OfferService {
     if (updateOfferDto.inscriptions !== undefined) {
       offer.inscriptions = updateOfferDto.inscriptions;
     }
-  
+
     const updatedOffer = await this.offerRepository.save(offer);
 
     console.log('updatedOffer: ', updatedOffer);
 
     return updatedOffer;
   }
-  
 
   public async addMatch(id: string, updateOfferDto: UpdateOfferDto) {
     return `This action updates a #${updateOfferDto} offer`;
