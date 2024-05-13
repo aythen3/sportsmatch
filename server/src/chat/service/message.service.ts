@@ -32,20 +32,19 @@ export class MessageService {
     senderId: string,
     receiverId: string,
     createdAt?: Date,
-    limit: number = 10
+    
   ): Promise<MessageEntity[]> {
     try {
       console.log('room:', room);
       console.log('senderId', senderId);
       console.log('receiverId',receiverId);
-      console.log('data from backend:', createdAt, limit);
+      console.log('data from backend:', createdAt);
   
       let query = this.messageRepository
         .createQueryBuilder('message')
         .where('message.room = :room', { room })
         .andWhere('(message.senderId = :senderId AND message.receiverDelete IS NULL) OR (message.receiverId = :receiverId AND message.senderDelete IS NULL)', { senderId, receiverId }) // Pasando senderId y receiverId como parámetros
         .orderBy('message.createdAt', 'DESC')
-        .limit(limit);
   
       if (createdAt) {
         const date = new Date(createdAt); // Convierte la cadena de texto en un objeto Date
