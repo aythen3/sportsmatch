@@ -15,16 +15,12 @@ export class UpdateOfferDto extends PartialType(CreateOfferDto) {
 
   @IsString()
   @IsOptional()
-  position:string;
+  position:any;
 
   @IsString()
   @IsOptional()
   posit: string;
 
-
-  @IsString()
-  @IsOptional()
-  paused: boolean;
 
 
   @IsString()

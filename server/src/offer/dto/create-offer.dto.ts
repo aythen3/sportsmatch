@@ -48,14 +48,7 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
-  position:string;
-
-
-
-  @IsString()
-  @IsOptional()
-  paused: boolean;
-
+  position: any;
   
 
   @IsString()
