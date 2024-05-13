@@ -38,8 +38,14 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
-  position: any;
+  posit: string;
 
+
+  @IsString()
+  @IsOptional()
+  paused: boolean;
+
+  
 
   @IsString()
   @IsOptional()

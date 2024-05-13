@@ -18,6 +18,12 @@ export class OfferEntity extends BaseEntity {
     enum: ['Male', 'Female', 'Otro']
   })
 
+  @Column({ nullable: true })
+  posit: string | null;
+
+  @Column({ nullable: true })
+  paused: boolean | null;
+
   @Column()
   @IsString()
   sexo: string;
