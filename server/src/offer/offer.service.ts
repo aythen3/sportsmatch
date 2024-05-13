@@ -178,6 +178,12 @@ export class OfferService {
     if (updateOfferDto.inscriptions !== undefined) {
       offer.inscriptions = updateOfferDto.inscriptions;
     }
+    if (updateOfferDto.paused !== undefined) {
+      offer.paused = updateOfferDto.paused;
+    }
+    if (updateOfferDto.posit !== undefined) {
+      offer.posit = updateOfferDto.posit;
+    }
 
     const updatedOffer = await this.offerRepository.save(offer);
 
