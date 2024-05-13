@@ -40,6 +40,9 @@ export class CreateOfferDto {
   @IsOptional()
   posit: string;
 
+  @IsString()
+  @IsOptional()
+  position: any;
 
   @IsString()
   @IsOptional()
