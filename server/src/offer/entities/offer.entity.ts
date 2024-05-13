@@ -32,13 +32,8 @@ export class OfferEntity extends BaseEntity {
   @IsString()
   category: string;
 
-  @Column()
-  @IsBoolean()
-  paused:boolean; 
 
-  @Column()
-  @IsString()
-  position:string;
+
 
   @Column({ type: 'int', nullable: true })
   @IsInt() // Validador para asegurar que sea un número entero
@@ -63,8 +58,8 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  // @ManyToOne(() => PositionEntity)
-  // position: PositionEntity;
+  @ManyToOne(() => PositionEntity)
+  position: PositionEntity;
 
   @OneToMany(() => MatchEntity, (match) => match.offerId, { nullable: true })
   match: MatchEntity[];
