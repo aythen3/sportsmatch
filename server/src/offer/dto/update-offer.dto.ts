@@ -19,6 +19,16 @@ export class UpdateOfferDto extends PartialType(CreateOfferDto) {
 
   @IsString()
   @IsOptional()
+  posit: string;
+
+
+  @IsString()
+  @IsOptional()
+  paused: boolean;
+
+
+  @IsString()
+  @IsOptional()
   matchId?: string;
 
   @IsString()
