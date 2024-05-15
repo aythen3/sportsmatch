@@ -470,17 +470,14 @@ const ConfigurarAnuncio = () => {
                           ? true
                           : selectedRemuneration === 'No'
                             ? false
-                            : null
-                    },
-                    positionId: selectedPosition?.id,
-                    clubId: club?.id,
-                    prop1: {
-                      position: selectedPosition.name,
-                      positionId: selectedPosition?.id,
+                            : null,
+                      posit: selectedPosition?.id,
                       paused: false
-                    }
+                    },
+
+                    clubId: club?.id
                   }
-                  // console.log('data: ', data)
+                  console.log('data: ', data)
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
@@ -506,14 +503,12 @@ const ConfigurarAnuncio = () => {
                     ...(selectedGender && { sexo: selectedGender }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
+                    ...(selectedPosition && { posit: selectedPosition.id }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
-                    }),
-                    ...(selectedPosition && {
-                      positionId: selectedPosition.id
                     })
                   }
-                  // console.log('data: ', data)
+                  console.log('update data: ', data)
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
                     (data) => dispatch(getAllOffers())
                   )

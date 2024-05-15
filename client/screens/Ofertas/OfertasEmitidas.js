@@ -24,7 +24,8 @@ import ModalOptionOffers from '../../components/ModalOptionOffers'
 import {
   getAllOffers,
   getOfferById,
-  setOffer
+  setOffer,
+  updateOffer
 } from '../../redux/actions/offers'
 import BackArrowSVG from '../../components/svg/BackArrowSVG'
 import { getAllPositions } from '../../redux/actions/sports'
@@ -57,7 +58,11 @@ const OfertasEmitidas = () => {
     setModalVisible(true)
   }
 
-  console.log('allpos: ', allPositions)
+  // console.log('allpos: ', allPositions)
+
+  useEffect(() => {
+    console.log('offers: ', offers)
+  }, [])
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -140,9 +145,11 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {offer?.position ||
-                          allPositions[i > allPositions.length - 1 ? 3 : i]
-                            ?.name}
+                        {
+                          allPositions?.filter(
+                            (position) => position?.id === offer?.posit
+                          )[0]?.name
+                        }
                       </Text>
                     </View>
 
@@ -167,13 +174,23 @@ const OfertasEmitidas = () => {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.botonPausar}>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      await dispatch(
+                        updateOffer({
+                          id: offer.id,
+                          body: { paused: !offer.paused }
+                        })
+                      ).then((data) => dispatch(getAllOffers()))
+                    }}
+                    style={styles.botonPausar}
+                  >
                     <View style={[styles.pausar, styles.pausarFlexBox]}>
                       <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                        Pausar
+                        {!offer.paused ? 'Pausar' : 'Reanudar'}
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                   <Pressable
                     style={styles.inscritos}
                     onPress={() =>
