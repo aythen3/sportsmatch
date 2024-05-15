@@ -1,8 +1,8 @@
 {
   "expo": {
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "3.0.0",
     "name": "Sportsmatch",
-    "slug": "sportfin",
+    "slug": "nuevappp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -39,7 +39,7 @@
         "foregroundImage": "./assets/smiconmain.png",
         "backgroundColor": "#000"
       },
-      "versionCode": 1,
+      "versionCode": 10,
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.INTERNET"
@@ -79,7 +79,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "9bc0f008-5a2b-4512-bbb6-071bce938377"
+        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
       }
     },
     "owner": "azschiaffino",
