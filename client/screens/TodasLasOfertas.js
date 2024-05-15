@@ -862,7 +862,7 @@ const TodasLasOfertas = () => {
           <View
             style={{
               width: '100%',
-              top: -100,
+              top: 100,
               alignSelf: 'flex-start',
               alignItems: 'center',
               flex: 1
