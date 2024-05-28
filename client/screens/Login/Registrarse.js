@@ -21,6 +21,7 @@ import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
 import { create, getAllUsers } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
+import PassView from './passview'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
@@ -46,6 +47,9 @@ const Registrarse = () => {
   })
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isEmailValid, setEmailValid] = useState(false)
+  const [passview1, setPassview1] = useState(true)
+  const [passview2, setPassview2] = useState(true)
+
 
   useEffect(() => {
     dispatch(getAllUsers())
@@ -250,11 +254,11 @@ const Registrarse = () => {
                           fontSize: FontSize.t2TextSTANDARD_size,
                           marginLeft: 10,
                           textAlign: 'left',
-                          width: '90%'
+                          width: '87%'
                         }}
                         placeholder="Contraseña"
                         placeholderTextColor="#999"
-                        secureTextEntry={true}
+                        secureTextEntry={passview1}
                         value={valuesUser.password}
                         onChangeText={(value) => seterValues('password', value)}
                         ref={passwordInputRef}
@@ -262,6 +266,9 @@ const Registrarse = () => {
                           confirmPasswordInputRef.current.focus()
                         }}
                       />
+                       <TouchableOpacity onPress={()=>setPassview1(!passview1)}>
+                    <PassView></PassView>
+                    </TouchableOpacity>
                     </View>
                   </View>
                   <View style={[styles.campo3Frame, styles.framePosition]}>
@@ -278,16 +285,19 @@ const Registrarse = () => {
                           fontSize: FontSize.t2TextSTANDARD_size,
                           marginLeft: 10,
                           textAlign: 'left',
-                          width: '90%'
+                          width: '87%'
                         }}
                         placeholder="Confirmar contraseña"
                         placeholderTextColor="#999"
-                        secureTextEntry={true}
+                        secureTextEntry={passview2}
                         value={confirmPassword}
                         onChangeText={(value) => setConfirmPassword(value)}
                         ref={confirmPasswordInputRef}
                         onSubmitEditing={submit}
                       />
+                    <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
+                    <PassView></PassView>
+                    </TouchableOpacity>
                     </View>
                   </View>
                 </View>

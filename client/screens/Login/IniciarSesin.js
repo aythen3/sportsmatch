@@ -26,6 +26,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
+import PassView from './passview'
 
 const IniciarSesin = () => {
   const {
@@ -36,6 +37,7 @@ const IniciarSesin = () => {
   } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
+  const [passview2, setPassview2] = useState(true)
 
   const route = useRoute()
 
@@ -70,7 +72,7 @@ const IniciarSesin = () => {
       } else {
         if (user?.accesToken) {
           console.log('jugador')
-          navigation.navigate('stepsJugador')
+          navigation.navigate('Paso1')
         }
       }
     }
@@ -174,7 +176,7 @@ const IniciarSesin = () => {
                           }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
-                          secureTextEntry={true}
+                          secureTextEntry={passview2}
                           value={valuesUser.password}
                           onChangeText={(value) =>
                             seterValues('password', value)
@@ -182,6 +184,9 @@ const IniciarSesin = () => {
                           ref={passwordInputRef}
                           onSubmitEditing={handleSubmit}
                         />
+                          <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
+                    <PassView></PassView>
+                    </TouchableOpacity>
                       </View>
                     </View>
                   </View>

@@ -161,7 +161,7 @@ const LoginSwitch = () => {
       } else {
         if (user?.accesToken) {
           console.log('jugador')
-          navigation.navigate('stepsJugador')
+          navigation.navigate('Paso1')
         }
       }
     }
