@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "3.0.0",
     "name": "Sportsmatch",
-    "slug": "nuevappp",
+    "slug": "mytreenueva",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -79,7 +79,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
+        "projectId": "296deecb-db9a-47bc-9d00-4f8bd96480ba"
       }
     },
     "owner": "azschiaffino",
