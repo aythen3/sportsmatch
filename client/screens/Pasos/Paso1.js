@@ -26,6 +26,9 @@ import Paso4Profesional from './Paso4Profesional'
 import { createSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import Visores from './visores'
+import StepsJugador from './StepsJugador'
+import Paso2Jugador from './Paso2Jugador'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -50,6 +53,7 @@ const Paso1 = () => {
   const [stepsSportman, setStepsSportman] = useState(0)
   const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
+  const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [sportmanValues, setSportmanValues] = useState({
     sport: sport.name,
@@ -96,10 +100,17 @@ const Paso1 = () => {
   }
 
   const handleNext = () => {
+
     if (selectedRole === 'Profesional del deporte') {
+      console.log("pasaaa")
       setProfesional(true)
-      setSportman(false)
-    } else {
+    return setSportman(false)
+    }
+    if (selectedRole === 'Invitado') {
+
+      setInvitadoStep((prev) => prev + 1)
+    }
+    else {
       setProfesional(false)
       setSportman(true)
     }
@@ -113,9 +124,12 @@ const Paso1 = () => {
   }, [stepsSportman])
 
   const handleNavigation = async () => {
+    if (sportman && stepsSportman === 1) {
+      return setStepsSportman((prev) => prev + 1)
+    }
     if (sportman) {
-      stepsSportman !== 1 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 1) {
+      stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
+      if (stepsSportman === 2) {
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
@@ -206,7 +220,24 @@ const Paso1 = () => {
                 justifyContent: 'flex-end',
                 alignItems: 'center'
               }}
-              onPress={() => navigation.goBack()}
+              onPress={() => {
+                if (!sportman && !profesional) {
+                  navigation.goBack()
+                }
+                if (stepsProfesional > 0) {
+                  setStepsProfesional((prev) => prev - 1)
+                }
+                if (stepsSportman > 0
+                ) {
+                  setStepsSportman((prev) => prev - 1)
+                }
+                else {
+                  setSportman(false)
+                  setProfesional(false)
+                }
+
+
+              }}
             >
               <Image
                 style={styles.coolicon}
@@ -236,9 +267,11 @@ const Paso1 = () => {
                   textAlign: 'center'
                 }}
               >
-                {!sportman && !profesional && 'Paso 2'}
-                {sportman && stepsSportman === 0 && 'Paso 3'}
-                {stepsSportman === 1 && 'Paso 4'}
+                {!sportman && !profesional && 'Paso 1'}
+                {sportman && stepsSportman === 0 && 'Paso 2'}
+                {stepsSportman === 1 && 'Paso 3'}
+                {stepsSportman === 2 && 'Paso 4'}
+
                 {profesional && stepsProfesional === 0 && 'Paso 3'}
                 {stepsProfesional === 1 && 'Paso 4'}
               </Text>
@@ -255,21 +288,25 @@ const Paso1 = () => {
                 }}
               >
                 {!sportman && !profesional && 'Escoge tu rol'}
-                {sportman && stepsSportman === 0 && 'Define tus skills'}
-                {stepsSportman === 1 && 'Unos detalles sobre ti'}
+                {sportman && stepsSportman === 0 && 'Escoge tu deporte'}
+                {sportman && stepsSportman === 1 && "Define tus skills"}
+                {stepsSportman === 2 && 'Unos detalles sobre ti'}
+
                 {profesional && 'Unos detalles sobre ti'}
               </Text>
 
               <Lines
                 index={
                   !sportman && !profesional
-                    ? 2
+                    ? 1
                     : (sportman && stepsSportman === 0) ||
-                        (profesional && stepsProfesional === 0)
-                      ? 3
-                      : stepsProfesional === 1 || stepsSportman
-                        ? 4
-                        : ''
+                      (profesional && stepsProfesional === 0)
+                      ? 2
+                      : stepsProfesional === 1 || stepsSportman === 1
+                        ? 3
+                        : '' || stepsSportman === 2
+                          ? 4
+                          : ''
                 }
               />
             </View>
@@ -277,7 +314,7 @@ const Paso1 = () => {
         </View>
 
         <View style={{ marginTop: 30 }}>
-          {!sportman && !profesional && (
+          {!sportman && !profesional && !invitadoStep && (
             <View
               style={{
                 ...styles.container
@@ -312,7 +349,7 @@ const Paso1 = () => {
                   style={[
                     styles.rectangulo,
                     selectedRole === 'Profesional del deporte' &&
-                      styles.selectedBackground
+                    styles.selectedBackground
                   ]}
                   onPress={() => handleRoleSelection('Profesional del deporte')}
                 >
@@ -321,7 +358,7 @@ const Paso1 = () => {
                       styles.jugador,
                       styles.jugadorTypo,
                       selectedRole === 'Profesional del deporte' &&
-                        styles.selectedText
+                      styles.selectedText
                     ]}
                   >
                     Profesional del deporte
@@ -333,10 +370,50 @@ const Paso1 = () => {
                   />
                 </TouchableOpacity>
               </View>
+              <View style={styles.botonLayout1}>
+                <TouchableOpacity
+                  style={[
+                    styles.rectangulo,
+                    selectedRole === 'Invitado' &&
+                    styles.selectedBackground
+                  ]}
+                  onPress={() => handleRoleSelection('Invitado')}
+                >
+                  <View style={{ position: "absolute", left: 18 }}><Visores></Visores></View>
+
+                  <Text
+                    style={[
+                      styles.jugador,
+                      styles.jugadorTypo,
+                      selectedRole === 'Profesional del deporte' &&
+                      styles.selectedText
+                    ]}
+                  >
+                    Invitado
+                  </Text>
+                  {/* <Image
+                    style={styles.simboloIconLayout}
+                    contentFit="cover"
+                    source={require('../../assets/simbolo7.png')}
+                  /> */}
+                </TouchableOpacity>
+              </View>
             </View>
           )}
 
           {sportman && stepsSportman === 1 && (
+            <SkillSeleccion setData={setData} data={data} />
+
+            // <Paso4Jugador
+            //   selectedCity={selectedCity}
+            //   setSelectedCity={setSelectedCity}
+            //   sportmanValues={sportmanValues}
+            //   setSportmanValues={setSportmanValues}
+            // />
+          )}
+          {sportman && stepsSportman === 2 && (
+            //  <SkillSeleccion setData={setData} data={data} />
+
             <Paso4Jugador
               selectedCity={selectedCity}
               setSelectedCity={setSelectedCity}
@@ -353,16 +430,20 @@ const Paso1 = () => {
             />
           )}
           {sportman && stepsSportman === 0 && (
-            <SkillSeleccion setData={setData} data={data} />
+
+            <Paso2Jugador></Paso2Jugador>
+
           )}
-          {profesional && stepsProfesional === 1 && <Paso4Profesional />}
+          {profesional && stepsProfesional  === 1 || invitadoStep === 1 &&
+            <Paso4Profesional />
+          }
 
           <View style={styles.botonesRoles}>
             <Pressable
               style={styles.siguiente}
               disabled={
-                (stepsSportman === 1 && !profileImage) ||
-                (stepsProfesional === 1 && !coverImage)
+                (stepsSportman === 2 && !profileImage) ||
+                (stepsProfesional === 2 && !coverImage)
               }
               onPress={() =>
                 !sportman && !profesional ? handleNext() : handleNavigation()

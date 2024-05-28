@@ -26,7 +26,55 @@ const Paso2Jugador = () => {
         gap: 15
       }}
     >
-      {sports.map((sport) => (
+      {/* {sports.map((sport) => (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))} */}
+      {sports.map((sport) => sport.name === "Fútbol" && (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
+      {sports.map((sport) => sport.name === "Fútbol de Salon" && (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
+        {sports.map((sport) => sport.name === "Básquetbol" && (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
+        {sports.map((sport) => sport.name === "Hockey" && (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
+        {sports.map((sport) => sport.name === "Handball" && (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
+        {sports.map((sport) => sport.name === "Voley" && (
         <DeportesSeleccion
           key={sport.id}
           sport={sport}
