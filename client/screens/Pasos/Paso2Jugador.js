@@ -3,14 +3,13 @@ import { View } from 'react-native'
 import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
-const Paso2Jugador = () => {
+const Paso2Jugador = ({selectedSport, setSelectedSport}) => {
   const { sports } = useSelector((state) => state.sports)
 
   useEffect(() => {
     console.log('sports: ', sports)
   }, [])
 
-  const [selectedSport, setSelectedSport] = useState(null)
 
   const handleSportSelection = (sport) => {
     setSelectedSport(sport)
@@ -22,7 +21,7 @@ const Paso2Jugador = () => {
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        marginTop: 10,
+        marginBottom:100,
         gap: 15
       }}
     >
@@ -42,7 +41,7 @@ const Paso2Jugador = () => {
           onSelect={handleSportSelection}
         />
       ))}
-      {sports.map((sport) => sport.name === "Fútbol de Salon" && (
+      {sports.map((sport) => sport.name === "Fútbol Sala" && (
         <DeportesSeleccion
           key={sport.id}
           sport={sport}

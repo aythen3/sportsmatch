@@ -132,8 +132,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data }) => {
       onScroll={handleScroll}
       keyboardShouldPersistTaps={'always'}
       style={{
-        height: '70%',
-        marginTop: -20
+        height: '100%',
       }}
     >
       <View
