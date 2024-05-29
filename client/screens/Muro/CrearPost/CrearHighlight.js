@@ -50,7 +50,9 @@ const CrearHighlight = () => {
       <View
         style={{
           width: '90%',
-          alignSelf: 'center'
+          alignSelf: 'center',
+          height:"100%",
+          paddingBottom:50
         }}
       >
         <View
@@ -58,7 +60,7 @@ const CrearHighlight = () => {
             marginTop: 20,
             justifyContent: 'space-between',
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <TouchableOpacity
@@ -82,18 +84,21 @@ const CrearHighlight = () => {
             marginTop: 40,
             marginBottom: 15,
             borderRadius: 8,
-            height: 340
+            maxHeight:"50%",
+            minHeight:"10%",
+            height: "100%"
           }}
           contentFit="cover"
           source={{ uri: image ? image : provisoryProfileImage }}
         />
         <View
           style={{
-            height: 100,
+            height: "35%",
             borderWidth: 1,
             borderRadius: 15,
             borderColor: Color.wHITESPORTSMATCH,
-            marginTop: 20
+            marginTop: 20,
+            marginBottom:30
           }}
         >
           <TextInput

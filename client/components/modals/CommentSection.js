@@ -145,6 +145,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                 onPress={() => {
                   Keyboard.dismiss()
                   handleSubmit({ comment, user, postId, dispatch, setComment })
+                  closeModal()
                 }}
               >
                 <Text

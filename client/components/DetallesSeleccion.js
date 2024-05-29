@@ -30,7 +30,7 @@ const SkillSeleccion = ({
   const [cityModal, setCityModal] = useState(false)
   const [pickedCity, setPickedCity] = useState()
 
-  const opcionesGenero = ['Masculino', 'Femenino', 'Otro']
+  const opcionesGenero = ['Masculino', 'Femenino']
   const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openAñoNacimientoModal = () => {

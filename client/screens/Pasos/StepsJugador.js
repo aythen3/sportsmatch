@@ -55,7 +55,7 @@ const StepsJugador = () => {
         paddingHorizontal: 15
       }}
     >
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView keyboardShouldPersistTaps={'always'} style={{height:"100%"}}>
         <Image
           style={{ width: '110%', height: '100%', position: 'absolute' }}
           contentFit="cover"

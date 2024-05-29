@@ -53,8 +53,11 @@ const Paso1 = () => {
   const [stepsSportman, setStepsSportman] = useState(0)
   const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
+  const [invitado, setInvitado] = useState(false)
+
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
+  const [selectedSport, setSelectedSport] = useState(null)
   const [sportmanValues, setSportmanValues] = useState({
     sport: sport.name,
     gender: sportmanGender,
@@ -100,17 +103,25 @@ const Paso1 = () => {
   }
 
   const handleNext = () => {
+    if (selectedRole == null) {
+      return
+    }
+    if (selectedRole === 'Invitado') {
+
+      return setInvitado(true)
+    }
 
     if (selectedRole === 'Profesional del deporte') {
       console.log("pasaaa")
       setProfesional(true)
-    return setSportman(false)
+      return setSportman(false)
     }
     if (selectedRole === 'Invitado') {
 
       setInvitadoStep((prev) => prev + 1)
     }
     else {
+
       setProfesional(false)
       setSportman(true)
     }
@@ -124,12 +135,20 @@ const Paso1 = () => {
   }, [stepsSportman])
 
   const handleNavigation = async () => {
+
+
+    if (selectedRole === "Jugador" && selectedSport == null) {
+      console.log("entra")
+      return
+    }
     if (sportman && stepsSportman === 1) {
       return setStepsSportman((prev) => prev + 1)
+
     }
     if (sportman) {
+
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 2) {
+      if (stepsSportman === 2 && profileImage && coverImage && selectedCity) {
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
@@ -195,12 +214,11 @@ const Paso1 = () => {
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'}>
+    <View keyboardShouldPersistTaps={'always'}>
       <View
         style={{
           height: Dimensions.get('window').height,
 
-          paddingBottom: 10,
           paddingHorizontal: 15,
           backgroundColor: Color.bLACK1SPORTSMATCH
         }}
@@ -221,7 +239,7 @@ const Paso1 = () => {
                 alignItems: 'center'
               }}
               onPress={() => {
-                if (!sportman && !profesional) {
+                if (!sportman && !profesional && !invitado) {
                   navigation.goBack()
                 }
                 if (stepsProfesional > 0) {
@@ -234,6 +252,7 @@ const Paso1 = () => {
                 else {
                   setSportman(false)
                   setProfesional(false)
+                  setInvitado(false)
                 }
 
 
@@ -272,8 +291,10 @@ const Paso1 = () => {
                 {stepsSportman === 1 && 'Paso 3'}
                 {stepsSportman === 2 && 'Paso 4'}
 
-                {profesional && stepsProfesional === 0 && 'Paso 3'}
-                {stepsProfesional === 1 && 'Paso 4'}
+                {profesional && stepsProfesional === 0 && 'Paso 2'}
+                {stepsProfesional === 1 && 'Paso 3'}
+                {/* {stepsProfesional === 0 && 'Paso 2'} */}
+
               </Text>
               <Text
                 style={{
@@ -287,7 +308,8 @@ const Paso1 = () => {
                   color: Color.wHITESPORTSMATCH
                 }}
               >
-                {!sportman && !profesional && 'Escoge tu rol'}
+                {!sportman && !profesional && !invitado && 'Escoge tu rol'}
+                {invitado && 'Unos detalles sobre ti'}
                 {sportman && stepsSportman === 0 && 'Escoge tu deporte'}
                 {sportman && stepsSportman === 1 && "Define tus skills"}
                 {stepsSportman === 2 && 'Unos detalles sobre ti'}
@@ -313,8 +335,8 @@ const Paso1 = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 30 }}>
-          {!sportman && !profesional && !invitadoStep && (
+        <View style={{ marginTop: 30, justifyContent: "center", height: Dimensions.get('window').height - 200 }}>
+          {!sportman && !profesional && !invitado && (
             <View
               style={{
                 ...styles.container
@@ -421,6 +443,14 @@ const Paso1 = () => {
               setSportmanValues={setSportmanValues}
             />
           )}
+          {invitado && (
+            <Paso4Jugador
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
+              sportmanValues={sportmanValues}
+              setSportmanValues={setSportmanValues}
+            />
+          )}
           {profesional && stepsProfesional === 0 && (
             <Paso3Profesional
               selectedCity={selectedCity}
@@ -431,30 +461,33 @@ const Paso1 = () => {
           )}
           {sportman && stepsSportman === 0 && (
 
-            <Paso2Jugador></Paso2Jugador>
+            <Paso2Jugador setSelectedSport={setSelectedSport} selectedSport={selectedSport}></Paso2Jugador>
 
           )}
-          {profesional && stepsProfesional  === 1 || invitadoStep === 1 &&
-            <Paso4Profesional />
+          {profesional && stepsProfesional === 1 &&
+            <Paso4Profesional
+              profesionalValues={profesionalValues}
+              setProfesionalValues={setProfesionalValues}
+            />
           }
 
-          <View style={styles.botonesRoles}>
-            <Pressable
-              style={styles.siguiente}
-              disabled={
-                (stepsSportman === 2 && !profileImage) ||
-                (stepsProfesional === 2 && !coverImage)
-              }
-              onPress={() =>
-                !sportman && !profesional ? handleNext() : handleNavigation()
-              }
-            >
-              <Text style={styles.siguiente1}>Siguiente</Text>
-            </Pressable>
-          </View>
+        </View>
+        <View style={styles.botonesRoles}>
+          <Pressable
+            style={styles.siguiente}
+            disabled={
+              (stepsSportman === 2 && !profileImage) ||
+              (stepsProfesional === 2 && !coverImage)
+            }
+            onPress={() =>
+              !sportman && !profesional ? handleNext() : handleNavigation()
+            }
+          >
+            <Text style={styles.siguiente1}>Siguiente</Text>
+          </Pressable>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -482,7 +515,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: '100%',
     width: '110%',
-    zIndex: 0
+    zIndex: 0,
+    top: 70
   },
   coolicon: {
     width: 9,
@@ -511,7 +545,12 @@ const styles = StyleSheet.create({
   botonesRoles: {
     width: '100%',
     marginTop: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
+    paddingTop: 30,
+    position: "absolute",
+    zIndex: 9999,
+    bottom: 0,
+    alignSelf: "center"
   },
   siguiente1: {
     fontWeight: '700',
@@ -525,7 +564,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: '90%',
+    width: '95%',
     alignSelf: 'center'
   },
   selectedBackground: {
@@ -534,7 +573,7 @@ const styles = StyleSheet.create({
   container: {
     gap: 20,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   }
 })
 

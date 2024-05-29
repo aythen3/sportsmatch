@@ -10,8 +10,8 @@ import {
 import { Color } from '../../GlobalStyles'
 
 const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) => {
-  const startYear = 2006
-  const endYear = 1934
+  const startYear = 2024
+  const endYear = 1920
   const años = Array.from(
     { length: startYear - endYear + 1 },
     (_, index) => startYear - index
