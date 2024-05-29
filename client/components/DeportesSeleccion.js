@@ -37,7 +37,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          {sport?.name === 'Fútbol de Salon' && (
+          {sport?.name === 'Fútbol Sala' && (
             <Image
               style={styles.frameChild}
               contentFit="cover"
