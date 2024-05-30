@@ -148,14 +148,14 @@ const Paso1 = () => {
     if (sportman) {
 
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 2 && profileImage && coverImage && selectedCity) {
+      if (stepsSportman === 2 && profileImage && coverImage ) {
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
           img_front: coverImage,
           ...data,
           nickname: user?.user?.nickname || '',
-          city: selectedCity || ''
+          city: sportmanValues.city || ''
         }
         const body = {
           sportmanData: {
