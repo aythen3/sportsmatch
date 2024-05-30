@@ -119,10 +119,14 @@ function Carousel({
 
     await dispatch(like(data))
   }
-
+  const fecha = data.createdAt.slice(0,10)
+  const año = fecha.slice(0,4)
+  const mes = fecha.slice(5,7)
+  const dia = fecha.slice(8,10)
   return (
     <View style={{ ...styles.container }}>
-      <Pressable
+     <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
+     <Pressable
         style={styles.topContainer}
         onPress={() => {
           if (data.author.id === user.user.id) {
@@ -143,7 +147,11 @@ function Carousel({
       >
         <Image style={styles.imgPerfil} source={imgPerfil} />
         <Text style={styles.nameText}>{name}</Text>
-      </Pressable>
+      </Pressable> 
+      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:0,fontSize:12}}>
+       {`${dia} - ${mes} - ${año}`}
+      </Text>
+     </View>
       <PagerView style={styles.postContainer} initialPage={0}>
         <View style={{ width: '100%', height: '100%' }} key={id}>
           <DoubleTap

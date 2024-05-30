@@ -109,7 +109,7 @@ const SkillSeleccion = ({
           open={openModal}
         />
         {modalVisible && (
-          <CustomModal
+          <ScrollableModal
             visible={modalVisible}
             closeModal={closeModal}
             onSelectItem={handleSelectGenero}
@@ -151,35 +151,18 @@ const SkillSeleccion = ({
         </Pressable>
       </View>
 
-      <View
-        collapsable={false}
-        onLayout={(event) => {
-          event.target.measure((x, y, width, height, pageX, pageY) => {
-            console.log(pageY)
-            setCityTop(pageY)
-          })
-        }}
-        style={{
-          position: 'relative',
-          width: '100%'
-        }}
-      >
-        <Acordeon
-          title="Lugar de residencia"
-          placeholderText={pickedCity ? pickedCity : 'Lugar de residencia'}
-          isAccordeon={true}
-          open={openCityModal}
-        />
-        {cityModal && (
-          <ScrollableModal
-            scrollHeight={scrolledHeight}
-            parentTop={cityTop}
-            visible={cityModal}
-            closeModal={closeModal}
-            onSelectItem={handleSelectCity}
-            options={opcionesResidencia}
+    
+      <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
+        <Text style={styles.atributo}>Lugar de residencia</Text>
+        <View style={styles.rectanguloBorder}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Lugar de residencia"
+            placeholderTextColor={'#999'}
+            value={sportmanValues?.city}
+            onChangeText={(value) => descriptionSportMan('city', value)}
           />
-        )}
+        </View>
       </View>
 
       <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
@@ -195,7 +178,7 @@ const SkillSeleccion = ({
         </View>
       </View>
       <View style={{ width: '100%', zIndex: -1000, paddingHorizontal: 15 }}>
-        <Text style={styles.atributo}>Cómo te defines como jugador</Text>
+        <Text style={styles.atributo}>¿Cómo te defines como jugador?</Text>
         <View style={styles.rectanguloBorder2}>
           <TextInput
             style={styles.multiLineTextInput}

@@ -25,7 +25,8 @@ const Feed = ({ externalId }) => {
     <ScrollView
       keyboardShouldPersistTaps={'always'}
       style={{
-        width: '95%',
+        width: '100%',
+        paddingHorizontal:10,
         alignSelf: 'center'
       }}
     >

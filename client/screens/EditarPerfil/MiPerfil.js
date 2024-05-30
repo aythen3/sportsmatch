@@ -90,15 +90,15 @@ const MiPerfil = () => {
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                <Text style={styles.textTypo}>
-                  {sportman?.type === 'coach'
-                    ? sportman?.info?.rol
-                    : sportman?.info?.position}
-                </Text>
-                <Text style={styles.textTypo}>
+                <Text style={styles.textTypo2}>
                   {typeof sportman?.info?.sport === 'object'
                     ? sportman?.info?.sport.name
                     : sportman?.info?.sport}
+                </Text>
+                <Text style={styles.textTypo3}>
+                  {sportman?.type === 'coach'
+                    ? sportman?.info?.rol
+                    : sportman?.info?.position}
                 </Text>
               </View>
               <Text
@@ -186,6 +186,22 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.button_size,
+    lineHeight: 20,
+    fontWeight: '700'
+  },
+  textTypo2: {
+    textAlign: 'left',
+    color: Color.colorGoldenrod,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '700'
+  },
+  textTypo3: {
+    textAlign: 'left',
+    color: Color.gREY2SPORTSMATCH,
+    fontFamily: FontFamily.t4TEXTMICRO,
+    fontSize: 14,
     lineHeight: 20,
     fontWeight: '700'
   },

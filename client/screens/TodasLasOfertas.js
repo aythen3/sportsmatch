@@ -862,7 +862,7 @@ const TodasLasOfertas = () => {
           <View
             style={{
               width: '100%',
-              top: 100,
+              top: 200,
               alignSelf: 'flex-start',
               alignItems: 'center',
               flex: 1
@@ -878,7 +878,7 @@ const TodasLasOfertas = () => {
                 bottom: 4
               }}
             >
-              Aun no te has inscrito en ninguna oferta!
+              Aún no te has inscrito en ninguna oferta!
             </Text>
           </View>
         )

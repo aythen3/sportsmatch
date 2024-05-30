@@ -132,14 +132,14 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
       </View>
       <Input
         title="Club actual"
-        placeholderText="Rellena solo si estas en algun club"
+        placeholderText="Rellena sólo si estas en algún club"
         field="actualClub"
         onValues={handlesValues}
         value={profesionalValues.actualClub}
       />
       <Input
-        title="Cómo te defines como profesional"
-        placeholderText="Describe tu juego, tu condicion fisica, tu personalidad en el campo"
+        title="¿Cómo te defines como profesional?"
+        placeholderText="Describe tu juego, tu condicion física, tu personalidad en el campo"
         isMultiLine={true}
         field="description"
         onValues={handlesValues}
