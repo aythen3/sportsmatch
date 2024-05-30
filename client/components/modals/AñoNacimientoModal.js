@@ -59,6 +59,13 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     maxHeight: '60%',
+    bottom:0,
+    position:"absolute",
+    width:"100%",
+    borderWidth: 0.5,
+    borderColor: Color.wHITESPORTSMATCH,
+    borderTopEndRadius:20,
+    borderTopStartRadius:20,
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',

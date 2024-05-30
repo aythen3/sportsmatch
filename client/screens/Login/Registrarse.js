@@ -105,11 +105,25 @@ const Registrarse = () => {
 
   return (
     <View style={styles.registrarse}>
-      <Image
+      {/* <Image
         style={styles.fondoIcon}
         contentFit="cover"
         source={require('../../assets/fondo2.png')}
-      />
+      /> */}
+       <View style={[styles.loginSwitchChild]}>
+        <Image
+          style={[styles.loginSwitchChild2]}
+          contentFit="cover"
+          source={require('../../assets/carrouselgif.gif')}
+        />
+      </View>
+      <View style={{ width: "100%", height: 800, position: "absolute", top: -110, right: -135 }}>
+        <Image
+          style={{ width: 550, height: 550, position: "absolute", top: -180, right: -50 }}
+
+          source={require('../../assets/lineasgif.png')}
+        />
+      </View>
       <View style={styles.contenido}>
         <View style={styles.botonAtrasFrame}>
           <Image
@@ -382,6 +396,31 @@ const styles = StyleSheet.create({
   eMailSpaceBlock: {
     marginLeft: 10,
     textAlign: 'left'
+  },
+  loginSwitchChild: {
+    marginBottom: 0, // o el modo de ajuste que prefieras
+    // backgroundColor: 'red',
+    width: 1000,
+    height: 300,
+    top: 20,
+    // bottom: '75%',
+    position: 'absolute',
+    transform: [{ rotate: '45deg' }, { scale: 0.6 }],
+    left: -20,
+    zIndex: 0,
+    overflow: "hidden"
+    // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
+  },
+  loginSwitchChild2: {
+    // backgroundColor: 'red',
+    width: 600,
+    height: 600,
+    // bottom: '75%',
+    top: 0,
+    left: 0,
+    transform: [{ rotate: '-45deg' }, { scale: 1 }],
+    zIndex: 0,
+    // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   framePosition: {
     paddingBottom: Padding.p_3xs,

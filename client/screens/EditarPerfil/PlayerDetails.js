@@ -59,7 +59,7 @@ const PlayerDetails = () => {
       zIndex: 7000
     },
     {
-      title: 'Cómo te defines como jugador',
+      title: '¿Cómo te defines como jugador?',
       type: 'text',
       placeHolder:
         'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
@@ -217,8 +217,8 @@ const PlayerDetails = () => {
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={{
-          width: '90%'
-        }}
+          width: '90%',
+                  }}
       >
         <View style={{ gap: 10, flex: 1 }}>
           {/* =========================================================== */}
@@ -237,7 +237,7 @@ const PlayerDetails = () => {
                 source={require('../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
-            <Text style={styles.clubDetailsTitle}>Detalles del jugador</Text>
+            <Text style={styles.clubDetailsTitle}>Detalles del usuario</Text>
           </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}

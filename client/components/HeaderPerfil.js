@@ -149,26 +149,28 @@ const HeaderPerfil = ({
           >
             {name}
           </Text>
-          {position && (
-            <Text
-              style={[
-                styles.jordiEspeltPvotBaloncesto,
-                styles.jugandoAlUniTypo
-              ]}
-            >
-              {position}
-            </Text>
-          )}
           {sport && (
             <Text
               style={[
                 styles.jordiEspeltPvotBaloncesto,
-                styles.jugandoAlUniTypo
+                styles.jugandoAlUniTypo,{fontSize:14,color:Color.colorGoldenrod}
               ]}
             >
               {sport}
             </Text>
           )}
+          {position && (
+            <Text
+              style={[
+                styles.jordiEspeltPvotBaloncesto,
+                styles.jugandoAlUniTypo,
+                {fontSize:14,color:Color.gREY2SPORTSMATCH}
+              ]}
+            >
+              {position}
+            </Text>
+          )}
+        
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"

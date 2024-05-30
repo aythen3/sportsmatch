@@ -57,7 +57,7 @@ const PlayerDetails = () => {
       zIndex: 7000
     },
     {
-      title: 'Cómo te defines como profesional',
+      title: '¿Cómo te defines como profesional?',
       type: 'text',
       placeHolder:
         'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',

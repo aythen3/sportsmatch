@@ -480,7 +480,7 @@ const ExplorarClubs = () => {
               data={posts}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
-              numColumns={2}
+              numColumns={3}
               columnWrapperStyle={{
                 justifyContent: 'space-between',
                 marginBottom: 10,
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
   },
   iconLayout: {
     borderRadius: Border.br_10xs,
-    height: 260,
+    height: 140,
     alignSelf: 'stretch',
     width: '100%',
     overflow: 'hidden'

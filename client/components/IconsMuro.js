@@ -42,7 +42,7 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
         // Compartir el archivo si existe
         if (fileInfo.exists) {
           // Esperar un segundo antes de llamar a Sharing.shareAsync()
-          await Sharing.shareAsync(localUri);
+          await Sharing.shareAsync(localUri,{dialogTitle:"asdasdasdas"});
          
         } else {
           console.log('El archivo no existe.');

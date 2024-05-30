@@ -21,21 +21,28 @@ const ScrollableModal = ({
   console.log('parentTop: ', parentTop)
   console.log('scrollHeight: ', scrollHeight)
   return (
-    <Modal transparent={true} visible={visible} onRequestClose={closeModal}>
+    <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={closeModal}>
       <TouchableWithoutFeedback onPress={closeModal}>
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            height:300,
+            width:"100%",
+            bottom:0,
+            position:"absolute",
+            backgroundColor: Color.bLACK1SPORTSMATCH,
+            borderWidth: 0.5,
+            borderColor: Color.wHITESPORTSMATCH,
+            borderTopEndRadius:20,
+            borderTopStartRadius:20,
           }}
         >
           <View
             style={{
-              position: 'absolute',
-              top: parentTop + 72 - scrollHeight,
+           
               backgroundColor: Color.bLACK1SPORTSMATCH,
-              maxHeight: 115,
+              maxHeight: 205,
               width: '85%',
               justifyContent: 'center',
               alignSelf: 'center',
