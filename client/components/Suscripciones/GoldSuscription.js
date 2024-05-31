@@ -62,8 +62,8 @@ const GoldSuscription = ({ setClientSecret, setPlanSelected, setPlanSelectedId, 
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>12,90€</Text>
-                <Text style={styles.timeTypo}>O también 124.40€/año</Text>
+                <Text style={styles.gratuito}>9,20€</Text>
+                <Text style={styles.timeTypo}>O también 104,70€/año</Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -138,9 +138,9 @@ const GoldSuscription = ({ setClientSecret, setPlanSelected, setPlanSelectedId, 
                   source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
-                  <Text style={styles.accesoA}>{`Acceso a `}</Text>
-                  <Text style={styles.ofertasTypo}>20 ofertas</Text>
-                  <Text style={styles.accesoA}> deportivas de los clubes </Text>
+                  <Text style={styles.accesoA}>{`Acceso `}</Text>
+                  <Text style={styles.ofertasTypo}>ilimitado</Text>
+                  <Text style={styles.accesoA}> a las ofertas deportivas de los clubes </Text>
                 </Text>
               </View>
             </View>

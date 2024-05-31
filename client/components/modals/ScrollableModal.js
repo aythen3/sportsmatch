@@ -58,7 +58,7 @@ const ScrollableModal = ({
               contentContainerStyle={styles.scrollContainer}
             >
               <View style={styles.modalContent}>
-                {options && options.map((item, index) => (
+                {options.length > 0 && options.map((item, index) => (
                   <Pressable
                     key={index}
                     style={styles.optionButton}
