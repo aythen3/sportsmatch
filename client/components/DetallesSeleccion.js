@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
 import AñoNacimientoModal from './modals/AñoNacimientoModal'
 import Acordeon from './Acordeon'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
 import ScrollableModal from './modals/ScrollableModal'
 import { cities } from '../utils/cities'
@@ -21,7 +21,7 @@ const SkillSeleccion = ({
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-
+  const { sportman } = useSelector((state) => state.sportman)
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedGenero, setSelectedGenero] = useState()
   const [añoNacimientoModalVisible, setAñoNacimientoModalVisible] =
@@ -81,6 +81,7 @@ const SkillSeleccion = ({
   }
 
   const [cityTop, setCityTop] = useState(0)
+  console.log(sportman.info,"valueees")
 
   return (
     <View

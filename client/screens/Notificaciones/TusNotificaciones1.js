@@ -92,7 +92,8 @@ const TusNotificaciones1 = () => {
   // },[])
 
   useEffect(() => {
-    getUsersMessages()
+   const res = getUsersMessages()
+   console.log(usersWithMessages,"resss")
   }, [])
 
   useEffect(() => {

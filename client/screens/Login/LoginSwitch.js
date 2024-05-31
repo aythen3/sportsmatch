@@ -286,7 +286,7 @@ const LoginSwitch = () => {
     )
 
   return (
-    <View style={{ backgroundColor: 'black' }}>
+    <View style={{ backgroundColor: 'black' ,height:"100%"}}>
       {/* <Image
         style={[styles.loginSwitchChild]}
         contentFit="cover"

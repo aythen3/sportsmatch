@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+// import { useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
   Border,
@@ -9,53 +10,60 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import axios from 'axios'
 import axiosInstance from '../../utils/apiBackend'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
-const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPlan,handleCancelSuscription,deletePlan,setDeletePlan}) => {
+const GoldSuscriptionClub = ({ setClientSecret, setPlanSelected, setPlanSelectedId, myPlan, handleCancelSuscription,deletePlan ,setDeletePlan}) => {
   const { user } = useSelector((state) => state.users)
 
-  const handleGetStar = async () => {
+  const handleGetGold = async () => {
     console.log("entra")
-     const res = await axiosInstance.post('/user/create-subscription',{
-       priceId:"price_1P4cOSGmE60O5ob7cqUBAyjk",
-       customerId:user.user.stripeId
-     })
-     if(res.data){
-      setPlanSelected("star")
-       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: "price_1P4cNLGmE60O5ob7O3hTmP9d",
+      customerId: user.user.stripeId
+    })
+
+    if (res.data) {
+
+      setPlanSelected("pro")
+      setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
       setPlanSelectedId(res.data.subscription.subscriptionId)
 
-       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
-     }
-     console.log(user.user.stripeId,"user")
-   }
+    }
+
+    console.log(user.user.stripeId, "user")
+
+  }
+
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
-        <View
-          style={{
-            width: '100%',
-            height: 42,
-            backgroundColor: Color.colorSilver,
-            justifyContent: 'center'
-          }}
-        >
+        <View style={styles.container}>
           <LinearGradient
             style={styles.gradient}
             start={{ x: 0, y: 1 }} // Punto de inicio (esquina superior derecha)
             end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
-            colors={['#FF00E6', '#1FFFBC']}
+            colors={[
+              '#e6b300',
+              '#bd9710',
+              '#ebc02a',
+              '#e6b300',
+              '#bd9710',
+              '#ebc02a'
+            ]}
           >
-            <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
+            <Text style={[styles.freemium2, styles.ofertasTypo]}>GOLD</Text>
           </LinearGradient>
         </View>
+
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>289,25€</Text>
-                <Text style={styles.timeTypo}>O también 3.150,25€/año</Text>
+                <Text style={styles.gratuito}>125€</Text>
+                <Text style={styles.timeTypo}>Pago único</Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -87,7 +95,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Acceso a la red social 
+                  Acceso a la red social
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -103,7 +111,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Acceso al buscador de jugadores/as y profesionales del deporte
+                  Acceso al buscador de ofertas deportivas de los clubes
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -119,7 +127,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                 Número ilimitado de Match
+                  Posibilidad de hacer Match con cualquier club
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -130,33 +138,35 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                   source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
-                  <Text style={styles.accesoA}>{`Acceso `}</Text>
-                  <Text style={styles.ofertasTypo}>ilimitado</Text>
-                  <Text style={styles.accesoA}> a las personas inscritas en tu oferta </Text>
+                  <Text style={styles.accesoA}>{`Acceso a `}</Text>
+                  <Text style={styles.ofertasTypo}>20 ofertas</Text>
+                  <Text style={styles.accesoA}> deportivas de los clubes </Text>
                 </Text>
               </View>
             </View>
           </View>
         </View>
-        {!deletePlan && !myPlan && (
-          <TouchableOpacity
-          onPress={handleGetStar }
-          style={{
-            width: '95%',
-            borderWidth: 1,
-            alignSelf: 'center',
-            marginTop: 25,
-            borderColor: '#000',
-            borderRadius: 100,
-            height: 30,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-           <Text style={styles.ofertasTypo}>{ "Seleccionar este plan"}</Text>
-        </TouchableOpacity>
-        )}
-          {myPlan && !deletePlan &&(
+       {!deletePlan && !myPlan && (
+         <TouchableOpacity
+         onPress={ handleGetGold}
+
+
+         style={{
+           width: '95%',
+           borderWidth: 1,
+           alignSelf: 'center',
+           marginTop: 25,
+           borderColor: '#000',
+           borderRadius: 100,
+           height: 30,
+           alignItems: 'center',
+           justifyContent: 'center'
+         }}
+       >
+         <Text style={styles.ofertasTypo}>{ "Seleccionar este plan" }</Text>
+       </TouchableOpacity>
+       )}
+       {myPlan && !deletePlan && (
           <TouchableOpacity
           onPress={()=> setDeletePlan(true)}
           style={{
@@ -174,7 +184,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
            <Text style={styles.ofertasTypo}>Cancelar suscripcion</Text>
         </TouchableOpacity>
         )}
-        {deletePlan && (
+       {deletePlan && (
         <View style={{paddingTop:20,width:"100%"}}>
           <Text style={{textAlign:"center"}}>Seguro quieres cancelar?</Text>
           <TouchableOpacity
@@ -195,7 +205,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
          <Text style={styles.ofertasTypo}>Volver</Text>
        </TouchableOpacity>
        <TouchableOpacity
-         onPress={handleCancelSuscription}
+         onPress={()=> handleCancelSuscription()}
 
          style={{
            width: '95%',
@@ -215,8 +225,9 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
        </TouchableOpacity>
         </View>
        )}
+
+        
       </View>
-      {/* <View style={[styles.marcaPlanActual, styles.aceptarBorder]} /> */}
     </View>
   )
 }
@@ -228,6 +239,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.wHITESPORTSMATCH,
     alignItems: 'center',
     overflow: 'hidden'
+  },
+  container: {
+    width: '100%',
+    height: 42,
+    backgroundColor: Color.colorSilver,
+    justifyContent: 'center'
   },
   freemium2: {
     zIndex: 1,
@@ -250,13 +267,14 @@ const styles = StyleSheet.create({
   gratuito: {
     fontSize: FontSize.size_21xl,
     fontFamily: FontFamily.t4TEXTMICRO,
-    color: '#ff00e6',
+    color: '#e6b300',
     fontWeight: '700',
     textAlign: 'center'
   },
   timeTypo: {
     fontWeight: '600',
     textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t2TextSTANDARD_size
   },
   frameView: {
@@ -276,6 +294,7 @@ const styles = StyleSheet.create({
   },
   creacinGratisDelLayout: {
     marginLeft: 5,
+    // width: 260,
     lineHeight: 16,
     color: Color.bLACK1SPORTSMATCH,
     fontSize: FontSize.t1TextSMALL_size,
@@ -300,10 +319,11 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   gradient: {
+    width: "100%",
     height: 42,
-    alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
-export default GoldSuscription
+export default GoldSuscriptionClub

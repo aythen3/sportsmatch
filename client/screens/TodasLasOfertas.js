@@ -941,6 +941,7 @@ const TodasLasOfertas = () => {
               paddingHorizontal: 20
             }}
           >
+            
             <FiltersSportman onClose={() => setModalFilterSportman(false)} />
           </View>
         </TouchableWithoutFeedback>
