@@ -18,7 +18,7 @@ const ScrollableModal = ({
   visible,
   scrollHeight
 }) => {
-  console.log('parentTop: ', parentTop)
+  console.log('parentTop: ', options)
   console.log('scrollHeight: ', scrollHeight)
   return (
     <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={closeModal}>
@@ -58,7 +58,7 @@ const ScrollableModal = ({
               contentContainerStyle={styles.scrollContainer}
             >
               <View style={styles.modalContent}>
-                {options.map((item, index) => (
+                {options && options.map((item, index) => (
                   <Pressable
                     key={index}
                     style={styles.optionButton}

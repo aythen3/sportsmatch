@@ -54,7 +54,7 @@ const PlayerDetails = () => {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
-      state: actualClubName,
+      state:  actualClubName ? actualClubName : sportman.info.actualClub,
       setState: setActualClubName,
       zIndex: 7000
     },
@@ -63,7 +63,7 @@ const PlayerDetails = () => {
       type: 'text',
       placeHolder:
         'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
-      state: userDescription,
+      state: userDescription ? userDescription : sportman.info.description,
       setState: setUserDescription,
       textArea: true,
       zIndex: 6000
@@ -357,7 +357,7 @@ const PlayerDetails = () => {
               <CustomPicker
                 zIndex={10000}
                 array={['Male', 'Female']}
-                placeholder={'Selecciona tu sexo'}
+                placeholder={ sportman.info.gender ? sportman.info.gender.toString() : 'Selecciona tu sexo'}
                 state={gender}
                 setState={setGender}
                 showModal={showGenderModal}
@@ -372,7 +372,7 @@ const PlayerDetails = () => {
               <TextInput
                 value={birthdate}
                 onChangeText={setBirthdate}
-                placeholder={'Año de nacimiento...'}
+                placeholder={sportman.info.birthdate && sportman.info.birthdate.toString() || 'Año de nacimiento...'}
                 keyboardType={'numeric'}
                 placeholderTextColor="#999999"
                 style={{
@@ -392,16 +392,29 @@ const PlayerDetails = () => {
               <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                 {'Lugar de residencia'}
               </Text>
-              <CustomPicker
+              {/* <CustomPicker
                 zIndex={8000}
                 cities={true}
                 array={cities.map((city) => city.city).sort()}
-                placeholder={'Lugar de residencia'}
+                placeholder={ sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}
                 state={city}
                 setState={setCity}
                 showModal={showCityModal}
                 setShowModal={setShowCityModal}
-              />
+              /> */}
+              <TextInput    style={{
+                  flex: 1,
+                  borderWidth: 0.5,
+                  borderColor: '#fff',
+                  borderRadius: 50,
+                  paddingLeft: 15,
+                  height: 40,
+                  fontSize: 15,
+                  color: '#fff'
+                }}
+                value={city}
+                onChangeText={(e)=> setCity(e)}
+                placeholderTextColor={"white"}  placeholder={ sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}></TextInput>
             </View>
 
             {inputs.map((input, index) => (

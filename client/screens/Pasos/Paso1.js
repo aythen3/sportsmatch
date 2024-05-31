@@ -62,6 +62,7 @@ const Paso1 = () => {
     sport: sport.name,
     gender: sportmanGender,
     birthdate: birthdate,
+
     city: city,
     actualClub: '',
     description: '',
@@ -148,12 +149,18 @@ const Paso1 = () => {
     if (sportman) {
 
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 2 && profileImage && coverImage ) {
+      if (stepsSportman === 2 && profileImage && coverImage) {
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
           img_front: coverImage,
-          ...data,
+          attack: data?.attack,
+          speed: data?.speed,
+          height: data?.height,
+          defense: data?.defense,
+          prop1: data?.prop1,
+          prop2: data?.prop2,
+          prop3: data?.prop3,
           nickname: user?.user?.nickname || '',
           city: sportmanValues.city || ''
         }
@@ -424,7 +431,7 @@ const Paso1 = () => {
           )}
 
           {sportman && stepsSportman === 1 && (
-            <SkillSeleccion setData={setData} data={data} />
+            <SkillSeleccion selectedSport={selectedSport} setData={setData} data={data} />
 
             // <Paso4Jugador
             //   selectedCity={selectedCity}

@@ -43,6 +43,8 @@ const StepsClub = () => {
   const { sport } = useSelector((state) => state.sports)
 
   const [stepsIndex, setstepsIndex] = useState(1)
+  const [sportS, setSportS] = useState("")
+
   const [clubValues, setClubValues] = useState({
     name: '',
     city: '',
@@ -91,7 +93,7 @@ const StepsClub = () => {
   const ViewComponent = (index) => {
     switch (index) {
       case 1:
-        return <Paso2Jugador />
+        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS}     />
       case 2:
         return (
           <EscogerDeporte2
