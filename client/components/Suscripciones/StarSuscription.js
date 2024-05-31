@@ -129,6 +129,22 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                   contentFit="cover"
                   source={require('../../assets/vector-27.png')}
                 />
+                <Text
+                  style={[
+                    styles.creacinGratisDel,
+                    styles.creacinGratisDelLayout
+                  ]}
+                >
+                 Publicación gratis e ilimitada de anuncios de ofertas deportivas
+                </Text>
+              </View>
+              <View style={styles.frameItem} />
+              <View style={styles.vectorParent}>
+                <Image
+                  style={styles.frameChild}
+                  contentFit="cover"
+                  source={require('../../assets/vector-27.png')}
+                />
                 <Text style={styles.creacinGratisDelLayout}>
                   <Text style={styles.accesoA}>{`Acceso `}</Text>
                   <Text style={styles.ofertasTypo}>ilimitado</Text>

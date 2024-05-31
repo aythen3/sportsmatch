@@ -138,7 +138,7 @@ const MiSuscripcin = () => {
         </View>
 
         <View style={{ marginTop: 30, gap: 30 }}>
-          {user.user.plan === 'basic' && user.user.sportman?.type == "player" && <SilverSuscription />}
+          {user.user.plan === 'basic' && !user.user.club && <SilverSuscription />}
           {user.user.plan === 'basic' && user.user.club && <SilverSuscriptionClub />}
 
           {user.user.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
@@ -152,7 +152,7 @@ const MiSuscripcin = () => {
           {user.user.plan === 'star' && <SilverSuscription />}
           {user.user.plan === 'pro' && <SilverSuscription />}
 
-          {user.user.plan !== 'pro' && user.user.sportman?.type == "player" && (
+          {user.user.plan !== 'pro'  && !user.user.club && (
             <GoldSuscription
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}

@@ -74,7 +74,7 @@ const SilverSuscriptionClub = () => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Acceso al buscador de ofertas deportivas de los clubes 
+                  Acceso al buscador de jugadores/as y profesionales del deporte
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -90,7 +90,23 @@ const SilverSuscriptionClub = () => {
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                  Posibilidad de hacer Match con cualquier club 
+                  Número ilimitado de Match
+                </Text>
+              </View>
+              <View style={styles.frameItem} />
+              <View style={styles.vectorParent}>
+                <Image
+                  style={styles.frameChild}
+                  contentFit="cover"
+                  source={require('../../assets/vector-27.png')}
+                />
+                <Text
+                  style={[
+                    styles.creacinGratisDel,
+                    styles.creacinGratisDelLayout
+                  ]}
+                >
+                  Publicación gratis e ilimitada de anuncios de ofertas deportivas
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -101,9 +117,9 @@ const SilverSuscriptionClub = () => {
                   source={require('../../assets/vector-27.png')}
                 />
                 <Text style={styles.creacinGratisDelLayout}>
-                  <Text style={styles.accesoA}>{`Acceso a `}</Text>
-                  <Text style={styles.ofertasTypo}>20 ofertas</Text>
-                  <Text style={styles.accesoA}> deportivas de los clubes </Text>
+                <Text style={styles.accesoA}>{`Acceso `}</Text>
+                  <Text style={styles.accesoA}> a las personas inscritas en tu oferta: </Text>
+                  <Text style={styles.ofertasTypo}>3 perfiles</Text>
                 </Text>
               </View>
             </View>

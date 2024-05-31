@@ -292,12 +292,12 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
               visible={positionModalVisible}
               closeModal={closeModal}
               onSelectItem={handleSelectPosition}
-              options={selectedSport?.name == "Fútbol" || sportman.info.sport == "Fútbol" && opciones.futbol ||
-                selectedSport?.name == "Fútbol Sala" || sportman.info.sport == "Fútbol Sala" && opciones.futbolSala ||
-                selectedSport?.name == "Básquetbol" || sportman.info.sport == "Básquetbol" && opciones.baloncesto ||
-                selectedSport?.name == "Hockey" || sportman.info.sport == "Hockey" && opciones.hockey ||
-                selectedSport?.name == "Voley" || sportman.info.sport == "Voley" && opciones.voleibol ||
-                selectedSport?.name == "Handball" || sportman.info.sport == "Handball" && opciones.handball
+              options={sportman.info?.sport == "Fútbol"  && opciones.futbol || selectedSport?.name == "Fútbol" && opciones.futbol ||
+                sportman.info?.sport == "Fútbol Sala" && opciones.futbolSala || selectedSport?.name == "Fútbol Sala" && opciones.futbolSala ||
+                selectedSport?.name == "Básquetbol" && opciones.baloncesto || sportman.info?.sport == "Básquetbol" && opciones.baloncesto ||
+                selectedSport?.name == "Hockey" && opciones.hockey || sportman.info?.sport == "Hockey" && opciones.hockey ||
+                selectedSport?.name == "Voley"  && opciones.voleibol  || sportman.info?.sport == "Voley" && opciones.voleibol ||
+                selectedSport?.name == "Handball" && opciones.handball || sportman.info?.sport == "Handball" && opciones.handball
               }
             />
           )}
