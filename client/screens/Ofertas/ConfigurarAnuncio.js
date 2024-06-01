@@ -36,6 +36,8 @@ const ConfigurarAnuncio = () => {
   const { user } = useSelector((state) => state.users)
   const { allPositions } = useSelector((state) => state.positions)
 
+  const [selectedProvince, setSelectedProvince] = useState('');
+
   const [selectedGender, setSelectedGender] = useState()
   const [selectedRemuneration, setSelectedRemuneration] = useState()
   const [selectedCategory, setSelectedCategory] = useState()
@@ -97,9 +99,12 @@ const ConfigurarAnuncio = () => {
   const handleChange = (name, value) => {
     setValues((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+    if (name === 'province') {
+      setSelectedProvince(value);
+    }
+  };
 
   const getClubData = async (id) => {
     console.log('id: ', id)
@@ -273,7 +278,15 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-
+          <View style={{ width: '100%', gap: 8 }}>
+  <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
+  <Input
+    value={selectedProvince}
+    placeholder="Ingrese la provincia"
+    onChangeText={(text) => setSelectedProvince(text)}
+    style={styles.inputText}
+  />
+</View>
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Categoría
@@ -472,7 +485,8 @@ const ConfigurarAnuncio = () => {
                             ? false
                             : null,
                       posit: selectedPosition?.id,
-                      paused: false
+                      paused: false,
+                      province: selectedProvince, 
                     },
 
                     clubId: club?.id
@@ -506,7 +520,8 @@ const ConfigurarAnuncio = () => {
                     ...(selectedPosition && { posit: selectedPosition.id }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
-                    })
+                    }),
+                    province: selectedProvince,
                   }
                   console.log('update data: ', data)
                   await dispatch(updateOffer({ id: offerId, body: data })).then(

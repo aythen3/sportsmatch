@@ -32,6 +32,10 @@ export class OfferEntity extends BaseEntity {
   @IsString()
   category: string;
 
+  @Column({ nullable: true })
+  @IsString()
+  province: string | null;
+
 
 
 
