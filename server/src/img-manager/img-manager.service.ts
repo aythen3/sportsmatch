@@ -12,7 +12,7 @@ cloudinary.v2.config({
 
 @Injectable()
 export class ImgManagerService {
-  constructor() {}
+  constructor() { }
 
   public async imgUpload(file) {
     console.log('SERVICE', file);
@@ -32,9 +32,14 @@ export class ImgManagerService {
       fs.writeFileSync(filePath, file.buffer);
       // Subir el archivo a Cloudinary
       const cloudinaryResponse = await cloudinary.v2.uploader.upload(filePath, {
-        public_id: file.originalname.split('.').slice(0, -1).join('.')
+        public_id: file.originalname.split('.').slice(0, -1).join('.'),
+        eager: [{
+          width: 10, // Example width
+          height: 10, // Example height
+          quality: 10, // Adjust quality as needed
+        }],
       });
-      console.log(cloudinaryResponse);
+      console.log(cloudinaryResponse,"clodinary");
       // Eliminar el archivo temporal después de subirlo
       fs.unlinkSync(filePath);
       return cloudinaryResponse.secure_url;

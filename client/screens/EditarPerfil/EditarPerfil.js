@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   frameChild: {
     borderColor: Color.colorDimgray_100,
     borderTopWidth: 1,
-    width: 361,
+    width: "100%",
     height: 1,
     marginTop: 10,
     borderStyle: 'solid'
@@ -164,8 +164,9 @@ const styles = StyleSheet.create({
   },
   groupParent: {
     top: 60,
-    left: 15,
-    position: 'absolute'
+    position: 'absolute',
+    paddingHorizontal:15,
+    width:"100%",
   },
   border: {
     right: 2,

@@ -70,7 +70,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
             onSubmit={handleSubmit}
           />
           <Input
-            title="Nombre del estadio, campo o pavellón"
+            title="Nombre del estadio, campo o pabellón"
             placeholderText="Palau Municipal d’Esports Josep Mora"
             isAccordeon={false}
             field="field"

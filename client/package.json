@@ -4,6 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "test": "jest",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"
@@ -70,6 +71,7 @@
     "@babel/core": "^7.24.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0",
     "prettier": "^3.2.5"
   },
   "private": true

@@ -46,9 +46,9 @@ export const ContextProvider = ({ children }) => {
       const profileImageForm = new FormData()
       profileImageForm.append('file', profileImageData)
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-      profileImageForm.append('cloud_name', 'dnewfuuv0')
+      profileImageForm.append('cloud_name', 'der45x19c')
 
-      await fetch('https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload', {
+      await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
         method: 'post',
         body: profileImageForm
       })
@@ -70,29 +70,31 @@ export const ContextProvider = ({ children }) => {
       const profileImageData = {
         uri: imageUri,
         type: 'image/jpg',
-        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
+        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0],
       }
 
       const profileImageForm = new FormData()
       profileImageForm.append('file', profileImageData)
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-      profileImageForm.append('cloud_name', 'dnewfuuv0')
+      profileImageForm.append('cloud_name', 'der45x19c')
 
-      await fetch('https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload', {
+      await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
         method: 'post',
         body: profileImageForm
       })
-        .then((res) => res.json())
+        .then(async (res)  => 
+     
+          res.json())
         .then((data) => {
           console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(transformHttpToHttps(data.url))
-        })
+        }).catch(error => console.log(error))
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 1
+        quality: 0.1
       })
 
       if (!result.canceled) {
@@ -109,10 +111,10 @@ export const ContextProvider = ({ children }) => {
           const profileImageForm = new FormData()
           profileImageForm.append('file', profileImageData)
           profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-          profileImageForm.append('cloud_name', 'dnewfuuv0')
+          profileImageForm.append('cloud_name', 'der45x19c')
 
           await fetch(
-            'https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload',
+            'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
             {
               method: 'post',
               body: profileImageForm
@@ -120,7 +122,7 @@ export const ContextProvider = ({ children }) => {
           )
             .then((res) => res.json())
             .then((data) => {
-              // console.log('dataUrl from profile:', data.url)
+              console.log('dataUrl from profile:', data.url)
               setProfileImage(transformHttpToHttps(data.url))
             })
         } else {
@@ -133,10 +135,10 @@ export const ContextProvider = ({ children }) => {
           const coverImageForm = new FormData()
           coverImageForm.append('file', coverImageData)
           coverImageForm.append('upload_preset', 'cfbb_profile_pictures')
-          coverImageForm.append('cloud_name', 'dnewfuuv0')
+          coverImageForm.append('cloud_name', 'der45x19c')
 
           await fetch(
-            'https://api.cloudinary.com/v1_1/dnewfuuv0/image/upload',
+            'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
             {
               method: 'post',
               body: coverImageForm

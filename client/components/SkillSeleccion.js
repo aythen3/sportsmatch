@@ -72,6 +72,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
 
   const handleSelectCategoria = (edad) => {
     setSelectedCategoria(edad)
+    setEditData({ ...editData, category: edad })
     dispatch(setCategory(edad))
   }
 

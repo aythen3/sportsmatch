@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  Touchable
+  Touchable,
+  TextInput
 } from 'react-native'
 import {
   Color,
@@ -37,6 +38,8 @@ const ConfigurarAnuncio = () => {
   const { allPositions } = useSelector((state) => state.positions)
 
   const [selectedGender, setSelectedGender] = useState()
+  const [retribucion, setRetribucion] = useState("")
+
   const [selectedRemuneration, setSelectedRemuneration] = useState()
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedPriority, setSelectedPriority] = useState()
@@ -157,7 +160,7 @@ const ConfigurarAnuncio = () => {
               <Text style={styles.inputText}>
                 {selectedPosition
                   ? selectedPosition?.name.charAt(0).toUpperCase() +
-                    selectedPosition?.name.slice(1).toLowerCase()
+                  selectedPosition?.name.slice(1).toLowerCase()
                   : 'Selecciona una posición'}
               </Text>
               {showModal && (
@@ -195,9 +198,9 @@ const ConfigurarAnuncio = () => {
                             textAlign: 'center',
                             borderBottomWidth:
                               index !==
-                              allPositions.map((position) => {
-                                return position?.name
-                              }).length -
+                                allPositions.map((position) => {
+                                  return position?.name
+                                }).length -
                                 1
                                 ? 1
                                 : 0,
@@ -401,6 +404,7 @@ const ConfigurarAnuncio = () => {
               <Text style={styles.inputText}>
                 {selectedRemuneration || 'Seleccione retribución'}
               </Text>
+
               {showRemunerationModal && (
                 <View
                   style={{
@@ -444,6 +448,22 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
+          {selectedRemuneration == "Si" && (
+            <View style={{ width: '100%', gap: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                Importe anual
+              </Text>
+
+              <View style={{ width: "100%" }}>
+                <TextInput inputMode='numeric' value={retribucion} placeholder={selectedRemuneration || 'Seleccione retribución'} onChangeText={(e) => setRetribucion(e)} style={{ ...styles.containerBox, paddingHorizontal: 18 }}>
+                </TextInput>
+              </View>
+
+
+
+
+            </View>
+          )}
         </View>
 
         <TouchableOpacity
@@ -465,6 +485,7 @@ const ConfigurarAnuncio = () => {
                       sexo: selectedGender,
                       category: selectedCategory,
                       urgency: selectedPriority,
+                      prop1: retribucion,
                       retribution:
                         selectedRemuneration === 'Si'
                           ? true
@@ -503,6 +524,7 @@ const ConfigurarAnuncio = () => {
                     ...(selectedGender && { sexo: selectedGender }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
+                    ...(retribucion && { prop1: "asdasd" }),
                     ...(selectedPosition && { posit: selectedPosition.id }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
@@ -586,11 +608,13 @@ const styles = StyleSheet.create({
   contenido: {
     top: '5%',
     marginBottom: '5%',
+    height:"100%",
     gap: 25
   },
   configurarAnuncio: {
     flex: 1,
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+    height:"100%"
   },
   topContainer: {
     flexDirection: 'row',
@@ -599,6 +623,7 @@ const styles = StyleSheet.create({
   },
   containerBox: {
     borderWidth: 0.5,
+    color: "white",
     position: 'relative',
     borderColor: Color.colorWhitesmoke,
     borderRadius: 50,
