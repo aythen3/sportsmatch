@@ -33,9 +33,9 @@ const PantallaInicio = () => {
       <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
-        source={require('../../assets/lineas.png')}
+        source={require('../../assets/inicio.png')}
       />
-      <View style={styles.logotipotagline}>
+      {/* <View style={styles.logotipotagline}>
         <View style={styles.logotipo}>
           <Image
             style={styles.icon}
@@ -51,8 +51,8 @@ const PantallaInicio = () => {
         style={styles.liniasimagenIcon}
         contentFit="cover"
         source={require('../../assets/liniasimagen.png')}
-      />
-      <View style={[styles.uxIphone, styles.iphonePosition]}>
+      /> */}
+      {/* <View style={[styles.uxIphone, styles.iphonePosition]}>
         <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
         <View style={styles.group}>
           <View style={[styles.battery, styles.batteryPosition]}>
@@ -78,7 +78,7 @@ const PantallaInicio = () => {
         <View style={[styles.starus, styles.timeLayout]}>
           <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
         </View>
-      </View>
+      </View> */}
     </SafeAreaView>
   )
 }
@@ -108,11 +108,8 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   liniasAbajoIcon: {
-    top: 450,
-    left: -100,
-    width: 400,
-    height: 300,
-    position: 'absolute'
+    width: "100%",
+    height: "100%",
   },
   icon: {
     height: '100%',

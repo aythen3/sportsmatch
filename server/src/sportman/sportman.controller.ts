@@ -22,7 +22,7 @@ export class SportmanController {
   constructor(
     private readonly sportmanService: SportmanService,
     private readonly imgManagerService: ImgManagerService
-  ) {}
+  ) { }
 
   @Post()
   public async create(@Body() createSportmanDto: CreateSportmanDto) {
@@ -54,7 +54,7 @@ export class SportmanController {
     const [file1, file2] = files;
     const image_url1 = await this.imgManagerService.imgUpload(file1);
     const image_url2 = await this.imgManagerService.imgUpload(file2);
-
+    console.log("pasa", image_url1)
     const sportman = await this.sportmanService.findOne(id);
     const newSportman = {
       ...sportman,
@@ -82,17 +82,17 @@ export class SportmanController {
 
   @Post(':sportmanId/info-relation')
   async findInfoRelation(
-    @Param('sportmanId') sportmanId: number, 
+    @Param('sportmanId') sportmanId: number,
     @Body() requestBody: { relations: string }
   ): Promise<any[]> {
     // Verificar si se proporcionaron relaciones
     if (!requestBody.relations || typeof requestBody.relations !== 'string') {
       throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
     }
-  console.log(requestBody.relations)
+    console.log(requestBody.relations)
     // Convertir las relaciones en un array
     const relationsArray = requestBody.relations.split(',');
-  
+
     // Llamar al servicio para obtener la información relacionada
     return this.sportmanService.findInfoRelation(sportmanId, relationsArray);
   }
@@ -102,12 +102,12 @@ export class SportmanController {
     const sportmen = await this.sportmanService.filterSportmen(filters);
     return sportmen;
   }
-  
+
   @Post('filterNoParcial')
   async filterSportmenNoParcial(@Body() filters: any): Promise<SportmanEntity[]> {
     const sportmen = await this.sportmanService.filterSportmenNoParcial(filters);
     return sportmen;
   }
-  
+
 }
 

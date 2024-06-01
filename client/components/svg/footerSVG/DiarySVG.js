@@ -5,8 +5,8 @@ const DiarySVG = ({ isActive }) => {
   return (
     <Svg
       width="33"
-      height="31"
-      viewBox="0 0 33 31"
+      height="32"
+      viewBox="0 1 33 31"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

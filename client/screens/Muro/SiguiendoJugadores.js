@@ -42,9 +42,26 @@ const SiguiendoJugadores = () => {
     console.log('facebookUserAuth from sj : ', facebookUserAuth)
     console.log('googleUserAuth from sj : ', googleUserAuth)
   }
+  useEffect(() => {
+    console.log('useEffect triggering')
+    dispatch(getAllOffers())
+    dispatch(getAllPosts())
+    dispatch(getAllMatchs())
+    dispatch(getAllLikes())
+    dispatch(getAllNotifications())
+  }, [post, comments])
 
   useEffect(() => {
     getUserAuth()
+    dispatch(listLikes(user?.user?.id))
+    const data = {
+      id: user?.user?.id,
+      type: user?.user?.type
+    }
+    dispatch(getUserChild(data))
+    if (Object.keys(sportman).length === 0) {
+      dispatch(getSportman(user?.user?.sportman?.id))
+    }
   }, [])
 
   // const getUserId = async () => {
@@ -61,20 +78,8 @@ const SiguiendoJugadores = () => {
   //   dispatch(getUserData(userId))
   // }, [])
 
-  useEffect(() => {
-    dispatch(listLikes(user?.user?.id))
-  }, [])
 
-  useEffect(() => {
-    const data = {
-      id: user?.user?.id,
-      type: user?.user?.type
-    }
-    dispatch(getUserChild(data))
-    if (Object.keys(sportman).length === 0) {
-      dispatch(getSportman(user?.user?.sportman?.id))
-    }
-  }, [])
+
 
   useEffect(() => {
     if (allMatchs) {
@@ -87,14 +92,7 @@ const SiguiendoJugadores = () => {
     }
   }, [allMatchs])
 
-  useEffect(() => {
-    console.log('useEffect triggering')
-    dispatch(getAllOffers())
-    dispatch(getAllPosts())
-    dispatch(getAllMatchs())
-    dispatch(getAllLikes())
-    dispatch(getAllNotifications())
-  }, [post, comments])
+
 
   const sortedPosts = [...allPosts].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)

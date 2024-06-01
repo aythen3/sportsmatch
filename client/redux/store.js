@@ -26,5 +26,11 @@ export const store = configureStore({
     chats: ChatsSlices,
     positions: positionsSlices,
     matchs: matchsSlices
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    })
+
+  
 })

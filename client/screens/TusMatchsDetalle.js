@@ -45,7 +45,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
       <MatchDetailsInfo title="Año de fundación" value={data.club.year} />
       <MatchDetailsInfo title="Aforo" value={data.club.capacity} />
       <MatchDetailsInfo
-        title="Nombre del estadio o pavellón"
+        title="Nombre del estadio o pabellón"
         value={data.club.field}
       />
       <MatchDetailsInfo title=" Población" value={data.club.city} />

@@ -69,12 +69,14 @@ const NavBarInferior = () => {
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleIconPress('post')}
-        style={styles.deselected}
-      >
-        <HomeSVG isActive={activeIcon === 'post'} />
-      </TouchableOpacity>
+     {!user.user.club && (
+       <TouchableOpacity
+       onPress={() => handleIconPress('post')}
+       style={styles.deselected}
+     >
+       <HomeSVG isActive={activeIcon === 'post'} />
+     </TouchableOpacity>
+     )}
       <TouchableOpacity
         onPress={() => handleIconPress('message')}
         style={activeIcon === 'message' ? styles.selected : styles.deselected}
@@ -111,7 +113,7 @@ export const styles = StyleSheet.create({
     // width: '100%',
     height: 60,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center',
     // paddingHorizontal: 15,
     gap: 8
