@@ -67,7 +67,7 @@ const ClubDetails = () => {
       setState: setCountry
     },
     {
-      title: 'Nombre del estadio, campo o pavellón',
+      title: 'Nombre del estadio, campo o pabellón',
       type: 'text',
       placeHolder: club.field || 'Nombre del estadio...',
       state: stadiumName,

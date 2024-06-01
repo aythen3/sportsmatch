@@ -149,7 +149,7 @@ const Paso1 = () => {
     if (sportman) {
 
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 2 && profileImage && coverImage) {
+      if (stepsSportman === 2 ) {
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,

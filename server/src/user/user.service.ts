@@ -186,7 +186,6 @@ export class UserService {
     let user: UserEntity | undefined;
     try {
       if (type === 'sportman') {
-        console.log('entre');
         user = await this.userRepository
           .createQueryBuilder('user')
           .where({ id })

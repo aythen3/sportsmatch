@@ -126,6 +126,7 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
           alignItems: 'center',
           padding: 10,
           borderRadius: 8
+          ,gap:10
         }}
       >
         <Text
@@ -166,7 +167,152 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
               fontFamily: FontFamily.openSansSemiBold
             }}
           >
-            Por proximidad
+            Fútbol
+          </Text>
+          <Image
+            style={{ width: 14, height: 17 }}
+            contentFit="cover"
+            source={require('../assets/pictograma.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+             onPress={() => {
+              // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+              // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+              // // Actualiza el estado de los posts con la nueva copia ordenada
+              // setPosts(sortedPosts);
+            }}
+  
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: Color.colorWhitesmoke,
+              fontFamily: FontFamily.openSansSemiBold
+            }}
+          >
+            Fútbol Sala
+          </Text>
+          <Image
+            style={{ width: 14, height: 17 }}
+            contentFit="cover"
+            source={require('../assets/pictograma.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+             onPress={() => {
+              // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+              // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+              // // Actualiza el estado de los posts con la nueva copia ordenada
+              // setPosts(sortedPosts);
+            }}
+  
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: Color.colorWhitesmoke,
+              fontFamily: FontFamily.openSansSemiBold
+            }}
+          >
+           Básquetbol
+          </Text>
+          <Image
+            style={{ width: 14, height: 17 }}
+            contentFit="cover"
+            source={require('../assets/pictograma.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+             onPress={() => {
+              // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+              // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+              // // Actualiza el estado de los posts con la nueva copia ordenada
+              // setPosts(sortedPosts);
+            }}
+  
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: Color.colorWhitesmoke,
+              fontFamily: FontFamily.openSansSemiBold
+            }}
+          >
+           Voley
+          </Text>
+          <Image
+            style={{ width: 14, height: 17 }}
+            contentFit="cover"
+            source={require('../assets/pictograma.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+             onPress={() => {
+              // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+              // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+              // // Actualiza el estado de los posts con la nueva copia ordenada
+              // setPosts(sortedPosts);
+            }}
+  
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: Color.colorWhitesmoke,
+              fontFamily: FontFamily.openSansSemiBold
+            }}
+          >
+           Hockey
+          </Text>
+          <Image
+            style={{ width: 14, height: 17 }}
+            contentFit="cover"
+            source={require('../assets/pictograma.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+             onPress={() => {
+              // Genera una nueva copia del array de posts ordenado por la cantidad de likes
+              // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
+              // // Actualiza el estado de los posts con la nueva copia ordenada
+              // setPosts(sortedPosts);
+            }}
+  
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: Color.colorWhitesmoke,
+              fontFamily: FontFamily.openSansSemiBold
+            }}
+          >
+           Handball
           </Text>
           <Image
             style={{ width: 14, height: 17 }}

@@ -23,7 +23,7 @@ const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
           </Pressable>
           <View style={styles.bloqueInformacion}>
             <Text style={styles.nombreDelEstadio}>
-              Nombre del estadio o pavellón
+              Nombre del estadio o pabellón
             </Text>
             <Text style={styles.secondText}>{fieldName}</Text>
             <Text style={styles.pasEspaaTypo}>Ciudad</Text>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Color.bALONCESTO,
     fontFamily: FontFamily.t4TEXTMICRO,
-    width: '60%'
+    width: '70%'
   },
   pasEspaaTypo: {
     marginTop: 13,

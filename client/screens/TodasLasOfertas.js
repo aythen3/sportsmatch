@@ -117,6 +117,8 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
+console.log("uswer",user)
+
   return (
     <View style={styles.todasLasOfertas}>
       <View style={{ marginVertical: 30, marginLeft: 15 }}>
@@ -243,8 +245,8 @@ const TodasLasOfertas = () => {
             .slice(
               0,
               user?.user?.plan === 'pro' || user?.user?.plan === 'star'
-                ? 100
-                : 2
+                ? 1000
+                : 20
             )
             .map((offer, index) => (
               <View
@@ -942,7 +944,7 @@ const TodasLasOfertas = () => {
             }}
           >
             
-            <FiltersSportman onClose={() => setModalFilterSportman(false)} />
+            <FiltersSportman sports={user?.user?.sportman?.info?.sport} onClose={() => setModalFilterSportman(false)} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
