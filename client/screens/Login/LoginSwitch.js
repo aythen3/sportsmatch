@@ -40,6 +40,7 @@ import { create, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
+import Linea from '../../components/svg/Linea'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -286,7 +287,7 @@ const LoginSwitch = () => {
     )
 
   return (
-    <View style={{ backgroundColor: 'black' ,height:"100%"}}>
+    <View style={{ backgroundColor: 'black', height: "100%", width: "100%" }}>
       {/* <Image
         style={[styles.loginSwitchChild]}
         contentFit="cover"
@@ -294,19 +295,19 @@ const LoginSwitch = () => {
       /> */}
 
       <View style={[styles.loginSwitchChild]}>
+
         <Image
           style={[styles.loginSwitchChild2]}
           contentFit="cover"
           source={require('../../assets/carrouselgif.gif')}
         />
       </View>
-      <View style={{width:"100%",height:800,position:"absolute",top:-110,right:-135}}>
-        <Image
-         style={{width:550,height:550,position:"absolute",top:-180,right:-50}}
-        
-          source={require('../../assets/lineasgif.png')}
-        />
-      </View>
+      <Image
+        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
+        contentFit="cover"
+        source={require('../../assets/sw.png')}
+      />
+
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -568,27 +569,37 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    // backgroundColor: 'red',
-    width: 1000,
-    height: 300,
-    top: 20,
+    width: 200,
+    height: 200,
+    top: -10,
     // bottom: '75%',
     position: 'absolute',
-    transform: [{ rotate: '45deg' }, { scale: 0.6 }],
-    left: -20,
+    transform: [{ rotate: '45deg' }],
+    right: -85,
     zIndex: 0,
     overflow: "hidden"
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: 600,
-    height: 600,
+    width: 270,
+    height: 270,
+    // bottom: '75%',
+    top: -20,
+    left: -40,
+    transform: [{ rotate: '-45deg' }],
+    zIndex: 0,
+    // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
+  },
+  loginSwitchChild3: {
+    // backgroundColor: 'red',
+    width: 100,
+    height: 100,
     // bottom: '75%',
     top: 0,
-    left:0,
+    left: 0,
     transform: [{ rotate: '-45deg' }, { scale: 1 }],
-    zIndex: 0,
+    zIndex: 99,
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
