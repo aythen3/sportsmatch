@@ -744,23 +744,23 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#00FF18',
     marginRight: 5
   },
   jugador2: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#999999',
     marginRight: 5
   },
   clubScouting: {
     color: '#999999',
-    fontSize: 12,
+    fontSize: 10,
     marginLeft: 5
   },
   clubScouting2: {
     color: '#00FF18',
-    fontSize: 12,
+    fontSize: 10,
     marginLeft: 5
   }
 })

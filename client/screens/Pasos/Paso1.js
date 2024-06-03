@@ -278,7 +278,7 @@ const Paso1 = () => {
     <View keyboardShouldPersistTaps={'always'}>
       <View
         style={{
-          height: Dimensions.get('window').height,
+          height:"100%",
 
           paddingHorizontal: 15,
           backgroundColor: Color.bLACK1SPORTSMATCH
@@ -397,7 +397,7 @@ const Paso1 = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 30, justifyContent: "center", height: Dimensions.get('window').height - 200 }}>
+        <View style={{ marginTop: 30, justifyContent: "center", height: "auto" }}>
           {!sportman && !profesional && !invitado && (
             <View
               style={{
