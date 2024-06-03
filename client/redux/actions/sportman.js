@@ -6,6 +6,7 @@ export const createSportman = createAsyncThunk(
   async (body) => {
     try {
       const { data } = await axiosInstance.post('sportman', body)
+      console.log(data,'dat')
       return data
     } catch (error) {
       throw new Error(error)

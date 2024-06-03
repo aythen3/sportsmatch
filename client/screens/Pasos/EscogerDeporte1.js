@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   Modal,
@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import { updateImgClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
-import { Camera } from 'expo-camera'
+import { Camera, CameraView } from 'expo-camera'
 
 const EscogerDeporte1 = () => {
   const {
@@ -40,6 +40,7 @@ const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
 
 const [hasPermission, setHasPermission] = useState(null)
 const [cameraRef, setCameraRef] = useState(null)
+const [facing, setFacing] = useState('back');
 
 useEffect(() => {
   (async () => {
@@ -49,16 +50,19 @@ useEffect(() => {
 }, [])
 
 const changePictureMode = async () => {
-  console.log(
-    'setting camera mode to: ',
-    cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-  )
-  setCameraType(
-    cameraType === Camera.Constants.Type.back
-      ? Camera.Constants.Type.front
-      : Camera.Constants.Type.back
-  )
+  // console.log(
+  //   'setting camera mode to: ',
+  //   cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
+  // )
+  // setCameraType(
+  //   cameraType === Camera.Constants.Type.back
+  //     ? Camera.Constants.Type.front
+  //     : Camera.Constants.Type.back
+  // )
+  setFacing((prev)=> prev == "back" ? "front" : "back")
+
 }
+const cameraReff = useRef(null);
 
 useEffect(() => {
   console.log('selectedImage changed', selectedImage)
@@ -66,89 +70,29 @@ useEffect(() => {
 }, [selectedImage, selectedPicture])
 
 const takePicture = async () => {
-  console.log('on takePicture!')
-  if (cameraRef) {
-    const photo = await cameraRef.takePictureAsync()
-    console.log(photo)
-    setSelectedImage(photo)
-    pickImageFromCamera(selectedPicture, photo.uri)
-    setShowCamera(false)
+  // console.log('on takePicture!')
+  // if (cameraRef) {
+  //   const photo = await cameraRef.takePictureAsync()
+  //   console.log(photo)
+  //   setSelectedImage(photo)
+  //   pickImageFromCamera(selectedPicture, photo.uri)
+  //   setShowCamera(false)
+  //   // You can handle the taken photo here, such as displaying it or saving it.
+  // }
+  console.log('on takePicture!');
+  if (cameraReff?.current) { // Check if cameraRef is not null
+    const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
+    console.log(photo);
+    setSelectedImage(photo);
+    pickImageFromCamera(selectedPicture, photo.uri);
+    setShowCamera(false);
     // You can handle the taken photo here, such as displaying it or saving it.
   }
 }
-
+if (!showCamera){
   return (
     <View style={styles.escogerDeporte}>
-      {showCamera && (
-        <Modal  animationType="slide"
-        transparent={true}
-        visible={showCamera}
-        onRequestClose={()=>setShowCamera(false)}>
-          <Camera
-          style={{
-            flex: 1
-          }}
-          type={Camera.Constants.Type.back}
-          ref={(ref) => setCameraRef(ref)}
-        >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row'
-            }}
-          >
-            <TouchableOpacity
-              style={{ position: 'absolute', top: 22, left: 18 }}
-              onPress={() => setShowCamera(false)}
-            >
-              <Image
-                style={{height: 15,
-                  width: 15}}
-                contentFit="cover"
-                source={require('../../assets/group-565.png')}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                width: '100%',
-                marginBottom: 10,
-                position: 'relative'
-              }}
-            >
-              <TouchableOpacity
-                onPress={takePicture}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 100,
-                  backgroundColor: '#cecece',
-
-                  color: 'white'
-                }}
-              ></TouchableOpacity>
-              <TouchableOpacity
-                onPress={changePictureMode}
-                style={{
-                  position: 'absolute',
-                  right: 20,
-                  color: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Entypo name="cycle" color={'#fff'} size={25} />
-              </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        </Camera>
-        </Modal>
-      )}
+   
     <View>
     <Image
           style={styles.perfilImage}
@@ -280,12 +224,81 @@ const takePicture = async () => {
       </TouchableOpacity>
       <Text style={[styles.max1mbJpeg, styles.max1mbTypo]}>Max 1mb, jpeg</Text>
     </View>
-  )
+  )} else {
+    return(
+      <View style={{zIndex: 9999, height: "85%" }}>
+
+        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e)=>console.log(e,"esto es e")}
+
+        // cameraType="back"
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: 22, left: 18 }}
+              onPress={() => setShowCamera(false)}
+            >
+              <Image
+                style={{
+                  height: 15,
+                  width: 15
+                }}
+                contentFit="cover"
+                source={require('../../assets/group-565.png')}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                width: '100%',
+                marginBottom: 30,
+                position: 'relative'
+              }}
+            >
+              <TouchableOpacity
+                onPress={takePicture}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 100,
+                  backgroundColor: '#cecece',
+
+                  color: 'white'
+                }}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                onPress={changePictureMode}
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  color: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Entypo name="cycle" color={'#fff'} size={25} />
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
+        </CameraView>
+
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   subirTypo: {
-    color: Color.bLACK1SPORTSMATCH,
+    color: "white",
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
@@ -342,6 +355,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   escogerDeporte: {
+    paddingTop:40,
     backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15,
     alignItems: 'center'

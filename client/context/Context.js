@@ -12,7 +12,7 @@ export const Context = createContext()
 export const ContextProvider = ({ children }) => {
   const dispatch = useDispatch()
   const { allMatchs } = useSelector((state) => state.matchs)
-  const [activeIcon, setActiveIcon] = useState(null)
+  const [activeIcon, setActiveIcon] = useState('diary')
   const [clubMatches, setClubMatches] = useState([])
   const [userMatches, setUserMatches] = useState([])
   const { allUsers, user } = useSelector((state) => state.users)

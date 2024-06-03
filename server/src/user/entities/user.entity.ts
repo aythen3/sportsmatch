@@ -32,9 +32,9 @@ export class UserEntity extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: ['sportman', 'club']
+    enum: ['sportman', 'club' , 'invitado']
   })
-  type: 'sportman' | 'club';
+  type: 'sportman' | 'club' | 'invitado';
 
   @Column({ default: 'basic' })
   plan: string;

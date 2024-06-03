@@ -103,7 +103,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
 
           <Input
             title="Describe tu club"
-            placeholderText="Descripcion"
+            placeholderText="Descripción"
             isMultiLine={true}
             isLast={true}
             field="description"

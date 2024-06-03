@@ -93,13 +93,16 @@ const StepsClub = () => {
   const ViewComponent = (index) => {
     switch (index) {
       case 1:
-        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS}     />
+        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
       case 2:
         return (
-          <EscogerDeporte2
-            clubValues={clubValues}
-            setClubValues={setClubValues}
-          />
+          <ScrollView contentContainerStyle={{paddingBottom:120 }}>
+            <EscogerDeporte2
+              clubValues={clubValues}
+              setClubValues={setClubValues}
+            />
+
+          </ScrollView>
         )
       case 3:
         return (
@@ -121,7 +124,7 @@ const StepsClub = () => {
 
   return (
     <View style={{ ...styles.escogerDeporte }}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView contentContainerStyle={{ height: "100%" }} keyboardShouldPersistTaps={'always'}>
         <Image
           style={{
             ...styles.escogerDeporteChild
@@ -154,17 +157,18 @@ const StepsClub = () => {
         <Lines club={true} index={stepsIndex} />
 
         {ViewComponent(stepsIndex)}
-
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() => {
-            stepsIndex === 3
-              ? handleRegister()
-              : setstepsIndex((prev) => prev + 1)
-          }}
-        >
-          <Text style={styles.nextText}>Siguiente</Text>
-        </TouchableOpacity>
+        <View style={{height:"auto",width:"100%",backgroundColor:"black",position:"absolute",bottom:0}}>
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => {
+              stepsIndex === 3
+                ? handleRegister()
+                : setstepsIndex((prev) => prev + 1)
+            }}
+          >
+            <Text style={styles.nextText}>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   )
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
   },
   escogerDeporte: {
     flex: 1,
-    overflow: 'hidden',
+    height: "100%",
     backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15
   },
@@ -228,9 +232,12 @@ const styles = StyleSheet.create({
     color: Color.bLACK1SPORTSMATCH
   },
   touchable: {
+
     marginVertical: 30,
     alignItems: 'center',
     justifyContent: 'center',
+   
+    width: "100%",
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
     paddingHorizontal: Padding.p_81xl,
