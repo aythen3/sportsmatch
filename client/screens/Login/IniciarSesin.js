@@ -24,7 +24,7 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { setIsSpotMan ,logedIn } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
 
@@ -46,7 +46,7 @@ const IniciarSesin = () => {
 
   const passwordInputRef = useRef(null)
 
-  const { user } = useSelector((state) => state.users)
+  const { user ,loged } = useSelector((state) => state.users)
 
   // const { isPlayer } = route.params
 
@@ -63,9 +63,11 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    if(!loged){
     if (user?.user?.club || user?.user?.sportman) {
       setActiveIcon('diary')
       navigation.navigate('SiguiendoJugadores')
+      dispatch(logedIn())
     } else {
       if (user?.user?.type === 'club') {
         if (user?.accesToken) {
@@ -77,6 +79,7 @@ const IniciarSesin = () => {
           navigation.navigate('Paso1')
         }
       }
+    }
     }
   }, [user])
 

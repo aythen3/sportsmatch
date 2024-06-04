@@ -82,7 +82,7 @@ const TusMatchs = () => {
           flexDirection: 'row',
           alignItems: 'center',
           gap: 15,
-          marginTop: 15,
+          marginTop: 25,
           justifyContent: 'flex-start'
         }}
       >
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_2xs,
     borderStyle: 'solid',
     flexDirection: 'row',
-    marginTop: 30
   },
   groupContainerSpaceBlock: {
     paddingVertical: Padding.p_4xs

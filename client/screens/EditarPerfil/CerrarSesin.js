@@ -16,7 +16,7 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch } from 'react-redux'
-import { clearUser } from '../../redux/slices/users.slices'
+import { clearUser, logedOut } from '../../redux/slices/users.slices'
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager } from 'react-native-fbsdk-next'
 import { auth } from '../../firebaseConfig'
@@ -108,6 +108,7 @@ quieres `}</Text>
                   AsyncStorage.removeItem('googleAuth')
                   AsyncStorage.removeItem('facebookAuth')
                   dispatch(clearUser())
+                  dispatch(logedOut())
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

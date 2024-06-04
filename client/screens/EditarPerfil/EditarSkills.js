@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 15,
     left: 15
   },
   coolicon: {

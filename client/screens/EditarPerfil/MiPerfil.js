@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -21,6 +21,7 @@ import StatsSVG from '../../components/svg/StatsSVG'
 import Feed from '../../components/Feed'
 import FeedStats from '../../components/FeedStats'
 import { Context } from '../../context/Context'
+import { useIsFocused } from '@react-navigation/native'
 
 const MiPerfil = () => {
   const navigation = useNavigation()
@@ -28,6 +29,13 @@ const MiPerfil = () => {
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user } = useSelector((state) => state.users)
+  const isFocused = useIsFocused()
+
+const {setActiveIcon} = useContext(Context)
+  useEffect(() => {
+    setActiveIcon("profile")
+  }, [isFocused])
+
 
   const [selectedTab, setSelectedTab] = useState('Feed')
   console.log(sportman, 'sportman')

@@ -44,6 +44,10 @@ const TusNotificaciones1 = () => {
     dispatch(getAllUsers())
   }, [])
 
+  React.useEffect(() => {
+    setActiveIcon("message")
+  }, [isFocused])
+
   const sortUsers = (userA, userB) => {
     const isInMessagesB =
       usersWithMessages?.filter((user) => user.id === userA.id).length > 0

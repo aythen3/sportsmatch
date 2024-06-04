@@ -28,11 +28,11 @@ const PlayerDetails = () => {
   const [showGenderModal, setShowGenderModal] = useState(false)
   const [showBirthdateModal, setShowBirthdateModal] = useState(false)
   const [showCityModal, setShowCityModal] = useState(false)
-  const [gender, setGender] = useState()
+  const [gender, setGender] = useState("")
   const [birthdate, setBirthdate] = useState()
-  const [city, setCity] = useState()
-  const [actualClubName, setActualClubName] = useState()
-  const [userDescription, setUserDescription] = useState()
+  const [city, setCity] = useState("")
+  const [actualClubName, setActualClubName] = useState("")
+  const [userDescription, setUserDescription] = useState("")
   const navigation = useNavigation()
 
   const {
@@ -54,7 +54,7 @@ const PlayerDetails = () => {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
-      state:  actualClubName ? actualClubName : sportman.info.actualClub,
+      state:  actualClubName ? actualClubName : sportman?.info?.actualClub,
       setState: setActualClubName,
       zIndex: 7000
     },

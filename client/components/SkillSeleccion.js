@@ -158,7 +158,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
     <ScrollView
       // onScroll={handleScroll}
       keyboardShouldPersistTaps={'always'}
-      style={{marginBottom:200}}
+      contentContainerStyle={{paddingBottom:20}}
     >
       <View
         style={{

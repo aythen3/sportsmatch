@@ -14,6 +14,7 @@ import {
 const usersSlices = createSlice({
   name: 'users',
   initialState: {
+    loged:false,
     user: {},
     userChild: {},
     sportmanGender: '',
@@ -70,6 +71,12 @@ const usersSlices = createSlice({
     },
     updateUser: (state, action) => {
       state.user = action.payload
+    },
+    logedIn: (state, action) => {
+      state.loged = true
+    },
+    logedOut: (state, action) => {
+      state.loged = false
     }
   },
   extraReducers: (builder) => {
@@ -184,6 +191,8 @@ export const {
   setCategory,
   setPosition,
   updateUser,
+  logedIn,
+  logedOut,
   clearUser
 } = usersSlices.actions
 

@@ -58,8 +58,7 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @ManyToOne(() => PositionEntity)
-  position: PositionEntity;
+
 
   @OneToMany(() => MatchEntity, (match) => match.offerId, { nullable: true })
   match: MatchEntity[];

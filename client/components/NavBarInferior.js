@@ -69,7 +69,7 @@ const NavBarInferior = () => {
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
-      {!user?.user?.club && user?.user?.sportman?.type !== 'invitado' && (
+      { user?.user?.sportman?.type !== 'invitado' && (
         <TouchableOpacity
           onPress={() => handleIconPress('post')}
           style={styles.deselected}

@@ -22,8 +22,7 @@ const Paso2Jugador = ({selectedSport, setSelectedSport}) => {
         justifyContent: 'center',
         flexWrap: 'wrap',
         // height:"100%",
-        marginBottom:100,
-        marginTop:40,
+        paddingHorizontal:20,
         gap: 15
       }}
     >

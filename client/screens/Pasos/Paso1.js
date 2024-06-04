@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  useWindowDimensions
 } from 'react-native'
 import {
   FontFamily,
@@ -57,7 +58,9 @@ const Paso1 = () => {
   const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
   const [invitado, setInvitado] = useState(false)
+  const {height, width} = useWindowDimensions();
 
+  console.log(width,"-----",height,"medidas")
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
@@ -275,12 +278,12 @@ const Paso1 = () => {
   }
 
   return (
-    <View keyboardShouldPersistTaps={'always'}>
       <View
         style={{
-          height:"100%",
-
-          paddingHorizontal: 15,
+          height:height,
+          width:width,
+          flex:1,
+          paddingHorizontal: 0,
           backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
@@ -397,8 +400,8 @@ const Paso1 = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 30, justifyContent: "center", height: "auto" }}>
-          {!sportman && !profesional && !invitado && (
+         <View style={{height:"100%",justifyContent:"space-between" ,flex:1,paddingTop:"6%"}}>
+         {!sportman && !profesional && !invitado && (
             <View
               style={{
                 ...styles.container
@@ -533,7 +536,6 @@ const Paso1 = () => {
             />
           }
 
-        </View>
         <View style={styles.botonesRoles}>
           <Pressable
             style={styles.siguiente}
@@ -548,8 +550,8 @@ const Paso1 = () => {
             <Text style={styles.siguiente1}>Siguiente</Text>
           </Pressable>
         </View>
+         </View>
       </View>
-    </View>
   )
 }
 
@@ -606,13 +608,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    marginTop: 30,
-    paddingBottom: 30,
-    paddingTop: 30,
-    position: "absolute",
-    zIndex: 9999,
-    bottom: 0,
-    alignSelf: "center"
+    backgroundColor:"black",
+    paddingVertical:25
   },
   siguiente1: {
     fontWeight: '700',
@@ -626,7 +623,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: '95%',
+    width: '100%',
     alignSelf: 'center'
   },
   selectedBackground: {

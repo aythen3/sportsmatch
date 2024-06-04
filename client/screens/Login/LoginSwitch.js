@@ -10,10 +10,11 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Platform
+  Platform,
+  useWindowDimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
 import {
   FontFamily,
   FontSize,
@@ -22,7 +23,7 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { logedIn, setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -45,10 +46,13 @@ import Linea from '../../components/svg/Linea'
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
+  const { height, width } = useWindowDimensions();
+
+  console.log(width, "-----", height, "medidas")
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user } = useSelector((state) => state.users)
-
+  const { isSportman, user ,loged} = useSelector((state) => state.users)
+  const isFocused = useIsFocused();
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
 
@@ -151,22 +155,67 @@ const LoginSwitch = () => {
     }
   }, [response])
 
+  // useEffect(() => {
+  //   if (user?.user?.club || user?.user?.sportman) {
+  //     console.log("entra aca no se que ondaaaaaa")
+  //     navigation.navigate('SiguiendoJugadores')
+  //   } else {
+  //     if (user?.user?.type === 'club') {
+  //       console.log("entra aca")
+  //       if (user?.accesToken) {
+  //         navigation.navigate('stepsClub')
+  //       }
+  //     } else {
+  //       if (user?.accesToken) {
+  //         console.log('jugador')
+  //         navigation.navigate('Paso1')
+  //       }
+  //     }
+  //   }
+  // }, [user])
+
+  // useEffect(() => {
+  //   if (user?.user?.club || user?.user?.sportman) {
+  //     console.log("entra aca no se que ondaaaaaasdasdasdasdasdasdasa")
+  //     navigation.navigate('SiguiendoJugadores')
+  //   } else {
+  //     if (user?.user?.type === 'club') {
+  //       console.log("entra aca")
+  //       if (user?.accesToken) {
+  //         navigation.navigate('stepsClub')
+  //       }
+  //     } else {
+  //       if (user?.accesToken) {
+  //         console.log('jugador')
+  //         navigation.navigate('Paso1')
+  //       }
+  //     }
+  //   }
+  // }, [user])
+
   useEffect(() => {
-    if (user?.user?.club || user?.user?.sportman) {
-      navigation.navigate('SiguiendoJugadores')
-    } else {
-      if (user?.user?.type === 'club') {
-        if (user?.accesToken) {
-          navigation.navigate('stepsClub')
-        }
+    if (!loged) {
+      if (user?.user?.club || user?.user?.sportman) {
+        console.log("entra aca no se que ondaaaaaa");
+        navigation.navigate('SiguiendoJugadores');
+        dispatch(logedIn())
       } else {
-        if (user?.accesToken) {
-          console.log('jugador')
-          navigation.navigate('Paso1')
+        if (user?.user?.type === 'club') {
+          console.log("entra aca");
+          if (user?.accesToken) {
+            navigation.navigate('stepsClub');
+          }
+        } else {
+          if (user?.accesToken) {
+            console.log('jugador');
+            navigation.navigate('Paso1');
+          }
         }
       }
     }
-  }, [user])
+  }, [user]);
+
+
 
   useEffect(() => {
     getLocalUser()
@@ -287,7 +336,7 @@ const LoginSwitch = () => {
     )
 
   return (
-    <View style={{ backgroundColor: 'black', height: "100%", width: "100%" }}>
+    <View style={{ backgroundColor: 'black', height: height, width: width }}>
       {/* <Image
         style={[styles.loginSwitchChild]}
         contentFit="cover"

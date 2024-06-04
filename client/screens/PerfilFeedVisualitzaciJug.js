@@ -190,7 +190,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         Edad
                       </Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {calculateAge(data?.author?.sportman?.info?.birthdate)}
+                        {data?.author?.sportman?.info?.birthdate ? calculateAge(data?.author?.sportman?.info?.birthdate) : "2000"}
                       </Text>
                     </View>
                   </View>
