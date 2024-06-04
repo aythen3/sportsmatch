@@ -146,9 +146,7 @@ const OfertasEmitidas = () => {
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
                         {
-                          allPositions?.filter(
-                            (position) => position?.id === offer?.posit
-                          )[0]?.name
+                          offer.posit
                         }
                       </Text>
                     </View>

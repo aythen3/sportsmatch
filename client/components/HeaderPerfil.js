@@ -45,6 +45,8 @@ const HeaderPerfil = ({
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [matchSended, setMatchSended] = useState(false)
+  const [liked, setLiked] = useState(false)
+
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -66,12 +68,15 @@ const HeaderPerfil = ({
     }
   }, [])
 
-  useEffect(() => {}, [allMatchs])
+  // useEffect(() => {}, [allMatchs])
 
-  useEffect(() => {}, [clubMatches])
+  // useEffect(() => {}, [clubMatches])
 
   useEffect(() => {
-    // console.log('user has changed: ', user)
+    const is = userFollowing?.includes(data?.author?.id)
+    if(is){
+      setLiked(true)
+    }
   }, [user])
 
   const userFollowing = user?.user?.following || []
@@ -194,20 +199,87 @@ const HeaderPerfil = ({
       {external && data.author.type !== 'club' ? (
         <View style={styles.groupContainer}>
           {!isSportman ? (
-            <View style={styles.leftButton}>
+            <Pressable
+            onPress={() => {
+              setLiked(!liked)
+              let actualUser = _.cloneDeep(user)
+              const actualFollowers =
+                allUsers?.filter((user) => user.id === data.author.id)[0]
+                  .followers || []
+              console.log('actual followers: ', actualFollowers)
+              const newFollowers = actualFollowers.includes(user?.user?.id)
+                ? actualFollowers.filter(
+                    (follower) => follower !== user?.user?.id
+                  )
+                : [...actualFollowers, user?.user?.id]
+
+              const newFollowingArray = userFollowing?.includes(
+                data?.author?.id
+              )
+                ? userFollowing.filter(
+                    (followed) => followed !== data?.author?.id
+                  )
+                : [...userFollowing, data?.author?.id]
+              actualUser.user.following = newFollowingArray
+              console.log('user: ', actualUser?.user?.following)
+
+              console.log('setting other user followers to:', newFollowers)
+              dispatch(
+                updateUserData({
+                  id: data.author.id,
+                  body: { followers: newFollowers }
+                })
+              )
+                .then((data) => {
+                  console.log('setting user following to:', newFollowingArray)
+                  dispatch(
+                    updateUserData({
+                      id: user.user.id,
+                      body: { following: newFollowingArray }
+                    })
+                  )
+                })
+                .then((response) => {
+                  if (newFollowers.includes(user?.user?.id)) {
+                    dispatch(
+                      sendNotification({
+                        title: 'Follow',
+                        message: `${user.user.nickname} ha comenzado a seguirte`,
+                        recipientId: data?.author?.id,
+                        date: new Date(),
+                        read: false,
+                        prop1: {
+                          userId: user?.user?.id,
+                          userData: {
+                            ...user
+                          }
+                        }
+                      })
+                    )
+                  }
+                  dispatch(updateUser(actualUser))
+                  dispatch(getAllUsers())
+                })
+            }}
+            style={styles.leftButton}>
               <Image
                 style={{ ...styles.frameChild, marginRight: 10 }}
                 contentFit="cover"
                 source={require('../assets/group-5361.png')}
               />
-              <Text style={[styles.ojear, styles.timeTypo]}>Ojear</Text>
-            </View>
+              <Text style={[styles.ojear, styles.timeTypo]}>
+              { liked
+                  ? 'Dejar de Ojear'
+                  : 'Ojear'}
+              </Text>
+            </Pressable>
           ) : (
             <Pressable
               onPress={() => {
+                setLiked(!liked)
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
-                  allUsers.filter((user) => user.id === data.author.id)[0]
+                  allUsers?.filter((user) => user.id === data.author.id)[0]
                     .followers || []
                 console.log('actual followers: ', actualFollowers)
                 const newFollowers = actualFollowers.includes(user?.user?.id)
@@ -260,8 +332,8 @@ const HeaderPerfil = ({
                         })
                       )
                     }
-                    dispatch(getAllUsers())
                     dispatch(updateUser(actualUser))
+                    dispatch(getAllUsers())
                   })
               }}
               style={{
@@ -269,7 +341,7 @@ const HeaderPerfil = ({
               }}
             >
               <Text style={[styles.ojear, styles.timeTypo]}>
-                {userFollowing?.includes(data?.author?.id)
+                { liked
                   ? 'Dejar de seguir'
                   : 'Seguir'}
               </Text>
@@ -748,8 +820,8 @@ const HeaderPerfil = ({
             {'Seguidores'}
           </Text>
           <Text style={styles.numeroText}>
-            {allUsers.filter((user) => user.id === data.author.id)[0]?.followers
-              ? allUsers.filter((user) => user.id === data.author.id)[0]
+            {allUsers?.filter((user) => user.id === data.author.id)[0]?.followers
+              ? allUsers?.filter((user) => user.id === data.author.id)[0]
                   .followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}

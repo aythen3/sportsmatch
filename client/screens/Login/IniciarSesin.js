@@ -24,7 +24,7 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { setIsSpotMan ,logedIn } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
 
@@ -33,7 +33,8 @@ const IniciarSesin = () => {
     setProvisoryProfileImage,
     setProvisoryCoverImage,
     setProfileImage,
-    setCoverImage
+    setCoverImage,
+    setActiveIcon
   } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
@@ -45,7 +46,7 @@ const IniciarSesin = () => {
 
   const passwordInputRef = useRef(null)
 
-  const { user } = useSelector((state) => state.users)
+  const { user ,loged } = useSelector((state) => state.users)
 
   // const { isPlayer } = route.params
 
@@ -62,8 +63,11 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
+    if(!loged){
     if (user?.user?.club || user?.user?.sportman) {
+      setActiveIcon('diary')
       navigation.navigate('SiguiendoJugadores')
+      dispatch(logedIn())
     } else {
       if (user?.user?.type === 'club') {
         if (user?.accesToken) {
@@ -75,6 +79,7 @@ const IniciarSesin = () => {
           navigation.navigate('Paso1')
         }
       }
+    }
     }
   }, [user])
 
@@ -117,13 +122,19 @@ const IniciarSesin = () => {
           source={require('../../assets/carrouselgif.gif')}
         />
       </View>
-      <View style={{ width: "100%", height: 800, position: "absolute", top: -110, right: -135 }}>
+      {/* <View style={{ width: "100%", height: 800, position: "absolute", top: -110, right: -135 }}>
         <Image
           style={{ width: 550, height: 550, position: "absolute", top: -180, right: -50 }}
 
           source={require('../../assets/lineasgif.png')}
         />
-      </View>
+      </View> */}
+        <Image
+        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
+        contentFit="cover"
+        source={require('../../assets/sw.png')}
+      />
+
       <View style={styles.contenido}>
         {/* <Image
           style={styles.fondoIcon}
@@ -248,26 +259,25 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    // backgroundColor: 'red',
-    width: 1000,
-    height: 300,
-    top: 20,
+    width: 200,
+    height: 200,
+    top: -10,
     // bottom: '75%',
     position: 'absolute',
-    transform: [{ rotate: '45deg' }, { scale: 0.6 }],
-    left: -20,
+    transform: [{ rotate: '45deg' }],
+    right: -85,
     zIndex: 0,
     overflow: "hidden"
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: 600,
-    height: 600,
+    width: 270,
+    height: 270,
     // bottom: '75%',
-    top: 0,
-    left: 0,
-    transform: [{ rotate: '-45deg' } , { scale: 1 }],
+    top: -20,
+    left: -40,
+    transform: [{ rotate: '-45deg' }],
     zIndex: 0,
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },

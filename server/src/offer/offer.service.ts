@@ -30,13 +30,7 @@ export class OfferService {
       const { offerData, position: positionId, clubId } = createOfferDto;
 
       // const position = await this.positionService.findOne(positionId);
-      const position = await this.positionRepository.findOne({
-        where: { id: positionId }
-      });
-
-      if (!position) {
-        return `position ${position} not found`;
-      }
+     
 
       const club = await this.clubService.findOne(clubId);
       if (!club) {
@@ -45,7 +39,7 @@ export class OfferService {
 
       const newOffer = await this.offerRepository.create({
         ...offerData,
-        position: position,
+
 
         club: club
       });
@@ -169,9 +163,9 @@ export class OfferService {
     if (updateOfferDto.prop4 !== undefined) {
       offer.prop4 = updateOfferDto.prop4;
     }
-    if (updateOfferDto.position !== undefined) {
-      offer.position = updateOfferDto.position;
-    }
+    // if (updateOfferDto.position !== undefined) {
+    //   offer.position = updateOfferDto.position;
+    // }
     if (updateOfferDto.club !== undefined) {
       offer.club = updateOfferDto.club;
     }

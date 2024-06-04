@@ -9,7 +9,7 @@ import {
   Modal
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FontFamily } from '../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,7 +20,7 @@ import { years } from '../../utils/years'
 import { cities } from '../../utils/cities'
 import { updateSportman } from '../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
-import { Camera } from 'expo-camera'
+import { Camera, CameraView } from 'expo-camera'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -28,11 +28,11 @@ const PlayerDetails = () => {
   const [showGenderModal, setShowGenderModal] = useState(false)
   const [showBirthdateModal, setShowBirthdateModal] = useState(false)
   const [showCityModal, setShowCityModal] = useState(false)
-  const [gender, setGender] = useState()
+  const [gender, setGender] = useState("")
   const [birthdate, setBirthdate] = useState()
-  const [city, setCity] = useState()
-  const [actualClubName, setActualClubName] = useState()
-  const [userDescription, setUserDescription] = useState()
+  const [city, setCity] = useState("")
+  const [actualClubName, setActualClubName] = useState("")
+  const [userDescription, setUserDescription] = useState("")
   const navigation = useNavigation()
 
   const {
@@ -48,13 +48,13 @@ const PlayerDetails = () => {
   const { user } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
-
+  const [facing, setFacing] = useState('back');
   const inputs = [
     {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
-      state:  actualClubName ? actualClubName : sportman.info.actualClub,
+      state:  actualClubName ? actualClubName : sportman?.info?.actualClub,
       setState: setActualClubName,
       zIndex: 7000
     },
@@ -104,6 +104,7 @@ const PlayerDetails = () => {
 
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
+  const cameraReff = useRef(null);
 
   useEffect(() => {
     ;(async () => {
@@ -113,15 +114,17 @@ const PlayerDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-    console.log(
-      'setting camera mode to: ',
-      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    )
-    setCameraType(
-      cameraType === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back
-    )
+    // console.log(
+    //   'setting camera mode to: ',
+    //   cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
+    // )
+    // setCameraType(
+    //   cameraType === Camera.Constants.Type.back
+    //     ? Camera.Constants.Type.front
+    //     : Camera.Constants.Type.back
+    // )
+    setFacing((prev)=> prev == "back" ? "front" : "back")
+
   }
 
   useEffect(() => {
@@ -130,20 +133,20 @@ const PlayerDetails = () => {
   }, [selectedImage, selectedPicture])
 
   const takePicture = async () => {
-    console.log('on takePicture!')
-    if (cameraRef) {
-      const photo = await cameraRef.takePictureAsync()
-      console.log(photo)
-      setSelectedImage(photo)
-      pickImageFromCamera(selectedPicture, photo.uri)
-      setShowCamera(false)
+    console.log('on takePicture!');
+    if (cameraReff?.current) { // Check if cameraRef is not null
+      const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
+      console.log(photo);
+      setSelectedImage(photo);
+      pickImageFromCamera(selectedPicture, photo.uri);
+      setShowCamera(false);
       // You can handle the taken photo here, such as displaying it or saving it.
     }
-  }
-
+  };
+  if (!showCamera){
   return (
     <SafeAreaView style={styles.clubDetailsContainer}>
-      {showCamera && (
+      {/* {showCamera && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -213,7 +216,7 @@ const PlayerDetails = () => {
             </View>
           </Camera>
         </Modal>
-      )}
+      )} */}
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={{
@@ -481,7 +484,76 @@ const PlayerDetails = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
+  )} else {
+    return(
+      <View style={{zIndex: 9999, height: "100%" }}>
+
+        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e)=>console.log(e,"esto es e")}
+
+        // cameraType="back"
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: 22, left: 18 }}
+              onPress={() => setShowCamera(false)}
+            >
+              <Image
+                style={{
+                  height: 15,
+                  width: 15
+                }}
+                contentFit="cover"
+                source={require('../../assets/group-565.png')}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                width: '100%',
+                marginBottom: 30,
+                position: 'relative'
+              }}
+            >
+              <TouchableOpacity
+                onPress={takePicture}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 100,
+                  backgroundColor: '#cecece',
+
+                  color: 'white'
+                }}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                onPress={changePictureMode}
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  color: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Entypo name="cycle" color={'#fff'} size={25} />
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
+        </CameraView>
+
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

@@ -5,7 +5,10 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Dimensions,
+  useWindowDimensions,
+  BackHandler
 } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import {
@@ -24,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createClub, getClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { updateUserClubData } from '../../redux/actions/users'
+import { clearUser } from '../../redux/slices/users.slices'
 
 const StepsClub = () => {
   const navigation = useNavigation()
@@ -44,6 +48,9 @@ const StepsClub = () => {
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [sportS, setSportS] = useState("")
+  const {height, width} = useWindowDimensions();
+
+  console.log(width,"-----",height,"medidas")
 
   const [clubValues, setClubValues] = useState({
     name: '',
@@ -54,6 +61,23 @@ const StepsClub = () => {
     capacity: '',
     description: ''
   })
+
+  useEffect(() => {
+    const backAction = () => {
+      // Despacha tu acción de Redux aquí
+      dispatch(clearUser());
+      console.log("back")
+      navigation.goBack()
+      return true; // Indica que el evento fue manejado
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); // Remueve el listener al desmontar el componente
+  }, [dispatch]);
 
   const handleRegister = async () => {
     if (profileImage && coverImage) {
@@ -93,13 +117,16 @@ const StepsClub = () => {
   const ViewComponent = (index) => {
     switch (index) {
       case 1:
-        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS}     />
+        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
       case 2:
         return (
-          <EscogerDeporte2
-            clubValues={clubValues}
-            setClubValues={setClubValues}
-          />
+           <ScrollView contentContainerStyle={{paddingBottom:20}}>
+              <EscogerDeporte2
+              clubValues={clubValues}
+              setClubValues={setClubValues}
+            />
+           </ScrollView>
+
         )
       case 3:
         return (
@@ -119,12 +146,16 @@ const StepsClub = () => {
     }
   }
 
+  const back = async ()=>{
+    await dispatch(clearUser())
+    navigation.goBack()
+  }
+
   return (
-    <View style={{ ...styles.escogerDeporte }}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <View style={{ ...styles.escogerDeporte,height: height,width:width ,flex:1}}  >
         <Image
           style={{
-            ...styles.escogerDeporteChild
+            ...styles.escogerDeporteChild,
           }}
           contentFit="cover"
           source={require('../../assets/group-2412.png')}
@@ -138,7 +169,7 @@ const StepsClub = () => {
           <Pressable
             onPress={() =>
               stepsIndex === 1
-                ? navigation.goBack()
+                ? back()
                 : setstepsIndex((prev) => prev - 1)
             }
           >
@@ -153,20 +184,22 @@ const StepsClub = () => {
         </View>
         <Lines club={true} index={stepsIndex} />
 
-        {ViewComponent(stepsIndex)}
-
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() => {
-            stepsIndex === 3
-              ? handleRegister()
-              : setstepsIndex((prev) => prev + 1)
-          }}
-        >
-          <Text style={styles.nextText}>Siguiente</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      <View style={{justifyContent:"space-between",height:"100%",flex:1,paddingVertical:20}}>
+      {ViewComponent(stepsIndex)}
+        <View >
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => {
+              stepsIndex === 3
+                ? handleRegister()
+                : setstepsIndex((prev) => prev + 1)
+            }}
+            >
+            <Text style={styles.nextText}>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
+            </View>
+      </View>
   )
 }
 
@@ -217,10 +250,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   escogerDeporte: {
-    flex: 1,
-    overflow: 'hidden',
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    paddingHorizontal: 15
   },
   nextText: {
     fontSize: FontSize.button_size,
@@ -228,9 +258,10 @@ const styles = StyleSheet.create({
     color: Color.bLACK1SPORTSMATCH
   },
   touchable: {
-    marginVertical: 30,
+
     alignItems: 'center',
     justifyContent: 'center',
+    width: "100%",
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
     paddingHorizontal: Padding.p_81xl,

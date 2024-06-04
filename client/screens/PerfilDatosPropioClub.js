@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import HeaderPerfil from '../components/HeaderPerfil'
 import { Color } from '../GlobalStyles'
 import CirclePerfilClub from '../components/CirclePerfilClub'
@@ -10,6 +10,7 @@ import CircleSkills from '../components/CircleSkills'
 import PercentageSkills from '../components/PercentageSkills'
 import CardInfoPerfil from '../components/CardInfoPerfil'
 import MoreDetailsAboutMe from '../components/MoreDetailsAboutMe'
+import { Context } from '../context/Context'
 
 const PerfilDatosPropioClub = () => {
   const navigation = useNavigation()
@@ -18,7 +19,14 @@ const PerfilDatosPropioClub = () => {
   const { user } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
+  const isFocused = useIsFocused()
 
+const {setActiveIcon} = useContext(Context)
+  useEffect(() => {
+    setActiveIcon("profile")
+  }, [isFocused])
+
+  console.log("acaaa")
   return (
     <View
       style={{

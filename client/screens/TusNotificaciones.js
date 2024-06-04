@@ -3,10 +3,17 @@ import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontSize, FontFamily, Padding, Color, Border } from '../GlobalStyles'
+import { useIsFocused } from '@react-navigation/native'
+import { Context } from '../context/Context'
 
 const TusNotificaciones = () => {
-  const navigation = useNavigation()
+  const isFocused = useIsFocused()
 
+  const navigation = useNavigation()
+  const {setActiveIcon} = React.useContext(Context)
+  React.useEffect(() => {
+    setActiveIcon("message")
+  }, [isFocused])
   return (
     <View style={styles.tusNotificaciones}>
       <View style={styles.cabezeraMenuNotificacion}>

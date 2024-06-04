@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
+  BackHandler,
   Dimensions,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  useWindowDimensions
 } from 'react-native'
 import {
   FontFamily,
@@ -29,6 +31,8 @@ import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import Visores from './visores'
 import StepsJugador from './StepsJugador'
 import Paso2Jugador from './Paso2Jugador'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { clearUser } from '../../redux/slices/users.slices'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -54,20 +58,22 @@ const Paso1 = () => {
   const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
   const [invitado, setInvitado] = useState(false)
+  const {height, width} = useWindowDimensions();
 
+  console.log(width,"-----",height,"medidas")
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
   const [sportmanValues, setSportmanValues] = useState({
-    sport: sport.name,
-    gender: sportmanGender,
-    birthdate: birthdate,
+    sport: sport?.name || 'Voley',
+    gender: sportmanGender || "Masculino",
+    birthdate: birthdate || 2020,
 
-    city: city,
+    city: city || 'otra',
     actualClub: '',
     description: '',
-    category: category,
-    position: position
+    category: category || 'Prebenjamín (6-8 años)"',
+    position: position || ''
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: profesionalType,
@@ -108,8 +114,40 @@ const Paso1 = () => {
       return
     }
     if (selectedRole === 'Invitado') {
-
-      return setInvitado(true)
+      const fullData = {
+        ...sportmanValues,
+        sport:"Invitado",
+        img_perfil: profileImage || '',
+        img_front: coverImage || '',
+        attack: data?.attack || '100',
+        speed: data?.speed || '100',
+        height: data?.height || '100',
+        defense: data?.defense || '100',
+        prop1: data?.prop1 || '',
+        prop2: data?.prop2 || '',
+        prop3: data?.prop3 || '',
+        nickname: user?.user?.nickname || '',
+        city: sportmanValues.city || ''
+      }
+      const body = {
+        sportmanData: {
+          type: 'invitado',
+          info: fullData,
+          club: null
+        },
+        userId: user.user.id
+      }
+      console.log('final body: ', body)
+      dispatch(createSportman(body)).then((response) => {
+        console.log('reponse: ',response) 
+        dispatch(
+          setInitialSportman({
+            id: response.payload.id,
+            ...body.sportmanData
+          })
+        )
+        navigation.navigate('SiguiendoJugadores')
+      })
     }
 
     if (selectedRole === 'Profesional del deporte') {
@@ -127,6 +165,25 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
+
+
+  useEffect(() => {
+    const backAction = () => {
+      // Despacha tu acción de Redux aquí
+      dispatch(clearUser());
+      navigation.goBack()
+      return true; // Indica que el evento fue manejado
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); // Remueve el listener al desmontar el componente
+  }, [dispatch]);
+
+
   useEffect(() => {
     console.log('sportman changed: ', sportman)
   }, [sportman])
@@ -221,12 +278,12 @@ const Paso1 = () => {
   }
 
   return (
-    <View keyboardShouldPersistTaps={'always'}>
       <View
         style={{
-          height: Dimensions.get('window').height,
-
-          paddingHorizontal: 15,
+          height:height,
+          width:width,
+          flex:1,
+          paddingHorizontal: 0,
           backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
@@ -245,8 +302,9 @@ const Paso1 = () => {
                 justifyContent: 'flex-end',
                 alignItems: 'center'
               }}
-              onPress={() => {
+              onPress={async () => {
                 if (!sportman && !profesional && !invitado) {
+                  await dispatch(clearUser())
                   navigation.goBack()
                 }
                 if (stepsProfesional > 0) {
@@ -342,8 +400,8 @@ const Paso1 = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 30, justifyContent: "center", height: Dimensions.get('window').height - 200 }}>
-          {!sportman && !profesional && !invitado && (
+         <View style={{height:"100%",justifyContent:"space-between" ,flex:1,paddingTop:"6%"}}>
+         {!sportman && !profesional && !invitado && (
             <View
               style={{
                 ...styles.container
@@ -478,7 +536,6 @@ const Paso1 = () => {
             />
           }
 
-        </View>
         <View style={styles.botonesRoles}>
           <Pressable
             style={styles.siguiente}
@@ -493,8 +550,8 @@ const Paso1 = () => {
             <Text style={styles.siguiente1}>Siguiente</Text>
           </Pressable>
         </View>
+         </View>
       </View>
-    </View>
   )
 }
 
@@ -551,13 +608,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    marginTop: 30,
-    paddingBottom: 30,
-    paddingTop: 30,
-    position: "absolute",
-    zIndex: 9999,
-    bottom: 0,
-    alignSelf: "center"
+    backgroundColor:"black",
+    paddingVertical:25
   },
   siguiente1: {
     fontWeight: '700',
@@ -571,7 +623,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: '95%',
+    width: '100%',
     alignSelf: 'center'
   },
   selectedBackground: {

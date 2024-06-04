@@ -11,7 +11,8 @@ import {
 
 enum SportmanType {
   player = 'player',
-  coach = 'coach'
+  coach = 'coach',
+  invitado = 'invitado'
 }
 class SportmanData {
   @IsEnum(SportmanType)

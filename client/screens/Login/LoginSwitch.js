@@ -10,10 +10,11 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Platform
+  Platform,
+  useWindowDimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
 import {
   FontFamily,
   FontSize,
@@ -22,7 +23,7 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { logedIn, setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -40,14 +41,18 @@ import { create, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
+import Linea from '../../components/svg/Linea'
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
+  const { height, width } = useWindowDimensions();
+
+  console.log(width, "-----", height, "medidas")
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user } = useSelector((state) => state.users)
-
+  const { isSportman, user ,loged} = useSelector((state) => state.users)
+  const isFocused = useIsFocused();
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
 
@@ -150,22 +155,67 @@ const LoginSwitch = () => {
     }
   }, [response])
 
+  // useEffect(() => {
+  //   if (user?.user?.club || user?.user?.sportman) {
+  //     console.log("entra aca no se que ondaaaaaa")
+  //     navigation.navigate('SiguiendoJugadores')
+  //   } else {
+  //     if (user?.user?.type === 'club') {
+  //       console.log("entra aca")
+  //       if (user?.accesToken) {
+  //         navigation.navigate('stepsClub')
+  //       }
+  //     } else {
+  //       if (user?.accesToken) {
+  //         console.log('jugador')
+  //         navigation.navigate('Paso1')
+  //       }
+  //     }
+  //   }
+  // }, [user])
+
+  // useEffect(() => {
+  //   if (user?.user?.club || user?.user?.sportman) {
+  //     console.log("entra aca no se que ondaaaaaasdasdasdasdasdasdasa")
+  //     navigation.navigate('SiguiendoJugadores')
+  //   } else {
+  //     if (user?.user?.type === 'club') {
+  //       console.log("entra aca")
+  //       if (user?.accesToken) {
+  //         navigation.navigate('stepsClub')
+  //       }
+  //     } else {
+  //       if (user?.accesToken) {
+  //         console.log('jugador')
+  //         navigation.navigate('Paso1')
+  //       }
+  //     }
+  //   }
+  // }, [user])
+
   useEffect(() => {
-    if (user?.user?.club || user?.user?.sportman) {
-      navigation.navigate('SiguiendoJugadores')
-    } else {
-      if (user?.user?.type === 'club') {
-        if (user?.accesToken) {
-          navigation.navigate('stepsClub')
-        }
+    if (!loged) {
+      if (user?.user?.club || user?.user?.sportman) {
+        console.log("entra aca no se que ondaaaaaa");
+        navigation.navigate('SiguiendoJugadores');
+        dispatch(logedIn())
       } else {
-        if (user?.accesToken) {
-          console.log('jugador')
-          navigation.navigate('Paso1')
+        if (user?.user?.type === 'club') {
+          console.log("entra aca");
+          if (user?.accesToken) {
+            navigation.navigate('stepsClub');
+          }
+        } else {
+          if (user?.accesToken) {
+            console.log('jugador');
+            navigation.navigate('Paso1');
+          }
         }
       }
     }
-  }, [user])
+  }, [user]);
+
+
 
   useEffect(() => {
     getLocalUser()
@@ -286,7 +336,7 @@ const LoginSwitch = () => {
     )
 
   return (
-    <View style={{ backgroundColor: 'black' ,height:"100%"}}>
+    <View style={{ backgroundColor: 'black', height: height, width: width }}>
       {/* <Image
         style={[styles.loginSwitchChild]}
         contentFit="cover"
@@ -294,19 +344,19 @@ const LoginSwitch = () => {
       /> */}
 
       <View style={[styles.loginSwitchChild]}>
+
         <Image
           style={[styles.loginSwitchChild2]}
           contentFit="cover"
           source={require('../../assets/carrouselgif.gif')}
         />
       </View>
-      <View style={{width:"100%",height:800,position:"absolute",top:-110,right:-135}}>
-        <Image
-         style={{width:550,height:550,position:"absolute",top:-180,right:-50}}
-        
-          source={require('../../assets/lineasgif.png')}
-        />
-      </View>
+      <Image
+        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
+        contentFit="cover"
+        source={require('../../assets/sw.png')}
+      />
+
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -568,27 +618,37 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    // backgroundColor: 'red',
-    width: 1000,
-    height: 300,
-    top: 20,
+    width: 200,
+    height: 200,
+    top: -10,
     // bottom: '75%',
     position: 'absolute',
-    transform: [{ rotate: '45deg' }, { scale: 0.6 }],
-    left: -20,
+    transform: [{ rotate: '45deg' }],
+    right: -85,
     zIndex: 0,
     overflow: "hidden"
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: 600,
-    height: 600,
+    width: 270,
+    height: 270,
+    // bottom: '75%',
+    top: -20,
+    left: -40,
+    transform: [{ rotate: '-45deg' }],
+    zIndex: 0,
+    // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
+  },
+  loginSwitchChild3: {
+    // backgroundColor: 'red',
+    width: 100,
+    height: 100,
     // bottom: '75%',
     top: 0,
-    left:0,
+    left: 0,
     transform: [{ rotate: '-45deg' }, { scale: 1 }],
-    zIndex: 0,
+    zIndex: 99,
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
@@ -733,23 +793,23 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#00FF18',
     marginRight: 5
   },
   jugador2: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#999999',
     marginRight: 5
   },
   clubScouting: {
     color: '#999999',
-    fontSize: 12,
+    fontSize: 10,
     marginLeft: 5
   },
   clubScouting2: {
     color: '#00FF18',
-    fontSize: 12,
+    fontSize: 10,
     marginLeft: 5
   }
 })

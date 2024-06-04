@@ -44,6 +44,8 @@ const ConfigurarAnuncio = () => {
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedPriority, setSelectedPriority] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
+  const [selectedSport, setSelectedSport] = useState("")
+
 
   const [showRemunerationModal, setShowRemunerationModal] = useState()
   const [showPriorityModal, setShowPriorityModal] = useState()
@@ -93,6 +95,15 @@ const ConfigurarAnuncio = () => {
     'Veteranos (+30 años)'
   ]
 
+  const opciones = {
+    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
+    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
+    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
+    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
+  }
+
   const remunerationData = ['Si', 'No']
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -109,7 +120,7 @@ const ConfigurarAnuncio = () => {
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
-      console.log('settingData: ', data)
+      setSelectedSport(data.sports[0].name)
       return data
     } catch (error) {
       console.error('Error fetching club data:', error)
@@ -127,7 +138,7 @@ const ConfigurarAnuncio = () => {
     }
     fetchClubData()
   }, [])
-
+console.log(club,"opossss")
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
@@ -174,9 +185,9 @@ const ConfigurarAnuncio = () => {
                     backgroundColor: Color.bLACK1SPORTSMATCH
                   }}
                 >
-                  {allPositions
-                    .map((position) => {
-                      return { name: position?.name, id: position.id }
+                  {selectedSport && opciones[`futbol`]
+                    .map((position, index) => {
+                      return { name: position, id: index }
                     })
                     .map((item, index) => (
                       <TouchableOpacity
@@ -187,6 +198,7 @@ const ConfigurarAnuncio = () => {
                           alignItems: 'center'
                         }}
                         onPress={() => {
+                          console.log(item.name)
                           setSelectedPosition(item)
                           setShowModal(false)
                         }}
@@ -492,7 +504,7 @@ const ConfigurarAnuncio = () => {
                           : selectedRemuneration === 'No'
                             ? false
                             : null,
-                      posit: selectedPosition?.id,
+                      posit: selectedPosition.name,
                       paused: false
                     },
 

@@ -19,14 +19,13 @@ import {
 export class SportmanEntity extends BaseEntity {
   @Column({
     type: 'enum',
-    enum: ['player', 'coach'],
+    enum: ['player', 'coach', 'invitado'],
     default: 'player'
   })
-  type: 'player' | 'coach';
+  type: 'player' | 'coach'| 'invitado';
 
   @Column('simple-json')
   info: { [key: string]: any };
-
 
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })

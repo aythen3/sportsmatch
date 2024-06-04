@@ -18,7 +18,7 @@ const NavBarInferior = () => {
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
-  useEffect(() => {}, [activeIcon])
+  useEffect(() => { }, [activeIcon])
 
   useEffect(() => {
     if (Object.keys(sportman).length === 0) {
@@ -47,7 +47,7 @@ const NavBarInferior = () => {
   }
 
   const handleNavigation = () => {
-    if (user.user.type !== 'club') {
+    if (user?.user?.type !== 'club') {
       navigation.navigate('MiPerfil')
     } else {
       navigation.navigate('PerfilDatosPropioClub')
@@ -69,25 +69,27 @@ const NavBarInferior = () => {
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
-     {!user.user.club && (
-       <TouchableOpacity
-       onPress={() => handleIconPress('post')}
-       style={styles.deselected}
-     >
-       <HomeSVG isActive={activeIcon === 'post'} />
-     </TouchableOpacity>
-     )}
-      <TouchableOpacity
-        onPress={() => handleIconPress('message')}
-        style={activeIcon === 'message' ? styles.selected : styles.deselected}
-      >
-        <View style={styles.iconContainer}>
-          <MessageSVG
-            isActive={activeIcon === 'message'}
-            style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
-          />
-        </View>
-      </TouchableOpacity>
+      { user?.user?.sportman?.type !== 'invitado' && (
+        <TouchableOpacity
+          onPress={() => handleIconPress('post')}
+          style={styles.deselected}
+        >
+          <HomeSVG isActive={activeIcon === 'post'} />
+        </TouchableOpacity>
+      )}
+      {user?.user?.sportman?.type !== 'invitado' && (
+        <TouchableOpacity
+          onPress={() => handleIconPress('message')}
+          style={activeIcon === 'message' ? styles.selected : styles.deselected}
+        >
+          <View style={styles.iconContainer}>
+            <MessageSVG
+              isActive={activeIcon === 'message'}
+              style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         onPress={handleNavigation}
         style={activeIcon === 'profile' ? styles.selected : styles.deselected}

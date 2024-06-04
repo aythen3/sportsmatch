@@ -22,10 +22,11 @@ import { getAllOffers } from '../../redux/actions/offers'
 import { getAllNotifications } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 
+
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-  const { getClubMatches, getUserMatches } = useContext(Context)
+  const { getClubMatches, getUserMatches ,setActiveIcon } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
@@ -73,10 +74,9 @@ const SiguiendoJugadores = () => {
   //   console.log('user data from home: ', user)
   // }, [])
 
-  // useEffect(() => {
-  //   const userId = getUserId()
-  //   dispatch(getUserData(userId))
-  // }, [])
+  useEffect(() => {
+    setActiveIcon("diary")
+  }, [isFocused])
 
 
 
@@ -127,7 +127,7 @@ const SiguiendoJugadores = () => {
               description={publication?.description}
               imgPerfil={
                 publication?.author?.sportman
-                  ? publication?.author?.sportman?.info?.img_perfil
+                  ? publication?.author?.sportman?.info?.img_front
                   : publication?.author?.club?.img_perfil
               }
               image={publication?.image}
