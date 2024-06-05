@@ -22,6 +22,7 @@ import { LoginManager } from 'react-native-fbsdk-next'
 import { auth } from '../../firebaseConfig'
 import { signOut } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { clearSportman } from '../../redux/slices/sportman.slices'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -108,6 +109,7 @@ quieres `}</Text>
                   AsyncStorage.removeItem('googleAuth')
                   AsyncStorage.removeItem('facebookAuth')
                   dispatch(clearUser())
+                  dispatch(clearSportman())
                   dispatch(logedOut())
                 }}
               >

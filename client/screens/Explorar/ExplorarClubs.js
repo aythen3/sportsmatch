@@ -251,9 +251,9 @@ const ExplorarClubs = () => {
       <TouchableOpacity
         onPress={() => {
           if (item.author.type === 'club') {
-            navigation.navigate('ClubProfile', item)
+            navigation.navigate('Post', item)
           } else {
-            navigation.navigate('PerfilFeedVisualitzaciJug', item)
+            navigation.navigate('Post', item)
           }
         }}
         style={{ width: '100%', flex: 2 }}
