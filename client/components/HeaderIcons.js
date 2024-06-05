@@ -4,6 +4,10 @@ import { Image } from 'react-native'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
+import LogoTopSportman from './svg/LogoTopSportman'
+import LogoTopClub from './svg/LogoTopClub'
+import LineaVertical from './svg/LineaVerticalSVG'
+
 
 const HeaderIcons = () => {
   const navigation = useNavigation()
@@ -20,11 +24,11 @@ const HeaderIcons = () => {
         style={{
           flexDirection: 'row',
           backgroundColor: Color.bALONCESTO,
-          width: 100,
+          width: 140,
           height: 50,
           borderTopLeftRadius: 30,
           borderBottomLeftRadius: 30,
-          justifyContent: 'space-between',
+          justifyContent: 'space-evenly',
           alignItems: 'center',
           paddingHorizontal: 10
         }}
@@ -36,12 +40,15 @@ const HeaderIcons = () => {
               : navigation.navigate('OfertasEmitidas')
           }
         >
-          <Image
+          {/* <Image
             style={styles.frameInner}
             contentFit="cover"
             source={require('../assets/group-6583.png')}
-          />
+          /> */}
+
+          {!isSportman ? <LogoTopSportman></LogoTopSportman> : <LogoTopClub></LogoTopClub>}
         </Pressable>
+        <LineaVertical />
         <Pressable onPress={() => navigation.navigate('TusMatchs')}>
           <Image
             style={[styles.groupIcon1, styles.iconGroupLayout]}

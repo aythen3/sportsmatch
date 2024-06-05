@@ -10,8 +10,11 @@ import {
 } from 'react-native'
 import { Border, Color, FontFamily } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/core'
 
 const Feed = ({ externalId }) => {
+  const navigation = useNavigation()
+
   const [userPosts, setUserPosts] = useState([])
   const { user } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
@@ -41,7 +44,14 @@ const Feed = ({ externalId }) => {
       >
         {userPosts?.length > 0 ? (
           userPosts?.map((post, index) => (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity 
+            onPress={() => {
+         
+                navigation.navigate('Post', post)
+             
+              
+            }}
+            key={index}>
               <Image
                 style={styles.iconLayout}
                 contentFit="cover"

@@ -16,10 +16,10 @@ const FeedStats = () => {
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
-    return actualYear - sportman?.info.birthdate
+    return actualYear - sportman?.info?.birthdate || 2000
   }
 
-  const age = calculateAge(sportman?.info.birthdate)
+  const age = calculateAge(sportman?.info?.birthdate) || 2000
 
   if (user)
     return (
@@ -55,7 +55,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.attack} />
+                  <CircularStat value={sportman?.info.attack || 0} />
                 </View>
                 <View
                   style={{
@@ -92,7 +92,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.defense} />
+                  <CircularStat value={sportman?.info.defense || 0} />
                 </View>
                 <View
                   style={{
@@ -117,7 +117,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.speed} />
+                  <CircularStat value={sportman?.info.speed || 0} />
                 </View>
                 <View
                   style={{
@@ -165,7 +165,7 @@ const FeedStats = () => {
                   >
                     Bote
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop1} />
+                  <BarStatSVG value={sportman?.info.prop1 || 0} />
                 </View>
                 <Text
                   style={{
@@ -200,7 +200,7 @@ const FeedStats = () => {
                   >
                     Lanzamiento
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop2} />
+                  <BarStatSVG value={sportman?.info.prop2 || 0} />
                 </View>
                 <Text
                   style={{
@@ -235,7 +235,7 @@ const FeedStats = () => {
                   >
                     Dribling
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop3} />
+                  <BarStatSVG value={sportman?.info.prop3 || 0} />
                 </View>
                 <Text
                   style={{
@@ -330,13 +330,13 @@ const FeedStats = () => {
                     Deporte
                   </Text>
                   <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.sport.name}
+                    {sportman?.info.sport.name || "sin deporte"}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>Rol</Text>
                   <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.rol}
+                    {sportman?.info.rol || "sin rol"}
                   </Text>
                 </View>
               </View>
@@ -347,7 +347,7 @@ const FeedStats = () => {
               Más detalles sobre mí
             </Text>
             <Text style={[styles.apasionadoLderCompettvo, styles.ataqueClr]}>
-              {sportman?.info.description}
+              {sportman?.info.description || "sin descripcion"}
             </Text>
           </View>
         </View>

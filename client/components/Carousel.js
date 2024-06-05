@@ -47,6 +47,13 @@ function Carousel({
 
   const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
+  const [isTruncated, setIsTruncated] = useState(true);
+
+  const toggleTruncate = () => {
+    setIsTruncated(!isTruncated);
+  };
+
+
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
@@ -145,7 +152,7 @@ function Carousel({
           }
         }}
       >
-        <Image style={styles.imgPerfil} source={imgPerfil} />
+        <Image style={styles.imgPerfil} source={data?.author?.id === user?.user?.id ? user?.user?.sportman?.info?.img_perfil : imgPerfil} />
         <Text style={styles.nameText}>{name}</Text>
       </Pressable> 
       <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:0,fontSize:12}}>
@@ -185,6 +192,43 @@ function Carousel({
                 style={{ ...styles.postImage, zIndex: 990 }}
                 source={image}
               />
+              
+            </View>
+          </DoubleTap>
+        </View>
+        <View style={{ width: '100%', height: '100%' }} key={12}>
+          <DoubleTap
+            onDoubleTap={() => {
+              console.log('doble pressss2222')
+              handleLike()
+              setDoubleTapHeart(true)
+              // handleDoubleTap(); // Llama a la función de manejar el doble clic
+              // resetDoubleTap(); // Reinicia el estado de doubleTap
+            }}
+          >
+            <View
+              style={{ width: '100%', height: '100%', position: 'relative' }}
+            >
+              {doubleTapHeart && liked && (
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999
+                  }}
+                >
+                  <Like2SVG id={id}></Like2SVG>
+                </TouchableOpacity>
+              )}
+
+              <Image
+                style={{ ...styles.postImage, zIndex: 990 }}
+                source={image}
+              />
+              
             </View>
           </DoubleTap>
         </View>
@@ -197,7 +241,7 @@ function Carousel({
       </PagerView>
       <View style={{ padding: 5 }}>
         {authorId === user?.user?.id && (
-          <TouchableOpacity onPress={() => navigation.navigate('MiSuscripcin')}>
+          <TouchableOpacity onPress={() => navigation.navigate('PostPromocion',data)}>
             <LinearGradient
               style={styles.botonPromocionarPublicacion}
               start={{ x: 0, y: 1 }} // Cambiado de x: 1 a x: 0
@@ -237,7 +281,19 @@ function Carousel({
             description={description} // Pasa la descripción del post como prop
           />
         </View>
-        <Text style={styles.description}>{description}</Text>
+        <Text    numberOfLines={isTruncated ? 2 : undefined}  // Limita el número de líneas si está truncado
+        ellipsizeMode="tail" style={styles.description}>{description}</Text>
+         {isTruncated && description.split(' ').length > 2 * 10   ? ( // Ajusta la lógica de truncamiento
+        <TouchableOpacity onPress={toggleTruncate}>
+          <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver más</Text>
+        </TouchableOpacity>
+      ) : (
+        !isTruncated &&  (
+          <TouchableOpacity onPress={toggleTruncate}>
+            <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver menos</Text>
+          </TouchableOpacity>
+        )
+      )}
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.commentsTitle}>
             Ver los {commentCount} comentarios
@@ -296,7 +352,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontWeight: '700',
-    color: Color.wHITESPORTSMATCH
+    color: Color.wHITESPORTSMATCH,
+    
   },
   commentsTitle: {
     fontFamily: FontFamily.t4TEXTMICRO,

@@ -44,9 +44,9 @@ const SeleccionarImagen = () => {
   }
 
   const handleSeleccionarImagen = (imagen) => {
+    pickImage('a', imagen.uri)
     console.log('imagen: ', imagen)
     setSelectedImage(imagen)
-    pickImage('a', imagen.uri)
   }
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
@@ -83,9 +83,9 @@ const SeleccionarImagen = () => {
     console.log('on takePicture!')
     if (cameraReff?.current) {
       const photo = await cameraReff.current.takePictureAsync()
+      pickImage('a', photo.uri)
       console.log(photo)
       setSelectedImage(photo)
-      pickImage('a', photo.uri)
       // pickImageFromCamera(selectedPicture, photo.uri);
 
       setShowCamera(false)
