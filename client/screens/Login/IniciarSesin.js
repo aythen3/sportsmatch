@@ -24,7 +24,7 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan ,logedIn } from '../../redux/slices/users.slices'
+import { setIsSpotMan, logedIn, logedOut } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
 
@@ -46,7 +46,7 @@ const IniciarSesin = () => {
 
   const passwordInputRef = useRef(null)
 
-  const { user ,loged } = useSelector((state) => state.users)
+  const { user, loged } = useSelector((state) => state.users)
 
   // const { isPlayer } = route.params
 
@@ -63,23 +63,24 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    if(!loged){
-    if (user?.user?.club || user?.user?.sportman) {
-      setActiveIcon('diary')
-      navigation.navigate('SiguiendoJugadores')
-      dispatch(logedIn())
-    } else {
-      if (user?.user?.type === 'club') {
-        if (user?.accesToken) {
-          navigation.navigate('stepsClub')
-        }
+
+    if (!loged) {
+      if (user?.user?.club || user?.user?.sportman) {
+        setActiveIcon('diary')
+        navigation.navigate('SiguiendoJugadores')
+        dispatch(logedIn())
       } else {
-        if (user?.accesToken) {
-          console.log('jugador')
-          navigation.navigate('Paso1')
+        if (user?.user?.type === 'club') {
+          if (user?.accesToken) {
+            navigation.navigate('stepsClub')
+          }
+        } else {
+          if (user?.accesToken) {
+            console.log('jugador')
+            navigation.navigate('Paso1')
+          }
         }
       }
-    }
     }
   }, [user])
 
@@ -129,7 +130,7 @@ const IniciarSesin = () => {
           source={require('../../assets/lineasgif.png')}
         />
       </View> */}
-        <Image
+      <Image
         style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
         contentFit="cover"
         source={require('../../assets/sw.png')}

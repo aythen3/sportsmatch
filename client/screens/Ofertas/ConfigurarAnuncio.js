@@ -24,6 +24,7 @@ import CustomModal from '../../components/modals/CustomModal'
 import axiosInstance from '../../utils/apiBackend'
 import { getClub } from '../../redux/actions/club'
 import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
+import ScrollableModal from '../../components/modals/ScrollableModal'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -170,11 +171,10 @@ console.log(club,"opossss")
             >
               <Text style={styles.inputText}>
                 {selectedPosition
-                  ? selectedPosition?.name.charAt(0).toUpperCase() +
-                  selectedPosition?.name.slice(1).toLowerCase()
+                  ? selectedPosition
                   : 'Selecciona una posición'}
               </Text>
-              {showModal && (
+              {/* {showModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -226,6 +226,14 @@ console.log(club,"opossss")
                       </TouchableOpacity>
                     ))}
                 </View>
+              )} */}
+              {showModal && (
+                 <ScrollableModal
+                 visible={showModal}
+                 closeModal={()=> setShowModal(false)}
+                 onSelectItem={setSelectedPosition}
+                 options={opciones[`futbol`]}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -246,7 +254,7 @@ console.log(club,"opossss")
                     ? 'Mujer'
                     : 'Hombre'}
               </Text>
-              {showGenderModal && (
+              {/* {showGenderModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -285,6 +293,14 @@ console.log(club,"opossss")
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                   {showGenderModal && (
+                 <ScrollableModal
+                 visible={showGenderModal}
+                 closeModal={()=> setShowGenderModal(false)}
+                 onSelectItem={setSelectedGender}
+                 options={[`Hombre`,'Mujer']}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -295,14 +311,14 @@ console.log(club,"opossss")
             </Text>
             <TouchableOpacity
               onPress={() => {
-                setShowCategoryModal(!showCategoryModal)
+                setShowCategoryModal(true)
               }}
               style={{ zIndex: 8000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
                 {selectedCategory || 'Selecciona una categoría'}
               </Text>
-              {showCategoryModal && (
+              {/* {showCategoryModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -342,6 +358,14 @@ console.log(club,"opossss")
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                 {showCategoryModal && (
+                 <ScrollableModal
+                 visible={showCategoryModal}
+                 closeModal={()=> setShowCategoryModal(false)}
+                 onSelectItem={setSelectedCategory}
+                 options={categories}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -359,7 +383,7 @@ console.log(club,"opossss")
               <Text style={styles.inputText}>
                 {selectedPriority || 'Seleccione el nivel de urgencia'}
               </Text>
-              {showPriorityModal && (
+              {/* {showPriorityModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -399,6 +423,14 @@ console.log(club,"opossss")
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                 {showPriorityModal && (
+                 <ScrollableModal
+                 visible={showPriorityModal}
+                 closeModal={()=> setShowPriorityModal(false)}
+                 onSelectItem={setSelectedPriority}
+                 options={numbers}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -417,7 +449,7 @@ console.log(club,"opossss")
                 {selectedRemuneration || 'Seleccione retribución'}
               </Text>
 
-              {showRemunerationModal && (
+              {/* {showRemunerationModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -457,6 +489,14 @@ console.log(club,"opossss")
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                   {showRemunerationModal && (
+                 <ScrollableModal
+                 visible={showRemunerationModal}
+                 closeModal={()=> setShowRemunerationModal(false)}
+                 onSelectItem={setSelectedRemuneration}
+                 options={remunerationData}
+               />
               )}
             </TouchableOpacity>
           </View>

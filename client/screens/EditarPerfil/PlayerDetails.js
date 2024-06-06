@@ -21,6 +21,8 @@ import { cities } from '../../utils/cities'
 import { updateSportman } from '../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
+import ScrollableModal from '../../components/modals/ScrollableModal'
+import AñoNacimientoModal from '../../components/modals/AñoNacimientoModal'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -54,7 +56,7 @@ const PlayerDetails = () => {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
-      state:  actualClubName ? actualClubName : sportman?.info?.actualClub,
+      state: actualClubName ? actualClubName : sportman?.info?.actualClub,
       setState: setActualClubName,
       zIndex: 7000
     },
@@ -107,7 +109,7 @@ const PlayerDetails = () => {
   const cameraReff = useRef(null);
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
@@ -123,8 +125,11 @@ const PlayerDetails = () => {
     //     ? Camera.Constants.Type.front
     //     : Camera.Constants.Type.back
     // )
-    setFacing((prev)=> prev == "back" ? "front" : "back")
+    setFacing((prev) => prev == "back" ? "front" : "back")
 
+  }
+  const handleSelectAñoNacimiento = (año) => {
+    setBirthdate(año)
   }
 
   useEffect(() => {
@@ -143,10 +148,10 @@ const PlayerDetails = () => {
       // You can handle the taken photo here, such as displaying it or saving it.
     }
   };
-  if (!showCamera){
-  return (
-    <SafeAreaView style={styles.clubDetailsContainer}>
-      {/* {showCamera && (
+  if (!showCamera) {
+    return (
+      <SafeAreaView style={styles.clubDetailsContainer}>
+        {/* {showCamera && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -217,185 +222,206 @@ const PlayerDetails = () => {
           </Camera>
         </Modal>
       )} */}
-      <ScrollView
-        keyboardShouldPersistTaps={'always'}
-        style={{
-          width: '90%',
-                  }}
-      >
-        <View style={{ gap: 10, flex: 1 }}>
-          {/* =========================================================== */}
-          {/* ====================== TOP CONTAINER ====================== */}
-          {/* =========================================================== */}
-          <View style={styles.topWrapper}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('PD')
-                navigation.goBack()
+        <ScrollView
+          keyboardShouldPersistTaps={'always'}
+          style={{
+            width: '90%',
+          }}
+        >
+          <View style={{ gap: 10, flex: 1 }}>
+            {/* =========================================================== */}
+            {/* ====================== TOP CONTAINER ====================== */}
+            {/* =========================================================== */}
+            <View style={styles.topWrapper}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('PD')
+                  navigation.goBack()
+                }}
+              >
+                <Image
+                  style={styles.icon}
+                  contentFit="cover"
+                  source={require('../../assets/coolicon3.png')}
+                />
+              </TouchableOpacity>
+              <Text style={styles.clubDetailsTitle}>Detalles del usuario</Text>
+            </View>
+            {/* =========================================================== */}
+            {/* ======================= PROFILE PIC ======================= */}
+            {/* =========================================================== */}
+            <View
+              style={{
+                width: '100%',
+                gap: 5,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                borderRadius: 5
               }}
             >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require('../../assets/coolicon3.png')}
-              />
-            </TouchableOpacity>
-            <Text style={styles.clubDetailsTitle}>Detalles del usuario</Text>
-          </View>
-          {/* =========================================================== */}
-          {/* ======================= PROFILE PIC ======================= */}
-          {/* =========================================================== */}
-          <View
-            style={{
-              width: '100%',
-              gap: 5,
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              borderRadius: 5
-            }}
-          >
-            <View style={styles.profileImageContainer}>
-              {sportman?.info?.img_perfil && (
-                <Image
-                  style={{ width: '100%', height: '100%', borderRadius: 100 }}
-                  contentFit="cover"
-                  source={{
-                    uri: provisoryProfileImage || sportman?.info?.img_perfil
+              <View style={styles.profileImageContainer}>
+                {sportman?.info?.img_perfil && (
+                  <Image
+                    style={{ width: '100%', height: '100%', borderRadius: 100 }}
+                    contentFit="cover"
+                    source={{
+                      uri: provisoryProfileImage || sportman?.info?.img_perfil
+                    }}
+                  />
+                )}
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedPicture('profile')
+                    setShowCamera(true)
                   }}
-                />
-              )}
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedPicture('profile')
-                  setShowCamera(true)
-                }}
-                style={{
-                  right: 0,
-                  position: 'absolute',
-                  width: 35,
-                  height: 35,
-                  borderRadius: 100,
-                  backgroundColor: '#252525',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Image
-                  style={{ width: 14, height: 14 }}
-                  contentFit="cover"
-                  source={require('../../assets/camera.png')}
-                />
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              style={styles.orangeButton}
-              onPress={() => pickImage('profile')}
-            >
-              <Text style={styles.mediumText}>Subir foto de perfil</Text>
-            </TouchableOpacity>
-            <Text style={styles.smallText}>Max 1mb, jpeg</Text>
-          </View>
-          {/* =========================================================== */}
-          {/* ======================== COVER PIC ======================== */}
-          {/* =========================================================== */}
-          <View
-            style={{
-              width: '100%',
-              gap: 5,
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              borderRadius: 5
-            }}
-          >
-            <View style={styles.coverImageContainer}>
-              {sportman?.info?.img_front && (
-                <Image
-                  style={{ width: '100%', height: '100%', borderRadius: 8 }}
-                  contentFit="cover"
-                  source={{
-                    uri: provisoryCoverImage || sportman?.info?.img_front
+                  style={{
+                    right: 0,
+                    position: 'absolute',
+                    width: 35,
+                    height: 35,
+                    borderRadius: 100,
+                    backgroundColor: '#252525',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
-                />
-              )}
+                >
+                  <Image
+                    style={{ width: 14, height: 14 }}
+                    contentFit="cover"
+                    source={require('../../assets/camera.png')}
+                  />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
-                onPress={() => {
-                  setSelectedPicture('cover')
-                  setShowCamera(true)
-                }}
-                style={{
-                  right: 0,
-                  position: 'absolute',
-                  top: -17,
-                  width: 35,
-                  height: 35,
-                  borderRadius: 100,
-                  backgroundColor: '#252525',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
+                style={styles.orangeButton}
+                onPress={() => pickImage('profile')}
               >
-                <Image
-                  style={{ width: 14, height: 14 }}
-                  contentFit="cover"
-                  source={require('../../assets/camera.png')}
-                />
+                <Text style={styles.mediumText}>Subir foto de perfil</Text>
               </TouchableOpacity>
+              <Text style={styles.smallText}>Max 1mb, jpeg</Text>
             </View>
-            <TouchableOpacity
-              style={styles.orangeButton}
-              onPress={() => pickImage('cover')}
+            {/* =========================================================== */}
+            {/* ======================== COVER PIC ======================== */}
+            {/* =========================================================== */}
+            <View
+              style={{
+                width: '100%',
+                gap: 5,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                borderRadius: 5
+              }}
             >
-              <Text style={styles.mediumText}>Subir foto de portada</Text>
-            </TouchableOpacity>
-            <Text style={styles.smallText}>Max 1mb, jpeg</Text>
-          </View>
-          {/* =========================================================== */}
-          {/* ========================== INPUTS ========================= */}
-          {/* =========================================================== */}
-          <View style={{ gap: 20, flex: 1 }}>
-            <View style={{ gap: 5 }}>
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
-                {'Selecciona tu sexo'}
-              </Text>
-              <CustomPicker
-                zIndex={10000}
-                array={['Male', 'Female']}
-                placeholder={ sportman.info.gender ? sportman.info.gender.toString() : 'Selecciona tu sexo'}
-                state={gender}
-                setState={setGender}
-                showModal={showGenderModal}
-                setShowModal={setShowGenderModal}
-              />
+              <View style={styles.coverImageContainer}>
+                {sportman?.info?.img_front && (
+                  <Image
+                    style={{ width: '100%', height: '100%', borderRadius: 8 }}
+                    contentFit="cover"
+                    source={{
+                      uri: provisoryCoverImage || sportman?.info?.img_front
+                    }}
+                  />
+                )}
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedPicture('cover')
+                    setShowCamera(true)
+                  }}
+                  style={{
+                    right: 0,
+                    position: 'absolute',
+                    top: -17,
+                    width: 35,
+                    height: 35,
+                    borderRadius: 100,
+                    backgroundColor: '#252525',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Image
+                    style={{ width: 14, height: 14 }}
+                    contentFit="cover"
+                    source={require('../../assets/camera.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.orangeButton}
+                onPress={() => pickImage('cover')}
+              >
+                <Text style={styles.mediumText}>Subir foto de portada</Text>
+              </TouchableOpacity>
+              <Text style={styles.smallText}>Max 1mb, jpeg</Text>
             </View>
+            {/* =========================================================== */}
+            {/* ========================== INPUTS ========================= */}
+            {/* =========================================================== */}
+            <View style={{ gap: 20, flex: 1 }}>
+              <View style={{ gap: 5 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  {'Selecciona tu sexo'}
+                </Text>
+                <CustomPicker
+                  zIndex={10000}
+                  array={['Male', 'Female']}
+                  placeholder={sportman.info.gender ? sportman.info.gender.toString() : 'Selecciona tu sexo'}
+                  state={gender}
+                  setState={setGender}
+                  showModal={false}
+                  setShowModal={setShowGenderModal}
+                />
+                <ScrollableModal
+                  visible={showGenderModal}
+                  closeModal={()=>setShowGenderModal(false)}
+                  onSelectItem={setGender}
+                  options={['Hombre','Mujer']}
+                />
+              </View>
 
-            <View style={{ gap: 5, zIndex: 9000 }}>
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
-                {'Año de nacimiento'}
-              </Text>
-              <TextInput
-                value={birthdate}
-                onChangeText={setBirthdate}
-                placeholder={sportman.info.birthdate && sportman.info.birthdate.toString() || 'Año de nacimiento...'}
-                keyboardType={'numeric'}
-                placeholderTextColor="#999999"
-                style={{
-                  flex: 1,
-                  borderWidth: 0.5,
-                  borderColor: '#fff',
-                  borderRadius: 50,
-                  paddingLeft: 15,
-                  height: 40,
-                  fontSize: 15,
-                  color: '#fff'
-                }}
-              />
-            </View>
+              <View style={{ gap: 5, zIndex: 9000 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  {'Año de nacimiento'}
+                </Text>
+                <CustomPicker
+                  zIndex={10000}
+                  array={['Male', 'Female']}
+                  placeholder={sportman.info.birthdate ? sportman.info.birthdate.toString() : 'Año de nacimiento...'}
+                  state={birthdate}
+                  setState={setBirthdate}
+                  showModal={false}
+                  setShowModal={setShowBirthdateModal}
+                />
+                {/* <TextInput
+                  value={birthdate}
+                  onChangeText={setBirthdate}
+                  placeholder={sportman.info.birthdate && sportman.info.birthdate.toString() || 'Año de nacimiento...'}
+                  keyboardType={'numeric'}
+                  placeholderTextColor="#999999"
+                  style={{
+                    flex: 1,
+                    borderWidth: 0.5,
+                    borderColor: '#fff',
+                    borderRadius: 50,
+                    paddingLeft: 15,
+                    height: 40,
+                    fontSize: 15,
+                    color: '#fff'
+                  }}
+                /> */}
+                <AñoNacimientoModal
+                  visible={showBirthdateModal}
+                  closeModal={()=> setShowBirthdateModal(false)}
+                  onSelectAñoNacimiento={handleSelectAñoNacimiento}
+                />
 
-            <View style={{ gap: 5 }}>
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
-                {'Lugar de residencia'}
-              </Text>
-              {/* <CustomPicker
+              </View>
+
+              <View style={{ gap: 5 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  {'Lugar de residencia'}
+                </Text>
+                {/* <CustomPicker
                 zIndex={8000}
                 cities={true}
                 array={cities.map((city) => city.city).sort()}
@@ -405,7 +431,7 @@ const PlayerDetails = () => {
                 showModal={showCityModal}
                 setShowModal={setShowCityModal}
               /> */}
-              <TextInput    style={{
+                <TextInput style={{
                   flex: 1,
                   borderWidth: 0.5,
                   borderColor: '#fff',
@@ -415,80 +441,81 @@ const PlayerDetails = () => {
                   fontSize: 15,
                   color: '#fff'
                 }}
-                value={city}
-                onChangeText={(e)=> setCity(e)}
-                placeholderTextColor={"white"}  placeholder={ sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}></TextInput>
-            </View>
-
-            {inputs.map((input, index) => (
-              <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
-                  {input.title}
-                </Text>
-                <TextInput
-                  multiline={input.textArea && true}
-                  numberOfLines={input.textArea && 3}
-                  value={input.state}
-                  onChangeText={input.setState}
-                  placeholder={input.placeHolder}
-                  keyboardType={input.type === 'text' ? 'default' : 'numeric'}
-                  placeholderTextColor="#999999"
-                  style={{
-                    flex: 1,
-                    borderWidth: 0.5,
-                    borderColor: '#fff',
-                    textAlignVertical: input.textArea && 'top',
-                    borderRadius: input.textArea ? 10 : 50,
-                    paddingTop: input.textArea && 10,
-                    paddingLeft: 15,
-                    height: input.textArea ? 170 : 40,
-                    fontSize: 15,
-                    color: '#fff'
-                  }}
-                />
+                  value={city}
+                  onChangeText={(e) => setCity(e)}
+                  placeholderTextColor={"white"} placeholder={sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}></TextInput>
               </View>
-            ))}
-          </View>
-          {/* =========================================================== */}
-          {/* ========================== INPUTS ========================= */}
-          {/* =========================================================== */}
-          <TouchableOpacity
-            style={{
-              height: 40,
-              marginTop: 10,
-              zIndex: 5000,
-              marginBottom: 10,
-              backgroundColor: '#fff',
-              borderRadius: 50,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            disabled={
-              !city &&
-              !profileImage &&
-              !coverImage &&
-              !userDescription &&
-              !birthdate &&
-              !actualClubName &&
-              !gender
-            }
-            onPress={handleUpdateUserData}
-          >
-            <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
-              Aceptar
-            </Text>
-          </TouchableOpacity>
-          {/* =========================================================== */}
-          {/* =========================================================== */}
-          {/* =========================================================== */}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  )} else {
-    return(
-      <View style={{zIndex: 9999, height: "100%" }}>
 
-        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e)=>console.log(e,"esto es e")}
+              {inputs.map((input, index) => (
+                <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                    {input.title}
+                  </Text>
+                  <TextInput
+                    multiline={input.textArea && true}
+                    numberOfLines={input.textArea && 3}
+                    value={input.state}
+                    onChangeText={input.setState}
+                    placeholder={input.placeHolder}
+                    keyboardType={input.type === 'text' ? 'default' : 'numeric'}
+                    placeholderTextColor="#999999"
+                    style={{
+                      flex: 1,
+                      borderWidth: 0.5,
+                      borderColor: '#fff',
+                      textAlignVertical: input.textArea && 'top',
+                      borderRadius: input.textArea ? 10 : 50,
+                      paddingTop: input.textArea && 10,
+                      paddingLeft: 15,
+                      height: input.textArea ? 170 : 40,
+                      fontSize: 15,
+                      color: '#fff'
+                    }}
+                  />
+                </View>
+              ))}
+            </View>
+            {/* =========================================================== */}
+            {/* ========================== INPUTS ========================= */}
+            {/* =========================================================== */}
+            <TouchableOpacity
+              style={{
+                height: 40,
+                marginTop: 10,
+                zIndex: 5000,
+                marginBottom: 10,
+                backgroundColor: '#fff',
+                borderRadius: 50,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              disabled={
+                !city &&
+                !profileImage &&
+                !coverImage &&
+                !userDescription &&
+                !birthdate &&
+                !actualClubName &&
+                !gender
+              }
+              onPress={handleUpdateUserData}
+            >
+              <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
+                Aceptar
+              </Text>
+            </TouchableOpacity>
+            {/* =========================================================== */}
+            {/* =========================================================== */}
+            {/* =========================================================== */}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    )
+  } else {
+    return (
+      <View style={{ zIndex: 9999, height: "100%" }}>
+
+        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e) => console.log(e, "esto es e")}
 
         // cameraType="back"
         >

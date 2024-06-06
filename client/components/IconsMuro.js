@@ -17,6 +17,7 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
 
   const { findedLike } = useSelector((state) => state.post)
 
@@ -30,6 +31,7 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
 
  
   const handleShare = async () => {
+    if(sportman?.type == "invitado") return
     try {
       // Descargar el archivo desde la URL remota
       const localUri = `${FileSystem.cacheDirectory}image.jpg`;
@@ -42,7 +44,7 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
         // Compartir el archivo si existe
         if (fileInfo.exists) {
           // Esperar un segundo antes de llamar a Sharing.shareAsync()
-          await Sharing.shareAsync(localUri,{dialogTitle:`${user.user.nickname} visitar este perfil en SportsMatch!`});
+          await Sharing.shareAsync(localUri,{dialogTitle:`Se te ha compartido una publicación de SportMatch. Si no tienes la aplicación descárgala “aqui (texto con link futuro)”`});
          
         } else {
           console.log('El archivo no existe.');
@@ -58,6 +60,8 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
 
  
   const handleLike = async () => {
+    if(sportman?.type == "invitado") return
+
     // Invertir el estado de liked
     setLiked(!liked);
 
@@ -129,7 +133,7 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
       >
         <CommentSVG />
       </TouchableOpacity>
-      {modalVisible && (
+      {modalVisible && sportman?.type !== "invitado" && (
         <CommentSection
           visible={modalVisible}
           closeModal={closeModal}

@@ -22,35 +22,37 @@ const ScrollableModal = ({
   console.log('scrollHeight: ', scrollHeight)
   return (
     <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={closeModal}>
-      <TouchableWithoutFeedback onPress={closeModal}>
+      <TouchableWithoutFeedback style={{ width: "100%" }} onPress={closeModal}>
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height:300,
-            width:"100%",
-            bottom:0,
-            position:"absolute",
+            width: "100%",
+            paddingVertical: 30,
+            bottom: 0,
+            position: "absolute",
+            maxHeight: 300,
             backgroundColor: Color.bLACK1SPORTSMATCH,
             borderWidth: 0.5,
             borderColor: Color.wHITESPORTSMATCH,
-            borderTopEndRadius:20,
-            borderTopStartRadius:20,
+            borderTopEndRadius: 20,
+            borderTopStartRadius: 20,
           }}
         >
+          <View style={{
+            height: 6,
+            width: 50,
+            borderRadius: 20,
+            backgroundColor: Color.wHITESPORTSMATCH,
+            alignSelf:"center",
+            marginBottom:12
+
+          }} />
           <View
             style={{
-           
-              backgroundColor: Color.bLACK1SPORTSMATCH,
-              maxHeight: 205,
-              width: '85%',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              alignItems: 'center',
+
+              width: '100%',
               paddingHorizontal: 5,
               borderRadius: 10,
               elevation: 5,
-              alignItems: 'center'
             }}
           >
             <ScrollView
@@ -81,12 +83,13 @@ const ScrollableModal = ({
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1
+    width: "100%",
   },
   modalContent: {
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    width: "100%",
+    height: "100%",
   },
   optionButton: {
     paddingVertical: 8,
@@ -96,7 +99,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc'
   },
   optionText: {
+    width: "100%",
     fontSize: 16,
+    textAlign: "center",
     color: Color.gREY2SPORTSMATCH
   }
 })

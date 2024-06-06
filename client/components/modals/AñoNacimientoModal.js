@@ -26,7 +26,15 @@ const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) =>
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Selecciona tu año de nacimiento</Text>
+        <View style={{
+            height: 6,
+            width: 50,
+            borderRadius: 20,
+            backgroundColor: Color.wHITESPORTSMATCH,
+            alignSelf:"center",
+            marginBottom:12
+
+          }} />
           <ScrollView keyboardShouldPersistTaps={'always'}>
             {años.map((año, index) => (
               <Pressable
@@ -41,9 +49,9 @@ const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) =>
               </Pressable>
             ))}
           </ScrollView>
-          <Pressable style={styles.cancelButton} onPress={closeModal}>
+          {/* <Pressable style={styles.cancelButton} onPress={closeModal}>
             <Text style={styles.cancelText}>Cancelar</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     </Modal>
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    maxHeight: '60%',
+    maxHeight: 300,
     bottom:0,
     position:"absolute",
     width:"100%",
@@ -66,13 +74,9 @@ const styles = StyleSheet.create({
     borderColor: Color.wHITESPORTSMATCH,
     borderTopEndRadius:20,
     borderTopStartRadius:20,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
     padding: 20,
     borderRadius: 10,
     elevation: 5,
-    alignItems: 'center'
   },
   modalTitle: {
     fontSize: 18,
@@ -88,6 +92,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc'
   },
   optionText: {
+    textAlign:"center",
+    width:"100%",
     fontSize: 16,
     color: Color.gREY2SPORTSMATCH
   },

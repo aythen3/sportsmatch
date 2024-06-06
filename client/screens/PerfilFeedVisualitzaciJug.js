@@ -19,6 +19,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
+  
   const data = router.params
   //console.log('data,', router.params)
 

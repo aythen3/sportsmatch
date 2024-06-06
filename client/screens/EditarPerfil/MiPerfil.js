@@ -67,20 +67,38 @@ const {setActiveIcon} = useContext(Context)
         >
           <View style={styles.imagenInformacion1}>
             <View style={{ position: 'relative' }}>
-              <Image
-                style={{
-                  height: 110,
-                  borderRadius: 100,
-                  width: 110,
-                  zIndex: 1000,
-                  borderWidth: 3,
-                  borderColor: '#000'
-                }}
-                contentFit="cover"
-                source={{
-                  uri: sportman?.info?.img_perfil
-                }}
-              />
+              {sportman?.info?.img_perfil && (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    zIndex: 1000,
+                    borderWidth: 3,
+                    borderColor: '#000'
+                  }}
+                  contentFit="cover"
+                  source={{
+                    uri: sportman?.info?.img_perfil 
+                  }}
+                />
+
+              )}
+                    {!sportman?.info?.img_perfil && (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    zIndex: 1000,
+                    borderWidth: 3,
+                    borderColor: '#000'
+                  }}
+                  contentFit="cover"
+                  source={require("../../assets/avatar.png")}
+                />
+
+              )}
               <View
                 style={{
                   position: 'absolute',
@@ -116,9 +134,9 @@ const {setActiveIcon} = useContext(Context)
                   { width: '100%' }
                 ]}
               >
-                {sportman?.info?.actualClub?.length > 0
-                  ? `Jugando en ${sportman?.info?.actualClub}`
-                  : 'Sin club actualmente'}
+                {sportman?.info?.description?.length > 0
+                  ? `Jugando en ${sportman?.info?.description}`
+                  : 'Sin descripción'}
               </Text>
             </View>
           </View>

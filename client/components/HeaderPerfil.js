@@ -47,6 +47,7 @@ const HeaderPerfil = ({
   const [matchSended, setMatchSended] = useState(false)
   const [liked, setLiked] = useState(false)
 
+  const { sportman } = useSelector((state) => state.sportman)
 
   const getOffersById = async (id) => {
     console.log('id from getoffers: ', id)
@@ -201,6 +202,8 @@ const HeaderPerfil = ({
           {!isSportman ? (
             <Pressable
             onPress={() => {
+              if(sportman?.type == 'invitado') return
+
               setLiked(!liked)
               let actualUser = _.cloneDeep(user)
               const actualFollowers =
@@ -276,6 +279,7 @@ const HeaderPerfil = ({
           ) : (
             <Pressable
               onPress={() => {
+                if(sportman?.type == 'invitado') return
                 setLiked(!liked)
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
@@ -350,11 +354,14 @@ const HeaderPerfil = ({
           {isSportman && external && (
             <TouchableOpacity
               onPress={() =>
+              {  
+                if(sportman?.type == 'invitado') return
+
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data.author.id,
                   receiverName: data.author.nickname,
                   profilePic: avatar
-                })
+                })}
               }
               style={styles.leftButton}
             >
@@ -413,6 +420,7 @@ const HeaderPerfil = ({
             )?.length === 0 ? (
             <Pressable
               onPress={() => {
+
                 setMatchSended(true)
                 dispatch(
                   sendMatch({

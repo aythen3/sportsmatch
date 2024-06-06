@@ -38,6 +38,7 @@ function Carousel({
 
   const { user } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
+  const { sportman } = useSelector((state) => state.sportman)
 
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
@@ -57,6 +58,7 @@ function Carousel({
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
+      if(sportman?.type == "invitado") return
       // Cambia el estado a true
       setDoubleTapHeart(true)
 
@@ -91,6 +93,7 @@ function Carousel({
   }
 
   const handleLike = async () => {
+    if(sportman?.type == "invitado") return
     // Invertir el estado de liked
     setLiked(!liked)
 
@@ -155,8 +158,8 @@ function Carousel({
         <Image style={styles.imgPerfil} source={data?.author?.id === user?.user?.id ? user?.user?.sportman?.info?.img_perfil : imgPerfil} />
         <Text style={styles.nameText}>{name}</Text>
       </Pressable> 
-      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:0,fontSize:12}}>
-       {`${dia} - ${mes} - ${año}`}
+      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:4,fontSize:12,alignSelf:"flex-end"}}>
+       {`${dia} - ${mes} - ${año.slice(2,4)}`}
       </Text>
      </View>
       <PagerView style={styles.postContainer} initialPage={0}>

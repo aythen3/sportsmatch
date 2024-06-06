@@ -23,7 +23,7 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { logedIn, setIsSpotMan } from '../../redux/slices/users.slices'
+import { logedIn, logedOut, setIsSpotMan } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -51,7 +51,7 @@ const LoginSwitch = () => {
   console.log(width, "-----", height, "medidas")
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user ,loged} = useSelector((state) => state.users)
+  const { isSportman, user, loged } = useSelector((state) => state.users)
   const isFocused = useIsFocused();
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
@@ -89,6 +89,9 @@ const LoginSwitch = () => {
       console.log('login with normal user...')
       const valuesUser = await JSON.parse(normalUserAuth)
       console.log('valuesuser: ', valuesUser)
+      // const res = await AsyncStorage.removeItem('userAuth')
+      // console.log('resres: ', res)
+
       dispatch(login(valuesUser))
         .then(async (response) => {
           console.log('response: ', response.payload)
@@ -100,6 +103,7 @@ const LoginSwitch = () => {
         .catch((error) => {
           console.error(error)
         })
+
       return
     }
   }
@@ -342,20 +346,20 @@ const LoginSwitch = () => {
         contentFit="cover"
         source={require('../../assets/fondo-inicial.png')}
       /> */}
-
-      <View style={[styles.loginSwitchChild]}>
-
+      <View style={{maxWidth:width}}>
+        <View style={[styles.loginSwitchChild]}>
+          <Image
+            style={[styles.loginSwitchChild2]}
+            contentFit="cover"
+            source={require('../../assets/carrouselgif.gif')}
+          />
+        </View>
         <Image
-          style={[styles.loginSwitchChild2]}
+          style={{ width: width, height: 250, position: "absolute", top: 0, right: 0, zIndex: 999 }}
           contentFit="cover"
-          source={require('../../assets/carrouselgif.gif')}
+          source={require('../../assets/sw.png')}
         />
       </View>
-      <Image
-        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
-        contentFit="cover"
-        source={require('../../assets/sw.png')}
-      />
 
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
@@ -618,24 +622,24 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    width: 200,
+    width: 220,
     height: 200,
     top: -10,
+    justifyContent:"flex-end",
+    flexDirection:"row",
     // bottom: '75%',
     position: 'absolute',
     transform: [{ rotate: '45deg' }],
-    right: -85,
+    right: "-26%",
     zIndex: 0,
     overflow: "hidden"
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: 270,
-    height: 270,
+    width: "130%",
+    height: "180%",
     // bottom: '75%',
-    top: -20,
-    left: -40,
     transform: [{ rotate: '-45deg' }],
     zIndex: 0,
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen

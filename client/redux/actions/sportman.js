@@ -29,11 +29,20 @@ export const updateSportman = createAsyncThunk(
   async (body) => {
     console.log('body: ', body)
     try {
-      const { id, newData } = body
-      const { data } = await axiosInstance.patch(`sportman/${id}`, {
-        info: newData
-      })
-      return data
+      const { id, newData , type } = body
+   if(!type){
+    const { data } = await axiosInstance.patch(`sportman/${id}`, {
+      info: newData
+      
+    })
+    return data
+   } else{
+    const { data } = await axiosInstance.patch(`sportman/${id}`, {
+      info: newData,
+      type:'sportman'
+    })
+    return data
+   }
     } catch (error) {
       throw new Error(error)
     }
