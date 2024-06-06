@@ -25,7 +25,7 @@ import Paso3Profesional from './Paso3Profesional'
 import Paso4Jugador from './Paso4Jugador'
 import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
-import { createSportman } from '../../redux/actions/sportman'
+import { createSportman, updateSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import Visores from './visores'
@@ -59,6 +59,7 @@ const Paso1 = () => {
   const [profesional, setProfesional] = useState(false)
   const [invitado, setInvitado] = useState(false)
   const {height, width} = useWindowDimensions();
+  const { sportman:sportmanRedux } = useSelector((state) => state.sportman)
 
   console.log(width,"-----",height,"medidas")
   const [invitadoStep, setInvitadoStep] = useState(0)
@@ -79,7 +80,7 @@ const Paso1 = () => {
     rol: profesionalType,
     sport: sport.name,
     yearsOfExperience: '',
-    city: city,
+    city: '',
     actualClub: '',
     description: ''
   })
@@ -113,10 +114,14 @@ const Paso1 = () => {
     if (selectedRole == null) {
       return
     }
-    if (selectedRole === 'Invitado') {
+    if (selectedRole === 'Invitado' ) {
+      if(Object.keys(sportmanRedux).length !== 0){
+        navigation.navigate('SiguiendoJugadores')
+     return 
+      }
       const fullData = {
         ...sportmanValues,
-        sport:"Invitado",
+        sport: "Invitado",
         img_perfil: profileImage || '',
         img_front: coverImage || '',
         attack: data?.attack || '100',
@@ -138,6 +143,7 @@ const Paso1 = () => {
         userId: user.user.id
       }
       console.log('final body: ', body)
+ 
       dispatch(createSportman(body)).then((response) => {
         console.log('reponse: ',response) 
         dispatch(
@@ -148,6 +154,8 @@ const Paso1 = () => {
         )
         navigation.navigate('SiguiendoJugadores')
       })
+    
+   
     }
 
     if (selectedRole === 'Profesional del deporte') {
@@ -207,6 +215,8 @@ const Paso1 = () => {
 
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
       if (stepsSportman === 2 ) {
+
+
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
@@ -230,16 +240,36 @@ const Paso1 = () => {
           userId: user.user.id
         }
         console.log('final body: ', body)
-        dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ')
-          dispatch(
-            setInitialSportman({
-              id: response.payload.id,
-              ...body.sportmanData
-            })
-          )
-          navigation.navigate('SiguiendoJugadores')
-        })
+        if(Object.keys(sportmanRedux).length == 0){
+          
+          dispatch(createSportman(body)).then((response) => {
+            console.log('reponse: ')
+            dispatch(
+              setInitialSportman({
+                id: response.payload.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        } else {
+          console.log(sportmanRedux.id,"usuariooo")
+          const upd = {
+            id: sportmanRedux.id,
+            newData : fullData,
+            type:"player"
+          }
+          dispatch(updateSportman(upd)).then((response) => {
+            console.log('reponse: ',response) 
+            dispatch(
+              setInitialSportman({
+                id: sportmanRedux.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        }
       }
     } else {
       console.log('stepsProfesional:', stepsProfesional)
@@ -263,16 +293,36 @@ const Paso1 = () => {
           userId: user.user.id
         }
         console.log('final body: ', body)
-        dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ', response.payload)
-          dispatch(
-            setInitialSportman({
-              id: response.payload.id,
-              ...body.sportmanData
-            })
-          )
-          navigation.navigate('SiguiendoJugadores')
-        })
+        if(Object.keys(sportmanRedux).length == 0){
+          
+          dispatch(createSportman(body)).then((response) => {
+            console.log('reponse: ')
+            dispatch(
+              setInitialSportman({
+                id: response.payload.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        } else {
+          console.log(sportmanRedux.id,"usuariooo")
+          const upd = {
+            id: sportmanRedux.id,
+            newData : fullData,
+            type:"player"
+          }
+          dispatch(updateSportman(upd)).then((response) => {
+            console.log('reponse: ',response) 
+            dispatch(
+              setInitialSportman({
+                id: sportmanRedux.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        }
       }
     }
   }

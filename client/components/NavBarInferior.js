@@ -36,10 +36,23 @@ const NavBarInferior = () => {
         navigation.navigate('ExplorarClubs')
         break
       case 'post':
-        navigation.navigate('SeleccionarImagen')
+        if (sportman.type == 'invitado') {
+          navigation.navigate('Paso1')
+
+        } else {
+
+          navigation.navigate('SeleccionarImagen')
+        }
         break
       case 'message':
-        navigation.navigate('TusNotificaciones1')
+        if (sportman.type == 'invitado') {
+          navigation.navigate('Paso1')
+
+        } else {
+          navigation.navigate('TusNotificaciones1')
+
+        }
+
         break
       default:
         break
@@ -47,6 +60,10 @@ const NavBarInferior = () => {
   }
 
   const handleNavigation = () => {
+    if (sportman?.type == 'invitado') {
+      return navigation.navigate('Paso1')
+
+    }
     if (user?.user?.type !== 'club') {
       navigation.navigate('MiPerfil')
     } else {
@@ -54,6 +71,11 @@ const NavBarInferior = () => {
     }
     setActiveIcon('profile')
   }
+
+
+  const imgPerfil =
+    (user?.user?.type !== 'club' && sportman?.info?.img_perfil) ||
+    (user?.user?.club?.img_perfil && user?.user?.club?.img_perfil);
 
   return (
     <View style={styles.container}>
@@ -69,41 +91,61 @@ const NavBarInferior = () => {
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
-      { user?.user?.sportman?.type !== 'invitado' && (
-        <TouchableOpacity
-          onPress={() => handleIconPress('post')}
-          style={styles.deselected}
-        >
-          <HomeSVG isActive={activeIcon === 'post'} />
-        </TouchableOpacity>
-      )}
-      {user?.user?.sportman?.type !== 'invitado' && (
-        <TouchableOpacity
-          onPress={() => handleIconPress('message')}
-          style={activeIcon === 'message' ? styles.selected : styles.deselected}
-        >
-          <View style={styles.iconContainer}>
-            <MessageSVG
-              isActive={activeIcon === 'message'}
-              style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
-            />
-          </View>
-        </TouchableOpacity>
-      )}
+
+      <TouchableOpacity
+        onPress={() => handleIconPress('post')}
+        style={styles.deselected}
+      >
+        <HomeSVG isActive={activeIcon === 'post'} />
+      </TouchableOpacity>
+
+
+      <TouchableOpacity
+        onPress={() => handleIconPress('message')}
+        style={activeIcon === 'message' ? styles.selected : styles.deselected}
+      >
+        <View style={styles.iconContainer}>
+          <MessageSVG
+            isActive={activeIcon === 'message'}
+            style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
+          />
+        </View>
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={handleNavigation}
         style={activeIcon === 'profile' ? styles.selected : styles.deselected}
       >
-        <Image
-          style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
-          contentFit="cover"
-          source={{
-            uri:
-              user?.user?.type !== 'club' && sportman?.info?.img_perfil
-                ? sportman?.info?.img_perfil
-                : user?.user?.club?.img_perfil && user?.user?.club?.img_perfil
-          }}
-        />
+
+        {/* {sportman?.info?.img_perfil || user?.user?.club?.img_perfil && (
+          <Image
+            style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
+            contentFit="cover"
+            source={{
+              uri:
+                user?.user?.type !== 'club' && sportman?.info?.img_perfil
+                  ? sportman?.info?.img_perfil
+                  : user?.user?.club?.img_perfil && user?.user?.club?.img_perfil
+            }}
+          />
+
+          
+        )} */}
+        {imgPerfil && (
+          <Image
+            style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
+            contentFit="cover"
+            source={{ uri: imgPerfil }}
+          />
+        )}
+        {sportman?.info?.img_perfil == '' && (
+          <Image
+            style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
+            contentFit="cover"
+            source={require("../assets/avatar.png")}
+          />
+
+        )}
       </TouchableOpacity>
     </View>
   )

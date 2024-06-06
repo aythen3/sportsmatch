@@ -29,7 +29,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   const [cityTop, setCityTop] = useState(0)
   const [pickedCity, setPickedCity] = useState()
 
-  const opcionesProfesional = ['Jugador','Entrenador', 'Masajista', 'Ayudante de campo']
+  const opcionesProfesional = ['Entrenador/a', 'Preparador/a físico/a', 'Analista técnico/a','Psicologo/a','Fisioterapeuta','Nutricionista']
   const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openModal = () => {
@@ -84,8 +84,16 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
         isAccordeon={true}
         open={openModal}
       />
-      {modalVisible && (
+      {/* {modalVisible && (
         <CustomModal
+          visible={modalVisible}
+          closeModal={closeModal}
+          onSelectItem={handleSelectProfesional}
+          options={opcionesProfesional}
+        />
+      )} */}
+      {modalVisible && (
+        <ScrollableModal
           visible={modalVisible}
           closeModal={closeModal}
           onSelectItem={handleSelectProfesional}
@@ -100,7 +108,14 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
         value={profesionalValues.yearsOfExperience}
         keyboardType="numeric"
       />
-      <View
+       <Input
+        title="Lugar de residencia"
+        placeholderText="Lugar de residencia"
+        field="city"
+        onValues={handlesValues}
+        value={profesionalValues.city}
+      />
+      {/* <View
         collapsable={false}
         onLayout={(event) => {
           event.target.measure((x, y, width, height, pageX, pageY) => {
@@ -129,7 +144,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
             options={opcionesResidencia}
           />
         )}
-      </View>
+      </View> */}
       <Input
         title="Club actual"
         placeholderText="Rellena sólo si estas en algún club"
@@ -139,7 +154,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
       />
       <Input
         title="¿Cómo te defines como profesional?"
-        placeholderText="Describe tu juego, tu condicion física, tu personalidad en el campo"
+        placeholderText="Describe tu juego, tu condición física, tu personalidad en el campo"
         isMultiLine={true}
         field="description"
         onValues={handlesValues}

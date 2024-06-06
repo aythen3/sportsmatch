@@ -123,16 +123,7 @@ const Registrarse = () => {
         source={require('../../assets/sw.png')}
       />
       <View style={styles.contenido}>
-        <View style={styles.botonAtrasFrame}>
-          <Image
-            style={styles.simboloIcon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-          <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
-            <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
+      
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formularioFrame}>
             <View style={styles.camposFormulario}>
