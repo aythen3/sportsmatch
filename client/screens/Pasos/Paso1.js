@@ -337,11 +337,28 @@ const Paso1 = () => {
           backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
-        <Image
+      {!sportman && !profesional && !invitado && (
+          <Image
           style={styles.imagenDeFondo}
           contentFit="cover"
-          source={require('../../assets/imagen-de-fondo3.png')}
+          source={require('../../assets/turolfondo.png')}
         />
+      )}
+          {sportman && stepsSportman === 0 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/tudeportefondo.png')}
+        />
+      )}
+         {sportman && stepsSportman === 1 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/skillsfondo.png')}
+        />
+      )}
+      
         <View style={{ alignItems: 'center' }}>
           <View>
             <Pressable
@@ -628,9 +645,8 @@ const styles = StyleSheet.create({
   imagenDeFondo: {
     position: 'absolute',
     height: '100%',
-    width: '110%',
+    width: '100%',
     zIndex: 0,
-    top: 70
   },
   coolicon: {
     width: 9,
@@ -658,8 +674,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    backgroundColor:"black",
-    paddingVertical:25
+    paddingVertical:25,
+    paddingHorizontal:10
   },
   siguiente1: {
     fontWeight: '700',
