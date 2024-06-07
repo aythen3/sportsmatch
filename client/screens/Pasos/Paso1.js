@@ -358,6 +358,21 @@ const Paso1 = () => {
           source={require('../../assets/skillsfondo.png')}
         />
       )}
+        {sportman && stepsSportman === 2 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+        {profesional && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+      
       
         <View style={{ alignItems: 'center' }}>
           <View>
@@ -569,6 +584,7 @@ const Paso1 = () => {
             //  <SkillSeleccion setData={setData} data={data} />
 
             <Paso4Jugador
+              selectedSport={selectedSport}
               selectedCity={selectedCity}
               setSelectedCity={setSelectedCity}
               sportmanValues={sportmanValues}

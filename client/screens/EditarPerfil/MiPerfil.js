@@ -30,11 +30,19 @@ const MiPerfil = () => {
   const { sportman } = useSelector((state) => state.sportman)
   const { user } = useSelector((state) => state.users)
   const isFocused = useIsFocused()
+  const [sportColor, setSportColor] = useState('#E1451E')
 
 const {setActiveIcon} = useContext(Context)
   useEffect(() => {
+    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
+    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { setSportColor('#A8154A') }
+    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
+    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
+    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
     setActiveIcon("profile")
   }, [isFocused])
+ 
 
 
   const [selectedTab, setSelectedTab] = useState('Feed')
@@ -116,7 +124,7 @@ const {setActiveIcon} = useContext(Context)
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                <Text style={styles.textTypo2}>
+                <Text style={[styles.textTypo2,{color:sportColor}]}>
                   {typeof sportman?.info?.sport === 'object'
                     ? sportman?.info?.sport.name
                     : sportman?.info?.sport}
@@ -135,7 +143,7 @@ const {setActiveIcon} = useContext(Context)
                 ]}
               >
                 {sportman?.info?.description?.length > 0
-                  ? `Jugando en ${sportman?.info?.description}`
+                  ? `${sportman?.info?.description}`
                   : 'Sin descripción'}
               </Text>
             </View>

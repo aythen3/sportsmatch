@@ -14,18 +14,26 @@ const NavBarInferior = () => {
   const { activeIcon, setActiveIcon } = useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const [sportColor, setSportColor] = useState('#E1451E')
   const { isSportman } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
-  useEffect(() => { }, [activeIcon])
+  useEffect(() => { 
+    console.log(sportman?.info?.sport.name,"aaaaaaaaaaaaaaaaa")
+    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
+    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { setSportColor('#A8154A') }
+    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
+    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
+    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
+  }, [sportman?.info])
 
   useEffect(() => {
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
   }, [])
-
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {
@@ -96,7 +104,7 @@ const NavBarInferior = () => {
         onPress={() => handleIconPress('post')}
         style={styles.deselected}
       >
-        <HomeSVG isActive={activeIcon === 'post'} />
+        <HomeSVG sportColor={sportColor} isActive={activeIcon === 'post'} />
       </TouchableOpacity>
 
 

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'react-native'
 import { Color } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -12,6 +12,19 @@ import LineaVertical from './svg/LineaVerticalSVG'
 const HeaderIcons = () => {
   const navigation = useNavigation()
   const { isSportman } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
+
+  const [sportColor, setSportColor] = useState('#E1451E')
+
+  useEffect(() => {
+    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
+    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { setSportColor('#A8154A') }
+    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
+    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
+    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
+  }, [sportman?.info])
+ 
 
   return (
     <View style={styles.vectorParent}>
@@ -23,7 +36,7 @@ const HeaderIcons = () => {
       <View
         style={{
           flexDirection: 'row',
-          backgroundColor: Color.bALONCESTO,
+          backgroundColor: sportColor,
           width: 140,
           height: 50,
           borderTopLeftRadius: 30,
