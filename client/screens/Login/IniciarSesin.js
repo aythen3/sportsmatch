@@ -8,7 +8,8 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -39,6 +40,8 @@ const IniciarSesin = () => {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
   const [passview2, setPassview2] = useState(true)
+  const [loading, setLoading] = useState(false)
+
 
   const route = useRoute()
 
@@ -85,6 +88,7 @@ const IniciarSesin = () => {
   }, [user])
 
   const handleSubmit = () => {
+    setLoading(true)
     // console.log('on handleSubmit')
     console.log('on handlesubmit')
     setProvisoryProfileImage()
@@ -103,6 +107,8 @@ const IniciarSesin = () => {
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
+          setLoading(false)
+
         })
         .catch((error) => {
           console.error(error)
@@ -227,7 +233,9 @@ const IniciarSesin = () => {
                 style={styles.botonIniciaSesin2}
                 onPress={handleSubmit}
               >
-                <Text style={styles.aceptar}>Inicia sesión</Text>
+                {!loading ? <Text style={styles.aceptar}>Inicia sesión</Text> : <ActivityIndicator></ActivityIndicator>}
+
+
               </TouchableOpacity>
               <Pressable
                 style={{ marginTop: 37 }}
@@ -312,7 +320,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   atrs: {
-    marginLeft: 5
+    marginLeft: 5,
+    zIndex:9999
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,

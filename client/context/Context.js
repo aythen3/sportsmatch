@@ -318,6 +318,7 @@ export const ContextProvider = ({ children }) => {
         )
 
         setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
+        console.log(sortedUsersWithMessages,'asdasfmaslfm')
       })
       .catch((error) => {
         console.error('Error fetching messages for users:', error)

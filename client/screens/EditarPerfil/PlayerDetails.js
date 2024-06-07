@@ -99,6 +99,7 @@ const PlayerDetails = () => {
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
+  const [sportColor, setSportColor] = useState('#E1451E')
 
   const handlePickImage = async (type) => {
     await pickImage(type)
@@ -109,6 +110,12 @@ const PlayerDetails = () => {
   const cameraReff = useRef(null);
 
   useEffect(() => {
+    if (sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
+    if (sportman?.info?.sport == 'Voley') { setSportColor('#A8154A') }
+    if (sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
+    if (sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
+    if (sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
     ; (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
@@ -293,7 +300,7 @@ const PlayerDetails = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={styles.orangeButton}
+                style={[styles.orangeButton,{backgroundColor:sportColor}]}
                 onPress={() => pickImage('profile')}
               >
                 <Text style={styles.mediumText}>Subir foto de perfil</Text>
@@ -347,7 +354,7 @@ const PlayerDetails = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={styles.orangeButton}
+                style={[styles.orangeButton,{backgroundColor:sportColor}]}
                 onPress={() => pickImage('cover')}
               >
                 <Text style={styles.mediumText}>Subir foto de portada</Text>

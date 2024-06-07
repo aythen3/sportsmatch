@@ -117,7 +117,8 @@ const App = () => {
                         route.name !== 'Paso3Profesional' &&
                         route.name !== 'Paso4Jugador' &&
                         route.name !== 'Paso4Profesional' &&
-                        route.name !== 'stepsJugador'
+                        route.name !== 'stepsJugador' && 
+                        route.name !== 'PostPromocion'
                     )
                   })}
                 >

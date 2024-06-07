@@ -42,6 +42,7 @@ import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
 import Linea from '../../components/svg/Linea'
+import InstagramSVG from '../../components/svg/InstagramSVG'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -73,6 +74,7 @@ const LoginSwitch = () => {
       await AsyncStorage.setItem('googleAuth', user.uid)
       await AsyncStorage.setItem('userType', response.payload.user.type)
       dispatch(setClub(response))
+      dispatch(logedIn())
       return
     }
     if (facebookUserAuth) {
@@ -99,6 +101,7 @@ const LoginSwitch = () => {
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           dispatch(setClub(response))
+        
         })
         .catch((error) => {
           console.error(error)
@@ -460,14 +463,13 @@ const LoginSwitch = () => {
                       >
                         <View style={styles.loremIpsum2}>
                           <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                            Continua con Facebook
+                            Continua con Instagram
                           </Text>
                         </View>
-
                         <Image
                           style={[styles.groupIcon, styles.groupPosition]}
                           contentFit="cover"
-                          source={require('../../assets/group12.png')}
+                          source={require('../../assets/instagramlogo2.png')}
                         />
                       </TouchableOpacity>
                       {Platform.OS === 'ios' && (
@@ -544,9 +546,9 @@ const LoginSwitch = () => {
                     </View>
 
                     <Image
-                      style={[styles.groupChild1, styles.groupPosition]}
+                      style={{width:30,height:30}}
                       contentFit="cover"
-                      source={require('../../assets/group-238.png')}
+                      source={require('../../assets/registromail.png')}
                     />
                   </Pressable>
                 </View>

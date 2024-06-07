@@ -337,11 +337,43 @@ const Paso1 = () => {
           backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
-        <Image
+      {!sportman && !profesional && !invitado && (
+          <Image
           style={styles.imagenDeFondo}
           contentFit="cover"
-          source={require('../../assets/imagen-de-fondo3.png')}
+          source={require('../../assets/turolfondo.png')}
         />
+      )}
+          {sportman && stepsSportman === 0 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/tudeportefondo.png')}
+        />
+      )}
+         {sportman && stepsSportman === 1 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/skillsfondo.png')}
+        />
+      )}
+        {sportman && stepsSportman === 2 && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+        {profesional && (
+          <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+      
+      
         <View style={{ alignItems: 'center' }}>
           <View>
             <Pressable
@@ -552,6 +584,7 @@ const Paso1 = () => {
             //  <SkillSeleccion setData={setData} data={data} />
 
             <Paso4Jugador
+              selectedSport={selectedSport}
               selectedCity={selectedCity}
               setSelectedCity={setSelectedCity}
               sportmanValues={sportmanValues}
@@ -628,9 +661,8 @@ const styles = StyleSheet.create({
   imagenDeFondo: {
     position: 'absolute',
     height: '100%',
-    width: '110%',
+    width: '100%',
     zIndex: 0,
-    top: 70
   },
   coolicon: {
     width: 9,
@@ -658,8 +690,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    backgroundColor:"black",
-    paddingVertical:25
+    paddingVertical:25,
+    paddingHorizontal:10
   },
   siguiente1: {
     fontWeight: '700',
