@@ -24,15 +24,41 @@ const HeaderIcons = () => {
     if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
     if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
   }, [sportman?.info])
- 
+
 
   return (
     <View style={styles.vectorParent}>
-      <Image
-        style={{ width: 180, height: 42, marginLeft: 20 }}
-        contentFit="cover"
-        source={require('../assets/logo3.png')}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Image
+          style={{ width: 180, height: 42, marginLeft: -10, objectFit: "contain" }}
+          contentFit=""
+          source={require('../assets/sportmatchlogooo.png')}
+        />
+        {sportColor == '#E1451E' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sportbaloncestoo.png')}
+        />)}
+        {sportColor == '#6A1C4F' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sporthandball.png')}
+        />)}
+        {sportColor == '#00FF18' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sportfutbol.png')}
+        />)}
+        {sportColor == '#A8154A' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sportvoley.png')}
+        />)}
+        {sportColor == '#E1AA1E' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sporthockey.png')}
+        />)}
+        {sportColor == '#0062FF' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sportfutbolsala.png')}
+        />)}
+      </View>
       <View
         style={{
           flexDirection: 'row',
