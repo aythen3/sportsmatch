@@ -48,9 +48,9 @@ const StepsClub = () => {
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [sportS, setSportS] = useState("")
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
-  console.log(width,"-----",height,"medidas")
+  console.log(width, "-----", height, "medidas")
 
   const [clubValues, setClubValues] = useState({
     name: '',
@@ -120,12 +120,12 @@ const StepsClub = () => {
         return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
       case 2:
         return (
-           <ScrollView contentContainerStyle={{paddingBottom:20}}>
-              <EscogerDeporte2
+          <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+            <EscogerDeporte2
               clubValues={clubValues}
               setClubValues={setClubValues}
             />
-           </ScrollView>
+          </ScrollView>
 
         )
       case 3:
@@ -146,46 +146,55 @@ const StepsClub = () => {
     }
   }
 
-  const back = async ()=>{
+  const back = async () => {
     await dispatch(clearUser())
     navigation.goBack()
   }
 
   return (
-      <View style={{ ...styles.escogerDeporte,height: height,width:width ,flex:1}}  >
-        <Image
-          style={{
-            ...styles.escogerDeporteChild,
-          }}
-          contentFit="cover"
-          source={require('../../assets/group-2412.png')}
-        />
-        <View style={{ ...styles.atrsParent }}>
-          <Image
-            style={styles.coolicon}
-            contentFit="cover"
-            source={require('../../assets/coolicon.png')}
-          />
-          <Pressable
-            onPress={() =>
-              stepsIndex === 1
-                ? back()
-                : setstepsIndex((prev) => prev - 1)
-            }
-          >
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
-        <View style={{ marginTop: -30 }}>
-          <Text style={styles.paso2}>Paso {stepsIndex}</Text>
-          <Text style={styles.detallesDelClub}>
-            {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
-          </Text>
-        </View>
-        <Lines club={true} index={stepsIndex} />
+    <View style={{ ...styles.escogerDeporte, height: height, width: width, flex: 1 }}  >
 
-      <View style={{justifyContent:"space-between",height:"100%",flex:1,paddingVertical:20}}>
-      {ViewComponent(stepsIndex)}
+
+      {stepsIndex == 1 && (<Image
+        style={{
+          ...styles.escogerDeporteChild,
+        }}
+        contentFit="cover"
+        source={require('../../assets/tudeportefondo.png')}
+      />)}
+      {stepsIndex > 1 && (<Image
+        style={{
+          ...styles.escogerDeporteChild,
+        }}
+        contentFit="cover"
+        source={require('../../assets/sobretifondo.png')}
+      />)}
+      <View style={{ ...styles.atrsParent }}>
+        <Image
+          style={styles.coolicon}
+          contentFit="cover"
+          source={require('../../assets/coolicon.png')}
+        />
+        <Pressable
+          onPress={() =>
+            stepsIndex === 1
+              ? back()
+              : setstepsIndex((prev) => prev - 1)
+          }
+        >
+          <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+        </Pressable>
+      </View>
+      <View style={{ marginTop: -30 }}>
+        <Text style={styles.paso2}>Paso {stepsIndex}</Text>
+        <Text style={styles.detallesDelClub}>
+          {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
+        </Text>
+      </View>
+      <Lines club={true} index={stepsIndex} />
+
+      <View style={{ justifyContent: "space-between", height: "100%", flex: 1, paddingVertical: 20 }}>
+        {ViewComponent(stepsIndex)}
         <View >
           <TouchableOpacity
             style={styles.touchable}
@@ -194,12 +203,12 @@ const StepsClub = () => {
                 ? handleRegister()
                 : setstepsIndex((prev) => prev + 1)
             }}
-            >
+          >
             <Text style={styles.nextText}>Siguiente</Text>
           </TouchableOpacity>
         </View>
-            </View>
       </View>
+    </View>
   )
 }
 

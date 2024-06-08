@@ -89,13 +89,13 @@ const NavBarInferior = () => {
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => handleIconPress('diary')}
-        style={activeIcon === 'diary' ? styles.selected : styles.deselected}
+        style={activeIcon === 'diary' ? [styles.selected,{borderTopColor:sportColor} ] : styles.deselected}
       >
         <DiarySVG isActive={activeIcon === 'diary'} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => handleIconPress('lens')}
-        style={activeIcon === 'lens' ? styles.selected : styles.deselected}
+        style={activeIcon === 'lens' ? [styles.selected,{borderTopColor:sportColor} ] : styles.deselected}
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
@@ -110,7 +110,7 @@ const NavBarInferior = () => {
 
       <TouchableOpacity
         onPress={() => handleIconPress('message')}
-        style={activeIcon === 'message' ? styles.selected : styles.deselected}
+        style={activeIcon === 'message' ? [styles.selected,{borderTopColor:sportColor} ] : styles.deselected}
       >
         <View style={styles.iconContainer}>
           <MessageSVG
@@ -122,7 +122,7 @@ const NavBarInferior = () => {
 
       <TouchableOpacity
         onPress={handleNavigation}
-        style={activeIcon === 'profile' ? styles.selected : styles.deselected}
+        style={activeIcon === 'profile' ? [styles.selected,{borderTopColor:sportColor} ]: styles.deselected}
       >
 
         {/* {sportman?.info?.img_perfil || user?.user?.club?.img_perfil && (

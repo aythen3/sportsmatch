@@ -116,7 +116,7 @@ const {setActiveIcon} = useContext(Context)
                   zIndex: -1000,
                   borderRadius: 100,
                   width: 105,
-                  backgroundColor: Color.bALONCESTO
+                  backgroundColor: sportColor
                 }}
               />
             </View>
@@ -136,15 +136,16 @@ const {setActiveIcon} = useContext(Context)
                 </Text>
               </View>
               <Text
+              numberOfLines={2}
                 style={[
                   styles.jugandoAlUni,
                   styles.seguidoresTypo,
-                  { width: '100%' }
+                  { width: '20%' }
                 ]}
               >
                 {sportman?.info?.description?.length > 0
                   ? `${sportman?.info?.description}`
-                  : 'Sin descripción'}
+                  : ''}
               </Text>
             </View>
           </View>
@@ -227,23 +228,23 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Color.colorGoldenrod,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
     fontWeight: '700'
   },
   textTypo3: {
     textAlign: 'left',
-    color: Color.gREY2SPORTSMATCH,
+    color: "white",
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
-    fontWeight: '700'
+    fontWeight: '400'
   },
   seguidoresTypo: {
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     textAlign: 'left',
-    color: Color.wHITESPORTSMATCH,
+    color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
   line: {

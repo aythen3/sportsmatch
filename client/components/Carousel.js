@@ -35,7 +35,12 @@ function Carousel({
   data
 }) {
   const dispatch = useDispatch()
+  const [currentPage, setCurrentPage] = useState(0);
 
+  const handlePageSelected = (event) => {
+    const { position } = event.nativeEvent;
+    setCurrentPage(position);
+  };
   const { user } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
   const { sportman } = useSelector((state) => state.sportman)
@@ -91,7 +96,7 @@ function Carousel({
   const closeModal = () => {
     setModalVisible(false)
   }
-
+const imagesNumber = ['0','1']
   const handleLike = async () => {
     if(sportman?.type == "invitado") return
     // Invertir el estado de liked
@@ -162,7 +167,7 @@ function Carousel({
        {`${dia} - ${mes} - ${año.slice(2,4)}`}
       </Text>
      </View>
-      <PagerView style={styles.postContainer} initialPage={0}>
+      <PagerView onPageSelected={handlePageSelected} style={styles.postContainer} initialPage={0}>
         <View style={{ width: '100%', height: '100%' }} key={id}>
           <DoubleTap
             onDoubleTap={() => {
@@ -242,7 +247,18 @@ function Carousel({
           />
         </View> */}
       </PagerView>
-      <View style={{ padding: 5 }}>
+      <View style={styles.indicatorContainer}>
+        {imagesNumber.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.indicator,
+              index === currentPage ? [styles.indicatorActive,{backgroundColor:'orange'}] : styles.indicatorInactive
+            ]}
+          />
+        ))}
+      </View>
+      <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
           <TouchableOpacity onPress={() => navigation.navigate('PostPromocion',data)}>
             <LinearGradient
@@ -327,6 +343,25 @@ function Carousel({
 export default Carousel
 
 const styles = StyleSheet.create({
+  indicatorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom:-10
+  },
+  indicator: {
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    marginHorizontal: 5
+  },
+  indicatorActive: {
+    backgroundColor: 'blue'
+  },
+  indicatorInactive: {
+    backgroundColor: 'gray'
+  },
   likes: {
     fontWeight: '700',
     color: Color.wHITESPORTSMATCH,
