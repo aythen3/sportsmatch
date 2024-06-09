@@ -24,7 +24,8 @@ const Paso4Jugador = ({
   sportmanValues,
   setSportmanValues,
   setSelectedCity,
-  selectedCity
+  selectedCity,
+  selectedSport
 }) => {
   const { pickImage, provisoryProfileImage, pickImageFromCamera, provisoryCoverImage } =
     useContext(Context)
@@ -33,6 +34,8 @@ const Paso4Jugador = ({
   const [permission, requestPermission] = useCameraPermissions();
 
   const [showCamera, setShowCamera] = useState(false)
+  const [sportColor, setSportColor] = useState('')
+
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
   const [cameraType, setCameraType] = useState(Camera)
@@ -45,6 +48,12 @@ const Paso4Jugador = ({
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
+    if (selectedSport.name == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (selectedSport.name == 'Hockey') { setSportColor('#E1AA1E') }
+    if (selectedSport.name == 'Voley') { setSportColor('#A8154A') }
+    if (selectedSport.name == 'Handball') { setSportColor('#6A1C4F') }
+    if (selectedSport.name == 'Fútbol') { setSportColor('#00FF18') }
+    if (selectedSport.name == 'Básquetbol') { setSportColor('#E1451E') }
     (async () => {
       console.log("entra a pedir permiso")
       const { status } = await Camera.requestCameraPermissionsAsync()
@@ -63,7 +72,7 @@ const Paso4Jugador = ({
     //     ? Camera?.Constants?.Type?.front
     //     : Camera?.Constants?.Type?.back
     // )
-    setFacing((prev)=> prev == "back" ? "front" : "back")
+    setFacing((prev) => prev == "back" ? "front" : "back")
   }
 
   useEffect(() => {
@@ -93,7 +102,7 @@ const Paso4Jugador = ({
     console.log('height: ', height)
     setScrolledHeight(height)
   }
-  if (!showCamera){
+  if (!showCamera) {
 
     return (
 
@@ -103,7 +112,7 @@ const Paso4Jugador = ({
         style={{ height: '70%' }}
       >
 
-        <View style={{paddingBottom:80,height:"100%"}}>
+        <View style={{ paddingBottom: 80, height: "100%" }}>
           <View style={{ marginBottom: 30 }}>
             <View style={styles.headersubirImagenesPerfil}>
               <View>
@@ -140,7 +149,7 @@ const Paso4Jugador = ({
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={styles.botonSubirImagen}
+                style={[styles.botonSubirImagen, { backgroundColor: sportColor }]}
                 onPress={() => handlePickImage('profile')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -208,7 +217,7 @@ const Paso4Jugador = ({
                 </View>
               )}
               <TouchableOpacity
-                style={styles.botonSubirImagen}
+                style={[styles.botonSubirImagen, { backgroundColor: sportColor }]}
                 onPress={() => handlePickImage('cover')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -229,80 +238,80 @@ const Paso4Jugador = ({
           />
         </View>
       </ScrollView>
-    ) 
-   
+    )
+
   } else {
-    
-     return(
-        <View style={{zIndex: 9999, height: "85%" }}>
 
-          <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e)=>console.log(e,"esto es e")}
+    return (
+      <View style={{ zIndex: 9999, height: "85%" }}>
 
-          // cameraType="back"
+        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e) => console.log(e, "esto es e")}
+
+        // cameraType="back"
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
+            }}
           >
-            <View
+            <TouchableOpacity
+              style={{ position: 'absolute', top: 22, left: 18 }}
+              onPress={() => setShowCamera(false)}
+            >
+              <Image
+                style={{
+                  height: 15,
+                  width: 15
+                }}
+                contentFit="cover"
+                source={require('../../assets/group-565.png')}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
               style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                width: '100%',
+                marginBottom: 30,
+                position: 'relative'
               }}
             >
               <TouchableOpacity
-                style={{ position: 'absolute', top: 22, left: 18 }}
-                onPress={() => setShowCamera(false)}
-              >
-                <Image
-                  style={{
-                    height: 15,
-                    width: 15
-                  }}
-                  contentFit="cover"
-                  source={require('../../assets/group-565.png')}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
+                onPress={takePicture}
                 style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
+                  width: 60,
+                  height: 60,
+                  borderRadius: 100,
+                  backgroundColor: '#cecece',
+
+                  color: 'white'
+                }}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                onPress={changePictureMode}
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  color: 'white',
                   justifyContent: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  marginBottom: 30,
-                  position: 'relative'
+                  alignItems: 'center'
                 }}
               >
-                <TouchableOpacity
-                  onPress={takePicture}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 100,
-                    backgroundColor: '#cecece',
-
-                    color: 'white'
-                  }}
-                ></TouchableOpacity>
-                <TouchableOpacity
-                  onPress={changePictureMode}
-                  style={{
-                    position: 'absolute',
-                    right: 20,
-                    color: 'white',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Entypo name="cycle" color={'#fff'} size={25} />
-                </TouchableOpacity>
+                <Entypo name="cycle" color={'#fff'} size={25} />
               </TouchableOpacity>
-            </View>
-          </CameraView>
+            </TouchableOpacity>
+          </View>
+        </CameraView>
 
-        </View>
-      )
-    }
+      </View>
+    )
   }
+}
 
 const styles = StyleSheet.create({
   atrsTypo: {

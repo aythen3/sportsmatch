@@ -64,6 +64,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { AppRegistry, StatusBar } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/EditarPerfil/ProDetails'
+import Post from './screens/EditarPerfil/Post'
+import PromocionarPost from './screens/Pasos/PromocionarPost'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -115,7 +117,8 @@ const App = () => {
                         route.name !== 'Paso3Profesional' &&
                         route.name !== 'Paso4Jugador' &&
                         route.name !== 'Paso4Profesional' &&
-                        route.name !== 'stepsJugador'
+                        route.name !== 'stepsJugador' && 
+                        route.name !== 'PostPromocion'
                     )
                   })}
                 >
@@ -162,6 +165,16 @@ const App = () => {
                   <Stack.Screen
                     name="DetallesUsuario"
                     component={DetallesUsuario}
+                    options={{ headerShown: false }}
+                  />
+                    <Stack.Screen
+                    name="Post"
+                    component={Post}
+                    options={{ headerShown: false }}
+                  />
+                   <Stack.Screen
+                    name="PostPromocion"
+                    component={PromocionarPost}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen

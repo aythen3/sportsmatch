@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -21,6 +21,7 @@ import StatsSVG from '../../components/svg/StatsSVG'
 import Feed from '../../components/Feed'
 import FeedStats from '../../components/FeedStats'
 import { Context } from '../../context/Context'
+import { useIsFocused } from '@react-navigation/native'
 
 const MiPerfil = () => {
   const navigation = useNavigation()
@@ -28,6 +29,21 @@ const MiPerfil = () => {
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user } = useSelector((state) => state.users)
+  const isFocused = useIsFocused()
+  const [sportColor, setSportColor] = useState('#E1451E')
+
+const {setActiveIcon} = useContext(Context)
+  useEffect(() => {
+    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
+    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
+    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { setSportColor('#A8154A') }
+    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
+    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
+    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
+    setActiveIcon("profile")
+  }, [isFocused])
+ 
+
 
   const [selectedTab, setSelectedTab] = useState('Feed')
   console.log(sportman, 'sportman')
@@ -59,20 +75,38 @@ const MiPerfil = () => {
         >
           <View style={styles.imagenInformacion1}>
             <View style={{ position: 'relative' }}>
-              <Image
-                style={{
-                  height: 110,
-                  borderRadius: 100,
-                  width: 110,
-                  zIndex: 1000,
-                  borderWidth: 3,
-                  borderColor: '#000'
-                }}
-                contentFit="cover"
-                source={{
-                  uri: sportman?.info?.img_perfil
-                }}
-              />
+              {sportman?.info?.img_perfil && (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    zIndex: 1000,
+                    borderWidth: 3,
+                    borderColor: '#000'
+                  }}
+                  contentFit="cover"
+                  source={{
+                    uri: sportman?.info?.img_perfil 
+                  }}
+                />
+
+              )}
+                    {!sportman?.info?.img_perfil && (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    zIndex: 1000,
+                    borderWidth: 3,
+                    borderColor: '#000'
+                  }}
+                  contentFit="cover"
+                  source={require("../../assets/avatar.png")}
+                />
+
+              )}
               <View
                 style={{
                   position: 'absolute',
@@ -82,7 +116,7 @@ const MiPerfil = () => {
                   zIndex: -1000,
                   borderRadius: 100,
                   width: 105,
-                  backgroundColor: Color.bALONCESTO
+                  backgroundColor: sportColor
                 }}
               />
             </View>
@@ -90,7 +124,7 @@ const MiPerfil = () => {
             <View style={styles.informacion}>
               <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                 <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                <Text style={styles.textTypo2}>
+                <Text style={[styles.textTypo2,{color:sportColor}]}>
                   {typeof sportman?.info?.sport === 'object'
                     ? sportman?.info?.sport.name
                     : sportman?.info?.sport}
@@ -102,15 +136,16 @@ const MiPerfil = () => {
                 </Text>
               </View>
               <Text
+              numberOfLines={2}
                 style={[
                   styles.jugandoAlUni,
                   styles.seguidoresTypo,
-                  { width: '100%' }
+                  { width: '20%' }
                 ]}
               >
-                {sportman?.info?.actualClub?.length > 0
-                  ? `Jugando en ${sportman?.info?.actualClub}`
-                  : 'Sin club actualmente'}
+                {sportman?.info?.description?.length > 0
+                  ? `${sportman?.info?.description}`
+                  : ''}
               </Text>
             </View>
           </View>
@@ -193,23 +228,23 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Color.colorGoldenrod,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
     fontWeight: '700'
   },
   textTypo3: {
     textAlign: 'left',
-    color: Color.gREY2SPORTSMATCH,
+    color: "white",
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
-    fontWeight: '700'
+    fontWeight: '400'
   },
   seguidoresTypo: {
     lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     textAlign: 'left',
-    color: Color.wHITESPORTSMATCH,
+    color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
   line: {

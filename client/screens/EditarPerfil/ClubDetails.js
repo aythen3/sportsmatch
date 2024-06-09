@@ -45,6 +45,7 @@ const ClubDetails = () => {
   console.log('club:', club)
 
   const inputs = [
+    
     {
       title: 'Nombre del club',
       type: 'text',
@@ -248,6 +249,7 @@ const ClubDetails = () => {
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={styles.generalWrapper}
+        contentContainerStyle={{paddingTop:20}}
       >
         <View style={styles.wrapperGap}>
           {/* =========================================================== */}
@@ -255,7 +257,7 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View
             style={{
-              marginBottom: 42,
+              marginBottom: 27,
               flexDirection: 'row',
               alignItems: 'center',
               gap: 15,

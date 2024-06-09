@@ -356,7 +356,6 @@ const styles = StyleSheet.create({
   },
   escogerDeporte: {
     paddingTop:40,
-    backgroundColor: Color.bLACK1SPORTSMATCH,
     paddingHorizontal: 15,
     alignItems: 'center'
   },

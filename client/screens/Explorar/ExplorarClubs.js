@@ -22,7 +22,8 @@ import FiltersSportman from '../../components/FiltersSportman'
 // import { getAllUsers } from '../redux/actions/users'
 import { getAllPosts } from '../../redux/actions/post'
 import axiosInstance from '../../utils/apiBackend'
-import { useNavigation } from '@react-navigation/core'
+import { useIsFocused, useNavigation } from '@react-navigation/core'
+import { Context } from '../../context/Context'
 
 const Grilla = ({ group, img1, img2, img3 }) => {
   const navigation = useNavigation()
@@ -177,7 +178,12 @@ const ExplorarClubs = () => {
   // const navigation = useNavigation()
 
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
 
+  const {setActiveIcon} = React.useContext(Context)
+  React.useEffect(() => {
+    setActiveIcon("lens")
+  }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
   const [searchUsers, setSearchUsers] = useState([])
@@ -245,9 +251,9 @@ const ExplorarClubs = () => {
       <TouchableOpacity
         onPress={() => {
           if (item.author.type === 'club') {
-            navigation.navigate('ClubProfile', item)
+            navigation.navigate('Post', item)
           } else {
-            navigation.navigate('PerfilFeedVisualitzaciJug', item)
+            navigation.navigate('Post', item)
           }
         }}
         style={{ width: '100%', flex: 2 }}

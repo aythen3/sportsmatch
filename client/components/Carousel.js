@@ -35,9 +35,15 @@ function Carousel({
   data
 }) {
   const dispatch = useDispatch()
+  const [currentPage, setCurrentPage] = useState(0);
 
+  const handlePageSelected = (event) => {
+    const { position } = event.nativeEvent;
+    setCurrentPage(position);
+  };
   const { user } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
+  const { sportman } = useSelector((state) => state.sportman)
 
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
@@ -47,9 +53,17 @@ function Carousel({
 
   const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
+  const [isTruncated, setIsTruncated] = useState(true);
+
+  const toggleTruncate = () => {
+    setIsTruncated(!isTruncated);
+  };
+
+
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
+      if(sportman?.type == "invitado") return
       // Cambia el estado a true
       setDoubleTapHeart(true)
 
@@ -82,8 +96,9 @@ function Carousel({
   const closeModal = () => {
     setModalVisible(false)
   }
-
+const imagesNumber = ['0','1']
   const handleLike = async () => {
+    if(sportman?.type == "invitado") return
     // Invertir el estado de liked
     setLiked(!liked)
 
@@ -145,14 +160,14 @@ function Carousel({
           }
         }}
       >
-        <Image style={styles.imgPerfil} source={imgPerfil} />
+        <Image style={styles.imgPerfil} source={data?.author?.id === user?.user?.id ? user?.user?.sportman?.info?.img_perfil : imgPerfil} />
         <Text style={styles.nameText}>{name}</Text>
       </Pressable> 
-      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:0,fontSize:12}}>
-       {`${dia} - ${mes} - ${año}`}
+      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:4,fontSize:12,alignSelf:"flex-end"}}>
+       {`${dia} - ${mes} - ${año.slice(2,4)}`}
       </Text>
      </View>
-      <PagerView style={styles.postContainer} initialPage={0}>
+      <PagerView onPageSelected={handlePageSelected} style={styles.postContainer} initialPage={0}>
         <View style={{ width: '100%', height: '100%' }} key={id}>
           <DoubleTap
             onDoubleTap={() => {
@@ -185,6 +200,43 @@ function Carousel({
                 style={{ ...styles.postImage, zIndex: 990 }}
                 source={image}
               />
+              
+            </View>
+          </DoubleTap>
+        </View>
+        <View style={{ width: '100%', height: '100%' }} key={12}>
+          <DoubleTap
+            onDoubleTap={() => {
+              console.log('doble pressss2222')
+              handleLike()
+              setDoubleTapHeart(true)
+              // handleDoubleTap(); // Llama a la función de manejar el doble clic
+              // resetDoubleTap(); // Reinicia el estado de doubleTap
+            }}
+          >
+            <View
+              style={{ width: '100%', height: '100%', position: 'relative' }}
+            >
+              {doubleTapHeart && liked && (
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999
+                  }}
+                >
+                  <Like2SVG id={id}></Like2SVG>
+                </TouchableOpacity>
+              )}
+
+              <Image
+                style={{ ...styles.postImage, zIndex: 990 }}
+                source={image}
+              />
+              
             </View>
           </DoubleTap>
         </View>
@@ -195,9 +247,20 @@ function Carousel({
           />
         </View> */}
       </PagerView>
-      <View style={{ padding: 5 }}>
+      <View style={styles.indicatorContainer}>
+        {imagesNumber.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.indicator,
+              index === currentPage ? [styles.indicatorActive,{backgroundColor:'orange'}] : styles.indicatorInactive
+            ]}
+          />
+        ))}
+      </View>
+      <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
-          <TouchableOpacity onPress={() => navigation.navigate('MiSuscripcin')}>
+          <TouchableOpacity onPress={() => navigation.navigate('PostPromocion',data)}>
             <LinearGradient
               style={styles.botonPromocionarPublicacion}
               start={{ x: 0, y: 1 }} // Cambiado de x: 1 a x: 0
@@ -237,7 +300,19 @@ function Carousel({
             description={description} // Pasa la descripción del post como prop
           />
         </View>
-        <Text style={styles.description}>{description}</Text>
+        <Text    numberOfLines={isTruncated ? 2 : undefined}  // Limita el número de líneas si está truncado
+        ellipsizeMode="tail" style={styles.description}>{description}</Text>
+         {isTruncated && description.split(' ').length > 2 * 10   ? ( // Ajusta la lógica de truncamiento
+        <TouchableOpacity onPress={toggleTruncate}>
+          <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver más</Text>
+        </TouchableOpacity>
+      ) : (
+        !isTruncated &&  (
+          <TouchableOpacity onPress={toggleTruncate}>
+            <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver menos</Text>
+          </TouchableOpacity>
+        )
+      )}
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.commentsTitle}>
             Ver los {commentCount} comentarios
@@ -268,6 +343,25 @@ function Carousel({
 export default Carousel
 
 const styles = StyleSheet.create({
+  indicatorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom:-10
+  },
+  indicator: {
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    marginHorizontal: 5
+  },
+  indicatorActive: {
+    backgroundColor: 'blue'
+  },
+  indicatorInactive: {
+    backgroundColor: 'gray'
+  },
   likes: {
     fontWeight: '700',
     color: Color.wHITESPORTSMATCH,
@@ -296,7 +390,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontWeight: '700',
-    color: Color.wHITESPORTSMATCH
+    color: Color.wHITESPORTSMATCH,
+    
   },
   commentsTitle: {
     fontFamily: FontFamily.t4TEXTMICRO,

@@ -123,16 +123,16 @@ const Registrarse = () => {
         source={require('../../assets/sw.png')}
       />
       <View style={styles.contenido}>
-        <View style={styles.botonAtrasFrame}>
+      <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.botonAtrasFrame}>
           <Image
             style={styles.simboloIcon}
             contentFit="cover"
             source={require('../../assets/coolicon3.png')}
           />
-          <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => {navigation.goBack()}} style={styles.atrs} >
             <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
           </Pressable>
-        </View>
+        </TouchableOpacity>
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formularioFrame}>
             <View style={styles.camposFormulario}>
@@ -465,7 +465,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    width: 393
+    width: 393,
+    zIndex:9999
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,

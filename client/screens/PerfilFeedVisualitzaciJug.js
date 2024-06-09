@@ -19,6 +19,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const { isSportman } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const [selectComponents, setSelectComponents] = useState('perfil')
+  
   const data = router.params
   //console.log('data,', router.params)
 
@@ -87,7 +88,7 @@ const PerfilFeedVisualitzaciJug = () => {
               <View style={styles.contenidoDatos}>
                 <View style={styles.circulos}>
                   <View style={styles.circuloLayout}>
-                    <CircularStat value={data?.author?.sportman?.info.attack} />
+                    <CircularStat value={data?.author?.sportman?.info.attack || "0"} />
                     <View
                       style={[
                         styles.informacionCirculo,
@@ -95,7 +96,7 @@ const PerfilFeedVisualitzaciJug = () => {
                       ]}
                     >
                       <Text style={[styles.text1, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.attack}
+                        {data?.author?.sportman?.info.attack || "0"}
                       </Text>
                       <Text style={[styles.ataque, styles.ataqueClr]}>
                         Ataque
@@ -104,7 +105,7 @@ const PerfilFeedVisualitzaciJug = () => {
                   </View>
                   <View style={[styles.circulo2, styles.circuloLayout]}>
                     <CircularStat
-                      value={data?.author?.sportman?.info.defense}
+                      value={data?.author?.sportman?.info.defense  || "0"}
                     />
                     <View
                       style={[
@@ -113,7 +114,7 @@ const PerfilFeedVisualitzaciJug = () => {
                       ]}
                     >
                       <Text style={[styles.text1, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.defense}
+                        {data?.author?.sportman?.info.defense || "0"}
                       </Text>
                       <Text style={[styles.ataque, styles.ataqueClr]}>
                         Defensa
@@ -121,7 +122,7 @@ const PerfilFeedVisualitzaciJug = () => {
                     </View>
                   </View>
                   <View style={[styles.circulo2, styles.circuloLayout]}>
-                    <CircularStat value={data?.author?.sportman?.info.speed} />
+                    <CircularStat value={data?.author?.sportman?.info.speed || "0"} />
                     <View
                       style={[
                         styles.informacionCirculo,
@@ -129,7 +130,7 @@ const PerfilFeedVisualitzaciJug = () => {
                       ]}
                     >
                       <Text style={[styles.text1, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.speed}
+                        {data?.author?.sportman?.info.speed || "0"}
                       </Text>
                       <Text style={[styles.ataque, styles.ataqueClr]}>
                         Velocidad
@@ -144,10 +145,10 @@ const PerfilFeedVisualitzaciJug = () => {
                       <Text style={[styles.concepto, styles.ataqueClr]}>
                         Bote
                       </Text>
-                      <BarStatSVG value={data?.author?.sportman?.info.prop1} />
+                      <BarStatSVG value={data?.author?.sportman?.info.prop1 || "0"} />
                     </View>
                     <Text style={[styles.numero1, styles.numeroTypo]}>
-                      {data?.author?.sportman?.info.prop1}
+                      {data?.author?.sportman?.info.prop1 || "0"}
                     </Text>
                   </View>
 
@@ -156,10 +157,10 @@ const PerfilFeedVisualitzaciJug = () => {
                       <Text style={[styles.concepto, styles.ataqueClr]}>
                         Lanzamiento
                       </Text>
-                      <BarStatSVG value={data?.author?.sportman?.info.prop2} />
+                      <BarStatSVG value={data?.author?.sportman?.info.prop2 || "0"} />
                     </View>
                     <Text style={[styles.numero1, styles.numeroTypo]}>
-                      {data?.author?.sportman?.info.prop2}
+                      {data?.author?.sportman?.info.prop2 || "0"}
                     </Text>
                   </View>
 
@@ -168,10 +169,10 @@ const PerfilFeedVisualitzaciJug = () => {
                       <Text style={[styles.concepto, styles.ataqueClr]}>
                         Dribling
                       </Text>
-                      <BarStatSVG value={data?.author?.sportman?.info.prop3} />
+                      <BarStatSVG value={data?.author?.sportman?.info.prop3 || "0"} />
                     </View>
                     <Text style={[styles.numero1, styles.numeroTypo]}>
-                      {data?.author?.sportman?.info.prop3}
+                      {data?.author?.sportman?.info.prop3 || "0"}
                     </Text>
                   </View>
                 </View>
@@ -182,7 +183,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         Sexo
                       </Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.gender}
+                        {data?.author?.sportman?.info.gender || "no gender"}
                       </Text>
                     </View>
                     <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -190,7 +191,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         Edad
                       </Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {calculateAge(data?.author?.sportman?.info?.birthdate)}
+                        {data?.author?.sportman?.info?.birthdate ? calculateAge(data?.author?.sportman?.info?.birthdate) : "2000"}
                       </Text>
                     </View>
                   </View>
@@ -208,7 +209,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         Posición principal
                       </Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.position}
+                        {data?.author?.sportman?.info.position || "no position"}
                       </Text>
                     </View>
                   </View>
@@ -218,7 +219,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         Altura
                       </Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.height}cm
+                        {data?.author?.sportman?.info.height || "0"}cm
                       </Text>
                     </View>
                     <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -226,7 +227,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         style={[styles.concepto, styles.ataqueClr]}
                       >{`Lugar de residencia `}</Text>
                       <Text style={[styles.masculino, styles.text1Typo]}>
-                        {data?.author?.sportman?.info.city}
+                        {data?.author?.sportman?.info.city || "no city"}
                       </Text>
                     </View>
                   </View>

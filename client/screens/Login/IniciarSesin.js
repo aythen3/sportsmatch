@@ -8,7 +8,8 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -24,7 +25,7 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan } from '../../redux/slices/users.slices'
+import { setIsSpotMan, logedIn, logedOut } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
 
@@ -39,6 +40,8 @@ const IniciarSesin = () => {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
   const [passview2, setPassview2] = useState(true)
+  const [loading, setLoading] = useState(false)
+
 
   const route = useRoute()
 
@@ -46,7 +49,7 @@ const IniciarSesin = () => {
 
   const passwordInputRef = useRef(null)
 
-  const { user } = useSelector((state) => state.users)
+  const { user, loged } = useSelector((state) => state.users)
 
   // const { isPlayer } = route.params
 
@@ -63,24 +66,29 @@ const IniciarSesin = () => {
   }
 
   useEffect(() => {
-    if (user?.user?.club || user?.user?.sportman) {
-      setActiveIcon('diary')
-      navigation.navigate('SiguiendoJugadores')
-    } else {
-      if (user?.user?.type === 'club') {
-        if (user?.accesToken) {
-          navigation.navigate('stepsClub')
-        }
+
+    if (!loged) {
+      if (user?.user?.club || user?.user?.sportman) {
+        setActiveIcon('diary')
+        navigation.navigate('SiguiendoJugadores')
+        dispatch(logedIn())
       } else {
-        if (user?.accesToken) {
-          console.log('jugador')
-          navigation.navigate('Paso1')
+        if (user?.user?.type === 'club') {
+          if (user?.accesToken) {
+            navigation.navigate('stepsClub')
+          }
+        } else {
+          if (user?.accesToken) {
+            console.log('jugador')
+            navigation.navigate('Paso1')
+          }
         }
       }
     }
   }, [user])
 
   const handleSubmit = () => {
+    setLoading(true)
     // console.log('on handleSubmit')
     console.log('on handlesubmit')
     setProvisoryProfileImage()
@@ -99,6 +107,8 @@ const IniciarSesin = () => {
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
           dispatch(setClub(response))
+          setLoading(false)
+
         })
         .catch((error) => {
           console.error(error)
@@ -126,7 +136,7 @@ const IniciarSesin = () => {
           source={require('../../assets/lineasgif.png')}
         />
       </View> */}
-        <Image
+      <Image
         style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
         contentFit="cover"
         source={require('../../assets/sw.png')}
@@ -223,7 +233,9 @@ const IniciarSesin = () => {
                 style={styles.botonIniciaSesin2}
                 onPress={handleSubmit}
               >
-                <Text style={styles.aceptar}>Inicia sesión</Text>
+                {!loading ? <Text style={styles.aceptar}>Inicia sesión</Text> : <ActivityIndicator></ActivityIndicator>}
+
+
               </TouchableOpacity>
               <Pressable
                 style={{ marginTop: 37 }}
@@ -308,7 +320,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   atrs: {
-    marginLeft: 5
+    marginLeft: 5,
+    zIndex:9999
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,

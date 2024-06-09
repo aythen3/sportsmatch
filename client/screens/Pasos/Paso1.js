@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  useWindowDimensions
 } from 'react-native'
 import {
   FontFamily,
@@ -24,7 +25,7 @@ import Paso3Profesional from './Paso3Profesional'
 import Paso4Jugador from './Paso4Jugador'
 import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
-import { createSportman } from '../../redux/actions/sportman'
+import { createSportman, updateSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import Visores from './visores'
@@ -57,7 +58,10 @@ const Paso1 = () => {
   const [selectedCity, setSelectedCity] = useState()
   const [profesional, setProfesional] = useState(false)
   const [invitado, setInvitado] = useState(false)
+  const { height, width } = useWindowDimensions();
+  const { sportman: sportmanRedux } = useSelector((state) => state.sportman)
 
+  console.log(width, "-----", height, "medidas")
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
@@ -76,7 +80,7 @@ const Paso1 = () => {
     rol: profesionalType,
     sport: sport.name,
     yearsOfExperience: '',
-    city: city,
+    city: '',
     actualClub: '',
     description: ''
   })
@@ -111,9 +115,13 @@ const Paso1 = () => {
       return
     }
     if (selectedRole === 'Invitado') {
+      if (Object.keys(sportmanRedux).length !== 0) {
+        navigation.navigate('SiguiendoJugadores')
+        return
+      }
       const fullData = {
         ...sportmanValues,
-        sport:"Invitado",
+        sport: "Invitado",
         img_perfil: profileImage || '',
         img_front: coverImage || '',
         attack: data?.attack || '100',
@@ -135,8 +143,9 @@ const Paso1 = () => {
         userId: user.user.id
       }
       console.log('final body: ', body)
+
       dispatch(createSportman(body)).then((response) => {
-        console.log('reponse: ',response) 
+        console.log('reponse: ', response)
         dispatch(
           setInitialSportman({
             id: response.payload.id,
@@ -145,6 +154,8 @@ const Paso1 = () => {
         )
         navigation.navigate('SiguiendoJugadores')
       })
+
+
     }
 
     if (selectedRole === 'Profesional del deporte') {
@@ -203,7 +214,9 @@ const Paso1 = () => {
     if (sportman) {
 
       stepsSportman !== 2 && setStepsSportman((prev) => prev + 1)
-      if (stepsSportman === 2 ) {
+      if (stepsSportman === 2) {
+
+
         const fullData = {
           ...sportmanValues,
           img_perfil: profileImage,
@@ -227,16 +240,36 @@ const Paso1 = () => {
           userId: user.user.id
         }
         console.log('final body: ', body)
-        dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ')
-          dispatch(
-            setInitialSportman({
-              id: response.payload.id,
-              ...body.sportmanData
-            })
-          )
-          navigation.navigate('SiguiendoJugadores')
-        })
+        if (Object.keys(sportmanRedux).length == 0) {
+
+          dispatch(createSportman(body)).then((response) => {
+            console.log('reponse: ')
+            dispatch(
+              setInitialSportman({
+                id: response.payload.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        } else {
+          console.log(sportmanRedux.id, "usuariooo")
+          const upd = {
+            id: sportmanRedux.id,
+            newData: fullData,
+            type: "player"
+          }
+          dispatch(updateSportman(upd)).then((response) => {
+            console.log('reponse: ', response)
+            dispatch(
+              setInitialSportman({
+                id: sportmanRedux.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        }
       }
     } else {
       console.log('stepsProfesional:', stepsProfesional)
@@ -260,280 +293,332 @@ const Paso1 = () => {
           userId: user.user.id
         }
         console.log('final body: ', body)
-        dispatch(createSportman(body)).then((response) => {
-          console.log('reponse: ', response.payload)
-          dispatch(
-            setInitialSportman({
-              id: response.payload.id,
-              ...body.sportmanData
-            })
-          )
-          navigation.navigate('SiguiendoJugadores')
-        })
+        if (Object.keys(sportmanRedux).length == 0) {
+
+          dispatch(createSportman(body)).then((response) => {
+            console.log('reponse: ')
+            dispatch(
+              setInitialSportman({
+                id: response.payload.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        } else {
+          console.log(sportmanRedux.id, "usuariooo")
+          const upd = {
+            id: sportmanRedux.id,
+            newData: fullData,
+            type: "player"
+          }
+          dispatch(updateSportman(upd)).then((response) => {
+            console.log('reponse: ', response)
+            dispatch(
+              setInitialSportman({
+                id: sportmanRedux.id,
+                ...body.sportmanData
+              })
+            )
+            navigation.navigate('SiguiendoJugadores')
+          })
+        }
       }
     }
   }
 
   return (
-    <View keyboardShouldPersistTaps={'always'}>
-      <View
-        style={{
-          height: Dimensions.get('window').height,
-
-          paddingHorizontal: 15,
-          backgroundColor: Color.bLACK1SPORTSMATCH
-        }}
-      >
+    <View
+      style={{
+        height: height,
+        width: width,
+        flex: 1,
+        paddingHorizontal: 0,
+        backgroundColor: Color.bLACK1SPORTSMATCH
+      }}
+    >
+      {!sportman && !profesional && !invitado && (
         <Image
           style={styles.imagenDeFondo}
           contentFit="cover"
-          source={require('../../assets/imagen-de-fondo3.png')}
+          source={require('../../assets/turolfondo.png')}
         />
-        <View style={{ alignItems: 'center' }}>
-          <View>
-            <Pressable
+      )}
+      {sportman && stepsSportman === 0 && (
+        <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/tudeportefondo.png')}
+        />
+      )}
+      {sportman && stepsSportman === 1 && (
+        <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/skillsfondo.png')}
+        />
+      )}
+      {sportman && stepsSportman === 2 && (
+        <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+      {profesional && (
+        <Image
+          style={styles.imagenDeFondo}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
+
+
+      <View style={{ alignItems: 'center' }}>
+        <View>
+          <Pressable
+            style={{
+              paddingHorizontal: Padding.p_xl,
+              marginBottom: 10,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center'
+            }}
+            onPress={async () => {
+              if (!sportman && !profesional && !invitado) {
+                await dispatch(clearUser())
+                navigation.goBack()
+              }
+              if (stepsProfesional > 0) {
+                setStepsProfesional((prev) => prev - 1)
+              }
+              if (stepsSportman > 0
+              ) {
+                setStepsSportman((prev) => prev - 1)
+              }
+              else {
+                setSportman(false)
+                setProfesional(false)
+                setInvitado(false)
+              }
+
+
+            }}
+          >
+            <Image
+              style={styles.coolicon}
+              contentFit="cover"
+              source={require('../../assets/coolicon1.png')}
+            />
+            <Text
               style={{
-                paddingHorizontal: Padding.p_xl,
-                marginBottom: 10,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center'
-              }}
-              onPress={async () => {
-                if (!sportman && !profesional && !invitado) {
-                  await dispatch(clearUser())
-                  navigation.goBack()
-                }
-                if (stepsProfesional > 0) {
-                  setStepsProfesional((prev) => prev - 1)
-                }
-                if (stepsSportman > 0
-                ) {
-                  setStepsSportman((prev) => prev - 1)
-                }
-                else {
-                  setSportman(false)
-                  setProfesional(false)
-                  setInvitado(false)
-                }
-
-
+                color: Color.gREY2SPORTSMATCH,
+                marginLeft: 5,
+                textAlign: 'center',
+                fontSize: FontSize.t2TextSTANDARD_size,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                textAlign: 'center'
               }}
             >
-              <Image
-                style={styles.coolicon}
-                contentFit="cover"
-                source={require('../../assets/coolicon1.png')}
-              />
-              <Text
-                style={{
-                  color: Color.gREY2SPORTSMATCH,
-                  marginLeft: 5,
-                  textAlign: 'center',
-                  fontSize: FontSize.t2TextSTANDARD_size,
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  textAlign: 'center'
-                }}
-              >
-                Atrás
-              </Text>
-            </Pressable>
-            <View>
-              <Text
-                style={{
-                  fontSize: FontSize.t1TextSMALL_size,
-                  color: Color.bALONCESTO,
-                  textAlign: 'center',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  textAlign: 'center'
-                }}
-              >
-                {!sportman && !profesional && 'Paso 1'}
-                {sportman && stepsSportman === 0 && 'Paso 2'}
-                {stepsSportman === 1 && 'Paso 3'}
-                {stepsSportman === 2 && 'Paso 4'}
+              Atrás
+            </Text>
+          </Pressable>
+          <View>
+            <Text
+              style={{
+                fontSize: FontSize.t1TextSMALL_size,
+                color: Color.bALONCESTO,
+                textAlign: 'center',
+                fontFamily: FontFamily.t4TEXTMICRO,
+                textAlign: 'center'
+              }}
+            >
+              {!sportman && !profesional && 'Paso 1'}
+              {sportman && stepsSportman === 0 && 'Paso 2'}
+              {stepsSportman === 1 && 'Paso 3'}
+              {stepsSportman === 2 && 'Paso 4'}
 
-                {profesional && stepsProfesional === 0 && 'Paso 2'}
-                {stepsProfesional === 1 && 'Paso 3'}
-                {/* {stepsProfesional === 0 && 'Paso 2'} */}
+              {profesional && stepsProfesional === 0 && 'Paso 2'}
+              {stepsProfesional === 1 && 'Paso 3'}
+              {/* {stepsProfesional === 0 && 'Paso 2'} */}
 
-              </Text>
-              <Text
-                style={{
-                  marginTop: -5,
-                  marginBottom: -3,
-                  fontSize: FontSize.size_9xl,
-                  color: Color.wHITESPORTSMATCH,
-                  textAlign: 'center',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  fontWeight: '500',
-                  color: Color.wHITESPORTSMATCH
-                }}
-              >
-                {!sportman && !profesional && !invitado && 'Escoge tu rol'}
-                {invitado && 'Unos detalles sobre ti'}
-                {sportman && stepsSportman === 0 && 'Escoge tu deporte'}
-                {sportman && stepsSportman === 1 && "Define tus skills"}
-                {stepsSportman === 2 && 'Unos detalles sobre ti'}
+            </Text>
+            <Text
+              style={{
+                marginTop: -5,
+                marginBottom: -3,
+                fontSize: FontSize.size_9xl,
+                color: Color.wHITESPORTSMATCH,
+                textAlign: 'center',
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: '500',
+                color: Color.wHITESPORTSMATCH
+              }}
+            >
+              {!sportman && !profesional && !invitado && 'Escoge tu rol'}
+              {invitado && 'Unos detalles sobre ti'}
+              {sportman && stepsSportman === 0 && 'Escoge tu deporte'}
+              {sportman && stepsSportman === 1 && "Define tus skills"}
+              {stepsSportman === 2 && 'Unos detalles sobre ti'}
 
-                {profesional && 'Unos detalles sobre ti'}
-              </Text>
+              {profesional && 'Unos detalles sobre ti'}
+            </Text>
 
-              <Lines
-                index={
-                  !sportman && !profesional
-                    ? 1
-                    : (sportman && stepsSportman === 0) ||
-                      (profesional && stepsProfesional === 0)
-                      ? 2
-                      : stepsProfesional === 1 || stepsSportman === 1
-                        ? 3
-                        : '' || stepsSportman === 2
-                          ? 4
-                          : ''
-                }
-              />
-            </View>
+            <Lines
+              index={
+                !sportman && !profesional
+                  ? 1
+                  : (sportman && stepsSportman === 0) ||
+                    (profesional && stepsProfesional === 0)
+                    ? 2
+                    : stepsProfesional === 1 || stepsSportman === 1
+                      ? 3
+                      : '' || stepsSportman === 2
+                        ? 4
+                        : ''
+              }
+            />
           </View>
         </View>
+      </View>
 
-        <View style={{ marginTop: 30, justifyContent: "center", height: Dimensions.get('window').height - 200 }}>
-          {!sportman && !profesional && !invitado && (
-            <View
-              style={{
-                ...styles.container
-              }}
-            >
-              <View style={styles.botonLayout1}>
-                <TouchableOpacity
+      <View style={{ height: "100%", justifyContent: "space-between", flex: 1, paddingTop: "6%" }}>
+        {!sportman && !profesional && !invitado && (
+          <View
+            style={{
+              ...styles.container
+            }}
+          >
+            <View style={styles.botonLayout1}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Jugador' && styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Jugador')}
+              >
+                <Image
+                  style={styles.simboloIconLayout}
+                  contentFit="cover"
+                  source={require('../../assets/simbolo6.png')}
+                />
+                <Text
                   style={[
-                    styles.rectangulo,
-                    selectedRole === 'Jugador' && styles.selectedBackground
+                    styles.jugador,
+                    styles.jugadorTypo,
+                    selectedRole === 'Jugador' && styles.selectedText
                   ]}
-                  onPress={() => handleRoleSelection('Jugador')}
                 >
-                  <Image
-                    style={styles.simboloIconLayout}
-                    contentFit="cover"
-                    source={require('../../assets/simbolo6.png')}
-                  />
-                  <Text
-                    style={[
-                      styles.jugador,
-                      styles.jugadorTypo,
-                      selectedRole === 'Jugador' && styles.selectedText
-                    ]}
-                  >
-                    Jugador
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.botonLayout1}>
-                <TouchableOpacity
+                  Jugador
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.botonLayout1}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Profesional del deporte' &&
+                  styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Profesional del deporte')}
+              >
+                <Text
                   style={[
-                    styles.rectangulo,
+                    styles.jugador,
+                    styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                    styles.selectedBackground
+                    styles.selectedText
                   ]}
-                  onPress={() => handleRoleSelection('Profesional del deporte')}
                 >
-                  <Text
-                    style={[
-                      styles.jugador,
-                      styles.jugadorTypo,
-                      selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
-                    ]}
-                  >
-                    Profesional del deporte
-                  </Text>
-                  <Image
-                    style={styles.simboloIconLayout}
-                    contentFit="cover"
-                    source={require('../../assets/simbolo7.png')}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.botonLayout1}>
-                <TouchableOpacity
-                  style={[
-                    styles.rectangulo,
-                    selectedRole === 'Invitado' &&
-                    styles.selectedBackground
-                  ]}
-                  onPress={() => handleRoleSelection('Invitado')}
-                >
-                  <View style={{ position: "absolute", left: 18 }}><Visores></Visores></View>
+                  Profesional del deporte
+                </Text>
+                <Image
+                  style={styles.simboloIconLayout}
+                  contentFit="cover"
+                  source={require('../../assets/simbolo7.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.botonLayout1}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Invitado' &&
+                  styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Invitado')}
+              >
+                <View style={{ position: "absolute", left: 18 }}><Visores></Visores></View>
 
-                  <Text
-                    style={[
-                      styles.jugador,
-                      styles.jugadorTypo,
-                      selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
-                    ]}
-                  >
-                    Invitado
-                  </Text>
-                  {/* <Image
+                <Text
+                  style={[
+                    styles.jugador,
+                    styles.jugadorTypo,
+                    selectedRole === 'Profesional del deporte' &&
+                    styles.selectedText
+                  ]}
+                >
+                  Invitado
+                </Text>
+                {/* <Image
                     style={styles.simboloIconLayout}
                     contentFit="cover"
                     source={require('../../assets/simbolo7.png')}
                   /> */}
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </View>
-          )}
+          </View>
+        )}
 
-          {sportman && stepsSportman === 1 && (
-            <SkillSeleccion selectedSport={selectedSport} setData={setData} data={data} />
+        {sportman && stepsSportman === 1 && (
+          <SkillSeleccion selectedSport={selectedSport} setData={setData} data={data} />
 
-            // <Paso4Jugador
-            //   selectedCity={selectedCity}
-            //   setSelectedCity={setSelectedCity}
-            //   sportmanValues={sportmanValues}
-            //   setSportmanValues={setSportmanValues}
-            // />
-          )}
-          {sportman && stepsSportman === 2 && (
-            //  <SkillSeleccion setData={setData} data={data} />
+          // <Paso4Jugador
+          //   selectedCity={selectedCity}
+          //   setSelectedCity={setSelectedCity}
+          //   sportmanValues={sportmanValues}
+          //   setSportmanValues={setSportmanValues}
+          // />
+        )}
+        {sportman && stepsSportman === 2 && (
+          //  <SkillSeleccion setData={setData} data={data} />
 
-            <Paso4Jugador
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
-              sportmanValues={sportmanValues}
-              setSportmanValues={setSportmanValues}
-            />
-          )}
-          {invitado && (
-            <Paso4Jugador
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
-              sportmanValues={sportmanValues}
-              setSportmanValues={setSportmanValues}
-            />
-          )}
-          {profesional && stepsProfesional === 0 && (
-            <Paso3Profesional
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
-              profesionalValues={profesionalValues}
-              setProfesionalValues={setProfesionalValues}
-            />
-          )}
-          {sportman && stepsSportman === 0 && (
+          <Paso4Jugador
+            selectedSport={selectedSport}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            sportmanValues={sportmanValues}
+            setSportmanValues={setSportmanValues}
+          />
+        )}
+        {invitado && (
+          <Paso4Jugador
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            sportmanValues={sportmanValues}
+            setSportmanValues={setSportmanValues}
+          />
+        )}
+        {profesional && stepsProfesional === 0 && (
+          <Paso3Profesional
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            profesionalValues={profesionalValues}
+            setProfesionalValues={setProfesionalValues}
+          />
+        )}
+        {sportman && stepsSportman === 0 && (
 
-            <Paso2Jugador setSelectedSport={setSelectedSport} selectedSport={selectedSport}></Paso2Jugador>
+          <Paso2Jugador setSelectedSport={setSelectedSport} selectedSport={selectedSport}></Paso2Jugador>
 
-          )}
-          {profesional && stepsProfesional === 1 &&
-            <Paso4Profesional
-              profesionalValues={profesionalValues}
-              setProfesionalValues={setProfesionalValues}
-            />
-          }
+        )}
+        {profesional && stepsProfesional === 1 &&
+          <Paso4Profesional
+            profesionalValues={profesionalValues}
+            setProfesionalValues={setProfesionalValues}
+          />
+        }
 
-        </View>
         <View style={styles.botonesRoles}>
           <Pressable
             style={styles.siguiente}
@@ -576,9 +661,8 @@ const styles = StyleSheet.create({
   imagenDeFondo: {
     position: 'absolute',
     height: '100%',
-    width: '110%',
+    width: '100%',
     zIndex: 0,
-    top: 70
   },
   coolicon: {
     width: 9,
@@ -606,13 +690,8 @@ const styles = StyleSheet.create({
   },
   botonesRoles: {
     width: '100%',
-    marginTop: 30,
-    paddingBottom: 30,
-    paddingTop: 30,
-    position: "absolute",
-    zIndex: 9999,
-    bottom: 0,
-    alignSelf: "center"
+    paddingVertical: 25,
+    paddingHorizontal: 10
   },
   siguiente1: {
     fontWeight: '700',
@@ -626,7 +705,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: '95%',
+    width: '100%',
     alignSelf: 'center'
   },
   selectedBackground: {

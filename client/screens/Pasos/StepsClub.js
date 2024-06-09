@@ -5,7 +5,10 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Dimensions,
+  useWindowDimensions,
+  BackHandler
 } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import {
@@ -24,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createClub, getClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { updateUserClubData } from '../../redux/actions/users'
+import { clearUser } from '../../redux/slices/users.slices'
 
 const StepsClub = () => {
   const navigation = useNavigation()
@@ -44,6 +48,9 @@ const StepsClub = () => {
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [sportS, setSportS] = useState("")
+  const { height, width } = useWindowDimensions();
+
+  console.log(width, "-----", height, "medidas")
 
   const [clubValues, setClubValues] = useState({
     name: '',
@@ -54,6 +61,23 @@ const StepsClub = () => {
     capacity: '',
     description: ''
   })
+
+  useEffect(() => {
+    const backAction = () => {
+      // Despacha tu acción de Redux aquí
+      dispatch(clearUser());
+      console.log("back")
+      navigation.goBack()
+      return true; // Indica que el evento fue manejado
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); // Remueve el listener al desmontar el componente
+  }, [dispatch]);
 
   const handleRegister = async () => {
     if (profileImage && coverImage) {
@@ -96,13 +120,13 @@ const StepsClub = () => {
         return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
       case 2:
         return (
-          <ScrollView contentContainerStyle={{paddingBottom:120 }}>
+          <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
             <EscogerDeporte2
               clubValues={clubValues}
               setClubValues={setClubValues}
             />
-
           </ScrollView>
+
         )
       case 3:
         return (
@@ -122,42 +146,56 @@ const StepsClub = () => {
     }
   }
 
-  return (
-    <View style={{ ...styles.escogerDeporte }}>
-      <ScrollView contentContainerStyle={{ height: "100%" }} keyboardShouldPersistTaps={'always'}>
-        <Image
-          style={{
-            ...styles.escogerDeporteChild
-          }}
-          contentFit="cover"
-          source={require('../../assets/group-2412.png')}
-        />
-        <View style={{ ...styles.atrsParent }}>
-          <Image
-            style={styles.coolicon}
-            contentFit="cover"
-            source={require('../../assets/coolicon.png')}
-          />
-          <Pressable
-            onPress={() =>
-              stepsIndex === 1
-                ? navigation.goBack()
-                : setstepsIndex((prev) => prev - 1)
-            }
-          >
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
-        <View style={{ marginTop: -30 }}>
-          <Text style={styles.paso2}>Paso {stepsIndex}</Text>
-          <Text style={styles.detallesDelClub}>
-            {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
-          </Text>
-        </View>
-        <Lines club={true} index={stepsIndex} />
+  const back = async () => {
+    await dispatch(clearUser())
+    navigation.goBack()
+  }
 
+  return (
+    <View style={{ ...styles.escogerDeporte, height: height, width: width, flex: 1 }}  >
+
+
+      {stepsIndex == 1 && (<Image
+        style={{
+          ...styles.escogerDeporteChild,
+        }}
+        contentFit="cover"
+        source={require('../../assets/tudeportefondo.png')}
+      />)}
+      {stepsIndex > 1 && (<Image
+        style={{
+          ...styles.escogerDeporteChild,
+        }}
+        contentFit="cover"
+        source={require('../../assets/sobretifondo.png')}
+      />)}
+      <View style={{ ...styles.atrsParent }}>
+        <Image
+          style={styles.coolicon}
+          contentFit="cover"
+          source={require('../../assets/coolicon.png')}
+        />
+        <Pressable
+          onPress={() =>
+            stepsIndex === 1
+              ? back()
+              : setstepsIndex((prev) => prev - 1)
+          }
+        >
+          <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+        </Pressable>
+      </View>
+      <View style={{ marginTop: -30 }}>
+        <Text style={styles.paso2}>Paso {stepsIndex}</Text>
+        <Text style={styles.detallesDelClub}>
+          {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
+        </Text>
+      </View>
+      <Lines club={true} index={stepsIndex} />
+
+      <View style={{ justifyContent: "space-between", height: "100%", flex: 1, paddingVertical: 20 }}>
         {ViewComponent(stepsIndex)}
-        <View style={{height:"auto",width:"100%",backgroundColor:"black",position:"absolute",bottom:0}}>
+        <View >
           <TouchableOpacity
             style={styles.touchable}
             onPress={() => {
@@ -169,7 +207,7 @@ const StepsClub = () => {
             <Text style={styles.nextText}>Siguiente</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </View>
   )
 }
@@ -221,10 +259,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   escogerDeporte: {
-    flex: 1,
-    height: "100%",
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    paddingHorizontal: 15
   },
   nextText: {
     fontSize: FontSize.button_size,
@@ -233,10 +268,8 @@ const styles = StyleSheet.create({
   },
   touchable: {
 
-    marginVertical: 30,
     alignItems: 'center',
     justifyContent: 'center',
-   
     width: "100%",
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,

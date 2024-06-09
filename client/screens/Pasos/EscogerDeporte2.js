@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { View } from 'react-native'
+import { KeyboardAvoidingView, Platform, View } from 'react-native'
 import Input from '../../components/Input'
 // import { useNavigation } from '@react-navigation/core'
 
@@ -38,9 +38,8 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
   }
 
   return (
-    <View>
-      <View>
-        <View>
+   
+        <View style={{height:"auto"}}>
           <Input
             title="Nombre del club"
             placeholderText="Nombre"
@@ -112,8 +111,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
             inputRef={descriptionRef}
           />
         </View>
-      </View>
-    </View>
+
   )
 }
 

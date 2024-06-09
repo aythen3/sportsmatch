@@ -16,12 +16,13 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch } from 'react-redux'
-import { clearUser } from '../../redux/slices/users.slices'
+import { clearUser, logedOut } from '../../redux/slices/users.slices'
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager } from 'react-native-fbsdk-next'
 import { auth } from '../../firebaseConfig'
 import { signOut } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { clearSportman } from '../../redux/slices/sportman.slices'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -108,6 +109,8 @@ quieres `}</Text>
                   AsyncStorage.removeItem('googleAuth')
                   AsyncStorage.removeItem('facebookAuth')
                   dispatch(clearUser())
+                  dispatch(clearSportman())
+                  dispatch(logedOut())
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

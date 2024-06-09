@@ -121,6 +121,7 @@ export class SportmanService {
           sportman[key] = sportmanData[key];
         }
       }
+      console.log(sportmanData,sportman)
       return await this.sportmanRepository.save(sportman);
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

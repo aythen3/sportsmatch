@@ -24,6 +24,7 @@ import CustomModal from '../../components/modals/CustomModal'
 import axiosInstance from '../../utils/apiBackend'
 import { getClub } from '../../redux/actions/club'
 import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
+import ScrollableModal from '../../components/modals/ScrollableModal'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -46,6 +47,8 @@ const ConfigurarAnuncio = () => {
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedPriority, setSelectedPriority] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
+  const [selectedSport, setSelectedSport] = useState("")
+
 
   const [showRemunerationModal, setShowRemunerationModal] = useState()
   const [showPriorityModal, setShowPriorityModal] = useState()
@@ -95,6 +98,15 @@ const ConfigurarAnuncio = () => {
     'Veteranos (+30 años)'
   ]
 
+  const opciones = {
+    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
+    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
+    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
+    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
+  }
+
   const remunerationData = ['Si', 'No']
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -114,7 +126,7 @@ const ConfigurarAnuncio = () => {
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
-      console.log('settingData: ', data)
+      setSelectedSport(data.sports[0].name)
       return data
     } catch (error) {
       console.error('Error fetching club data:', error)
@@ -132,7 +144,7 @@ const ConfigurarAnuncio = () => {
     }
     fetchClubData()
   }, [])
-
+console.log(club,"opossss")
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
@@ -164,11 +176,10 @@ const ConfigurarAnuncio = () => {
             >
               <Text style={styles.inputText}>
                 {selectedPosition
-                  ? selectedPosition?.name.charAt(0).toUpperCase() +
-                  selectedPosition?.name.slice(1).toLowerCase()
+                  ? selectedPosition
                   : 'Selecciona una posición'}
               </Text>
-              {showModal && (
+              {/* {showModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -179,9 +190,9 @@ const ConfigurarAnuncio = () => {
                     backgroundColor: Color.bLACK1SPORTSMATCH
                   }}
                 >
-                  {allPositions
-                    .map((position) => {
-                      return { name: position?.name, id: position.id }
+                  {selectedSport && opciones[`futbol`]
+                    .map((position, index) => {
+                      return { name: position, id: index }
                     })
                     .map((item, index) => (
                       <TouchableOpacity
@@ -192,6 +203,7 @@ const ConfigurarAnuncio = () => {
                           alignItems: 'center'
                         }}
                         onPress={() => {
+                          console.log(item.name)
                           setSelectedPosition(item)
                           setShowModal(false)
                         }}
@@ -219,6 +231,14 @@ const ConfigurarAnuncio = () => {
                       </TouchableOpacity>
                     ))}
                 </View>
+              )} */}
+              {showModal && (
+                 <ScrollableModal
+                 visible={showModal}
+                 closeModal={()=> setShowModal(false)}
+                 onSelectItem={setSelectedPosition}
+                 options={opciones[`futbol`]}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -239,7 +259,7 @@ const ConfigurarAnuncio = () => {
                     ? 'Mujer'
                     : 'Hombre'}
               </Text>
-              {showGenderModal && (
+              {/* {showGenderModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -278,6 +298,14 @@ const ConfigurarAnuncio = () => {
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                   {showGenderModal && (
+                 <ScrollableModal
+                 visible={showGenderModal}
+                 closeModal={()=> setShowGenderModal(false)}
+                 onSelectItem={setSelectedGender}
+                 options={[`Hombre`,'Mujer']}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -296,14 +324,14 @@ const ConfigurarAnuncio = () => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                setShowCategoryModal(!showCategoryModal)
+                setShowCategoryModal(true)
               }}
               style={{ zIndex: 8000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
                 {selectedCategory || 'Selecciona una categoría'}
               </Text>
-              {showCategoryModal && (
+              {/* {showCategoryModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -343,6 +371,14 @@ const ConfigurarAnuncio = () => {
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                 {showCategoryModal && (
+                 <ScrollableModal
+                 visible={showCategoryModal}
+                 closeModal={()=> setShowCategoryModal(false)}
+                 onSelectItem={setSelectedCategory}
+                 options={categories}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -360,7 +396,7 @@ const ConfigurarAnuncio = () => {
               <Text style={styles.inputText}>
                 {selectedPriority || 'Seleccione el nivel de urgencia'}
               </Text>
-              {showPriorityModal && (
+              {/* {showPriorityModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -400,6 +436,14 @@ const ConfigurarAnuncio = () => {
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                 {showPriorityModal && (
+                 <ScrollableModal
+                 visible={showPriorityModal}
+                 closeModal={()=> setShowPriorityModal(false)}
+                 onSelectItem={setSelectedPriority}
+                 options={numbers}
+               />
               )}
             </TouchableOpacity>
           </View>
@@ -418,7 +462,7 @@ const ConfigurarAnuncio = () => {
                 {selectedRemuneration || 'Seleccione retribución'}
               </Text>
 
-              {showRemunerationModal && (
+              {/* {showRemunerationModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -458,6 +502,14 @@ const ConfigurarAnuncio = () => {
                     </TouchableOpacity>
                   ))}
                 </View>
+              )} */}
+                   {showRemunerationModal && (
+                 <ScrollableModal
+                 visible={showRemunerationModal}
+                 closeModal={()=> setShowRemunerationModal(false)}
+                 onSelectItem={setSelectedRemuneration}
+                 options={remunerationData}
+               />
               )}
             </TouchableOpacity>
           </View>

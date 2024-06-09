@@ -8,7 +8,9 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation, useRoute } from '@react-navigation/core'
@@ -46,13 +48,16 @@ const CrearHighlight = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
-      <View
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
         style={{
           width: '90%',
-          alignSelf: 'center',
           height:"100%",
-          paddingBottom:50
+          alignSelf: 'center',
+          paddingBottom: 70
         }}
       >
         <View
@@ -81,24 +86,22 @@ const CrearHighlight = () => {
         </View>
         <Image
           style={{
+            flex: 1,
             marginTop: 40,
             marginBottom: 15,
             borderRadius: 8,
-            maxHeight:"50%",
-            minHeight:"10%",
-            height: "100%"
           }}
           contentFit="cover"
           source={{ uri: image ? image : provisoryProfileImage }}
         />
         <View
           style={{
-            height: "35%",
+            flex: 1,
             borderWidth: 1,
             borderRadius: 15,
             borderColor: Color.wHITESPORTSMATCH,
             marginTop: 20,
-            marginBottom:30
+            marginBottom: 30
           }}
         >
           <TextInput
@@ -110,8 +113,8 @@ const CrearHighlight = () => {
             value={description}
           />
         </View>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 
