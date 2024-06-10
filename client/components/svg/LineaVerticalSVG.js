@@ -11,7 +11,7 @@ function LineaVertical(props) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <Path d="M2.484.032v87.915" stroke="#B83919" strokeWidth={4.04207} />
+      <Path d="M2.484.032v87.915" stroke="#1c1c1c" strokeWidth={4.04207} />
     </Svg>
   )
 }

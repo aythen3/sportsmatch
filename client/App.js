@@ -102,9 +102,9 @@ const App = () => {
         />
         <Provider store={store}>
           <ContextProvider>
-            <NavigationContainer>
+            <NavigationContainer >
               {hideSplashScreen ? (
-                <Stack.Navigator
+                <Stack.Navigator 
                   screenOptions={({ route }) => ({
                     headerShown: false,
                     footerShown: setIsFooterShow(
@@ -122,7 +122,7 @@ const App = () => {
                     )
                   })}
                 >
-                  <Stack.Screen
+                  <Stack.Screen 
                     name="PantallaInicio"
                     component={PantallaInicio}
                     options={{ headerShown: false }}
@@ -177,41 +177,7 @@ const App = () => {
                     component={PromocionarPost}
                     options={{ headerShown: false }}
                   />
-                  <Stack.Screen
-                    name="stepsClub"
-                    component={StepsClub}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="stepsJugador"
-                    component={StepsJugador}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Paso4Jugador"
-                    component={Paso4Jugador}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Paso3Profesional"
-                    component={Paso3Profesional}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Paso4Profesional"
-                    component={Paso4Profesional}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="EscogerDeporte1"
-                    component={EscogerDeporte1}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="EscogerDeporte2"
-                    component={EscogerDeporte2}
-                    options={{ headerShown: false }}
-                  />
+                 
                   <Stack.Screen
                     name="ExplorarPersonaClubsFiltr"
                     component={ExplorarPersonaClubsFiltr}
@@ -285,6 +251,41 @@ const App = () => {
                   <Stack.Screen
                     name="PerfilDatosPropioClub"
                     component={PerfilDatosPropioClub}
+                    options={{ headerShown: false }}
+                  />
+                   <Stack.Screen
+                    name="stepsClub"
+                    component={StepsClub}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="stepsJugador"
+                    component={StepsJugador}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Paso4Jugador"
+                    component={Paso4Jugador}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Paso3Profesional"
+                    component={Paso3Profesional}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Paso4Profesional"
+                    component={Paso4Profesional}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="EscogerDeporte1"
+                    component={EscogerDeporte1}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="EscogerDeporte2"
+                    component={EscogerDeporte2}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen

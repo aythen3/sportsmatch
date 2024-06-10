@@ -41,7 +41,7 @@ function Carousel({
     const { position } = event.nativeEvent;
     setCurrentPage(position);
   };
-  const { user } = useSelector((state) => state.users)
+  const { user , mainColor } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
   const { sportman } = useSelector((state) => state.sportman)
 
@@ -253,7 +253,7 @@ const imagesNumber = ['0','1']
             key={index}
             style={[
               styles.indicator,
-              index === currentPage ? [styles.indicatorActive,{backgroundColor:'orange'}] : styles.indicatorInactive
+              index === currentPage ? [styles.indicatorActive,{backgroundColor:mainColor}] : styles.indicatorInactive
             ]}
           />
         ))}
@@ -302,7 +302,7 @@ const imagesNumber = ['0','1']
         </View>
         <Text    numberOfLines={isTruncated ? 2 : undefined}  // Limita el número de líneas si está truncado
         ellipsizeMode="tail" style={styles.description}>{description}</Text>
-         {isTruncated && description.split(' ').length > 2 * 10   ? ( // Ajusta la lógica de truncamiento
+         {isTruncated && description.split(' ').length > 2 * 6   ? ( // Ajusta la lógica de truncamiento
         <TouchableOpacity onPress={toggleTruncate}>
           <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver más</Text>
         </TouchableOpacity>

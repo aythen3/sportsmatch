@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView ,TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { Color, FontFamily } from '../../GlobalStyles'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -47,53 +47,53 @@ const CustomPicker = ({
               : state}
       </Text>
       {showModal && (
-        <ScrollView
-          keyboardShouldPersistTaps={'always'}
-          style={{
-            position: 'absolute',
-            top: 40,
-            width: '100%',
-            maxHeight: 200,
-            borderRadius: 15,
-            borderWidth: 1,
-            backgroundColor: Color.bLACK1SPORTSMATCH
-          }}
-        >
-          {array.map((item, index) => (
-            <TouchableOpacity
-              key={index}
+            <ScrollView
+              keyboardShouldPersistTaps={'always'}
               style={{
-                paddingVertical: 3,
+                position: 'absolute',
+                top: 40,
                 width: '100%',
-                alignItems: 'center'
-              }}
-              onPress={() => {
-                setState(item)
-                setShowModal(false)
+                maxHeight: 200,
+                borderRadius: 15,
+                borderWidth: 1,
+                backgroundColor: Color.bLACK1SPORTSMATCH
               }}
             >
-              <Text
-                style={{
-                  width: 200,
-                  paddingBottom: 5,
-                  textAlign: 'center',
-                  borderBottomWidth: index !== array.length ? 1 : 0,
-                  borderBottomColor: '#ccc',
-                  fontSize: 16,
-                  color: Color.gREY2SPORTSMATCH
-                }}
-              >
-                {item === 'Female'
-                  ? 'Mujer'
-                  : item === 'Male'
-                    ? 'Hombre'
-                    : cities
-                      ? item?.city
-                      : item}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+              {array.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    paddingVertical: 3,
+                    width: '100%',
+                    alignItems: 'center'
+                  }}
+                  onPress={() => {
+                    setState(item)
+                    setShowModal(false)
+                  }}
+                >
+                  <Text
+                    style={{
+                      width: 200,
+                      paddingBottom: 5,
+                      textAlign: 'center',
+                      borderBottomWidth: index !== array.length ? 1 : 0,
+                      borderBottomColor: '#ccc',
+                      fontSize: 16,
+                      color: Color.gREY2SPORTSMATCH
+                    }}
+                  >
+                    {item === 'Female'
+                      ? 'Mujer'
+                      : item === 'Male'
+                        ? 'Hombre'
+                        : cities
+                          ? item?.city
+                          : item}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
       )}
       <Entypo
         style={{ color: '#fff', marginRight: 15 }}

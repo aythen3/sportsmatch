@@ -14,6 +14,7 @@ import {
 const usersSlices = createSlice({
   name: 'users',
   initialState: {
+    mainColor:'#E1451E',
     loged:false,
     user: {},
     userChild: {},
@@ -47,6 +48,9 @@ const usersSlices = createSlice({
   reducers: {
     setIsSpotMan: (state, action) => {
       state.isSportman = action.payload
+    },
+    setMainColor: (state, action) => {
+      state.mainColor = action.payload
     },
     setGender: (state, action) => {
       state.sportmanGender = action.payload
@@ -183,6 +187,7 @@ const usersSlices = createSlice({
 })
 
 export const {
+  setMainColor,
   setIsSpotMan,
   setGender,
   setBirthdate,
