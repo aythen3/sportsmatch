@@ -22,7 +22,7 @@ const ScrollableModal = ({
   console.log('scrollHeight: ', scrollHeight)
   return (
     <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={closeModal}>
-      <TouchableWithoutFeedback style={{ width: "100%" }} onPress={closeModal}>
+      <TouchableWithoutFeedback style={{ width: "100%",height:"100%" }} onPress={closeModal}>
         <View
           style={{
             width: "100%",

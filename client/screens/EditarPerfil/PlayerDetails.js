@@ -73,6 +73,15 @@ const PlayerDetails = () => {
   ]
 
   const handleUpdateUserData = () => {
+    if (!city &&
+      !profileImage &&
+      !coverImage &&
+      !userDescription &&
+      !birthdate &&
+      !actualClubName &&
+      !gender) {
+      return navigation.navigate('EditarPerfil')
+    }
     console.log('on handleUpdateUserData')
     const data = {
       city,
@@ -233,6 +242,7 @@ const PlayerDetails = () => {
           keyboardShouldPersistTaps={'always'}
           style={{
             width: '90%',
+            marginTop: 20
           }}
         >
           <View style={{ gap: 10, flex: 1 }}>
@@ -267,7 +277,7 @@ const PlayerDetails = () => {
               }}
             >
               <View style={styles.profileImageContainer}>
-                {sportman?.info?.img_perfil && (
+                {sportman?.info?.img_perfil ? (
                   <Image
                     style={{ width: '100%', height: '100%', borderRadius: 100 }}
                     contentFit="cover"
@@ -275,7 +285,12 @@ const PlayerDetails = () => {
                       uri: provisoryProfileImage || sportman?.info?.img_perfil
                     }}
                   />
-                )}
+                ) : (
+                  <View
+                    style={{ width: '100%', height: '100%', borderRadius: 100,backgroundColor:"#D9D9D9" }}
+                  
+                  ></View>
+                ) }
                 <TouchableOpacity
                   onPress={() => {
                     setSelectedPicture('profile')
@@ -300,7 +315,7 @@ const PlayerDetails = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={[styles.orangeButton,{backgroundColor:sportColor}]}
+                style={[styles.orangeButton, { backgroundColor: sportColor }]}
                 onPress={() => pickImage('profile')}
               >
                 <Text style={styles.mediumText}>Subir foto de perfil</Text>
@@ -320,7 +335,7 @@ const PlayerDetails = () => {
               }}
             >
               <View style={styles.coverImageContainer}>
-                {sportman?.info?.img_front && (
+                {sportman?.info?.img_front ? (
                   <Image
                     style={{ width: '100%', height: '100%', borderRadius: 8 }}
                     contentFit="cover"
@@ -328,6 +343,11 @@ const PlayerDetails = () => {
                       uri: provisoryCoverImage || sportman?.info?.img_front
                     }}
                   />
+                ) : (
+                  <View
+                    style={{ width: '100%', height: '100%', borderRadius: 8,backgroundColor:"#D9D9D9" }}
+                  
+                  ></View>
                 )}
                 <TouchableOpacity
                   onPress={() => {
@@ -354,7 +374,7 @@ const PlayerDetails = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={[styles.orangeButton,{backgroundColor:sportColor}]}
+                style={[styles.orangeButton, { backgroundColor: sportColor }]}
                 onPress={() => pickImage('cover')}
               >
                 <Text style={styles.mediumText}>Subir foto de portada</Text>
@@ -364,7 +384,7 @@ const PlayerDetails = () => {
             {/* =========================================================== */}
             {/* ========================== INPUTS ========================= */}
             {/* =========================================================== */}
-            <View style={{ gap: 20, flex: 1 }}>
+            <View style={{ gap: 30, flex: 1 }}>
               <View style={{ gap: 5 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {'Selecciona tu sexo'}
@@ -380,9 +400,9 @@ const PlayerDetails = () => {
                 />
                 <ScrollableModal
                   visible={showGenderModal}
-                  closeModal={()=>setShowGenderModal(false)}
+                  closeModal={() => setShowGenderModal(false)}
                   onSelectItem={setGender}
-                  options={['Hombre','Mujer']}
+                  options={['Hombre', 'Mujer']}
                 />
               </View>
 
@@ -418,7 +438,7 @@ const PlayerDetails = () => {
                 /> */}
                 <AñoNacimientoModal
                   visible={showBirthdateModal}
-                  closeModal={()=> setShowBirthdateModal(false)}
+                  closeModal={() => setShowBirthdateModal(false)}
                   onSelectAñoNacimiento={handleSelectAñoNacimiento}
                 />
 
@@ -496,15 +516,7 @@ const PlayerDetails = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
-              disabled={
-                !city &&
-                !profileImage &&
-                !coverImage &&
-                !userDescription &&
-                !birthdate &&
-                !actualClubName &&
-                !gender
-              }
+
               onPress={handleUpdateUserData}
             >
               <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>

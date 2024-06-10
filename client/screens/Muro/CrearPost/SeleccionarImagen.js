@@ -26,7 +26,7 @@ const SeleccionarImagen = () => {
   const [album, setAlbum] = useState([])
   const [albumData, setAlbumData] = useState([])
 
-  const [selectedAlbum, setSelectedAlbum] = useState('')
+  const [selectedAlbum, setSelectedAlbum] = useState({ "title": "Camera"})
 
   const [showAlbum, setShowAlbum] = useState(false)
 
@@ -293,7 +293,7 @@ const SeleccionarImagen = () => {
                     fontWeight: '500'
                   }}
                 >
-                  {selectedAlbum || 'Galeria'}
+                  {selectedAlbum?.title || selectedAlbum || 'Galeria'}
                 </Text>
                 <Entypo size={20} color={'#fff'} name="chevron-small-down" />
               </Pressable>
