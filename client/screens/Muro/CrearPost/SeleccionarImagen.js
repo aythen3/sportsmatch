@@ -17,16 +17,22 @@ import { Dimensions } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import ScrollableModal from '../../../components/modals/ScrollableModal'
+import PagerView from 'react-native-pager-view'
+import SimboloSVG from './SimboloSVG'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage, pickImageFromCamera } = useContext(Context)
 
   const navigation = useNavigation()
   const [showCamera, setShowCamera] = useState(false)
+  const [showSelection, setShowSelection] = useState(false)
+
+  const [multiSelect, setMultiSelect] = useState([])
+
   const [album, setAlbum] = useState([])
   const [albumData, setAlbumData] = useState([])
 
-  const [selectedAlbum, setSelectedAlbum] = useState({ "title": "Camera"})
+  const [selectedAlbum, setSelectedAlbum] = useState({ "title": "Camera" })
 
   const [showAlbum, setShowAlbum] = useState(false)
 
@@ -61,31 +67,30 @@ const SeleccionarImagen = () => {
 
 
   const obtenerImagenesDeGalerias = async () => {
-    
+
     const { status } = await MediaLibrary.requestPermissionsAsync()
     if (status !== 'granted') {
       console.error('Permiso denegado para acceder a la galería de imágenes.')
       return
     }
-    const filtro = albumData.filter(e=> e.title == selectedAlbum)
-    console.log("filtro",filtro)
-    
-    const assets = await MediaLibrary.getAssetsAsync({ album: filtro[0]})
-    console.log(assets,"eeeeeeeeeeeeeee")
+    const filtro = albumData.filter(e => e.title == selectedAlbum)
+    console.log("filtro", filtro)
+
+    const assets = await MediaLibrary.getAssetsAsync({ album: filtro[0] })
+    console.log(assets, "eeeeeeeeeeeeeee")
     const arr = []
     const imagesArray = assets?.assets ?? []
     setImagenes(imagesArray)
   }
 
   useEffect(() => {
-    if(selectedAlbum !== ''){
+    if (selectedAlbum !== '') {
 
       obtenerImagenesDeGalerias()
     }
   }, [selectedAlbum])
 
   const handleSeleccionarImagen = (imagen) => {
-    pickImage('a', imagen.uri)
     console.log('imagen: ', imagen)
     setSelectedImage(imagen)
   }
@@ -103,17 +108,7 @@ const SeleccionarImagen = () => {
   }, [])
 
   const changePictureMode = async () => {
-    // console.log(
-    //   'setting camera mode to: ',
-    //   cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    // )
-    // setCameraType(
-    //   cameraType === Camera.Constants.Type.back
-    //     ? Camera.Constants.Type.front
-    //     : Camera.Constants.Type.back
-    // )
     setFacing((prev) => prev == "back" ? "front" : "back")
-
   }
 
   useEffect(() => {
@@ -131,6 +126,17 @@ const SeleccionarImagen = () => {
 
       setShowCamera(false)
       // You can handle the taken photo here, such as displaying it or saving it.
+    }
+  }
+
+  const handleSelect = (image) => {
+    console.log(image)
+    const exist = multiSelect.find((png) => png.id === image.id)
+    console.log(exist, "aaaaa")
+    if (!exist) {
+      setMultiSelect([...multiSelect, image])
+    } else {
+      setMultiSelect(multiSelect.filter((png) => png.id !== image.id))
     }
   }
 
@@ -154,8 +160,18 @@ const SeleccionarImagen = () => {
           {imagenes.map((imagen, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleSeleccionarImagen(imagen)}
+              onPress={() => {
+                if (showSelection) {
+                  handleSelect(imagen)
+                } else {
+                  handleSeleccionarImagen(imagen)
+                }
+              }}
+              onLongPress={() => handleSelect(imagen)}
             >
+              {multiSelect.find((img, i) => imagen.id === img.id) && (
+                <View style={{ width: 20, height: 20, backgroundColor: "blue", borderRadius: 100, position: "absolute", top: 10, right: 10, zIndex: 800 }}><Text style={{color:"white",textAlign:"center"}}>{multiSelect.indexOf(imagen) + 1}</Text></View>
+              )}
               <Image
                 source={{ uri: imagen.uri }}
                 style={{
@@ -240,7 +256,7 @@ const SeleccionarImagen = () => {
           <View style={{ width: '90%', alignSelf: 'center', flex: 1 }}>
             <View style={styles.container}>
               <TouchableOpacity
-                o
+
                 onPress={() => {
                   console.log('SIMG')
                   navigation.goBack()
@@ -254,9 +270,8 @@ const SeleccionarImagen = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('CrearHighlight', { image: libraryImage })
+                  navigation.navigate('CrearHighlight', { image: multiSelect.length == 0 ? selectedImage.uri : multiSelect })
                 }}
-                disabled={!libraryImage}
               >
                 <Text
                   style={{
@@ -270,11 +285,30 @@ const SeleccionarImagen = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Image
-              style={styles.codeBlockPersonaEnCanch}
-              contentFit="cover"
-              source={{ uri: selectedImage?.uri }}
-            />
+            {multiSelect.length === 0 ? (
+              <View style={{ height: "auto", width: "100%" }}>
+                <Image
+                  style={styles.codeBlockPersonaEnCanch}
+                  contentFit="cover"
+                  source={{ uri: selectedImage?.uri }}
+                />
+              </View>
+            ) : (
+
+              <View style={{ height: 344, width: "100%" }}>
+                <PagerView style={{ flex: 1, marginBottom: 10 }} initialPage={0}>
+                  {multiSelect.map((e, i) => (
+                    <View style={{ width: "100%" }} key={i}>
+                      <Image
+                        style={styles.codeBlockPersonaEnCanch}
+                        contentFit="cover"
+                        source={{ uri: e?.uri }}
+                      />
+                    </View>
+                  ))}
+                </PagerView>
+              </View>
+            )}
             <View
               style={{
                 flexDirection: 'row',
@@ -282,7 +316,7 @@ const SeleccionarImagen = () => {
                 marginBottom: 15
               }}
             >
-              <Pressable onPress={()=> setShowAlbum(true)}
+              <Pressable onPress={() => setShowAlbum(true)}
                 style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}
               >
                 <Text
@@ -298,28 +332,55 @@ const SeleccionarImagen = () => {
                 <Entypo size={20} color={'#fff'} name="chevron-small-down" />
               </Pressable>
               {showAlbum && (
-                <ScrollableModal closeModal={()=> setShowAlbum(false)} onSelectItem={setSelectedAlbum} options={album} visible={showAlbum}></ScrollableModal>
+                <ScrollableModal closeModal={() => setShowAlbum(false)} onSelectItem={setSelectedAlbum} options={album} visible={showAlbum}></ScrollableModal>
               )}
 
               {hasPermission && (
-                <TouchableOpacity
-                  onPress={() => setShowCamera(true)}
-                  style={{
-                    width: 35,
-                    height: 35,
-                    borderRadius: 100,
-                    backgroundColor: '#252525',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Image
-                    style={{ width: 14, height: 14 }}
-                    contentFit="cover"
-                    source={require('../../../assets/camera.png')}
-                  />
-                </TouchableOpacity>
+                <View style={{ flexDirection: "row", gap: 8 }}>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (showSelection) {
+                        setMultiSelect([])
+                      }
+                      setShowSelection(!showSelection)
+                    }}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      borderRadius: 100,
+                      backgroundColor: '#252525',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    {/* <Image
+                      style={{ width: 14, height: 14 }}
+                      contentFit="cover"
+                      source={require('../../../assets/camera.png')}
+                    /> */}
+                    <SimboloSVG></SimboloSVG>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setShowCamera(true)}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      borderRadius: 100,
+                      backgroundColor: '#252525',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image
+                      style={{ width: 14, height: 14 }}
+                      contentFit="cover"
+                      source={require('../../../assets/camera.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
               )}
+
             </View>
 
             {renderizarImagenes()}

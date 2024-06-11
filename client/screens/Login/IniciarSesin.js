@@ -28,6 +28,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { setIsSpotMan, logedIn, logedOut } from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
+import HomeGif from '../../utils/HomeGif'
 
 const IniciarSesin = () => {
   const {
@@ -122,25 +123,7 @@ const IniciarSesin = () => {
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
 
-      <View style={[styles.loginSwitchChild]}>
-        <Image
-          style={[styles.loginSwitchChild2]}
-          contentFit="cover"
-          source={require('../../assets/carrouselgif.gif')}
-        />
-      </View>
-      {/* <View style={{ width: "100%", height: 800, position: "absolute", top: -110, right: -135 }}>
-        <Image
-          style={{ width: 550, height: 550, position: "absolute", top: -180, right: -50 }}
-
-          source={require('../../assets/lineasgif.png')}
-        />
-      </View> */}
-      <Image
-        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
-        contentFit="cover"
-        source={require('../../assets/sw.png')}
-      />
+  <HomeGif></HomeGif>
 
       <View style={styles.contenido}>
         {/* <Image

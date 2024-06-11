@@ -10,13 +10,15 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  useWindowDimensions
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { createPost, getAllPosts } from '../../../redux/actions/post'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../../../context/Context'
+import PagerView from 'react-native-pager-view'
 
 const CrearHighlight = () => {
   const navigation = useNavigation()
@@ -26,24 +28,43 @@ const CrearHighlight = () => {
   const route = useRoute()
 
   const { image } = route.params || {}
-  const { provisoryProfileImage } = useContext(Context)
+  const { provisoryProfileImage, pickImage, libraryImage } = useContext(Context)
   const { user } = useSelector((state) => state.users)
-
+  const { height, width } = useWindowDimensions();
   const [description, setDescription] = useState('')
+  const [multis, setMultis] = useState();
 
   useEffect(() => {
     console.log('image changed: ', image)
     console.log('provisoryProfileImage changed: ', provisoryProfileImage)
   }, [image, provisoryProfileImage])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    let imageFinal
+    if (!Array.isArray(image)) {
+      const res = await pickImage('a', image)
+      console.log(res, "pathh1")
+      imageFinal = res
+    } else {
+      const todas = []
+      for (let i = 0; i < image.length; i++) {
+      const res = await pickImage('a', image[i].uri)
+      console.log(res,"esto es del bucleee")
+      todas.push(res)
+      }
+      imageFinal = todas
+      console.log(imageFinal, "pathh2")
+    }
     const data = {
-      image: image,
-      description: description,
+      image: imageFinal,
+      description: description || "  ",
       authorType: user.user.type,
       author: user.user.id
     }
-    dispatch(createPost(data)).then((data) => dispatch(getAllPosts()))
+    dispatch(createPost(data)).then((data) => {
+      console.log(data)
+      dispatch(getAllPosts())
+    })
     navigation.navigate('SiguiendoJugadores')
   }
 
@@ -52,12 +73,12 @@ const CrearHighlight = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
       <ScrollView
-        contentContainerStyle={{ flex: 1 }}
+        contentContainerStyle={{ flex: 1, height: 'auto' }}
         style={{
-          width: '90%',
-          height:"100%",
+          flex: 1,
+          width: '92%',
+          height: height,
           alignSelf: 'center',
-          paddingBottom: 70
         }}
       >
         <View
@@ -84,19 +105,44 @@ const CrearHighlight = () => {
             <Text style={styles.siguiente}>Subir</Text>
           </TouchableOpacity>
         </View>
-        <Image
-          style={{
-            flex: 1,
-            marginTop: 40,
-            marginBottom: 15,
-            borderRadius: 8,
-          }}
-          contentFit="cover"
-          source={{ uri: image ? image : provisoryProfileImage }}
-        />
+        {!Array.isArray(image) ? (
+
+          <Image
+            style={{
+              marginTop: 40,
+              marginBottom: 15,
+              borderRadius: 8,
+              height: 350,
+              width: "100%",
+            }}
+            contentFit="cover"
+            source={{ uri: image ? image : provisoryProfileImage }}
+          />
+        ) : (
+          <View style={{ height: 344, width: "100%" }}>
+            <PagerView style={{ flex: 1, marginBottom: 10 }} initialPage={0}>
+              {image.map((e, i) => (
+                <View style={{ width: "100%" }} key={i}>
+                  <Image
+                    style={{
+                      marginTop: 40,
+                      marginBottom: 15,
+                      borderRadius: 8,
+                      height: 350,
+                      width: "100%",
+                    }}
+                    contentFit="cover"
+                    source={{ uri: e?.uri }}
+                  />
+                </View>
+              ))}
+            </PagerView>
+          </View>
+        )}
         <View
           style={{
             flex: 1,
+            width: "100%",
             borderWidth: 1,
             borderRadius: 15,
             borderColor: Color.wHITESPORTSMATCH,

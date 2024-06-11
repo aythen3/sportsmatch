@@ -35,50 +35,6 @@ const PantallaInicio = () => {
         contentFit="cover"
         source={require('../../assets/inicio.png')}
       />
-      {/* <View style={styles.logotipotagline}>
-        <View style={styles.logotipo}>
-          <Image
-            style={styles.icon}
-            contentFit="cover"
-            source={require('../../assets/logotipo.png')}
-          />
-        </View>
-        <Text style={[styles.tagline, styles.timeFlexBox]}>
-          La primera red social que conecta clubes y deportistas
-        </Text>
-      </View>
-      <Image
-        style={styles.liniasimagenIcon}
-        contentFit="cover"
-        source={require('../../assets/liniasimagen.png')}
-      /> */}
-      {/* <View style={[styles.uxIphone, styles.iphonePosition]}>
-        <View style={[styles.uxIphoneChild, styles.iphonePosition]} />
-        <View style={styles.group}>
-          <View style={[styles.battery, styles.batteryPosition]}>
-            <View style={[styles.border, styles.borderPosition]} />
-            <Image
-              style={[styles.capIcon, styles.batteryPosition]}
-              contentFit="cover"
-              source={require('../../assets/cap.png')}
-            />
-            <View style={styles.capacity} />
-          </View>
-          <Image
-            style={styles.wifiIcon}
-            contentFit="cover"
-            source={require('../../assets/wifi.png')}
-          />
-          <Image
-            style={styles.cellularConnectionIcon}
-            contentFit="cover"
-            source={require('../../assets/cellular-connection.png')}
-          />
-        </View>
-        <View style={[styles.starus, styles.timeLayout]}>
-          <Text style={[styles.time, styles.timeLayout]}>9:41</Text>
-        </View>
-      </View> */}
     </SafeAreaView>
   )
 }

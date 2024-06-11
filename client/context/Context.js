@@ -78,7 +78,7 @@ export const ContextProvider = ({ children }) => {
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
       profileImageForm.append('cloud_name', 'der45x19c')
 
-      await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
+     const res = await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
         method: 'post',
         body: profileImageForm
       })
@@ -88,7 +88,10 @@ export const ContextProvider = ({ children }) => {
         .then((data) => {
           console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(transformHttpToHttps(data.url))
+          return transformHttpToHttps(data.url)
         }).catch(error => console.log(error))
+
+       return res
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { create, getAllUsers } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 import PassView from './passview'
+import HomeGif from '../../utils/HomeGif'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
@@ -105,23 +106,7 @@ const Registrarse = () => {
 
   return (
     <View style={styles.registrarse}>
-      {/* <Image
-        style={styles.fondoIcon}
-        contentFit="cover"
-        source={require('../../assets/fondo2.png')}
-      /> */}
-       <View style={[styles.loginSwitchChild]}>
-        <Image
-          style={[styles.loginSwitchChild2]}
-          contentFit="cover"
-          source={require('../../assets/carrouselgif.gif')}
-        />
-      </View>
-      <Image
-        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
-        contentFit="cover"
-        source={require('../../assets/sw.png')}
-      />
+     <HomeGif></HomeGif>
       <View style={styles.contenido}>
       <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.botonAtrasFrame}>
           <Image

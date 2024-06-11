@@ -187,6 +187,8 @@ const ExplorarClubs = () => {
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
   const [searchUsers, setSearchUsers] = useState([])
+  const [filterSelected, setFilterSelected] = useState("")
+
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
 
@@ -515,6 +517,8 @@ const ExplorarClubs = () => {
           <View style={{ flex: 1 }}>
             <View style={styles.modal}>
               <FiltersSportman
+              setFilterSelected={setFilterSelected}
+              filterSelected={filterSelected}
                 posts={posts}
                 setPosts={setPosts}
                 allPosts={allPosts}
