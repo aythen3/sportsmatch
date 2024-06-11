@@ -13,6 +13,10 @@ import DetallesSeleccion from '../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
 import Carousel from '../../components/Carousel'
 import { useRoute } from '@react-navigation/native';
+
+
+
+
 const Post = () => {
   const route = useRoute();
   const navigation = useNavigation()
@@ -22,7 +26,7 @@ const Post = () => {
   console.log("item", item)
 
   return (
-    <View keyboardShouldPersistTaps={'always'} style={styles.paso6}>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <View style={{flexDirection:"row" ,alignItems:"center",gap:10,paddingLeft:10}}>
       <Pressable
             // style={styles.coolicon}
@@ -66,7 +70,7 @@ const Post = () => {
         authorId={item.author.id}
         data={item}
       />
-    </View>
+    </ScrollView>
   )
 }
 

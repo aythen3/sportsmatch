@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { filterPost } from '../redux/actions/post'
 import { setFilterPost } from '../redux/slices/post.slices'
 
-const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
+const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports , setFilterSelected ,filterSelected }) => {
 
   const copy = posts ? [...posts] : []
   const change = copy.sort((a, b) => b.likes - a.likes);
@@ -52,6 +52,7 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
             // Genera una nueva copia del array de posts ordenado por la cantidad de likes
             const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
             // Actualiza el estado de los posts con la nueva copia ordenada
+            setFilterSelected("Por proximidad")
             setPosts(sortedPosts);
           }}
 
@@ -62,6 +63,12 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
           alignItems: 'center'
         }}
       >
+
+        {filterSelected == 'Por proximidad' && (
+
+          <Image style={{width:10,height:10}} source={require("../assets/tildeBlanca.png")}></Image>
+
+        )}
         <Text
           style={{
             color: Color.colorWhitesmoke,
@@ -90,6 +97,8 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
           // Genera una nueva copia del array de posts ordenado por la cantidad de likes
           const sortedPosts = [...posts].sort((a, b) => b.commentCount - a.commentCount);
           // Actualiza el estado de los posts con la nueva copia ordenada
+          setFilterSelected("Por relevancia")
+
           setPosts(sortedPosts);
         }}
 
@@ -100,6 +109,12 @@ const FiltersSportman = ({ posts, onClose, allPosts, setPosts , sports }) => {
           alignItems: 'center'
         }}
       >
+        
+        {filterSelected == 'Por relevancia' && (
+
+<Image style={{width:10,height:10}} source={require("../assets/tildeBlanca.png")}></Image>
+
+)}
         <Text
           style={{
             color: Color.colorWhitesmoke,

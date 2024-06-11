@@ -39,7 +39,7 @@ const EditarPerfil = () => {
         </View>
 
         <View style={styles.defineTusSkillsParent}>
-          {user.user.type !== 'club' && (
+          {user.user.type !== 'club' && sportman.type !== 'coach' && (
             <Text
               style={[styles.defineTusSkills, styles.eliminarCuentaTypo]}
               onPress={() => navigation.navigate('EditarSkills')}

@@ -59,7 +59,6 @@ function Carousel({
     setIsTruncated(!isTruncated);
   };
 
-
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
@@ -168,78 +167,47 @@ const imagesNumber = ['0','1']
       </Text>
      </View>
       <PagerView onPageSelected={handlePageSelected} style={styles.postContainer} initialPage={0}>
-        <View style={{ width: '100%', height: '100%' }} key={id}>
-          <DoubleTap
-            onDoubleTap={() => {
-              console.log('doble pressss2222')
-              handleLike()
-              setDoubleTapHeart(true)
-              // handleDoubleTap(); // Llama a la función de manejar el doble clic
-              // resetDoubleTap(); // Reinicia el estado de doubleTap
-            }}
-          >
-            <View
-              style={{ width: '100%', height: '100%', position: 'relative' }}
-            >
-              {doubleTapHeart && liked && (
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 999
-                  }}
-                >
-                  <Like2SVG id={id}></Like2SVG>
-                </TouchableOpacity>
-              )}
 
-              <Image
-                style={{ ...styles.postImage, zIndex: 990 }}
-                source={image}
-              />
-              
-            </View>
-          </DoubleTap>
-        </View>
-        <View style={{ width: '100%', height: '100%' }} key={12}>
-          <DoubleTap
-            onDoubleTap={() => {
-              console.log('doble pressss2222')
-              handleLike()
-              setDoubleTapHeart(true)
-              // handleDoubleTap(); // Llama a la función de manejar el doble clic
-              // resetDoubleTap(); // Reinicia el estado de doubleTap
-            }}
-          >
-            <View
-              style={{ width: '100%', height: '100%', position: 'relative' }}
-            >
-              {doubleTapHeart && liked && (
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 999
-                  }}
-                >
-                  <Like2SVG id={id}></Like2SVG>
-                </TouchableOpacity>
-              )}
 
-              <Image
-                style={{ ...styles.postImage, zIndex: 990 }}
-                source={image}
-              />
-              
-            </View>
-          </DoubleTap>
-        </View>
+     { image.map((e,i)=> (
+         <View style={{ width: '100%', height: '100%' }} key={i}>
+         <DoubleTap
+           onDoubleTap={() => {
+             console.log('doble pressss2222')
+             handleLike()
+             setDoubleTapHeart(true)
+             // handleDoubleTap(); // Llama a la función de manejar el doble clic
+             // resetDoubleTap(); // Reinicia el estado de doubleTap
+           }}
+         >
+           <View
+             style={{ width: '100%', height: '100%', position: 'relative' }}
+           >
+             {doubleTapHeart && liked && (
+               <TouchableOpacity
+                 style={{
+                   position: 'absolute',
+                   width: '100%',
+                   height: '100%',
+                   justifyContent: 'center',
+                   alignItems: 'center',
+                   zIndex: 999
+                 }}
+               >
+                 <Like2SVG id={id}></Like2SVG>
+               </TouchableOpacity>
+             )}
+
+             <Image
+               style={{ ...styles.postImage, zIndex: 990 }}
+               source={e}
+             />
+             
+           </View>
+         </DoubleTap>
+       </View>
+     )) }
+       
         {/* <View key={index + 1}>
           <Image
             style={styles.postImage}
@@ -248,7 +216,7 @@ const imagesNumber = ['0','1']
         </View> */}
       </PagerView>
       <View style={styles.indicatorContainer}>
-        {imagesNumber.map((_, index) => (
+        {image.length > 1 && image.map((_, index) => (
           <View
             key={index}
             style={[
@@ -302,7 +270,7 @@ const imagesNumber = ['0','1']
         </View>
         <Text    numberOfLines={isTruncated ? 2 : undefined}  // Limita el número de líneas si está truncado
         ellipsizeMode="tail" style={styles.description}>{description}</Text>
-         {isTruncated && description.split(' ').length > 2 * 6   ? ( // Ajusta la lógica de truncamiento
+         {isTruncated && description.length > 160  ? ( // Ajusta la lógica de truncamiento
         <TouchableOpacity onPress={toggleTruncate}>
           <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver más</Text>
         </TouchableOpacity>
@@ -432,7 +400,7 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: '100%',
-    height: 300,
+    height: "100%",
     borderRadius: 5
   }
 })

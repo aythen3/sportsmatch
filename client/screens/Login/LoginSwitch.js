@@ -43,6 +43,7 @@ import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
 import Linea from '../../components/svg/Linea'
 import InstagramSVG from '../../components/svg/InstagramSVG'
+import HomeGif from '../../utils/HomeGif'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -344,25 +345,8 @@ const LoginSwitch = () => {
 
   return (
     <View style={{ backgroundColor: 'black', height: height, width: width }}>
-      {/* <Image
-        style={[styles.loginSwitchChild]}
-        contentFit="cover"
-        source={require('../../assets/fondo-inicial.png')}
-      /> */}
-      <View style={{maxWidth:width}}>
-        <View style={[styles.loginSwitchChild]}>
-          <Image
-            style={[styles.loginSwitchChild2]}
-            contentFit="cover"
-            source={require('../../assets/carrouselgif.gif')}
-          />
-        </View>
-        <Image
-          style={{ width: width, height: 250, position: "absolute", top: 0, right: 0, zIndex: 999 }}
-          contentFit="cover"
-          source={require('../../assets/sw.png')}
-        />
-      </View>
+    
+      <HomeGif></HomeGif>
 
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
@@ -624,9 +608,9 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    width: 220,
-    height: 200,
-    top: -10,
+    width: 320,
+    height: 300,
+    bottom: -200,
     justifyContent:"flex-end",
     flexDirection:"row",
     // bottom: '75%',
@@ -639,10 +623,10 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: "130%",
-    height: "180%",
+    width: "100%",
+    height: "150%",
     // bottom: '75%',
-    transform: [{ rotate: '-45deg' }],
+    transform: [{ rotate: '-45deg'}],
     zIndex: 0,
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },

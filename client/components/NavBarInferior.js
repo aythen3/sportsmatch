@@ -62,7 +62,6 @@ const NavBarInferior = () => {
   const handleNavigation = () => {
     if (sportman?.type == 'invitado') {
       return navigation.navigate('Paso1')
-
     }
     if (user?.user?.type !== 'club') {
       navigation.navigate('MiPerfil')
@@ -72,10 +71,8 @@ const NavBarInferior = () => {
     setActiveIcon('profile')
   }
 
+  const imgPerfil = user?.user?.type !== 'club' ? sportman?.info?.img_perfil : user?.user?.club?.img_perfil;
 
-  const imgPerfil =
-    (user?.user?.type !== 'club' && sportman?.info?.img_perfil) ||
-    (user?.user?.club?.img_perfil && user?.user?.club?.img_perfil);
 
   return (
     <View style={styles.container}>
@@ -116,21 +113,6 @@ const NavBarInferior = () => {
         onPress={handleNavigation}
         style={activeIcon === 'profile' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
       >
-
-        {/* {sportman?.info?.img_perfil || user?.user?.club?.img_perfil && (
-          <Image
-            style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
-            contentFit="cover"
-            source={{
-              uri:
-                user?.user?.type !== 'club' && sportman?.info?.img_perfil
-                  ? sportman?.info?.img_perfil
-                  : user?.user?.club?.img_perfil && user?.user?.club?.img_perfil
-            }}
-          />
-
-          
-        )} */}
         {imgPerfil && (
           <Image
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
@@ -138,7 +120,7 @@ const NavBarInferior = () => {
             source={{ uri: imgPerfil }}
           />
         )}
-        {sportman?.info?.img_perfil == '' && (
+        {!sportman?.info?.img_front &&  !imgPerfil && (
           <Image
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
             contentFit="cover"
