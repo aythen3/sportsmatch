@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as AppleAuthentication from 'expo-apple-authentication'
+import InstagramLogin from 'react-native-instagram-login'
 
 import { Image } from 'expo-image'
 import {
@@ -14,7 +15,11 @@ import {
   useWindowDimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation
+} from '@react-navigation/native'
 import {
   FontFamily,
   FontSize,
@@ -23,7 +28,11 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { logedIn, logedOut, setIsSpotMan } from '../../redux/slices/users.slices'
+import {
+  logedIn,
+  logedOut,
+  setIsSpotMan
+} from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -48,13 +57,15 @@ import HomeGif from '../../utils/HomeGif'
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
-  const { height, width } = useWindowDimensions();
+  const instagramRef = useRef()
+  const [igToken, setIgToken] = useState(null)
+  const { height, width } = useWindowDimensions()
 
-  console.log(width, "-----", height, "medidas")
+  console.log(width, '-----', height, 'medidas')
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman, user, loged } = useSelector((state) => state.users)
-  const isFocused = useIsFocused();
+  const isFocused = useIsFocused()
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
 
@@ -102,7 +113,6 @@ const LoginSwitch = () => {
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           dispatch(setClub(response))
-        
         })
         .catch((error) => {
           console.error(error)
@@ -239,6 +249,60 @@ const LoginSwitch = () => {
     return () => unsub()
   }, [response])
 
+  const getInstagramUsername = async (accessToken) => {
+    try {
+      const response = await axios.get(`https://graph.instagram.com/me`, {
+        params: {
+          fields: 'id,username',
+          access_token: accessToken
+        }
+      })
+      console.log('response: ', response.data)
+      return response.data
+    } catch (error) {
+      console.error('Error fetching Instagram username:', error)
+      throw error
+    }
+  }
+
+  useEffect(() => {
+    const fetchInstagramUsername = async () => {
+      if (igToken) {
+        console.log('=====LOGIN WITH INSTAGRAM=====')
+        const userData = await getInstagramUsername(igToken.access_token)
+        console.log('userData before dispatching', userData)
+        dispatch(
+          create({
+            nickname: userData.username,
+            email: '',
+            facebookId: igToken.user_id.toString(),
+            type: isSportman === true ? 'sportman' : 'club'
+          })
+        ).then(async (data) => {
+          try {
+            const response = await dispatch(
+              login({ facebookId: igToken.user_id.toString() })
+            )
+            console.log('response facebook:', response.payload)
+            dispatch(
+              setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+            )
+            await AsyncStorage.setItem(
+              'facebookAuth',
+              igToken.user_id.toString()
+            )
+            await AsyncStorage.setItem('userType', response.payload.user.type)
+            dispatch(setClub(response))
+          } catch (error) {
+            console.log('Error:', error)
+          }
+        })
+      }
+    }
+
+    fetchInstagramUsername()
+  }, [igToken])
+
   // =========================FACEBOOK================================
 
   const signInWithFacebook = async () => {
@@ -284,9 +348,19 @@ const LoginSwitch = () => {
 
   return (
     <View style={{ backgroundColor: 'black', height: height, width: width }}>
-    
       <HomeGif></HomeGif>
-
+      <InstagramLogin
+        ref={instagramRef}
+        appId="831187755599572"
+        appSecret="2ec849af68b38422f8da9cc54ee9c794"
+        redirectUrl="https://github.com/"
+        scopes={['user_profile', 'user_media']}
+        onLoginSuccess={(token) => {
+          console.log('Setting instagram token to', token)
+          setIgToken(token)
+        }}
+        onLoginFailure={(data) => console.log('Instagram login failed', data)}
+      />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -381,7 +455,11 @@ const LoginSwitch = () => {
                         </TouchableOpacity> */}
 
                       <TouchableOpacity
-                        onPress={signInWithFacebook}
+                        // onPress={signInWithFacebook}
+                        onPress={() => {
+                          console.log('showing Instagram popup')
+                          instagramRef.current.show()
+                        }}
                         style={styles.loremIpsumGroup}
                       >
                         <View style={styles.loremIpsum2}>
@@ -469,7 +547,7 @@ const LoginSwitch = () => {
                     </View>
 
                     <Image
-                      style={{width:30,height:30}}
+                      style={{ width: 30, height: 30 }}
                       contentFit="cover"
                       source={require('../../assets/registromail.png')}
                     />
@@ -550,23 +628,23 @@ const styles = StyleSheet.create({
     width: 320,
     height: 300,
     bottom: -200,
-    justifyContent:"flex-end",
-    flexDirection:"row",
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
     // bottom: '75%',
     position: 'absolute',
     transform: [{ rotate: '45deg' }],
-    right: "-26%",
+    right: '-26%',
     zIndex: 0,
-    overflow: "hidden"
+    overflow: 'hidden'
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: "100%",
-    height: "150%",
+    width: '100%',
+    height: '150%',
     // bottom: '75%',
-    transform: [{ rotate: '-45deg'}],
-    zIndex: 0,
+    transform: [{ rotate: '-45deg' }],
+    zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild3: {
@@ -577,7 +655,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     transform: [{ rotate: '-45deg' }, { scale: 1 }],
-    zIndex: 99,
+    zIndex: 99
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
