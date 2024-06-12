@@ -55,17 +55,20 @@ const SiguiendoJugadores = () => {
   }, [post, comments])
 
   useEffect(() => {
+   if(user){
     getUserAuth()
     dispatch(listLikes(user?.user?.id))
     const data = {
       id: user?.user?.id,
       type: user?.user?.type
     }
+    console.log(data,"esto es mui dataaa")
     dispatch(getUserChild(data))
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
-  }, [])
+   }
+  }, [user])
 
   // const getUserId = async () => {
   //   const userId = await AsyncStorage.getItem('userId')
@@ -127,7 +130,7 @@ const SiguiendoJugadores = () => {
             paddingBottom: 20
           }}
         >
-          {sortedPosts?.map((publication, i) => (
+          {sortedPosts.slice(0,15)?.map((publication, i) => (
             <Carousel
               key={publication.id}
               name={publication?.author?.nickname}
@@ -157,7 +160,7 @@ const SiguiendoJugadores = () => {
 const styles = StyleSheet.create({
   siguiendoJugadores: {
     flex: 1,
-    position: 'relative',
+   
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },

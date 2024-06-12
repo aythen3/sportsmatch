@@ -78,7 +78,7 @@ function Carousel({
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike.includes(id))
+    setLiked(findedLike?.includes(id))
   }, [findedLike, id])
 
   const handleDoubleTap = () => {

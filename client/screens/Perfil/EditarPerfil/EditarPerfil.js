@@ -1,9 +1,11 @@
 import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
-import { FontSize, FontFamily, Color } from '../../GlobalStyles'
+import { FontSize, FontFamily, Color } from '../../../GlobalStyles'
 import { useSelector } from 'react-redux'
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
 
 const EditarPerfil = () => {
   const navigation = useNavigation()
@@ -11,32 +13,9 @@ const EditarPerfil = () => {
   const { sportman } = useSelector((state) => state.sportman)
 
   return (
-    <View style={styles.editarPerfil}>
+    <SafeAreaView  style={styles.editarPerfil}>
+        <CustomHeaderBack header={"Editar perfil"}></CustomHeaderBack>
       <View style={styles.groupParent}>
-        <View style={[styles.cooliconParent, styles.starusPosition]}>
-          <Pressable
-            style={styles.coolicon}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Image
-              style={styles.icon}
-              contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.editarPerfil1}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Text style={styles.editarPerfil2}>Editar perfil</Text>
-          </Pressable>
-        </View>
 
         <View style={styles.defineTusSkillsParent}>
           {user.user.type !== 'club' && sportman.type !== 'coach' && (
@@ -76,6 +55,14 @@ const EditarPerfil = () => {
           <View style={styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
+            onPress={() => navigation.navigate('Notificaciones')}
+          >
+            Notificaciones
+          </Text>
+          <View style={styles.frameChild} />
+          
+          <Text
+            style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() => navigation.navigate('CerrarSesin')}
           >
             Cerrar sesión
@@ -90,7 +77,7 @@ const EditarPerfil = () => {
           <View style={styles.frameChild} />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -160,11 +147,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   defineTusSkillsParent: {
-    marginTop: 60
   },
   groupParent: {
-    top: 60,
-    position: 'absolute',
     paddingHorizontal:15,
     width:"100%",
   },

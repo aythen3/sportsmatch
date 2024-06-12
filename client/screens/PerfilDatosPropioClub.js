@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
-import HeaderPerfil from '../components/HeaderPerfil'
+import HeaderPerfil from './Perfil/EditarPerfil/club/HeaderPerfil'
 import { Color } from '../GlobalStyles'
 import CirclePerfilClub from '../components/CirclePerfilClub'
 import PlayingFieldPerfilClub from '../components/PlayingFieldPerfilClub'

@@ -10,19 +10,20 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { FontFamily } from '../../GlobalStyles'
+import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { Context } from '../../context/Context'
-import { updateClubData } from '../../redux/actions/club'
-import CustomPicker from '../../components/CustomPicker/CustomPicker'
-import { years } from '../../utils/years'
-import { cities } from '../../utils/cities'
-import { updateSportman } from '../../redux/actions/sportman'
+import { Context } from '../../../../context/Context'
+import { updateClubData } from '../../../../redux/actions/club'
+import CustomPicker from '../../../../components/CustomPicker/CustomPicker'
+import { years } from '../../../../utils/years'
+import { cities } from '../../../../utils/cities'
+import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
-import ScrollableModal from '../../components/modals/ScrollableModal'
-import AñoNacimientoModal from '../../components/modals/AñoNacimientoModal'
+import ScrollableModal from '../../../../components/modals/ScrollableModal'
+import AñoNacimientoModal from '../../../../components/modals/AñoNacimientoModal'
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -166,104 +167,20 @@ const PlayerDetails = () => {
   };
   if (!showCamera) {
     return (
-      <SafeAreaView style={styles.clubDetailsContainer}>
-        {/* {showCamera && (
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showCamera}
-          onRequestClose={() => setShowCamera(false)}
-        >
-          <Camera
-            style={{
-              flex: 1
-            }}
-            type={Camera.Constants.Type.back}
-            ref={(ref) => setCameraRef(ref)}
-          >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
-              }}
-            >
-              <TouchableOpacity
-                style={{ position: 'absolute', top: 22, left: 18 }}
-                onPress={() => setShowCamera(false)}
-              >
-                <Image
-                  style={{ height: 15, width: 15 }}
-                  contentFit="cover"
-                  source={require('../../assets/group-565.png')}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  marginBottom: 10,
-                  position: 'relative'
-                }}
-              >
-                <TouchableOpacity
-                  onPress={takePicture}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 100,
-                    backgroundColor: '#cecece',
-
-                    color: 'white'
-                  }}
-                ></TouchableOpacity>
-                <TouchableOpacity
-                  onPress={changePictureMode}
-                  style={{
-                    position: 'absolute',
-                    right: 20,
-                    color: 'white',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Entypo name="cycle" color={'#fff'} size={25} />
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-          </Camera>
-        </Modal>
-      )} */}
-        <ScrollView
+      <SafeAreaView style={{backgroundColor:"black",flex:1}}>
+      <View style={styles.clubDetailsContainer}>
+      <ScrollView
           keyboardShouldPersistTaps={'always'}
           style={{
-            width: '90%',
-            marginTop: 20
-          }}
+            width: '100%',
+            }}
         >
-          <View style={{ gap: 10, flex: 1 }}>
+          <CustomHeaderBack header={'Detalles del usuario'}></CustomHeaderBack>
+          <View style={{ gap: 10, flex: 1 ,paddingHorizontal:10}}>
             {/* =========================================================== */}
             {/* ====================== TOP CONTAINER ====================== */}
             {/* =========================================================== */}
-            <View style={styles.topWrapper}>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('PD')
-                  navigation.goBack()
-                }}
-              >
-                <Image
-                  style={styles.icon}
-                  contentFit="cover"
-                  source={require('../../assets/coolicon3.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.clubDetailsTitle}>Detalles del usuario</Text>
-            </View>
+           
             {/* =========================================================== */}
             {/* ======================= PROFILE PIC ======================= */}
             {/* =========================================================== */}
@@ -310,7 +227,7 @@ const PlayerDetails = () => {
                   <Image
                     style={{ width: 14, height: 14 }}
                     contentFit="cover"
-                    source={require('../../assets/camera.png')}
+                    source={require('../../../../assets/camera.png')}
                   />
                 </TouchableOpacity>
               </View>
@@ -369,7 +286,7 @@ const PlayerDetails = () => {
                   <Image
                     style={{ width: 14, height: 14 }}
                     contentFit="cover"
-                    source={require('../../assets/camera.png')}
+                    source={require('../../../../assets/camera.png')}
                   />
                 </TouchableOpacity>
               </View>
@@ -528,6 +445,7 @@ const PlayerDetails = () => {
             {/* =========================================================== */}
           </View>
         </ScrollView>
+      </View>
       </SafeAreaView>
     )
   } else {
@@ -555,7 +473,7 @@ const PlayerDetails = () => {
                   width: 15
                 }}
                 contentFit="cover"
-                source={require('../../assets/group-565.png')}
+                source={require('../../../../assets/group-565.png')}
               />
             </TouchableOpacity>
 

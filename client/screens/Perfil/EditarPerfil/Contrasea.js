@@ -14,11 +14,12 @@ import {
   Color,
   Border,
   Padding
-} from '../../GlobalStyles'
-import Input from '../../components/Input'
+} from '../../../GlobalStyles'
+import Input from '../../../components/Input'
 import { useSelector } from 'react-redux'
-import axiosInstance from '../../utils/apiBackend'
-
+import axiosInstance from '../../../utils/apiBackend'
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
 const Contrasea = () => {
   const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
@@ -40,32 +41,10 @@ const Contrasea = () => {
   }
 
   return (
-    <View style={styles.contrasea}>
-      <View style={styles.cabezeraParent}>
-        <View style={styles.loremIpsumFlexBox}>
-          <Pressable
-            style={styles.coolicon}
-            onPress={() => {
-              console.log('CTSNA')
-              navigation.goBack()
-            }}
-          >
-            <Image
-              style={styles.icon}
-              contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.contrasea1}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={[styles.contrasea2, styles.textTypo]}>Contraseña</Text>
-          </Pressable>
-        </View>
-      </View>
-
-      <View View style={{ marginTop: 30 }}>
+    <SafeAreaView style={styles.contrasea}>
+        <CustomHeaderBack header={'Contraseña'}></CustomHeaderBack>
+     
+      <View>
         <Input
           state={password}
           setState={setPassword}
@@ -100,7 +79,7 @@ const Contrasea = () => {
           <Text style={styles.aceptar}>Aceptar</Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 

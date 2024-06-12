@@ -10,23 +10,27 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useState } from 'react'
-import { FontFamily } from '../../GlobalStyles'
+import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { Context } from '../../context/Context'
-import { updateClubData } from '../../redux/actions/club'
+import { Context } from '../../../../context/Context'
+import { updateClubData } from '../../../../redux/actions/club'
+import CustomPicker from '../../../../components/CustomPicker/CustomPicker'
+import { years } from '../../../../utils/years'
+import { cities } from '../../../../utils/cities'
+import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
 
-const ClubDetails = () => {
+const PlayerDetails = () => {
   const dispatch = useDispatch()
-  const [clubName, setClubName] = useState()
+  const { sportman } = useSelector((state) => state.sportman)
+  const [profesionalType, setProfesionalTpye] = useState()
+  const [showCityModal, setShowCityModal] = useState(false)
+  const [yearsOfExperience, setYearsOfExperience] = useState()
   const [city, setCity] = useState()
-  const [country, setCountry] = useState()
-  const [stadiumName, setStadiumName] = useState()
-  const [foundationDate, setFoundationDate] = useState()
-  const [capacity, setCapacity] = useState()
-  const [description, setDescription] = useState()
+  const [actualClubName, setActualClubName] = useState()
+  const [userDescription, setUserDescription] = useState()
   const navigation = useNavigation()
 
   const {
@@ -42,75 +46,38 @@ const ClubDetails = () => {
   const { user } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
-  console.log('club:', club)
 
   const inputs = [
-    
     {
-      title: 'Nombre del club',
+      title: 'Club actual',
       type: 'text',
-      placeHolder: club.name || 'Nombre del club...',
-      state: clubName,
-      setState: setClubName
+      placeHolder: 'Escribe solo si estas en algun club...',
+      state: actualClubName,
+      setState: setActualClubName,
+      zIndex: 7000
     },
     {
-      title: 'Población',
-      type: 'text',
-      placeHolder: club.city || 'Población...',
-      state: city,
-      setState: setCity
-    },
-    {
-      title: 'País',
-      type: 'text',
-      placeHolder: club.country || 'País...',
-      state: country,
-      setState: setCountry
-    },
-    {
-      title: 'Nombre del estadio, campo o pabellón',
-      type: 'text',
-      placeHolder: club.field || 'Nombre del estadio...',
-      state: stadiumName,
-      setState: setStadiumName
-    },
-    {
-      title: 'Año de fundación',
-      type: 'number',
-      placeHolder: club.year.toString() || 'Año de fundación...',
-      state: foundationDate,
-      setState: setFoundationDate
-    },
-    {
-      title: 'Aforo',
-      type: 'number',
-      placeHolder: club.capacity.toString() || 'Aforo...',
-      state: capacity,
-      setState: setCapacity
-    },
-    {
-      title: 'Describe tu club',
+      title: '¿Cómo te defines como profesional?',
       type: 'text',
       placeHolder:
-        club.description ||
-        'Habla de aquello que sea más relevante de tu club. Campeonatos ganados, categorías, anécdotas, etc.',
-      state: description,
-      setState: setDescription,
-      textArea: true
+        'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
+      state: userDescription,
+      setState: setUserDescription,
+      textArea: true,
+      zIndex: 6000
     }
   ]
 
-  const handleUpdateClubData = () => {
+  const handleUpdateUserData = () => {
+    console.log('on handleUpdateUserData')
     const data = {
-      name: clubName,
       city,
-      country,
-      capacity,
-      description,
-      field: stadiumName,
+      description: userDescription,
+      actualClub: actualClubName,
       img_perfil: profileImage,
       img_front: coverImage,
-      year: foundationDate
+      rol: profesionalType,
+      yearsOfExperience: yearsOfExperience
     }
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
       if (value !== undefined) {
@@ -118,15 +85,15 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    console.log('filteredData: ', filteredData)
-    dispatch(updateClubData({ id: club.id, body: filteredData }))
+    dispatch(updateSportman({ id: sportman.id, newData: filteredData }))
     setProfileImage()
     setCoverImage()
-    navigation.navigate('PerfilDatosPropioClub')
+    navigation.navigate('MiPerfil')
   }
 
   const [showCamera, setShowCamera] = useState(false)
   const [selectedPicture, setSelectedPicture] = useState()
+  const [showTypeModal, setShowTypeModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState(null)
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
 
@@ -203,7 +170,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ height: 15, width: 15 }}
                   contentFit="cover"
-                  source={require('../../assets/group-565.png')}
+                  source={require('../../../../assets/group-565.png')}
                 />
               </TouchableOpacity>
 
@@ -248,56 +215,50 @@ const ClubDetails = () => {
       )}
       <ScrollView
         keyboardShouldPersistTaps={'always'}
-        style={styles.generalWrapper}
-        contentContainerStyle={{paddingTop:20}}
+        style={{
+          width: '90%'
+        }}
       >
-        <View style={styles.wrapperGap}>
+        <View style={{ gap: 10, flex: 1 }}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
-          <View
-            style={{
-              marginBottom: 27,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 15,
-              justifyContent: 'flex-start'
-            }}
-          >
+          <View style={styles.topWrapper}>
             <TouchableOpacity
               onPress={() => {
-                console.log('CD')
+                console.log('PROD')
                 navigation.goBack()
               }}
             >
               <Image
-                style={{ width: 9, height: 15, marginTop: 2.5 }}
+                style={styles.icon}
                 contentFit="cover"
-                source={require('../../assets/coolicon3.png')}
+                source={require('../../../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: '500',
-                fontSize: 22,
-                fontFamily: FontFamily.t4TEXTMICRO
-              }}
-            >
-              Detalles del club
+            <Text style={styles.clubDetailsTitle}>
+              Detalles del profesional
             </Text>
           </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
           {/* =========================================================== */}
-          <View style={styles.updateImageWrapper}>
+          <View
+            style={{
+              width: '100%',
+              gap: 5,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              borderRadius: 5
+            }}
+          >
             <View style={styles.profileImageContainer}>
-              {user?.user?.club?.img_perfil && (
+              {sportman?.info?.img_perfil && (
                 <Image
-                  style={styles.image}
+                  style={{ width: '100%', height: '100%', borderRadius: 100 }}
                   contentFit="cover"
                   source={{
-                    uri: provisoryProfileImage || user?.user?.club?.img_perfil
+                    uri: provisoryProfileImage || sportman?.info?.img_perfil
                   }}
                 />
               )}
@@ -320,7 +281,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>
@@ -335,14 +296,22 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           {/* ======================== COVER PIC ======================== */}
           {/* =========================================================== */}
-          <View style={styles.updateImageWrapper}>
+          <View
+            style={{
+              width: '100%',
+              gap: 5,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              borderRadius: 5
+            }}
+          >
             <View style={styles.coverImageContainer}>
-              {user?.user?.club?.img_front && (
+              {sportman?.info?.img_front && (
                 <Image
                   style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"
                   source={{
-                    uri: provisoryCoverImage || user?.user?.club?.img_front
+                    uri: provisoryCoverImage || sportman?.info?.img_front
                   }}
                 />
               )}
@@ -353,8 +322,8 @@ const ClubDetails = () => {
                 }}
                 style={{
                   right: 0,
-                  top: -17,
                   position: 'absolute',
+                  top: -17,
                   width: 35,
                   height: 35,
                   borderRadius: 100,
@@ -366,7 +335,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>
@@ -381,15 +350,74 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           {/* ========================== INPUTS ========================= */}
           {/* =========================================================== */}
-          <View style={{ gap: 20 }}>
+          <View style={{ gap: 20, flex: 1 }}>
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Selecciona tu posición'}
+              </Text>
+              <CustomPicker
+                zIndex={10000}
+                array={[
+                  'Jugador',
+                  'Entrenador',
+                  'Masajista',
+                  'Ayudante de campo'
+                ]}
+                placeholder={'Selecciona tu posición'}
+                state={profesionalType}
+                setState={setProfesionalTpye}
+                showModal={showTypeModal}
+                setShowModal={setShowTypeModal}
+              />
+            </View>
+
+            <View style={{ gap: 5, zIndex: 9000 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Años en activo'}
+              </Text>
+              <TextInput
+                value={yearsOfExperience}
+                onChangeText={setYearsOfExperience}
+                placeholder={'Años en activo...'}
+                keyboardType={'numeric'}
+                placeholderTextColor="#999999"
+                style={{
+                  flex: 1,
+                  borderWidth: 0.5,
+                  borderColor: '#fff',
+                  borderRadius: 50,
+                  paddingLeft: 15,
+                  height: 40,
+                  fontSize: 15,
+                  color: '#fff'
+                }}
+              />
+            </View>
+
+            <View style={{ gap: 5 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                {'Lugar de residencia'}
+              </Text>
+              <CustomPicker
+                zIndex={8000}
+                cities={true}
+                array={cities.map((city) => city.city).sort()}
+                placeholder={'Lugar de residencia'}
+                state={city}
+                setState={setCity}
+                showModal={showCityModal}
+                setShowModal={setShowCityModal}
+              />
+            </View>
+
             {inputs.map((input, index) => (
-              <View key={index} style={{ gap: 5 }}>
+              <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {input.title}
                 </Text>
                 <TextInput
                   multiline={input.textArea && true}
-                  numberOfLines={input.textArea && 4}
+                  numberOfLines={input.textArea && 3}
                   value={input.state}
                   onChangeText={input.setState}
                   placeholder={input.placeHolder}
@@ -397,13 +425,13 @@ const ClubDetails = () => {
                   placeholderTextColor="#999999"
                   style={{
                     flex: 1,
-                    borderWidth: 1,
+                    borderWidth: 0.5,
                     borderColor: '#fff',
                     textAlignVertical: input.textArea && 'top',
                     borderRadius: input.textArea ? 10 : 50,
                     paddingTop: input.textArea && 10,
                     paddingLeft: 15,
-                    height: input.textArea ? 190 : 40,
+                    height: input.textArea ? 170 : 40,
                     fontSize: 15,
                     color: '#fff'
                   }}
@@ -418,6 +446,7 @@ const ClubDetails = () => {
             style={{
               height: 40,
               marginTop: 10,
+              zIndex: 5000,
               marginBottom: 10,
               backgroundColor: '#fff',
               borderRadius: 50,
@@ -425,17 +454,15 @@ const ClubDetails = () => {
               justifyContent: 'center'
             }}
             disabled={
-              !clubName &&
               !city &&
-              !country &&
-              !capacity &&
-              !description &&
-              !stadiumName &&
               !profileImage &&
               !coverImage &&
-              !foundationDate
+              !userDescription &&
+              !profesionalType &&
+              !actualClubName &&
+              !yearsOfExperience
             }
-            onPress={handleUpdateClubData}
+            onPress={handleUpdateUserData}
           >
             <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
               Aceptar
@@ -458,13 +485,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000'
   },
-  updateImageWrapper: {
-    width: '100%',
-    gap: 5,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    borderRadius: 8
-  },
   orangeButton: {
     backgroundColor: '#E1451E',
     borderRadius: 50,
@@ -473,35 +493,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  wrapperGap: {
-    gap: 10
-  },
-  image: {
-    width: 117,
-    height: 117,
-    borderRadius: 100
-  },
   profileImageContainer: {
     width: 117,
     height: 117,
     borderRadius: 100,
-    marginBottom: 8,
-    backgroundColor: '#fff'
+    marginBottom: 8
   },
   coverImageContainer: {
     width: '100%',
     height: 138,
     marginBottom: 8,
-    backgroundColor: '#fff',
     borderRadius: 8
   },
-  generalWrapper: {
-    width: '90%'
+  topWrapper: {
+    marginBottom: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
+    justifyContent: 'flex-start'
   },
   icon: {
     width: 9,
     height: 15,
     marginTop: 2.5
+  },
+  clubDetailsTitle: {
+    color: '#fff',
+    fontWeight: '500',
+    fontSize: 22,
+    fontFamily: FontFamily.t4TEXTMICRO
   },
   mediumText: {
     color: '#fff',
@@ -517,4 +537,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ClubDetails
+export default PlayerDetails

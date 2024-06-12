@@ -8,68 +8,54 @@ import {
   FontSize,
   Padding,
   Border
-} from '../../GlobalStyles'
-import DetallesSeleccion from '../../components/DetallesSeleccion'
+} from '../../../../GlobalStyles'
+import DetallesSeleccion from '../../../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
-import Carousel from '../../components/Carousel'
-import { useRoute } from '@react-navigation/native';
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
-
-
-
-const Post = () => {
-  const route = useRoute();
+const EditarSkills = () => {
   const navigation = useNavigation()
-  const [page, setPage] = useState(1)
-  const { user, allUsers } = useSelector((state) => state.users)
-  const item = route.params;
-  console.log("item", item)
+  const [editable, setEditable] = useState(true)
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View style={{flexDirection:"row" ,alignItems:"center",gap:10,paddingLeft:10}}>
-      <Pressable
-            // style={styles.coolicon}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
+   
+      <CustomHeaderBack header={'Detalles del usuario'}></CustomHeaderBack>
+      
+
+      <View>
+        <View>
+          <View style={styles.headersubirImagenesPerfil}>
             <Image
-              style={{width:20,height:20}}
+              style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
+              source={require('../../../../assets/circulo.png')}
             />
-          </Pressable>
-          <Pressable
-            // style={styles.editarPerfil1}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Text style={styles.editarPerfil2}>Post</Text>
-          </Pressable>
+            <View style={styles.botonSubirImagen}>
+              <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
+                Subir foto de perfil
+              </Text>
+            </View>
+
+            <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
+              Max 1mb, jpeg
+            </Text>
+          </View>
+          <View style={styles.rectangulobotonpesoMaximo}>
+            <View style={styles.rectangulo} />
+            <View style={styles.botonSubirImagen}>
+              <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
+                Subir foto de portada
+              </Text>
+            </View>
+            <Text style={[styles.pesoMaximo, styles.atrsTypo]}>
+              Max 1mb, jpeg
+            </Text>
+          </View>
+        </View>
+
+        <DetallesSeleccion editable={editable} setEditable={setEditable} />
       </View>
-      <Carousel
-        key={item.id}
-        name={item?.author?.nickname}
-        description={item?.description}
-        imgPerfil={
-          item?.author?.sportman
-            ? item?.author?.sportman?.info?.img_front
-            : item?.author?.club?.img_perfil
-        }
-        image={item?.image}
-        club={item?.club === user?.user?.type}
-        likes={item?.likes}
-        commentCount={item?.commentCount}
-        index={page}
-        id={item?.id}
-        userId={user?.user?.id}
-        authorId={item.author.id}
-        data={item}
-      />
     </ScrollView>
   )
 }
@@ -101,11 +87,7 @@ const styles = StyleSheet.create({
   },
   paso6: {
     width: '100%',
-    height:"100%",
-    gap:20,
-    backgroundColor: "black",
-    paddingVertical:20,
-    paddingHorizontal:10
+    backgroundColor: Color.bLACK3SPORTSMATCH
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,
@@ -159,4 +141,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Post
+export default EditarSkills

@@ -2,42 +2,22 @@ import React, { useState } from 'react'
 import { StyleSheet, ScrollView, View, Pressable, Text } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
-import SkillSeleccion from '../../components/SkillSeleccion'
-import { Color, FontFamily, FontSize } from '../../GlobalStyles'
+import SkillSeleccion from '../../../../components/SkillSeleccion'
+import { Color, FontFamily, FontSize } from '../../../../GlobalStyles'
 import { useSelector } from 'react-redux'
-
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
 const EditarSkills = () => {
   const navigation = useNavigation()
   const [editable, setEditable] = useState(true)
 
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View style={styles.cooliconParent}>
-        <Pressable
-          style={styles.coolicon}
-          onPress={() => {
-            console.log('ES')
-            navigation.goBack()
-          }}
-        >
-          <Image
-            style={styles.icon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.editarPerfil1}
-          onPress={() => {
-            console.log('ES')
-            navigation.goBack()
-          }}
-        >
-          <Text style={styles.editarPerfil2}>Define tus Skills</Text>
-        </Pressable>
-      </View>
+  <SafeAreaView style={{flex:1 ,backgroundColor:"#000"}}>
+      <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
+      <CustomHeaderBack header={'Define tus Skills'}></CustomHeaderBack>
       <SkillSeleccion editable={editable} setEditable={setEditable} />
     </ScrollView>
+  </SafeAreaView>
   )
 }
 

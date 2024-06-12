@@ -26,6 +26,8 @@ const NavBarInferior = () => {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
   }, [])
+
+  
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {

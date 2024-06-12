@@ -163,67 +163,6 @@ const LoginSwitch = () => {
     }
   }, [response])
 
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaasdasdasdasdasdasdasa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  useEffect(() => {
-    if (!loged) {
-      if (user?.user?.club || user?.user?.sportman) {
-        console.log("entra aca no se que ondaaaaaa");
-        navigation.navigate('SiguiendoJugadores');
-        dispatch(logedIn())
-      } else {
-        if (user?.user?.type === 'club') {
-          console.log("entra aca");
-          if (user?.accesToken) {
-            navigation.navigate('stepsClub');
-          }
-        } else {
-          if (user?.accesToken) {
-            console.log('jugador');
-            navigation.navigate('Paso1');
-          }
-        }
-      }
-    }
-  }, [user]);
-
-
 
   useEffect(() => {
     getLocalUser()

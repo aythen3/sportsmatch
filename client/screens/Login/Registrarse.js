@@ -23,6 +23,7 @@ import { create, getAllUsers } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
+import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
@@ -264,7 +265,7 @@ const Registrarse = () => {
                         }}
                       />
                        <TouchableOpacity onPress={()=>setPassview1(!passview1)}>
-                    <PassView></PassView>
+                   {passview1 ?  <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
                     </TouchableOpacity>
                     </View>
                   </View>
@@ -293,7 +294,7 @@ const Registrarse = () => {
                         onSubmitEditing={submit}
                       />
                     <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
-                    <PassView></PassView>
+                    {passview2 ? <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
                     </TouchableOpacity>
                     </View>
                   </View>

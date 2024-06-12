@@ -29,6 +29,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
 import axiosInstance from '../utils/apiBackend'
+import CustomHeaderBack from '../components/CustomHeaderBack'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -121,25 +122,7 @@ console.log("uswer",user)
 
   return (
     <View style={styles.todasLasOfertas}>
-      <View style={{ marginVertical: 30, marginLeft: 15 }}>
-        <View style={styles.cabezera1}>
-          <Pressable
-            style={styles.coolicon}
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <Image
-              style={styles.icon}
-              contentFit="cover"
-              source={require('../assets/coolicon3.png')}
-            />
-          </Pressable>
-          <Pressable style={styles.ofertas} onPress={() => navigation.goBack()}>
-            <Text style={[styles.ofertas1, styles.pvotTypo]}>Ofertas</Text>
-          </Pressable>
-        </View>
-      </View>
+     <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
 
       <FiltersHome modalSportmanActive={onFilterSportman} />
       <View
