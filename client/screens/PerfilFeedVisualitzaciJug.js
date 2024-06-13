@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, Text } from 'react-native'
+import { StyleSheet, View, ScrollView, Text, StatusBar } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Border, Padding } from '../GlobalStyles'
 import HeaderPerfil from './Perfil/EditarPerfil/club/HeaderPerfil'
@@ -36,6 +36,7 @@ const PerfilFeedVisualitzaciJug = () => {
 
   return (
     <View style={styles.perfilFeedVisualitzaciJug}>
+        <StatusBar  translucent={true}  backgroundColor={'transparent'}/>
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <HeaderPerfil
           name={data.author.nickname}

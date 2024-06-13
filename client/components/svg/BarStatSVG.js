@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, View } from 'react-native'
 import Svg, { Rect } from 'react-native-svg'
 
-const HorizontalProgressBar = ({ value }) => {
+const HorizontalProgressBar = ({ value , color }) => {
   const barWidth = (value / 100) * Dimensions.get('screen').width * 0.75
   return (
     <View
@@ -21,7 +21,7 @@ const HorizontalProgressBar = ({ value }) => {
           fill="#252525"
         />
         {/* Barra de progreso */}
-        <Rect x={0} y={0} width={barWidth} height="15" fill="#e1451e" />
+        <Rect x={0} y={0} width={barWidth} height="15" fill={color || "#e1451e"} />
       </Svg>
     </View>
   )

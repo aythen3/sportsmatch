@@ -55,9 +55,7 @@ const Paso4Jugador = ({
     if (selectedSport.name == 'Fútbol') { setSportColor('#00FF18') }
     if (selectedSport.name == 'Básquetbol') { setSportColor('#E1451E') }
     (async () => {
-      console.log("entra a pedir permiso")
       const { status } = await Camera.requestCameraPermissionsAsync()
-      console.log(cameraType, "status")
       setHasPermission(status === 'granted')
     })()
   }, [])
@@ -76,15 +74,12 @@ const Paso4Jugador = ({
   }
 
   useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
+ 
   }, [selectedImage, selectedPicture])
 
   const takePicture = async () => {
-    console.log('on takePicture!');
     if (cameraReff?.current) { // Check if cameraRef is not null
       const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
-      console.log(photo);
       setSelectedImage(photo);
       pickImageFromCamera(selectedPicture, photo.uri);
       setShowCamera(false);
@@ -99,7 +94,6 @@ const Paso4Jugador = ({
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent
     const height = contentOffset.y // Get the scrolled height
-    console.log('height: ', height)
     setScrolledHeight(height)
   }
   if (!showCamera) {
@@ -245,7 +239,7 @@ const Paso4Jugador = ({
     return (
       <View style={{ zIndex: 9999, height: "85%" }}>
 
-        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" onCameraReady={(e) => console.log(e, "esto es e")}
+        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" 
 
         // cameraType="back"
         >

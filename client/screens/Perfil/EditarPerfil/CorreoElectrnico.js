@@ -21,7 +21,6 @@ const CorreoElectrnico = () => {
           <Pressable
             style={styles.coolicon}
             onPress={() => {
-              console.log('CORREO')
               navigation.goBack()
             }}
           >

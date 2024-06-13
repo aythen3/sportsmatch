@@ -25,8 +25,6 @@ const {setActiveIcon} = useContext(Context)
   useEffect(() => {
     setActiveIcon("profile")
   }, [isFocused])
-
-  console.log("acaaa")
   return (
     <View
       style={{

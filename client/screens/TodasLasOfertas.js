@@ -36,7 +36,7 @@ const TodasLasOfertas = () => {
   const dispatch = useDispatch()
   const { userMatches } = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
-  const { user } = useSelector((state) => state.users)
+  const { user,mainColor } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -48,10 +48,8 @@ const TodasLasOfertas = () => {
   useEffect(() => {
     dispatch(getAllOffers())
   }, [])
-  console.log('userMatches: ', userMatches)
 
   useEffect(() => {
-    console.log('selectOfferComponent: ', selectOfferComponent)
   }, [selectOfferComponent])
 
   const onFilterSportman = () => {
@@ -59,7 +57,6 @@ const TodasLasOfertas = () => {
   }
 
   const handleGetGold = async () => {
-    console.log('entra')
     const res = await axiosInstance.post('/user/create-subscription', {
       priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
       customerId: user.user.stripeId
@@ -74,7 +71,6 @@ const TodasLasOfertas = () => {
       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
     }
 
-    console.log(user.user.stripeId, 'user')
   }
 
   const actualFavoriteOffers =
@@ -86,7 +82,6 @@ const TodasLasOfertas = () => {
 
   React.useEffect(() => {
     const initializePaymentSheet = async () => {
-      console.log(user, 'userrrr')
       const { error } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'azul',
@@ -109,7 +104,6 @@ const TodasLasOfertas = () => {
             .then(() => dispatch(getUserData(user.user.id)))
 
           setShowPremiumModal(false)
-          console.log(updUser, 'upd')
         }
       }
     }
@@ -118,7 +112,6 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
-console.log("uswer",user)
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -134,6 +127,7 @@ console.log("uswer",user)
         }}
       >
         <Pressable
+        style={{flex:1}}
           onPress={() => {
             setSelectOfferComponent('todas')
           }}
@@ -143,15 +137,15 @@ console.log("uswer",user)
               borderBottomWidth: 3,
               borderColor:
                 selectOfferComponent === 'todas'
-                  ? Color.bALONCESTO
+                  ? mainColor
                   : 'transparent',
-              width: 150
+              width: "100%"
             }}
           >
             <Text
               style={[
                 selectOfferComponent === 'todas'
-                  ? styles.todasLaOfertas
+                  ?{ ...styles.todasLaOfertas,color:mainColor}
                   : styles.todasLaOfertas2,
                 styles.ofertasTypo
               ]}
@@ -162,6 +156,7 @@ console.log("uswer",user)
         </Pressable>
 
         <Pressable
+        style={{flex:1}}
           onPress={() => {
             setSelectOfferComponent('favoritas')
           }}
@@ -171,15 +166,16 @@ console.log("uswer",user)
               borderBottomWidth: 3,
               borderColor:
                 selectOfferComponent === 'favoritas'
-                  ? Color.bALONCESTO
+                  ? mainColor
                   : 'transparent',
-              width: 150
+                  width: "100%"
+
             }}
           >
             <Text
               style={[
                 selectOfferComponent === 'favoritas'
-                  ? styles.todasLaOfertas
+                  ? {...styles.todasLaOfertas,color:mainColor}
                   : styles.todasLaOfertas2,
                 ,
                 styles.ofertasTypo
@@ -782,7 +778,7 @@ console.log("uswer",user)
                         user?.user?.sportman?.id
                       )
                         ? Color.wHITESPORTSMATCH
-                        : '#e1451e',
+                        : mainColor,
                       height: 45
                     }}
                   >
@@ -797,8 +793,6 @@ console.log("uswer",user)
                             user?.user?.sportman?.id
                           )
                         ) {
-                          console.log('offer', offer)
-                          console.log('sp id: ', user?.user?.sportman?.id)
                           dispatch(
                             signToOffer({
                               offerId: offer?.id,

@@ -83,7 +83,6 @@ const PlayerDetails = () => {
       !gender) {
       return navigation.navigate('EditarPerfil')
     }
-    console.log('on handleUpdateUserData')
     const data = {
       city,
       gender,
@@ -150,15 +149,12 @@ const PlayerDetails = () => {
   }
 
   useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
+
   }, [selectedImage, selectedPicture])
 
   const takePicture = async () => {
-    console.log('on takePicture!');
     if (cameraReff?.current) { // Check if cameraRef is not null
       const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
-      console.log(photo);
       setSelectedImage(photo);
       pickImageFromCamera(selectedPicture, photo.uri);
       setShowCamera(false);

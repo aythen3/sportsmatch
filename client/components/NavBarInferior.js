@@ -112,7 +112,7 @@ const NavBarInferior = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={handleNavigation}
+        onPress={()=>handleNavigation()}
         style={activeIcon === 'profile' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
       >
         {imgPerfil && (

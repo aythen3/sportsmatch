@@ -61,31 +61,18 @@ import ClubDetails from './screens/Perfil/EditarPerfil/club/ClubDetails'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlayerDetails from './screens/Perfil/EditarPerfil/jugador/PlayerDetails'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AppRegistry, StatusBar, View } from 'react-native'
+import { AppRegistry, StatusBar, View,DevSettings, NativeModules } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/Perfil/EditarPerfil/profesional/ProDetails'
 import Post from './screens/Perfil/EditarPerfil/Post'
 import PromocionarPost from './screens/Pasos/PromocionarPost'
 import Notificaciones from './screens/Perfil/EditarPerfil/Notificaciones'
+import { registerDevMenuItems } from 'expo-dev-menu';
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
   const [isFooterShow, setIsFooterShow] = useState(null)
 
-
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     await AsyncStorage.getItem('userToken').then((user) => {
-  //       if (user) {
-  //         setIsLoged(true)
-  //       }
-  //     }).catch((error) => {
-  //       console.log(error)
-  //     })
-  //   }
-  //   getUser()
-
-  // }, [])
   const [fontsLoaded, error] = useFonts({
     'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
     'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
@@ -116,7 +103,7 @@ const App = () => {
         />
         <Provider store={store}>
           <ContextProvider>
-            <NavigationContainer >
+            <NavigationContainer children={NavBarInferior}>
               {hideSplashScreen ? (
                 <Stack.Navigator
                   screenOptions={({ route }) => ({
@@ -425,7 +412,7 @@ const App = () => {
                   />
                 </Stack.Navigator>
               ) : null}
-              {isFooterShow && <NavBarInferior />}
+            {isFooterShow && <NavBarInferior />}
             </NavigationContainer>
           </ContextProvider>
         </Provider>

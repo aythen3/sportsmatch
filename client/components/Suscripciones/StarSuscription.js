@@ -16,7 +16,6 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
   const { user } = useSelector((state) => state.users)
 
   const handleGetStar = async () => {
-    console.log("entra")
      const res = await axiosInstance.post('/user/create-subscription',{
        priceId:"price_1P4cOSGmE60O5ob7cqUBAyjk",
        customerId:user.user.stripeId
@@ -28,7 +27,6 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
 
        // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
      }
-     console.log(user.user.stripeId,"user")
    }
   return (
     <View>

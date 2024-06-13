@@ -173,7 +173,6 @@ const imagesNumber = ['0','1']
          <View style={{ width: '100%', height: '100%' }} key={i}>
          <DoubleTap
            onDoubleTap={() => {
-             console.log('doble pressss2222')
              handleLike()
              setDoubleTapHeart(true)
              // handleDoubleTap(); // Llama a la función de manejar el doble clic
@@ -316,7 +315,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-    marginBottom:-10
+    marginBottom:0
   },
   indicator: {
     width: 5,
@@ -339,7 +338,7 @@ const styles = StyleSheet.create({
   botonPromocionarPublicacion: {
     marginTop: 15,
     borderRadius: Border.br_81xl,
-    width: 210,
+    width: "48%",
     justifyContent: 'center',
     paddingHorizontal: Padding.p_5xs,
     paddingVertical: Padding.p_11xs,

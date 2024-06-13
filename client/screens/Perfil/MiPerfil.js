@@ -39,7 +39,6 @@ const MiPerfil = () => {
 
 
   const [selectedTab, setSelectedTab] = useState('Feed')
-  console.log(sportman, 'sportman')
   const renderContent = () => {
     if (selectedTab === 'Feed') {
       return <Feed />
@@ -47,7 +46,6 @@ const MiPerfil = () => {
       return <FeedStats />
     }
   }
-  console.log('sportman: ', sportman)
 
   return (
     <View style={{ flex: 1, backgroundColor: "transparent" }}>
@@ -270,7 +268,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   imagenPosition: {
-    height: 160
+    height: 150
     // width: '100%'
   },
   jugandoAlUni: {

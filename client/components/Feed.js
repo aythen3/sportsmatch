@@ -93,11 +93,11 @@ const Feed = ({ externalId }) => {
           <ScrollableModal visible={modal} options={!postSelected.prop1 ? ['Fijar post'] : ['Quitar post fijo']} onSelectItem={ async (e)=> {
            if(e == 'Fijar post'){
             axiosInstance.patch(`post/${postSelected.id}`,{prop1:{pined:true}})
-            console.log(postSelected,"eeeee")
+      
            }
            if(e == 'Quitar post fijo'){
             axiosInstance.patch(`post/${postSelected.id}`,{prop1:null})
-            console.log(postSelected,"eeeee")
+       
            }
           dispatch(getAllPosts())
           }

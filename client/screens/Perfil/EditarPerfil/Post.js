@@ -25,7 +25,6 @@ const Post = () => {
   const [page, setPage] = useState(1)
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params;
-  console.log("item", item)
 
   return (
     <SafeAreaView style={styles.safeArea}>

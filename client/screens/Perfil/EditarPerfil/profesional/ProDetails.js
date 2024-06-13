@@ -69,7 +69,6 @@ const PlayerDetails = () => {
   ]
 
   const handleUpdateUserData = () => {
-    console.log('on handleUpdateUserData')
     const data = {
       city,
       description: userDescription,
@@ -112,10 +111,7 @@ const PlayerDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-    console.log(
-      'setting camera mode to: ',
-      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    )
+  
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -123,16 +119,11 @@ const PlayerDetails = () => {
     )
   }
 
-  useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
-  }, [selectedImage, selectedPicture])
+
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync()
-      console.log(photo)
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

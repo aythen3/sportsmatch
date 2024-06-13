@@ -211,22 +211,17 @@ const MessagesChat = ({
                     offer.inscriptions &&
                     offer.inscriptions.includes(sportmanId)
                 )[0]?.id
-                console.log('offerId: ', offerId)
                 const newInscriptions = currentOffer.inscriptions.filter(
                   (applicant) => applicant !== sportmanId
                 )
 
-                console.log('newInscriptions: ', newInscriptions)
                 const actualMatches = currentOffer.matches || []
                 const newMatchs = [...actualMatches, sportmanId]
-                console.log('newMatchs: ', newMatchs)
 
                 const sportmanUser = allUsers.filter(
                   (user) => user?.sportman?.id === sportmanId
                 )[0]
-                console.log('sportmanUser', sportmanUser)
 
-                console.log('club', user?.user)
 
                 dispatch(
                   sendMatch({

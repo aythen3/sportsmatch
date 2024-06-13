@@ -70,16 +70,13 @@ const IniciarSesin = () => {
 
   const handleSubmit = () => {
     setLoading(true)
-    console.log('on handlesubmit')
     setProvisoryProfileImage()
     setProvisoryCoverImage()
     setProfileImage()
     setCoverImage()
     if (valuesUser.email && valuesUser.password) {
-      console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
@@ -98,7 +95,6 @@ const IniciarSesin = () => {
               }
             } else {
               if (response.payload.accesToken) {
-                console.log('jugador')
                 navigation.navigate('Paso1')
               }
             }

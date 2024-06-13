@@ -25,7 +25,6 @@ const Notifications = ({ data }) => {
   const { allUsers, user } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
   const dispatch = useDispatch()
-  console.log(data, "data")
   function formatDate(timestamp) {
     const date = new Date(timestamp)
     // Extract the day, month, and year components
@@ -110,11 +109,9 @@ const Notifications = ({ data }) => {
             <TouchableOpacity
               onPress={() => {
                 let actualUser = _.cloneDeep(user)
-                console.log('atualUser: ', actualUser)
                 const actualFollowers =
                   allUsers.filter((user) => user.id === data.prop1.userId)[0]
                     .followers || []
-                console.log('actual followers: ', actualFollowers)
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
                     (follower) => follower !== user?.user?.id
@@ -129,9 +126,7 @@ const Notifications = ({ data }) => {
                   )
                   : [...userFollowing, data.prop1.userId]
                 actualUser.user.following = newFollowingArray
-                console.log('user: ', actualUser?.user?.following)
 
-                console.log('setting other user followers to:', newFollowers)
                 dispatch(
                   updateUserData({
                     id: data.prop1.userId,
@@ -139,7 +134,6 @@ const Notifications = ({ data }) => {
                   })
                 )
                   .then((data) => {
-                    console.log('setting user following to:', newFollowingArray)
                     dispatch(
                       updateUserData({
                         id: user.user.id,

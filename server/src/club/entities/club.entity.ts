@@ -21,6 +21,9 @@ export class ClubEntity extends BaseEntity {
   @Column()
   field: string;
 
+  @Column({ nullable: true })
+  sport: string;
+
   @Column()
   year: number;
 

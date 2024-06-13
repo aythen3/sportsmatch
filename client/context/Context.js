@@ -54,7 +54,6 @@ export const ContextProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log('setting', source, 'image to:', data.url)
           source === 'profile'
             ? setProfileImage(transformHttpToHttps(data.url))
             : setCoverImage(transformHttpToHttps(data.url))
@@ -63,8 +62,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   const pickImage = async (source, imageUri) => {
-    console.log('source: ', source)
-    console.log('imageUri:', imageUri)
+
     if (imageUri) {
       setProvisoryProfileImage(imageUri)
       const profileImageData = {
@@ -86,7 +84,6 @@ export const ContextProvider = ({ children }) => {
      
           res.json())
         .then((data) => {
-          console.log('dataUrl from uriImg:', data.url)
           setLibraryImage(transformHttpToHttps(data.url))
           return transformHttpToHttps(data.url)
         }).catch(error => console.log(error))
@@ -125,7 +122,6 @@ export const ContextProvider = ({ children }) => {
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log('dataUrl from profile:', data.url)
               setProfileImage(transformHttpToHttps(data.url))
             })
         } else {
@@ -163,7 +159,6 @@ export const ContextProvider = ({ children }) => {
 
   function getTimeFromDate(dateString) {
     // Create a new Date object from the UTC string
-    console.log('dateString:', dateString)
     const utcDate = new Date(dateString)
 
     // // Get the local time zone offset in milliseconds
@@ -203,20 +198,16 @@ export const ContextProvider = ({ children }) => {
   )
 
   socket.on('connect', () => {
-    console.log('Connected to server')
   })
 
   socket.on('disconnect', () => {
-    console.log('Disconnected from server')
     setRoomId()
   })
 
   socket.on('error', (error) => {
-    console.error('Socket connection error:', error)
   })
 
   socket.on('joinedRoom', (room) => {
-    console.log('Joined to room: ', room)
     setRoomId(room)
   })
 
@@ -231,12 +222,10 @@ export const ContextProvider = ({ children }) => {
   })
 
   const joinRoom = (sender, receiver) => {
-    console.log('on joinRoom with id: ', sender, receiver)
     socket.emit('joinRoom', { sender, receiver })
   }
 
   const leaveRoom = (sender, receiver) => {
-    console.log('on leaveRoom with id: ', sender, receiver)
     socket.emit('leaveRoom', { sender, receiver })
   }
 
@@ -245,22 +234,18 @@ export const ContextProvider = ({ children }) => {
   }
 
   const getClubMatches = () => {
-    console.log('getting club matches')
     axiosInstance.get('match').then((data) => {
       const clubMatches = data.data.filter(
         (match) => match?.prop1?.clubId === user?.user?.club?.id
       )
-      console.log('clubMatches: ', clubMatches)
       setClubMatches(clubMatches)
     })
   }
   const getUserMatches = () => {
-    console.log('getting user matches')
     axiosInstance.get('match').then((data) => {
       const userMatches = data.data.filter(
         (match) => match?.prop1?.sportmanId === user?.user?.sportman?.id
       )
-      console.log('userMatches: ', userMatches)
       setUserMatches(userMatches)
     })
   }
@@ -321,7 +306,6 @@ export const ContextProvider = ({ children }) => {
         )
 
         setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
-        console.log(sortedUsersWithMessages,'asdasfmaslfm')
       })
       .catch((error) => {
         console.error('Error fetching messages for users:', error)

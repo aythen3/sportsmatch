@@ -8,11 +8,22 @@ import { getAllPositions } from '../../redux/actions/positions'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { logedIn, setIsSpotMan } from '../../redux/slices/users.slices'
+import { logedIn, setIsSpotMan, setMainColor } from '../../redux/slices/users.slices'
 import { setClub } from '../../redux/slices/club.slices'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
+
+
+export const detectSportColor = (sport,dispatch)=>{
+  if (sport == 'Fútbol Sala' ) { dispatch(setMainColor  ('#0062FF')) }
+  if (sport == 'Hockey' ){ dispatch(setMainColor('#E1AA1E')) }
+  if (sport == 'Voley' ) { dispatch(setMainColor('#A8154A')) }
+  if (sport == 'Handball' ) { dispatch(setMainColor('#6A1C4F')) }
+  if (sport == 'Fútbol' ) { dispatch(setMainColor('#00FF18')) }
+  if (sport == 'Básquetbol' ) { dispatch(setMainColor('#E1451E')) }
+}
+
 
 const PantallaInicio = () => {
   const isFocused = useIsFocused()
@@ -23,15 +34,25 @@ const PantallaInicio = () => {
   const navigateToOtraPantalla = async (user) => {
     const valuesUser = await JSON.parse(user) || {};
     if (valuesUser.email) {
-      console.log(valuesUser, 'asdasdasdasdas')
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log(response, '2222')
+          console.log("response", response.payload.user)        
+          if(response.payload.user.sportman || response.payload.user.club){
+
+          detectSportColor(response.payload.user.sportman?.info?.sport || response.payload.user.club.sport ,dispatch)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           dispatch(setClub(response))
           navigation.navigate('SiguiendoJugadores')
+         }
+         else {
+          if(response.payload.user.type == 'club') {
+            return navigation.navigate('stepsClub')
+          }
+          return navigation.navigate('Paso1')
+
+         }
         })
         .catch((error) => {
           console.error(error)

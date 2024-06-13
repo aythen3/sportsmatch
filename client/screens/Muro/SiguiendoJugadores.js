@@ -41,12 +41,9 @@ const SiguiendoJugadores = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-    console.log('normalUserAuth from sj : ', normalUserAuth)
-    console.log('facebookUserAuth from sj : ', facebookUserAuth)
-    console.log('googleUserAuth from sj : ', googleUserAuth)
+
   }
   useEffect(() => {
-    console.log('useEffect triggering')
     dispatch(getAllOffers())
     dispatch(getAllPosts())
     dispatch(getAllMatchs())
@@ -62,7 +59,6 @@ const SiguiendoJugadores = () => {
       id: user?.user?.id,
       type: user?.user?.type
     }
-    console.log(data,"esto es mui dataaa")
     dispatch(getUserChild(data))
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
@@ -75,14 +71,14 @@ const SiguiendoJugadores = () => {
   //   return userId
   // }
 
-  useEffect(() => {
-    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
-    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
-    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { dispatch(setMainColor('#A8154A')) }
-    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
-    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
-    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
-  }, [sportman?.info])
+  // useEffect(() => {
+  //   if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
+  //   if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
+  //   if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { dispatch(setMainColor('#A8154A')) }
+  //   if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
+  //   if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
+  //   if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
+  // }, [sportman?.info])
 
   useEffect(() => {
     setActiveIcon("diary")
@@ -93,7 +89,6 @@ const SiguiendoJugadores = () => {
 
   useEffect(() => {
     if (allMatchs) {
-      console.log('before getting matches...')
       if (user?.user?.type === 'club') {
         getClubMatches()
       } else {

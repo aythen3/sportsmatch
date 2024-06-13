@@ -16,7 +16,6 @@ const HeaderIcons = () => {
 
   const [sportColor, setSportColor] = useState('#E1451E')
 
-  console.log(mainColor,'ASDASCOLOR')
 
 
 

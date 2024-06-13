@@ -42,7 +42,6 @@ const ClubDetails = () => {
   const { user } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
-  console.log('club:', club)
 
   const inputs = [
     
@@ -118,7 +117,6 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    console.log('filteredData: ', filteredData)
     dispatch(updateClubData({ id: club.id, body: filteredData }))
     setProfileImage()
     setCoverImage()
@@ -145,10 +143,7 @@ const ClubDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-    console.log(
-      'setting camera mode to: ',
-      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    )
+  
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -156,16 +151,11 @@ const ClubDetails = () => {
     )
   }
 
-  useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
-  }, [selectedImage, selectedPicture])
+
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync()
-      console.log(photo)
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

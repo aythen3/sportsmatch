@@ -32,7 +32,8 @@ const TusNotificaciones1 = () => {
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
-  const { user, allUsers } = useSelector((state) => state.users)
+  const { user, allUsers , mainColor } = useSelector((state) => state.users)
+  
   const { offers } = useSelector((state) => state.offers)
   const { getUsersMessages, usersWithMessages, setActiveIcon } =
     useContext(Context)
@@ -98,12 +99,10 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
    const res = getUsersMessages()
-   console.log(usersWithMessages,"resss")
   }, [])
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
-      console.log('offers: ', offers)
       const clubOffers = offers?.filter(
         (offer) => offer.clubId === user.user.club.id
       )
@@ -136,7 +135,7 @@ const TusNotificaciones1 = () => {
             <Text
               style={[
                 selectedComponent === 'messages'
-                  ? styles.notficaciones
+                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}
@@ -148,7 +147,7 @@ const TusNotificaciones1 = () => {
             <Text
               style={[
                 selectedComponent === 'notifications'
-                  ? styles.notficaciones
+                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}

@@ -40,7 +40,7 @@ const HeaderPerfil = ({
   const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user, allUsers } = useSelector((state) => state.users)
+  const { isSportman, user, allUsers,mainColor } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
@@ -50,7 +50,6 @@ const HeaderPerfil = ({
   const { sportman } = useSelector((state) => state.sportman)
 
   const getOffersById = async (id) => {
-    console.log('id from getoffers: ', id)
     const { data } = await axiosInstance.get('offer')
     const filteredOffers = data.filter((offer) => offer.club.id === id)
     setClubOffers(filteredOffers)
@@ -114,7 +113,7 @@ const HeaderPerfil = ({
               height: 105,
               borderRadius: 100,
               width: 105,
-              backgroundColor: Color.bALONCESTO
+              backgroundColor: mainColor
             }}
           />
           {isSportman ? (
@@ -139,7 +138,7 @@ const HeaderPerfil = ({
                 borderColor: '#000'
               }}
               contentFit="cover"
-              source={{ uri: avatar }}
+              source={ avatar ? { uri: avatar } : require('../../../../assets/avatar.png')}
             />
           )}
         </View>
@@ -209,7 +208,6 @@ const HeaderPerfil = ({
               const actualFollowers =
                 allUsers?.filter((user) => user.id === data.author.id)[0]
                   .followers || []
-              console.log('actual followers: ', actualFollowers)
               const newFollowers = actualFollowers.includes(user?.user?.id)
                 ? actualFollowers.filter(
                     (follower) => follower !== user?.user?.id
@@ -224,9 +222,7 @@ const HeaderPerfil = ({
                   )
                 : [...userFollowing, data?.author?.id]
               actualUser.user.following = newFollowingArray
-              console.log('user: ', actualUser?.user?.following)
 
-              console.log('setting other user followers to:', newFollowers)
               dispatch(
                 updateUserData({
                   id: data.author.id,
@@ -234,7 +230,6 @@ const HeaderPerfil = ({
                 })
               )
                 .then((data) => {
-                  console.log('setting user following to:', newFollowingArray)
                   dispatch(
                     updateUserData({
                       id: user.user.id,
@@ -285,7 +280,6 @@ const HeaderPerfil = ({
                 const actualFollowers =
                   allUsers?.filter((user) => user.id === data.author.id)[0]
                     .followers || []
-                console.log('actual followers: ', actualFollowers)
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
                       (follower) => follower !== user?.user?.id
@@ -300,9 +294,7 @@ const HeaderPerfil = ({
                     )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
-                console.log('user: ', actualUser?.user?.following)
 
-                console.log('setting other user followers to:', newFollowers)
                 dispatch(
                   updateUserData({
                     id: data.author.id,
@@ -310,7 +302,6 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
-                    console.log('setting user following to:', newFollowingArray)
                     dispatch(
                       updateUserData({
                         id: user.user.id,
@@ -864,12 +855,12 @@ const HeaderPerfil = ({
             }}
           >
            <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-           <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
               {user.user.club.year}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,textAlign:"center"
               }}
             >
@@ -894,12 +885,12 @@ const HeaderPerfil = ({
             }}
           >
            <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-           <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
               {user.user.club.capacity}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,
                 textAlign:"center"
         
@@ -926,12 +917,12 @@ const HeaderPerfil = ({
             }}
           >
           <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-          <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 , textAlign:"center" }}>
+          <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 , textAlign:"center" }}>
               {clubOffers?.length}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color:mainColor,
                 fontSize: 12,
                 textAlign:"center"
               }}

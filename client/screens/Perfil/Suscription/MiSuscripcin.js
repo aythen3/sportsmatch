@@ -32,7 +32,7 @@ const MiSuscripcin = () => {
 
 
   const { user } = useSelector((state) => state.users)
-  console.log(user.user.club, "userrr222")
+
   const dispatch = useDispatch()
 
   const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
@@ -40,7 +40,6 @@ const MiSuscripcin = () => {
   React.useEffect(() => {
     const initializePaymentSheet = async () => {
       setDeletePlan(false)
-      console.log(user, 'userrrr')
       const { error } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'azul',
@@ -63,13 +62,11 @@ const MiSuscripcin = () => {
 
             })
             .then(() => dispatch(getUserData(user.user.id)))
-          console.log(updUser, 'upd')
         }
       }
     }
 
     if (clientSecret) {
-      console.log('entra a la hoja')
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])

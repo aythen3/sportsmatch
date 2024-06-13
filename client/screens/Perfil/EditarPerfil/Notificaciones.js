@@ -9,10 +9,12 @@ import {
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Switch } from 'react-native-switch'
+import { useSelector } from 'react-redux'
 
 
 const Notificaciones = () => {
     const [activated, setActivated] = useState(true)
+    const {  mainColor } = useSelector((state) => state.users)
 
 
     return (
@@ -27,7 +29,7 @@ const Notificaciones = () => {
                     circleSize={16}
                     onValueChange={() => setActivated(!activated)}
                     value={activated}
-                    backgroundActive={'#E1451E'}
+                    backgroundActive={mainColor}
                     backgroundInactive={'gray'}
                     activeText={false}
                     inActiveText={false}

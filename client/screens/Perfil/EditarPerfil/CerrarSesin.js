@@ -43,7 +43,6 @@ const CerrarSesin = () => {
   //   }
   // };
   const signOutFacebook = async () => {
-    console.log('sign out fb')
     try {
       await LoginManager.logOut()
       // Perform any additional clean-up or navigation logic as needed
