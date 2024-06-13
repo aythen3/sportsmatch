@@ -26,47 +26,7 @@ const Post = () => {
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 10,
-          paddingLeft: 10,
-          marginBottom: 10
-        }}
-      >
-        <Pressable
-          onPress={() => {
-            console.log('EP')
-            navigation.goBack()
-          }}
-        >
-          <Image
-            style={{ width: 27 * 0.35, height: 46 * 0.35 }}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-        </Pressable>
-        <Pressable
-          // style={styles.editarPerfil1}
-          onPress={() => {
-            console.log('EP')
-            navigation.goBack()
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '500',
-              textAlign: 'left',
-              fontFamily: FontFamily.t4TEXTMICRO,
-              color: Color.wHITESPORTSMATCH
-            }}
-          >
-            Post
-          </Text>
-        </Pressable>
-      </View>
+      <CustomHeaderBack header={'Post'}></CustomHeaderBack>
       <View style={{ paddingBottom: 40 }}>
         <Carousel
           key={item.id}
