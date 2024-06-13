@@ -62,13 +62,12 @@ export const ContextProvider = ({ children }) => {
   }
 
   const pickImage = async (source, imageUri) => {
-
     if (imageUri) {
       setProvisoryProfileImage(imageUri)
       const profileImageData = {
         uri: imageUri,
         type: 'image/jpg',
-        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0],
+        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
       }
 
       const profileImageForm = new FormData()
@@ -76,19 +75,21 @@ export const ContextProvider = ({ children }) => {
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
       profileImageForm.append('cloud_name', 'der45x19c')
 
-     const res = await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
-        method: 'post',
-        body: profileImageForm
-      })
-        .then(async (res)  => 
-     
-          res.json())
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
+        {
+          method: 'post',
+          body: profileImageForm
+        }
+      )
+        .then(async (res) => res.json())
         .then((data) => {
           setLibraryImage(transformHttpToHttps(data.url))
           return transformHttpToHttps(data.url)
-        }).catch(error => console.log(error))
+        })
+        .catch((error) => console.log(error))
 
-       return res
+      return res
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -197,15 +198,13 @@ export const ContextProvider = ({ children }) => {
     }
   )
 
-  socket.on('connect', () => {
-  })
+  socket.on('connect', () => {})
 
   socket.on('disconnect', () => {
     setRoomId()
   })
 
-  socket.on('error', (error) => {
-  })
+  socket.on('error', (error) => {})
 
   socket.on('joinedRoom', (room) => {
     setRoomId(room)
@@ -262,28 +261,30 @@ export const ContextProvider = ({ children }) => {
   const getUsersMessages = () => {
     const getConvMessages = async (user) => {
       try {
-        const { data } = await axiosInstance.get(
-          `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-        )
-        const filterByDelete = data.filter((message) => {
-          const senderOrReceiver =
-            message.senderId === userId ? 'sender' : 'receiver'
-          if (senderOrReceiver === 'sender') {
-            if (message.senderDelete === true) {
-              return false
-            }
-            return true
-          }
-          if (senderOrReceiver === 'receiver') {
-            if (message.receiverDelete === true) {
-              return false
-            }
-            return true
-          }
-        })
-        return filterByDelete
+        // const { data } = await axiosInstance.get(
+        //   `chat/chats/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
+        // )
+        const data = await axiosInstance.post('chat/chats', { userId })
+        console.log('data from get messages==============', data)
+        // const filterByDelete = data.filter((message) => {
+        //   const senderOrReceiver =
+        //     message.senderId === userId ? 'sender' : 'receiver'
+        //   if (senderOrReceiver === 'sender') {
+        //     if (message.senderDelete === true) {
+        //       return false
+        //     }
+        //     return true
+        //   }
+        //   if (senderOrReceiver === 'receiver') {
+        //     if (message.receiverDelete === true) {
+        //       return false
+        //     }
+        //     return true
+        //   }
+        // })
+        // return filterByDelete
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching data gcm:', error)
         return []
       }
     }
