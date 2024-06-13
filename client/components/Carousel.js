@@ -35,13 +35,13 @@ function Carousel({
   data
 }) {
   const dispatch = useDispatch()
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0)
 
   const handlePageSelected = (event) => {
-    const { position } = event.nativeEvent;
-    setCurrentPage(position);
-  };
-  const { user , mainColor } = useSelector((state) => state.users)
+    const { position } = event.nativeEvent
+    setCurrentPage(position)
+  }
+  const { user, mainColor } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
   const { sportman } = useSelector((state) => state.sportman)
 
@@ -53,16 +53,16 @@ function Carousel({
 
   const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
-  const [isTruncated, setIsTruncated] = useState(true);
+  const [isTruncated, setIsTruncated] = useState(true)
 
   const toggleTruncate = () => {
-    setIsTruncated(!isTruncated);
-  };
+    setIsTruncated(!isTruncated)
+  }
 
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
-      if(sportman?.type == "invitado") return
+      if (sportman?.type == 'invitado') return
       // Cambia el estado a true
       setDoubleTapHeart(true)
 
@@ -95,9 +95,9 @@ function Carousel({
   const closeModal = () => {
     setModalVisible(false)
   }
-const imagesNumber = ['0','1']
+  const imagesNumber = ['0', '1']
   const handleLike = async () => {
-    if(sportman?.type == "invitado") return
+    if (sportman?.type == 'invitado') return
     // Invertir el estado de liked
     setLiked(!liked)
 
@@ -133,41 +133,101 @@ const imagesNumber = ['0','1']
 
     await dispatch(like(data))
   }
-  const fecha = data.createdAt.slice(0,10)
-  const año = fecha.slice(0,4)
-  const mes = fecha.slice(5,7)
-  const dia = fecha.slice(8,10)
+  const fecha = data.createdAt.slice(0, 10)
+  const año = fecha.slice(0, 4)
+  const mes = fecha.slice(5, 7)
+  const dia = fecha.slice(8, 10)
   return (
     <View style={{ ...styles.container }}>
-     <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
-     <Pressable
-        style={styles.topContainer}
-        onPress={() => {
-          if (data.author.id === user.user.id) {
-            if (user.user.type !== 'club') {
-              navigation.navigate('MiPerfil')
-              return
-            } else {
-              navigation.navigate('PerfilDatosPropioClub')
-              return
-            }
-          }
-          if (data.author.type === 'club') {
-            navigation.navigate('ClubProfile', data)
-          } else {
-            navigation.navigate('PerfilFeedVisualitzaciJug', data)
-          }
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between'
         }}
       >
-        <Image style={styles.imgPerfil} source={data?.author?.id === user?.user?.id ? user?.user?.sportman?.info?.img_perfil : imgPerfil} />
-        <Text style={styles.nameText}>{name}</Text>
-      </Pressable> 
-      <Text style={{color: Color.gREY2SPORTSMATCH,paddingRight:4,fontSize:12,alignSelf:"flex-end"}}>
-       {`${dia} - ${mes} - ${año.slice(2,4)}`}
-      </Text>
-     </View>
-      <PagerView onPageSelected={handlePageSelected} style={styles.postContainer} initialPage={0}>
+        <Pressable
+          style={styles.topContainer}
+          onPress={() => {
+            if (data.author.id === user.user.id) {
+              if (user.user.type !== 'club') {
+                navigation.navigate('MiPerfil')
+                return
+              } else {
+                navigation.navigate('PerfilDatosPropioClub')
+                return
+              }
+            }
+            if (data.author.type === 'club') {
+              navigation.navigate('ClubProfile', data)
+            } else {
+              navigation.navigate('PerfilFeedVisualitzaciJug', data)
+            }
+          }}
+        >
+          <Image
+            style={styles.imgPerfil}
+            source={
+              data?.author?.id === user?.user?.id
+                ? user?.user?.sportman?.info?.img_perfil
+                : imgPerfil
+            }
+          />
+          <Text style={styles.nameText}>{name}</Text>
+        </Pressable>
+        <Text
+          style={{
+            color: Color.gREY2SPORTSMATCH,
+            paddingRight: 4,
+            fontSize: 12,
+            alignSelf: 'flex-end'
+          }}
+        >
+          {`${dia} - ${mes} - ${año.slice(2, 4)}`}
+        </Text>
+      </View>
+      <PagerView
+        onPageSelected={handlePageSelected}
+        style={styles.postContainer}
+        initialPage={0}
+      >
+        {image.map((e, i) => (
+          <View style={{ width: '100%', height: '100%' }} key={i}>
+            <DoubleTap
+              onDoubleTap={() => {
+                console.log('doble pressss2222')
+                handleLike()
+                setDoubleTapHeart(true)
+                // handleDoubleTap(); // Llama a la función de manejar el doble clic
+                // resetDoubleTap(); // Reinicia el estado de doubleTap
+              }}
+            >
+              <View
+                style={{ width: '100%', height: '100%', position: 'relative' }}
+              >
+                {doubleTapHeart && liked && (
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 999
+                    }}
+                  >
+                    <Like2SVG id={id}></Like2SVG>
+                  </TouchableOpacity>
+                )}
 
+                <Image
+                  style={{ ...styles.postImage, zIndex: 990 }}
+                  source={e}
+                />
+              </View>
+            </DoubleTap>
+          </View>
+        ))}
 
      { image.map((e,i)=> (
          <View style={{ width: '100%', height: '100%' }} key={i}>
@@ -214,20 +274,33 @@ const imagesNumber = ['0','1']
           />
         </View> */}
       </PagerView>
-      <View style={styles.indicatorContainer}>
-        {image.length > 1 && image.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.indicator,
-              index === currentPage ? [styles.indicatorActive,{backgroundColor:mainColor}] : styles.indicatorInactive
-            ]}
-          />
-        ))}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          marginBottom: authorId === user?.user?.id ? 0 : 5
+        }}
+      >
+        {image.length > 1 &&
+          image.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.indicator,
+                index === currentPage
+                  ? [styles.indicatorActive, { backgroundColor: mainColor }]
+                  : styles.indicatorInactive
+              ]}
+            />
+          ))}
       </View>
       <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
-          <TouchableOpacity onPress={() => navigation.navigate('PostPromocion',data)}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PostPromocion', data)}
+          >
             <LinearGradient
               style={styles.botonPromocionarPublicacion}
               start={{ x: 0, y: 1 }} // Cambiado de x: 1 a x: 0
@@ -267,19 +340,28 @@ const imagesNumber = ['0','1']
             description={description} // Pasa la descripción del post como prop
           />
         </View>
-        <Text    numberOfLines={isTruncated ? 2 : undefined}  // Limita el número de líneas si está truncado
-        ellipsizeMode="tail" style={styles.description}>{description}</Text>
-         {isTruncated && description.length > 160  ? ( // Ajusta la lógica de truncamiento
-        <TouchableOpacity onPress={toggleTruncate}>
-          <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver más</Text>
-        </TouchableOpacity>
-      ) : (
-        !isTruncated &&  (
+        <Text
+          numberOfLines={isTruncated ? 2 : undefined} // Limita el número de líneas si está truncado
+          ellipsizeMode="tail"
+          style={styles.description}
+        >
+          {description}
+        </Text>
+        {isTruncated && description.length > 160 ? ( // Ajusta la lógica de truncamiento
           <TouchableOpacity onPress={toggleTruncate}>
-            <Text style={{color:Color.colorDimgray_100,marginTop:3}}>Ver menos</Text>
+            <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+              Ver más
+            </Text>
           </TouchableOpacity>
-        )
-      )}
+        ) : (
+          !isTruncated && (
+            <TouchableOpacity onPress={toggleTruncate}>
+              <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                Ver menos
+              </Text>
+            </TouchableOpacity>
+          )
+        )}
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.commentsTitle}>
             Ver los {commentCount} comentarios
@@ -321,7 +403,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 5,
-    marginHorizontal: 5
+    marginHorizontal: 3.5
   },
   indicatorActive: {
     backgroundColor: 'blue'
@@ -357,8 +439,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontWeight: '700',
-    color: Color.wHITESPORTSMATCH,
-    
+    color: Color.wHITESPORTSMATCH
   },
   commentsTitle: {
     fontFamily: FontFamily.t4TEXTMICRO,
@@ -399,7 +480,7 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: '100%',
-    height: "100%",
+    height: '100%',
     borderRadius: 5
   }
 })

@@ -25,7 +25,11 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan, logedIn, logedOut } from '../../redux/slices/users.slices'
+import {
+  setIsSpotMan,
+  logedIn,
+  logedOut
+} from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
@@ -43,7 +47,6 @@ const IniciarSesin = () => {
   const navigation = useNavigation()
   const [passview2, setPassview2] = useState(true)
   const [loading, setLoading] = useState(false)
-
 
   const route = useRoute()
 
@@ -190,8 +193,18 @@ const IniciarSesin = () => {
                           ref={passwordInputRef}
                           onSubmitEditing={handleSubmit}
                         />
-                        <TouchableOpacity onPress={() => setPassview2(!passview2)}>
-                     {passview2 ?      <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
+                        <TouchableOpacity
+                          onPress={() => setPassview2(!passview2)}
+                        >
+                          {passview2 ? (
+                            <PassView></PassView>
+                          ) : (
+                            <Image
+                              style={{ width: 28 * 0.96, height: 19 * 0.96 }}
+                              contentFit="cover\"
+                              source={require('../../assets/closedEye.png')}
+                            />
+                          )}
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -206,9 +219,11 @@ const IniciarSesin = () => {
                 style={styles.botonIniciaSesin2}
                 onPress={handleSubmit}
               >
-                {!loading ? <Text style={styles.aceptar}>Inicia sesión</Text> : <ActivityIndicator></ActivityIndicator>}
-
-
+                {!loading ? (
+                  <Text style={styles.aceptar}>Inicia sesión</Text>
+                ) : (
+                  <ActivityIndicator></ActivityIndicator>
+                )}
               </TouchableOpacity>
               <Pressable
                 style={{ marginTop: 37 }}
@@ -249,7 +264,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
     right: -85,
     zIndex: 0,
-    overflow: "hidden"
+    overflow: 'hidden'
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
@@ -260,7 +275,7 @@ const styles = StyleSheet.create({
     top: -20,
     left: -40,
     transform: [{ rotate: '-45deg' }],
-    zIndex: 0,
+    zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   framePosition: {

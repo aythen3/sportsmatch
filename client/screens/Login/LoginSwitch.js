@@ -257,10 +257,12 @@ const LoginSwitch = () => {
     const fetchInstagramUsername = async () => {
       if (igToken) {
         console.log('=====LOGIN WITH INSTAGRAM=====')
-        const userData = await getInstagramUsername(igToken.access_token)
+        // const {username} = await getInstagramUsername(igToken.access_token)
+        // console.log('userData before dispatching', userData)
         dispatch(
           create({
-            nickname: userData.username,
+            // nickname: userData?.username,
+            nickname: igToken.user_id.toString(),
             email: '',
             facebookId: igToken.user_id.toString(),
             type: isSportman === true ? 'sportman' : 'club'
@@ -270,6 +272,7 @@ const LoginSwitch = () => {
             const response = await dispatch(
               login({ facebookId: igToken.user_id.toString() })
             )
+            console.log('response instagram:', response.payload)
             dispatch(
               setIsSpotMan(response.payload.user.type === 'club' ? false : true)
             )

@@ -3,6 +3,7 @@ import axiosInstance from '../../utils/apiBackend'
 
 export const setOffer = createAsyncThunk('setOffer', async (offer) => {
   try {
+    console.log('===POSTING OFFER (action)===', offer)
     const { data } = await axiosInstance.post('offer', offer)
     return data
   } catch (error) {

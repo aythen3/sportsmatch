@@ -142,9 +142,7 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {
-                          offer.posit
-                        }
+                        {offer.posit}
                       </Text>
                     </View>
 
