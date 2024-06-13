@@ -28,15 +28,16 @@ const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) =>
       <TouchableWithoutFeedback onPress={closeModal}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <View style={{
-              height: 6,
-              width: 50,
-              borderRadius: 20,
-              backgroundColor: Color.wHITESPORTSMATCH,
-              alignSelf: "center",
-              marginBottom: 12
-
-            }} />
+            <View
+              style={{
+                height: 6,
+                width: 50,
+                borderRadius: 20,
+                backgroundColor: Color.wHITESPORTSMATCH,
+                alignSelf: 'center',
+                marginBottom: 12
+              }}
+            />
             <ScrollView keyboardShouldPersistTaps={'always'}>
               {años.map((año, index) => (
                 <Pressable
@@ -71,15 +72,16 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH,
     maxHeight: 300,
     bottom: 0,
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     borderWidth: 0.5,
     borderColor: Color.wHITESPORTSMATCH,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 5,
     borderRadius: 10,
-    elevation: 5,
+    elevation: 5
   },
   modalTitle: {
     fontSize: 18,
@@ -95,8 +97,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc'
   },
   optionText: {
-    textAlign: "center",
-    width: "100%",
+    textAlign: 'center',
+    width: '100%',
     fontSize: 16,
     color: Color.gREY2SPORTSMATCH
   },

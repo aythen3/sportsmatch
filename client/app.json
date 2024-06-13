@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "3.0.0",
     "name": "SportsMatch",
-    "slug": "sportmatch",
+    "slug": "sportsmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -16,9 +16,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aythenapps.sportsmatch",
@@ -51,9 +49,7 @@
     },
     "plugins": [
       "expo-font",
-      [
-        "expo-apple-authentication"
-      ],
+      ["expo-apple-authentication"],
       [
         "expo-build-properties",
         {
@@ -79,13 +75,10 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "0b1058a2-89d7-4d50-a87e-426b8d921640"
+        "projectId": "80a81d0e-016b-4da7-8ed6-d55ba93fed2d"
       }
     },
-    "owner": "azulaula",
-    "scheme": [
-      "sportsmatch",
-      "fb2654178301415308"
-    ]
+    "owner": "kraa",
+    "scheme": ["sportsmatch", "fb2654178301415308"]
   }
 }

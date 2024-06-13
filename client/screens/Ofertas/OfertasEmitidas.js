@@ -61,7 +61,11 @@ const OfertasEmitidas = () => {
   // console.log('allpos: ', allPositions)
 
   useEffect(() => {
-    console.log('offers: ', offers)
+    console.log('clubId', club.id)
+    console.log(
+      'offers: ',
+      offers.map((offer) => offer.club.id)
+    )
   }, [])
 
   return (
@@ -145,9 +149,7 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {
-                          offer.posit
-                        }
+                        {offer.posit}
                       </Text>
                     </View>
 
