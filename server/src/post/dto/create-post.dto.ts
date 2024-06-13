@@ -3,7 +3,6 @@ import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class
 
 export class CreatePostDto {
   @IsNotEmpty()
-  @IsString()
   image: string[];
 
   @IsNotEmpty()

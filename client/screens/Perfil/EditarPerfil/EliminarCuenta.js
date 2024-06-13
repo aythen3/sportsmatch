@@ -8,44 +8,18 @@ import {
   FontFamily,
   Border,
   Padding
-} from '../../GlobalStyles'
+} from '../../../GlobalStyles'
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const EliminarCuenta = () => {
   const navigation = useNavigation()
 
   return (
-    <View style={styles.cerrarSesin}>
+    <SafeAreaView style={styles.cerrarSesin}>
+      <CustomHeaderBack header={'Eliminar Cuenta'}></CustomHeaderBack>
       <View style={styles.cabezera}>
-        <View style={styles.cabezera1}>
-          <View>
-            <View style={styles.cooliconParent}>
-              <Pressable
-                style={styles.coolicon}
-                onPress={() => {
-                  console.log('EC')
-                  navigation.goBack()
-                }}
-              >
-                <Image
-                  style={styles.icon}
-                  contentFit="cover"
-                  source={require('../../assets/coolicon3.png')}
-                />
-              </Pressable>
-              <Pressable
-                style={styles.cerrarSesin1}
-                onPress={() => {
-                  console.log('EC')
-                  navigation.goBack()
-                }}
-              >
-                <Text style={[styles.cerrarSesin2, styles.cerrarSesin2Typo]}>
-                  Mi suscripcion
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
+    
         <View
           style={{
             justifyContent: 'center',
@@ -70,7 +44,7 @@ const EliminarCuenta = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -230,7 +204,6 @@ const styles = StyleSheet.create({
   cerrarSesin: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     width: '100%',
-    paddingHorizontal: 15,
     flex: 1
   }
 })

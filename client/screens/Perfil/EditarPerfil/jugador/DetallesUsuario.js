@@ -8,9 +8,10 @@ import {
   FontSize,
   Padding,
   Border
-} from '../../GlobalStyles'
-import DetallesSeleccion from '../../components/DetallesSeleccion'
+} from '../../../../GlobalStyles'
+import DetallesSeleccion from '../../../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const EditarSkills = () => {
   const navigation = useNavigation()
@@ -18,27 +19,9 @@ const EditarSkills = () => {
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View style={styles.cooliconParent}>
-        <Pressable
-          style={styles.coolicon}
-          onPress={() => {
-            console.log('DU')
-            navigation.goBack()
-          }}
-        >
-          <Image
-            style={styles.icon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.editarPerfil1}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.editarPerfil2}>{}</Text>
-        </Pressable>
-      </View>
+   
+      <CustomHeaderBack header={'Detalles del usuario'}></CustomHeaderBack>
+      
 
       <View>
         <View>
@@ -46,7 +29,7 @@ const EditarSkills = () => {
             <Image
               style={styles.circuloIcon}
               contentFit="cover"
-              source={require('../../assets/circulo.png')}
+              source={require('../../../../assets/circulo.png')}
             />
             <View style={styles.botonSubirImagen}>
               <Text style={[styles.subirFotoDe, styles.paso4Typo]}>

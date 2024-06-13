@@ -8,8 +8,8 @@ import {
   Color,
   Border,
   Padding
-} from '../../GlobalStyles'
-import Input from '../../components/Input'
+} from '../../../GlobalStyles'
+import Input from '../../../components/Input'
 
 const CorreoElectrnico = () => {
   const navigation = useNavigation()
@@ -21,14 +21,13 @@ const CorreoElectrnico = () => {
           <Pressable
             style={styles.coolicon}
             onPress={() => {
-              console.log('CORREO')
               navigation.goBack()
             }}
           >
             <Image
               style={styles.icon}
               contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
+              source={require('../../../assets/coolicon3.png')}
             />
           </Pressable>
           <Pressable

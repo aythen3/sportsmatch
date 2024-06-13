@@ -10,15 +10,15 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useState } from 'react'
-import { FontFamily } from '../../GlobalStyles'
+import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { Context } from '../../context/Context'
-import { updateClubData } from '../../redux/actions/club'
-import CustomPicker from '../../components/CustomPicker/CustomPicker'
-import { years } from '../../utils/years'
-import { cities } from '../../utils/cities'
-import { updateSportman } from '../../redux/actions/sportman'
+import { Context } from '../../../../context/Context'
+import { updateClubData } from '../../../../redux/actions/club'
+import CustomPicker from '../../../../components/CustomPicker/CustomPicker'
+import { years } from '../../../../utils/years'
+import { cities } from '../../../../utils/cities'
+import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
 
@@ -69,7 +69,6 @@ const PlayerDetails = () => {
   ]
 
   const handleUpdateUserData = () => {
-    console.log('on handleUpdateUserData')
     const data = {
       city,
       description: userDescription,
@@ -112,10 +111,7 @@ const PlayerDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-    console.log(
-      'setting camera mode to: ',
-      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    )
+  
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -123,16 +119,11 @@ const PlayerDetails = () => {
     )
   }
 
-  useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
-  }, [selectedImage, selectedPicture])
+
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync()
-      console.log(photo)
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -170,7 +161,7 @@ const PlayerDetails = () => {
                 <Image
                   style={{ height: 15, width: 15 }}
                   contentFit="cover"
-                  source={require('../../assets/group-565.png')}
+                  source={require('../../../../assets/group-565.png')}
                 />
               </TouchableOpacity>
 
@@ -233,7 +224,7 @@ const PlayerDetails = () => {
               <Image
                 style={styles.icon}
                 contentFit="cover"
-                source={require('../../assets/coolicon3.png')}
+                source={require('../../../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
             <Text style={styles.clubDetailsTitle}>
@@ -281,7 +272,7 @@ const PlayerDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>
@@ -335,7 +326,7 @@ const PlayerDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>

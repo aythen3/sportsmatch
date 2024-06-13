@@ -21,17 +21,19 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAllOffers } from '../../redux/actions/offers'
 import { getAllNotifications } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
+import { setColor } from '../../utils/handles/HandlerSportColor'
+import { setMainColor } from '../../redux/slices/users.slices'
 
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-  const { getClubMatches, getUserMatches ,setActiveIcon } = useContext(Context)
+  const { getClubMatches, getUserMatches, setActiveIcon } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
   const { sportman } = useSelector((state) => state.sportman)
-  const { user, allUsers } = useSelector((state) => state.users)
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const { allNotifications } = useSelector((state) => state.notifications)
   const { comments } = useSelector((state) => state.comments)
 
@@ -39,12 +41,9 @@ const SiguiendoJugadores = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-    console.log('normalUserAuth from sj : ', normalUserAuth)
-    console.log('facebookUserAuth from sj : ', facebookUserAuth)
-    console.log('googleUserAuth from sj : ', googleUserAuth)
+
   }
   useEffect(() => {
-    console.log('useEffect triggering')
     dispatch(getAllOffers())
     dispatch(getAllPosts())
     dispatch(getAllMatchs())
@@ -53,6 +52,7 @@ const SiguiendoJugadores = () => {
   }, [post, comments])
 
   useEffect(() => {
+   if(user){
     getUserAuth()
     dispatch(listLikes(user?.user?.id))
     const data = {
@@ -63,7 +63,8 @@ const SiguiendoJugadores = () => {
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
-  }, [])
+   }
+  }, [user])
 
   // const getUserId = async () => {
   //   const userId = await AsyncStorage.getItem('userId')
@@ -71,8 +72,13 @@ const SiguiendoJugadores = () => {
   // }
 
   // useEffect(() => {
-  //   console.log('user data from home: ', user)
-  // }, [])
+  //   if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
+  //   if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
+  //   if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { dispatch(setMainColor('#A8154A')) }
+  //   if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
+  //   if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
+  //   if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
+  // }, [sportman?.info])
 
   useEffect(() => {
     setActiveIcon("diary")
@@ -83,7 +89,6 @@ const SiguiendoJugadores = () => {
 
   useEffect(() => {
     if (allMatchs) {
-      console.log('before getting matches...')
       if (user?.user?.type === 'club') {
         getClubMatches()
       } else {
@@ -111,7 +116,7 @@ const SiguiendoJugadores = () => {
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
       <ScrollView keyboardShouldPersistTaps={'always'}>
-        <HeaderIcons />
+        <HeaderIcons mainColor={mainColor} />
         <View
           style={{
             width: '95%',
@@ -120,7 +125,7 @@ const SiguiendoJugadores = () => {
             paddingBottom: 20
           }}
         >
-          {sortedPosts?.map((publication, i) => (
+          {sortedPosts.slice(0,15)?.map((publication, i) => (
             <Carousel
               key={publication.id}
               name={publication?.author?.nickname}
@@ -150,7 +155,7 @@ const SiguiendoJugadores = () => {
 const styles = StyleSheet.create({
   siguiendoJugadores: {
     flex: 1,
-    position: 'relative',
+   
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },

@@ -11,19 +11,12 @@ import LineaVertical from './svg/LineaVerticalSVG'
 
 const HeaderIcons = () => {
   const navigation = useNavigation()
-  const { isSportman } = useSelector((state) => state.users)
+  const { isSportman , mainColor } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
   const [sportColor, setSportColor] = useState('#E1451E')
 
-  useEffect(() => {
-    if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { setSportColor('#0062FF') }
-    if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { setSportColor('#E1AA1E') }
-    if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { setSportColor('#A8154A') }
-    if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { setSportColor('#6A1C4F') }
-    if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { setSportColor('#00FF18') }
-    if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { setSportColor('#E1451E') }
-  }, [sportman?.info])
+
 
 
   return (
@@ -34,27 +27,27 @@ const HeaderIcons = () => {
           contentFit=""
           source={require('../assets/sportmatchlogooo.png')}
         />
-        {sportColor == '#E1451E' && (<Image
+        {mainColor == '#E1451E' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sportbaloncestoo.png')}
         />)}
-        {sportColor == '#6A1C4F' && (<Image
+        {mainColor == '#6A1C4F' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sporthandball.png')}
         />)}
-        {sportColor == '#00FF18' && (<Image
+        {mainColor == '#00FF18' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sportfutbol.png')}
         />)}
-        {sportColor == '#A8154A' && (<Image
+        {mainColor == '#A8154A' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sportvoley.png')}
         />)}
-        {sportColor == '#E1AA1E' && (<Image
+        {mainColor == '#E1AA1E' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sporthockey.png')}
         />)}
-        {sportColor == '#0062FF' && (<Image
+        {mainColor == '#0062FF' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sportfutbolsala.png')}
         />)}
@@ -62,7 +55,7 @@ const HeaderIcons = () => {
       <View
         style={{
           flexDirection: 'row',
-          backgroundColor: sportColor,
+          backgroundColor: mainColor,
           width: 140,
           height: 50,
           borderTopLeftRadius: 30,
@@ -105,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 15
   },
   superiorLayout: {

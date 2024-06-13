@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native'
 import React, { useState } from 'react'
-import HeaderPerfil from '../../components/HeaderPerfil'
+import HeaderPerfil from '../Perfil/EditarPerfil/club/HeaderPerfil'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useSelector } from 'react-redux'
 import { Color } from '../../GlobalStyles'

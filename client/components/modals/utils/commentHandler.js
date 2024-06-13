@@ -33,10 +33,7 @@ export const formatDateDifference = (date) => {
   const minutosDiferencia = Math.floor(segundosDiferencia / 60)
   const horasDiferencia = Math.floor(minutosDiferencia / 60)
 
-  console.log('ahora: ', ahora)
-  console.log('fecha: ',fecha)
-  console.log('segundosDiferencia: ',segundosDiferencia)
-  console.log('minutosDiferencia: ',minutosDiferencia)
+
   
 
   if (horasDiferencia < 24) {

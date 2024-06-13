@@ -60,9 +60,6 @@ const OfertasEmitidas = () => {
 
   // console.log('allpos: ', allPositions)
 
-  useEffect(() => {
-    console.log('offers: ', offers)
-  }, [])
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -145,9 +142,7 @@ const OfertasEmitidas = () => {
                         Posicion
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
-                        {
-                          offer.posit
-                        }
+                        {offer.posit}
                       </Text>
                     </View>
 

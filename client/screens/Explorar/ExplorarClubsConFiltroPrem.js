@@ -34,11 +34,9 @@ const submit = async()=> {
     }
 
 
-  console.log(filteredFilter,"asi se envia")
   const res = await axiosInstance.post("sportman/filter",filteredFilter)
   setSearchUsers(res.data)
   setTextValue(" ")
-  console.log(res.data,"Esto es")
 }
 
   return (

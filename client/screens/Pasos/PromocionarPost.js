@@ -58,7 +58,6 @@ const PromocionarPost = () => {
   const [sportS, setSportS] = useState("")
   const { height, width } = useWindowDimensions();
 
-  console.log(data.image[0], "dataaaaaaaaaaa")
 
   const [clubValues, setClubValues] = useState({
     name: '',

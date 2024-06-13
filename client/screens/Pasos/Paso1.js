@@ -32,7 +32,8 @@ import Visores from './visores'
 import StepsJugador from './StepsJugador'
 import Paso2Jugador from './Paso2Jugador'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { clearUser } from '../../redux/slices/users.slices'
+import { clearUser, setMainColor } from '../../redux/slices/users.slices'
+import { setColor } from '../../utils/handles/HandlerSportColor'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -53,6 +54,8 @@ const Paso1 = () => {
   } = useSelector((state) => state.users)
 
   const [selectedRole, setSelectedRole] = useState(null)
+  const [sportColor, setSportColor] = useState('#00F0FF')
+
   const [sportman, setSportman] = useState(false)
   const [stepsSportman, setStepsSportman] = useState(0)
   const [selectedCity, setSelectedCity] = useState()
@@ -60,8 +63,7 @@ const Paso1 = () => {
   const [invitado, setInvitado] = useState(false)
   const { height, width } = useWindowDimensions();
   const { sportman: sportmanRedux } = useSelector((state) => state.sportman)
-
-  console.log(width, "-----", height, "medidas")
+  const { loged } = useSelector((state) => state.users)
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
@@ -142,10 +144,8 @@ const Paso1 = () => {
         },
         userId: user.user.id
       }
-      console.log('final body: ', body)
 
       dispatch(createSportman(body)).then((response) => {
-        console.log('reponse: ', response)
         dispatch(
           setInitialSportman({
             id: response.payload.id,
@@ -159,7 +159,6 @@ const Paso1 = () => {
     }
 
     if (selectedRole === 'Profesional del deporte') {
-      console.log("pasaaa")
       setProfesional(true)
       return setSportman(false)
     }
@@ -175,36 +174,52 @@ const Paso1 = () => {
   }
 
 
+  // const backAction = async () => {
+  //   // Despacha tu acción de Redux aquí
+  //   await handleBackSteps();
+  //   return true; // Indica que el evento fue manejado
+  // };
+
+  // const backHandlerr = BackHandler.addEventListener(
+  //   'hardwareBackPress',
+  //   backAction // Cambiado de handleBackSteps a backAction
+  // );
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     if (navigation.isFocused()) {
+  //       handleBackSteps()
+  //       return true;
+  //     }
+
+  //   };
+  //   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+  //   return () => {
+  //     backHandler.remove();}
+  // }, [])
+
+
+
+  // useEffect(() => {
+
+  //   return async () => {
+  //     console.log("me despido de ti y me voy")
+  //   } // Remueve el listener al desmontar el componente
+  // }, [stepsSportman, stepsProfesional, loged]);
+
+
   useEffect(() => {
-    const backAction = () => {
-      // Despacha tu acción de Redux aquí
-      dispatch(clearUser());
-      navigation.goBack()
-      return true; // Indica que el evento fue manejado
-    };
+    const color = setColor(selectedSport?.name)
+    setSportColor(color)
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
-
-    return () => backHandler.remove(); // Remueve el listener al desmontar el componente
-  }, [dispatch]);
+  }, [selectedSport, profesional, sportman])
 
 
-  useEffect(() => {
-    console.log('sportman changed: ', sportman)
-  }, [sportman])
-
-  useEffect(() => {
-    console.log('stepsSportman changed: ', stepsSportman)
-  }, [stepsSportman])
 
   const handleNavigation = async () => {
 
 
     if (selectedRole === "Jugador" && selectedSport == null) {
-      console.log("entra")
       return
     }
     if (sportman && stepsSportman === 1) {
@@ -239,44 +254,43 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        console.log('final body: ', body)
         if (Object.keys(sportmanRedux).length == 0) {
 
+
           dispatch(createSportman(body)).then((response) => {
-            console.log('reponse: ')
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
                 ...body.sportmanData
               })
             )
+            const color = !sportman && !profesional
+              && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor
+            dispatch(setMainColor(color))
             navigation.navigate('SiguiendoJugadores')
           })
         } else {
-          console.log(sportmanRedux.id, "usuariooo")
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
             type: "player"
           }
           dispatch(updateSportman(upd)).then((response) => {
-            console.log('reponse: ', response)
             dispatch(
               setInitialSportman({
                 id: sportmanRedux.id,
                 ...body.sportmanData
               })
             )
+
             navigation.navigate('SiguiendoJugadores')
           })
         }
       }
     } else {
-      console.log('stepsProfesional:', stepsProfesional)
       stepsProfesional !== 1 && setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
-        console.log('profesional')
-        console.log('selectedRole: ', selectedRole)
+ 
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -292,28 +306,28 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        console.log('final body: ', body)
         if (Object.keys(sportmanRedux).length == 0) {
 
           dispatch(createSportman(body)).then((response) => {
-            console.log('reponse: ')
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
                 ...body.sportmanData
               })
             )
+            const color = !sportman && !profesional
+              && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor
+            dispatch(setMainColor(color))
+
             navigation.navigate('SiguiendoJugadores')
           })
         } else {
-          console.log(sportmanRedux.id, "usuariooo")
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
             type: "player"
           }
           dispatch(updateSportman(upd)).then((response) => {
-            console.log('reponse: ', response)
             dispatch(
               setInitialSportman({
                 id: sportmanRedux.id,
@@ -327,6 +341,35 @@ const Paso1 = () => {
     }
   }
 
+
+  const handleBackSteps = async () => {
+    if (!loged) {
+      if (!sportman && !profesional && !invitado) {
+        await dispatch(clearUser())
+        navigation.goBack()
+        return true
+      }
+      if (stepsProfesional > 0) {
+        setStepsProfesional((prev) => prev - 1)
+        return true
+      }
+      if (stepsSportman > 0) {
+        setStepsSportman((prev) => prev - 1)
+        return true
+      }
+      else {
+        setSportman(false)
+        setProfesional(false)
+        setInvitado(false)
+      }
+      return true
+    }
+    else {
+      BackHandler.removeEventListener('hardwareBackPress', backHandler)
+      navigation.goBack()
+    }
+  }
+
   return (
     <View
       style={{
@@ -334,6 +377,7 @@ const Paso1 = () => {
         width: width,
         flex: 1,
         paddingHorizontal: 0,
+        paddingTop:10,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
@@ -384,26 +428,7 @@ const Paso1 = () => {
               justifyContent: 'flex-end',
               alignItems: 'center'
             }}
-            onPress={async () => {
-              if (!sportman && !profesional && !invitado) {
-                await dispatch(clearUser())
-                navigation.goBack()
-              }
-              if (stepsProfesional > 0) {
-                setStepsProfesional((prev) => prev - 1)
-              }
-              if (stepsSportman > 0
-              ) {
-                setStepsSportman((prev) => prev - 1)
-              }
-              else {
-                setSportman(false)
-                setProfesional(false)
-                setInvitado(false)
-              }
-
-
-            }}
+            onPress={handleBackSteps}
           >
             <Image
               style={styles.coolicon}
@@ -427,7 +452,8 @@ const Paso1 = () => {
             <Text
               style={{
                 fontSize: FontSize.t1TextSMALL_size,
-                color: Color.bALONCESTO,
+                color: !sportman && !profesional
+                  && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor,
                 textAlign: 'center',
                 fontFamily: FontFamily.t4TEXTMICRO,
                 textAlign: 'center'
@@ -465,11 +491,14 @@ const Paso1 = () => {
             </Text>
 
             <Lines
+              selectedSport={selectedSport}
+              profesional={profesional}
+
               index={
                 !sportman && !profesional
                   ? 1
-                  : (sportman && stepsSportman === 0) ||
-                    (profesional && stepsProfesional === 0)
+                  : sportman && stepsSportman === 0 ||
+                    profesional && stepsProfesional === 0
                     ? 2
                     : stepsProfesional === 1 || stepsSportman === 1
                       ? 3
@@ -622,10 +651,7 @@ const Paso1 = () => {
         <View style={styles.botonesRoles}>
           <Pressable
             style={styles.siguiente}
-            disabled={
-              (stepsSportman === 2 && !profileImage) ||
-              (stepsProfesional === 2 && !coverImage)
-            }
+
             onPress={() =>
               !sportman && !profesional ? handleNext() : handleNavigation()
             }

@@ -8,69 +8,61 @@ import {
   FontSize,
   Padding,
   Border
-} from '../../GlobalStyles'
-import DetallesSeleccion from '../../components/DetallesSeleccion'
+} from '../../../GlobalStyles'
+import DetallesSeleccion from '../../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
-import Carousel from '../../components/Carousel'
+import Carousel from '../../../components/Carousel'
 import { useRoute } from '@react-navigation/native';
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 const Post = () => {
-  const route = useRoute();
+  const route = useRoute()
   const navigation = useNavigation()
   const [page, setPage] = useState(1)
   const { user, allUsers } = useSelector((state) => state.users)
-  const item = route.params;
-  console.log("item", item)
+  const item = route.params
+  console.log('item', item)
 
   return (
-    <View keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View style={{flexDirection:"row" ,alignItems:"center",gap:10,paddingLeft:10}}>
-      <Pressable
-            // style={styles.coolicon}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Image
-              style={{width:20,height:20}}
-              contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
-            />
-          </Pressable>
-          <Pressable
-            // style={styles.editarPerfil1}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Text style={styles.editarPerfil2}>Post</Text>
-          </Pressable>
+    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
+      <CustomHeaderBack header={'Post'}></CustomHeaderBack>
+      <View style={{ paddingBottom: 40 }}>
+        <Carousel
+          key={item.id}
+          name={item?.author?.nickname}
+          description={item.description}
+          imgPerfil={
+            item?.author?.sportman
+              ? item?.author?.sportman?.info?.img_front
+              : item?.author?.club?.img_perfil
+          }
+          image={item?.image}
+          club={item?.club === user?.user?.type}
+          likes={item?.likes}
+          commentCount={item?.commentCount}
+          index={page}
+          id={item?.id}
+          userId={user?.user?.id}
+          authorId={item.author.id}
+          data={item}
+        />
       </View>
-      <Carousel
-        key={item.id}
-        name={item?.author?.nickname}
-        description={item?.description}
-        imgPerfil={
-          item?.author?.sportman
-            ? item?.author?.sportman?.info?.img_front
-            : item?.author?.club?.img_perfil
-        }
-        image={item?.image}
-        club={item?.club === user?.user?.type}
-        likes={item?.likes}
-        commentCount={item?.commentCount}
-        index={page}
-        id={item?.id}
-        userId={user?.user?.id}
-        authorId={item.author.id}
-        data={item}
-      />
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  safeArea:{
+    flex:1,
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+ 
+    width: '100%',
+  
+  },
+  carrouselContainer: {
+    paddingHorizontal: 10
+  },
   cooliconParent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,11 +89,11 @@ const styles = StyleSheet.create({
   },
   paso6: {
     width: '100%',
-    height:"100%",
-    gap:20,
-    backgroundColor: "black",
-    paddingVertical:20,
-    paddingHorizontal:10
+    height: '100%',
+    gap: 20,
+    backgroundColor: 'black',
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,

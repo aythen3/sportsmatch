@@ -21,6 +21,7 @@ import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
+import CustomHeaderBack from '../../components/CustomHeaderBack'
 
 const TusNotificaciones1 = () => {
   const [value, setValue] = useState('')
@@ -31,7 +32,8 @@ const TusNotificaciones1 = () => {
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
-  const { user, allUsers } = useSelector((state) => state.users)
+  const { user, allUsers , mainColor } = useSelector((state) => state.users)
+  
   const { offers } = useSelector((state) => state.offers)
   const { getUsersMessages, usersWithMessages, setActiveIcon } =
     useContext(Context)
@@ -97,12 +99,10 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
    const res = getUsersMessages()
-   console.log(usersWithMessages,"resss")
   }, [])
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
-      console.log('offers: ', offers)
       const clubOffers = offers?.filter(
         (offer) => offer.clubId === user.user.club.id
       )
@@ -122,52 +122,20 @@ const TusNotificaciones1 = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
+      <CustomHeaderBack header={'Tu Buzón'}></CustomHeaderBack>
       <View style={styles.tuBuznParent}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 15,
-            justifyContent: 'flex-start'
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              console.log('TN1')
-              setActiveIcon('diary')
-              navigation.navigate('SiguiendoJugadores')
-            }}
-          >
-            <Image
-              style={{ width: 9, height: 15, marginTop: 2.5 }}
-              contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#fff',
-              fontWeight: '500',
-              fontSize: 22,
-              fontFamily: FontFamily.t4TEXTMICRO
-            }}
-          >
-            Tu Buzón
-          </Text>
-        </View>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            marginTop: 30
           }}
         >
-          <Pressable onPress={() => setSelectedComponent('messages')}>
+          <Pressable style={{width:"50%",height:40,}} onPress={() => setSelectedComponent('messages')}>
             <Text
               style={[
                 selectedComponent === 'messages'
-                  ? styles.notficaciones
+                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}
@@ -175,11 +143,11 @@ const TusNotificaciones1 = () => {
               Mensajes
             </Text>
           </Pressable>
-          <Pressable onPress={() => setSelectedComponent('notifications')}>
+          <Pressable style={{width:"50%",height:40,}} onPress={() => setSelectedComponent('notifications')}>
             <Text
               style={[
                 selectedComponent === 'notifications'
-                  ? styles.notficaciones
+                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}
@@ -221,8 +189,8 @@ const TusNotificaciones1 = () => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              marginTop: 30,
-              position: 'relative'
+              alignSelf:"center",
+             width:"97%",
             }}
           >
             <Image
@@ -243,7 +211,8 @@ const TusNotificaciones1 = () => {
           <ScrollView
             keyboardShouldPersistTaps={'always'}
             style={{
-              marginTop: 30
+              marginTop: 30,
+              paddingHorizontal:14
             }}
           >
             {value === '' && usersWithMessages.length === 0 ? (
@@ -296,7 +265,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: FontSize.t1TextSMALL_size,
     textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO
   },
   tuBuzn1: {
     fontSize: FontSize.h3TitleMEDIUM_size,
@@ -317,7 +285,6 @@ const styles = StyleSheet.create({
     height: 20
   },
   tuBuznParent: {
-    marginTop: 10,
     height: '100%'
   },
   backButton: {
@@ -336,7 +303,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: Color.bALONCESTO,
     paddingBottom: 5,
-    width: 120
+    width: "100%"
   },
   text: {
     left: '80.77%',
@@ -349,7 +316,6 @@ const styles = StyleSheet.create({
   },
   tusNotificaciones: {
     flex: 1,
-    paddingHorizontal: 15,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },

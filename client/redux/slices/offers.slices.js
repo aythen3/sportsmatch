@@ -41,7 +41,6 @@ const offersSlices = createSlice({
         state.error = false
       })
       .addCase(getAllOffers.fulfilled, (state, action) => {
-        console.log('payload: ', action.payload)
         const unpausedOffers = action.payload.filter(
           (offer) => offer.paused === false
         )

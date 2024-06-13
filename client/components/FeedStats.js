@@ -10,9 +10,9 @@ const FeedStats = () => {
   const navigation = useNavigation()
 
   const { sportman } = useSelector((state) => state.sportman)
-  const { user } = useSelector((state) => state.users)
+  const { user , mainColor } = useSelector((state) => state.users)
 
-  console.log('user: ', sportman.type)
+
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -55,7 +55,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.attack || 0} />
+                  <CircularStat color={mainColor} value={sportman?.info.attack || 0} />
                 </View>
                 <View
                   style={{
@@ -72,7 +72,7 @@ const FeedStats = () => {
                       fontSize: FontSize.h2TITLEBIG_size,
                       alignSelf: 'stretch',
                       flex: 1,
-                      color: Color.bALONCESTO,
+                      color: mainColor,
                       fontWeight: '500',
                       textAlign: 'center',
                       fontFamily: FontFamily.t4TEXTMICRO
@@ -92,7 +92,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.defense || 0} />
+                  <CircularStat color={mainColor} value={sportman?.info.defense || 0} />
                 </View>
                 <View
                   style={{
@@ -102,7 +102,7 @@ const FeedStats = () => {
                     zIndex: 1
                   }}
                 >
-                  <Text style={[styles.text1, styles.text1Typo]}>
+                  <Text style={[styles.text1, styles.text1Typo,{color:mainColor}]}>
                     {sportman?.info.defense}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
@@ -117,7 +117,7 @@ const FeedStats = () => {
                 }}
               >
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
-                  <CircularStat value={sportman?.info.speed || 0} />
+                  <CircularStat color={mainColor} value={sportman?.info.speed || 0} />
                 </View>
                 <View
                   style={{
@@ -127,7 +127,7 @@ const FeedStats = () => {
                     zIndex: 1
                   }}
                 >
-                  <Text style={[styles.text1, styles.text1Typo]}>
+                  <Text style={[styles.text1, styles.text1Typo,{color:mainColor}]}>
                     {sportman?.info.speed}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>
@@ -165,7 +165,7 @@ const FeedStats = () => {
                   >
                     Bote
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop1 || 0} />
+                  <BarStatSVG color={mainColor} value={sportman?.info.prop1 || 0} />
                 </View>
                 <Text
                   style={{
@@ -200,7 +200,7 @@ const FeedStats = () => {
                   >
                     Lanzamiento
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop2 || 0} />
+                  <BarStatSVG color={mainColor}  value={sportman?.info.prop2 || 0} />
                 </View>
                 <Text
                   style={{
@@ -235,7 +235,7 @@ const FeedStats = () => {
                   >
                     Dribling
                   </Text>
-                  <BarStatSVG value={sportman?.info.prop3 || 0} />
+                  <BarStatSVG color={mainColor}  value={sportman?.info.prop3 || 0} />
                 </View>
                 <Text
                   style={{
@@ -256,14 +256,14 @@ const FeedStats = () => {
               <View style={styles.circulos}>
                 <View style={styles.moduloSpaceBlock}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>Sexo</Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.gender}
+                  <Text style={[styles.masculino, styles.text1Typo ,{color:mainColor}]}>
+                    {sportman?.info.gender || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>Edad</Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {age}
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
+                    {age || '-'}
                   </Text>
                 </View>
               </View>
@@ -272,16 +272,16 @@ const FeedStats = () => {
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Categoría
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.category}
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
+                    {sportman?.info.category || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Posición principal
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.position}
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
+                    {sportman?.info.position || '-'}
                   </Text>
                 </View>
               </View>
@@ -290,16 +290,16 @@ const FeedStats = () => {
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Altura
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.height}cm
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
+                    {sportman?.info.height || '-'}cm
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text
                     style={[styles.concepto, styles.ataqueClr]}
                   >{`Lugar de residencia `}</Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
-                    {sportman?.info.city}
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
+                    {sportman?.info.city || '-'}
                   </Text>
                 </View>
               </View>
@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
   moduloSpaceBlock: {
     paddingVertical: Padding.p_7xs,
     height: 80,
+    width:"46%",
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: Border.br_8xs,
     alignItems: 'center',
@@ -414,7 +415,8 @@ const styles = StyleSheet.create({
     height: 63
   },
   circulos: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent:"center"
   },
   concepto: {
     lineHeight: 14,
@@ -443,7 +445,7 @@ const styles = StyleSheet.create({
   },
   barras: {
     marginTop: 30,
-    marginLeft: 1
+    width:"100%",
   },
   masculino: {
     marginTop: 10,
@@ -456,7 +458,8 @@ const styles = StyleSheet.create({
   },
   modulosMedio: {
     marginTop: 15,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent:"center"
   },
   msDetallesSobre: {
     lineHeight: 30,
@@ -476,7 +479,7 @@ const styles = StyleSheet.create({
   },
   masDetalles: {
     width: '95%',
-    marginTop: 30
+    paddingVertical:30
   }
 })
 

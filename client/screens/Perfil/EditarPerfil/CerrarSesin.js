@@ -14,15 +14,17 @@ import {
   FontFamily,
   Border,
   Padding
-} from '../../GlobalStyles'
+} from '../../../GlobalStyles'
 import { useDispatch } from 'react-redux'
-import { clearUser, logedOut } from '../../redux/slices/users.slices'
+import { clearUser, logedOut } from '../../../redux/slices/users.slices'
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager } from 'react-native-fbsdk-next'
-import { auth } from '../../firebaseConfig'
+import { auth } from '../../../firebaseConfig'
 import { signOut } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { clearSportman } from '../../redux/slices/sportman.slices'
+import { clearSportman } from '../../../redux/slices/sportman.slices'
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -41,7 +43,6 @@ const CerrarSesin = () => {
   //   }
   // };
   const signOutFacebook = async () => {
-    console.log('sign out fb')
     try {
       await LoginManager.logOut()
       // Perform any additional clean-up or navigation logic as needed
@@ -51,32 +52,10 @@ const CerrarSesin = () => {
   }
 
   return (
-    <View style={styles.cerrarSesin}>
+    <SafeAreaView style={styles.cerrarSesin}>
+      <CustomHeaderBack header={'Cerrar sesión'}></CustomHeaderBack>
       <View style={styles.cabezera}>
-        <View style={styles.cabezera1}>
-          <View>
-            <View style={styles.cooliconParent}>
-              <Pressable
-                style={styles.coolicon}
-                onPress={() => navigation.goBack()}
-              >
-                <Image
-                  style={styles.icon}
-                  contentFit="cover"
-                  source={require('../../assets/coolicon3.png')}
-                />
-              </Pressable>
-              <Pressable
-                style={styles.cerrarSesin1}
-                onPress={() => navigation.goBack()}
-              >
-                <Text style={[styles.cerrarSesin2, styles.cerrarSesin2Typo]}>
-                  Cerrar sesión
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
+
         <View
           style={{
             justifyContent: 'center',
@@ -97,17 +76,10 @@ quieres `}</Text>
                 onPress={async () => {
                   navigation.navigate('LoginSwitch')
                   firebaseLogout()
-                  const normalUserAuth = await AsyncStorage.getItem('userAuth')
-                  const facebookUserAuth =
-                    await AsyncStorage.getItem('facebookAuth')
-                  const googleUserAuth =
-                    await AsyncStorage.getItem('googleAuth')
-                  console.log('normalUserAuth from cs : ', normalUserAuth)
-                  console.log('facebookUserAuth from cs : ', facebookUserAuth)
-                  console.log('googleUserAuth from cs : ', googleUserAuth)
-                  AsyncStorage.removeItem('userAuth')
-                  AsyncStorage.removeItem('googleAuth')
-                  AsyncStorage.removeItem('facebookAuth')
+                  await AsyncStorage.removeItem('userAuth')
+                  await AsyncStorage.removeItem('googleAuth')
+                  await AsyncStorage.removeItem('facebookAuth')
+                  await AsyncStorage.removeItem('@user')
                   dispatch(clearUser())
                   dispatch(clearSportman())
                   dispatch(logedOut())
@@ -121,7 +93,7 @@ quieres `}</Text>
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -281,7 +253,6 @@ const styles = StyleSheet.create({
   cerrarSesin: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     width: '100%',
-    paddingHorizontal: 15,
     flex: 1
   }
 })

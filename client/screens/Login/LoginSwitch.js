@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as AppleAuthentication from 'expo-apple-authentication'
+import InstagramLogin from 'react-native-instagram-login'
 
 import { Image } from 'expo-image'
 import {
@@ -14,7 +15,11 @@ import {
   useWindowDimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation
+} from '@react-navigation/native'
 import {
   FontFamily,
   FontSize,
@@ -23,7 +28,11 @@ import {
   Padding
 } from '../../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { logedIn, logedOut, setIsSpotMan } from '../../redux/slices/users.slices'
+import {
+  logedIn,
+  logedOut,
+  setIsSpotMan
+} from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -43,17 +52,19 @@ import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
 import Linea from '../../components/svg/Linea'
 import InstagramSVG from '../../components/svg/InstagramSVG'
+import HomeGif from '../../utils/HomeGif'
 
 WebBrowser.maybeCompleteAuthSession()
 
 const LoginSwitch = () => {
-  const { height, width } = useWindowDimensions();
+  const instagramRef = useRef()
+  const [igToken, setIgToken] = useState(null)
+  const { height, width } = useWindowDimensions()
 
-  console.log(width, "-----", height, "medidas")
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman, user, loged } = useSelector((state) => state.users)
-  const isFocused = useIsFocused();
+  const isFocused = useIsFocused()
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
 
@@ -61,11 +72,8 @@ const LoginSwitch = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-    console.log('normalUserAuth from app : ', normalUserAuth)
-    console.log('facebookUserAuth from app : ', facebookUserAuth)
-    console.log('googleUserAuth from app : ', googleUserAuth)
+
     if (googleUserAuth) {
-      console.log('login with google...')
       const googleId = await JSON.parse(googleUserAuth)
       const response = await dispatch(login({ googleId }))
       dispatch(
@@ -78,7 +86,6 @@ const LoginSwitch = () => {
       return
     }
     if (facebookUserAuth) {
-      console.log('login with facebook...')
       const facebookId = await JSON.parse(facebookUserAuth)
       const response = await dispatch(login({ facebookId }))
       dispatch(
@@ -88,20 +95,16 @@ const LoginSwitch = () => {
       return
     }
     if (normalUserAuth) {
-      console.log('login with normal user...')
       const valuesUser = await JSON.parse(normalUserAuth)
-      console.log('valuesuser: ', valuesUser)
       // const res = await AsyncStorage.removeItem('userAuth')
       // console.log('resres: ', res)
 
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
           dispatch(setClub(response))
-        
         })
         .catch((error) => {
           console.error(error)
@@ -112,7 +115,6 @@ const LoginSwitch = () => {
   }
 
   useEffect(() => {
-    console.log('hola')
     getUserAuth()
   }, [])
 
@@ -126,9 +128,6 @@ const LoginSwitch = () => {
     setIsPlayer(!isPlayer)
   }
 
-  useEffect(() => {
-    console.log('isSportman', isSportman)
-  }, [isSportman])
 
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
@@ -158,70 +157,8 @@ const LoginSwitch = () => {
       const { id_token } = response.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
-      console.log('deberia crear el usuario')
     }
   }, [response])
-
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaasdasdasdasdasdasdasa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  useEffect(() => {
-    if (!loged) {
-      if (user?.user?.club || user?.user?.sportman) {
-        console.log("entra aca no se que ondaaaaaa");
-        navigation.navigate('SiguiendoJugadores');
-        dispatch(logedIn())
-      } else {
-        if (user?.user?.type === 'club') {
-          console.log("entra aca");
-          if (user?.accesToken) {
-            navigation.navigate('stepsClub');
-          }
-        } else {
-          if (user?.accesToken) {
-            console.log('jugador');
-            navigation.navigate('Paso1');
-          }
-        }
-      }
-    }
-  }, [user]);
-
 
 
   useEffect(() => {
@@ -256,6 +193,7 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
+              navigation.navigate('SiguiendoJugadores')
             } catch (error) {
               console.log('Error:', error)
             }
@@ -287,17 +225,72 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('facebookAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
+              navigation.navigate('SiguiendoJugadores')
+
             } catch (error) {
               console.log('Error:', error)
             }
           })
         }
       } else {
-        console.log('user not authenticated')
       }
     })
     return () => unsub()
   }, [response])
+
+  const getInstagramUsername = async (accessToken) => {
+    try {
+      const response = await axios.get(`https://graph.instagram.com/me`, {
+        params: {
+          fields: 'id,username',
+          access_token: accessToken
+        }
+      })
+      return response.data
+    } catch (error) {
+      console.error('Error fetching Instagram username:', error)
+      throw error
+    }
+  }
+
+  useEffect(() => {
+    const fetchInstagramUsername = async () => {
+      if (igToken) {
+        console.log('=====LOGIN WITH INSTAGRAM=====')
+        // const {username} = await getInstagramUsername(igToken.access_token)
+        // console.log('userData before dispatching', userData)
+        dispatch(
+          create({
+            // nickname: userData?.username,
+            nickname: igToken.user_id.toString(),
+            email: '',
+            facebookId: igToken.user_id.toString(),
+            type: isSportman === true ? 'sportman' : 'club'
+          })
+        ).then(async (data) => {
+          try {
+            const response = await dispatch(
+              login({ facebookId: igToken.user_id.toString() })
+            )
+            console.log('response instagram:', response.payload)
+            dispatch(
+              setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+            )
+            await AsyncStorage.setItem(
+              'facebookAuth',
+              igToken.user_id.toString()
+            )
+            await AsyncStorage.setItem('userType', response.payload.user.type)
+            dispatch(setClub(response))
+          } catch (error) {
+            console.log('Error:', error)
+          }
+        })
+      }
+    }
+
+    fetchInstagramUsername()
+  }, [igToken])
 
   // =========================FACEBOOK================================
 
@@ -321,7 +314,6 @@ const LoginSwitch = () => {
     dispatch(create(user)).then(async (data) => {
       try {
         const response = await dispatch(login({ appleId: user.appleId }))
-        console.log('response google:', response.payload)
         dispatch(
           setIsSpotMan(response.payload.user.type === 'club' ? false : true)
         )
@@ -344,26 +336,19 @@ const LoginSwitch = () => {
 
   return (
     <View style={{ backgroundColor: 'black', height: height, width: width }}>
-      {/* <Image
-        style={[styles.loginSwitchChild]}
-        contentFit="cover"
-        source={require('../../assets/fondo-inicial.png')}
-      /> */}
-      <View style={{maxWidth:width}}>
-        <View style={[styles.loginSwitchChild]}>
-          <Image
-            style={[styles.loginSwitchChild2]}
-            contentFit="cover"
-            source={require('../../assets/carrouselgif.gif')}
-          />
-        </View>
-        <Image
-          style={{ width: width, height: 250, position: "absolute", top: 0, right: 0, zIndex: 999 }}
-          contentFit="cover"
-          source={require('../../assets/sw.png')}
-        />
-      </View>
-
+      <HomeGif></HomeGif>
+      <InstagramLogin
+        ref={instagramRef}
+        appId="831187755599572"
+        appSecret="2ec849af68b38422f8da9cc54ee9c794"
+        redirectUrl="https://github.com/"
+        scopes={['user_profile', 'user_media']}
+        onLoginSuccess={(token) => {
+          console.log('Setting instagram token to', token)
+          setIgToken(token)
+        }}
+        onLoginFailure={(data) => console.log('Instagram login failed', data)}
+      />
       <View style={styles.wrapper}>
         <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
           <Image
@@ -391,9 +376,9 @@ const LoginSwitch = () => {
                   value={isEnabled}
                   backgroundActive={'#00FF18'}
                   backgroundInactive={'#00FF18'}
+                  circleActiveColor={'black'}
                   activeText={false}
                   inActiveText={false}
-                  circleActiveColor={'black'}
                   circleInActiveColor={'black'}
                   barHeight={18}
                   switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
@@ -458,7 +443,11 @@ const LoginSwitch = () => {
                         </TouchableOpacity> */}
 
                       <TouchableOpacity
-                        onPress={signInWithFacebook}
+                        // onPress={signInWithFacebook}
+                        onPress={() => {
+                          console.log('showing Instagram popup')
+                          instagramRef.current.show()
+                        }}
                         style={styles.loremIpsumGroup}
                       >
                         <View style={styles.loremIpsum2}>
@@ -546,7 +535,7 @@ const LoginSwitch = () => {
                     </View>
 
                     <Image
-                      style={{width:30,height:30}}
+                      style={{ width: 30, height: 30 }}
                       contentFit="cover"
                       source={require('../../assets/registromail.png')}
                     />
@@ -624,26 +613,26 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild: {
     marginBottom: 0, // o el modo de ajuste que prefieras
-    width: 220,
-    height: 200,
-    top: -10,
-    justifyContent:"flex-end",
-    flexDirection:"row",
+    width: 320,
+    height: 300,
+    bottom: -200,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
     // bottom: '75%',
     position: 'absolute',
     transform: [{ rotate: '45deg' }],
-    right: "-26%",
+    right: '-26%',
     zIndex: 0,
-    overflow: "hidden"
+    overflow: 'hidden'
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: "130%",
-    height: "180%",
+    width: '100%',
+    height: '150%',
     // bottom: '75%',
     transform: [{ rotate: '-45deg' }],
-    zIndex: 0,
+    zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild3: {
@@ -654,7 +643,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     transform: [{ rotate: '-45deg' }, { scale: 1 }],
-    zIndex: 99,
+    zIndex: 99
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {

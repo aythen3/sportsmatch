@@ -24,6 +24,7 @@ import { getAllPosts } from '../../redux/actions/post'
 import axiosInstance from '../../utils/apiBackend'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { Context } from '../../context/Context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Grilla = ({ group, img1, img2, img3 }) => {
   const navigation = useNavigation()
@@ -187,6 +188,8 @@ const ExplorarClubs = () => {
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
   const [searchUsers, setSearchUsers] = useState([])
+  const [filterSelected, setFilterSelected] = useState("")
+
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
 
@@ -269,8 +272,7 @@ const ExplorarClubs = () => {
   }
 
   return (
-    <View style={styles.explorarClubs}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+    <SafeAreaView style={styles.explorarClubs}>
         <HeaderIcons />
 
         <FiltersHome
@@ -487,16 +489,16 @@ const ExplorarClubs = () => {
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
               numColumns={3}
+              
               columnWrapperStyle={{
                 justifyContent: 'space-between',
                 marginBottom: 10,
                 gap: 10
               }}
-              contentContainerStyle={{ paddingHorizontal: 5 }}
+              contentContainerStyle={{ paddingHorizontal: 5 , paddingBottom:140 }}
             ></FlatList>
           )}
         </View>
-      </ScrollView>
       <Modal visible={modalFilters} transparent={true} animationType="slide">
         <TouchableWithoutFeedback onPress={() => setModalFilters(false)}>
           <View style={{ flex: 1 }} />
@@ -515,6 +517,8 @@ const ExplorarClubs = () => {
           <View style={{ flex: 1 }}>
             <View style={styles.modal}>
               <FiltersSportman
+              setFilterSelected={setFilterSelected}
+              filterSelected={filterSelected}
                 posts={posts}
                 setPosts={setPosts}
                 allPosts={allPosts}
@@ -524,7 +528,7 @@ const ExplorarClubs = () => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </View>
+    </SafeAreaView>
   )
 }
 

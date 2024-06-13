@@ -46,7 +46,8 @@ export class ClubService {
         });
       }
       const newClub = await this.clubRepository.create(clubData);
-      newClub.sports = [sport]; // Relate the club with the sport
+      newClub.sports = [sport];
+      newClub.sport = clubData.sport // Relate the club with the sport
       const saveClub = await this.clubRepository.save(newClub);
       if (!saveClub) {
         throw new ErrorManager({

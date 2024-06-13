@@ -58,15 +58,12 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   }
 
   useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
+   
   }, [selectedImage, selectedPicture])
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraReff) {
       const photo = await cameraReff.current.takePictureAsync()
-      console.log(photo)
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

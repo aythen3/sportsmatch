@@ -65,8 +65,7 @@ const changePictureMode = async () => {
 const cameraReff = useRef(null);
 
 useEffect(() => {
-  console.log('selectedImage changed', selectedImage)
-  console.log('selectedPicture changed', selectedPicture)
+
 }, [selectedImage, selectedPicture])
 
 const takePicture = async () => {
@@ -79,10 +78,8 @@ const takePicture = async () => {
   //   setShowCamera(false)
   //   // You can handle the taken photo here, such as displaying it or saving it.
   // }
-  console.log('on takePicture!');
   if (cameraReff?.current) { // Check if cameraRef is not null
     const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
-    console.log(photo);
     setSelectedImage(photo);
     pickImageFromCamera(selectedPicture, photo.uri);
     setShowCamera(false);

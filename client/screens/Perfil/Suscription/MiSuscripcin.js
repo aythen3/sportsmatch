@@ -9,16 +9,18 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, Padding, Border, FontFamily, FontSize } from '../GlobalStyles'
-import SilverSuscription from '../components/Suscripciones/SilverSuscription'
-import GoldSuscription from '../components/Suscripciones/GoldSuscription'
-import StarSuscription from '../components/Suscripciones/StarSuscription'
+import { Color, Padding, Border, FontFamily, FontSize } from '../../../GlobalStyles'
+import SilverSuscription from '../../../components/Suscripciones/SilverSuscription'
+import GoldSuscription from '../../../components/Suscripciones/GoldSuscription'
+import StarSuscription from '../../../components/Suscripciones/StarSuscription'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
-import axiosInstance from '../utils/apiBackend'
+import axiosInstance from '../../../utils/apiBackend'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserData } from '../redux/actions/users'
-import SilverSuscriptionClub from '../components/Suscripciones/SilverSuscriptionClub'
-import GoldSuscriptionClub from '../components/Suscripciones/GoldSuscriptionClub'
+import { getUserData } from '../../../redux/actions/users'
+import SilverSuscriptionClub from '../../../components/Suscripciones/SilverSuscriptionClub'
+import GoldSuscriptionClub from '../../../components/Suscripciones/GoldSuscriptionClub'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
 
 const MiSuscripcin = () => {
   const navigation = useNavigation()
@@ -30,7 +32,7 @@ const MiSuscripcin = () => {
 
 
   const { user } = useSelector((state) => state.users)
-  console.log(user.user.club, "userrr222")
+
   const dispatch = useDispatch()
 
   const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
@@ -38,7 +40,6 @@ const MiSuscripcin = () => {
   React.useEffect(() => {
     const initializePaymentSheet = async () => {
       setDeletePlan(false)
-      console.log(user, 'userrrr')
       const { error } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'azul',
@@ -61,13 +62,11 @@ const MiSuscripcin = () => {
 
             })
             .then(() => dispatch(getUserData(user.user.id)))
-          console.log(updUser, 'upd')
         }
       }
     }
 
     if (clientSecret) {
-      console.log('entra a la hoja')
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
@@ -95,42 +94,11 @@ const MiSuscripcin = () => {
   }
 
   return (
-    <View style={styles.miSuscripcin}>
+    <SafeAreaView style={styles.miSuscripcin}>
       <ScrollView keyboardShouldPersistTaps={'always'}>
-        <View
-          style={{
-            marginTop: 20,
-            marginBottom: 5,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 15,
-            justifyContent: 'flex-start'
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              console.log('triggered MS')
-              navigation.goBack()
-            }}
-          >
-            <Image
-              style={{ width: 9, height: 15, marginTop: 2.5 }}
-              contentFit="cover"
-              source={require('../assets/coolicon3.png')}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#fff',
-              fontWeight: '500',
-              fontSize: 22,
-              fontFamily: FontFamily.t4TEXTMICRO
-            }}
-          >
-            Mi suscripción
-          </Text>
-        </View>
+     <CustomHeaderBack header={'Mi suscripción'}></CustomHeaderBack>
 
+        <View style={{paddingHorizontal:10}}>
         <View>
           <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
             Este es tu plan actual
@@ -174,8 +142,9 @@ const MiSuscripcin = () => {
             />
           )}
         </View>
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -505,7 +474,6 @@ const styles = StyleSheet.create({
   miSuscripcin: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     flex: 1,
-    paddingHorizontal: 15,
     paddingBottom: 20,
     width: '100%'
   }

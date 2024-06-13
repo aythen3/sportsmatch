@@ -5,17 +5,19 @@ import {
   StyleSheet,
   Modal,
   Pressable,
-  ScrollView
+  ScrollView,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { Color } from '../../GlobalStyles'
 
+const startYear = 2024
+const endYear = 1920
+const años = Array.from(
+  { length: startYear - endYear + 1 },
+  (_, index) => startYear - index
+)
+
 const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) => {
-  const startYear = 2024
-  const endYear = 1920
-  const años = Array.from(
-    { length: startYear - endYear + 1 },
-    (_, index) => startYear - index
-  )
 
   return (
     <Modal
@@ -24,36 +26,39 @@ const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) =>
       visible={visible}
       onRequestClose={closeModal}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-        <View style={{
-            height: 6,
-            width: 50,
-            borderRadius: 20,
-            backgroundColor: Color.wHITESPORTSMATCH,
-            alignSelf:"center",
-            marginBottom:12
-
-          }} />
-          <ScrollView keyboardShouldPersistTaps={'always'}>
-            {años.map((año, index) => (
-              <Pressable
-                key={index}
-                style={styles.optionButton}
-                onPress={() => {
-                  onSelectAñoNacimiento(año)
-                  closeModal()
-                }}
-              >
-                <Text style={styles.optionText}>{año}</Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-          {/* <Pressable style={styles.cancelButton} onPress={closeModal}>
+      <TouchableWithoutFeedback onPress={closeModal}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View
+              style={{
+                height: 6,
+                width: 50,
+                borderRadius: 20,
+                backgroundColor: Color.wHITESPORTSMATCH,
+                alignSelf: 'center',
+                marginBottom: 12
+              }}
+            />
+            <ScrollView keyboardShouldPersistTaps={'always'}>
+              {años.map((año, index) => (
+                <Pressable
+                  key={index}
+                  style={styles.optionButton}
+                  onPress={() => {
+                    onSelectAñoNacimiento(año)
+                    closeModal()
+                  }}
+                >
+                  <Text style={styles.optionText}>{año}</Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+            {/* <Pressable style={styles.cancelButton} onPress={closeModal}>
             <Text style={styles.cancelText}>Cancelar</Text>
           </Pressable> */}
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   )
 }
@@ -67,16 +72,17 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     maxHeight: 300,
-    bottom:0,
-    position:"absolute",
-    width:"100%",
+    bottom: 0,
+    position: 'absolute',
+    width: '100%',
     borderWidth: 0.5,
     borderColor: Color.wHITESPORTSMATCH,
-    borderTopEndRadius:20,
-    borderTopStartRadius:20,
-    padding: 20,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 5,
     borderRadius: 10,
-    elevation: 5,
+    elevation: 5
   },
   modalTitle: {
     fontSize: 18,
@@ -92,8 +98,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc'
   },
   optionText: {
-    textAlign:"center",
-    width:"100%",
+    textAlign: 'center',
+    width: '100%',
     fontSize: 16,
     color: Color.gREY2SPORTSMATCH
   },

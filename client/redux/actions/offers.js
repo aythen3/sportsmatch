@@ -3,6 +3,7 @@ import axiosInstance from '../../utils/apiBackend'
 
 export const setOffer = createAsyncThunk('setOffer', async (offer) => {
   try {
+    console.log('===POSTING OFFER (action)===', offer)
     const { data } = await axiosInstance.post('offer', offer)
     return data
   } catch (error) {
@@ -13,7 +14,6 @@ export const setOffer = createAsyncThunk('setOffer', async (offer) => {
 export const signToOffer = createAsyncThunk(
   'signToOffer',
   async ({ offerId, userId }) => {
-    console.log('{offerId, userId}: ', { offerId, userId })
     try {
       const { data } = await axiosInstance.post(
         `offer/${offerId}/agregar-inscripcion/${userId}`
@@ -56,7 +56,6 @@ export const updateOffer = createAsyncThunk(
   'updateOffer',
   async ({ id, body }) => {
     try {
-      console.log('id, body :', id, body)
       const { data } = await axiosInstance.patch(`offer/${id}`, body)
       // console.log('data from updateOffer: ', data)
       return data

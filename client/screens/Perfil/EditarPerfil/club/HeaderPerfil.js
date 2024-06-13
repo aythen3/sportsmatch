@@ -8,18 +8,18 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native'
-import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
+import { Border, Color, FontFamily, FontSize } from '../../../../GlobalStyles'
 import { Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
-import FeedSVG from './svg/FeedSVG'
-import StatsSVG from './svg/StatsSVG'
-import axiosInstance from '../utils/apiBackend'
-import { Context } from '../context/Context'
-import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
-import { updateUser } from '../redux/slices/users.slices'
-import { getAllUsers, updateUserData } from '../redux/actions/users'
-import { sendNotification } from '../redux/actions/notifications'
+import FeedSVG from '../../../../components/svg/FeedSVG'
+import StatsSVG from '../../../../components/svg/StatsSVG'
+import axiosInstance from '../../../../utils/apiBackend'
+import { Context } from '../../../../context/Context'
+import { getAllMatchs, sendMatch } from '../../../../redux/actions/matchs'
+import { updateUser } from '../../../../redux/slices/users.slices'
+import { getAllUsers, updateUserData } from '../../../../redux/actions/users'
+import { sendNotification } from '../../../../redux/actions/notifications'
 
 const HeaderPerfil = ({
   name,
@@ -40,7 +40,7 @@ const HeaderPerfil = ({
   const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user, allUsers } = useSelector((state) => state.users)
+  const { isSportman, user, allUsers,mainColor } = useSelector((state) => state.users)
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
@@ -50,7 +50,6 @@ const HeaderPerfil = ({
   const { sportman } = useSelector((state) => state.sportman)
 
   const getOffersById = async (id) => {
-    console.log('id from getoffers: ', id)
     const { data } = await axiosInstance.get('offer')
     const filteredOffers = data.filter((offer) => offer.club.id === id)
     setClubOffers(filteredOffers)
@@ -114,7 +113,7 @@ const HeaderPerfil = ({
               height: 105,
               borderRadius: 100,
               width: 105,
-              backgroundColor: Color.bALONCESTO
+              backgroundColor: mainColor
             }}
           />
           {isSportman ? (
@@ -139,7 +138,7 @@ const HeaderPerfil = ({
                 borderColor: '#000'
               }}
               contentFit="cover"
-              source={{ uri: avatar }}
+              source={ avatar ? { uri: avatar } : require('../../../../assets/avatar.png')}
             />
           )}
         </View>
@@ -209,7 +208,6 @@ const HeaderPerfil = ({
               const actualFollowers =
                 allUsers?.filter((user) => user.id === data.author.id)[0]
                   .followers || []
-              console.log('actual followers: ', actualFollowers)
               const newFollowers = actualFollowers.includes(user?.user?.id)
                 ? actualFollowers.filter(
                     (follower) => follower !== user?.user?.id
@@ -224,9 +222,7 @@ const HeaderPerfil = ({
                   )
                 : [...userFollowing, data?.author?.id]
               actualUser.user.following = newFollowingArray
-              console.log('user: ', actualUser?.user?.following)
 
-              console.log('setting other user followers to:', newFollowers)
               dispatch(
                 updateUserData({
                   id: data.author.id,
@@ -234,7 +230,6 @@ const HeaderPerfil = ({
                 })
               )
                 .then((data) => {
-                  console.log('setting user following to:', newFollowingArray)
                   dispatch(
                     updateUserData({
                       id: user.user.id,
@@ -268,7 +263,7 @@ const HeaderPerfil = ({
               <Image
                 style={{ ...styles.frameChild, marginRight: 10 }}
                 contentFit="cover"
-                source={require('../assets/group-5361.png')}
+                source={require('../../../../assets/group-5361.png')}
               />
               <Text style={[styles.ojear, styles.timeTypo]}>
               { liked
@@ -285,7 +280,6 @@ const HeaderPerfil = ({
                 const actualFollowers =
                   allUsers?.filter((user) => user.id === data.author.id)[0]
                     .followers || []
-                console.log('actual followers: ', actualFollowers)
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
                       (follower) => follower !== user?.user?.id
@@ -300,9 +294,7 @@ const HeaderPerfil = ({
                     )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
-                console.log('user: ', actualUser?.user?.following)
 
-                console.log('setting other user followers to:', newFollowers)
                 dispatch(
                   updateUserData({
                     id: data.author.id,
@@ -310,7 +302,6 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
-                    console.log('setting user following to:', newFollowingArray)
                     dispatch(
                       updateUserData({
                         id: user.user.id,
@@ -410,7 +401,7 @@ const HeaderPerfil = ({
                 <Image
                   style={styles.groupIcon}
                   contentFit="cover"
-                  source={require('../assets/group13.png')}
+                  source={require('../../../../assets/group13.png')}
                 />
               </View>
             </Pressable>
@@ -521,7 +512,7 @@ const HeaderPerfil = ({
                 <Image
                   style={styles.groupIcon}
                   contentFit="cover"
-                  source={require('../assets/group13.png')}
+                  source={require('../../../../assets/group13.png')}
                 />
               </View>
             </Pressable>
@@ -591,7 +582,7 @@ const HeaderPerfil = ({
                   <Image
                     style={styles.groupIcon}
                     contentFit="cover"
-                    source={require('../assets/group13.png')}
+                    source={require('../../../../assets/group13.png')}
                   />
                 </View>
               </Pressable>
@@ -855,27 +846,27 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingBottom: 5,
+             
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
               alignSelf: 'center',
-              marginTop: 10
+              marginVertical: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+           <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
+           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
               {user.user.club.year}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
-                fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                color: mainColor,
+                fontSize: 12,textAlign:"center"
               }}
             >
               Fundación
             </Text>
+           </View>
           </View>
           <View
             style={{
@@ -885,27 +876,29 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingBottom: 5,
+             
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
               alignSelf: 'center',
-              marginTop: 10
+              marginVertical: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+           <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
+           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
               {user.user.club.capacity}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                textAlign:"center"
+        
               }}
             >
               Aforo
             </Text>
+           </View>
           </View>
           <View
             style={{
@@ -915,27 +908,28 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingBottom: 5,
+             
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
               alignSelf: 'center',
-              marginTop: 10
+              marginVertical: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+          <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
+          <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 , textAlign:"center" }}>
               {clubOffers?.length}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color:mainColor,
                 fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                textAlign:"center"
               }}
             >
               Nº ofertas
             </Text>
+          </View>
           </View>
         </View>
       )}

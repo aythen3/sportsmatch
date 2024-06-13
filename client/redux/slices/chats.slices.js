@@ -15,7 +15,6 @@ const clubSlices = createSlice({
         ...message,
         isReaded: true
       }))
-      console.log('allToReaded', allToReaded)
       state.allMessages = allToReaded
     }
   },

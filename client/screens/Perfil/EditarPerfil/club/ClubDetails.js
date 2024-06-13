@@ -10,11 +10,11 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useState } from 'react'
-import { FontFamily } from '../../GlobalStyles'
+import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { Context } from '../../context/Context'
-import { updateClubData } from '../../redux/actions/club'
+import { Context } from '../../../../context/Context'
+import { updateClubData } from '../../../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
 
@@ -42,7 +42,6 @@ const ClubDetails = () => {
   const { user } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
-  console.log('club:', club)
 
   const inputs = [
     
@@ -118,7 +117,6 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    console.log('filteredData: ', filteredData)
     dispatch(updateClubData({ id: club.id, body: filteredData }))
     setProfileImage()
     setCoverImage()
@@ -145,10 +143,7 @@ const ClubDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-    console.log(
-      'setting camera mode to: ',
-      cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
-    )
+  
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -156,16 +151,11 @@ const ClubDetails = () => {
     )
   }
 
-  useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
-    console.log('selectedPicture changed', selectedPicture)
-  }, [selectedImage, selectedPicture])
+
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync()
-      console.log(photo)
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -203,7 +193,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ height: 15, width: 15 }}
                   contentFit="cover"
-                  source={require('../../assets/group-565.png')}
+                  source={require('../../../../assets/group-565.png')}
                 />
               </TouchableOpacity>
 
@@ -273,7 +263,7 @@ const ClubDetails = () => {
               <Image
                 style={{ width: 9, height: 15, marginTop: 2.5 }}
                 contentFit="cover"
-                source={require('../../assets/coolicon3.png')}
+                source={require('../../../../assets/coolicon3.png')}
               />
             </TouchableOpacity>
             <Text
@@ -320,7 +310,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>
@@ -366,7 +356,7 @@ const ClubDetails = () => {
                 <Image
                   style={{ width: 14, height: 14 }}
                   contentFit="cover"
-                  source={require('../../assets/camera.png')}
+                  source={require('../../../../assets/camera.png')}
                 />
               </TouchableOpacity>
             </View>

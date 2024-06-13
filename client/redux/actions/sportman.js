@@ -6,7 +6,6 @@ export const createSportman = createAsyncThunk(
   async (body) => {
     try {
       const { data } = await axiosInstance.post('sportman', body)
-      console.log(data,'dat')
       return data
     } catch (error) {
       throw new Error(error)
@@ -17,7 +16,6 @@ export const createSportman = createAsyncThunk(
 export const getSportman = createAsyncThunk('get/sportman', async (id) => {
   try {
     const { data } = await axiosInstance.get(`sportman/${id}`)
-    console.log(data,'sportman data')
     return data
   } catch (error) {
     throw new Error(error)
@@ -27,7 +25,6 @@ export const getSportman = createAsyncThunk('get/sportman', async (id) => {
 export const updateSportman = createAsyncThunk(
   'update/sportman',
   async (body) => {
-    console.log('body: ', body)
     try {
       const { id, newData , type } = body
    if(!type){

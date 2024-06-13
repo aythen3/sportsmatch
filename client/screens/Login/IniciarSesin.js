@@ -25,9 +25,15 @@ import { login } from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { setIsSpotMan, logedIn, logedOut } from '../../redux/slices/users.slices'
+import {
+  setIsSpotMan,
+  logedIn,
+  logedOut
+} from '../../redux/slices/users.slices'
 import { Context } from '../../context/Context'
 import PassView from './passview'
+import HomeGif from '../../utils/HomeGif'
+import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 
 const IniciarSesin = () => {
   const {
@@ -41,7 +47,6 @@ const IniciarSesin = () => {
   const navigation = useNavigation()
   const [passview2, setPassview2] = useState(true)
   const [loading, setLoading] = useState(false)
-
 
   const route = useRoute()
 
@@ -65,50 +70,39 @@ const IniciarSesin = () => {
     }))
   }
 
-  useEffect(() => {
-
-    if (!loged) {
-      if (user?.user?.club || user?.user?.sportman) {
-        setActiveIcon('diary')
-        navigation.navigate('SiguiendoJugadores')
-        dispatch(logedIn())
-      } else {
-        if (user?.user?.type === 'club') {
-          if (user?.accesToken) {
-            navigation.navigate('stepsClub')
-          }
-        } else {
-          if (user?.accesToken) {
-            console.log('jugador')
-            navigation.navigate('Paso1')
-          }
-        }
-      }
-    }
-  }, [user])
 
   const handleSubmit = () => {
     setLoading(true)
-    // console.log('on handleSubmit')
-    console.log('on handlesubmit')
     setProvisoryProfileImage()
     setProvisoryCoverImage()
     setProfileImage()
     setCoverImage()
     if (valuesUser.email && valuesUser.password) {
-      console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
+          await AsyncStorage.setItem('@user', JSON.stringify(response.payload.user))
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
-          dispatch(setClub(response))
           setLoading(false)
-
+          if (response.payload?.user?.club || response.payload.user?.sportman) {
+            setActiveIcon('diary')
+            navigation.navigate('SiguiendoJugadores')
+          } else {
+            if (response.payload?.user?.type === 'club') {
+              if (user?.accesToken) {
+                navigation.navigate('stepsClub')
+              }
+            } else {
+              if (response.payload.accesToken) {
+                navigation.navigate('Paso1')
+              }
+            }
+          }
+          dispatch(setClub(response))
         })
         .catch((error) => {
           console.error(error)
@@ -122,25 +116,7 @@ const IniciarSesin = () => {
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
 
-      <View style={[styles.loginSwitchChild]}>
-        <Image
-          style={[styles.loginSwitchChild2]}
-          contentFit="cover"
-          source={require('../../assets/carrouselgif.gif')}
-        />
-      </View>
-      {/* <View style={{ width: "100%", height: 800, position: "absolute", top: -110, right: -135 }}>
-        <Image
-          style={{ width: 550, height: 550, position: "absolute", top: -180, right: -50 }}
-
-          source={require('../../assets/lineasgif.png')}
-        />
-      </View> */}
-      <Image
-        style={{ width: "100%", height: 250, position: "absolute", top: 0, left: 0, zIndex: 999 }}
-        contentFit="cover"
-        source={require('../../assets/sw.png')}
-      />
+      <HomeGif></HomeGif>
 
       <View style={styles.contenido}>
         {/* <Image
@@ -217,8 +193,18 @@ const IniciarSesin = () => {
                           ref={passwordInputRef}
                           onSubmitEditing={handleSubmit}
                         />
-                        <TouchableOpacity onPress={() => setPassview2(!passview2)}>
-                          <PassView></PassView>
+                        <TouchableOpacity
+                          onPress={() => setPassview2(!passview2)}
+                        >
+                          {passview2 ? (
+                            <PassView></PassView>
+                          ) : (
+                            <Image
+                              style={{ width: 28 * 0.96, height: 19 * 0.96 }}
+                              contentFit="cover\"
+                              source={require('../../assets/closedEye.png')}
+                            />
+                          )}
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -233,9 +219,11 @@ const IniciarSesin = () => {
                 style={styles.botonIniciaSesin2}
                 onPress={handleSubmit}
               >
-                {!loading ? <Text style={styles.aceptar}>Inicia sesión</Text> : <ActivityIndicator></ActivityIndicator>}
-
-
+                {!loading ? (
+                  <Text style={styles.aceptar}>Inicia sesión</Text>
+                ) : (
+                  <ActivityIndicator></ActivityIndicator>
+                )}
               </TouchableOpacity>
               <Pressable
                 style={{ marginTop: 37 }}
@@ -276,7 +264,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
     right: -85,
     zIndex: 0,
-    overflow: "hidden"
+    overflow: 'hidden'
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
@@ -287,7 +275,7 @@ const styles = StyleSheet.create({
     top: -20,
     left: -40,
     transform: [{ rotate: '-45deg' }],
-    zIndex: 0,
+    zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   framePosition: {
@@ -321,7 +309,7 @@ const styles = StyleSheet.create({
   },
   atrs: {
     marginLeft: 5,
-    zIndex:9999
+    zIndex: 9999
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,
