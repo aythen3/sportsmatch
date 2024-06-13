@@ -15,7 +15,6 @@ import Carousel from '../../../components/Carousel'
 import { useRoute } from '@react-navigation/native';
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useRoute } from '@react-navigation/native'
 
 const Post = () => {
   const route = useRoute()
