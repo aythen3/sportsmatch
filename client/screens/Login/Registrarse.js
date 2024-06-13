@@ -51,7 +51,6 @@ const Registrarse = () => {
   const [passview1, setPassview1] = useState(true)
   const [passview2, setPassview2] = useState(true)
 
-
   useEffect(() => {
     dispatch(getAllUsers())
   }, [])
@@ -82,7 +81,12 @@ const Registrarse = () => {
   }
 
   const submit = () => {
-    if (valuesUser.email && valuesUser.nickname && valuesUser.password) {
+    if (
+      valuesUser.email &&
+      valuesUser.nickname &&
+      valuesUser.password &&
+      isChecked
+    ) {
       if (isValidEmail(valuesUser.email)) {
         const existingUser = allUsers?.find(
           (user) => user.email === valuesUser.email
@@ -106,15 +110,25 @@ const Registrarse = () => {
 
   return (
     <View style={styles.registrarse}>
-     <HomeGif></HomeGif>
+      <HomeGif></HomeGif>
       <View style={styles.contenido}>
-      <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.botonAtrasFrame}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack()
+          }}
+          style={styles.botonAtrasFrame}
+        >
           <Image
             style={styles.simboloIcon}
             contentFit="cover"
             source={require('../../assets/coolicon3.png')}
           />
-          <Pressable onPress={() => {navigation.goBack()}} style={styles.atrs} >
+          <Pressable
+            onPress={() => {
+              navigation.goBack()
+            }}
+            style={styles.atrs}
+          >
             <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
           </Pressable>
         </TouchableOpacity>
@@ -263,9 +277,11 @@ const Registrarse = () => {
                           confirmPasswordInputRef.current.focus()
                         }}
                       />
-                       <TouchableOpacity onPress={()=>setPassview1(!passview1)}>
-                    <PassView></PassView>
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setPassview1(!passview1)}
+                      >
+                        <PassView></PassView>
+                      </TouchableOpacity>
                     </View>
                   </View>
                   <View style={[styles.campo3Frame, styles.framePosition]}>
@@ -292,9 +308,11 @@ const Registrarse = () => {
                         ref={confirmPasswordInputRef}
                         onSubmitEditing={submit}
                       />
-                    <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
-                    <PassView></PassView>
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setPassview2(!passview2)}
+                      >
+                        <PassView></PassView>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>
@@ -390,7 +408,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
     right: -85,
     zIndex: 0,
-    overflow: "hidden"
+    overflow: 'hidden'
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   loginSwitchChild2: {
@@ -401,7 +419,7 @@ const styles = StyleSheet.create({
     top: -20,
     left: -40,
     transform: [{ rotate: '-45deg' }],
-    zIndex: 0,
+    zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   framePosition: {
@@ -451,7 +469,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     width: 393,
-    zIndex:9999
+    zIndex: 9999
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,

@@ -12,64 +12,80 @@ import {
 import DetallesSeleccion from '../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
 import Carousel from '../../components/Carousel'
-import { useRoute } from '@react-navigation/native';
-
-
-
+import { useRoute } from '@react-navigation/native'
 
 const Post = () => {
-  const route = useRoute();
+  const route = useRoute()
   const navigation = useNavigation()
   const [page, setPage] = useState(1)
   const { user, allUsers } = useSelector((state) => state.users)
-  const item = route.params;
-  console.log("item", item)
+  const item = route.params
+  console.log('item', item)
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <View style={{flexDirection:"row" ,alignItems:"center",gap:10,paddingLeft:10}}>
-      <Pressable
-            // style={styles.coolicon}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10,
+          paddingLeft: 10,
+          marginBottom: 10
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            console.log('EP')
+            navigation.goBack()
+          }}
+        >
+          <Image
+            style={{ width: 27 * 0.35, height: 46 * 0.35 }}
+            contentFit="cover"
+            source={require('../../assets/coolicon3.png')}
+          />
+        </Pressable>
+        <Pressable
+          // style={styles.editarPerfil1}
+          onPress={() => {
+            console.log('EP')
+            navigation.goBack()
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '500',
+              textAlign: 'left',
+              fontFamily: FontFamily.t4TEXTMICRO,
+              color: Color.wHITESPORTSMATCH
             }}
           >
-            <Image
-              style={{width:20,height:20}}
-              contentFit="cover"
-              source={require('../../assets/coolicon3.png')}
-            />
-          </Pressable>
-          <Pressable
-            // style={styles.editarPerfil1}
-            onPress={() => {
-              console.log('EP')
-              navigation.goBack()
-            }}
-          >
-            <Text style={styles.editarPerfil2}>Post</Text>
-          </Pressable>
+            Post
+          </Text>
+        </Pressable>
       </View>
-      <Carousel
-        key={item.id}
-        name={item?.author?.nickname}
-        description={item?.description}
-        imgPerfil={
-          item?.author?.sportman
-            ? item?.author?.sportman?.info?.img_front
-            : item?.author?.club?.img_perfil
-        }
-        image={item?.image}
-        club={item?.club === user?.user?.type}
-        likes={item?.likes}
-        commentCount={item?.commentCount}
-        index={page}
-        id={item?.id}
-        userId={user?.user?.id}
-        authorId={item.author.id}
-        data={item}
-      />
+      <View style={{ paddingBottom: 40 }}>
+        <Carousel
+          key={item.id}
+          name={item?.author?.nickname}
+          description={item.description}
+          imgPerfil={
+            item?.author?.sportman
+              ? item?.author?.sportman?.info?.img_front
+              : item?.author?.club?.img_perfil
+          }
+          image={item?.image}
+          club={item?.club === user?.user?.type}
+          likes={item?.likes}
+          commentCount={item?.commentCount}
+          index={page}
+          id={item?.id}
+          userId={user?.user?.id}
+          authorId={item.author.id}
+          data={item}
+        />
+      </View>
     </ScrollView>
   )
 }
@@ -101,11 +117,11 @@ const styles = StyleSheet.create({
   },
   paso6: {
     width: '100%',
-    height:"100%",
-    gap:20,
-    backgroundColor: "black",
-    paddingVertical:20,
-    paddingHorizontal:10
+    height: '100%',
+    gap: 20,
+    backgroundColor: 'black',
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,
