@@ -3,21 +3,27 @@ import React, { useEffect, useState } from 'react'
 import { Color } from '../GlobalStyles'
 import { setColor } from '../utils/handles/HandlerSportColor'
 
-const Lines = ({ index, club, profesional, selectedSport }) => {
+const Lines = ({ index, club, profesional, selectedSport, color }) => {
 
   const [colorSelect, setColorSelect] = useState('')
 
   useEffect(() => {
-    if (index == 1) return setColorSelect("#E1451E")
-    if (selectedSport == null) {
-    return setColorSelect('#E1451E')
+    function setcolor() {
+      if (color) {
+        return setColorSelect(color)
+      }
+      if (index == 1 || !color) return setColorSelect("#E1451E")
+      if (selectedSport == null) {
+        return setColorSelect('#E1451E')
+      }
+      if (profesional) {
+        setColorSelect('#00F0FF')
+      } else {
+        setColorSelect(setColor(selectedSport?.name))
+      }
     }
-    if (profesional) {
-      setColorSelect('#00F0FF')
-    } else {
-      setColorSelect(setColor(selectedSport?.name))
-    }
-  }, [index, selectedSport])
+    setcolor()
+  }, [index, selectedSport ,color])
 
 
   return (

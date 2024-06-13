@@ -50,8 +50,7 @@ const TusMatchs = () => {
 
   const [details, setDetails] = useState(false)
   const [userDetails, setUserDetails] = useState(false)
-  console.log('useramatchs: ', userMatches)
-  console.log('clubMatchs', clubMatches)
+
 
   // const getOfferData = async (id) => {
   //   const { data } = await axiosInstance.get(`offer/${id}`)
@@ -88,7 +87,6 @@ const TusMatchs = () => {
       >
         <TouchableOpacity
           onPress={() => {
-            console.log('TM')
             navigation.goBack()
           }}
         >

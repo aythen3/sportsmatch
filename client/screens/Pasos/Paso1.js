@@ -144,10 +144,8 @@ const Paso1 = () => {
         },
         userId: user.user.id
       }
-      console.log('final body: ', body)
 
       dispatch(createSportman(body)).then((response) => {
-        console.log('reponse: ', response)
         dispatch(
           setInitialSportman({
             id: response.payload.id,
@@ -161,7 +159,6 @@ const Paso1 = () => {
     }
 
     if (selectedRole === 'Profesional del deporte') {
-      console.log("pasaaa")
       setProfesional(true)
       return setSportman(false)
     }
@@ -217,15 +214,12 @@ const Paso1 = () => {
 
   }, [selectedSport, profesional, sportman])
 
-  useEffect(() => {
-    console.log('stepsSportman changed: ', stepsSportman)
-  }, [stepsSportman])
+
 
   const handleNavigation = async () => {
 
 
     if (selectedRole === "Jugador" && selectedSport == null) {
-      console.log("entra")
       return
     }
     if (sportman && stepsSportman === 1) {
@@ -260,12 +254,10 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        console.log('final body: ', body)
         if (Object.keys(sportmanRedux).length == 0) {
 
 
           dispatch(createSportman(body)).then((response) => {
-            console.log('reponse: ')
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
@@ -278,14 +270,12 @@ const Paso1 = () => {
             navigation.navigate('SiguiendoJugadores')
           })
         } else {
-          console.log(sportmanRedux.id, "usuariooo")
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
             type: "player"
           }
           dispatch(updateSportman(upd)).then((response) => {
-            console.log('reponse: ', response)
             dispatch(
               setInitialSportman({
                 id: sportmanRedux.id,
@@ -298,11 +288,9 @@ const Paso1 = () => {
         }
       }
     } else {
-      console.log('stepsProfesional:', stepsProfesional)
       stepsProfesional !== 1 && setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
-        console.log('profesional')
-        console.log('selectedRole: ', selectedRole)
+ 
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -318,11 +306,9 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        console.log('final body: ', body)
         if (Object.keys(sportmanRedux).length == 0) {
 
           dispatch(createSportman(body)).then((response) => {
-            console.log('reponse: ')
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
@@ -336,14 +322,12 @@ const Paso1 = () => {
             navigation.navigate('SiguiendoJugadores')
           })
         } else {
-          console.log(sportmanRedux.id, "usuariooo")
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
             type: "player"
           }
           dispatch(updateSportman(upd)).then((response) => {
-            console.log('reponse: ', response)
             dispatch(
               setInitialSportman({
                 id: sportmanRedux.id,
@@ -393,6 +377,7 @@ const Paso1 = () => {
         width: width,
         flex: 1,
         paddingHorizontal: 0,
+        paddingTop:10,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >

@@ -15,7 +15,6 @@ import { useContext } from 'react'
 const TusMatchsDetalle1 = ({ onClose, data }) => {
   const navigation = useNavigation()
   const { getUserAge } = useContext(Context)
-  console.log('data: ', data)
 
   return (
     <View style={styles.tusMatchsDetalle}>
@@ -23,7 +22,6 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
         <Pressable
           style={[styles.match, styles.framePosition]}
           onPress={() => {
-            console.log('TMD1')
             navigation.goBack()
           }}
         >

@@ -6,9 +6,7 @@ const Like2SVG = ({ id , doubleTap }) => {
   const { findedLike } = useSelector((state) => state.post)
   const { mainColor } = useSelector((state) => state.users)
 
-  useEffect(() => {
-    console.log('like changed: ', findedLike?.includes(id))
-  }, [findedLike])
+
   return (
     <Svg
       width="33"

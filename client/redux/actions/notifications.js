@@ -38,7 +38,6 @@ export const getNotificationsByUserId = createAsyncThunk(
 export const sendNotification = createAsyncThunk(
   'sendNotification',
   async (body) => {
-    console.log('body from sendNotification: ', body)
     try {
       const { data } = await axiosInstance.post('notification', body)
       return data
@@ -50,7 +49,6 @@ export const sendNotification = createAsyncThunk(
 export const removeNotification = createAsyncThunk(
   'removeNotification',
   async (id) => {
-    console.log('id from removeNotification: ', id)
     try {
       const { data } = await axiosInstance.delete(`notification/${id}`)
       return data

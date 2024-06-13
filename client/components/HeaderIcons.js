@@ -16,7 +16,6 @@ const HeaderIcons = () => {
 
   const [sportColor, setSportColor] = useState('#E1451E')
 
-  console.log(mainColor,'ASDASCOLOR')
 
 
 
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 15
   },
   superiorLayout: {

@@ -78,7 +78,7 @@ function Carousel({
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike.includes(id))
+    setLiked(findedLike?.includes(id))
   }, [findedLike, id])
 
   const handleDoubleTap = () => {
@@ -229,6 +229,44 @@ function Carousel({
           </View>
         ))}
 
+     { image.map((e,i)=> (
+         <View style={{ width: '100%', height: '100%' }} key={i}>
+         <DoubleTap
+           onDoubleTap={() => {
+             handleLike()
+             setDoubleTapHeart(true)
+             // handleDoubleTap(); // Llama a la función de manejar el doble clic
+             // resetDoubleTap(); // Reinicia el estado de doubleTap
+           }}
+         >
+           <View
+             style={{ width: '100%', height: '100%', position: 'relative' }}
+           >
+             {doubleTapHeart && liked && (
+               <TouchableOpacity
+                 style={{
+                   position: 'absolute',
+                   width: '100%',
+                   height: '100%',
+                   justifyContent: 'center',
+                   alignItems: 'center',
+                   zIndex: 999
+                 }}
+               >
+                 <Like2SVG id={id}></Like2SVG>
+               </TouchableOpacity>
+             )}
+
+             <Image
+               style={{ ...styles.postImage, zIndex: 990 }}
+               source={e}
+             />
+             
+           </View>
+         </DoubleTap>
+       </View>
+     )) }
+       
         {/* <View key={index + 1}>
           <Image
             style={styles.postImage}
@@ -354,6 +392,13 @@ function Carousel({
 export default Carousel
 
 const styles = StyleSheet.create({
+  indicatorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom:0
+  },
   indicator: {
     width: 5,
     height: 5,
@@ -375,7 +420,7 @@ const styles = StyleSheet.create({
   botonPromocionarPublicacion: {
     marginTop: 15,
     borderRadius: Border.br_81xl,
-    width: 210,
+    width: "48%",
     justifyContent: 'center',
     paddingHorizontal: Padding.p_5xs,
     paddingVertical: Padding.p_11xs,

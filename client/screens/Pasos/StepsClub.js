@@ -27,7 +27,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createClub, getClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { updateUserClubData } from '../../redux/actions/users'
-import { clearUser } from '../../redux/slices/users.slices'
+import { clearUser, setMainColor } from '../../redux/slices/users.slices'
+import { setColor } from '../../utils/handles/HandlerSportColor'
 
 const StepsClub = () => {
   const navigation = useNavigation()
@@ -49,24 +50,23 @@ const StepsClub = () => {
   const [stepsIndex, setstepsIndex] = useState(1)
   const [sportS, setSportS] = useState("")
   const { height, width } = useWindowDimensions();
+  const [sportColor, setSportColor] = useState('#00F0FF')
 
-  console.log(width, "-----", height, "medidas")
 
   const [clubValues, setClubValues] = useState({
     name: '',
     city: '',
     country: '',
     field: '',
-    year: '',
-    capacity: '',
-    description: ''
+    year: 0,
+    capacity: 0,
+    description: '',
   })
 
   useEffect(() => {
     const backAction = () => {
       // Despacha tu acción de Redux aquí
       dispatch(clearUser());
-      console.log("back")
       navigation.goBack()
       return true; // Indica que el evento fue manejado
     };
@@ -79,39 +79,47 @@ const StepsClub = () => {
     return () => backHandler.remove(); // Remueve el listener al desmontar el componente
   }, [dispatch]);
 
+  useEffect(() => {
+    const color = setColor(sportS.name)
+    setSportColor(color)
+
+  }, [sportS])
+
   const handleRegister = async () => {
-    if (profileImage && coverImage) {
-      clubValues.img_perfil = profileImage
-      clubValues.img_front = coverImage
-      const data = {
-        userId: user.user.id,
-        clubData: clubValues,
-        sportId: sport.id
-      }
-      // console.log('data from handleRegister: ', data)
-      await dispatch(createClub(data))
-        .then((response) => {
-          console.log(
-            'userData after club creation:',
-            response.meta.arg.clubData
-          )
-          dispatch(getClub(response.payload.id))
-          dispatch(
-            updateUserClubData({
-              id: response.meta.arg.userId,
-              data: response.meta.arg.clubData
-            })
-          ).catch((error) => {
-            console.error('Error updating user club data:', error)
-          })
-        })
-        .then(() => {
-          navigation.navigate('SiguiendoJugadores')
-        })
-        .catch((error) => {
-          console.error('Error creating club:', error)
-        })
+
+    clubValues.img_perfil = profileImage || ''
+    clubValues.img_front = coverImage || ''
+    const data = {
+      userId: user.user.id,
+      clubData: {...clubValues,sport:sportS.name},
+      sportId: sportS.id,
+
     }
+    // console.log('data from handleRegister: ', data)
+    await dispatch(createClub(data))
+      .then((response) => {
+        console.log(response, 'handle')
+        dispatch(setMainColor(setColor(response.payload.sports[0].name)))
+        dispatch(getClub(response.payload.id))
+        dispatch(
+          updateUserClubData({
+            id: response.meta.arg.userId,
+            data: response.meta.arg.clubData
+          })
+        ).then((responde) => {
+          if (responde.payload) {
+            
+            navigation.navigate('SiguiendoJugadores')
+          }
+        }).catch((error) => {
+          console.error('Error updating user club data:', error)
+        })
+      })
+
+      .catch((error) => {
+        console.error('Error creating club:', error)
+      })
+
   }
 
   const ViewComponent = (index) => {
@@ -152,7 +160,7 @@ const StepsClub = () => {
   }
 
   return (
-    <View style={{ ...styles.escogerDeporte, height: height, width: width, flex: 1 }}  >
+    <View style={{ ...styles.escogerDeporte, height: height, width: width, flex: 1, paddingTop: 10 }}  >
 
 
       {stepsIndex == 1 && (<Image
@@ -186,12 +194,12 @@ const StepsClub = () => {
         </Pressable>
       </View>
       <View style={{ marginTop: -30 }}>
-        <Text style={styles.paso2}>Paso {stepsIndex}</Text>
+        <Text style={{ ...styles.paso2, color: sportColor }}>Paso {stepsIndex}</Text>
         <Text style={styles.detallesDelClub}>
           {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
         </Text>
       </View>
-      <Lines club={true} index={stepsIndex} />
+      <Lines color={sportColor} club={true} index={stepsIndex} selectedSport={sportS.name} />
 
       <View style={{ justifyContent: "space-between", height: "100%", flex: 1, paddingVertical: 20 }}>
         {ViewComponent(stepsIndex)}

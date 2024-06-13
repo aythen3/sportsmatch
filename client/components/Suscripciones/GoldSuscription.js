@@ -27,7 +27,6 @@ const GoldSuscription = ({
   const { user } = useSelector((state) => state.users)
 
   const handleGetGold = async () => {
-    console.log('entra')
     const res = await axiosInstance.post('/user/create-subscription', {
       priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
       customerId: user.user.stripeId
@@ -42,7 +41,6 @@ const GoldSuscription = ({
       setPlanSelectedId(res.data.subscription.subscriptionId)
     }
 
-    console.log(user.user.stripeId, 'user')
   }
 
   return (

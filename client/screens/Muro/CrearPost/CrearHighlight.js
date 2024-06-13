@@ -35,25 +35,24 @@ const CrearHighlight = () => {
   const [multis, setMultis] = useState();
 
   useEffect(() => {
-    console.log('image changed: ', image)
-    console.log('provisoryProfileImage changed: ', provisoryProfileImage)
+
   }, [image, provisoryProfileImage])
 
   const handleSubmit = async () => {
+    if (image) {
+      navigation.navigate('SiguiendoJugadores')
+    }
     let imageFinal
     if (!Array.isArray(image)) {
       const res = await pickImage('a', image)
-      console.log(res, "pathh1")
       imageFinal = res
     } else {
       const todas = []
       for (let i = 0; i < image.length; i++) {
-      const res = await pickImage('a', image[i].uri)
-      console.log(res,"esto es del bucleee")
-      todas.push(res)
+        const res = await pickImage('a', image[i].uri)
+        todas.push(res)
       }
       imageFinal = todas
-      console.log(imageFinal, "pathh2")
     }
     const data = {
       image: imageFinal,
@@ -62,105 +61,101 @@ const CrearHighlight = () => {
       author: user.user.id
     }
     dispatch(createPost(data)).then((data) => {
-      console.log(data)
       dispatch(getAllPosts())
     })
-    navigation.navigate('SiguiendoJugadores')
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
-      <ScrollView
-        contentContainerStyle={{ flex: 1, height: 'auto' }}
-        style={{
-          flex: 1,
-          width: '92%',
-          height: height,
-          alignSelf: 'center',
-        }}
-      >
+    <SafeAreaView style={{ backgroundColor: "black", flex: 1, justifyContent: "flex-start", flexDirection: "column" }}>
+      <KeyboardAvoidingView
+keyboardVerticalOffset={80}
+        style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
         <View
           style={{
-            marginTop: 20,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
+            flex:1,
+            width: '100%',
+            paddingHorizontal: 12,
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              console.log('CH')
-              navigation.goBack()
+          <View
+            style={{
+              marginTop: 20,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
-            <Image
-              style={{ height: 15, width: 15 }}
-              contentFit="cover"
-              source={require('../../../assets/group-565.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSubmit}>
-            <Text style={styles.siguiente}>Subir</Text>
-          </TouchableOpacity>
-        </View>
-        {!Array.isArray(image) ? (
-
-          <Image
-            style={{
-              marginTop: 40,
-              marginBottom: 15,
-              borderRadius: 8,
-              height: 350,
-              width: "100%",
-            }}
-            contentFit="cover"
-            source={{ uri: image ? image : provisoryProfileImage }}
-          />
-        ) : (
-          <View style={{ height: 344, width: "100%" }}>
-            <PagerView style={{ flex: 1, marginBottom: 10 }} initialPage={0}>
-              {image.map((e, i) => (
-                <View style={{ width: "100%" }} key={i}>
-                  <Image
-                    style={{
-                      marginTop: 40,
-                      marginBottom: 15,
-                      borderRadius: 8,
-                      height: 350,
-                      width: "100%",
-                    }}
-                    contentFit="cover"
-                    source={{ uri: e?.uri }}
-                  />
-                </View>
-              ))}
-            </PagerView>
+            <TouchableOpacity
+              style={{ width: 30 }}
+              onPress={() => {
+                navigation.goBack()
+              }}
+            >
+              <Image
+                style={{ height: 15, width: 15 }}
+                contentFit="cover"
+                source={require('../../../assets/group-565.png')}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit}>
+              <Text style={styles.siguiente}>Subir</Text>
+            </TouchableOpacity>
           </View>
-        )}
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-            borderWidth: 1,
-            borderRadius: 15,
-            borderColor: Color.wHITESPORTSMATCH,
-            marginTop: 20,
-            marginBottom: 30
-          }}
-        >
-          <TextInput
-            style={styles.descriptionText}
-            placeholder="Añade una descripción"
-            placeholderTextColor={Color.wHITESPORTSMATCH}
-            multiline={true}
-            onChangeText={(text) => setDescription(text)}
-            value={description}
-          />
+          <View style={{flex: 1,gap:20,paddingVertical:20 }}>
+            {!Array.isArray(image) ? (
+
+              <Image
+                style={{
+                  borderRadius: 8,
+                  height:"50%",
+                  width:"100%"
+                }}
+                contentFit="cover"
+                source={{ uri: image ? image : provisoryProfileImage }}
+              />
+            ) : (
+              <View style={{ height: "50%", width: "100%" }}>
+                <PagerView style={{ flex: 1, marginBottom: 10 }} initialPage={0}>
+                  {image.map((e, i) => (
+                    <View style={{ width: "100%" }} key={i}>
+                      <Image
+                        style={{
+                          marginTop: 40,
+                          marginBottom: 15,
+                          borderRadius: 8,
+                          height: 350,
+                          width: "100%",
+                        }}
+                        contentFit="cover"
+                        source={{ uri: e?.uri }}
+                      />
+                    </View>
+                  ))}
+                </PagerView>
+              </View>
+            )}
+            <View
+              style={{
+                flex: 1,
+                borderWidth: 1,
+                borderRadius: 15,
+                borderColor: Color.wHITESPORTSMATCH,
+
+              }}
+            >
+              <TextInput
+                style={styles.descriptionText}
+                placeholder="Añade una descripción"
+                placeholderTextColor={Color.wHITESPORTSMATCH}
+                multiline={true}
+                onChangeText={(text) => setDescription(text)}
+                value={description}
+              />
+            </View>
+          </View>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }
 

@@ -33,6 +33,7 @@ import {
 import { Context } from '../../context/Context'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
+import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 
 const IniciarSesin = () => {
   const {
@@ -69,48 +70,39 @@ const IniciarSesin = () => {
     }))
   }
 
-  useEffect(() => {
-    if (!loged) {
-      if (user?.user?.club || user?.user?.sportman) {
-        setActiveIcon('diary')
-        navigation.navigate('SiguiendoJugadores')
-        dispatch(logedIn())
-      } else {
-        if (user?.user?.type === 'club') {
-          if (user?.accesToken) {
-            navigation.navigate('stepsClub')
-          }
-        } else {
-          if (user?.accesToken) {
-            console.log('jugador')
-            navigation.navigate('Paso1')
-          }
-        }
-      }
-    }
-  }, [user])
 
   const handleSubmit = () => {
     setLoading(true)
-    // console.log('on handleSubmit')
-    console.log('on handlesubmit')
     setProvisoryProfileImage()
     setProvisoryCoverImage()
     setProfileImage()
     setCoverImage()
     if (valuesUser.email && valuesUser.password) {
-      console.log('valuesuser: ', valuesUser)
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
+          await AsyncStorage.setItem('@user', JSON.stringify(response.payload.user))
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
-          dispatch(setClub(response))
           setLoading(false)
+          if (response.payload?.user?.club || response.payload.user?.sportman) {
+            setActiveIcon('diary')
+            navigation.navigate('SiguiendoJugadores')
+          } else {
+            if (response.payload?.user?.type === 'club') {
+              if (user?.accesToken) {
+                navigation.navigate('stepsClub')
+              }
+            } else {
+              if (response.payload.accesToken) {
+                navigation.navigate('Paso1')
+              }
+            }
+          }
+          dispatch(setClub(response))
         })
         .catch((error) => {
           console.error(error)

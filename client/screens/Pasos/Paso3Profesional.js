@@ -51,7 +51,6 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   }
 
   const handleSelectCity = (city) => {
-    console.log('city: ', city)
     setSelectedCity(city)
     setPickedCity(city)
     dispatch(setCity(city))
@@ -62,7 +61,6 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent
     const height = contentOffset.y 
-    console.log('height: ', height)
     setScrolledHeight(height)
   }
 

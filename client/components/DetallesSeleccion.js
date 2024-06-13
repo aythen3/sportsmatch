@@ -60,18 +60,8 @@ const SkillSeleccion = ({
     setSelectedGenero(genero)
   }
 
-  useEffect(() => {
-    console.log('selectedCity changed: ', selectedCity)
-  }, [selectedCity])
-  const openCityModal = () => {
-    setCityModal(!cityModal)
-  }
-  const handleSelectCity = (city) => {
-    console.log('city: ', city)
-    setSelectedCity(city)
-    setPickedCity(city)
-    dispatch(setCity(city))
-  }
+
+
 
   const descriptionSportMan = (field, value) => {
     setSportmanValues((prev) => ({
@@ -80,8 +70,7 @@ const SkillSeleccion = ({
     }))
   }
 
-  const [cityTop, setCityTop] = useState(0)
-  console.log(sportman.info,"valueees")
+
 
   return (
     <View

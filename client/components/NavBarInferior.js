@@ -26,6 +26,8 @@ const NavBarInferior = () => {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
   }, [])
+
+  
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {
@@ -110,7 +112,7 @@ const NavBarInferior = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={handleNavigation}
+        onPress={()=>handleNavigation()}
         style={activeIcon === 'profile' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
       >
         {imgPerfil && (

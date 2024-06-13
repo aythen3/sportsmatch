@@ -61,7 +61,6 @@ const LoginSwitch = () => {
   const [igToken, setIgToken] = useState(null)
   const { height, width } = useWindowDimensions()
 
-  console.log(width, '-----', height, 'medidas')
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman, user, loged } = useSelector((state) => state.users)
@@ -73,11 +72,8 @@ const LoginSwitch = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-    console.log('normalUserAuth from app : ', normalUserAuth)
-    console.log('facebookUserAuth from app : ', facebookUserAuth)
-    console.log('googleUserAuth from app : ', googleUserAuth)
+
     if (googleUserAuth) {
-      console.log('login with google...')
       const googleId = await JSON.parse(googleUserAuth)
       const response = await dispatch(login({ googleId }))
       dispatch(
@@ -90,7 +86,6 @@ const LoginSwitch = () => {
       return
     }
     if (facebookUserAuth) {
-      console.log('login with facebook...')
       const facebookId = await JSON.parse(facebookUserAuth)
       const response = await dispatch(login({ facebookId }))
       dispatch(
@@ -100,15 +95,12 @@ const LoginSwitch = () => {
       return
     }
     if (normalUserAuth) {
-      console.log('login with normal user...')
       const valuesUser = await JSON.parse(normalUserAuth)
-      console.log('valuesuser: ', valuesUser)
       // const res = await AsyncStorage.removeItem('userAuth')
       // console.log('resres: ', res)
 
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log('response: ', response.payload)
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
@@ -123,7 +115,6 @@ const LoginSwitch = () => {
   }
 
   useEffect(() => {
-    console.log('hola')
     getUserAuth()
   }, [])
 
@@ -137,9 +128,6 @@ const LoginSwitch = () => {
     setIsPlayer(!isPlayer)
   }
 
-  useEffect(() => {
-    console.log('isSportman', isSportman)
-  }, [isSportman])
 
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
@@ -169,69 +157,9 @@ const LoginSwitch = () => {
       const { id_token } = response.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
-      console.log('deberia crear el usuario')
     }
   }, [response])
 
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  // useEffect(() => {
-  //   if (user?.user?.club || user?.user?.sportman) {
-  //     console.log("entra aca no se que ondaaaaaasdasdasdasdasdasdasa")
-  //     navigation.navigate('SiguiendoJugadores')
-  //   } else {
-  //     if (user?.user?.type === 'club') {
-  //       console.log("entra aca")
-  //       if (user?.accesToken) {
-  //         navigation.navigate('stepsClub')
-  //       }
-  //     } else {
-  //       if (user?.accesToken) {
-  //         console.log('jugador')
-  //         navigation.navigate('Paso1')
-  //       }
-  //     }
-  //   }
-  // }, [user])
-
-  useEffect(() => {
-    if (!loged) {
-      if (user?.user?.club || user?.user?.sportman) {
-        console.log('entra aca no se que ondaaaaaa')
-        navigation.navigate('SiguiendoJugadores')
-        dispatch(logedIn())
-      } else {
-        if (user?.user?.type === 'club') {
-          console.log('entra aca')
-          if (user?.accesToken) {
-            navigation.navigate('stepsClub')
-          }
-        } else {
-          if (user?.accesToken) {
-            console.log('jugador')
-            navigation.navigate('Paso1')
-          }
-        }
-      }
-    }
-  }, [user])
 
   useEffect(() => {
     getLocalUser()
@@ -265,6 +193,7 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
+              navigation.navigate('SiguiendoJugadores')
             } catch (error) {
               console.log('Error:', error)
             }
@@ -296,13 +225,14 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('facebookAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
+              navigation.navigate('SiguiendoJugadores')
+
             } catch (error) {
               console.log('Error:', error)
             }
           })
         }
       } else {
-        console.log('user not authenticated')
       }
     })
     return () => unsub()
@@ -316,7 +246,6 @@ const LoginSwitch = () => {
           access_token: accessToken
         }
       })
-      console.log('response: ', response.data)
       return response.data
     } catch (error) {
       console.error('Error fetching Instagram username:', error)
@@ -385,7 +314,6 @@ const LoginSwitch = () => {
     dispatch(create(user)).then(async (data) => {
       try {
         const response = await dispatch(login({ appleId: user.appleId }))
-        console.log('response google:', response.payload)
         dispatch(
           setIsSpotMan(response.payload.user.type === 'club' ? false : true)
         )
@@ -448,9 +376,9 @@ const LoginSwitch = () => {
                   value={isEnabled}
                   backgroundActive={'#00FF18'}
                   backgroundInactive={'#00FF18'}
+                  circleActiveColor={'black'}
                   activeText={false}
                   inActiveText={false}
-                  circleActiveColor={'black'}
                   circleInActiveColor={'black'}
                   barHeight={18}
                   switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider

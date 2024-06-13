@@ -62,10 +62,7 @@ const ChatAbierto1 = () => {
     setSelectedUserDetails(
       allUsers.filter((user) => user.id === route.params.receiverId)[0]
     )
-    console.log(
-      'userData',
-      allUsers.filter((user) => user.id === route.params.receiverId)[0]
-    )
+
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
@@ -100,11 +97,9 @@ const ChatAbierto1 = () => {
   const handleFollow = () => {
     setShowOptionsModal(false)
     let actualUser = _.cloneDeep(user)
-    console.log('atualUser: ', actualUser)
     const actualFollowers =
       allUsers.filter((user) => user.id === selectedUserDetails.id)[0]
         .followers || []
-    console.log('actual followers: ', actualFollowers)
     const newFollowers = actualFollowers.includes(user?.user?.id)
       ? actualFollowers.filter((follower) => follower !== user?.user?.id)
       : [...actualFollowers, user?.user?.id]
@@ -113,9 +108,7 @@ const ChatAbierto1 = () => {
       ? userFollowing.filter((followed) => followed !== selectedUserDetails.id)
       : [...userFollowing, selectedUserDetails.id]
     actualUser.user.following = newFollowingArray
-    console.log('user: ', actualUser?.user?.following)
 
-    console.log('setting other user followers to:', newFollowers)
     dispatch(
       updateUserData({
         id: selectedUserDetails.id,
@@ -123,7 +116,6 @@ const ChatAbierto1 = () => {
       })
     )
       .then((data) => {
-        console.log('setting user following to:', newFollowingArray)
         dispatch(
           updateUserData({
             id: user.user.id,
@@ -162,11 +154,9 @@ const ChatAbierto1 = () => {
       receiverId: route.params.receiverId.toString(),
       room: roomId
     }
-    console.log('removing chat...', body)
     axiosInstance.post('chat/marcarMensajesComoEliminados', body)
   }
 
-  console.log('allMessages.length', allMessages.length)
 
   if (selectedUserDetails)
     return (
@@ -356,7 +346,6 @@ const ChatAbierto1 = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
               onPress={() => {
-                console.log('triggered CA1')
                 getUsersMessages()
                 navigation.goBack()
               }}

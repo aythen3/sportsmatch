@@ -10,32 +10,29 @@ import {
 
 class ClubData {
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   @IsString()
-  @IsNotEmpty()
   city: string;
 
   @IsString()
-  @IsNotEmpty()
   country: string;
 
   @IsString()
-  @IsNotEmpty()
   field: string;
 
   @IsNumber()
-  @IsNotEmpty()
   year: number;
 
   @IsNumber()
-  @IsNotEmpty()
   capacity: number;
 
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsString()
+  sport: string;
 
   @IsString()
   @IsOptional()
@@ -53,6 +50,8 @@ export class CreateClubDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+
+
 
   @IsString()
   @IsNotEmpty()

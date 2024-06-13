@@ -29,14 +29,12 @@ const InscritosAMisOfertas = () => {
 
   const inscriptions = route.params.inscriptions
 
-  console.log('inscriptions', inscriptions)
   return (
     <View style={styles.inscritosAMisOfertas}>
       <View style={styles.inscritosParent}>
         <Pressable
           style={styles.coolicon}
           onPress={() => {
-            console.log('triggered IAMO')
             navigation.goBack()
           }}
         >
@@ -49,7 +47,6 @@ const InscritosAMisOfertas = () => {
         <Pressable
           style={styles.carlesMirPosition}
           onPress={() => {
-            console.log('IAMO')
             navigation.goBack()
           }}
         >
@@ -120,22 +117,17 @@ const InscritosAMisOfertas = () => {
                         offer.inscriptions &&
                         offer.inscriptions.includes(inscription)
                     )[0].id
-                    console.log('offerId: ', offerId)
                     const newInscriptions = currentOffer.inscriptions.filter(
                       (applicant) => applicant !== inscription
                     )
 
-                    console.log('newInscriptions: ', newInscriptions)
                     const actualMatches = currentOffer.matches || []
                     const newMatchs = [...actualMatches, inscription]
-                    console.log('newMatchs: ', newMatchs)
 
                     const sportmanUser = allUsers.filter(
                       (user) => user?.sportman?.id === inscription
                     )[0]
-                    console.log('sportmanUser', sportmanUser)
 
-                    console.log('club', user.user)
 
                     dispatch(
                       sendMatch({
@@ -162,23 +154,7 @@ const InscritosAMisOfertas = () => {
                       })
                     )
                       .then((data) => {
-                        console.log('data from sendMatch: ', data)
-                        console.log('body to sendNotification: ', {
-                          title: 'Match',
-                          message: 'Has hecho match!',
-                          recipientId:
-                            data?.payload?.prop1?.sportManData?.userId,
-                          date: new Date(),
-                          read: false,
-                          prop1: {
-                            matchId: data?.payload?.id,
-                            clubData: {
-                              name: user?.user?.nickname,
-                              userId: user.user.id,
-                              ...user?.user?.club
-                            }
-                          }
-                        })
+                     
                         dispatch(
                           sendNotification({
                             title: 'Match',

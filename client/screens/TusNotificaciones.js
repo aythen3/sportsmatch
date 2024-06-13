@@ -20,7 +20,6 @@ const TusNotificaciones = () => {
         <Pressable
           style={styles.cooliconParent}
           onPress={() => {
-            console.log('TN')
             navigation.goBack()
           }}
         >

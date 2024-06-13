@@ -23,6 +23,7 @@ import { create, getAllUsers } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
+import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
@@ -96,7 +97,6 @@ const Registrarse = () => {
           return
         }
         if (valuesUser.password === confirmPassword) {
-          console.log('valuesUser: ', valuesUser)
           dispatch(create(valuesUser))
           navigation.navigate('IniciarSesin', { isPlayer })
         } else {
@@ -277,11 +277,9 @@ const Registrarse = () => {
                           confirmPasswordInputRef.current.focus()
                         }}
                       />
-                      <TouchableOpacity
-                        onPress={() => setPassview1(!passview1)}
-                      >
-                        <PassView></PassView>
-                      </TouchableOpacity>
+                       <TouchableOpacity onPress={()=>setPassview1(!passview1)}>
+                   {passview1 ?  <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
+                    </TouchableOpacity>
                     </View>
                   </View>
                   <View style={[styles.campo3Frame, styles.framePosition]}>
@@ -308,11 +306,9 @@ const Registrarse = () => {
                         ref={confirmPasswordInputRef}
                         onSubmitEditing={submit}
                       />
-                      <TouchableOpacity
-                        onPress={() => setPassview2(!passview2)}
-                      >
-                        <PassView></PassView>
-                      </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
+                    {passview2 ? <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
+                    </TouchableOpacity>
                     </View>
                   </View>
                 </View>

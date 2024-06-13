@@ -75,11 +75,9 @@ const SeleccionarImagen = () => {
       console.error('Permiso denegado para acceder a la galería de imágenes.')
       return
     }
-    const filtro = albumData.filter((e) => e.title == selectedAlbum)
-    console.log('filtro', filtro)
+    const filtro = albumData.filter(e => e.title == selectedAlbum)
 
     const assets = await MediaLibrary.getAssetsAsync({ album: filtro[0] })
-    console.log(assets, 'eeeeeeeeeeeeeee')
     const arr = []
     const imagesArray = assets?.assets ?? []
     setImagenes(imagesArray)
@@ -92,7 +90,6 @@ const SeleccionarImagen = () => {
   }, [selectedAlbum])
 
   const handleSeleccionarImagen = (imagen) => {
-    console.log('imagen: ', imagen)
     setSelectedImage(imagen)
   }
   const [hasPermission, setHasPermission] = useState(null)
@@ -113,15 +110,12 @@ const SeleccionarImagen = () => {
   }
 
   useEffect(() => {
-    console.log('selectedImage changed', selectedImage)
   }, [selectedImage])
 
   const takePicture = async () => {
-    console.log('on takePicture!')
     if (cameraReff?.current) {
       const photo = await cameraReff.current.takePictureAsync()
       pickImage('a', photo.uri)
-      console.log(photo)
       setSelectedImage(photo)
       // pickImageFromCamera(selectedPicture, photo.uri);
 
@@ -131,9 +125,7 @@ const SeleccionarImagen = () => {
   }
 
   const handleSelect = (image) => {
-    console.log(image)
     const exist = multiSelect.find((png) => png.id === image.id)
-    console.log(exist, 'aaaaa')
     if (!exist) {
       setMultiSelect([...multiSelect, image])
     } else {
@@ -272,7 +264,6 @@ const SeleccionarImagen = () => {
             <View style={styles.container}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('SIMG')
                   navigation.goBack()
                 }}
               >

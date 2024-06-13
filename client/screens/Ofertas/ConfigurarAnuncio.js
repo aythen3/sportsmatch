@@ -117,7 +117,6 @@ const ConfigurarAnuncio = () => {
   }
 
   const getClubData = async (id) => {
-    console.log('id: ', id)
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
@@ -132,14 +131,12 @@ const ConfigurarAnuncio = () => {
     const fetchClubData = async () => {
       try {
         const data = await getClubData(club.id)
-        console.log('club data:', data)
       } catch (error) {
         console.error('Error fetching club data:', error)
       }
     }
     fetchClubData()
   }, [])
-console.log(club,"opossss")
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
@@ -149,7 +146,6 @@ console.log(club,"opossss")
           <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
           <Text
             onPress={() => {
-              console.log('CA')
               statesCleanUp()
               navigation.goBack()
             }}
@@ -550,11 +546,9 @@ console.log(club,"opossss")
 
                     clubId: club?.id
                   }
-                  console.log('data: ', data)
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
-                  console.log('CA')
                   navigation.goBack()
                 } else {
                   // const data = {
@@ -582,7 +576,6 @@ console.log(club,"opossss")
                       retribution: selectedRemuneration === 'Si' ? true : false
                     })
                   }
-                  console.log('update data: ', data)
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
                     (data) => dispatch(getAllOffers())
                   )

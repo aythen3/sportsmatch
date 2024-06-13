@@ -60,13 +60,6 @@ const OfertasEmitidas = () => {
 
   // console.log('allpos: ', allPositions)
 
-  useEffect(() => {
-    console.log('clubId', club.id)
-    console.log(
-      'offers: ',
-      offers.map((offer) => offer.club.id)
-    )
-  }, [])
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>

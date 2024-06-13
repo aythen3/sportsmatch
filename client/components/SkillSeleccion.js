@@ -20,7 +20,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
-  console.log('sportmann: ', sportman)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
@@ -140,10 +139,8 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent
     const height = contentOffset.y // Get the scrolled height
-    console.log('height: ', height)
     setScrolledHeight(height)
   }
-  console.log(sportman?.info, "infoooo")
   const selectores = () => {
     if (selectedSport == "Fútbol") setSelectedOptions(opciones.futbol)
     if (selectedSport == "Fútbol Sala") setSelectedOptions(opciones.futbolSala)
@@ -235,7 +232,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
           collapsable={false}
           onLayout={(event) => {
             event.target.measure((x, y, width, height, pageX, pageY) => {
-              console.log(pageY)
               setCategoryTop(pageY)
             })
           }}
@@ -267,7 +263,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
           collapsable={false}
           onLayout={(event) => {
             event.target.measure((x, y, width, height, pageX, pageY) => {
-              console.log(pageY)
               setPositionTop(pageY)
             })
           }}

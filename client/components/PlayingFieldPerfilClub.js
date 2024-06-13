@@ -2,8 +2,11 @@ import React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
+import { useSelector } from 'react-redux'
 
 const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
+  const { mainColor } = useSelector((state) => state.users)
+
   return (
     <View style={styles.moduloCampo}>
       <View style={styles.graficotextoLateral}>
@@ -19,17 +22,17 @@ const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
               navigation.goBack()
             }}
           >
-            <Text style={[styles.estadio, styles.taxto1Clr]}>Estadio</Text>
+            <Text style={[styles.estadio, styles.taxto1Clr,{color:mainColor}]}>Estadio</Text>
           </Pressable>
           <View style={styles.bloqueInformacion}>
-            <Text style={styles.nombreDelEstadio}>
+            <Text style={{...styles.nombreDelEstadio,color:mainColor}}>
               Nombre del estadio o pabellón
             </Text>
-            <Text style={styles.secondText}>{fieldName}</Text>
-            <Text style={styles.pasEspaaTypo}>Ciudad</Text>
-            <Text style={styles.secondText}>{city}</Text>
-            <Text style={[styles.pasEspaa, styles.pasEspaaTypo]}>País</Text>
-            <Text style={styles.secondText}>{country}</Text>
+            <Text style={{...styles.secondText,color:mainColor}}>{fieldName}</Text>
+            <Text style={{...styles.pasEspaaTypo,color:mainColor}}>Ciudad</Text>
+            <Text style={{...styles.secondText,color:mainColor}}>{city}</Text>
+            <Text style={[styles.pasEspaa, styles.pasEspaaTypo,{color:mainColor}]}>País</Text>
+            <Text style={{...styles.secondText,color:mainColor}}>{country}</Text>
           </View>
         </View>
       </View>
