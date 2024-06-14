@@ -15,15 +15,14 @@ import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
 
 
-export const detectSportColor = (sport,dispatch)=>{
-  if (sport == 'Fútbol Sala' ) { dispatch(setMainColor  ('#0062FF')) }
-  if (sport == 'Hockey' ){ dispatch(setMainColor('#E1AA1E')) }
-  if (sport == 'Voley' ) { dispatch(setMainColor('#A8154A')) }
-  if (sport == 'Handball' ) { dispatch(setMainColor('#6A1C4F')) }
-  if (sport == 'Fútbol' ) { dispatch(setMainColor('#00FF18')) }
-  if (sport == 'Básquetbol' ) { dispatch(setMainColor('#E1451E')) }
+export const detectSportColor = (sport, dispatch) => {
+  if (sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
+  if (sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
+  if (sport == 'Voley') { dispatch(setMainColor('#A8154A')) }
+  if (sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
+  if (sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
+  if (sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
 }
-
 
 const PantallaInicio = () => {
   const isFocused = useIsFocused()
@@ -33,38 +32,67 @@ const PantallaInicio = () => {
 
   const navigateToOtraPantalla = async (user) => {
     const valuesUser = await JSON.parse(user) || {};
-    if (valuesUser.email) {
+    if (valuesUser.email && !valuesUser.uid) {
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log("response", response.payload.user)        
-          if(response.payload.user.sportman || response.payload.user.club){
+          console.log("response", response.payload.user)
+          if (response.payload.user.sportman || response.payload.user.club) {
 
-          detectSportColor(response.payload.user.sportman?.info?.sport || response.payload.user.club.sport ,dispatch)
-          dispatch(
-            setIsSpotMan(response.payload.user.type === 'club' ? false : true)
-          )
-          dispatch(setClub(response))
-          navigation.navigate('SiguiendoJugadores')
-         }
-         else {
-          if(response.payload.user.type == 'club') {
-            return navigation.navigate('stepsClub')
+            detectSportColor(response.payload.user.sportman?.info?.sport || response.payload.user.club.sport, dispatch)
+            dispatch(
+              setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+            )
+            dispatch(setClub(response))
+           return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes:[{name:"SiguiendoJugadores"}]
+            
+             })
           }
-          return navigation.navigate('Paso1')
+          else {
+            if (response.payload.user.type == 'club') {
+              return navigation.navigate('stepsClub')
+            }
+            return navigation.navigate('Paso1')
 
-         }
+          }
         })
         .catch((error) => {
           console.error(error)
         })
 
     }
-    if(valuesUser.uid){
-       dispatch(login({ googleId: valuesUser.uid })).then(async ()=> {
+    if (valuesUser.uid) {
+
+      dispatch(login({ googleId: valuesUser.uid })).then(async (res) => {
+
+        detectSportColor(res.payload.user.sportman?.info?.sport || res.payload.user.club.sport, dispatch)
+
         dispatch(
           setIsSpotMan(valuesUser.type === 'club' ? false : true)
         )
-        navigation.navigate('SiguiendoJugadores') })
+        if (res.payload.user.sportman || res.payload.user.club) {
+         return navigation.reset({
+
+            index: 0,
+            history: false,
+            routes:[{name:"SiguiendoJugadores"}]
+          
+           })
+
+        }
+        if (res.payload.user.type === 'sportman') {
+          return navigation.navigate('Paso1')
+
+        } if (res.payload.user.type === 'club') {
+          return navigation.navigate('StepsClub')
+        }
+
+        console.log(res.payload.user, "reeeee")
+        // navigation.navigate('SiguiendoJugadores') 
+      })
     }
     else {
       navigation.navigate('LoginSwitch')
@@ -72,26 +100,40 @@ const PantallaInicio = () => {
     }
   }
 
-  useEffect(async () => {
-    dispatch(getAll())
-    const getUser = async () => {
-      const res = await AsyncStorage.getItem('userAuth')
-      const resGoogle =  await AsyncStorage.getItem('@user')
-      if(res) return res
-      if(resGoogle) return resGoogle
-      else{
-        return null
-      }
+  const getUser = async () => {
+    const res = await AsyncStorage.getItem('userAuth')
+    const resGoogle = await AsyncStorage.getItem('@user')
+    const resInstagram = await AsyncStorage.getItem('facebookAuth')
+    if (res) return res
+    if (resGoogle) return resGoogle
+    if (resInstagram) return resInstagram
+
+    else {
+      return null
     }
-    const responde = await getUser()
-    // dispatch(getAllPositions())
-    const timeoutId = setTimeout(() => {
-      navigateToOtraPantalla(responde)
-    }, 2000)
+  }
 
-    return () => clearTimeout(timeoutId)
-  }, [])
+  useEffect(() => {
+    const asyncpet = async () => {
+      const res = await getUser();
+      if (res) {
+        return res;
+      } else {
+        return null;
+      }
+    };
 
+    dispatch(getAll());
+
+    asyncpet().then((responde) => {
+      console.log(responde, "responde aca");
+
+      navigateToOtraPantalla(responde);
+
+    });
+
+    // Si necesitas limpiar el timeout al desmontar el componente
+  }, []);
 
 
 

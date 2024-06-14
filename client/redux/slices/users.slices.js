@@ -71,7 +71,7 @@ const usersSlices = createSlice({
       state.position = action.payload
     },
     clearUser: (state) => {
-      state.user = null
+      state.user = {}
     },
     updateUser: (state, action) => {
       state.user = action.payload

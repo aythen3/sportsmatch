@@ -90,7 +90,13 @@ const IniciarSesin = () => {
           setLoading(false)
           if (response.payload?.user?.club || response.payload.user?.sportman) {
             setActiveIcon('diary')
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes:[{name:"SiguiendoJugadores"}]
+            
+             })
           } else {
             if (response.payload?.user?.type === 'club') {
               if (user?.accesToken) {
@@ -109,6 +115,8 @@ const IniciarSesin = () => {
         })
     }
   }
+
+  
 
   return (
     <SafeAreaView style={styles.iniciarSesin}>

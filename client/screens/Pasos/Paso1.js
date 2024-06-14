@@ -346,7 +346,7 @@ const Paso1 = () => {
     if (!loged) {
       if (!sportman && !profesional && !invitado) {
         await dispatch(clearUser())
-        navigation.goBack()
+        navigation.navigate('LoginSwitch')
         return true
       }
       if (stepsProfesional > 0) {

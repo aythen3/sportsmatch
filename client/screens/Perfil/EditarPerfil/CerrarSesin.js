@@ -7,7 +7,7 @@ import {
   View,
   TouchableOpacity
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation ,StackActions , CommonActions } from '@react-navigation/native'
 import {
   FontSize,
   Color,
@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { clearSportman } from '../../../redux/slices/sportman.slices'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -74,15 +75,19 @@ quieres `}</Text>
               <TouchableOpacity
                 style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
                 onPress={async () => {
-                  navigation.navigate('LoginSwitch')
-                  firebaseLogout()
                   await AsyncStorage.removeItem('userAuth')
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')
                   await AsyncStorage.removeItem('@user')
-                  dispatch(clearUser())
-                  dispatch(clearSportman())
-                  dispatch(logedOut())
+                  navigation.reset({
+
+                    index: 0,
+                    history: false,
+                    routes:[{name:"LoginSwitch"}]
+                  
+                   })
+                
+                  firebaseLogout()
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>
