@@ -26,6 +26,17 @@ const clubSlices = createSlice({
         state.error = false
       })
       .addCase(getChatHistory.fulfilled, (state, action) => {
+        console.log(
+          '========SETTING ALLMESSAGES TO PAYLOAD',
+          action.payload.map((message) => {
+            return {
+              message: message.message,
+              receiverId: message.receiverId,
+              senderId: message.senderId,
+              roomId: message.room
+            }
+          })
+        )
         state.loading = false
         state.allMessages = action.payload
         state.error = false

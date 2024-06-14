@@ -166,8 +166,12 @@ const LoginSwitch = () => {
             // console.log('data from back:', data);
             try {
               const response = await dispatch(login({ googleId: user.uid }))
-              detectSportColor(response.payload.user.sportman?.info?.sport || response.payload.user.club.sport, dispatch)
-              console.log('response google:', response.payload)
+              detectSportColor(
+                response.payload.user.sportman?.info?.sport ||
+                  response.payload.user.club.sport,
+                dispatch
+              )
+              //  console.log('response google:', response.payload)
 
               dispatch(
                 setIsSpotMan(
@@ -181,19 +185,19 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
-              if (response.payload.user.sportman || response.payload.user.club) {
+              if (
+                response.payload.user.sportman ||
+                response.payload.user.club
+              ) {
                 navigation.reset({
                   index: 0,
-                  routes:[{name:"SiguiendoJugadores"}]
-                
-                 })
+                  routes: [{ name: 'SiguiendoJugadores' }]
+                })
               } else if (response.payload.user.type === 'sportman') {
                 navigation.navigate('Paso1')
-              }
-              else {
+              } else {
                 navigation.navigate('StepsClub')
               }
-
             } catch (error) {
               console.log('Error:', error)
             }
@@ -212,7 +216,7 @@ const LoginSwitch = () => {
             // console.log('data from back fb:', data);
             try {
               const response = await dispatch(login({ facebookId: user.uid }))
-              console.log('response facebook:', response.payload)
+              //  console.log('response facebook:', response.payload)
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
@@ -227,10 +231,8 @@ const LoginSwitch = () => {
               dispatch(setClub(response))
               navigation.reset({
                 index: 0,
-                routes:[{name:"SiguiendoJugadores"}]
-              
-               })
-
+                routes: [{ name: 'SiguiendoJugadores' }]
+              })
             } catch (error) {
               console.log('Error:', error)
             }
@@ -276,7 +278,7 @@ const LoginSwitch = () => {
             const response = await dispatch(
               login({ facebookId: igToken.user_id.toString() })
             )
-            console.log('response instagram:', response.payload)
+            // console.log('response instagram:', response.payload)
             dispatch(
               setIsSpotMan(response.payload.user.type === 'club' ? false : true)
             )
@@ -288,9 +290,8 @@ const LoginSwitch = () => {
             dispatch(setClub(response))
             navigation.reset({
               index: 0,
-              routes:[{name:"SiguiendoJugadores"}]
-            
-             })
+              routes: [{ name: 'SiguiendoJugadores' }]
+            })
           } catch (error) {
             console.log('Error:', error)
           }

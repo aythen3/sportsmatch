@@ -62,7 +62,6 @@ const ChatAbierto1 = () => {
     setSelectedUserDetails(
       allUsers.filter((user) => user.id === route.params.receiverId)[0]
     )
-
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
@@ -156,7 +155,6 @@ const ChatAbierto1 = () => {
     }
     axiosInstance.post('chat/marcarMensajesComoEliminados', body)
   }
-
 
   if (selectedUserDetails)
     return (

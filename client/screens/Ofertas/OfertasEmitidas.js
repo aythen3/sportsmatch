@@ -34,6 +34,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const OfertasEmitidas = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const { mainColor } = useSelector((state) => state.users)
   const { club } = useSelector((state) => state.clubs)
   const { allPositions } = useSelector((state) => state.positions)
 
@@ -59,7 +60,6 @@ const OfertasEmitidas = () => {
   }
 
   // console.log('allpos: ', allPositions)
-
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -99,7 +99,14 @@ const OfertasEmitidas = () => {
               .map((offer, i) => (
                 <View key={offer.id} style={styles.offers}>
                   <View style={styles.offerView}>
-                    <Text style={[styles.oferta1, styles.sexo1Typo]}>
+                    <Text
+                      style={{
+                        color: mainColor,
+                        lineHeight: 14,
+                        fontSize: FontSize.t4TEXTMICRO_size,
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
                       Oferta {i + 1}
                     </Text>
                     <TouchableOpacity
@@ -315,11 +322,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-    justifyContent: 'flex-start',
-    gap: 11
+    justifyContent: 'space-between'
   },
   offers: {
-    width: (Dimensions.get('window').width * 0.89) / 2,
+    width: ((Dimensions.get('window').width - 30) * 0.97) / 2,
     marginTop: 20,
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: 8,

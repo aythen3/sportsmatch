@@ -36,11 +36,11 @@ const MiPerfil = () => {
 
   const { setActiveIcon } = useContext(Context)
 
-useEffect(()=>{
-if(isFocused){
-  setActiveIcon("profile")
-}
-},[isFocused])
+  useEffect(() => {
+    if (isFocused) {
+      setActiveIcon('profile')
+    }
+  }, [isFocused])
 
   const [selectedTab, setSelectedTab] = useState('Feed')
   const renderContent = () => {
@@ -52,20 +52,27 @@ if(isFocused){
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "transparent" }}>
-    
-      <StatusBar  translucent={true}  backgroundColor={'transparent'}/>
+    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+      <StatusBar translucent={true} backgroundColor={'transparent'} />
 
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={{ backgroundColor: Color.bLACK1SPORTSMATCH, overflow: 'hidden' }}
       >
         <View>
-          <Image
-            style={styles.imagenPosition}
-            contentFit="cover"
-            source={{ uri: sportman?.info?.img_front }}
-          />
+          {sportman?.info?.img_front === '' ? (
+            <Image
+              style={styles.imagenPosition}
+              contentFit="cover"
+              source={require('../../assets/avatar.png')}
+            />
+          ) : (
+            <Image
+              style={styles.imagenPosition}
+              contentFit="cover"
+              source={{ uri: sportman?.info?.img_front }}
+            />
+          )}
           <View
             style={{
               width: '95%',
@@ -89,7 +96,6 @@ if(isFocused){
                       uri: sportman?.info?.img_perfil
                     }}
                   />
-
                 )}
                 {!sportman?.info?.img_perfil && (
                   <Image
@@ -102,9 +108,8 @@ if(isFocused){
                       borderColor: '#000'
                     }}
                     contentFit="cover"
-                    source={require("../../assets/avatar.png")}
+                    source={require('../../assets/avatar.png')}
                   />
-
                 )}
                 <View
                   style={{
@@ -234,7 +239,7 @@ const styles = StyleSheet.create({
   },
   textTypo3: {
     textAlign: 'left',
-    color: "white",
+    color: 'white',
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 16,
     lineHeight: 20,

@@ -8,21 +8,38 @@ import { getAllPositions } from '../../redux/actions/positions'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { logedIn, setIsSpotMan, setMainColor } from '../../redux/slices/users.slices'
+import {
+  logedIn,
+  setIsSpotMan,
+  setMainColor
+} from '../../redux/slices/users.slices'
 import { setClub } from '../../redux/slices/club.slices'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
 
-
 export const detectSportColor = (sport, dispatch) => {
-  if (sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
-  if (sport == 'coach') { dispatch(setMainColor('#00F0FF')) }
-  if (sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
-  if (sport == 'Voley') { dispatch(setMainColor('#A8154A')) }
-  if (sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
-  if (sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
-  if (sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
+  if (sport == 'Fútbol Sala') {
+    dispatch(setMainColor('#0062FF'))
+  }
+  if (sport == 'coach') {
+    dispatch(setMainColor('#00F0FF'))
+  }
+  if (sport == 'Hockey') {
+    dispatch(setMainColor('#E1AA1E'))
+  }
+  if (sport == 'Voley') {
+    dispatch(setMainColor('#A8154A'))
+  }
+  if (sport == 'Handball') {
+    dispatch(setMainColor('#6A1C4F'))
+  }
+  if (sport == 'Fútbol') {
+    dispatch(setMainColor('#00FF18'))
+  }
+  if (sport == 'Básquetbol') {
+    dispatch(setMainColor('#E1451E'))
+  }
 }
 
 const PantallaInicio = () => {
@@ -32,17 +49,23 @@ const PantallaInicio = () => {
   const [isLoged, setIsLoged] = useState(false)
 
   const navigateToOtraPantalla = async (user) => {
-    const valuesUser = await JSON.parse(user) || {};
+    const valuesUser = (await JSON.parse(user)) || {}
     if (valuesUser.email && !valuesUser.uid) {
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log("response", response.payload.user)
-          if (response.payload?.user?.sportman || response.payload?.user?.club) {
+          // console.log("response", response.payload.user)
+          if (
+            response.payload?.user?.sportman ||
+            response.payload?.user?.club
+          ) {
             if (response.payload?.user?.sportman?.type === 'coach') {
               detectSportColor('coach', dispatch)
-
             } else {
-              detectSportColor(response.payload.user.sportman?.info?.sport || response?.payload?.user?.club?.sport, dispatch)
+              detectSportColor(
+                response.payload.user.sportman?.info?.sport ||
+                  response?.payload?.user?.club?.sport,
+                dispatch
+              )
             }
 
             dispatch(
@@ -50,59 +73,48 @@ const PantallaInicio = () => {
             )
             dispatch(setClub(response))
             return navigation.reset({
-
               index: 0,
               history: false,
-              routes: [{ name: "SiguiendoJugadores" }]
-
+              routes: [{ name: 'SiguiendoJugadores' }]
             })
-          }
-          else {
+          } else {
             if (response.payload.user.type == 'club') {
               return navigation.navigate('stepsClub')
             }
             return navigation.navigate('Paso1')
-
           }
         })
         .catch((error) => {
           console.error(error)
         })
-
     }
     if (valuesUser.uid) {
-
       dispatch(login({ googleId: valuesUser.uid })).then(async (res) => {
-
-        detectSportColor(res.payload.user.sportman?.info?.sport || res.payload.user.club.sport, dispatch)
-
-        dispatch(
-          setIsSpotMan(valuesUser.type === 'club' ? false : true)
+        detectSportColor(
+          res.payload.user.sportman?.info?.sport || res.payload.user.club.sport,
+          dispatch
         )
+
+        dispatch(setIsSpotMan(valuesUser.type === 'club' ? false : true))
         if (res.payload.user.sportman || res.payload.user.club) {
           return navigation.reset({
-
             index: 0,
             history: false,
-            routes: [{ name: "SiguiendoJugadores" }]
-
+            routes: [{ name: 'SiguiendoJugadores' }]
           })
-
         }
         if (res.payload.user.type === 'sportman') {
           return navigation.navigate('Paso1')
-
-        } if (res.payload.user.type === 'club') {
+        }
+        if (res.payload.user.type === 'club') {
           return navigation.navigate('StepsClub')
         }
 
-        console.log(res.payload.user, "reeeee")
-        // navigation.navigate('SiguiendoJugadores') 
+        console.log(res.payload.user, 'reeeee')
+        // navigation.navigate('SiguiendoJugadores')
       })
-    }
-    else {
+    } else {
       navigation.navigate('LoginSwitch')
-
     }
   }
 
@@ -113,7 +125,6 @@ const PantallaInicio = () => {
     if (res) return res
     if (resGoogle) return resGoogle
     if (resInstagram) return resInstagram
-
     else {
       return null
     }
@@ -121,27 +132,24 @@ const PantallaInicio = () => {
 
   useEffect(() => {
     const asyncpet = async () => {
-      const res = await getUser();
+      const res = await getUser()
       if (res) {
-        return res;
+        return res
       } else {
-        return null;
+        return null
       }
-    };
+    }
 
-    dispatch(getAll());
+    dispatch(getAll())
 
     asyncpet().then((responde) => {
-      console.log(responde, "responde aca");
+      console.log(responde, 'responde aca')
 
-      navigateToOtraPantalla(responde);
-
-    });
+      navigateToOtraPantalla(responde)
+    })
 
     // Si necesitas limpiar el timeout al desmontar el componente
-  }, []);
-
-
+  }, [])
 
   return (
     <SafeAreaView style={styles.pantallaInicio}>
@@ -182,8 +190,8 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   liniasAbajoIcon: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%'
   },
   icon: {
     height: '100%',

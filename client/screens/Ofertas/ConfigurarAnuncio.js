@@ -38,17 +38,16 @@ const ConfigurarAnuncio = () => {
   const { user } = useSelector((state) => state.users)
   const { allPositions } = useSelector((state) => state.positions)
 
-  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState('')
 
   const [selectedGender, setSelectedGender] = useState()
-  const [retribucion, setRetribucion] = useState("")
+  const [retribucion, setRetribucion] = useState('')
 
   const [selectedRemuneration, setSelectedRemuneration] = useState()
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedPriority, setSelectedPriority] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
-  const [selectedSport, setSelectedSport] = useState("")
-
+  const [selectedSport, setSelectedSport] = useState('')
 
   const [showRemunerationModal, setShowRemunerationModal] = useState()
   const [showPriorityModal, setShowPriorityModal] = useState()
@@ -114,12 +113,12 @@ const ConfigurarAnuncio = () => {
   const handleChange = (name, value) => {
     setValues((prev) => ({
       ...prev,
-      [name]: value,
-    }));
+      [name]: value
+    }))
     if (name === 'province') {
-      setSelectedProvince(value);
+      setSelectedProvince(value)
     }
-  };
+  }
 
   const getClubData = async (id) => {
     try {
@@ -509,41 +508,44 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-          {selectedRemuneration == "Si" && (
+          {selectedRemuneration == 'Si' && (
             <View style={{ width: '100%', gap: 8 }}>
               <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
                 Importe anual
               </Text>
 
-              <View style={{ width: "100%" }}>
-                <TextInput inputMode='numeric' value={retribucion} placeholder={selectedRemuneration || 'Seleccione retribución'} onChangeText={(e) => setRetribucion(e)} style={{ ...styles.containerBox, paddingHorizontal: 18 }}>
-                </TextInput>
+              <View style={{ width: '100%' }}>
+                <TextInput
+                  inputMode="numeric"
+                  value={retribucion}
+                  placeholder={selectedRemuneration || 'Seleccione retribución'}
+                  onChangeText={(e) => setRetribucion(e)}
+                  style={{ ...styles.containerBox, paddingHorizontal: 18 }}
+                ></TextInput>
               </View>
-
-
-
-
             </View>
           )}
         </View>
 
-        <TouchableOpacity
-          style={styles.botonsOferta}
-          onPress={() => navigation.navigate('SiguiendoJugadores')}
-        >
+        <View style={styles.botonsOferta}>
           <View>
-            <View style={[styles.botonPromocion, styles.boitonCrearFlexBox]}>
+            <TouchableOpacity
+              onPress={() => console.log('promocionando')}
+              style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
+            >
               <Text style={[styles.promocionarOferta, styles.ofertaTypo]}>
                 Promocionar la oferta
               </Text>
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
               onPress={async () => {
                 if (!editOffer) {
                   const data = {
                     offerData: {
-                      sexo: selectedGender == 'Hombre' && 'Male' || selectedGender == 'Mujer' && 'Female',
+                      sexo:
+                        (selectedGender == 'Hombre' && 'Male') ||
+                        (selectedGender == 'Mujer' && 'Female'),
                       category: selectedCategory,
                       urgency: selectedPriority,
                       prop1: retribucion,
@@ -555,7 +557,7 @@ const ConfigurarAnuncio = () => {
                             : null,
                       posit: selectedPosition,
                       paused: false,
-                      province: selectedProvince,
+                      province: selectedProvince
                     },
 
                     clubId: club?.id
@@ -581,15 +583,19 @@ const ConfigurarAnuncio = () => {
                   //   ...(club && { clubId: club.id })
                   // }
                   const data = {
-                    ...(selectedGender && { sexo: selectedGender == 'Hombre' && 'Male' || selectedGender == 'Mujer' && 'Female' }),
+                    ...(selectedGender && {
+                      sexo:
+                        (selectedGender == 'Hombre' && 'Male') ||
+                        (selectedGender == 'Mujer' && 'Female')
+                    }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
-                    ...(retribucion && { prop1: "asdasd" }),
+                    ...(retribucion && { prop1: 'asdasd' }),
                     ...(selectedPosition && { posit: selectedPosition }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
                     }),
-                    province: selectedProvince,
+                    province: selectedProvince
                   }
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
                     (data) => dispatch(getAllOffers())
@@ -604,7 +610,7 @@ const ConfigurarAnuncio = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -668,13 +674,13 @@ const styles = StyleSheet.create({
   contenido: {
     top: '5%',
     marginBottom: '5%',
-    height: "100%",
+    height: '100%',
     gap: 25
   },
   configurarAnuncio: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    height: "100%"
+    height: '100%'
   },
   topContainer: {
     flexDirection: 'row',
@@ -683,7 +689,7 @@ const styles = StyleSheet.create({
   },
   containerBox: {
     borderWidth: 0.5,
-    color: "white",
+    color: 'white',
     position: 'relative',
     borderColor: Color.colorWhitesmoke,
     borderRadius: 50,

@@ -19,15 +19,13 @@ const NavBarInferior = () => {
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
-
- 
   useEffect(() => {
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
   }, [])
 
-  console.log(user.user,'asdasdas')
+  // console.log(user.user,'asdasdas')
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {
@@ -40,24 +38,18 @@ const NavBarInferior = () => {
       case 'post':
         if (sportman.type == 'invitado') {
           navigation.navigate('Paso1')
-
         }
         if (user.user.club) {
           navigation.navigate('ConfigurarAnuncio')
-
-        }
-         else {
-
+        } else {
           navigation.navigate('SeleccionarImagen')
         }
         break
       case 'message':
         if (sportman.type == 'invitado') {
           navigation.navigate('Paso1')
-
         } else {
           navigation.navigate('TusNotificaciones1')
-
         }
 
         break
@@ -71,28 +63,37 @@ const NavBarInferior = () => {
       return navigation.navigate('Paso1')
     }
     if (user?.user?.type !== 'club') {
-      
       navigation.navigate('MiPerfil')
     } else {
       navigation.navigate('PerfilDatosPropioClub')
     }
-   return setActiveIcon('profile')
+    return setActiveIcon('profile')
   }
 
-  const imgPerfil = user?.user?.type !== 'club' ? sportman?.info?.img_perfil : user?.user?.club?.img_perfil;
-
+  const imgPerfil =
+    user?.user?.type !== 'club'
+      ? sportman?.info?.img_perfil
+      : user?.user?.club?.img_perfil
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => handleIconPress('diary')}
-        style={activeIcon === 'diary' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
+        style={
+          activeIcon === 'diary'
+            ? [styles.selected, { borderTopColor: mainColor }]
+            : styles.deselected
+        }
       >
         <DiarySVG isActive={activeIcon === 'diary'} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => handleIconPress('lens')}
-        style={activeIcon === 'lens' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
+        style={
+          activeIcon === 'lens'
+            ? [styles.selected, { borderTopColor: mainColor }]
+            : styles.deselected
+        }
       >
         <LensSVG isActive={activeIcon === 'lens'} />
       </TouchableOpacity>
@@ -104,10 +105,13 @@ const NavBarInferior = () => {
         <HomeSVG sportColor={mainColor} isActive={activeIcon === 'post'} />
       </TouchableOpacity>
 
-
       <TouchableOpacity
         onPress={() => handleIconPress('message')}
-        style={activeIcon === 'message' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
+        style={
+          activeIcon === 'message'
+            ? [styles.selected, { borderTopColor: mainColor }]
+            : styles.deselected
+        }
       >
         <View style={styles.iconContainer}>
           <MessageSVG
@@ -118,8 +122,12 @@ const NavBarInferior = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={()=>handleNavigation()}
-        style={activeIcon === 'profile' ? [styles.selected, { borderTopColor: mainColor }] : styles.deselected}
+        onPress={() => handleNavigation()}
+        style={
+          activeIcon === 'profile'
+            ? [styles.selected, { borderTopColor: mainColor }]
+            : styles.deselected
+        }
       >
         {imgPerfil && (
           <Image
@@ -128,13 +136,12 @@ const NavBarInferior = () => {
             source={{ uri: imgPerfil }}
           />
         )}
-        {!sportman?.info?.img_front &&  !imgPerfil && (
+        {!sportman?.info?.img_front && !imgPerfil && (
           <Image
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
             contentFit="cover"
-            source={require("../assets/avatar.png")}
+            source={require('../assets/avatar.png')}
           />
-
         )}
       </TouchableOpacity>
     </View>

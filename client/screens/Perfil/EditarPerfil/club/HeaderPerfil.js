@@ -40,7 +40,9 @@ const HeaderPerfil = ({
   const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { isSportman, user, allUsers,mainColor } = useSelector((state) => state.users)
+  const { isSportman, user, allUsers, mainColor } = useSelector(
+    (state) => state.users
+  )
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
@@ -74,7 +76,7 @@ const HeaderPerfil = ({
 
   useEffect(() => {
     const is = userFollowing?.includes(data?.author?.id)
-    if(is){
+    if (is) {
       setLiked(true)
     }
   }, [user])
@@ -84,11 +86,19 @@ const HeaderPerfil = ({
   return (
     <View>
       <TouchableOpacity>
-        <Image
-          style={styles.imgFront}
-          contentFit="cover"
-          source={{ uri: front }}
-        />
+        {front === '' || !front ? (
+          <Image
+            style={styles.imgFront}
+            contentFit="cover"
+            source={require('../../../../assets/avatar.png')}
+          />
+        ) : (
+          <Image
+            style={styles.imgFront}
+            contentFit="cover"
+            source={{ uri: front }}
+          />
+        )}
       </TouchableOpacity>
       <View
         style={{
@@ -138,7 +148,11 @@ const HeaderPerfil = ({
                 borderColor: '#000'
               }}
               contentFit="cover"
-              source={ avatar ? { uri: avatar } : require('../../../../assets/avatar.png')}
+              source={
+                avatar
+                  ? { uri: avatar }
+                  : require('../../../../assets/avatar.png')
+              }
             />
           )}
         </View>
@@ -158,7 +172,8 @@ const HeaderPerfil = ({
             <Text
               style={[
                 styles.jordiEspeltPvotBaloncesto,
-                styles.jugandoAlUniTypo,{fontSize:14,color:Color.colorGoldenrod}
+                styles.jugandoAlUniTypo,
+                { fontSize: 14, color: Color.colorGoldenrod }
               ]}
             >
               {sport}
@@ -169,13 +184,13 @@ const HeaderPerfil = ({
               style={[
                 styles.jordiEspeltPvotBaloncesto,
                 styles.jugandoAlUniTypo,
-                {fontSize:14,color:Color.gREY2SPORTSMATCH}
+                { fontSize: 14, color: Color.gREY2SPORTSMATCH }
               ]}
             >
               {position}
             </Text>
           )}
-        
+
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
@@ -200,81 +215,80 @@ const HeaderPerfil = ({
         <View style={styles.groupContainer}>
           {!isSportman ? (
             <Pressable
-            onPress={() => {
-              if(sportman?.type == 'invitado') return
+              onPress={() => {
+                if (sportman?.type == 'invitado') return
 
-              setLiked(!liked)
-              let actualUser = _.cloneDeep(user)
-              const actualFollowers =
-                allUsers?.filter((user) => user.id === data.author.id)[0]
-                  .followers || []
-              const newFollowers = actualFollowers.includes(user?.user?.id)
-                ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
-                : [...actualFollowers, user?.user?.id]
+                setLiked(!liked)
+                let actualUser = _.cloneDeep(user)
+                const actualFollowers =
+                  allUsers?.filter((user) => user.id === data.author.id)[0]
+                    .followers || []
+                const newFollowers = actualFollowers.includes(user?.user?.id)
+                  ? actualFollowers.filter(
+                      (follower) => follower !== user?.user?.id
+                    )
+                  : [...actualFollowers, user?.user?.id]
 
-              const newFollowingArray = userFollowing?.includes(
-                data?.author?.id
-              )
-                ? userFollowing.filter(
-                    (followed) => followed !== data?.author?.id
-                  )
-                : [...userFollowing, data?.author?.id]
-              actualUser.user.following = newFollowingArray
+                const newFollowingArray = userFollowing?.includes(
+                  data?.author?.id
+                )
+                  ? userFollowing.filter(
+                      (followed) => followed !== data?.author?.id
+                    )
+                  : [...userFollowing, data?.author?.id]
+                actualUser.user.following = newFollowingArray
 
-              dispatch(
-                updateUserData({
-                  id: data.author.id,
-                  body: { followers: newFollowers }
-                })
-              )
-                .then((data) => {
-                  dispatch(
-                    updateUserData({
-                      id: user.user.id,
-                      body: { following: newFollowingArray }
-                    })
-                  )
-                })
-                .then((response) => {
-                  if (newFollowers.includes(user?.user?.id)) {
+                dispatch(
+                  updateUserData({
+                    id: data.author.id,
+                    body: { followers: newFollowers }
+                  })
+                )
+                  .then((data) => {
                     dispatch(
-                      sendNotification({
-                        title: 'Follow',
-                        message: `${user.user.nickname} ha comenzado a seguirte`,
-                        recipientId: data?.author?.id,
-                        date: new Date(),
-                        read: false,
-                        prop1: {
-                          userId: user?.user?.id,
-                          userData: {
-                            ...user
-                          }
-                        }
+                      updateUserData({
+                        id: user.user.id,
+                        body: { following: newFollowingArray }
                       })
                     )
-                  }
-                  dispatch(updateUser(actualUser))
-                  dispatch(getAllUsers())
-                })
-            }}
-            style={styles.leftButton}>
+                  })
+                  .then((response) => {
+                    if (newFollowers.includes(user?.user?.id)) {
+                      dispatch(
+                        sendNotification({
+                          title: 'Follow',
+                          message: `${user.user.nickname} ha comenzado a seguirte`,
+                          recipientId: data?.author?.id,
+                          date: new Date(),
+                          read: false,
+                          prop1: {
+                            userId: user?.user?.id,
+                            userData: {
+                              ...user
+                            }
+                          }
+                        })
+                      )
+                    }
+                    dispatch(updateUser(actualUser))
+                    dispatch(getAllUsers())
+                  })
+              }}
+              style={styles.leftButton}
+            >
               <Image
                 style={{ ...styles.frameChild, marginRight: 10 }}
                 contentFit="cover"
                 source={require('../../../../assets/group-5361.png')}
               />
               <Text style={[styles.ojear, styles.timeTypo]}>
-              { liked
-                  ? 'Dejar de Ojear'
-                  : 'Ojear'}
+                {liked ? 'Dejar de Ojear' : 'Ojear'}
               </Text>
             </Pressable>
           ) : (
             <Pressable
               onPress={() => {
-                if(sportman?.type == 'invitado') return
+                if (sportman?.type == 'invitado') return
                 setLiked(!liked)
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
@@ -336,24 +350,21 @@ const HeaderPerfil = ({
               }}
             >
               <Text style={[styles.ojear, styles.timeTypo]}>
-                { liked
-                  ? 'Dejar de seguir'
-                  : 'Seguir'}
+                {liked ? 'Dejar de seguir' : 'Seguir'}
               </Text>
             </Pressable>
           )}
           {isSportman && external && (
             <TouchableOpacity
-              onPress={() =>
-              {  
-                if(sportman?.type == 'invitado') return
+              onPress={() => {
+                if (sportman?.type == 'invitado') return
 
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data.author.id,
                   receiverName: data.author.nickname,
                   profilePic: avatar
-                })}
-              }
+                })
+              }}
               style={styles.leftButton}
             >
               <Text style={[styles.ojear, styles.timeTypo]}>
@@ -411,7 +422,6 @@ const HeaderPerfil = ({
             )?.length === 0 ? (
             <Pressable
               onPress={() => {
-
                 setMatchSended(true)
                 dispatch(
                   sendMatch({
@@ -819,7 +829,8 @@ const HeaderPerfil = ({
             {'Seguidores'}
           </Text>
           <Text style={styles.numeroText}>
-            {allUsers?.filter((user) => user.id === data.author.id)[0]?.followers
+            {allUsers?.filter((user) => user.id === data.author.id)[0]
+              ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
                   .followers?.length
               : '0'}
@@ -846,7 +857,7 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-             
+
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
@@ -854,19 +865,33 @@ const HeaderPerfil = ({
               marginVertical: 10
             }}
           >
-           <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
-              {user.user.club.year}
-            </Text>
-            <Text
+            <View
               style={{
-                color: mainColor,
-                fontSize: 12,textAlign:"center"
+                height: '100%',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}
             >
-              Fundación
-            </Text>
-           </View>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 27,
+                  fontWeight: 500,
+                  textAlign: 'center'
+                }}
+              >
+                {user.user.club.year}
+              </Text>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 12,
+                  textAlign: 'center'
+                }}
+              >
+                Fundación
+              </Text>
+            </View>
           </View>
           <View
             style={{
@@ -876,7 +901,7 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-             
+
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
@@ -884,21 +909,33 @@ const HeaderPerfil = ({
               marginVertical: 10
             }}
           >
-           <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-           <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 ,textAlign:"center"}}>
-              {user.user.club.capacity}
-            </Text>
-            <Text
+            <View
               style={{
-                color: mainColor,
-                fontSize: 12,
-                textAlign:"center"
-        
+                height: '100%',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}
             >
-              Aforo
-            </Text>
-           </View>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 27,
+                  fontWeight: 500,
+                  textAlign: 'center'
+                }}
+              >
+                {user.user.club.capacity}
+              </Text>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 12,
+                  textAlign: 'center'
+                }}
+              >
+                Aforo
+              </Text>
+            </View>
           </View>
           <View
             style={{
@@ -908,7 +945,7 @@ const HeaderPerfil = ({
               borderColor: '#252525',
               alignItems: 'center',
               justifyContent: 'center',
-             
+
               borderRadius: 100,
               height: (Dimensions.get('window').width * 0.9) / 3 - 15,
               width: (Dimensions.get('window').width * 0.9) / 3 - 15,
@@ -916,20 +953,33 @@ const HeaderPerfil = ({
               marginVertical: 10
             }}
           >
-          <View style={{height:"100%",flexDirection:"column",justifyContent:"center"}}>
-          <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 , textAlign:"center" }}>
-              {clubOffers?.length}
-            </Text>
-            <Text
+            <View
               style={{
-                color:mainColor,
-                fontSize: 12,
-                textAlign:"center"
+                height: '100%',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}
             >
-              Nº ofertas
-            </Text>
-          </View>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 27,
+                  fontWeight: 500,
+                  textAlign: 'center'
+                }}
+              >
+                {clubOffers?.length}
+              </Text>
+              <Text
+                style={{
+                  color: mainColor,
+                  fontSize: 12,
+                  textAlign: 'center'
+                }}
+              >
+                Nº ofertas
+              </Text>
+            </View>
           </View>
         </View>
       )}

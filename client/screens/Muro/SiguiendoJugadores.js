@@ -24,7 +24,6 @@ import { getAllMatchs } from '../../redux/actions/matchs'
 import { setColor } from '../../utils/handles/HandlerSportColor'
 import { setMainColor } from '../../redux/slices/users.slices'
 
-
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
@@ -41,7 +40,6 @@ const SiguiendoJugadores = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-
   }
   useEffect(() => {
     dispatch(getAllOffers())
@@ -52,18 +50,18 @@ const SiguiendoJugadores = () => {
   }, [post, comments])
 
   useEffect(() => {
-   if(user){
-    getUserAuth()
-    dispatch(listLikes(user?.user?.id))
-    const data = {
-      id: user?.user?.id,
-      type: user?.user?.type
+    if (user) {
+      getUserAuth()
+      dispatch(listLikes(user?.user?.id))
+      const data = {
+        id: user?.user?.id,
+        type: user?.user?.type
+      }
+      dispatch(getUserChild(data))
+      if (Object.keys(sportman).length === 0) {
+        dispatch(getSportman(user?.user?.sportman?.id))
+      }
     }
-    dispatch(getUserChild(data))
-    if (Object.keys(sportman).length === 0) {
-      dispatch(getSportman(user?.user?.sportman?.id))
-    }
-   }
   }, [user])
 
   // const getUserId = async () => {
@@ -81,11 +79,8 @@ const SiguiendoJugadores = () => {
   // }, [sportman?.info])
 
   useEffect(() => {
-    setActiveIcon("diary")
+    setActiveIcon('diary')
   }, [isFocused])
-
-
-
 
   useEffect(() => {
     if (allMatchs) {
@@ -96,8 +91,6 @@ const SiguiendoJugadores = () => {
       }
     }
   }, [allMatchs])
-
-
 
   const sortedPosts = [...allPosts].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -125,7 +118,7 @@ const SiguiendoJugadores = () => {
             paddingBottom: 20
           }}
         >
-          {sortedPosts.slice(0,15)?.map((publication, i) => (
+          {sortedPosts.slice(0, 15)?.map((publication, i) => (
             <Carousel
               key={publication.id}
               name={publication?.author?.nickname}
@@ -135,7 +128,7 @@ const SiguiendoJugadores = () => {
                   ? publication?.author?.sportman?.info?.img_front
                   : publication?.author?.club?.img_perfil
               }
-              image={publication?.image}
+              image={[...new Set(publication?.image)]}
               club={publication?.club === user?.user?.type}
               likes={publication?.likes}
               commentCount={publication?.commentCount}
@@ -155,7 +148,7 @@ const SiguiendoJugadores = () => {
 const styles = StyleSheet.create({
   siguiendoJugadores: {
     flex: 1,
-   
+
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },

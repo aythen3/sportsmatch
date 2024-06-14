@@ -9,14 +9,13 @@ import CustomHeaderBack from '../../../components/CustomHeaderBack'
 
 const EditarPerfil = () => {
   const navigation = useNavigation()
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
   return (
-    <SafeAreaView  style={styles.editarPerfil}>
-        <CustomHeaderBack header={"Editar perfil"}></CustomHeaderBack>
+    <SafeAreaView style={styles.editarPerfil}>
+      <CustomHeaderBack header={'Editar perfil'}></CustomHeaderBack>
       <View style={styles.groupParent}>
-
         <View style={styles.defineTusSkillsParent}>
           {user.user.type !== 'club' && sportman.type !== 'coach' && (
             <Text
@@ -60,7 +59,7 @@ const EditarPerfil = () => {
             Notificaciones
           </Text>
           <View style={styles.frameChild} />
-          
+
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() => navigation.navigate('CerrarSesin')}
@@ -69,7 +68,15 @@ const EditarPerfil = () => {
           </Text>
           <View style={styles.frameChild} />
           <Text
-            style={[styles.eliminarCuenta, styles.eliminarCuentaTypo]}
+            style={{
+              color: mainColor,
+              marginTop: 10,
+              height: 23,
+              width: 360,
+              fontSize: FontSize.t2TextSTANDARD_size,
+              textAlign: 'left',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
             onPress={() => navigation.navigate('EliminarCuenta')}
           >
             Eliminar cuenta
@@ -132,7 +139,7 @@ const styles = StyleSheet.create({
   frameChild: {
     borderColor: Color.colorDimgray_100,
     borderTopWidth: 1,
-    width: "100%",
+    width: '100%',
     height: 1,
     marginTop: 10,
     borderStyle: 'solid'
@@ -146,11 +153,10 @@ const styles = StyleSheet.create({
     color: '#e74235',
     marginTop: 10
   },
-  defineTusSkillsParent: {
-  },
+  defineTusSkillsParent: {},
   groupParent: {
-    paddingHorizontal:15,
-    width:"100%",
+    paddingHorizontal: 15,
+    width: '100%'
   },
   border: {
     right: 2,
