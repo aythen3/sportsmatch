@@ -151,12 +151,12 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
     setScrolledHeight(height)
   }
   const selectores = () => {
-    if (selectedSport?.name == "Fútbol" || sportman.info.sport) setSelectedOptions(opciones.futbol)
-    if (selectedSport?.name == "Fútbol Sala" || sportman.info.sport) setSelectedOptions(opciones.futbolSala)
-    if (selectedSport?.name == "Básquetbol" || sportman.info.sport) setSelectedOptions(opciones.baloncesto)
-    if (selectedSport?.name == "Hockey" || sportman.info.sport) setSelectedOptions(opciones.hockey)
-    if (selectedSport?.name == "Handball" || sportman.info.sport) setSelectedOptions(opciones.handball)
-    if (selectedSport?.name == "Voley" || sportman.info.sport) setSelectedOptions(opciones.voleibol)
+    if (selectedSport?.name == "Fútbol" || sportman.info?.sport) setSelectedOptions(opciones.futbol)
+    if (selectedSport?.name == "Fútbol Sala" || sportman.info?.sport) setSelectedOptions(opciones.futbolSala)
+    if (selectedSport?.name == "Básquetbol" || sportman.info?.sport) setSelectedOptions(opciones.baloncesto)
+    if (selectedSport?.name == "Hockey" || sportman.info?.sport) setSelectedOptions(opciones.hockey)
+    if (selectedSport?.name == "Handball" || sportman.info?.sport) setSelectedOptions(opciones.handball)
+    if (selectedSport?.name == "Voley" || sportman.info?.sport) setSelectedOptions(opciones.voleibol)
   }
   useEffect(() => { selectores() }, [selectedSport])
 
