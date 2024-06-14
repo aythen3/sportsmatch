@@ -34,6 +34,26 @@ public async getChat(@Req() req: any) {
     return this.messageService.markAsRead(id);
   }
 
+  @Post('/user-mensagge')
+  public async getUserMessage(@Body() body: { userId: string }) {
+    try {
+      const chats = await this.chatService.getChatsForUser(body.userId);
+      return chats;
+    } catch (error) {
+      console.error('Error al obtener los chats del usuario:', error);
+      throw new InternalServerErrorException('Error interno del servidor.');
+    }
+
+
+    
+  }
+
+
+
+  @Post('chats')
+  public async getUserChat(@Body() body: { userId: string }){ 
+    return this.chatService.getUserChats(body.userId);
+  }
 //   @Get('/visible-messages/:senderId/:receiverId')
 // async getVisibleMessages(
 //   @Param('senderId') senderId: string,

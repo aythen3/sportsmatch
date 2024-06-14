@@ -128,7 +128,6 @@ const LoginSwitch = () => {
     setIsPlayer(!isPlayer)
   }
 
-
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
 
@@ -159,7 +158,6 @@ const LoginSwitch = () => {
       signInWithCredential(auth, credential)
     }
   }, [response])
-
 
   useEffect(() => {
     getLocalUser()
@@ -226,7 +224,6 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
               navigation.navigate('SiguiendoJugadores')
-
             } catch (error) {
               console.log('Error:', error)
             }
