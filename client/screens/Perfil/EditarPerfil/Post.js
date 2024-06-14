@@ -12,17 +12,18 @@ import {
 import DetallesSeleccion from '../../../components/DetallesSeleccion'
 import { useSelector } from 'react-redux'
 import Carousel from '../../../components/Carousel'
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useStripe } from '@stripe/stripe-react-native'
 
 const Post = () => {
   const route = useRoute()
   const navigation = useNavigation()
   const [page, setPage] = useState(1)
+
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params
-  console.log('item', item)
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
@@ -37,7 +38,7 @@ const Post = () => {
               ? item?.author?.sportman?.info?.img_front
               : item?.author?.club?.img_perfil
           }
-          image={item?.image}
+          image={[...new Set(item?.image)]}
           club={item?.club === user?.user?.type}
           likes={item?.likes}
           commentCount={item?.commentCount}
@@ -53,12 +54,11 @@ const Post = () => {
 }
 
 const styles = StyleSheet.create({
-  safeArea:{
-    flex:1,
+  safeArea: {
+    flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH,
- 
-    width: '100%',
-  
+
+    width: '100%'
   },
   carrouselContainer: {
     paddingHorizontal: 10

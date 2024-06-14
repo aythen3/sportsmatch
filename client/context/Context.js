@@ -318,14 +318,10 @@ export const ContextProvider = ({ children }) => {
 
     if (Object.keys(data).length > 0) {
       const finalInfo = Object.keys(data).map((key) => {
-        console.log('KEY', key)
         const otherUserId = key
           .split('_')
           .filter((singleId) => singleId !== userId)[0]
-        console.log('otherUserId', otherUserId)
         const userData = allUsers.filter((user) => user.id === otherUserId)[0]
-        console.log('userData', userData)
-        console.log('returning:', { room: key, ...userData })
         return { room: key, ...userData }
       })
       setUsersWithMessages(finalInfo)

@@ -26,10 +26,12 @@ import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { createClub, getClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
-import { updateUserClubData } from '../../redux/actions/users'
+import { getUserData, updateUserClubData } from '../../redux/actions/users'
 import { clearUser } from '../../redux/slices/users.slices'
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'
+import { useStripe } from '@stripe/stripe-react-native'
+import axiosInstance from '../../utils/apiBackend'
 
 const PromocionarPost = () => {
   const route = useRoute();
@@ -69,25 +71,55 @@ const PromocionarPost = () => {
     description: ''
   })
 
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     // Despacha tu acción de Redux aquí
-  //     dispatch(clearUser());
-  //     console.log("back")
-  //     navigation.goBack()
-  //     return true; // Indica que el evento fue manejado
-  //   };
+  const [clientSecret, setClientSecret] = useState('')
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction
-  //   );
 
-  //   return () => backHandler.remove(); // Remueve el listener al desmontar el componente
-  // }, [dispatch]);
+  const handleGetGold = async () => {
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
+      customerId: user.user.stripeId
+    })
+
+    if (res.data) {
+      setClientSecret(
+        res.data.subscription.clientSecret.latest_invoice.payment_intent
+          .client_secret
+      )
+    }
+
+  }
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
+
+  React.useEffect(() => {
+    const initializePaymentSheet = async () => {
+      const { error } = await initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'azul',
+        returnURL: 'stripe-example://payment-sheet'
+        // Set `allowsDelayedPaymentMethods` to true if your business handles
+        // delayed notification payment methods like US bank accounts.
+      })
+      if (error) {
+        // Handle error
+        console.log(error, 'error')
+      } else {
+        const { error } = await presentPaymentSheet()
+        if (error) {
+          console.log(error, 'error')
+        } else {
+         navigation.navigate('SiguiendoJugadores')
+        }
+      }
+    }
+
+    if (clientSecret) {
+      initializePaymentSheet()
+    }
+  }, [clientSecret, initPaymentSheet])
 
   const handleRegister = async () => {
-    navigation.goBack()
+    handleGetGold()
   }
 
   const ViewComponent = (index) => {

@@ -38,17 +38,16 @@ const ConfigurarAnuncio = () => {
   const { user } = useSelector((state) => state.users)
   const { allPositions } = useSelector((state) => state.positions)
 
-  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState('')
 
   const [selectedGender, setSelectedGender] = useState()
-  const [retribucion, setRetribucion] = useState("")
+  const [retribucion, setRetribucion] = useState('')
 
   const [selectedRemuneration, setSelectedRemuneration] = useState()
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedPriority, setSelectedPriority] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
-  const [selectedSport, setSelectedSport] = useState("")
-
+  const [selectedSport, setSelectedSport] = useState('')
 
   const [showRemunerationModal, setShowRemunerationModal] = useState()
   const [showPriorityModal, setShowPriorityModal] = useState()
@@ -114,18 +113,18 @@ const ConfigurarAnuncio = () => {
   const handleChange = (name, value) => {
     setValues((prev) => ({
       ...prev,
-      [name]: value,
-    }));
+      [name]: value
+    }))
     if (name === 'province') {
-      setSelectedProvince(value);
+      setSelectedProvince(value)
     }
-  };
+  }
 
   const getClubData = async (id) => {
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
-      setSelectedSport(data.sports[0].name)
+      setSelectedSport(data.sports[0]?.name)
       return data
     } catch (error) {
       console.error('Error fetching club data:', error)
@@ -229,12 +228,12 @@ const ConfigurarAnuncio = () => {
                 </View>
               )} */}
               {showModal && (
-                 <ScrollableModal
-                 visible={showModal}
-                 closeModal={()=> setShowModal(false)}
-                 onSelectItem={setSelectedPosition}
-                 options={opciones[`futbol`]}
-               />
+                <ScrollableModal
+                  visible={showModal}
+                  closeModal={() => setShowModal(false)}
+                  onSelectItem={setSelectedPosition}
+                  options={opciones[`futbol`]}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -295,25 +294,25 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                   {showGenderModal && (
-                 <ScrollableModal
-                 visible={showGenderModal}
-                 closeModal={()=> setShowGenderModal(false)}
-                 onSelectItem={setSelectedGender}
-                 options={[`Hombre`,'Mujer']}
-               />
+              {showGenderModal && (
+                <ScrollableModal
+                  visible={showGenderModal}
+                  closeModal={() => setShowGenderModal(false)}
+                  onSelectItem={setSelectedGender}
+                  options={[`Hombre`, 'Mujer']}
+                />
               )}
             </TouchableOpacity>
           </View>
-          <View style={{ width: '100%', gap: 8 }}>
-  <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
-  <Input
-    value={selectedProvince}
-    placeholder="Ingrese la provincia"
-    onChangeText={(text) => setSelectedProvince(text)}
-    style={styles.inputText}
-  />
-</View>
+          {/* <View style={{ width: '100%'  }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
+            <Input
+              value={selectedProvince}
+              placeholder="Ingrese la provincia"
+              onChangeText={(text) => setSelectedProvince(text)}
+              style={styles.inputText}
+            />
+          </View> */}
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Categoría
@@ -368,13 +367,13 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                 {showCategoryModal && (
-                 <ScrollableModal
-                 visible={showCategoryModal}
-                 closeModal={()=> setShowCategoryModal(false)}
-                 onSelectItem={setSelectedCategory}
-                 options={categories}
-               />
+              {showCategoryModal && (
+                <ScrollableModal
+                  visible={showCategoryModal}
+                  closeModal={() => setShowCategoryModal(false)}
+                  onSelectItem={setSelectedCategory}
+                  options={categories}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -433,13 +432,13 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                 {showPriorityModal && (
-                 <ScrollableModal
-                 visible={showPriorityModal}
-                 closeModal={()=> setShowPriorityModal(false)}
-                 onSelectItem={setSelectedPriority}
-                 options={numbers}
-               />
+              {showPriorityModal && (
+                <ScrollableModal
+                  visible={showPriorityModal}
+                  closeModal={() => setShowPriorityModal(false)}
+                  onSelectItem={setSelectedPriority}
+                  options={numbers}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -499,51 +498,54 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                   {showRemunerationModal && (
-                 <ScrollableModal
-                 visible={showRemunerationModal}
-                 closeModal={()=> setShowRemunerationModal(false)}
-                 onSelectItem={setSelectedRemuneration}
-                 options={remunerationData}
-               />
+              {showRemunerationModal && (
+                <ScrollableModal
+                  visible={showRemunerationModal}
+                  closeModal={() => setShowRemunerationModal(false)}
+                  onSelectItem={setSelectedRemuneration}
+                  options={remunerationData}
+                />
               )}
             </TouchableOpacity>
           </View>
-          {selectedRemuneration == "Si" && (
+          {selectedRemuneration == 'Si' && (
             <View style={{ width: '100%', gap: 8 }}>
               <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
                 Importe anual
               </Text>
 
-              <View style={{ width: "100%" }}>
-                <TextInput inputMode='numeric' value={retribucion} placeholder={selectedRemuneration || 'Seleccione retribución'} onChangeText={(e) => setRetribucion(e)} style={{ ...styles.containerBox, paddingHorizontal: 18 }}>
-                </TextInput>
+              <View style={{ width: '100%' }}>
+                <TextInput
+                  inputMode="numeric"
+                  value={retribucion}
+                  placeholder={selectedRemuneration || 'Seleccione retribución'}
+                  onChangeText={(e) => setRetribucion(e)}
+                  style={{ ...styles.containerBox, paddingHorizontal: 18 }}
+                ></TextInput>
               </View>
-
-
-
-
             </View>
           )}
         </View>
 
-        <TouchableOpacity
-          style={styles.botonsOferta}
-          onPress={() => navigation.navigate('SiguiendoJugadores')}
-        >
+        <View style={styles.botonsOferta}>
           <View>
-            <View style={[styles.botonPromocion, styles.boitonCrearFlexBox]}>
+            <TouchableOpacity
+              onPress={() => console.log('promocionando')}
+              style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
+            >
               <Text style={[styles.promocionarOferta, styles.ofertaTypo]}>
                 Promocionar la oferta
               </Text>
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
               onPress={async () => {
                 if (!editOffer) {
                   const data = {
                     offerData: {
-                      sexo: selectedGender,
+                      sexo:
+                        (selectedGender == 'Hombre' && 'Male') ||
+                        (selectedGender == 'Mujer' && 'Female'),
                       category: selectedCategory,
                       urgency: selectedPriority,
                       prop1: retribucion,
@@ -553,9 +555,9 @@ const ConfigurarAnuncio = () => {
                           : selectedRemuneration === 'No'
                             ? false
                             : null,
-                      posit: selectedPosition?.id,
+                      posit: selectedPosition,
                       paused: false,
-                      province: selectedProvince, 
+                      province: selectedProvince
                     },
 
                     clubId: club?.id
@@ -581,15 +583,19 @@ const ConfigurarAnuncio = () => {
                   //   ...(club && { clubId: club.id })
                   // }
                   const data = {
-                    ...(selectedGender && { sexo: selectedGender }),
+                    ...(selectedGender && {
+                      sexo:
+                        (selectedGender == 'Hombre' && 'Male') ||
+                        (selectedGender == 'Mujer' && 'Female')
+                    }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
-                    ...(retribucion && { prop1: "asdasd" }),
-                    ...(selectedPosition && { posit: selectedPosition.id }),
+                    ...(retribucion && { prop1: 'asdasd' }),
+                    ...(selectedPosition && { posit: selectedPosition }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
                     }),
-                    province: selectedProvince,
+                    province: selectedProvince
                   }
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
                     (data) => dispatch(getAllOffers())
@@ -604,7 +610,7 @@ const ConfigurarAnuncio = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -668,13 +674,13 @@ const styles = StyleSheet.create({
   contenido: {
     top: '5%',
     marginBottom: '5%',
-    height:"100%",
+    height: '100%',
     gap: 25
   },
   configurarAnuncio: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    height:"100%"
+    height: '100%'
   },
   topContainer: {
     flexDirection: 'row',
@@ -683,7 +689,7 @@ const styles = StyleSheet.create({
   },
   containerBox: {
     borderWidth: 0.5,
-    color: "white",
+    color: 'white',
     position: 'relative',
     borderColor: Color.colorWhitesmoke,
     borderRadius: 50,

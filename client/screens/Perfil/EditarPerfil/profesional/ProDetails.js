@@ -21,6 +21,7 @@ import { cities } from '../../../../utils/cities'
 import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -43,7 +44,7 @@ const PlayerDetails = () => {
     provisoryProfileImage,
     pickImageFromCamera
   } = useContext(Context)
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
 
@@ -104,14 +105,14 @@ const PlayerDetails = () => {
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
   }, [])
 
   const changePictureMode = async () => {
-  
+
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -207,30 +208,14 @@ const PlayerDetails = () => {
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={{
-          width: '90%'
+          width: '100%'
         }}
       >
-        <View style={{ gap: 10, flex: 1 }}>
+        <CustomHeaderBack header={'Detalles del profesional'}></CustomHeaderBack>
+        <View style={{ gap: 10, flex: 1, paddingHorizontal: 12 }}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
-          <View style={styles.topWrapper}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('PROD')
-                navigation.goBack()
-              }}
-            >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require('../../../../assets/coolicon3.png')}
-              />
-            </TouchableOpacity>
-            <Text style={styles.clubDetailsTitle}>
-              Detalles del profesional
-            </Text>
-          </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
           {/* =========================================================== */}
@@ -243,13 +228,22 @@ const PlayerDetails = () => {
               borderRadius: 5
             }}
           >
-            <View style={styles.profileImageContainer}>
-              {sportman?.info?.img_perfil && (
+            <View style={{...styles.profileImageContainer}}>
+              {provisoryProfileImage  && (
                 <Image
                   style={{ width: '100%', height: '100%', borderRadius: 100 }}
                   contentFit="cover"
                   source={{
-                    uri: provisoryProfileImage || sportman?.info?.img_perfil
+                    uri: provisoryProfileImage 
+                  }}
+                />
+              )}
+                { sportman?.info?.img_perfil && (
+                <Image
+                  style={{ width: '100%', height: '100%', borderRadius: 100 }}
+                  contentFit="cover"
+                  source={{
+                    uri: sportman?.info?.img_perfil
                   }}
                 />
               )}
@@ -277,7 +271,7 @@ const PlayerDetails = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.orangeButton}
+              style={{ ...styles.orangeButton, backgroundColor: mainColor }}
               onPress={() => pickImage('profile')}
             >
               <Text style={styles.mediumText}>Subir foto de perfil</Text>
@@ -296,13 +290,22 @@ const PlayerDetails = () => {
               borderRadius: 5
             }}
           >
-            <View style={styles.coverImageContainer}>
-              {sportman?.info?.img_front && (
+            <View style={{...styles.coverImageContainer}}>
+              { sportman?.info?.img_front && (
                 <Image
                   style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"
                   source={{
-                    uri: provisoryCoverImage || sportman?.info?.img_front
+                    uri:  sportman?.info?.img_front
+                  }}
+                />
+              )}
+                { provisoryCoverImage && (
+                <Image
+                  style={{ width: '100%', height: '100%', borderRadius: 8 }}
+                  contentFit="cover"
+                  source={{
+                    uri: provisoryCoverImage 
                   }}
                 />
               )}
@@ -331,7 +334,8 @@ const PlayerDetails = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.orangeButton}
+              style={{ ...styles.orangeButton, backgroundColor: mainColor }}
+
               onPress={() => pickImage('cover')}
             >
               <Text style={styles.mediumText}>Subir foto de portada</Text>
@@ -487,14 +491,16 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     width: 117,
     height: 117,
-    borderRadius: 100,
-    marginBottom: 8
+    marginBottom: 8,
+    backgroundColor:"#D9D9D9",
+    borderRadius:100
   },
   coverImageContainer: {
     width: '100%',
     height: 138,
     marginBottom: 8,
-    borderRadius: 8
+    borderRadius: 8,
+    backgroundColor:"#D9D9D9",
   },
   topWrapper: {
     marginBottom: 42,

@@ -16,7 +16,7 @@ import { setCategory, setPosition } from '../redux/slices/users.slices'
 import { updateSportman } from '../redux/actions/sportman'
 import ScrollableModal from './modals/ScrollableModal'
 
-const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport }) => {
+const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, selectPosition, setSelectPosition }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
@@ -25,7 +25,9 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
   const [selectedCategoria, setSelectedCategoria] = useState(null)
   const [positionModalVisible, setPositionModalVisible] = useState(false)
   const [selectedPosition, setSelectedPosition] = useState(null)
-  const [selectedOptions, setSelectedOptions] = useState(null)
+  const [selectedOptions, setSelectedOptions] = useState([])
+  const [selectedOptionsInputs, setSelectedOptionsInputs] = useState('')
+
 
   const [editData, setEditData] = useState(null)
 
@@ -54,7 +56,15 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
     handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
   }
 
-
+  useEffect(()=>{
+  if(setData){
+    const newData = {
+      ...data,
+     position: selectedOptionsInputs
+    }
+    setData(newData)
+  }
+  },[selectedOptionsInputs])
 
   const openModal = () => {
     setModalVisible(!modalVisible)
@@ -78,7 +88,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
   const handleSelectPosition = (posicion) => {
     setSelectedPosition(posicion)
     setEditData({ ...editData, position: posicion })
-    dispatch(setPosition(posicion))
   }
 
   const handleData = (key, value) => {
@@ -142,20 +151,20 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
     setScrolledHeight(height)
   }
   const selectores = () => {
-    if (selectedSport == "Fútbol") setSelectedOptions(opciones.futbol)
-    if (selectedSport == "Fútbol Sala") setSelectedOptions(opciones.futbolSala)
-    if (selectedSport == "Baloncesto") setSelectedOptions(opciones.baloncesto)
-    if (selectedSport == "Hockey") setSelectedOptions(opciones.hockey)
-    if (selectedSport == "Handball") setSelectedOptions(opciones.handball)
-    if (selectedSport == "Voley") setSelectedOptions(opciones.voleibol)
+    if (selectedSport?.name == "Fútbol" || sportman.info?.sport) setSelectedOptions(opciones.futbol)
+    if (selectedSport?.name == "Fútbol Sala" || sportman.info?.sport) setSelectedOptions(opciones.futbolSala)
+    if (selectedSport?.name == "Básquetbol" || sportman.info?.sport) setSelectedOptions(opciones.baloncesto)
+    if (selectedSport?.name == "Hockey" || sportman.info?.sport) setSelectedOptions(opciones.hockey)
+    if (selectedSport?.name == "Handball" || sportman.info?.sport) setSelectedOptions(opciones.handball)
+    if (selectedSport?.name == "Voley" || sportman.info?.sport) setSelectedOptions(opciones.voleibol)
   }
-  useEffect(() => { selectores() }, [])
+  useEffect(() => { selectores() }, [selectedSport])
 
   return (
     <ScrollView
       // onScroll={handleScroll}
       keyboardShouldPersistTaps={'always'}
-      contentContainerStyle={{paddingBottom:20}}
+      contentContainerStyle={{ paddingBottom: 20 }}
     >
       <View
         style={{
@@ -259,7 +268,29 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
             />
           )}
         </View>
-        <View
+        <View style={styles.formularioCategoria}>
+          <Text style={styles.atributo}>Posición Principal</Text>
+          <View style={styles.rectanguloBorder}>
+            <TextInput
+              style={styles.textInput}
+              placeholder={selectPosition
+                ? selectPosition
+                : sportman?.info?.position?.toString() ||
+                'Selecciona tu posición '}
+              placeholderTextColor={'#999'}
+              onChangeText={(e) => {
+                const newData = {
+                  ...data,
+                  position: e
+                }
+                setSelectedOptionsInputs(e)
+
+              }}
+              maxLength={40}
+            />
+          </View>
+        </View>
+        {/* <View
           collapsable={false}
           onLayout={(event) => {
             event.target.measure((x, y, width, height, pageX, pageY) => {
@@ -279,6 +310,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
             isAccordeon={true}
             open={openPositionModal}
           />
+         
           {positionModalVisible && (
             <ScrollableModal
               scrollHeight={scrolledHeight}
@@ -286,23 +318,23 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
               visible={positionModalVisible}
               closeModal={closeModal}
               onSelectItem={handleSelectPosition}
-              options={sportman.info?.sport == "Fútbol"  && opciones.futbol || selectedSport?.name == "Fútbol" && opciones.futbol ||
+              options={sportman.info?.sport == "Fútbol" && opciones.futbol || selectedSport?.name == "Fútbol" && opciones.futbol ||
                 sportman.info?.sport == "Fútbol Sala" && opciones.futbolSala || selectedSport?.name == "Fútbol Sala" && opciones.futbolSala ||
                 selectedSport?.name == "Básquetbol" && opciones.baloncesto || sportman.info?.sport == "Básquetbol" && opciones.baloncesto ||
                 selectedSport?.name == "Hockey" && opciones.hockey || sportman.info?.sport == "Hockey" && opciones.hockey ||
-                selectedSport?.name == "Voley"  && opciones.voleibol  || sportman.info?.sport == "Voley" && opciones.voleibol ||
+                selectedSport?.name == "Voley" && opciones.voleibol || sportman.info?.sport == "Voley" && opciones.voleibol ||
                 selectedSport?.name == "Handball" && opciones.handball || sportman.info?.sport == "Handball" && opciones.handball
               }
             />
           )}
-        </View>
+        </View> */}
 
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Altura</Text>
+          <Text style={styles.atributo}>{selectedOptions[0]}</Text>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={sportman?.info?.height?.toString() || '1.80m'}
+              placeholder={sportman?.info?.height?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               onChangeText={(value) => handleData('height', value)}
@@ -311,7 +343,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
           </View>
         </View>
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Bote</Text>
+          <Text style={styles.atributo}>{selectedOptions[1]}</Text>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
@@ -331,7 +363,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
           </View>
         </View>
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Lanzamiento</Text>
+          <Text style={styles.atributo}>{selectedOptions[2]}</Text>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
@@ -351,7 +383,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport })
           </View>
         </View>
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Dribling</Text>
+          <Text style={styles.atributo}>{selectedOptions[3]}</Text>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}

@@ -36,7 +36,7 @@ const TodasLasOfertas = () => {
   const dispatch = useDispatch()
   const { userMatches } = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
-  const { user,mainColor } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -49,8 +49,7 @@ const TodasLasOfertas = () => {
     dispatch(getAllOffers())
   }, [])
 
-  useEffect(() => {
-  }, [selectOfferComponent])
+  useEffect(() => {}, [selectOfferComponent])
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -70,7 +69,6 @@ const TodasLasOfertas = () => {
       )
       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
     }
-
   }
 
   const actualFavoriteOffers =
@@ -112,10 +110,11 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
+  console.log('O============OOFFERS', offers)
 
   return (
     <View style={styles.todasLasOfertas}>
-     <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
+      <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
 
       <FiltersHome modalSportmanActive={onFilterSportman} />
       <View
@@ -127,7 +126,7 @@ const TodasLasOfertas = () => {
         }}
       >
         <Pressable
-        style={{flex:1}}
+          style={{ flex: 1 }}
           onPress={() => {
             setSelectOfferComponent('todas')
           }}
@@ -136,16 +135,14 @@ const TodasLasOfertas = () => {
             style={{
               borderBottomWidth: 3,
               borderColor:
-                selectOfferComponent === 'todas'
-                  ? mainColor
-                  : 'transparent',
-              width: "100%"
+                selectOfferComponent === 'todas' ? mainColor : 'transparent',
+              width: '100%'
             }}
           >
             <Text
               style={[
                 selectOfferComponent === 'todas'
-                  ?{ ...styles.todasLaOfertas,color:mainColor}
+                  ? { ...styles.todasLaOfertas, color: mainColor }
                   : styles.todasLaOfertas2,
                 styles.ofertasTypo
               ]}
@@ -156,7 +153,7 @@ const TodasLasOfertas = () => {
         </Pressable>
 
         <Pressable
-        style={{flex:1}}
+          style={{ flex: 1 }}
           onPress={() => {
             setSelectOfferComponent('favoritas')
           }}
@@ -168,14 +165,13 @@ const TodasLasOfertas = () => {
                 selectOfferComponent === 'favoritas'
                   ? mainColor
                   : 'transparent',
-                  width: "100%"
-
+              width: '100%'
             }}
           >
             <Text
               style={[
                 selectOfferComponent === 'favoritas'
-                  ? {...styles.todasLaOfertas,color:mainColor}
+                  ? { ...styles.todasLaOfertas, color: mainColor }
                   : styles.todasLaOfertas2,
                 ,
                 styles.ofertasTypo
@@ -920,8 +916,10 @@ const TodasLasOfertas = () => {
               paddingHorizontal: 20
             }}
           >
-            
-            <FiltersSportman sports={user?.user?.sportman?.info?.sport} onClose={() => setModalFilterSportman(false)} />
+            <FiltersSportman
+              sports={user?.user?.sportman?.info?.sport}
+              onClose={() => setModalFilterSportman(false)}
+            />
           </View>
         </TouchableWithoutFeedback>
       </Modal>

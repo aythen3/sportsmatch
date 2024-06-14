@@ -12,42 +12,47 @@ import { LinearGradient } from 'expo-linear-gradient'
 import axiosInstance from '../../utils/apiBackend'
 import { useSelector } from 'react-redux'
 
-const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPlan,handleCancelSuscription,deletePlan,setDeletePlan}) => {
+const GoldSuscription = ({
+  setClientSecret,
+  setPlanSelected,
+  setPlanSelectedId,
+  myPlan,
+  handleCancelSuscription,
+  deletePlan,
+  setDeletePlan
+}) => {
   const { user } = useSelector((state) => state.users)
 
   const handleGetStar = async () => {
-     const res = await axiosInstance.post('/user/create-subscription',{
-       priceId:"price_1P4cOSGmE60O5ob7cqUBAyjk",
-       customerId:user.user.stripeId
-     })
-     if(res.data){
-      setPlanSelected("star")
-       setClientSecret(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret)
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
+      customerId: user.user.stripeId
+    })
+    if (res.data) {
+      setPlanSelected('star')
+      setClientSecret(
+        res.data.subscription.clientSecret.latest_invoice.payment_intent
+          .client_secret
+      )
       setPlanSelectedId(res.data.subscription.subscriptionId)
 
-       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
-     }
-   }
+      // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+    }
+  }
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
-        <View
-          style={{
-            width: '100%',
-            height: 42,
-            backgroundColor: Color.colorSilver,
-            justifyContent: 'center'
-          }}
-        >
+        <View style={styles.container}>
           <LinearGradient
             style={styles.gradient}
-            start={{ x: 0, y: 1 }} // Punto de inicio (esquina superior derecha)
-            end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
-            colors={['#FF00E6', '#1FFFBC']}
-          >
-            <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
-          </LinearGradient>
+            colors={['#1FFFBC', '#FF00E6']}
+            locations={[0, 1]}
+            start={[0.0, 1.0]}
+            end={[1.0, 0.0]}
+          ></LinearGradient>
+          <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
         </View>
+
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
@@ -117,7 +122,7 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                 Número ilimitado de Match
+                  Número ilimitado de Match
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -133,7 +138,8 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                     styles.creacinGratisDelLayout
                   ]}
                 >
-                 Publicación gratis e ilimitada de anuncios de ofertas deportivas
+                  Publicación gratis e ilimitada de anuncios de ofertas
+                  deportivas
                 </Text>
               </View>
               <View style={styles.frameItem} />
@@ -146,7 +152,10 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
                 <Text style={styles.creacinGratisDelLayout}>
                   <Text style={styles.accesoA}>{`Acceso `}</Text>
                   <Text style={styles.ofertasTypo}>ilimitado</Text>
-                  <Text style={styles.accesoA}> a las personas inscritas en tu oferta </Text>
+                  <Text style={styles.accesoA}>
+                    {' '}
+                    a las personas inscritas en tu oferta 
+                  </Text>
                 </Text>
               </View>
             </View>
@@ -154,81 +163,83 @@ const GoldSuscription = ({setClientSecret,setPlanSelected,setPlanSelectedId,myPl
         </View>
         {!deletePlan && !myPlan && (
           <TouchableOpacity
-          onPress={handleGetStar }
-          style={{
-            width: '95%',
-            borderWidth: 1,
-            alignSelf: 'center',
-            marginTop: 25,
-            borderColor: '#000',
-            borderRadius: 100,
-            height: 30,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-           <Text style={styles.ofertasTypo}>{ "Seleccionar este plan"}</Text>
-        </TouchableOpacity>
+            onPress={handleGetStar}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>{'Seleccionar este plan'}</Text>
+          </TouchableOpacity>
         )}
-          {myPlan && !deletePlan &&(
+        {myPlan && !deletePlan && (
           <TouchableOpacity
-          onPress={()=> setDeletePlan(true)}
-          style={{
-            width: '95%',
-            borderWidth: 1,
-            alignSelf: 'center',
-            marginTop: 25,
-            borderColor: '#000',
-            borderRadius: 100,
-            height: 30,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-           <Text style={styles.ofertasTypo}>Cancelar suscripcion</Text>
-        </TouchableOpacity>
+            onPress={() => setDeletePlan(true)}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>Cancelar suscripcion</Text>
+          </TouchableOpacity>
         )}
         {deletePlan && (
-        <View style={{paddingTop:20,width:"100%"}}>
-          <Text style={{textAlign:"center"}}>Seguro quieres cancelar?</Text>
-          <TouchableOpacity
-         onPress={()=> setDeletePlan(false)}
-
-         style={{
-           width: '95%',
-           borderWidth: 1,
-           alignSelf: 'center',
-           marginTop: 14,
-           borderColor: '#000',
-           borderRadius: 100,
-           height: 30,
-           alignItems: 'center',
-           justifyContent: 'center'
-         }}
-       >
-         <Text style={styles.ofertasTypo}>Volver</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         onPress={handleCancelSuscription}
-
-         style={{
-           width: '95%',
-           borderWidth: 1,
-           alignSelf: 'center',
-           marginTop: 14,
-           borderColor: '#000',
-           backgroundColor:"red",
-           color:"white",
-           borderRadius: 100,
-           height: 30,
-           alignItems: 'center',
-           justifyContent: 'center'
-         }}
-       >
-         <Text style={{...styles.ofertasTypo,color:"white"}}>Confirmar</Text>
-       </TouchableOpacity>
-        </View>
-       )}
+          <View style={{ paddingTop: 20, width: '100%' }}>
+            <Text style={{ textAlign: 'center' }}>
+              Seguro quieres cancelar?
+            </Text>
+            <TouchableOpacity
+              onPress={() => setDeletePlan(false)}
+              style={{
+                width: '95%',
+                borderWidth: 1,
+                alignSelf: 'center',
+                marginTop: 14,
+                borderColor: '#000',
+                borderRadius: 100,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Text style={styles.ofertasTypo}>Volver</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleCancelSuscription}
+              style={{
+                width: '95%',
+                borderWidth: 1,
+                alignSelf: 'center',
+                marginTop: 14,
+                borderColor: '#000',
+                backgroundColor: 'red',
+                color: 'white',
+                borderRadius: 100,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Text style={{ ...styles.ofertasTypo, color: 'white' }}>
+                Confirmar
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
       {/* <View style={[styles.marcaPlanActual, styles.aceptarBorder]} /> */}
     </View>
@@ -313,10 +324,20 @@ const styles = StyleSheet.create({
   accesoA: {
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  gradient: {
-    height: 42,
-    alignItems: 'center',
+  container: {
+    width: '100%',
+    height: 80,
+    backgroundColor: Color.colorSilver,
     justifyContent: 'center'
+  },
+  gradient: {
+    width: '100%',
+    height: 500,
+    transform: [{ scaleY: 0.16 }],
+    position: 'absolute',
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

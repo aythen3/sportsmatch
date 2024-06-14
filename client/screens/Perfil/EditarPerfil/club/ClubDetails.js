@@ -17,6 +17,7 @@ import { Context } from '../../../../context/Context'
 import { updateClubData } from '../../../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
 import { Camera } from 'expo-camera'
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const ClubDetails = () => {
   const dispatch = useDispatch()
@@ -44,7 +45,7 @@ const ClubDetails = () => {
   const { club } = useSelector((state) => state.clubs)
 
   const inputs = [
-    
+
     {
       title: 'Nombre del club',
       type: 'text',
@@ -136,14 +137,14 @@ const ClubDetails = () => {
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
   }, [])
 
   const changePictureMode = async () => {
-  
+
     setCameraType(
       cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
@@ -239,55 +240,33 @@ const ClubDetails = () => {
       <ScrollView
         keyboardShouldPersistTaps={'always'}
         style={styles.generalWrapper}
-        contentContainerStyle={{paddingTop:20}}
+        contentContainerStyle={{ paddingTop: 0 }}
       >
+        <CustomHeaderBack header={'Detalles del club'}></CustomHeaderBack>
         <View style={styles.wrapperGap}>
           {/* =========================================================== */}
           {/* ====================== TOP CONTAINER ====================== */}
           {/* =========================================================== */}
-          <View
-            style={{
-              marginBottom: 27,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 15,
-              justifyContent: 'flex-start'
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                console.log('CD')
-                navigation.goBack()
-              }}
-            >
-              <Image
-                style={{ width: 9, height: 15, marginTop: 2.5 }}
-                contentFit="cover"
-                source={require('../../../../assets/coolicon3.png')}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: '500',
-                fontSize: 22,
-                fontFamily: FontFamily.t4TEXTMICRO
-              }}
-            >
-              Detalles del club
-            </Text>
-          </View>
           {/* =========================================================== */}
           {/* ======================= PROFILE PIC ======================= */}
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.profileImageContainer}>
+              {provisoryProfileImage && (
+                <Image
+                  style={styles.image}
+                  contentFit="cover"
+                  source={{
+                    uri: provisoryProfileImage
+                  }}
+                />
+              )}
               {user?.user?.club?.img_perfil && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
                   source={{
-                    uri: provisoryProfileImage || user?.user?.club?.img_perfil
+                    uri: user?.user?.club?.img_perfil
                   }}
                 />
               )}
@@ -332,7 +311,16 @@ const ClubDetails = () => {
                   style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"
                   source={{
-                    uri: provisoryCoverImage || user?.user?.club?.img_front
+                    uri: user?.user?.club?.img_front
+                  }}
+                />
+              )}
+              {provisoryCoverImage && (
+                <Image
+                  style={{ width: '100%', height: '100%', borderRadius: 8 }}
+                  contentFit="cover"
+                  source={{
+                    uri: provisoryCoverImage
                   }}
                 />
               )}
@@ -444,7 +432,6 @@ const styles = StyleSheet.create({
   clubDetailsContainer: {
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: '15px',
     flex: 1,
     backgroundColor: '#000'
   },
@@ -464,7 +451,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   wrapperGap: {
-    gap: 10
+    gap: 10,
+    paddingHorizontal: 14
   },
   image: {
     width: 117,
@@ -486,7 +474,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   generalWrapper: {
-    width: '90%'
+    width: '100%'
   },
   icon: {
     width: 9,

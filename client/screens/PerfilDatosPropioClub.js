@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, StatusBar } from 'react-native'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import HeaderPerfil from './Perfil/EditarPerfil/club/HeaderPerfil'
 import { Color } from '../GlobalStyles'
@@ -34,6 +34,8 @@ const {setActiveIcon} = useContext(Context)
         paddingBottom: 30
       }}
     >
+      <StatusBar  translucent={true}  backgroundColor={'transparent'}/>
+
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <View>
           <HeaderPerfil

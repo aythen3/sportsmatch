@@ -53,6 +53,7 @@ import axios from 'axios'
 import Linea from '../../components/svg/Linea'
 import InstagramSVG from '../../components/svg/InstagramSVG'
 import HomeGif from '../../utils/HomeGif'
+import { detectSportColor } from './PantallaInicio'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -72,19 +73,6 @@ const LoginSwitch = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
-
-    if (googleUserAuth) {
-      const googleId = await JSON.parse(googleUserAuth)
-      const response = await dispatch(login({ googleId }))
-      dispatch(
-        setIsSpotMan(response.payload.user.type === 'club' ? false : true)
-      )
-      await AsyncStorage.setItem('googleAuth', user.uid)
-      await AsyncStorage.setItem('userType', response.payload.user.type)
-      dispatch(setClub(response))
-      dispatch(logedIn())
-      return
-    }
     if (facebookUserAuth) {
       const facebookId = await JSON.parse(facebookUserAuth)
       const response = await dispatch(login({ facebookId }))
@@ -178,7 +166,13 @@ const LoginSwitch = () => {
             // console.log('data from back:', data);
             try {
               const response = await dispatch(login({ googleId: user.uid }))
-              console.log('response google:', response.payload)
+              detectSportColor(
+                response.payload.user.sportman?.info?.sport ||
+                  response.payload.user.club.sport,
+                dispatch
+              )
+              //  console.log('response google:', response.payload)
+
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
@@ -191,7 +185,19 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
-              navigation.navigate('SiguiendoJugadores')
+              if (
+                response.payload.user.sportman ||
+                response.payload.user.club
+              ) {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'SiguiendoJugadores' }]
+                })
+              } else if (response.payload.user.type === 'sportman') {
+                navigation.navigate('Paso1')
+              } else {
+                navigation.navigate('StepsClub')
+              }
             } catch (error) {
               console.log('Error:', error)
             }
@@ -210,7 +216,7 @@ const LoginSwitch = () => {
             // console.log('data from back fb:', data);
             try {
               const response = await dispatch(login({ facebookId: user.uid }))
-              console.log('response facebook:', response.payload)
+              //  console.log('response facebook:', response.payload)
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
@@ -223,7 +229,10 @@ const LoginSwitch = () => {
               await AsyncStorage.setItem('facebookAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))
-              navigation.navigate('SiguiendoJugadores')
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'SiguiendoJugadores' }]
+              })
             } catch (error) {
               console.log('Error:', error)
             }
@@ -269,7 +278,7 @@ const LoginSwitch = () => {
             const response = await dispatch(
               login({ facebookId: igToken.user_id.toString() })
             )
-            console.log('response instagram:', response.payload)
+            // console.log('response instagram:', response.payload)
             dispatch(
               setIsSpotMan(response.payload.user.type === 'club' ? false : true)
             )
@@ -279,6 +288,10 @@ const LoginSwitch = () => {
             )
             await AsyncStorage.setItem('userType', response.payload.user.type)
             dispatch(setClub(response))
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'SiguiendoJugadores' }]
+            })
           } catch (error) {
             console.log('Error:', error)
           }

@@ -10,13 +10,13 @@ import {
 } from 'react-native'
 import { FontSize, Color, FontFamily, Border } from '../../GlobalStyles'
 import * as ImagePicker from 'expo-image-picker'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateImgClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 
-const EscogerDeporte1 = () => {
+const EscogerDeporte1 = ({color}) => {
   const {
     pickImage,
     coverImage,
@@ -36,6 +36,7 @@ const EscogerDeporte1 = () => {
   const [selectedImage, setSelectedImage] = useState(null)
 const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
 
+const { mainColor } = useSelector((state) => state.users)
 
 
 const [hasPermission, setHasPermission] = useState(null)
@@ -124,7 +125,7 @@ if (!showCamera){
               </TouchableOpacity>
     </View>
       <TouchableOpacity
-        style={[styles.rectangleView, styles.rectangleViewLayout]}
+        style={[styles.rectangleView, styles.rectangleViewLayout,{backgroundColor:color}]}
         onPress={() => pickImage('profile')}
       >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>
@@ -212,7 +213,7 @@ if (!showCamera){
         </View>
       )}
       <TouchableOpacity
-        style={[styles.rectangleView, styles.rectangleViewLayout]}
+        style={[styles.rectangleView, styles.rectangleViewLayout,{backgroundColor:color}]}
         onPress={() => pickImage('cover')}
       >
         <Text style={[styles.subirFotoDe, styles.subirTypo]}>

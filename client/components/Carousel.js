@@ -36,7 +36,6 @@ function Carousel({
 }) {
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(0)
-
   const handlePageSelected = (event) => {
     const { position } = event.nativeEvent
     setCurrentPage(position)
@@ -229,44 +228,43 @@ function Carousel({
           </View>
         ))}
 
-     { image.map((e,i)=> (
-         <View style={{ width: '100%', height: '100%' }} key={i}>
-         <DoubleTap
-           onDoubleTap={() => {
-             handleLike()
-             setDoubleTapHeart(true)
-             // handleDoubleTap(); // Llama a la función de manejar el doble clic
-             // resetDoubleTap(); // Reinicia el estado de doubleTap
-           }}
-         >
-           <View
-             style={{ width: '100%', height: '100%', position: 'relative' }}
-           >
-             {doubleTapHeart && liked && (
-               <TouchableOpacity
-                 style={{
-                   position: 'absolute',
-                   width: '100%',
-                   height: '100%',
-                   justifyContent: 'center',
-                   alignItems: 'center',
-                   zIndex: 999
-                 }}
-               >
-                 <Like2SVG id={id}></Like2SVG>
-               </TouchableOpacity>
-             )}
+        {image.map((e, i) => (
+          <View style={{ width: '100%', height: '100%' }} key={i}>
+            <DoubleTap
+              onDoubleTap={() => {
+                handleLike()
+                setDoubleTapHeart(true)
+                // handleDoubleTap(); // Llama a la función de manejar el doble clic
+                // resetDoubleTap(); // Reinicia el estado de doubleTap
+              }}
+            >
+              <View
+                style={{ width: '100%', height: '100%', position: 'relative' }}
+              >
+                {doubleTapHeart && liked && (
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 999
+                    }}
+                  >
+                    <Like2SVG id={id}></Like2SVG>
+                  </TouchableOpacity>
+                )}
 
-             <Image
-               style={{ ...styles.postImage, zIndex: 990 }}
-               source={e}
-             />
-             
-           </View>
-         </DoubleTap>
-       </View>
-     )) }
-       
+                <Image
+                  style={{ ...styles.postImage, zIndex: 990 }}
+                  source={e}
+                />
+              </View>
+            </DoubleTap>
+          </View>
+        ))}
+
         {/* <View key={index + 1}>
           <Image
             style={styles.postImage}
@@ -299,6 +297,7 @@ function Carousel({
       <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
           <TouchableOpacity
+            style={{ border: '1px solid green' }}
             onPress={() => navigation.navigate('PostPromocion', data)}
           >
             <LinearGradient
@@ -397,7 +396,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-    marginBottom:0
+    marginBottom: 0
   },
   indicator: {
     width: 5,
@@ -420,7 +419,7 @@ const styles = StyleSheet.create({
   botonPromocionarPublicacion: {
     marginTop: 15,
     borderRadius: Border.br_81xl,
-    width: "48%",
+    maxWidth: '55%',
     justifyContent: 'center',
     paddingHorizontal: Padding.p_5xs,
     paddingVertical: Padding.p_11xs,

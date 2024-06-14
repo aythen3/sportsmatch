@@ -20,6 +20,7 @@ const MessagesChat = ({
   setValue
 }) => {
   const dispatch = useDispatch()
+  const { mainColor } = useSelector((state) => state.users)
   const { offers } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
   const isFocused = useIsFocused()
@@ -29,14 +30,29 @@ const MessagesChat = ({
   const [convMessages, setConvMessages] = useState([])
   const [lastMessage, setLastMessage] = useState()
   const { user, allUsers } = useSelector((state) => state.users)
-
   const getChatMessages = async () => {
     const { data } = await axiosInstance.get(
-      `chat/room?&senderId=${user.user.id}&receiverId=${selectedUserId}`
+      `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
     )
+    // const receiverMessages = await axiosInstance.get(
+    //   `chat/room?limit=${1000}&senderId=${selectedUserId}&receiverId=${user.user.id}`
+    // )
+    // console.log('CONV MESSAGES ON', selectedUserId, data)
     setConvMessages(data)
   }
+  useEffect(() => {
+    selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
+  }, [])
 
+  useEffect(() => {
+    lastMessage &&
+      console.log('==LAST MESSAGE', {
+        message: lastMessage.message.message,
+        receiverId: lastMessage.message.receiverId,
+        senderId: lastMessage.message.senderId,
+        roomId: lastMessage.message.room
+      })
+  }, [lastMessage])
   // console.log('name:',name,'sportmanId: ', sportmanId)
 
   useEffect(() => {
@@ -50,7 +66,11 @@ const MessagesChat = ({
 
   useEffect(() => {
     if (convMessages?.length) {
-      getLastMessage(convMessages)
+      getLastMessage(
+        convMessages.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )
+      )
     }
   }, [convMessages])
 
@@ -77,7 +97,11 @@ const MessagesChat = ({
           <Image
             style={{ height: 35, borderRadius: 50, width: 35 }}
             contentFit="cover"
-            source={{ uri: profilePic }}
+            source={
+              profilePic === '' || !profilePic
+                ? require('../assets/avatar.png')
+                : { uri: profilePic }
+            }
           />
           <View style={{ alignSelf: 'flex-start' }}>
             <Text
@@ -131,7 +155,7 @@ const MessagesChat = ({
                     width: 5,
                     height: 5,
                     borderRadius: 100,
-                    backgroundColor: Color.bALONCESTO
+                    backgroundColor: mainColor
                   }}
                 />
               )}
@@ -172,7 +196,7 @@ const MessagesChat = ({
                     width: 5,
                     height: 5,
                     borderRadius: 100,
-                    backgroundColor: Color.bALONCESTO
+                    backgroundColor: mainColor
                   }}
                 />
               )}

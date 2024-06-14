@@ -62,7 +62,6 @@ const ChatAbierto1 = () => {
     setSelectedUserDetails(
       allUsers.filter((user) => user.id === route.params.receiverId)[0]
     )
-
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
@@ -84,7 +83,6 @@ const ChatAbierto1 = () => {
         (message) =>
           message.senderId !== user.user.id && message.isReaded === false
       )
-      // console.log('messagesToSetReaded: ', messagesToSetReaded)
       messagesToSetReaded.forEach((message) => {
         axiosInstance.put(`chat/readed/${message.id}`)
         dispatch(setAllConversationMessagesToRead())
@@ -156,7 +154,6 @@ const ChatAbierto1 = () => {
     }
     axiosInstance.post('chat/marcarMensajesComoEliminados', body)
   }
-
 
   if (selectedUserDetails)
     return (

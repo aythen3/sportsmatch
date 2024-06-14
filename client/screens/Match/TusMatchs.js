@@ -51,7 +51,6 @@ const TusMatchs = () => {
   const [details, setDetails] = useState(false)
   const [userDetails, setUserDetails] = useState(false)
 
-
   // const getOfferData = async (id) => {
   //   const { data } = await axiosInstance.get(`offer/${id}`)
   //   console.log('data from getOfferData', data)
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: Padding.p_2xs,
     borderStyle: 'solid',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   groupContainerSpaceBlock: {
     paddingVertical: Padding.p_4xs
