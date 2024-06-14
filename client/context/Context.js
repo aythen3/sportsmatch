@@ -258,59 +258,78 @@ export const ContextProvider = ({ children }) => {
 
   const [usersWithMessages, setUsersWithMessages] = useState([])
 
-  const getUsersMessages = () => {
-    const getConvMessages = async (user) => {
-      try {
-        // const { data } = await axiosInstance.get(
-        //   `chat/chats/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-        // )
-        const data = await axiosInstance.post('chat/chats', { userId })
-        console.log('data from get messages==============', data)
-        // const filterByDelete = data.filter((message) => {
-        //   const senderOrReceiver =
-        //     message.senderId === userId ? 'sender' : 'receiver'
-        //   if (senderOrReceiver === 'sender') {
-        //     if (message.senderDelete === true) {
-        //       return false
-        //     }
-        //     return true
-        //   }
-        //   if (senderOrReceiver === 'receiver') {
-        //     if (message.receiverDelete === true) {
-        //       return false
-        //     }
-        //     return true
-        //   }
-        // })
-        // return filterByDelete
-      } catch (error) {
-        console.error('Error fetching data gcm:', error)
-        return []
-      }
+  const getUsersMessages = async () => {
+    // const getConvMessages = async (user) => {
+    //   try {
+    //     const { data } = await axiosInstance.get(
+    //       `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
+    //     )
+    //     const filterByDelete = data.filter((message) => {
+    //       const senderOrReceiver =
+    //         message.senderId === userId ? 'sender' : 'receiver'
+    //       if (senderOrReceiver === 'sender') {
+    //         if (message.senderDelete === true) {
+    //           return false
+    //         }
+    //         return true
+    //       }
+    //       if (senderOrReceiver === 'receiver') {
+    //         if (message.receiverDelete === true) {
+    //           return false
+    //         }
+    //         return true
+    //       }
+    //     })
+    //     return filterByDelete
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error)
+    //     return []
+    //   }
+    // }
+    // Promise.all(
+    //   allUsers
+    //     ?.filter((user) => user?.id !== userId)
+    //     .map(async (user) => ({
+    //       user,
+    //       data: await getConvMessages(user)
+    //     }))
+    // )
+    //   .then((filteredUsers) => {
+    //     const usersWithMessages = filteredUsers.filter(
+    //       (user) => user?.data && user?.data.length > 0
+    //     )
+
+    //     const sortedUsersWithMessages = usersWithMessages.sort(
+    //       (a, b) =>
+    //         new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
+    //     )
+    //     console.log(
+    //       'setting users with messages to',
+    //       sortedUsersWithMessages.map(({ user }) => user)
+    //     )
+    //     setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching messages for users:', error)
+    //   })
+    const { data } = await axiosInstance.post('chat/chats', {
+      userId
+    })
+
+    if (Object.keys(data).length > 0) {
+      const finalInfo = Object.keys(data).map((key) => {
+        console.log('KEY', key)
+        const otherUserId = key
+          .split('_')
+          .filter((singleId) => singleId !== userId)[0]
+        console.log('otherUserId', otherUserId)
+        const userData = allUsers.filter((user) => user.id === otherUserId)[0]
+        console.log('userData', userData)
+        console.log('returning:', { room: key, ...userData })
+        return { room: key, ...userData }
+      })
+      setUsersWithMessages(finalInfo)
     }
-    Promise.all(
-      allUsers
-        ?.filter((user) => user?.id !== userId)
-        .map(async (user) => ({
-          user,
-          data: await getConvMessages(user)
-        }))
-    )
-      .then((filteredUsers) => {
-        const usersWithMessages = filteredUsers.filter(
-          (user) => user?.data && user?.data.length > 0
-        )
-
-        const sortedUsersWithMessages = usersWithMessages.sort(
-          (a, b) =>
-            new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
-        )
-
-        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
-      })
-      .catch((error) => {
-        console.error('Error fetching messages for users:', error)
-      })
   }
 
   return (
