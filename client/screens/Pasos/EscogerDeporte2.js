@@ -1,10 +1,12 @@
 import React, { useRef } from 'react'
 import { KeyboardAvoidingView, Platform, View } from 'react-native'
 import Input from '../../components/Input'
+import { useSelector } from 'react-redux'
 // import { useNavigation } from '@react-navigation/core'
 
 const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
   // const navigation = useNavigation()
+
 
   const cityRef = useRef(null)
   const countryRef = useRef(null)

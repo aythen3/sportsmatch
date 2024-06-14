@@ -36,7 +36,11 @@ const MiPerfil = () => {
 
   const { setActiveIcon } = useContext(Context)
 
-
+useEffect(()=>{
+if(isFocused){
+  setActiveIcon("profile")
+}
+},[isFocused])
 
   const [selectedTab, setSelectedTab] = useState('Feed')
   const renderContent = () => {

@@ -9,10 +9,11 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
 
   useEffect(() => {
     function setcolor() {
+      
       if (color) {
         return setColorSelect(color)
       }
-      if (index == 1 || !color) return setColorSelect("#E1451E")
+      if (index == 1 && !color && club) return setColorSelect("#E1451E")
       if (selectedSport == null) {
         return setColorSelect('#E1451E')
       }

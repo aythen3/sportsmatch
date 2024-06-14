@@ -17,6 +17,7 @@ import { getAll } from '../../redux/actions/sports'
 
 export const detectSportColor = (sport, dispatch) => {
   if (sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
+  if (sport == 'coach') { dispatch(setMainColor('#00F0FF')) }
   if (sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
   if (sport == 'Voley') { dispatch(setMainColor('#A8154A')) }
   if (sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
@@ -36,20 +37,25 @@ const PantallaInicio = () => {
       dispatch(login(valuesUser))
         .then(async (response) => {
           console.log("response", response.payload.user)
-          if (response.payload.user.sportman || response.payload.user.club) {
+          if (response.payload?.user?.sportman || response.payload?.user?.club) {
+            if (response.payload?.user?.sportman?.type === 'coach') {
+              detectSportColor('coach', dispatch)
 
-            detectSportColor(response.payload.user.sportman?.info?.sport || response.payload.user.club.sport, dispatch)
+            } else {
+              detectSportColor(response.payload.user.sportman?.info?.sport || response?.payload?.user?.club?.sport, dispatch)
+            }
+
             dispatch(
               setIsSpotMan(response.payload.user.type === 'club' ? false : true)
             )
             dispatch(setClub(response))
-           return navigation.reset({
+            return navigation.reset({
 
               index: 0,
               history: false,
-              routes:[{name:"SiguiendoJugadores"}]
-            
-             })
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           }
           else {
             if (response.payload.user.type == 'club') {
@@ -74,13 +80,13 @@ const PantallaInicio = () => {
           setIsSpotMan(valuesUser.type === 'club' ? false : true)
         )
         if (res.payload.user.sportman || res.payload.user.club) {
-         return navigation.reset({
+          return navigation.reset({
 
             index: 0,
             history: false,
-            routes:[{name:"SiguiendoJugadores"}]
-          
-           })
+            routes: [{ name: "SiguiendoJugadores" }]
+
+          })
 
         }
         if (res.payload.user.type === 'sportman') {

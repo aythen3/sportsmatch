@@ -15,14 +15,16 @@ import Carousel from '../../../components/Carousel'
 import { useRoute } from '@react-navigation/native';
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useStripe } from '@stripe/stripe-react-native'
 
 const Post = () => {
   const route = useRoute()
   const navigation = useNavigation()
   const [page, setPage] = useState(1)
+
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params
-  console.log('item', item)
+
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>

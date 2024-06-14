@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -8,11 +8,29 @@ import BarStatSVG from '../components/svg/BarStatSVG'
 
 const FeedStats = () => {
   const navigation = useNavigation()
+  const [selectedOptions, setSelectedOptions] = useState([])
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user , mainColor } = useSelector((state) => state.users)
 
+  const opciones = {
+    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
+    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
+    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
+    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
+    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
+  }
 
+  const selectores = () => {
+    if ( sportman.info.sport) setSelectedOptions(opciones.futbol)
+    if ( sportman.info.sport) setSelectedOptions(opciones.futbolSala)
+    if ( sportman.info.sport) setSelectedOptions(opciones.baloncesto)
+    if ( sportman.info.sport) setSelectedOptions(opciones.hockey)
+    if ( sportman.info.sport) setSelectedOptions(opciones.handball)
+    if ( sportman.info.sport) setSelectedOptions(opciones.voleibol)
+  }
+  useEffect(() => { selectores() }, [])
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -163,7 +181,7 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    Bote
+                    {selectedOptions[0]}
                   </Text>
                   <BarStatSVG color={mainColor} value={sportman?.info.prop1 || 0} />
                 </View>
@@ -198,7 +216,8 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    Lanzamiento
+                                        {selectedOptions[1]}
+
                   </Text>
                   <BarStatSVG color={mainColor}  value={sportman?.info.prop2 || 0} />
                 </View>
@@ -233,9 +252,45 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    Dribling
+                                                            {selectedOptions[2]}
+
                   </Text>
                   <BarStatSVG color={mainColor}  value={sportman?.info.prop3 || 0} />
+                </View>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: Color.gREY2SPORTSMATCH,
+                    fontSize: FontSize.t2TextSTANDARD_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  {sportman?.info.prop3}
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginTop: 8,
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      lineHeight: 14,
+                      marginBottom: 2,
+                      fontSize: 13,
+                      textAlign: 'left',
+                      color: Color.gREY2SPORTSMATCH,
+                      fontFamily: FontFamily.t4TEXTMICRO
+                    }}
+                  >
+                                                            {selectedOptions[3]}
+
+                  </Text>
+                  <BarStatSVG color={mainColor}  value={sportman?.info.height || 0} />
                 </View>
                 <Text
                   style={{
@@ -311,7 +366,7 @@ const FeedStats = () => {
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Lugar de residencia
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
                     {sportman.info.city}
                   </Text>
                 </View>
@@ -319,7 +374,7 @@ const FeedStats = () => {
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Años de expereiencia
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
                     {sportman.info.yearsOfExperience}
                   </Text>
                 </View>
@@ -329,13 +384,13 @@ const FeedStats = () => {
                   <Text style={[styles.concepto, styles.ataqueClr]}>
                     Deporte
                   </Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
                     {sportman?.info.sport.name || "sin deporte"}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>Rol</Text>
-                  <Text style={[styles.masculino, styles.text1Typo]}>
+                  <Text style={[styles.masculino, styles.text1Typo,{color:mainColor}]}>
                     {sportman?.info.rol || "sin rol"}
                   </Text>
                 </View>

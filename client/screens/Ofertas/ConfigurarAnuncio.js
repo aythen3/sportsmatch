@@ -125,7 +125,7 @@ const ConfigurarAnuncio = () => {
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
-      setSelectedSport(data.sports[0].name)
+      setSelectedSport(data.sports[0]?.name)
       return data
     } catch (error) {
       console.error('Error fetching club data:', error)
@@ -229,12 +229,12 @@ const ConfigurarAnuncio = () => {
                 </View>
               )} */}
               {showModal && (
-                 <ScrollableModal
-                 visible={showModal}
-                 closeModal={()=> setShowModal(false)}
-                 onSelectItem={setSelectedPosition}
-                 options={opciones[`futbol`]}
-               />
+                <ScrollableModal
+                  visible={showModal}
+                  closeModal={() => setShowModal(false)}
+                  onSelectItem={setSelectedPosition}
+                  options={opciones[`futbol`]}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -295,25 +295,25 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                   {showGenderModal && (
-                 <ScrollableModal
-                 visible={showGenderModal}
-                 closeModal={()=> setShowGenderModal(false)}
-                 onSelectItem={setSelectedGender}
-                 options={[`Hombre`,'Mujer']}
-               />
+              {showGenderModal && (
+                <ScrollableModal
+                  visible={showGenderModal}
+                  closeModal={() => setShowGenderModal(false)}
+                  onSelectItem={setSelectedGender}
+                  options={[`Hombre`, 'Mujer']}
+                />
               )}
             </TouchableOpacity>
           </View>
-          <View style={{ width: '100%', gap: 8 }}>
-  <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
-  <Input
-    value={selectedProvince}
-    placeholder="Ingrese la provincia"
-    onChangeText={(text) => setSelectedProvince(text)}
-    style={styles.inputText}
-  />
-</View>
+          {/* <View style={{ width: '100%'  }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
+            <Input
+              value={selectedProvince}
+              placeholder="Ingrese la provincia"
+              onChangeText={(text) => setSelectedProvince(text)}
+              style={styles.inputText}
+            />
+          </View> */}
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Categoría
@@ -368,13 +368,13 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                 {showCategoryModal && (
-                 <ScrollableModal
-                 visible={showCategoryModal}
-                 closeModal={()=> setShowCategoryModal(false)}
-                 onSelectItem={setSelectedCategory}
-                 options={categories}
-               />
+              {showCategoryModal && (
+                <ScrollableModal
+                  visible={showCategoryModal}
+                  closeModal={() => setShowCategoryModal(false)}
+                  onSelectItem={setSelectedCategory}
+                  options={categories}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -433,13 +433,13 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                 {showPriorityModal && (
-                 <ScrollableModal
-                 visible={showPriorityModal}
-                 closeModal={()=> setShowPriorityModal(false)}
-                 onSelectItem={setSelectedPriority}
-                 options={numbers}
-               />
+              {showPriorityModal && (
+                <ScrollableModal
+                  visible={showPriorityModal}
+                  closeModal={() => setShowPriorityModal(false)}
+                  onSelectItem={setSelectedPriority}
+                  options={numbers}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -499,13 +499,13 @@ const ConfigurarAnuncio = () => {
                   ))}
                 </View>
               )} */}
-                   {showRemunerationModal && (
-                 <ScrollableModal
-                 visible={showRemunerationModal}
-                 closeModal={()=> setShowRemunerationModal(false)}
-                 onSelectItem={setSelectedRemuneration}
-                 options={remunerationData}
-               />
+              {showRemunerationModal && (
+                <ScrollableModal
+                  visible={showRemunerationModal}
+                  closeModal={() => setShowRemunerationModal(false)}
+                  onSelectItem={setSelectedRemuneration}
+                  options={remunerationData}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -543,7 +543,7 @@ const ConfigurarAnuncio = () => {
                 if (!editOffer) {
                   const data = {
                     offerData: {
-                      sexo: selectedGender,
+                      sexo: selectedGender == 'Hombre' && 'Male' || selectedGender == 'Mujer' && 'Female',
                       category: selectedCategory,
                       urgency: selectedPriority,
                       prop1: retribucion,
@@ -553,9 +553,9 @@ const ConfigurarAnuncio = () => {
                           : selectedRemuneration === 'No'
                             ? false
                             : null,
-                      posit: selectedPosition?.id,
+                      posit: selectedPosition,
                       paused: false,
-                      province: selectedProvince, 
+                      province: selectedProvince,
                     },
 
                     clubId: club?.id
@@ -581,11 +581,11 @@ const ConfigurarAnuncio = () => {
                   //   ...(club && { clubId: club.id })
                   // }
                   const data = {
-                    ...(selectedGender && { sexo: selectedGender }),
+                    ...(selectedGender && { sexo: selectedGender == 'Hombre' && 'Male' || selectedGender == 'Mujer' && 'Female' }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
                     ...(retribucion && { prop1: "asdasd" }),
-                    ...(selectedPosition && { posit: selectedPosition.id }),
+                    ...(selectedPosition && { posit: selectedPosition }),
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
                     }),
@@ -668,13 +668,13 @@ const styles = StyleSheet.create({
   contenido: {
     top: '5%',
     marginBottom: '5%',
-    height:"100%",
+    height: "100%",
     gap: 25
   },
   configurarAnuncio: {
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH,
-    height:"100%"
+    height: "100%"
   },
   topContainer: {
     flexDirection: 'row',

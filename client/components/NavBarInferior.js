@@ -27,7 +27,7 @@ const NavBarInferior = () => {
     }
   }, [])
 
-  
+  console.log(user.user,'asdasdas')
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {
@@ -41,7 +41,12 @@ const NavBarInferior = () => {
         if (sportman.type == 'invitado') {
           navigation.navigate('Paso1')
 
-        } else {
+        }
+        if (user.user.club) {
+          navigation.navigate('ConfigurarAnuncio')
+
+        }
+         else {
 
           navigation.navigate('SeleccionarImagen')
         }
@@ -66,11 +71,12 @@ const NavBarInferior = () => {
       return navigation.navigate('Paso1')
     }
     if (user?.user?.type !== 'club') {
+      
       navigation.navigate('MiPerfil')
     } else {
       navigation.navigate('PerfilDatosPropioClub')
     }
-    setActiveIcon('profile')
+   return setActiveIcon('profile')
   }
 
   const imgPerfil = user?.user?.type !== 'club' ? sportman?.info?.img_perfil : user?.user?.club?.img_perfil;

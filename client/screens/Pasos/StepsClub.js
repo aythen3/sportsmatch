@@ -109,7 +109,13 @@ const StepsClub = () => {
         ).then((responde) => {
           if (responde.payload) {
             
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           }
         }).catch((error) => {
           console.error('Error updating user club data:', error)
@@ -139,6 +145,7 @@ const StepsClub = () => {
       case 3:
         return (
           <EscogerDeporte1
+            color={sportColor}
             profileImage={profileImage}
             setProfileImage={setProfileImage}
             coverImage={coverImage}

@@ -67,6 +67,8 @@ const Paso1 = () => {
   const [invitadoStep, setInvitadoStep] = useState(0)
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
+  const [selectPosition, setSelectPosition] = useState('')
+
   const [sportmanValues, setSportmanValues] = useState({
     sport: sport?.name || 'Voley',
     gender: sportmanGender || "Masculino",
@@ -76,7 +78,6 @@ const Paso1 = () => {
     actualClub: '',
     description: '',
     category: category || 'Prebenjamín (6-8 años)"',
-    position: position || ''
   })
   const [profesionalValues, setProfesionalValues] = useState({
     rol: profesionalType,
@@ -244,7 +245,9 @@ const Paso1 = () => {
           prop2: data?.prop2,
           prop3: data?.prop3,
           nickname: user?.user?.nickname || '',
-          city: sportmanValues.city || ''
+          city: sportmanValues.city || '',
+          position: data?.position || ''
+
         }
         const body = {
           sportmanData: {
@@ -267,7 +270,13 @@ const Paso1 = () => {
             const color = !sportman && !profesional
               && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor
             dispatch(setMainColor(color))
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           })
         } else {
           const upd = {
@@ -283,14 +292,20 @@ const Paso1 = () => {
               })
             )
 
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           })
         }
       }
     } else {
       stepsProfesional !== 1 && setStepsProfesional((prev) => prev + 1)
       if (profesional && stepsProfesional === 1) {
- 
+
         const fullData = {
           ...profesionalValues,
           img_perfil: profileImage,
@@ -319,7 +334,13 @@ const Paso1 = () => {
               && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor
             dispatch(setMainColor(color))
 
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           })
         } else {
           const upd = {
@@ -334,7 +355,13 @@ const Paso1 = () => {
                 ...body.sportmanData
               })
             )
-            navigation.navigate('SiguiendoJugadores')
+            return navigation.reset({
+
+              index: 0,
+              history: false,
+              routes: [{ name: "SiguiendoJugadores" }]
+
+            })
           })
         }
       }
@@ -377,7 +404,7 @@ const Paso1 = () => {
         width: width,
         flex: 1,
         paddingHorizontal: 0,
-        paddingTop:10,
+        paddingTop: 10,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
@@ -493,7 +520,8 @@ const Paso1 = () => {
             <Lines
               selectedSport={selectedSport}
               profesional={profesional}
-
+              color={null}
+              club={false}
               index={
                 !sportman && !profesional
                   ? 1
@@ -600,7 +628,7 @@ const Paso1 = () => {
         )}
 
         {sportman && stepsSportman === 1 && (
-          <SkillSeleccion selectedSport={selectedSport} setData={setData} data={data} />
+          <SkillSeleccion selectedSport={selectedSport} setData={setData} data={data} setSelectPosition={setSelectPosition} selectPosition={selectPosition} />
 
           // <Paso4Jugador
           //   selectedCity={selectedCity}
