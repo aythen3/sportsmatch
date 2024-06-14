@@ -116,7 +116,6 @@ const LoginSwitch = () => {
     setIsPlayer(!isPlayer)
   }
 
-
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
 
@@ -147,7 +146,6 @@ const LoginSwitch = () => {
       signInWithCredential(auth, credential)
     }
   }, [response])
-
 
   useEffect(() => {
     getLocalUser()

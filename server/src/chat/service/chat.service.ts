@@ -1,7 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ErrorManager } from 'src/utils/error.manager';
+import { MessageEntity } from '../entities/message.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ChatService {
+  constructor(
+    
+    @InjectRepository(MessageEntity)
+    private messageRepository: Repository<MessageEntity>
+  ) {}
   create() {
     return 'This action adds a new socket';
   }
@@ -17,6 +26,58 @@ export class ChatService {
   update(id: number) {
     return `This action updates a #${id} socket`;
   }
+
+    // Método para obtener los mensajes de un usuario
+    async getChatsForUser(userId: string): Promise<MessageEntity[]> {
+      try {
+        const chats = await this.messageRepository
+          .createQueryBuilder('message')
+          .where('message.senderId = :userId AND message.senderDelete IS NULL OR message.receiverId = :userId AND message.receiverDelete IS NULL', { userId })
+          .orderBy('message.createdAt', 'DESC')
+          .getMany();
+  
+        return chats;
+      } catch (error) {
+        throw ErrorManager.createSignatureError(error.message);
+      }
+    }
+
+  
+
+    async getUserChats(userId: string): Promise<Record<string, MessageEntity[]>> {
+      const messages = await this.messageRepository
+        .createQueryBuilder('message')
+        .select([
+          'message.id',
+          'message.createdAt',
+          'message.updatedAt',
+          'message.senderId',
+          'message.receiverId',
+          'message.room',
+          'message.message',
+          'message.isReaded',
+          'message.senderDelete',
+          'message.receiverDelete',
+          'message.prop1',
+          'message.prop2',
+          'message.prop3',
+          'message.prop4',
+        ])
+        .where('message.senderId = :userId OR message.receiverId = :userId', { userId })
+        .getMany();
+    
+      // Agrupar los mensajes por el campo "room"
+      const chats = messages.reduce((acc, message) => {
+        if (!acc[message.room]) {
+          acc[message.room] = [];
+        }
+        acc[message.room].push(message);
+        return acc;
+      }, {} as Record<string, MessageEntity[]>);
+    
+      return chats;
+    }
+    
 
   public roomIdGenerator(senderId: string, receiverId: string): string {
     // Ordena los IDs alfabéticamente para asegurar la consistencia de la sala

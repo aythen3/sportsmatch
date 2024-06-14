@@ -32,8 +32,8 @@ const TusNotificaciones1 = () => {
   const { allNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
-  const { user, allUsers , mainColor } = useSelector((state) => state.users)
-  
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
+
   const { offers } = useSelector((state) => state.offers)
   const { getUsersMessages, usersWithMessages, setActiveIcon } =
     useContext(Context)
@@ -47,7 +47,7 @@ const TusNotificaciones1 = () => {
   }, [])
 
   React.useEffect(() => {
-    setActiveIcon("message")
+    setActiveIcon('message')
   }, [isFocused])
 
   const sortUsers = (userA, userB) => {
@@ -98,7 +98,7 @@ const TusNotificaciones1 = () => {
   // },[])
 
   useEffect(() => {
-   const res = getUsersMessages()
+    getUsersMessages()
   }, [])
 
   useEffect(() => {
@@ -128,14 +128,21 @@ const TusNotificaciones1 = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
-          <Pressable style={{width:"50%",height:40,}} onPress={() => setSelectedComponent('messages')}>
+          <Pressable
+            style={{ width: '50%', height: 40 }}
+            onPress={() => setSelectedComponent('messages')}
+          >
             <Text
               style={[
                 selectedComponent === 'messages'
-                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
+                  ? {
+                      ...styles.notficaciones,
+                      color: mainColor,
+                      borderColor: mainColor
+                    }
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}
@@ -143,11 +150,18 @@ const TusNotificaciones1 = () => {
               Mensajes
             </Text>
           </Pressable>
-          <Pressable style={{width:"50%",height:40,}} onPress={() => setSelectedComponent('notifications')}>
+          <Pressable
+            style={{ width: '50%', height: 40 }}
+            onPress={() => setSelectedComponent('notifications')}
+          >
             <Text
               style={[
                 selectedComponent === 'notifications'
-                  ? {...styles.notficaciones,color: mainColor,borderColor:mainColor}
+                  ? {
+                      ...styles.notficaciones,
+                      color: mainColor,
+                      borderColor: mainColor
+                    }
                   : styles.mensajes1,
                 styles.mensajes1Typo
               ]}
@@ -189,8 +203,8 @@ const TusNotificaciones1 = () => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              alignSelf:"center",
-             width:"97%",
+              alignSelf: 'center',
+              width: '97%'
             }}
           >
             <Image
@@ -212,7 +226,7 @@ const TusNotificaciones1 = () => {
             keyboardShouldPersistTaps={'always'}
             style={{
               marginTop: 30,
-              paddingHorizontal:14
+              paddingHorizontal: 14
             }}
           >
             {value === '' && usersWithMessages.length === 0 ? (
@@ -225,6 +239,7 @@ const TusNotificaciones1 = () => {
               value === '' &&
               usersWithMessages?.map((user) => (
                 <MessagesChat
+                  setValue={setValue}
                   key={user.id}
                   name={user.nickname}
                   sportmanId={user.sportman?.id}
@@ -241,6 +256,7 @@ const TusNotificaciones1 = () => {
             {value !== '' &&
               filteredUsers.map((user) => (
                 <MessagesChat
+                  setValue={setValue}
                   key={user.id}
                   name={user.nickname}
                   sportmanId={user.sportman?.id}
@@ -264,7 +280,7 @@ const styles = StyleSheet.create({
   mensajes1Typo: {
     fontWeight: '700',
     fontSize: FontSize.t1TextSMALL_size,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   tuBuzn1: {
     fontSize: FontSize.h3TitleMEDIUM_size,
@@ -303,7 +319,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: Color.bALONCESTO,
     paddingBottom: 5,
-    width: "100%"
+    width: '100%'
   },
   text: {
     left: '80.77%',

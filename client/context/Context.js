@@ -62,13 +62,12 @@ export const ContextProvider = ({ children }) => {
   }
 
   const pickImage = async (source, imageUri) => {
-
     if (imageUri) {
       setProvisoryProfileImage(imageUri)
       const profileImageData = {
         uri: imageUri,
         type: 'image/jpg',
-        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0],
+        name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
       }
 
       const profileImageForm = new FormData()
@@ -76,19 +75,21 @@ export const ContextProvider = ({ children }) => {
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
       profileImageForm.append('cloud_name', 'der45x19c')
 
-     const res = await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
-        method: 'post',
-        body: profileImageForm
-      })
-        .then(async (res)  => 
-     
-          res.json())
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
+        {
+          method: 'post',
+          body: profileImageForm
+        }
+      )
+        .then(async (res) => res.json())
         .then((data) => {
           setLibraryImage(transformHttpToHttps(data.url))
           return transformHttpToHttps(data.url)
-        }).catch(error => console.log(error))
+        })
+        .catch((error) => console.log(error))
 
-       return res
+      return res
     } else {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -197,15 +198,13 @@ export const ContextProvider = ({ children }) => {
     }
   )
 
-  socket.on('connect', () => {
-  })
+  socket.on('connect', () => {})
 
   socket.on('disconnect', () => {
     setRoomId()
   })
 
-  socket.on('error', (error) => {
-  })
+  socket.on('error', (error) => {})
 
   socket.on('joinedRoom', (room) => {
     setRoomId(room)
@@ -259,57 +258,78 @@ export const ContextProvider = ({ children }) => {
 
   const [usersWithMessages, setUsersWithMessages] = useState([])
 
-  const getUsersMessages = () => {
-    const getConvMessages = async (user) => {
-      try {
-        const { data } = await axiosInstance.get(
-          `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-        )
-        const filterByDelete = data.filter((message) => {
-          const senderOrReceiver =
-            message.senderId === userId ? 'sender' : 'receiver'
-          if (senderOrReceiver === 'sender') {
-            if (message.senderDelete === true) {
-              return false
-            }
-            return true
-          }
-          if (senderOrReceiver === 'receiver') {
-            if (message.receiverDelete === true) {
-              return false
-            }
-            return true
-          }
-        })
-        return filterByDelete
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        return []
-      }
+  const getUsersMessages = async () => {
+    // const getConvMessages = async (user) => {
+    //   try {
+    //     const { data } = await axiosInstance.get(
+    //       `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
+    //     )
+    //     const filterByDelete = data.filter((message) => {
+    //       const senderOrReceiver =
+    //         message.senderId === userId ? 'sender' : 'receiver'
+    //       if (senderOrReceiver === 'sender') {
+    //         if (message.senderDelete === true) {
+    //           return false
+    //         }
+    //         return true
+    //       }
+    //       if (senderOrReceiver === 'receiver') {
+    //         if (message.receiverDelete === true) {
+    //           return false
+    //         }
+    //         return true
+    //       }
+    //     })
+    //     return filterByDelete
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error)
+    //     return []
+    //   }
+    // }
+    // Promise.all(
+    //   allUsers
+    //     ?.filter((user) => user?.id !== userId)
+    //     .map(async (user) => ({
+    //       user,
+    //       data: await getConvMessages(user)
+    //     }))
+    // )
+    //   .then((filteredUsers) => {
+    //     const usersWithMessages = filteredUsers.filter(
+    //       (user) => user?.data && user?.data.length > 0
+    //     )
+
+    //     const sortedUsersWithMessages = usersWithMessages.sort(
+    //       (a, b) =>
+    //         new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
+    //     )
+    //     console.log(
+    //       'setting users with messages to',
+    //       sortedUsersWithMessages.map(({ user }) => user)
+    //     )
+    //     setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching messages for users:', error)
+    //   })
+    const { data } = await axiosInstance.post('chat/chats', {
+      userId
+    })
+
+    if (Object.keys(data).length > 0) {
+      const finalInfo = Object.keys(data).map((key) => {
+        console.log('KEY', key)
+        const otherUserId = key
+          .split('_')
+          .filter((singleId) => singleId !== userId)[0]
+        console.log('otherUserId', otherUserId)
+        const userData = allUsers.filter((user) => user.id === otherUserId)[0]
+        console.log('userData', userData)
+        console.log('returning:', { room: key, ...userData })
+        return { room: key, ...userData }
+      })
+      setUsersWithMessages(finalInfo)
     }
-    Promise.all(
-      allUsers
-        ?.filter((user) => user?.id !== userId)
-        .map(async (user) => ({
-          user,
-          data: await getConvMessages(user)
-        }))
-    )
-      .then((filteredUsers) => {
-        const usersWithMessages = filteredUsers.filter(
-          (user) => user?.data && user?.data.length > 0
-        )
-
-        const sortedUsersWithMessages = usersWithMessages.sort(
-          (a, b) =>
-            new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
-        )
-
-        setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
-      })
-      .catch((error) => {
-        console.error('Error fetching messages for users:', error)
-      })
   }
 
   return (

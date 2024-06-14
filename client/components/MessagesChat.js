@@ -16,7 +16,8 @@ const MessagesChat = ({
   selectedUserId,
   profilePic,
   applicant,
-  sportmanId
+  sportmanId,
+  setValue
 }) => {
   const dispatch = useDispatch()
   const { offers } = useSelector((state) => state.offers)
@@ -64,6 +65,7 @@ const MessagesChat = ({
           gap: 5
         }}
         onPress={() => {
+          setValue('')
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
@@ -221,7 +223,6 @@ const MessagesChat = ({
                 const sportmanUser = allUsers.filter(
                   (user) => user?.sportman?.id === sportmanId
                 )[0]
-
 
                 dispatch(
                   sendMatch({

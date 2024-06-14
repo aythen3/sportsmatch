@@ -37,7 +37,7 @@
         <data android:scheme="sportsmatch"/>
         <data android:scheme="fb2654178301415308"/>
         <data android:scheme="com.aythenapps.sportsmatch"/>
-        <data android:scheme="exp+sportmatch"/>
+        <data android:scheme="exp+sportsmatch"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
