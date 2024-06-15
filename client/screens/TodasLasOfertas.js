@@ -44,12 +44,21 @@ const TodasLasOfertas = () => {
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
   const [clientSecret, setClientSecret] = useState('')
   const [planSelected, setPlanSelected] = useState('')
+  const [selectedSports, setSelectedSports] = useState([])
+
+  const [offer, setOffer] = useState([])
+
 
   useEffect(() => {
     dispatch(getAllOffers())
   }, [])
 
-  useEffect(() => {}, [selectOfferComponent])
+  useEffect(() => {
+if(offers){
+  setOffer(offers)
+  console.log(offers)
+}
+  }, [])
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -201,7 +210,7 @@ const TodasLasOfertas = () => {
         return true
       }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
-          {offers
+          {offer
             .filter((offer) => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
@@ -235,35 +244,7 @@ const TodasLasOfertas = () => {
                   opacity: 0.7
                 }}
               >
-                {/* <TouchableOpacity style={{position:'absolute',right:20,top:10, zIndex:3000}}  onPress={() => {
-                let actualUser = _.cloneDeep(user)
-                console.log('atualUser: ', actualUser)
-                const newFavoriteOffersArray = actualFavoriteOffers?.includes(offer.id) ? actualFavoriteOffers.filter(
-                      (favorite) => favorite !== offer.id
-                    )
-                  : [...actualFavoriteOffers, offer.id]
-                  console.log('newFavoriteOffersArray: ',newFavoriteOffersArray)
-                  if (!actualUser.user.prop1) {
-                    actualUser.user.prop1 = {};
-                  }
-                  actualUser.user.prop1.favoriteOffers = newFavoriteOffersArray
-                  console.log('userFavs: ', actualUser?.user?.prop1?.favoriteOffers)
-
-                  console.log('setting user favorites to:', newFavoriteOffersArray)
-                  dispatch(
-                    updateUserData({
-                      id: user.user.id,
-                      body: { prop1: { ...user.user.prop1, favoriteOffers: newFavoriteOffersArray } }
-                    })
-                  ).then((data) => {
-                    dispatch(getAllUsers())
-                    dispatch(updateUser(actualUser))
-                  })
-                }}
-                >
-                  <FontAwesome name={actualFavoriteOffers.includes(offer.id) ? 'heart' : 'heart-o'} color='#E1451E' size={30} />
-
-                </TouchableOpacity> */}
+              
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
                   <CardInfoOffers
                     text="Sexo"
@@ -603,7 +584,7 @@ const TodasLasOfertas = () => {
       )} */}
 
       {selectOfferComponent === 'todas' &&
-        offers.filter((offer) => {
+        offer.filter((offer) => {
           const filteredUserMatches = userMatches.filter(
             (match) => match.offerId && match.offerId !== offer.id
           )
@@ -647,7 +628,7 @@ const TodasLasOfertas = () => {
       {/* ============================ FAVORITE OFFERS ============================ */}
       {selectOfferComponent !== 'todas' &&
       offers &&
-      offers.filter((offer) => {
+      offer.filter((offer) => {
         const filteredUserMatches = userMatches.filter(
           (match) => match.offerId && match.offerId !== offer.id
         )
@@ -663,7 +644,7 @@ const TodasLasOfertas = () => {
         return false
       }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
-          {offers
+          {offer
             .filter((offer) => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
@@ -917,6 +898,10 @@ const TodasLasOfertas = () => {
             }}
           >
             <FiltersSportman
+            setSelectedSports={setSelectedSports}
+            selectedSports={selectedSports}
+            setOffer={setOffer}
+            offer={offers}
               sports={user?.user?.sportman?.info?.sport}
               onClose={() => setModalFilterSportman(false)}
             />

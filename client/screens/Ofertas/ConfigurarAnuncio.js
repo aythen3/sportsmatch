@@ -25,6 +25,7 @@ import axiosInstance from '../../utils/apiBackend'
 import { getClub } from '../../redux/actions/club'
 import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
 import ScrollableModal from '../../components/modals/ScrollableModal'
+import { useStripe } from '@stripe/stripe-react-native'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -124,7 +125,7 @@ const ConfigurarAnuncio = () => {
     try {
       const { data } = await axiosInstance.get(`club/${id}`)
       setClubData(data)
-      setSelectedSport(data.sports[0]?.name)
+      setSelectedSport(data.sport)
       return data
     } catch (error) {
       console.error('Error fetching club data:', error)
@@ -141,6 +142,60 @@ const ConfigurarAnuncio = () => {
     }
     fetchClubData()
   }, [])
+
+
+  const [clientSecret, setClientSecret] = useState('')
+
+
+  const handleGetGold = async () => {
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
+      customerId: user.user.stripeId
+    })
+
+    if (res.data) {
+      setClientSecret(
+        res.data.subscription.clientSecret.latest_invoice.payment_intent
+          .client_secret
+      )
+    }
+
+  }
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
+
+  React.useEffect(() => {
+    const initializePaymentSheet = async () => {
+      const { error } = await initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'azul',
+        returnURL: 'stripe-example://payment-sheet'
+        // Set `allowsDelayedPaymentMethods` to true if your business handles
+        // delayed notification payment methods like US bank accounts.
+      })
+      if (error) {
+        // Handle error
+        console.log(error, 'error')
+      } else {
+        const { error } = await presentPaymentSheet()
+        if (error) {
+          console.log(error, 'error')
+        } else {
+         navigation.goBack()
+        }
+      }
+    }
+
+    if (clientSecret) {
+      initializePaymentSheet()
+    }
+  }, [clientSecret, initPaymentSheet])
+
+  const handleRegister = async () => {
+    handleGetGold()
+  }
+
+
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
@@ -530,7 +585,7 @@ const ConfigurarAnuncio = () => {
         <View style={styles.botonsOferta}>
           <View>
             <TouchableOpacity
-              onPress={() => console.log('promocionando')}
+              onPress={() => handleRegister()}
               style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
             >
               <Text style={[styles.promocionarOferta, styles.ofertaTypo]}>
@@ -557,7 +612,8 @@ const ConfigurarAnuncio = () => {
                             : null,
                       posit: selectedPosition,
                       paused: false,
-                      province: selectedProvince
+                      province: selectedProvince,
+                      sport:selectedSport
                     },
 
                     clubId: club?.id

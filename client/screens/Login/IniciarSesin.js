@@ -89,6 +89,8 @@ const IniciarSesin = () => {
           await AsyncStorage.setItem('userType', response.payload.user.type)
           setLoading(false)
           if (response.payload?.user?.club || response.payload.user?.sportman) {
+            dispatch(setClub(response))
+
             setActiveIcon('diary')
             return navigation.reset({
 
