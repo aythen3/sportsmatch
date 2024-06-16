@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Image, TouchableOpacity, StyleSheet, Text } from 'react-native'
 import DiarySVG from './svg/footerSVG/DiarySVG'
 import LensSVG from './svg/footerSVG/LensSVG'
 import HomeSVG from './svg/footerSVG/HomeSVG'
@@ -11,7 +11,8 @@ import { getSportman } from '../redux/actions/sportman'
 import { Context } from '../context/Context'
 
 const NavBarInferior = () => {
-  const { activeIcon, setActiveIcon } = useContext(Context)
+  const { activeIcon, setActiveIcon, getUsersMessages, notReaded } =
+    useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [sportColor, setSportColor] = useState('#E1451E')
@@ -20,10 +21,13 @@ const NavBarInferior = () => {
   const { sportman } = useSelector((state) => state.sportman)
 
   useEffect(() => {
+    getUsersMessages()
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
   }, [])
+
+  useEffect(() => {}, [notReaded])
 
   // console.log(user.user,'asdasdas')
   const handleIconPress = (iconName) => {
@@ -118,6 +122,24 @@ const NavBarInferior = () => {
             isActive={activeIcon === 'message'}
             style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
           />
+          {notReaded > 0 && (
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                backgroundColor: mainColor,
+                borderRadius: 100,
+                position: 'absolute',
+                top: 10,
+                right: -20,
+                zIndex: 800
+              }}
+            >
+              <Text style={{ color: 'white', textAlign: 'center' }}>
+                {notReaded}
+              </Text>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
 

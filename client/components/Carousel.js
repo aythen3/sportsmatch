@@ -228,7 +228,7 @@ function Carousel({
           </View>
         ))}
 
-        {image.map((e, i) => (
+        {/* {image.map((e, i) => (
           <View style={{ width: '100%', height: '100%' }} key={i}>
             <DoubleTap
               onDoubleTap={() => {
@@ -263,7 +263,7 @@ function Carousel({
               </View>
             </DoubleTap>
           </View>
-        ))}
+        ))} */}
 
         {/* <View key={index + 1}>
           <Image
@@ -278,7 +278,7 @@ function Carousel({
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: 10,
-          marginBottom: authorId === user?.user?.id ? 0 : 5
+          marginBottom: authorId === user?.user?.id ? 0 : -10
         }}
       >
         {image.length > 1 &&
@@ -297,7 +297,7 @@ function Carousel({
       <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
           <TouchableOpacity
-            style={{ border: '1px solid green' }}
+            style={{ marginTop: -15 }}
             onPress={() => navigation.navigate('PostPromocion', data)}
           >
             <LinearGradient
@@ -402,7 +402,8 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 5,
-    marginHorizontal: 3.5
+    marginHorizontal: 3.5,
+    marginBottom: 5
   },
   indicatorActive: {
     backgroundColor: 'blue'

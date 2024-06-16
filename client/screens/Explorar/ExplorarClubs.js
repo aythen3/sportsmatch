@@ -184,12 +184,12 @@ const ExplorarClubs = () => {
 
   const { setActiveIcon } = React.useContext(Context)
   React.useEffect(() => {
-    setActiveIcon("lens")
+    setActiveIcon('lens')
   }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
   const [searchUsers, setSearchUsers] = useState([])
-  const [filterSelected, setFilterSelected] = useState("")
+  const [filterSelected, setFilterSelected] = useState('')
 
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
@@ -271,16 +271,18 @@ const ExplorarClubs = () => {
   //     </TouchableOpacity>
   //   )
   // }
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get('window').width
   const renderItem = ({ item, index }) => {
     if (index % 4 === 0) {
       return (
-        <View style={{ flexDirection: "row" }}>
-          <View style={{
-            flexDirection: 'column',
-            width: (screenWidth - 8) / 3, // ancho de una columna
-            marginRight: 8,
-          }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'column',
+              width: (screenWidth - 8) / 3, // ancho de una columna
+              marginRight: 8
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 if (item.author.type === 'club') {
@@ -290,11 +292,14 @@ const ExplorarClubs = () => {
                 }
               }}
             >
-              <Image source={{ uri: posts[index].image[0] }} style={{
-                width: '100%',
-                height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                marginBottom: 8,
-              }} />
+              <Image
+                source={{ uri: posts[index]?.image[0] }}
+                style={{
+                  width: '100%',
+                  height: (screenWidth - 8) / 3, // altura de una imagen pequeña
+                  marginBottom: 8
+                }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -305,12 +310,14 @@ const ExplorarClubs = () => {
                 }
               }}
             >
-
-              <Image source={{ uri: posts[index + 1].image[0] }} style={{
-                width: '100%',
-                height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                marginBottom: 8,
-              }} />
+              <Image
+                source={{ uri: posts[index + 1]?.image[0] }}
+                style={{
+                  width: '100%',
+                  height: (screenWidth - 8) / 3, // altura de una imagen pequeña
+                  marginBottom: 8
+                }}
+              />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -322,18 +329,19 @@ const ExplorarClubs = () => {
               }
             }}
           >
-
-
-            <Image source={{ uri: posts[index + 2].image[0] }} style={{
-              width: (screenWidth - 8) * 2 / 3 + 8, // ancho de dos columnas
-              height: (screenWidth - 8) * 2 / 3 + 8, // altura de dos filas de imagen pequeña
-            }} />
+            <Image
+              source={{ uri: posts[index + 2]?.image[0] }}
+              style={{
+                width: ((screenWidth - 8) * 2) / 3 + 8, // ancho de dos columnas
+                height: ((screenWidth - 8) * 2) / 3 + 8 // altura de dos filas de imagen pequeña
+              }}
+            />
           </TouchableOpacity>
         </View>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   return (
     <SafeAreaView style={styles.explorarClubs}>
@@ -553,7 +561,6 @@ const ExplorarClubs = () => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={renderItem}
             numColumns={1}
-
             contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
           ></FlatList>
         )}

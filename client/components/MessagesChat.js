@@ -24,8 +24,13 @@ const MessagesChat = ({
   const { offers } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
   const isFocused = useIsFocused()
-  const { getTimeFromDate, clubMatches, getClubMatches, userMatches } =
-    useContext(Context)
+  const {
+    getTimeFromDate,
+    clubMatches,
+    getClubMatches,
+    userMatches,
+    getUsersMessages
+  } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState([])
   const [lastMessage, setLastMessage] = useState()
