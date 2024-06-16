@@ -90,6 +90,8 @@ const PantallaInicio = () => {
     }
     if (valuesUser.uid) {
       dispatch(login({ googleId: valuesUser.uid })).then(async (res) => {
+        dispatch(setClub(res))
+
         detectSportColor(
           res.payload.user.sportman?.info?.sport || res.payload.user.club.sport,
           dispatch

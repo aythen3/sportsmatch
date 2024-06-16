@@ -13,9 +13,12 @@ const FiltersSportman = ({
   setPosts,
   sports,
   setFilterSelected,
-  filterSelected
+  filterSelected,
+  setOffer,
+  offer,
+  setSelectedSports,
+  selectedSports
 }) => {
-  const [selectedSports, setSelectedSports] = useState([])
   const sportsNames = [
     'Fútbol',
     'Fútbol Sala',
@@ -34,9 +37,10 @@ const FiltersSportman = ({
   const toggleSport = (sport) => {
     setSelectedSports((prevSports) => {
       if (prevSports.includes(sport)) {
+        setOffer(offer)
         return prevSports.filter((s) => s !== sport)
       } else {
-        return [...prevSports, sport]
+        return [ sport]
       }
     })
   }
@@ -189,6 +193,9 @@ const FiltersSportman = ({
           <TouchableOpacity
             onPress={() => {
               toggleSport(sport)
+              const filt = offer.filter(s => s.sport === sport)
+              console.log(filt)
+              setOffer(filt)
               // Genera una nueva copia del array de posts ordenado por la cantidad de likes
               // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
               // // Actualiza el estado de los posts con la nueva copia ordenada

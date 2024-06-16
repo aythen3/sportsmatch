@@ -22,6 +22,9 @@ export class OfferEntity extends BaseEntity {
   posit: string | null;
 
   @Column({ nullable: true })
+  sport: string | null;
+
+  @Column({ nullable: true })
   paused: boolean | null;
 
   @Column()

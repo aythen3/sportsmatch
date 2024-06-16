@@ -48,6 +48,10 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
+  sport: string;
+
+  @IsString()
+  @IsOptional()
   position: any;
   
 
