@@ -48,10 +48,9 @@ const StepsClub = () => {
   const { sport } = useSelector((state) => state.sports)
 
   const [stepsIndex, setstepsIndex] = useState(1)
-  const [sportS, setSportS] = useState("")
-  const { height, width } = useWindowDimensions();
+  const [sportS, setSportS] = useState('')
+  const { height, width } = useWindowDimensions()
   const [sportColor, setSportColor] = useState('#00F0FF')
-
 
   const [clubValues, setClubValues] = useState({
     name: '',
@@ -60,40 +59,37 @@ const StepsClub = () => {
     field: '',
     year: 0,
     capacity: 0,
-    description: '',
+    description: ''
   })
 
   useEffect(() => {
     const backAction = () => {
       // Despacha tu acción de Redux aquí
-      dispatch(clearUser());
+      dispatch(clearUser())
       navigation.goBack()
-      return true; // Indica que el evento fue manejado
-    };
+      return true // Indica que el evento fue manejado
+    }
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction
-    );
+    )
 
-    return () => backHandler.remove(); // Remueve el listener al desmontar el componente
-  }, [dispatch]);
+    return () => backHandler.remove() // Remueve el listener al desmontar el componente
+  }, [dispatch])
 
   useEffect(() => {
     const color = setColor(sportS.name)
     setSportColor(color)
-
   }, [sportS])
 
   const handleRegister = async () => {
-
     clubValues.img_perfil = profileImage || ''
     clubValues.img_front = coverImage || ''
     const data = {
       userId: user.user.id,
-      clubData: {...clubValues,sport:sportS.name},
-      sportId: sportS.id,
-
+      clubData: { ...clubValues, sport: sportS.name },
+      sportId: sportS.id
     }
     // console.log('data from handleRegister: ', data)
     await dispatch(createClub(data))
@@ -106,32 +102,32 @@ const StepsClub = () => {
             id: response.meta.arg.userId,
             data: response.meta.arg.clubData
           })
-        ).then((responde) => {
-          if (responde.payload) {
-            
-            return navigation.reset({
-
-              index: 0,
-              history: false,
-              routes: [{ name: "SiguiendoJugadores" }]
-
-            })
-          }
-        }).catch((error) => {
-          console.error('Error updating user club data:', error)
-        })
+        )
+          .then((responde) => {
+            if (responde.payload) {
+              return navigation.reset({
+                index: 0,
+                history: false,
+                routes: [{ name: 'SiguiendoJugadores' }]
+              })
+            }
+          })
+          .catch((error) => {
+            console.error('Error updating user club data:', error)
+          })
       })
 
       .catch((error) => {
         console.error('Error creating club:', error)
       })
-
   }
 
   const ViewComponent = (index) => {
     switch (index) {
       case 1:
-        return <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
+        return (
+          <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
+        )
       case 2:
         return (
           <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
@@ -140,7 +136,6 @@ const StepsClub = () => {
               setClubValues={setClubValues}
             />
           </ScrollView>
-
         )
       case 3:
         return (
@@ -167,23 +162,33 @@ const StepsClub = () => {
   }
 
   return (
-    <View style={{ ...styles.escogerDeporte, height: height, width: width, flex: 1, paddingTop: 10 }}  >
-
-
-      {stepsIndex == 1 && (<Image
-        style={{
-          ...styles.escogerDeporteChild,
-        }}
-        contentFit="cover"
-        source={require('../../assets/tudeportefondo.png')}
-      />)}
-      {stepsIndex > 1 && (<Image
-        style={{
-          ...styles.escogerDeporteChild,
-        }}
-        contentFit="cover"
-        source={require('../../assets/sobretifondo.png')}
-      />)}
+    <View
+      style={{
+        ...styles.escogerDeporte,
+        height: height,
+        width: width,
+        flex: 1,
+        paddingTop: 10
+      }}
+    >
+      {stepsIndex == 1 && (
+        <Image
+          style={{
+            ...styles.escogerDeporteChild
+          }}
+          contentFit="cover"
+          source={require('../../assets/tudeportefondo.png')}
+        />
+      )}
+      {stepsIndex > 1 && (
+        <Image
+          style={{
+            ...styles.escogerDeporteChild
+          }}
+          contentFit="cover"
+          source={require('../../assets/sobretifondo.png')}
+        />
+      )}
       <View style={{ ...styles.atrsParent }}>
         <Image
           style={styles.coolicon}
@@ -192,25 +197,37 @@ const StepsClub = () => {
         />
         <Pressable
           onPress={() =>
-            stepsIndex === 1
-              ? back()
-              : setstepsIndex((prev) => prev - 1)
+            stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
           }
         >
           <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
         </Pressable>
       </View>
       <View style={{ marginTop: -30 }}>
-        <Text style={{ ...styles.paso2, color: sportColor }}>Paso {stepsIndex}</Text>
+        <Text style={{ ...styles.paso2, color: sportColor }}>
+          Paso {stepsIndex}
+        </Text>
         <Text style={styles.detallesDelClub}>
           {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
         </Text>
       </View>
-      <Lines color={sportColor} club={true} index={stepsIndex} selectedSport={sportS.name} />
+      <Lines
+        color={sportColor}
+        club={true}
+        index={stepsIndex}
+        selectedSport={sportS.name}
+      />
 
-      <View style={{ justifyContent: "space-between", height: "100%", flex: 1, paddingVertical: 20 }}>
+      <View
+        style={{
+          justifyContent: 'space-between',
+          height: '100%',
+          flex: 1,
+          paddingVertical: 20
+        }}
+      >
         {ViewComponent(stepsIndex)}
-        <View >
+        <View>
           <TouchableOpacity
             style={styles.touchable}
             onPress={() => {
@@ -266,7 +283,8 @@ const styles = StyleSheet.create({
     top: 0,
     justifyContent: 'flex-end',
     right: 20,
-    marginBottom: 50
+    marginTop: 5,
+    marginBottom: 30
   },
   escogerDeporteChild: {
     width: '100%',
@@ -274,7 +292,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   escogerDeporte: {
-    backgroundColor: Color.bLACK1SPORTSMATCH,
+    backgroundColor: Color.bLACK1SPORTSMATCH
   },
   nextText: {
     fontSize: FontSize.button_size,
@@ -282,10 +300,9 @@ const styles = StyleSheet.create({
     color: Color.bLACK1SPORTSMATCH
   },
   touchable: {
-
     alignItems: 'center',
     justifyContent: 'center',
-    width: "100%",
+    width: '100%',
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
     paddingHorizontal: Padding.p_81xl,

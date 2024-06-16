@@ -14,7 +14,10 @@ import NotificacinMatch from '../screens/NotificacinMatch'
 import { useDispatch, useSelector } from 'react-redux'
 import TusMatchsDetalle from './../screens/TusMatchsDetalle'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
-import { getAllNotifications, sendNotification } from '../redux/actions/notifications'
+import {
+  getAllNotifications,
+  sendNotification
+} from '../redux/actions/notifications'
 import { updateUser } from '../redux/slices/users.slices'
 import axiosInstance from '../utils/apiBackend'
 
@@ -22,7 +25,7 @@ const Notifications = ({ data }) => {
   const _ = require('lodash')
   const [isMatch, setIsMatch] = useState(false)
   const [details, setDetails] = useState(false)
-  const { allUsers, user } = useSelector((state) => state.users)
+  const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
   const dispatch = useDispatch()
   function formatDate(timestamp) {
@@ -47,7 +50,9 @@ const Notifications = ({ data }) => {
       style={{ marginTop: 20 }}
       onPress={async () => {
         if (!data.read) {
-          await axiosInstance.patch(`notification/${data.id}`, { read: true }).then(async (res) => await dispatch(getAllNotifications()));
+          await axiosInstance
+            .patch(`notification/${data.id}`, { read: true })
+            .then(async (res) => await dispatch(getAllNotifications()))
         }
         if (data.title === 'Solicitud') {
           setIsMatch(true)
@@ -59,7 +64,6 @@ const Notifications = ({ data }) => {
             allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
           )
         }
-
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
@@ -73,7 +77,7 @@ const Notifications = ({ data }) => {
         {!data.read && (
           <Text
             style={{
-              color: Color.bALONCESTO,
+              color: mainColor,
               fontSize: 35,
               top: -12
             }}
@@ -114,16 +118,16 @@ const Notifications = ({ data }) => {
                     .followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
+                      (follower) => follower !== user?.user?.id
+                    )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data.prop1.userId
                 )
                   ? userFollowing.filter(
-                    (followed) => followed !== data.prop1.userId
-                  )
+                      (followed) => followed !== data.prop1.userId
+                    )
                   : [...userFollowing, data.prop1.userId]
                 actualUser.user.following = newFollowingArray
 
@@ -214,17 +218,18 @@ const Notifications = ({ data }) => {
           <NotificacinMatch data={data} onClose={() => setIsMatch(false)} />
         </View>
       </Modal>
-      <Modal visible={details} transparent={true} animationType="slide">
-        <View
+      <Modal visible={details} animationType="slide">
+        <Pressable
           style={{
             flex: 1
           }}
+          onPress={() => setDetails(false)}
         >
           <TusMatchsDetalle
             data={selectedClubDetails}
             onClose={() => setDetails(false)}
           />
-        </View>
+        </Pressable>
       </Modal>
     </TouchableOpacity>
   )

@@ -4,16 +4,14 @@ import { Color } from '../GlobalStyles'
 import { setColor } from '../utils/handles/HandlerSportColor'
 
 const Lines = ({ index, club, profesional, selectedSport, color }) => {
-
   const [colorSelect, setColorSelect] = useState('')
 
   useEffect(() => {
     function setcolor() {
-      
       if (color) {
         return setColorSelect(color)
       }
-      if (index == 1 && !color && club) return setColorSelect("#E1451E")
+      if (index == 1 && !color && club) return setColorSelect('#E1451E')
       if (selectedSport == null) {
         return setColorSelect('#E1451E')
       }
@@ -24,14 +22,13 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
       }
     }
     setcolor()
-  }, [index, selectedSport ,color])
-
+  }, [index, selectedSport, color])
 
   return (
     <View
       style={{
         marginTop: 5,
-        marginBottom: 10,
+        marginBottom: 5,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -65,8 +62,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         <View
           style={{
             borderWidth: 2,
-            borderColor:
-              index === 4 ? colorSelect : Color.colorDimgray_100,
+            borderColor: index === 4 ? colorSelect : Color.colorDimgray_100,
             width: 80,
             marginTop: 10
           }}

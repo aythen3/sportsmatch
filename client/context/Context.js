@@ -257,6 +257,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   const [usersWithMessages, setUsersWithMessages] = useState([])
+  const [notReaded, setNotReaded] = useState(0)
 
   const getUsersMessages = async () => {
     // const getConvMessages = async (user) => {
@@ -315,7 +316,17 @@ export const ContextProvider = ({ children }) => {
     const { data } = await axiosInstance.post('chat/chats', {
       userId
     })
-
+    const convs = Object.keys(data)
+    const notReaded = convs
+      .map(
+        (conv) =>
+          data[conv].filter(
+            (message) =>
+              message.senderId !== userId && message.isReaded === false
+          ).length
+      )
+      .reduce((acc, curr) => acc + curr, 0)
+    setNotReaded(notReaded)
     if (Object.keys(data).length > 0) {
       const finalInfo = Object.keys(data).map((key) => {
         const otherUserId = key
@@ -331,6 +342,8 @@ export const ContextProvider = ({ children }) => {
   return (
     <Context.Provider
       value={{
+        notReaded,
+        setNotReaded,
         getUsersMessages,
         setUsersWithMessages,
         usersWithMessages,

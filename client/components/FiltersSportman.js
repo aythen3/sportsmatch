@@ -17,7 +17,9 @@ const FiltersSportman = ({
   setOffer,
   offer,
   setSelectedSports,
-  selectedSports
+  selectedSports,
+  byRelevance,
+  setByRelevance
 }) => {
   const sportsNames = [
     'Fútbol',
@@ -40,7 +42,7 @@ const FiltersSportman = ({
         setOffer(offer)
         return prevSports.filter((s) => s !== sport)
       } else {
-        return [ sport]
+        return [sport]
       }
     })
   }
@@ -193,8 +195,9 @@ const FiltersSportman = ({
           <TouchableOpacity
             onPress={() => {
               toggleSport(sport)
-              const filt = offer.filter(s => s.sport === sport)
-              console.log(filt)
+              console.log('offer', offer)
+              const filt = offer.filter((s) => s?.club?.sport === sport)
+              console.log('filtered offers', filt)
               setOffer(filt)
               // Genera una nueva copia del array de posts ordenado por la cantidad de likes
               // const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes);
@@ -247,10 +250,21 @@ const FiltersSportman = ({
         />
         <TouchableOpacity
           onPress={() => {
-            // Genera una nueva copia del array de posts ordenado por la cantidad de likes
-            // const sortedPosts = [...posts].sort((a, b) => b.commentCount - a.commentCount);
-            // // Actualiza el estado de los posts con la nueva copia ordenada
-            // setPosts(sortedPosts);
+            setByRelevance((prevByRelevance) => {
+              const newByRelevance = !prevByRelevance
+
+              // const filt = [...offer].sort((a, b) => {
+              //   return newByRelevance
+              //     ? a.inscriptions?.length - b.inscriptions?.length
+              //     : b.inscriptions?.length - a.inscriptions?.length
+              // })
+
+              // console.log(
+              //   newByRelevance ? 'filtered offers asc' : 'filtered offers desc'
+              // )
+              // setOffer(filt)
+              return newByRelevance
+            })
           }}
           style={{
             flexDirection: 'row',
@@ -273,6 +287,18 @@ const FiltersSportman = ({
             contentFit="cover"
             source={require('../assets/group6.png')}
           />
+          {byRelevance && (
+            <Image
+              style={{
+                width: 10 * 1.2,
+                height: 7 * 1.2,
+                position: 'absolute',
+                left: -25
+              }}
+              contentFit="cover"
+              source={require('../assets/tick.png')}
+            />
+          )}
         </TouchableOpacity>
       </View>
     )

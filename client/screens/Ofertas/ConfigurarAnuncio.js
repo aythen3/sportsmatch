@@ -143,9 +143,7 @@ const ConfigurarAnuncio = () => {
     fetchClubData()
   }, [])
 
-
   const [clientSecret, setClientSecret] = useState('')
-
 
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
@@ -159,7 +157,6 @@ const ConfigurarAnuncio = () => {
           .client_secret
       )
     }
-
   }
 
   const { initPaymentSheet, presentPaymentSheet } = useStripe(null)
@@ -181,7 +178,7 @@ const ConfigurarAnuncio = () => {
         if (error) {
           console.log(error, 'error')
         } else {
-         navigation.goBack()
+          navigation.goBack()
         }
       }
     }
@@ -194,7 +191,6 @@ const ConfigurarAnuncio = () => {
   const handleRegister = async () => {
     handleGetGold()
   }
-
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -218,7 +214,7 @@ const ConfigurarAnuncio = () => {
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Posición
             </Text>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 setShowModal(!showModal)
               }}
@@ -229,7 +225,7 @@ const ConfigurarAnuncio = () => {
                   ? selectedPosition
                   : 'Selecciona una posición'}
               </Text>
-              {/* {showModal && (
+              {showModal && (
                 <View
                   style={{
                     position: 'absolute',
@@ -281,7 +277,7 @@ const ConfigurarAnuncio = () => {
                       </TouchableOpacity>
                     ))}
                 </View>
-              )} */}
+              )}
               {showModal && (
                 <ScrollableModal
                   visible={showModal}
@@ -290,7 +286,17 @@ const ConfigurarAnuncio = () => {
                   options={opciones[`futbol`]}
                 />
               )}
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <View style={{ width: '100%' }}>
+              <TextInput
+                inputMode="numeric"
+                value={selectedPosition}
+                placeholderTextColor={'#fff'}
+                placeholder={selectedPosition || 'Indique una posición'}
+                onChangeText={(text) => setSelectedPosition(text)}
+                style={{ ...styles.containerBox, paddingHorizontal: 18 }}
+              ></TextInput>
+            </View>
           </View>
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
@@ -573,6 +579,7 @@ const ConfigurarAnuncio = () => {
                 <TextInput
                   inputMode="numeric"
                   value={retribucion}
+                  placeholderTextColor={'#fff'}
                   placeholder={selectedRemuneration || 'Seleccione retribución'}
                   onChangeText={(e) => setRetribucion(e)}
                   style={{ ...styles.containerBox, paddingHorizontal: 18 }}
@@ -613,7 +620,7 @@ const ConfigurarAnuncio = () => {
                       posit: selectedPosition,
                       paused: false,
                       province: selectedProvince,
-                      sport:selectedSport
+                      sport: selectedSport
                     },
 
                     clubId: club?.id

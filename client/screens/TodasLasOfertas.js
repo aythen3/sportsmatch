@@ -45,19 +45,20 @@ const TodasLasOfertas = () => {
   const [clientSecret, setClientSecret] = useState('')
   const [planSelected, setPlanSelected] = useState('')
   const [selectedSports, setSelectedSports] = useState([])
+  const [byRelevance, setByRelevance] = useState(false)
 
   const [offer, setOffer] = useState([])
-
 
   useEffect(() => {
     dispatch(getAllOffers())
   }, [])
+  useEffect(() => {}, [byRelevance])
 
   useEffect(() => {
-if(offers){
-  setOffer(offers)
-  console.log(offers)
-}
+    if (offers) {
+      setOffer(offers)
+      console.log(offers)
+    }
   }, [])
 
   const onFilterSportman = () => {
@@ -119,7 +120,7 @@ if(offers){
     }
   }, [clientSecret, initPaymentSheet])
 
-  console.log('O============OOFFERS', offers)
+  // console.log('O============OOFFERS', offers)
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -231,132 +232,181 @@ if(offers){
               user?.user?.plan === 'pro' || user?.user?.plan === 'star'
                 ? 1000
                 : 20
-            )
-            .map((offer, index) => (
-              <View
-                key={index}
-                style={{
-                  marginTop: 20,
-                  padding: 10,
-                  flex: 1,
-                  backgroundColor: Color.bLACK2SPORTMATCH,
-                  alignItems: 'center',
-                  opacity: 0.7
-                }}
-              >
-              
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Sexo"
-                    value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                  />
-                  <CardInfoOffers
-                    category={true}
-                    text="Categoría"
-                    value={offer.category}
-                  />
-                </View>
-
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Posición"
-                    value={`${offer.urgency}/10`}
-                  />
-                  <CardInfoOffers text="Ubicacion" value="Random" />
-                </View>
-
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers text="Urgencia" value={offer.urgency} />
-                  <CardInfoOffers
-                    text="Retribucion"
-                    value={offer.retribution ? 'Si' : 'No'}
-                  />
-                </View>
-
+            ).length > 0 ? (
+            offer
+              .filter((offer) => {
+                const filteredUserMatches = userMatches.filter(
+                  (match) => match.offerId && match.offerId !== offer.id
+                )
+                const alreadyJoined = offer?.inscriptions?.includes(
+                  user?.user?.sportman?.id
+                )
+                if (filteredUserMatches.length > 0) {
+                  return false
+                }
+                if (alreadyJoined) {
+                  return false
+                }
+                return true
+              })
+              .slice(
+                0,
+                user?.user?.plan === 'pro' || user?.user?.plan === 'star'
+                  ? 1000
+                  : 20
+              )
+              .sort((a, b) => {
+                return byRelevance
+                  ? a.inscriptions?.length - b.inscriptions?.length
+                  : b.inscriptions?.length - a.inscriptions?.length
+              })
+              .map((offer, index) => (
                 <View
+                  key={index}
                   style={{
-                    width: '100%',
-                    justifyContent: 'center',
+                    marginTop: 20,
+                    padding: 10,
+                    flex: 1,
+                    backgroundColor: Color.bLACK2SPORTMATCH,
+                    borderRadius: 10,
                     alignItems: 'center',
-                    marginTop: 30,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex: 10,
-                    borderWidth: 2,
-                    borderColor: Color.bLACK3SPORTSMATCH,
-                    height: 90
+                    opacity: 0.7
                   }}
                 >
-                  <Pressable
+                  <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                    <CardInfoOffers
+                      text="Sexo"
+                      value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                    />
+                    <CardInfoOffers
+                      category={true}
+                      text="Categoría"
+                      value={offer.category}
+                    />
+                  </View>
+
+                  <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                    <CardInfoOffers
+                      text="Posición"
+                      value={`${offer.urgency}/10`}
+                    />
+                    <CardInfoOffers text="Ubicacion" value="Random" />
+                  </View>
+
+                  <View style={{ flexDirection: 'row', zIndex: 5 }}>
+                    <CardInfoOffers text="Urgencia" value={offer.urgency} />
+                    <CardInfoOffers
+                      text="Retribucion"
+                      value={offer.retribution ? 'Si' : 'No'}
+                    />
+                  </View>
+
+                  <View
                     style={{
-                      width: '70%',
-                      paddingHorizontal: Padding.p_mini,
-                      paddingVertical: Padding.p_8xs,
+                      width: '100%',
                       justifyContent: 'center',
-                      borderRadius: Border.br_81xl,
-                      flexDirection: 'row',
                       alignItems: 'center',
-                      zIndex: 5,
-                      backgroundColor: !offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                        ? Color.wHITESPORTSMATCH
-                        : '#e1451e',
-                      height: 45
+                      marginTop: 30,
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                      zIndex: 10,
+                      borderWidth: 2,
+                      borderColor: Color.bLACK3SPORTSMATCH,
+                      height: 90
                     }}
                   >
-                    <Text
-                      // onPress={() => setModalVisible(true)}
-                      disabled={offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )}
-                      onPress={() => {
-                        if (
-                          !offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                        ) {
-                          console.log('offer', offer)
-                          console.log('sp id: ', user?.user?.sportman?.id)
-                          dispatch(
-                            signToOffer({
-                              offerId: offer?.id,
-                              userId: user?.user?.sportman?.id
-                            })
-                          ).then((data) => dispatch(getAllOffers()))
-                        }
-                      }}
+                    <Pressable
                       style={{
-                        color: offer?.inscriptions?.includes(
+                        width: '70%',
+                        paddingHorizontal: Padding.p_mini,
+                        paddingVertical: Padding.p_8xs,
+                        justifyContent: 'center',
+                        borderRadius: Border.br_81xl,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        zIndex: 5,
+                        backgroundColor: !offer?.inscriptions?.includes(
                           user?.user?.sportman?.id
                         )
-                          ? '#fff'
-                          : Color.bLACK1SPORTSMATCH,
-                        textAlign: 'center',
-                        fontWeight: '700',
-                        lineHeight: 17,
-                        fontFamily: FontFamily.t4TEXTMICRO,
-                        fontSize: 17
+                          ? Color.wHITESPORTSMATCH
+                          : '#e1451e',
+                        height: 45
                       }}
                     >
-                      {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                        ? 'Inscrito!'
-                        : 'Inscríbete en la oferta'}
-                    </Text>
-                  </Pressable>
+                      <Text
+                        // onPress={() => setModalVisible(true)}
+                        disabled={offer?.inscriptions?.includes(
+                          user?.user?.sportman?.id
+                        )}
+                        onPress={() => {
+                          if (
+                            !offer?.inscriptions?.includes(
+                              user?.user?.sportman?.id
+                            )
+                          ) {
+                            console.log('offer', offer)
+                            console.log('sp id: ', user?.user?.sportman?.id)
+                            dispatch(
+                              signToOffer({
+                                offerId: offer?.id,
+                                userId: user?.user?.sportman?.id
+                              })
+                            ).then((data) => dispatch(getAllOffers()))
+                          }
+                        }}
+                        style={{
+                          color: offer?.inscriptions?.includes(
+                            user?.user?.sportman?.id
+                          )
+                            ? '#fff'
+                            : Color.bLACK1SPORTSMATCH,
+                          textAlign: 'center',
+                          fontWeight: '700',
+                          lineHeight: 17,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: 17
+                        }}
+                      >
+                        {offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                          ? 'Inscrito!'
+                          : 'Inscríbete en la oferta'}
+                      </Text>
+                    </Pressable>
+                  </View>
+                  <Image
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 1,
+                      borderRadius: 8,
+                      overflow: 'hidden'
+                    }}
+                    source={require('../assets/group-4891.png')}
+                  />
                 </View>
-                <Image
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 1,
-                    borderRadius: 8,
-                    overflow: 'hidden'
-                  }}
-                  source={require('../assets/group-4891.png')}
-                />
-              </View>
-            ))}
+              ))
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                alignSelf: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  marginTop: 30,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: 400,
+                  fontSize: 14,
+                  color: Color.wHITESPORTSMATCH,
+                  bottom: 4
+                }}
+              >
+                No hay ofertas disponibles basadas en su busqueda!
+              </Text>
+            </View>
+          )}
         </ScrollView>
       ) : (
         selectOfferComponent === 'todas' && (
@@ -898,10 +948,12 @@ if(offers){
             }}
           >
             <FiltersSportman
-            setSelectedSports={setSelectedSports}
-            selectedSports={selectedSports}
-            setOffer={setOffer}
-            offer={offers}
+              byRelevance={byRelevance}
+              setByRelevance={setByRelevance}
+              setSelectedSports={setSelectedSports}
+              selectedSports={selectedSports}
+              setOffer={setOffer}
+              offer={offers}
               sports={user?.user?.sportman?.info?.sport}
               onClose={() => setModalFilterSportman(false)}
             />

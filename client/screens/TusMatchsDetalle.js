@@ -11,16 +11,28 @@ import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, FontSize, Padding, Border } from '../GlobalStyles'
 import MatchDetailsInfo from '../components/MatchDetailsInfo'
 import { AntDesign } from '@expo/vector-icons'
+import { useSelector } from 'react-redux'
 
 const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
+  const { mainColor } = useSelector((state) => state.users)
+
+  const images = {
+    '#6A1C4F': require('../assets/expandedMatchCards/6A1C4F.png'),
+    '#E1451E': require('../assets/expandedMatchCards/E1451E.png'),
+    '#00FF18': require('../assets/expandedMatchCards/00FF18.png'),
+    '#0062FF': require('../assets/expandedMatchCards/0062FF.png'),
+    '#E1AA1E': require('../assets/expandedMatchCards/E1AA1E.png'),
+    '#A8154A': require('../assets/expandedMatchCards/A8154A.png')
+  }
+  const imageSource = images[mainColor] || images['#E1451E']
 
   return (
     <View style={styles.tusMatchsDetalle}>
       <Image
         style={[styles.fondoColorIcon, styles.iconGroupLayout]}
         contentFit="cover"
-        source={require('../assets/fondo-color.png')}
+        source={imageSource}
       />
 
       <View
@@ -35,30 +47,30 @@ const TusMatchsDetalle = ({ onClose, data }) => {
         <Image
           style={{ width: 45, height: 45, borderRadius: 50 }}
           contentFit="cover"
-          source={{ uri: data.club.img_perfil }}
+          source={{ uri: data?.club?.img_perfil }}
         />
         <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
-          {data.nickname}
+          {data?.nickname}
         </Text>
       </View>
 
-      <MatchDetailsInfo title="Año de fundación" value={data.club.year} />
-      <MatchDetailsInfo title="Aforo" value={data.club.capacity} />
+      <MatchDetailsInfo title="Año de fundación" value={data?.club?.year} />
+      <MatchDetailsInfo title="Aforo" value={data?.club?.capacity} />
       <MatchDetailsInfo
         title="Nombre del estadio o pabellón"
-        value={data.club.field}
+        value={data?.club?.field}
       />
-      <MatchDetailsInfo title=" Población" value={data.club.city} />
-      <MatchDetailsInfo title=" País" value={data.club.country} />
+      <MatchDetailsInfo title=" Población" value={data?.club?.city} />
+      <MatchDetailsInfo title=" País" value={data?.club?.country} />
 
       <Pressable
         style={[styles.aceptar, styles.aceptarFlexBox]}
         onPress={() => {
           onClose()
           navigation.navigate('ChatAbierto1', {
-            receiverId: data.id,
-            receiverName: data.nickname,
-            profilePic: data.club.img_perfil
+            receiverId: data?.id,
+            receiverName: data?.nickname,
+            profilePic: data?.club?.img_perfil
           })
         }}
       >
