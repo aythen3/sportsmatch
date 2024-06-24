@@ -175,6 +175,7 @@ const Registrarse = () => {
                         onChangeText={(value) => {
                           if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
                             // Si la entrada coincide con la expresión regular o está vacía, actualizar el estado y limpiar el mensaje de error
+                            console.log(`nickname: ${value}`); // Log nickname value
                             seterValues('nickname', value)
                             setNombreError('')
                           } else {
@@ -229,7 +230,10 @@ const Registrarse = () => {
                         placeholderTextColor="#999"
                         autoCapitalize="none"
                         value={valuesUser.email}
-                        onChangeText={(value) => seterValues('email', value)}
+                        onChangeText={(value) => {
+                          console.log(`email: ${value}`); // Log email value
+                          seterValues('email', value);
+                        }}
                         ref={emailInputRef}
                         onSubmitEditing={() => {
                           passwordInputRef.current.focus()
@@ -271,7 +275,10 @@ const Registrarse = () => {
                         placeholderTextColor="#999"
                         secureTextEntry={passview1}
                         value={valuesUser.password}
-                        onChangeText={(value) => seterValues('password', value)}
+                        onChangeText={(value) => {
+                          console.log(`password: ${value}`); // Log password value
+                          seterValues('password', value);
+                        }}
                         ref={passwordInputRef}
                         onSubmitEditing={() => {
                           confirmPasswordInputRef.current.focus()
@@ -302,7 +309,10 @@ const Registrarse = () => {
                         placeholderTextColor="#999"
                         secureTextEntry={passview2}
                         value={confirmPassword}
-                        onChangeText={(value) => setConfirmPassword(value)}
+                        onChangeText={(value) => {
+                          console.log(`confirmPassword: ${value}`); // Log confirmPassword value
+                          setConfirmPassword(value);
+                        }}
                         ref={confirmPasswordInputRef}
                         onSubmitEditing={submit}
                       />

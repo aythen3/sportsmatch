@@ -114,7 +114,7 @@ const SkillSeleccion = ({
           paddingHorizontal: 15
         }}
       >
-        <Text style={styles.atributo}>Año de Nacimiento</Text>
+        <Text style={styles.atributo}>Año de nacimiento</Text>
         <Pressable
           onPress={openAñoNacimientoModal}
           style={styles.rectanguloBorder}
