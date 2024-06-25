@@ -168,6 +168,24 @@ const TusNotificaciones1 = () => {
             >
               Notíficaciones
             </Text>
+            {allNotifications?.filter(
+              (notification) => notification.recipientId === userId
+            ).length > 0 &&
+              allNotifications
+                ?.filter((notification) => notification.recipientId === userId)
+                .filter((notif) => !notif.read).length > 0 && (
+                <View
+                  style={{
+                    width: 6,
+                    height: 6,
+                    backgroundColor: mainColor,
+                    borderRadius: 100,
+                    position: 'absolute',
+                    top: 2,
+                    right: 15
+                  }}
+                ></View>
+              )}
           </Pressable>
         </View>
 

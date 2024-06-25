@@ -61,13 +61,20 @@ import ClubDetails from './screens/Perfil/EditarPerfil/club/ClubDetails'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlayerDetails from './screens/Perfil/EditarPerfil/jugador/PlayerDetails'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AppRegistry, StatusBar, View,DevSettings, NativeModules } from 'react-native'
+import {
+  AppRegistry,
+  StatusBar,
+  View,
+  DevSettings,
+  NativeModules
+} from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/Perfil/EditarPerfil/profesional/ProDetails'
 import Post from './screens/Perfil/EditarPerfil/Post'
 import PromocionarPost from './screens/Pasos/PromocionarPost'
 import Notificaciones from './screens/Perfil/EditarPerfil/Notificaciones'
-import { registerDevMenuItems } from 'expo-dev-menu';
+import { registerDevMenuItems } from 'expo-dev-menu'
+import UserFollowers from './screens/Explorar/UserFollowers'
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -89,7 +96,7 @@ const App = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#000"
+        backgroundColor: '#000'
       }}
     >
       <StripeProvider
@@ -97,10 +104,7 @@ const App = () => {
         urlScheme="com.android.app" // required for 3D Secure and bank redirects
         merchantIdentifier="merchant.com.app" // required for Apple Pay
       >
-        <StatusBar
-          barStyle={'light-content'}
-          backgroundColor="#000"
-        />
+        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
         <Provider store={store}>
           <ContextProvider>
             <NavigationContainer children={NavBarInferior}>
@@ -110,33 +114,31 @@ const App = () => {
                     headerShown: false,
                     footerShown: setIsFooterShow(
                       route.name !== 'PantallaInicio' &&
-                      route.name !== 'LoginSwitch' &&
-                      route.name !== 'IniciarSesin' &&
-                      route.name !== 'stepsClub' &&
-                      route.name !== 'Registrarse' &&
-                      route.name !== 'Paso1' &&
-                      route.name !== 'Paso3Profesional' &&
-                      route.name !== 'Paso4Jugador' &&
-                      route.name !== 'Paso4Profesional' &&
-                      route.name !== 'stepsJugador' &&
-                      route.name !== 'PostPromocion'
+                        route.name !== 'LoginSwitch' &&
+                        route.name !== 'IniciarSesin' &&
+                        route.name !== 'stepsClub' &&
+                        route.name !== 'Registrarse' &&
+                        route.name !== 'Paso1' &&
+                        route.name !== 'Paso3Profesional' &&
+                        route.name !== 'Paso4Jugador' &&
+                        route.name !== 'Paso4Profesional' &&
+                        route.name !== 'stepsJugador' &&
+                        route.name !== 'PostPromocion'
                     )
                   })}
                 >
-               
-                    <Stack.Screen
+                  <Stack.Screen
                     name="PantallaInicio"
                     component={PantallaInicio}
                     options={{ headerShown: false }}
                   />
-            
-              
-                    <Stack.Screen
-                      name="LoginSwitch"
-                      component={LoginSwitch}
-                      options={{ headerShown: false }}
-                    />
-                 
+
+                  <Stack.Screen
+                    name="LoginSwitch"
+                    component={LoginSwitch}
+                    options={{ headerShown: false }}
+                  />
+
                   <Stack.Screen
                     name="Paso2Jugador"
                     component={Paso2Jugador}
@@ -168,6 +170,11 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
+                    name="UserFollowers"
+                    component={UserFollowers}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
                     name="DetallesUsuario"
                     component={DetallesUsuario}
                     options={{ headerShown: false }}
@@ -193,7 +200,7 @@ const App = () => {
                     component={MonetizarOfertaPRO}
                     options={{ headerShown: false }}
                   />
-                   <Stack.Screen
+                  <Stack.Screen
                     name="Notificaciones"
                     component={Notificaciones}
                     options={{ headerShown: false }}
@@ -338,13 +345,13 @@ const App = () => {
                     component={ExplorarClubsConFiltroPrem}
                     options={{ headerShown: false }}
                   />
-               
-                    <Stack.Screen
-                      name="IniciarSesin"
-                      component={IniciarSesin}
-                      options={{ headerShown: false }}
-                    />
-               
+
+                  <Stack.Screen
+                    name="IniciarSesin"
+                    component={IniciarSesin}
+                    options={{ headerShown: false }}
+                  />
+
                   <Stack.Screen
                     name="Registrarse"
                     component={Registrarse}
@@ -412,7 +419,7 @@ const App = () => {
                   />
                 </Stack.Navigator>
               ) : null}
-            {isFooterShow && <NavBarInferior />}
+              {isFooterShow && <NavBarInferior />}
             </NavigationContainer>
           </ContextProvider>
         </Provider>

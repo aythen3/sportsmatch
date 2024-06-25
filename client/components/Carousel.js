@@ -165,11 +165,19 @@ function Carousel({
           }}
         >
           <Image
-            style={styles.imgPerfil}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              backgroundColor: mainColor
+            }}
+            resizeMode="cover"
             source={
               data?.author?.id === user?.user?.id
                 ? user?.user?.sportman?.info?.img_perfil
-                : imgPerfil
+                : imgPerfil === ''
+                  ? require('../assets/whiteSport.png')
+                  : imgPerfil
             }
           />
           <Text style={styles.nameText}>{name}</Text>

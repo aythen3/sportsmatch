@@ -127,17 +127,32 @@ const HeaderPerfil = ({
             }}
           />
           {isSportman ? (
-            <Image
+            <View
               style={{
                 height: 110,
                 borderRadius: 100,
                 width: 110,
                 borderWidth: 3,
-                borderColor: '#000'
+                borderColor: '#000',
+                backgroundColor: avatar === '' ? mainColor : 'transparent',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden'
               }}
-              contentFit="cover"
-              source={{ uri: avatar }}
-            />
+            >
+              <Image
+                resizeMode="cover"
+                style={{
+                  width: '100%',
+                  height: '100%'
+                }}
+                source={
+                  avatar === ''
+                    ? require('../../../../assets/whiteSport.png')
+                    : { uri: avatar }
+                }
+              />
+            </View>
           ) : (
             <Image
               style={{
@@ -807,7 +822,20 @@ const HeaderPerfil = ({
         </View>
       )}
       {external && data.author.type !== 'club' && (
-        <View
+        <Pressable
+          onPress={() => {
+            const followers =
+              allUsers?.filter((user) => user.id === data.author.id)[0]
+                .followers || []
+            if (followers?.length > 0) {
+              navigation.navigate('UserFollowers', {
+                author: allUsers.filter((user) => user.id === data.author.id),
+                followers: allUsers.filter((user) =>
+                  followers.includes(user.id)
+                )
+              })
+            }
+          }}
           style={{
             width: '95%',
             height: 50,
@@ -836,7 +864,7 @@ const HeaderPerfil = ({
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>
-        </View>
+        </Pressable>
       )}
 
       {!external && !isSportman && (

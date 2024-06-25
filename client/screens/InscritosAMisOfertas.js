@@ -31,26 +31,48 @@ const InscritosAMisOfertas = () => {
 
   return (
     <View style={styles.inscritosAMisOfertas}>
-      <View style={styles.inscritosParent}>
+      <View
+        style={{
+          marginTop: 30,
+          marginLeft: 15,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5
+        }}
+      >
         <Pressable
-          style={styles.coolicon}
+          style={{ width: 15, height: 15 }}
           onPress={() => {
             navigation.goBack()
           }}
         >
           <Image
-            style={[styles.icon, styles.iconGroupLayout]}
+            style={{
+              maxHeight: '100%',
+              height: '100%',
+              width: '100%',
+              maxWidth: '100%',
+              maxHeight: '100%',
+              overflow: 'hidden'
+            }}
             contentFit="cover"
             source={require('../assets/coolicon4.png')}
           />
         </Pressable>
         <Pressable
-          style={styles.carlesMirPosition}
           onPress={() => {
             navigation.goBack()
           }}
         >
-          <Text style={[styles.inscritos1, styles.carlesMirTypo]}>
+          <Text
+            style={{
+              fontSize: FontSize.h3TitleMEDIUM_size,
+              lineHeight: 22,
+              fontWeight: '500',
+              color: Color.wHITESPORTSMATCH,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
             Inscritos
           </Text>
         </Pressable>
@@ -128,7 +150,6 @@ const InscritosAMisOfertas = () => {
                       (user) => user?.sportman?.id === inscription
                     )[0]
 
-
                     dispatch(
                       sendMatch({
                         offerId,
@@ -154,7 +175,6 @@ const InscritosAMisOfertas = () => {
                       })
                     )
                       .then((data) => {
-                     
                         dispatch(
                           sendNotification({
                             title: 'Match',

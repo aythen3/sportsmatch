@@ -13,7 +13,6 @@ const MatchDetailsInfo = ({ title, value }) => {
           borderWidth: 0.5,
           borderColor: '#fff',
           marginTop: 5
-          //   marginVertical: 15
         }}
       />
     </View>
