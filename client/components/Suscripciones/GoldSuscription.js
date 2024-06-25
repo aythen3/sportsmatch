@@ -40,7 +40,6 @@ const GoldSuscription = ({
       )
       setPlanSelectedId(res.data.subscription.subscriptionId)
     }
-
   }
 
   return (
@@ -68,8 +67,8 @@ const GoldSuscription = ({
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>9,20€</Text>
-                <Text style={styles.timeTypo}>O también 104,70€/año</Text>
+                <Text style={styles.gratuito}>125€</Text>
+                <Text style={styles.timeTypo}>Pago único</Text>
               </View>
             </View>
             <View style={styles.frameView}>

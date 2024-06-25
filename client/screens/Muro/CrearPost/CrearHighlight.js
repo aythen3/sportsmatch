@@ -30,13 +30,11 @@ const CrearHighlight = () => {
   const { image } = route.params || {}
   const { provisoryProfileImage, pickImage, libraryImage } = useContext(Context)
   const { user } = useSelector((state) => state.users)
-  const { height, width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions()
   const [description, setDescription] = useState('')
-  const [multis, setMultis] = useState();
+  const [multis, setMultis] = useState()
 
-  useEffect(() => {
-
-  }, [image, provisoryProfileImage])
+  useEffect(() => {}, [image, provisoryProfileImage])
 
   const handleSubmit = async () => {
     if (image) {
@@ -56,7 +54,7 @@ const CrearHighlight = () => {
     }
     const data = {
       image: imageFinal,
-      description: description || "  ",
+      description: description || '  ',
       authorType: user.user.type,
       author: user.user.id
     }
@@ -66,15 +64,23 @@ const CrearHighlight = () => {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: "black", flex: 1, justifyContent: "flex-start", flexDirection: "column" }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: 'black',
+        flex: 1,
+        justifyContent: 'flex-start',
+        flexDirection: 'column'
+      }}
+    >
       <KeyboardAvoidingView
-keyboardVerticalOffset={80}
-        style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}>
+        keyboardVerticalOffset={80}
+        style={{ flex: 1, backgroundColor: Color.bLACK1SPORTSMATCH }}
+      >
         <View
           style={{
-            flex:1,
+            flex: 1,
             width: '100%',
-            paddingHorizontal: 12,
+            paddingHorizontal: 12
           }}
         >
           <View
@@ -82,7 +88,7 @@ keyboardVerticalOffset={80}
               marginTop: 20,
               justifyContent: 'space-between',
               flexDirection: 'row',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <TouchableOpacity
@@ -98,33 +104,35 @@ keyboardVerticalOffset={80}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleSubmit}>
-              <Text style={styles.siguiente}>Subir</Text>
+              <Text style={styles.siguiente}>Publicar</Text>
             </TouchableOpacity>
           </View>
-          <View style={{flex: 1,gap:20,paddingVertical:20 }}>
+          <View style={{ flex: 1, gap: 20, paddingVertical: 20 }}>
             {!Array.isArray(image) ? (
-
               <Image
                 style={{
                   borderRadius: 8,
-                  height:"50%",
-                  width:"100%"
+                  height: '50%',
+                  width: '100%'
                 }}
                 contentFit="cover"
                 source={{ uri: image ? image : provisoryProfileImage }}
               />
             ) : (
-              <View style={{ height: "50%", width: "100%" }}>
-                <PagerView style={{ flex: 1, marginBottom: 10 }} initialPage={0}>
+              <View style={{ height: '50%', width: '100%' }}>
+                <PagerView
+                  style={{ flex: 1, marginBottom: 10 }}
+                  initialPage={0}
+                >
                   {image.map((e, i) => (
-                    <View style={{ width: "100%" }} key={i}>
+                    <View style={{ width: '100%' }} key={i}>
                       <Image
                         style={{
                           marginTop: 40,
                           marginBottom: 15,
                           borderRadius: 8,
                           height: 350,
-                          width: "100%",
+                          width: '100%'
                         }}
                         contentFit="cover"
                         source={{ uri: e?.uri }}
@@ -139,8 +147,7 @@ keyboardVerticalOffset={80}
                 flex: 1,
                 borderWidth: 1,
                 borderRadius: 15,
-                borderColor: Color.wHITESPORTSMATCH,
-
+                borderColor: Color.wHITESPORTSMATCH
               }}
             >
               <TextInput

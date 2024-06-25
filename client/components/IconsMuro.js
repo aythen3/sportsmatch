@@ -10,10 +10,10 @@ import CommentSection from './modals/CommentSection'
 import { setFindedLikes } from '../redux/slices/post.slices'
 import { sendNotification } from '../redux/actions/notifications'
 
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system'
+import * as Sharing from 'expo-sharing'
 
-const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
+const IconsMuro = ({ id, userId, postUserId, image, doubleTap }) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -22,60 +22,58 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
   const { findedLike } = useSelector((state) => state.post)
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [liked, setLiked] = useState(false); // Estado para controlar si se ha dado like
+  const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike?.includes(id));
-  }, [findedLike, id]);
+    setLiked(findedLike?.includes(id))
+  }, [findedLike, id])
 
- 
   const handleShare = async () => {
-    if(sportman?.type == "invitado") return
+    if (sportman?.type == 'invitado') return
     try {
       // Descargar el archivo desde la URL remota
-      const localUri = `${FileSystem.cacheDirectory}image.jpg`;
-      const downloadResult = await FileSystem.downloadAsync(image[0], localUri);
-  
+      const localUri = `${FileSystem.cacheDirectory}image.jpg`
+      const downloadResult = await FileSystem.downloadAsync(image[0], localUri)
+
       if (downloadResult.status === 200) {
         // Obtener información sobre el archivo descargado
-        const fileInfo = await FileSystem.getInfoAsync(localUri);
-  
+        const fileInfo = await FileSystem.getInfoAsync(localUri)
+
         // Compartir el archivo si existe
         if (fileInfo.exists) {
           // Esperar un segundo antes de llamar a Sharing.shareAsync()
-          await Sharing.shareAsync(localUri,{dialogTitle:`Se te ha compartido una publicación de SportMatch. Si no tienes la aplicación descárgala “aqui (texto con link futuro)”`});
-         
+          await Sharing.shareAsync(localUri, {
+            dialogTitle: `Comparte la publicación`
+          })
         } else {
-          console.log('El archivo no existe.');
+          console.log('El archivo no existe.')
         }
       } else {
-        console.log('Error al descargar el archivo.');
+        console.log('Error al descargar el archivo.')
       }
     } catch (error) {
-      console.error('Error al compartir:', error.message);
+      console.error('Error al compartir:', error.message)
     }
-  };
-  
+  }
 
- 
   const handleLike = async () => {
-    if(sportman?.type == "invitado") return
+    if (sportman?.type == 'invitado') return
 
     // Invertir el estado de liked
-    setLiked(!liked);
+    setLiked(!liked)
 
     const data = {
       post: id,
       author: userId
-    };
+    }
 
     await dispatch(
       setFindedLikes({
         ...data,
         liked: !liked // Invertir el estado del like
       })
-    );
+    )
 
     if (!liked) {
       await dispatch(
@@ -92,13 +90,12 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
             }
           }
         })
-      );
+      )
     }
 
-    await dispatch(like(data));
-  };
+    await dispatch(like(data))
+  }
 
- 
   // useEffect(() => {
   //   console.log('findedLike', findedLike)
   //   console.log('id: ', id)
@@ -121,19 +118,19 @@ const IconsMuro = ({ id, userId, postUserId , image, doubleTap}) => {
         onPress={() => handleLike(id, userId)}
       >
         <LikeSVG id={id} doubleTap={doubleTap} />
-      </TouchableOpacity >
-      <View style={styles.shareView}>
-      <TouchableOpacity style={styles.shareView} onPress={handleShare}>
-        <ShareSVG />
       </TouchableOpacity>
-            </View>
+      <View style={styles.shareView}>
+        <TouchableOpacity style={styles.shareView} onPress={handleShare}>
+          <ShareSVG />
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         style={styles.commentView}
         onPress={() => setModalVisible(true)}
       >
         <CommentSVG />
       </TouchableOpacity>
-      {modalVisible && sportman?.type !== "invitado" && (
+      {modalVisible && sportman?.type !== 'invitado' && (
         <CommentSection
           visible={modalVisible}
           closeModal={closeModal}

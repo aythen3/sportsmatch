@@ -36,8 +36,17 @@ const TusMatchs = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { clubMatches, userMatches } = useContext(Context)
-  const { allUsers } = useSelector((state) => state.users)
+  const { allUsers, mainColor, user } = useSelector((state) => state.users)
 
+  const images = {
+    '#6A1C4F': require('../../assets/6A1C4F.png'),
+    '#E1451E': require('../../assets/E1451E.png'),
+    '#00FF18': require('../../assets/00FF18.png'),
+    '#0062FF': require('../../assets/0062FF.png'),
+    '#E1AA1E': require('../../assets/E1AA1E.png'),
+    '#A8154A': require('../../assets/A8154A.png')
+  }
+  const imageSource = images[mainColor] || images['#E1451E']
   useEffect(() => {
     // if (user.user.type !== 'club') {
     //   dispatch(getuserMatches(user.user.sportman?.id))
@@ -70,11 +79,12 @@ const TusMatchs = () => {
   //   }
   // }, [])
 
-  const { user } = useSelector((state) => state.users)
-
   return (
     <View style={styles.tusMatchs}>
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          navigation.goBack()
+        }}
         style={{
           marginBottom: 15,
           flexDirection: 'row',
@@ -84,17 +94,12 @@ const TusMatchs = () => {
           justifyContent: 'flex-start'
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <Image
-            style={{ width: 9, height: 15, marginTop: 2.5 }}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-        </TouchableOpacity>
+        <Image
+          style={{ width: 9, height: 15, marginTop: 2.5 }}
+          contentFit="cover"
+          source={require('../../assets/coolicon3.png')}
+        />
+
         <Text
           style={{
             color: '#fff',
@@ -105,7 +110,7 @@ const TusMatchs = () => {
         >
           Tus Matchs
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={[styles.groupContainer, styles.groupContainerSpaceBlock]}>
         <Image
@@ -146,7 +151,7 @@ const TusMatchs = () => {
                     <Image
                       style={styles.iconLayout}
                       contentFit="cover"
-                      source={require('../../assets/fondo-pastilla.png')}
+                      source={imageSource}
                     />
                   </Pressable>
                   <Pressable
@@ -225,7 +230,7 @@ const TusMatchs = () => {
                   <Image
                     style={styles.iconLayout}
                     contentFit="cover"
-                    source={require('../../assets/fondo-pastilla.png')}
+                    source={imageSource}
                   />
                 </Pressable>
                 <Pressable

@@ -75,7 +75,7 @@ const SeleccionarImagen = () => {
       console.error('Permiso denegado para acceder a la galería de imágenes.')
       return
     }
-    const filtro = albumData.filter(e => e.title == selectedAlbum)
+    const filtro = albumData.filter((e) => e.title == selectedAlbum)
 
     const assets = await MediaLibrary.getAssetsAsync({ album: filtro[0] })
     const arr = []
@@ -109,8 +109,7 @@ const SeleccionarImagen = () => {
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
-  useEffect(() => {
-  }, [selectedImage])
+  useEffect(() => {}, [selectedImage])
 
   const takePicture = async () => {
     if (cameraReff?.current) {
@@ -375,7 +374,11 @@ const SeleccionarImagen = () => {
                       source={require('../../../assets/camera.png')}
                     /> */}
                     <SimboloSVG
-                      color={multiSelect.length > 0 ? mainColor : '#fff'}
+                      color={
+                        showSelection || multiSelect.length > 0
+                          ? mainColor
+                          : '#fff'
+                      }
                     />
                   </TouchableOpacity>
                   <TouchableOpacity

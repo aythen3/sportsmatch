@@ -77,17 +77,25 @@ const ChatAbierto1 = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (allMessages && allMessages.length > 0) {
-      const messagesToSetReaded = allMessages?.filter(
-        (message) =>
-          message.senderId !== user.user.id && message.isReaded === false
-      )
-      // console.log('messagesToSetReaded: ', messagesToSetReaded)
-      messagesToSetReaded.forEach((message) => {
+  const setAllToRead = async () => {
+    console.log('on setAllToRead')
+    const messagesToSetReaded = allMessages?.filter(
+      (message) =>
+        message.senderId !== user.user.id && message.isReaded === false
+    )
+    console.log('messagesToSetReaded', messagesToSetReaded)
+    if (messagesToSetReaded.length > 0) {
+      await messagesToSetReaded.forEach((message) => {
         axiosInstance.put(`chat/readed/${message.id}`)
         dispatch(setAllConversationMessagesToRead())
       })
+      getUsersMessages()
+    }
+  }
+
+  useEffect(() => {
+    if (allMessages && allMessages.length > 0) {
+      setAllToRead()
     }
   }, [allMessages])
 

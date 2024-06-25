@@ -2,30 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily } from '../GlobalStyles'
 
-const CardInfoOffers = ({ text, value ,category}) => {
-  const [first, setFirst] = useState("")
-  const [second, setSecond] = useState("")
+const CardInfoOffers = ({ text, value, category }) => {
+  const [first, setFirst] = useState('')
+  const [second, setSecond] = useState('')
 
   const getSeparatedCategory = (value) => {
     let str = value
-let matches = str.match(/(.*?)\((.*)\)/);
+    let matches = str.match(/(.*?)\((.*)\)/)
 
-if (matches) {
-  let firstPart = matches[1].trim(); // "Hello"
-  let secondPart = "(" + matches[2].trim() + ")"; // "(Hello testing)"
-  setFirst(firstPart)
-  setSecond(secondPart)
-  return
-} else {
-  console.log("No match found.");
-}
+    if (matches) {
+      let firstPart = matches[1].trim() // "Hello"
+      let secondPart = '(' + matches[2].trim() + ')' // "(Hello testing)"
+      setFirst(firstPart)
+      setSecond(secondPart)
+      return
+    } else {
+      console.log('No match found.')
+    }
   }
 
-  useEffect(()=>{
-    if(category){
+  useEffect(() => {
+    if (category) {
       getSeparatedCategory(value)
     }
-  },[])
+  }, [])
+
+  useEffect(() => {
+    text === 'Retribucion' && console.log('Retribucion, value', value)
+  }, [])
   return (
     <View style={styles.card}>
       <Text style={[styles.text]}>{text}</Text>
@@ -33,6 +37,10 @@ if (matches) {
         <View>
           {category && <Text style={styles.taxto1Clr}>{first}</Text>}
           <Text style={styles.taxto1Clr}>{category ? second : value}</Text>
+        </View>
+      ) : text === 'Retribucion' && value !== 'No' ? (
+        <View>
+          <Text style={styles.taxto1Clr}>{value || 0}</Text>
         </View>
       ) : (
         <View

@@ -69,7 +69,15 @@ const OfertasEmitidas = () => {
           <Text style={styles.titular}>Ofertas</Text>
         </Pressable>
         <TouchableOpacity
-          style={styles.add}
+          style={{
+            width: 40,
+            height: 40,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: mainColor,
+            borderRadius: 10,
+            borderWidth: 1
+          }}
           onPress={() => navigation.navigate('ConfigurarAnuncio')}
         >
           <Text style={styles.addText}>+</Text>
