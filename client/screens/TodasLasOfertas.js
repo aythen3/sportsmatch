@@ -7,7 +7,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ToastAndroid
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -286,18 +287,15 @@ const TodasLasOfertas = () => {
                   </View>
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                    <CardInfoOffers
-                      text="Posición"
-                      value={`${offer.urgency}/10`}
-                    />
+                    <CardInfoOffers text="Posición" value={offer?.posit} />
                     <CardInfoOffers text="Ubicacion" value="Random" />
                   </View>
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                    <CardInfoOffers text="Urgencia" value={offer.urgency} />
+                    <CardInfoOffers text="Urgencia" value={offer?.urgency} />
                     <CardInfoOffers
                       text="Retribucion"
-                      value={offer.retribution ? 'Si' : 'No'}
+                      value={offer.retribution === false ? 'No' : offer.prop1}
                     />
                   </View>
 
@@ -314,7 +312,7 @@ const TodasLasOfertas = () => {
                       height: 90
                     }}
                   >
-                    <Pressable
+                    <TouchableOpacity
                       style={{
                         width: '70%',
                         paddingHorizontal: Padding.p_mini,
@@ -350,7 +348,13 @@ const TodasLasOfertas = () => {
                                 offerId: offer?.id,
                                 userId: user?.user?.sportman?.id
                               })
-                            ).then((data) => dispatch(getAllOffers()))
+                            ).then((data) => {
+                              ToastAndroid.show(
+                                'Te has inscrito en la oferta!',
+                                ToastAndroid.SHORT
+                              )
+                              dispatch(getAllOffers())
+                            })
                           }
                         }}
                         style={{
@@ -370,7 +374,7 @@ const TodasLasOfertas = () => {
                           ? 'Inscrito!'
                           : 'Inscríbete en la oferta'}
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                   <Image
                     style={{
@@ -791,7 +795,7 @@ const TodasLasOfertas = () => {
                     height: 90
                   }}
                 >
-                  <Pressable
+                  <TouchableOpacity
                     style={{
                       width: '70%',
                       paddingHorizontal: Padding.p_mini,
@@ -825,7 +829,13 @@ const TodasLasOfertas = () => {
                               offerId: offer?.id,
                               userId: user?.user?.sportman?.id
                             })
-                          ).then((data) => dispatch(getAllOffers()))
+                          ).then((data) => {
+                            ToastAndroid.show(
+                              'Te has inscrito en la oferta!',
+                              ToastAndroid.SHORT
+                            )
+                            dispatch(getAllOffers())
+                          })
 
                           navigation.goBack()
                         }
@@ -847,7 +857,7 @@ const TodasLasOfertas = () => {
                         ? 'Inscrito!'
                         : 'Inscríbete en la oferta'}
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
                 <Image
                   style={{

@@ -104,9 +104,26 @@ const NavBarInferior = () => {
 
       <TouchableOpacity
         onPress={() => handleIconPress('post')}
-        style={styles.deselected}
+        style={{
+          width: '18.4%',
+          height: 70,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
       >
-        <HomeSVG sportColor={mainColor} isActive={activeIcon === 'post'} />
+        <View
+          style={{
+            width: 37,
+            height: 37,
+            backgroundColor: mainColor,
+            borderRadius: 5,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={{ color: '#fff', fontSize: 28, bottom: 2 }}>+</Text>
+        </View>
+        {/* <HomeSVG sportColor={mainColor} isActive={activeIcon === 'post'} /> */}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -151,7 +168,7 @@ const NavBarInferior = () => {
             : styles.deselected
         }
       >
-        {imgPerfil && (
+        {imgPerfil && imgPerfil !== '' && (
           <Image
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
             contentFit="cover"
@@ -160,9 +177,14 @@ const NavBarInferior = () => {
         )}
         {!sportman?.info?.img_front && !imgPerfil && (
           <Image
-            style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
+            style={{
+              width: 35,
+              height: 35,
+              borderRadius: 100,
+              backgroundColor: mainColor
+            }}
             contentFit="cover"
-            source={require('../assets/avatar.png')}
+            source={require('../assets/whiteSport.png')}
           />
         )}
       </TouchableOpacity>

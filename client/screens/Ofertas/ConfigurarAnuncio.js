@@ -580,7 +580,7 @@ const ConfigurarAnuncio = () => {
                   inputMode="numeric"
                   value={retribucion}
                   placeholderTextColor={'#fff'}
-                  placeholder={selectedRemuneration || 'Seleccione retribución'}
+                  placeholder={retribucion || 'Ingrese retribución anual'}
                   onChangeText={(e) => setRetribucion(e)}
                   style={{ ...styles.containerBox, paddingHorizontal: 18 }}
                 ></TextInput>
@@ -625,10 +625,11 @@ const ConfigurarAnuncio = () => {
 
                     clubId: club?.id
                   }
+                  console.log('SENDIND DATAAAA', data)
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
-                  navigation.goBack()
+                  navigation.navigate('OfertasEmitidas')
                 } else {
                   // const data = {
                   //   offerData: {

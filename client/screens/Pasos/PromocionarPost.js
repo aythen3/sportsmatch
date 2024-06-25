@@ -53,6 +53,7 @@ const PromocionarPost = () => {
 
   const { user } = useSelector((state) => state.users)
   const { sport } = useSelector((state) => state.sports)
+  const { club } = useSelector((state) => state.clubs)
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [optionIndex, setOptionIndex] = useState(1)
@@ -346,8 +347,12 @@ const PromocionarPost = () => {
               }}
             >
               <Text style={{ color: 'white' }}>Beneficiario y pagador</Text>
-              <Text style={{ color: 'gray' }}>Beneficiario: Jordi Espelt</Text>
-              <Text style={{ color: 'gray' }}>Pagador: Jordi Espelt</Text>
+              <Text
+                style={{ color: 'gray' }}
+              >{`Beneficiario: ${user?.user?.type !== 'club' ? user.user.nickname : club.name}`}</Text>
+              <Text
+                style={{ color: 'gray' }}
+              >{`Pagador: ${user?.user?.type !== 'club' ? user.user.nickname : club.name}`}</Text>
             </View>
             <View
               style={{
@@ -358,7 +363,7 @@ const PromocionarPost = () => {
             >
               <Text style={{ color: 'white' }}>Objetivo</Text>
               <Text style={{ color: 'gray' }}>
-                Visitas en el perfil de Jordi Espelt
+                {`Visitas en el perfil de ${user?.user?.type !== 'club' ? user.user.nickname : club.name}`}
               </Text>
             </View>
             <View
@@ -442,19 +447,49 @@ const PromocionarPost = () => {
         contentFit="cover"
         source={require('../../assets/group-2412.png')}
       />
-      <View style={{ ...styles.atrsParent }}>
-        <Image
-          style={styles.coolicon}
-          contentFit="cover"
-          source={require('../../assets/coolicon.png')}
-        />
-        <Pressable
-          onPress={() =>
-            stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
-          }
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '100%',
+          top: 10,
+          justifyContent: 'space-between',
+          right: 0,
+          paddingHorizontal: 20,
+          marginBottom: 60
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
         >
-          <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-        </Pressable>
+          <Image
+            style={styles.coolicon}
+            contentFit="cover"
+            source={require('../../assets/coolicon.png')}
+          />
+          <Pressable
+            onPress={() =>
+              stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
+            }
+          >
+            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+          </Pressable>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
+            <Text style={[styles.atrs, styles.atrsTypo]}>Cancelar</Text>
+          </Pressable>
+        </View>
       </View>
       <View style={{ marginTop: -30 }}>
         <Text style={styles.paso2}>Paso {stepsIndex}</Text>

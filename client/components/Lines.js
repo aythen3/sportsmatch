@@ -31,14 +31,14 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         marginBottom: 5,
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-around'
       }}
     >
       <View
         style={{
           borderWidth: 2,
           borderColor: index === 1 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '28%' : 80,
+          width: club ? '24%' : '18%',
           marginTop: 10
         }}
       />
@@ -46,7 +46,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 2 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '28%' : 80,
+          width: club ? '24%' : '18%',
           marginTop: 10
         }}
       />
@@ -54,7 +54,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 3 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '28%' : 80,
+          width: club ? '24%' : '18%',
           marginTop: 10
         }}
       />
@@ -63,7 +63,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
           style={{
             borderWidth: 2,
             borderColor: index === 4 ? colorSelect : Color.colorDimgray_100,
-            width: 80,
+            width: '18%',
             marginTop: 10
           }}
         />

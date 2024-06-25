@@ -57,8 +57,8 @@ const GoldSuscription = ({
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>289,25€</Text>
-                <Text style={styles.timeTypo}>O también 3.150,25€/año</Text>
+                <Text style={styles.gratuito}>126€/mes</Text>
+                <Text style={styles.timeTypo}>O también 1.650,20€/año</Text>
               </View>
             </View>
             <View style={styles.frameView}>

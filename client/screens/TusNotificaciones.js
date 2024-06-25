@@ -10,9 +10,9 @@ const TusNotificaciones = () => {
   const isFocused = useIsFocused()
 
   const navigation = useNavigation()
-  const {setActiveIcon} = React.useContext(Context)
+  const { setActiveIcon } = React.useContext(Context)
   React.useEffect(() => {
-    setActiveIcon("message")
+    setActiveIcon('message')
   }, [isFocused])
   return (
     <View style={styles.tusNotificaciones}>

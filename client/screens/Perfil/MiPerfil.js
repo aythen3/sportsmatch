@@ -62,9 +62,9 @@ const MiPerfil = () => {
         <View>
           {sportman?.info?.img_front === '' ? (
             <Image
-              style={styles.imagenPosition}
+              style={{ height: 150, backgroundColor: mainColor }}
               contentFit="cover"
-              source={require('../../assets/avatar.png')}
+              source={require('../../assets/whiteSport.png')}
             />
           ) : (
             <Image
@@ -81,36 +81,39 @@ const MiPerfil = () => {
           >
             <View style={styles.imagenInformacion1}>
               <View style={{ position: 'relative' }}>
-                {sportman?.info?.img_perfil && (
-                  <Image
-                    style={{
-                      height: 110,
-                      borderRadius: 100,
-                      width: 110,
-                      zIndex: 1000,
-                      borderWidth: 3,
-                      borderColor: '#000'
-                    }}
-                    contentFit="cover"
-                    source={{
-                      uri: sportman?.info?.img_perfil
-                    }}
-                  />
-                )}
-                {!sportman?.info?.img_perfil && (
-                  <Image
-                    style={{
-                      height: 110,
-                      borderRadius: 100,
-                      width: 110,
-                      zIndex: 1000,
-                      borderWidth: 3,
-                      borderColor: '#000'
-                    }}
-                    contentFit="cover"
-                    source={require('../../assets/avatar.png')}
-                  />
-                )}
+                {sportman?.info?.img_perfil &&
+                  sportman?.info?.img_perfil !== '' && (
+                    <Image
+                      style={{
+                        height: 110,
+                        borderRadius: 100,
+                        width: 110,
+                        zIndex: 1000,
+                        borderWidth: 3,
+                        borderColor: '#000'
+                      }}
+                      contentFit="cover"
+                      source={{
+                        uri: sportman?.info?.img_perfil
+                      }}
+                    />
+                  )}
+                {!sportman?.info?.img_perfil ||
+                  (sportman?.info?.img_perfil === '' && (
+                    <Image
+                      style={{
+                        height: 110,
+                        borderRadius: 100,
+                        width: 110,
+                        zIndex: 1000,
+                        borderWidth: 3,
+                        borderColor: '#000',
+                        backgroundColor: mainColor
+                      }}
+                      contentFit="cover"
+                      source={require('../../assets/whiteSport.png')}
+                    />
+                  ))}
                 <View
                   style={{
                     position: 'absolute',
