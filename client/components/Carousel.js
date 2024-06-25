@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View
 } from 'react-native'
 import { Image } from 'expo-image'
@@ -20,6 +21,8 @@ import { setFindedLikes } from '../redux/slices/post.slices'
 import { like } from '../redux/actions/post'
 import { sendNotification } from '../redux/actions/notifications'
 import Like2SVG from './svg/Like2SVG'
+import { Modal } from 'react-native'
+import ModalOptionOffers from './ModalOptionOffers'
 
 function Carousel({
   name,
@@ -32,6 +35,9 @@ function Carousel({
   id,
   userId,
   authorId,
+  setShowDeletePostModal,
+  showDeletePostModal,
+  fromProfile,
   data
 }) {
   const dispatch = useDispatch()
@@ -40,6 +46,7 @@ function Carousel({
     const { position } = event.nativeEvent
     setCurrentPage(position)
   }
+  const { setSelectedPost, selectedPost } = useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
   const { sportman } = useSelector((state) => state.sportman)
@@ -136,6 +143,20 @@ function Carousel({
   const año = fecha.slice(0, 4)
   const mes = fecha.slice(5, 7)
   const dia = fecha.slice(8, 10)
+
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
+  const [optionsModal, setOptionsModal] = useState(false)
+
+  const handlePostClick = (event) => {
+    const { pageX, pageY } = event.nativeEvent
+
+    const height = fromProfile ? 60 : 37
+
+    setModalPosition({ x: pageX - 160, y: pageY - height })
+
+    setOptionsModal(true)
+  }
+
   return (
     <View style={{ ...styles.container }}>
       <View
@@ -182,16 +203,65 @@ function Carousel({
           />
           <Text style={styles.nameText}>{name}</Text>
         </Pressable>
-        <Text
-          style={{
-            color: Color.gREY2SPORTSMATCH,
-            paddingRight: 4,
-            fontSize: 12,
-            alignSelf: 'flex-end'
-          }}
-        >
-          {`${dia} - ${mes} - ${año.slice(2, 4)}`}
-        </Text>
+
+        {authorId === user.user.id ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 5,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text
+              style={{
+                color: Color.gREY2SPORTSMATCH,
+                paddingRight: 4,
+                fontSize: 12,
+                alignSelf: 'flex-end'
+              }}
+            >
+              {`${dia}/${mes}/${año.slice(2, 4)}`}
+            </Text>
+            <TouchableOpacity
+              onPress={(event) => {
+                handlePostClick(event)
+                setSelectedPost(id)
+              }}
+              style={{
+                width: 24,
+                height: 25,
+                top: 2,
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ width: 5, height: 21 }}
+                contentFit="cover"
+                source={require('../assets/frame-957.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text
+              style={{
+                color: Color.gREY2SPORTSMATCH,
+                paddingRight: 4,
+                fontSize: 12,
+                alignSelf: 'flex-end'
+              }}
+            >
+              {`${dia}/${mes}/${año.slice(2, 4)}`}
+            </Text>
+          </View>
+        )}
       </View>
       <PagerView
         onPageSelected={handlePageSelected}
@@ -392,6 +462,29 @@ function Carousel({
           <Text style={styles.comments}>{comments[0].comment}</Text>
         )}  */}
       </View>
+      <Modal visible={optionsModal} transparent={true}>
+        <TouchableWithoutFeedback onPress={() => setOptionsModal(false)}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                position: 'absolute',
+                top: modalPosition.y,
+                left: modalPosition.x,
+                padding: 20,
+                borderRadius: 8
+              }}
+            >
+              <ModalOptionOffers
+                post={true}
+                postId={selectedPost}
+                data={data}
+                setShowDeletePostModal={setShowDeletePostModal}
+                onClose={() => setOptionsModal(false)}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   )
 }
@@ -469,8 +562,7 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    padding: 5
+    gap: 10
   },
   imgPerfil: {
     width: 30,

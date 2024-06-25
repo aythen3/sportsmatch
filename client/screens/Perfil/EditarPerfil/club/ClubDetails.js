@@ -9,14 +9,14 @@ import {
   Modal
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { Context } from '../../../../context/Context'
 import { updateClubData } from '../../../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
-import { Camera } from 'expo-camera'
+import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const ClubDetails = () => {
@@ -45,7 +45,6 @@ const ClubDetails = () => {
   const { club } = useSelector((state) => state.clubs)
 
   const inputs = [
-
     {
       title: 'Nombre del club',
       type: 'text',
@@ -125,9 +124,11 @@ const ClubDetails = () => {
   }
 
   const [showCamera, setShowCamera] = useState(false)
+  const cameraReff = useRef(null)
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
+  // const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
+  const [facing, setFacing] = useState('back')
 
   const handlePickImage = async (type) => {
     await pickImage(type)
@@ -137,26 +138,45 @@ const ClubDetails = () => {
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
   }, [])
 
-  const changePictureMode = async () => {
+  // const changePictureMode = async () => {
+  //   setCameraType(
+  //     cameraType === Camera?.Constants?.Type?.back
+  //       ? Camera?.Constants?.Type?.front
+  //       : Camera?.Constants?.Type?.back
+  //   )
+  // }
 
-    setCameraType(
-      cameraType === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back
-    )
+  const changePictureMode = async () => {
+    // console.log(
+    //   'setting camera mode to: ',
+    //   cameraType === Camera.Constants.Type.back ? 'selfie' : 'normal'
+    // )
+    // setCameraType(
+    //   cameraType === Camera.Constants.Type.back
+    //     ? Camera.Constants.Type.front
+    //     : Camera.Constants.Type.back
+    // )
+    setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
-
-
+  // const takePicture = async () => {
+  //   if (cameraRef) {
+  //     const photo = await cameraRef.takePictureAsync()
+  //     setSelectedImage(photo)
+  //     pickImageFromCamera(selectedPicture, photo.uri)
+  //     setShowCamera(false)
+  //     // You can handle the taken photo here, such as displaying it or saving it.
+  //   }
+  // }
   const takePicture = async () => {
-    if (cameraRef) {
-      const photo = await cameraRef.takePictureAsync()
+    if (cameraReff) {
+      const photo = await cameraReff.current.takePictureAsync()
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -173,12 +193,13 @@ const ClubDetails = () => {
           visible={showCamera}
           onRequestClose={() => setShowCamera(false)}
         >
-          <Camera
-            style={{
-              flex: 1
-            }}
-            type={Camera.Constants.Type.back}
-            ref={(ref) => setCameraRef(ref)}
+          <CameraView
+            ref={cameraReff}
+            facing={facing}
+            style={{ flex: 1 }}
+            mode="picture"
+            FocusMode="on"
+            onCameraReady={(e) => console.log(e, 'esto es e')}
           >
             <View
               style={{
@@ -234,7 +255,7 @@ const ClubDetails = () => {
                 </TouchableOpacity>
               </TouchableOpacity>
             </View>
-          </Camera>
+          </CameraView>
         </Modal>
       )}
       <ScrollView
@@ -261,7 +282,7 @@ const ClubDetails = () => {
                   }}
                 />
               )}
-              {user?.user?.club?.img_perfil && (
+              {user?.user?.club?.img_perfil && !provisoryProfileImage && (
                 <Image
                   style={styles.image}
                   contentFit="cover"
@@ -306,7 +327,7 @@ const ClubDetails = () => {
           {/* =========================================================== */}
           <View style={styles.updateImageWrapper}>
             <View style={styles.coverImageContainer}>
-              {user?.user?.club?.img_front && (
+              {user?.user?.club?.img_front && !provisoryCoverImage && (
                 <Image
                   style={{ width: '100%', height: '100%', borderRadius: 8 }}
                   contentFit="cover"

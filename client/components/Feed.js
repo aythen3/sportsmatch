@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -14,10 +14,13 @@ import { useNavigation } from '@react-navigation/core'
 import ScrollableModal from './modals/ScrollableModal'
 import axiosInstance from '../utils/apiBackend'
 import { getAllPosts } from '../redux/actions/post'
+import { Context } from '../context/Context'
 
 const Feed = ({ externalId }) => {
   const navigation = useNavigation()
   const [modal, setModal] = useState(false)
+  const { showDeletePostModalFromProfile, setShowDeletePostModalFromProfile } =
+    useContext(Context)
   const [postSelected, setPostSelected] = useState({})
 
   const [userPosts, setUserPosts] = useState([])
@@ -28,9 +31,13 @@ const Feed = ({ externalId }) => {
 
   useEffect(() => {
     const userId = externalId || user.user.id
-    const post = allPosts.filter((post) => post.author.id === userId && !post.prop1 )
-    const postPined = allPosts.filter((post) => post.author.id === userId && post.prop1 )
-    setUserPosts([...postPined,...post])
+    const post = allPosts.filter(
+      (post) => post.author.id === userId && !post.prop1
+    )
+    const postPined = allPosts.filter(
+      (post) => post.author.id === userId && post.prop1
+    )
+    setUserPosts([...postPined, ...post])
   }, [allPosts])
 
   return (
@@ -56,18 +63,27 @@ const Feed = ({ externalId }) => {
             <TouchableOpacity
               onLongPress={() => {
                 setPostSelected(post)
-                setModal(true)}}
+                setModal(true)
+              }}
               onPress={() => {
                 navigation.navigate('Post', post)
               }}
-              key={index}>
-                {post?.prop1?.pined && (
-                   <Image
-                   style={{width:20,height:20,position:"absolute",top:5,right:5,zIndex:999}}
-                   contentFit="cover"
-                   source={require('../assets/pined.png')}
-                 />
-                )}
+              key={index}
+            >
+              {post?.prop1?.pined && (
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    position: 'absolute',
+                    top: 5,
+                    right: 5,
+                    zIndex: 999
+                  }}
+                  contentFit="cover"
+                  source={require('../assets/pined.png')}
+                />
+              )}
               <Image
                 style={styles.iconLayout}
                 contentFit="cover"
@@ -85,23 +101,33 @@ const Feed = ({ externalId }) => {
                 color: Color.wHITESPORTSMATCH
               }}
             >
-              {externalId ? 'El usuario aun no tiene publicaciones' : 'No tienes publicaciones'}
+              {externalId
+                ? 'El usuario aun no tiene publicaciones'
+                : 'No tienes publicaciones'}
             </Text>
           </View>
         )}
-        { modal && (
-          <ScrollableModal visible={modal} options={!postSelected.prop1 ? ['Fijar post'] : ['Quitar post fijo']} onSelectItem={ async (e)=> {
-           if(e == 'Fijar post'){
-            axiosInstance.patch(`post/${postSelected.id}`,{prop1:{pined:true}})
-      
-           }
-           if(e == 'Quitar post fijo'){
-            axiosInstance.patch(`post/${postSelected.id}`,{prop1:null})
-       
-           }
-          dispatch(getAllPosts())
-          }
-           } closeModal={()=> setModal(false)}></ScrollableModal>
+        {modal && (
+          <ScrollableModal
+            visible={modal}
+            options={
+              !postSelected.prop1 || postSelected.prop1.pined === false
+                ? ['Fijar post']
+                : ['Quitar post fijo']
+            }
+            onSelectItem={async (e) => {
+              if (e == 'Fijar post') {
+                axiosInstance.patch(`post/${postSelected.id}`, {
+                  prop1: { pined: true }
+                })
+              }
+              if (e == 'Quitar post fijo') {
+                axiosInstance.patch(`post/${postSelected.id}`, { prop1: null })
+              }
+              dispatch(getAllPosts())
+            }}
+            closeModal={() => setModal(false)}
+          ></ScrollableModal>
         )}
       </View>
     </ScrollView>

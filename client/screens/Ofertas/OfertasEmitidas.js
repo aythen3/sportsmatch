@@ -59,7 +59,9 @@ const OfertasEmitidas = () => {
     setModalVisible(true)
   }
 
-  // console.log('allpos: ', allPositions)
+  useEffect(() => {
+    console.log(offers.map((off) => off.province))
+  }, [])
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -122,10 +124,15 @@ const OfertasEmitidas = () => {
                         handleImageClick(event)
                         setSelectedOffer(offer.id)
                       }}
-                      style={styles.touchableImg}
+                      style={{
+                        width: 24,
+                        height: 25,
+                        top: 2,
+                        alignItems: 'center'
+                      }}
                     >
                       <Image
-                        style={styles.titularChild}
+                        style={{ width: 5, height: 21 }}
                         contentFit="cover"
                         source={require('../../assets/frame-957.png')}
                       />
@@ -158,6 +165,15 @@ const OfertasEmitidas = () => {
                       </Text>
                       <Text style={[styles.masculino, styles.timeTypo]}>
                         {offer.posit}
+                      </Text>
+                    </View>
+                    <View style={styles.innerLine} />
+                    <View>
+                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                        Provincia
+                      </Text>
+                      <Text style={[styles.masculino, styles.timeTypo]}>
+                        {offer?.province?.length > 0 ? offer.province : '-'}
                       </Text>
                     </View>
 

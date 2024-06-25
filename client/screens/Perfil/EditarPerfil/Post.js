@@ -1,5 +1,13 @@
-import React, { useState } from 'react'
-import { StyleSheet, ScrollView, View, Pressable, Text } from 'react-native'
+import React, { useContext, useState } from 'react'
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Pressable,
+  Text,
+  Modal,
+  TouchableWithoutFeedback
+} from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -10,17 +18,25 @@ import {
   Border
 } from '../../../GlobalStyles'
 import DetallesSeleccion from '../../../components/DetallesSeleccion'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Carousel from '../../../components/Carousel'
 import { useRoute } from '@react-navigation/native'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useStripe } from '@stripe/stripe-react-native'
+import { Context } from '../../../context/Context'
+import { deletePost, getAllPosts } from '../../../redux/actions/post'
 
 const Post = () => {
   const route = useRoute()
+  const dispatch = useDispatch()
   const navigation = useNavigation()
   const [page, setPage] = useState(1)
+  const {
+    showDeletePostModalFromProfile,
+    setShowDeletePostModalFromProfile,
+    selectedPost
+  } = useContext(Context)
 
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params
@@ -30,6 +46,9 @@ const Post = () => {
       <CustomHeaderBack header={'Post'}></CustomHeaderBack>
       <View style={{ paddingBottom: 40 }}>
         <Carousel
+          fromProfile={true}
+          setShowDeletePostModal={setShowDeletePostModalFromProfile}
+          showDeletePostModal={showDeletePostModalFromProfile}
           key={item.id}
           name={item?.author?.nickname}
           description={item.description}
@@ -49,6 +68,98 @@ const Post = () => {
           data={item}
         />
       </View>
+      <Modal visible={showDeletePostModalFromProfile} transparent={true}>
+        <TouchableWithoutFeedback
+          onPress={() => setShowDeletePostModalFromProfile(false)}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <View
+              style={{
+                width: 300,
+                height: 200,
+                backgroundColor: '#292929',
+                borderRadius: 10,
+                padding: 20,
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 18,
+                  color: '#fff',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  width: '70%',
+                  textAlign: 'center'
+                }}
+              >
+                ¿Estás seguro que quieres eliminar esta publicación?
+              </Text>
+              <Pressable
+                onPress={() => {
+                  console.log('Cancel pressed')
+                  setShowDeletePostModalFromProfile(false)
+                }}
+                style={{
+                  width: '100%',
+                  gap: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: '#949494',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    textAlign: 'center'
+                  }}
+                >
+                  Cancelar
+                </Text>
+              </Pressable>
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: Color.colorDimgray_100,
+                  width: '100%'
+                }}
+              />
+              <Pressable
+                onPress={() => {
+                  console.log('Deleting post', selectedPost)
+                  setShowDeletePostModalFromProfile(false)
+                  navigation.goBack()
+                  if (selectedPost) {
+                    dispatch(deletePost(selectedPost)).then((res) =>
+                      dispatch(getAllPosts())
+                    )
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: '#fff',
+                    fontFamily: FontFamily.t4TEXTMICRO,
+                    textAlign: 'center'
+                  }}
+                >
+                  Eliminar
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </ScrollView>
   )
 }

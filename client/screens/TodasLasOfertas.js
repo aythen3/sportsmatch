@@ -53,7 +53,11 @@ const TodasLasOfertas = () => {
   useEffect(() => {
     dispatch(getAllOffers())
   }, [])
-  useEffect(() => {}, [byRelevance])
+  useEffect(() => {
+    if (byRelevance === true) {
+      setOffer(offer)
+    }
+  }, [byRelevance])
 
   useEffect(() => {
     if (offers) {
@@ -121,7 +125,12 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
-  // console.log('O============OOFFERS', offers)
+  console.log(
+    'O============OOFFERS',
+    offers.map((off) => {
+      return `${off?.inscriptions?.length || 0} ${off?.posit}`
+    })
+  )
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -257,9 +266,11 @@ const TodasLasOfertas = () => {
                   : 20
               )
               .sort((a, b) => {
-                return byRelevance
-                  ? a.inscriptions?.length - b.inscriptions?.length
-                  : b.inscriptions?.length - a.inscriptions?.length
+                const first = a.inscriptions?.length || 0
+                const second = b.inscriptions?.length || 0
+                console.log('first', first, 'second', second)
+
+                return byRelevance ? second - first : first - second
               })
               .map((offer, index) => (
                 <View
@@ -939,7 +950,7 @@ const TodasLasOfertas = () => {
       <Modal
         visible={modalFilterSportman}
         transparent={true}
-        animationType="slide"
+        animationType="fade"
       >
         <TouchableWithoutFeedback onPress={() => setModalFilterSportman(false)}>
           <View
@@ -953,7 +964,7 @@ const TodasLasOfertas = () => {
               flex: 1,
               justifyContent: 'flex-start',
               alignItems: 'flex-end',
-              paddingTop: 132,
+              paddingTop: 122,
               paddingHorizontal: 20
             }}
           >
