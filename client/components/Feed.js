@@ -6,7 +6,8 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  Text
+  Text,
+  FlatList
 } from 'react-native'
 import { Border, Color, FontFamily } from '../GlobalStyles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,92 +41,83 @@ const Feed = ({ externalId }) => {
     setUserPosts([...postPined, ...post])
   }, [allPosts])
 
-  return (
-    <ScrollView
-      keyboardShouldPersistTaps={'always'}
-      style={{
-        width: '100%',
-        paddingHorizontal: 10,
-        alignSelf: 'center'
+
+  const renderItem = ({ item: post, index }) => (
+    <TouchableOpacity
+      onLongPress={() => {
+        setPostSelected(post);
+        setModal(true);
       }}
+      onPress={() => {
+        navigation.navigate('Post', post);
+      }}
+      key={index}
+      style={{flex:1 / 3,aspectRatio:1 ,margin:2 ,}}
     >
-      <View
-        style={{
-          width: '100%',
-          justifyContent: 'flex-start',
-          gap: 4,
-          flexDirection: 'row', // Set flexDirection to 'row'
-          flexWrap: 'wrap'
-        }}
-      >
-        {userPosts?.length > 0 ? (
-          userPosts?.map((post, index) => (
-            <TouchableOpacity
-              onLongPress={() => {
-                setPostSelected(post)
-                setModal(true)
-              }}
-              onPress={() => {
-                navigation.navigate('Post', post)
-              }}
-              key={index}>
-              {post?.prop1?.pined && (
-                <View style={{ position: "absolute", top: 5, right: 5, zIndex: 999, backgroundColor: mainColor, padding: 5, borderRadius: 50 }}>
-                  <Image
-                    style={{ width: 10, height: 10 }}
-                    contentFit="cover"
-                    source={require('../assets/pinpin.png')}
-                  />
-                </View>
-              )}
-              <Image
-                style={styles.iconLayout}
-                contentFit="cover"
-                source={{ uri: post.image[0] }}
-              />
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View style={{ marginTop: 30, width: '100%', alignItems: 'center' }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '600',
-                fontFamily: FontFamily.t4TEXTMICRO,
-                color: Color.wHITESPORTSMATCH
-              }}
-            >
-              {externalId
-                ? 'El usuario aun no tiene publicaciones'
-                : 'No tienes publicaciones'}
-            </Text>
-          </View>
-        )}
-        {modal && (
-          <ScrollableModal
-            visible={modal}
-            options={
-              !postSelected.prop1 || postSelected.prop1.pined === false
-                ? ['Fijar post']
-                : ['Quitar post fijo']
+      {post?.prop1?.pined && (
+        <View style={{position:"absolute",top:6,borderRadius:50,right:6,backgroundColor:"orange",padding:5,zIndex:999}}>
+          <Image
+            style={{width:12,height:12}}
+            contentFit="cover"
+            source={require('../assets/pinpin.png')}
+          />
+        </View>
+      )}
+      <Image
+        style={styles.iconLayout}
+        contentFit="cover"
+        source={{ uri: post.image[0] }}
+      />
+    </TouchableOpacity>
+  );
+
+
+
+  return (
+    <View style={styles.container}>
+      {userPosts?.length > 0 ? (
+        <FlatList
+        scrollEnabled={false}
+          data={userPosts}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          numColumns={3}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={styles.listContent}
+        />
+      ) : (
+        <View style={styles.noPostsContainer}>
+          <Text style={styles.noPostsText}>
+            {externalId
+              ? 'El usuario aun no tiene publicaciones'
+              : 'No tienes publicaciones'}
+          </Text>
+        </View>
+      )}
+      {modal && (
+        <ScrollableModal
+          visible={modal}
+          options={
+            !postSelected.prop1 || postSelected.prop1.pined === false
+              ? ['Fijar post']
+              : ['Quitar post fijo']
+          }
+          onSelectItem={async (e) => {
+            if (e === 'Fijar post') {
+              await axiosInstance.patch(`post/${postSelected.id}`, {
+                prop1: { pined: true },
+              });
             }
-            onSelectItem={async (e) => {
-              if (e == 'Fijar post') {
-                axiosInstance.patch(`post/${postSelected.id}`, {
-                  prop1: { pined: true }
-                })
-              }
-              if (e == 'Quitar post fijo') {
-                axiosInstance.patch(`post/${postSelected.id}`, { prop1: null })
-              }
-              dispatch(getAllPosts())
-            }}
-            closeModal={() => setModal(false)}
-          ></ScrollableModal>
-        )}
-      </View>
-    </ScrollView>
-  )
+            if (e === 'Quitar post fijo') {
+              await axiosInstance.patch(`post/${postSelected.id}`, { prop1: null });
+            }
+            dispatch(getAllPosts());
+          }}
+          closeModal={() => setModal(false)}
+        />
+      )}
+    </View>
+  );
 }
 const screenWidth = Dimensions.get('window').width
 const itemSize = (screenWidth * 0.9 + 10) / 3
@@ -155,9 +147,9 @@ const styles = StyleSheet.create({
   },
   iconLayout: {
     borderRadius: Border.br_10xs,
-    height: itemSize + 15,
+    height: "100%",
     alignSelf: 'stretch',
-    width: itemSize,
+    width: "100%",
     overflow: 'hidden'
   }
 })
