@@ -166,7 +166,7 @@ const TusNotificaciones1 = () => {
                 styles.mensajes1Typo
               ]}
             >
-              Notíficaciones
+              Notificaciones
             </Text>
             {allNotifications?.filter(
               (notification) => notification.recipientId === userId

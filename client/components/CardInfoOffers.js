@@ -40,7 +40,9 @@ const CardInfoOffers = ({ text, value, category }) => {
         </View>
       ) : text === 'Retribucion' && value !== 'No' ? (
         <View>
-          <Text style={styles.taxto1Clr}>{value || 0}</Text>
+          <Text style={styles.taxto1Clr}>
+            {value && value > 0 ? value : 'No'}
+          </Text>
         </View>
       ) : (
         <View

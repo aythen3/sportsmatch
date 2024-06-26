@@ -18,6 +18,7 @@ export const signToOffer = createAsyncThunk(
       const { data } = await axiosInstance.post(
         `offer/${offerId}/agregar-inscripcion/${userId}`
       )
+      console.log('INSCRITO CORRECTAMENTE!.')
       return data
     } catch (error) {
       throw new Error(error)

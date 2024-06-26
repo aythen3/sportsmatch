@@ -16,7 +16,15 @@ import { setCategory, setPosition } from '../redux/slices/users.slices'
 import { updateSportman } from '../redux/actions/sportman'
 import ScrollableModal from './modals/ScrollableModal'
 
-const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, selectPosition, setSelectPosition }) => {
+const SkillSeleccion = ({
+  editable,
+  setEditable,
+  setData,
+  data,
+  selectedSport,
+  selectPosition,
+  setSelectPosition
+}) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
@@ -27,7 +35,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
   const [selectedPosition, setSelectedPosition] = useState(null)
   const [selectedOptions, setSelectedOptions] = useState([])
   const [selectedOptionsInputs, setSelectedOptionsInputs] = useState('')
-
 
   const [editData, setEditData] = useState(null)
 
@@ -43,8 +50,18 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
     'Veteranos (+30 años)'
   ]
   const opcionesPosicion = ['Pase', 'Resistencia', 'Disparo', 'Regate']
-  const opcionesPosicionBaloncesto = ['Altura', 'Bote', 'Lanzamiento', 'Dribling']
-  const opcionesPosicionFutbolSala = ['Pase', 'Resistencia', 'Disparo', 'Regate']
+  const opcionesPosicionBaloncesto = [
+    'Altura',
+    'Bote',
+    'Lanzamiento',
+    'Dribling'
+  ]
+  const opcionesPosicionFutbolSala = [
+    'Pase',
+    'Resistencia',
+    'Disparo',
+    'Regate'
+  ]
   const opcionesPosicionHockey = ['Pase', 'Resistencia', 'Disparo', 'Regate']
 
   const opciones = {
@@ -56,15 +73,15 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
     handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
   }
 
-  useEffect(()=>{
-  if(setData){
-    const newData = {
-      ...data,
-     position: selectedOptionsInputs
+  useEffect(() => {
+    if (setData) {
+      const newData = {
+        ...data,
+        position: selectedOptionsInputs
+      }
+      setData(newData)
     }
-    setData(newData)
-  }
-  },[selectedOptionsInputs])
+  }, [selectedOptionsInputs])
 
   const openModal = () => {
     setModalVisible(!modalVisible)
@@ -144,21 +161,28 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
   const [positionTop, setPositionTop] = useState(0)
   const [scrolledHeight, setScrolledHeight] = useState(0)
 
-
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent
     const height = contentOffset.y // Get the scrolled height
     setScrolledHeight(height)
   }
   const selectores = () => {
-    if (selectedSport?.name == "Fútbol" || sportman.info?.sport) setSelectedOptions(opciones.futbol)
-    if (selectedSport?.name == "Fútbol Sala" || sportman.info?.sport) setSelectedOptions(opciones.futbolSala)
-    if (selectedSport?.name == "Básquetbol" || sportman.info?.sport) setSelectedOptions(opciones.baloncesto)
-    if (selectedSport?.name == "Hockey" || sportman.info?.sport) setSelectedOptions(opciones.hockey)
-    if (selectedSport?.name == "Handball" || sportman.info?.sport) setSelectedOptions(opciones.handball)
-    if (selectedSport?.name == "Voley" || sportman.info?.sport) setSelectedOptions(opciones.voleibol)
+    if (selectedSport?.name == 'Fútbol' || sportman.info?.sport)
+      setSelectedOptions(opciones.futbol)
+    if (selectedSport?.name == 'Fútbol Sala' || sportman.info?.sport)
+      setSelectedOptions(opciones.futbolSala)
+    if (selectedSport?.name == 'Básquetbol' || sportman.info?.sport)
+      setSelectedOptions(opciones.baloncesto)
+    if (selectedSport?.name == 'Hockey' || sportman.info?.sport)
+      setSelectedOptions(opciones.hockey)
+    if (selectedSport?.name == 'Handball' || sportman.info?.sport)
+      setSelectedOptions(opciones.handball)
+    if (selectedSport?.name == 'Voley' || sportman.info?.sport)
+      setSelectedOptions(opciones.voleibol)
   }
-  useEffect(() => { selectores() }, [selectedSport])
+  useEffect(() => {
+    selectores()
+  }, [selectedSport])
 
   return (
     <ScrollView
@@ -252,7 +276,7 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
               selectedCategoria
                 ? selectedCategoria
                 : sportman?.info?.category?.toString() ||
-                'Selecciona tu categoría'
+                  'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
@@ -273,10 +297,12 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={selectPosition
-                ? selectPosition
-                : sportman?.info?.position?.toString() ||
-                'Selecciona tu posición '}
+              placeholder={
+                selectPosition
+                  ? selectPosition
+                  : sportman?.info?.position?.toString() ||
+                    'Selecciona tu posición '
+              }
               placeholderTextColor={'#999'}
               onChangeText={(e) => {
                 const newData = {
@@ -284,7 +310,6 @@ const SkillSeleccion = ({ editable, setEditable, setData, data, selectedSport, s
                   position: e
                 }
                 setSelectedOptionsInputs(e)
-
               }}
               maxLength={40}
             />
