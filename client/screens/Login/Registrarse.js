@@ -175,7 +175,7 @@ const Registrarse = () => {
                         onChangeText={(value) => {
                           if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
                             // Si la entrada coincide con la expresión regular o está vacía, actualizar el estado y limpiar el mensaje de error
-                            console.log(`nickname: ${value}`); // Log nickname value
+                            console.log(`nickname: ${value}`) // Log nickname value
                             seterValues('nickname', value)
                             setNombreError('')
                           } else {
@@ -231,8 +231,8 @@ const Registrarse = () => {
                         autoCapitalize="none"
                         value={valuesUser.email}
                         onChangeText={(value) => {
-                          console.log(`email: ${value}`); // Log email value
-                          seterValues('email', value);
+                          console.log(`email: ${value}`) // Log email value
+                          seterValues('email', value)
                         }}
                         ref={emailInputRef}
                         onSubmitEditing={() => {
@@ -276,17 +276,23 @@ const Registrarse = () => {
                         secureTextEntry={passview1}
                         value={valuesUser.password}
                         onChangeText={(value) => {
-                          console.log(`password: ${value}`); // Log password value
-                          seterValues('password', value);
+                          console.log(`password: ${value}`) // Log password value
+                          seterValues('password', value)
                         }}
                         ref={passwordInputRef}
                         onSubmitEditing={() => {
                           confirmPasswordInputRef.current.focus()
                         }}
                       />
-                       <TouchableOpacity onPress={()=>setPassview1(!passview1)}>
-                   {passview1 ?  <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setPassview1(!passview1)}
+                      >
+                        {passview1 ? (
+                          <PassView></PassView>
+                        ) : (
+                          <OjoCerradoSVG></OjoCerradoSVG>
+                        )}
+                      </TouchableOpacity>
                     </View>
                   </View>
                   <View style={[styles.campo3Frame, styles.framePosition]}>
@@ -310,15 +316,21 @@ const Registrarse = () => {
                         secureTextEntry={passview2}
                         value={confirmPassword}
                         onChangeText={(value) => {
-                          console.log(`confirmPassword: ${value}`); // Log confirmPassword value
-                          setConfirmPassword(value);
+                          console.log(`confirmPassword: ${value}`) // Log confirmPassword value
+                          setConfirmPassword(value)
                         }}
                         ref={confirmPasswordInputRef}
                         onSubmitEditing={submit}
                       />
-                    <TouchableOpacity onPress={()=>setPassview2(!passview2)}>
-                    {passview2 ? <PassView></PassView> : <OjoCerradoSVG></OjoCerradoSVG>}
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setPassview2(!passview2)}
+                      >
+                        {passview2 ? (
+                          <PassView></PassView>
+                        ) : (
+                          <OjoCerradoSVG></OjoCerradoSVG>
+                        )}
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>
@@ -368,11 +380,13 @@ const Registrarse = () => {
           </View>
           <View style={styles.textoLegal}>
             <View style={styles.textoLegalFrame}>
-              <CheckBox
-                isChecked={isChecked}
-                onClick={handleCheckboxToggle}
-                checkBoxColor="#999"
-              />
+              <View style={{ marginTop: -4 }}>
+                <CheckBox
+                  isChecked={isChecked}
+                  onClick={handleCheckboxToggle}
+                  checkBoxColor="#999"
+                />
+              </View>
               <Text style={[styles.texto1, styles.textoTypo]}>
                 Estoy de acuerdo en recibir información promocional y
                 publicitaria a través del correo electrónico
@@ -593,7 +607,7 @@ const styles = StyleSheet.create({
   textoLegalFrame: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   textoInferior: {
     marginTop: 9

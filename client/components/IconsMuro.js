@@ -13,7 +13,7 @@ import { sendNotification } from '../redux/actions/notifications'
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 
-const IconsMuro = ({ id, userId, postUserId, image, doubleTap }) => {
+const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -29,31 +29,61 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap }) => {
     setLiked(findedLike?.includes(id))
   }, [findedLike, id])
 
-  const handleShare = async () => {
-    if (sportman?.type == 'invitado') return
+  // const handleShare = async () => {
+  //   if (sportman?.type == 'invitado') return
+  //   try {
+  //     // Descargar el archivo desde la URL remota
+  //     const localUri = `${FileSystem.cacheDirectory}image.jpg`
+  //     const downloadResult = await FileSystem.downloadAsync(image[0], localUri)
+
+  //     if (downloadResult.status === 200) {
+  //       // Obtener información sobre el archivo descargado
+  //       const fileInfo = await FileSystem.getInfoAsync(localUri)
+
+  //       // Compartir el archivo si existe
+  //       if (fileInfo.exists) {
+  //         // Esperar un segundo antes de llamar a Sharing.shareAsync()
+  //         await Sharing.shareAsync(localUri, {
+  //           dialogTitle: `Comparte la publicación`
+  //         })
+  //       } else {
+  //         console.log('El archivo no existe.')
+  //       }
+  //     } else {
+  //       console.log('Error al descargar el archivo.')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error al compartir:', error.message)
+  //   }
+  // }
+  const onShare = async (message) => {
     try {
-      // Descargar el archivo desde la URL remota
-      const localUri = `${FileSystem.cacheDirectory}image.jpg`
-      const downloadResult = await FileSystem.downloadAsync(image[0], localUri)
-
-      if (downloadResult.status === 200) {
-        // Obtener información sobre el archivo descargado
-        const fileInfo = await FileSystem.getInfoAsync(localUri)
-
-        // Compartir el archivo si existe
-        if (fileInfo.exists) {
-          // Esperar un segundo antes de llamar a Sharing.shareAsync()
-          await Sharing.shareAsync(localUri, {
-            dialogTitle: `Comparte la publicación`
-          })
-        } else {
-          console.log('El archivo no existe.')
+      const result = await Share.share(
+        {
+          message,
+          title: 'Echa un vistazo!'
+        },
+        {
+          // Android only:
+          dialogTitle: 'Compartir esta publicación con',
+          // iOS only:
+          excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter']
         }
-      } else {
-        console.log('Error al descargar el archivo.')
+      )
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // compartido con el tipo de actividad de result.activityType
+          // console.log('evento conmpartido con ', result.activityType)
+        } else {
+          // compartido
+          // console.log('evento conmpartido')
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // descartado
       }
     } catch (error) {
-      console.error('Error al compartir:', error.message)
+      alert(error.message)
     }
   }
 
@@ -120,7 +150,14 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap }) => {
         <LikeSVG id={id} doubleTap={doubleTap} />
       </TouchableOpacity>
       <View style={styles.shareView}>
-        <TouchableOpacity style={styles.shareView} onPress={handleShare}>
+        <TouchableOpacity
+          style={styles.shareView}
+          onPress={() =>
+            onShare(
+              `Da un vistazo a la publicación de ${name}!. Si aun no te bajaste la app descargala en Google Play https://play.google.com/store/apps/details?id=com.aythenapps.sportsmatch`
+            )
+          }
+        >
           <ShareSVG />
         </TouchableOpacity>
       </View>

@@ -80,7 +80,7 @@ const MiPerfil = () => {
             }}
           >
             <View style={styles.imagenInformacion1}>
-              <View style={{ position: 'relative',minWidth:110 }}>
+              <View style={{ position: 'relative', minWidth: 110 }}>
                 {sportman?.info?.img_perfil &&
                   sportman?.info?.img_perfil !== '' && (
                     <Image
@@ -98,21 +98,21 @@ const MiPerfil = () => {
                       }}
                     />
                   )}
-                {!sportman?.info?.img_perfil  && (
-                    <Image
-                      style={{
-                        height: 110,
-                        borderRadius: 100,
-                        width: 110,
-                        zIndex: 1000,
-                        borderWidth: 3,
-                        borderColor: '#000',
-                        backgroundColor: mainColor
-                      }}
-                      contentFit="cover"
-                      source={require('../../assets/whiteSport.png')}
-                    />
-                  )}
+                {!sportman?.info?.img_perfil && (
+                  <Image
+                    style={{
+                      height: 110,
+                      borderRadius: 100,
+                      width: 110,
+                      zIndex: 1000,
+                      borderWidth: 3,
+                      borderColor: '#000',
+                      backgroundColor: mainColor
+                    }}
+                    contentFit="cover"
+                    source={require('../../assets/whiteSport.png')}
+                  />
+                )}
                 <View
                   style={{
                     position: 'absolute',
@@ -134,19 +134,36 @@ const MiPerfil = () => {
                     {typeof sportman?.info?.sport === 'object'
                       ? sportman?.info?.sport.name
                       : sportman?.info?.sport}
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: 'white',
+                        fontFamily: FontFamily.t4TEXTMICRO,
+                        fontSize: 16,
+                        lineHeight: 20,
+                        fontWeight: '400'
+                      }}
+                    >
+                      {' '}
+                      {'('}
+                      {sportman?.type === 'coach'
+                        ? sportman?.info?.rol
+                        : sportman?.info?.position}
+                      {')'}
+                    </Text>
                   </Text>
-                  <Text style={styles.textTypo3}>
-                    {sportman?.type === 'coach'
-                      ? sportman?.info?.rol
-                      : sportman?.info?.position}
-                  </Text>
+                  {user?.user?.sportman?.info?.city && (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.sportman?.info?.city}
+                    </Text>
+                  )}
                 </View>
                 <Text
                   numberOfLines={2}
                   style={[
                     styles.jugandoAlUni,
                     styles.seguidoresTypo,
-                    { width: '20%' }
+                    { width: '100%' }
                   ]}
                 >
                   {sportman?.info?.description?.length > 0
@@ -288,8 +305,8 @@ const styles = StyleSheet.create({
   },
   informacion: {
     marginLeft: 15,
-    alignSelf: 'flex-end',
-    paddingTop: 20
+    alignSelf: 'center',
+    paddingTop: 10
   },
   imagenInformacion1: {
     flexDirection: 'row',
