@@ -28,6 +28,15 @@ export const like = createAsyncThunk('like/post', async (body) => {
   }
 })
 
+export const deletePost = createAsyncThunk('delete/post', async (postId) => {
+  try {
+    const { data } = await axiosInstance.delete(`post/${postId}`)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
 export const updateLike = createAsyncThunk(
   'updateLike/post',
   async ({ post, author, liked }) => {
@@ -76,4 +85,3 @@ export const filterPost = (posts) => {
     throw new Error(error)
   }
 }
-

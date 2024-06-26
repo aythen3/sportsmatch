@@ -55,6 +55,7 @@ const ConfigurarAnuncio = () => {
   const [showModal, setShowModal] = useState(false)
   const [showGenderModal, setShowGenderModal] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
+  const [province, setProvince] = useState('')
 
   const [clubPositions, setClubPositions] = useState()
 
@@ -196,7 +197,10 @@ const ConfigurarAnuncio = () => {
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
     <SafeAreaView style={styles.configurarAnuncio}>
-      <View style={styles.contenido}>
+      <ScrollView
+        style={{ flex: 1, flexGrow: 1 }}
+        contentContainerStyle={styles.contenido}
+      >
         <View style={styles.topContainer}>
           <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
           <Text
@@ -214,82 +218,8 @@ const ConfigurarAnuncio = () => {
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Posición
             </Text>
-            {/* <TouchableOpacity
-              onPress={() => {
-                setShowModal(!showModal)
-              }}
-              style={{ zIndex: 10000, ...styles.containerBox }}
-            >
-              <Text style={styles.inputText}>
-                {selectedPosition
-                  ? selectedPosition
-                  : 'Selecciona una posición'}
-              </Text>
-              {showModal && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    width: '100%',
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    backgroundColor: Color.bLACK1SPORTSMATCH
-                  }}
-                >
-                  {selectedSport && opciones[`futbol`]
-                    .map((position, index) => {
-                      return { name: position, id: index }
-                    })
-                    .map((item, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={{
-                          paddingVertical: 3,
-                          width: '100%',
-                          alignItems: 'center'
-                        }}
-                        onPress={() => {
-                          console.log(item.name)
-                          setSelectedPosition(item)
-                          setShowModal(false)
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 200,
-                            paddingBottom: 5,
-                            textAlign: 'center',
-                            borderBottomWidth:
-                              index !==
-                                allPositions.map((position) => {
-                                  return position?.name
-                                }).length -
-                                1
-                                ? 1
-                                : 0,
-                            borderBottomColor: '#ccc',
-                            ...styles.optionText
-                          }}
-                        >
-                          {item?.name.charAt(0).toUpperCase() +
-                            item?.name.slice(1).toLowerCase()}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                </View>
-              )}
-              {showModal && (
-                <ScrollableModal
-                  visible={showModal}
-                  closeModal={() => setShowModal(false)}
-                  onSelectItem={setSelectedPosition}
-                  options={opciones[`futbol`]}
-                />
-              )}
-            </TouchableOpacity> */}
             <View style={{ width: '100%' }}>
               <TextInput
-                inputMode="numeric"
                 value={selectedPosition}
                 placeholderTextColor={'#fff'}
                 placeholder={selectedPosition || 'Indique una posición'}
@@ -365,15 +295,6 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-          {/* <View style={{ width: '100%'  }}>
-            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Provincia</Text>
-            <Input
-              value={selectedProvince}
-              placeholder="Ingrese la provincia"
-              onChangeText={(text) => setSelectedProvince(text)}
-              style={styles.inputText}
-            />
-          </View> */}
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Categoría
@@ -438,7 +359,20 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-
+          <View style={{ width: '100%', gap: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+              Provincia
+            </Text>
+            <View style={{ width: '100%' }}>
+              <TextInput
+                value={selectedProvince}
+                placeholderTextColor={'#fff'}
+                placeholder={selectedProvince || 'Indique la provincia'}
+                onChangeText={(text) => setSelectedProvince(text)}
+                style={{ ...styles.containerBox, paddingHorizontal: 18 }}
+              ></TextInput>
+            </View>
+          </View>
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Urgencia
@@ -675,7 +609,7 @@ const ConfigurarAnuncio = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -737,9 +671,8 @@ const styles = StyleSheet.create({
   },
   contenido: {
     top: '5%',
-    marginBottom: '5%',
-    height: '100%',
-    gap: 25
+    gap: 25,
+    paddingBottom: 70
   },
   configurarAnuncio: {
     flex: 1,

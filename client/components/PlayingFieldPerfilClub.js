@@ -3,8 +3,10 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/core'
 
 const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
+  const navigation = useNavigation()
   const { mainColor } = useSelector((state) => state.users)
 
   return (
@@ -22,17 +24,49 @@ const PlayingFieldPerfilClub = ({ fieldName, city, country }) => {
               navigation.goBack()
             }}
           >
-            <Text style={[styles.estadio, styles.taxto1Clr,{color:mainColor}]}>Estadio</Text>
+            <Text
+              style={[styles.estadio, styles.taxto1Clr, { color: mainColor }]}
+            >
+              Estadio
+            </Text>
           </Pressable>
           <View style={styles.bloqueInformacion}>
-            <Text style={{...styles.nombreDelEstadio,color:mainColor}}>
+            <Text
+              style={{
+                ...styles.nombreDelEstadio,
+                color: mainColor,
+                fontWeight: '700'
+              }}
+            >
               Nombre del estadio o pabellón
             </Text>
-            <Text style={{...styles.secondText,color:mainColor}}>{fieldName}</Text>
-            <Text style={{...styles.pasEspaaTypo,color:mainColor}}>Ciudad</Text>
-            <Text style={{...styles.secondText,color:mainColor}}>{city}</Text>
-            <Text style={[styles.pasEspaa, styles.pasEspaaTypo,{color:mainColor}]}>País</Text>
-            <Text style={{...styles.secondText,color:mainColor}}>{country}</Text>
+            <Text style={{ ...styles.secondText, color: mainColor }}>
+              {fieldName}
+            </Text>
+            <Text
+              style={{
+                ...styles.pasEspaaTypo,
+                color: mainColor,
+                fontWeight: '700'
+              }}
+            >
+              Ciudad
+            </Text>
+            <Text style={{ ...styles.secondText, color: mainColor }}>
+              {city}
+            </Text>
+            <Text
+              style={[
+                styles.pasEspaa,
+                styles.pasEspaaTypo,
+                { color: mainColor, fontWeight: '700' }
+              ]}
+            >
+              País
+            </Text>
+            <Text style={{ ...styles.secondText, color: mainColor }}>
+              {country}
+            </Text>
           </View>
         </View>
       </View>
@@ -54,7 +88,8 @@ const styles = StyleSheet.create({
     height: 240
   },
   textoLateral: {
-    marginLeft: 12
+    marginLeft: 12,
+    width: '54%'
   },
   estadio: {
     fontWeight: '500',

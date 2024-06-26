@@ -22,6 +22,9 @@ export const ContextProvider = ({ children }) => {
   const [coverImage, setCoverImage] = useState()
   const [roomId, setRoomId] = useState()
   const [libraryImage, setLibraryImage] = useState()
+  const [selectedPost, setSelectedPost] = useState()
+  const [showDeletePostModalFromProfile, setShowDeletePostModalFromProfile] =
+    useState(false)
   const userId = user?.user?.id
 
   function transformHttpToHttps(url) {
@@ -348,6 +351,8 @@ export const ContextProvider = ({ children }) => {
         setUsersWithMessages,
         usersWithMessages,
         pickImage,
+        showDeletePostModalFromProfile,
+        setShowDeletePostModalFromProfile,
         coverImage,
         setCoverImage,
         profileImage,
@@ -364,6 +369,8 @@ export const ContextProvider = ({ children }) => {
         libraryImage,
         setLibraryImage,
         transformHttpToHttps,
+        selectedPost,
+        setSelectedPost,
         leaveRoom,
         getTimeFromDate,
         activeIcon,

@@ -254,14 +254,13 @@ const FiltersSportman = ({
               const newByRelevance = !prevByRelevance
 
               // const filt = [...offer].sort((a, b) => {
-              //   return newByRelevance
-              //     ? a.inscriptions?.length - b.inscriptions?.length
-              //     : b.inscriptions?.length - a.inscriptions?.length
+              //   const first = a.inscriptions?.length || 0
+              //   const second = b.inscriptions?.length || 0
+              //   console.log('first', first, 'second', second)
+
+              //   return newByRelevance ? second - first : first - second
               // })
 
-              // console.log(
-              //   newByRelevance ? 'filtered offers asc' : 'filtered offers desc'
-              // )
               // setOffer(filt)
               return newByRelevance
             })
