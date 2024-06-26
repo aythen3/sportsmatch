@@ -24,7 +24,7 @@ const Feed = ({ externalId }) => {
   const [postSelected, setPostSelected] = useState({})
 
   const [userPosts, setUserPosts] = useState([])
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
 
   const dispatch = useDispatch()
@@ -53,7 +53,7 @@ const Feed = ({ externalId }) => {
         style={{
           width: '100%',
           justifyContent: 'flex-start',
-          gap: 10,
+          gap: 4,
           flexDirection: 'row', // Set flexDirection to 'row'
           flexWrap: 'wrap'
         }}
@@ -68,21 +68,15 @@ const Feed = ({ externalId }) => {
               onPress={() => {
                 navigation.navigate('Post', post)
               }}
-              key={index}
-            >
+              key={index}>
               {post?.prop1?.pined && (
-                <Image
-                  style={{
-                    width: 20,
-                    height: 20,
-                    position: 'absolute',
-                    top: 5,
-                    right: 5,
-                    zIndex: 999
-                  }}
-                  contentFit="cover"
-                  source={require('../assets/pined.png')}
-                />
+                <View style={{ position: "absolute", top: 5, right: 5, zIndex: 999, backgroundColor: mainColor, padding: 5, borderRadius: 50 }}>
+                  <Image
+                    style={{ width: 10, height: 10 }}
+                    contentFit="cover"
+                    source={require('../assets/pinpin.png')}
+                  />
+                </View>
               )}
               <Image
                 style={styles.iconLayout}
@@ -134,7 +128,7 @@ const Feed = ({ externalId }) => {
   )
 }
 const screenWidth = Dimensions.get('window').width
-const itemSize = (screenWidth * 0.9 - 6) / 3
+const itemSize = (screenWidth * 0.9 + 10) / 3
 const styles = StyleSheet.create({
   fila1: {
     flexDirection: 'column'

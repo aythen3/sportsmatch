@@ -32,6 +32,7 @@ import { getAllNotifications } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 import { setColor } from '../../utils/handles/HandlerSportColor'
 import { setMainColor } from '../../redux/slices/users.slices'
+import { Image } from 'expo-image'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()

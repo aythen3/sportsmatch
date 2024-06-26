@@ -47,7 +47,7 @@ const Notifications = ({ data }) => {
 
   return (
     <TouchableOpacity
-      style={{ marginTop: 20 }}
+      style={{ marginTop: 20 , paddingHorizontal:5 }}
       onPress={async () => {
         if (!data.read) {
           await axiosInstance
