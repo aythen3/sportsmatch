@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -14,10 +14,13 @@ import { useNavigation } from '@react-navigation/core'
 import ScrollableModal from './modals/ScrollableModal'
 import axiosInstance from '../utils/apiBackend'
 import { getAllPosts } from '../redux/actions/post'
+import { Context } from '../context/Context'
 
 const Feed = ({ externalId }) => {
   const navigation = useNavigation()
   const [modal, setModal] = useState(false)
+  const { showDeletePostModalFromProfile, setShowDeletePostModalFromProfile } =
+    useContext(Context)
   const [postSelected, setPostSelected] = useState({})
 
   const [userPosts, setUserPosts] = useState([])
@@ -28,8 +31,12 @@ const Feed = ({ externalId }) => {
 
   useEffect(() => {
     const userId = externalId || user.user.id
-    const post = allPosts.filter((post) => post.author.id === userId && !post.prop1)
-    const postPined = allPosts.filter((post) => post.author.id === userId && post.prop1)
+    const post = allPosts.filter(
+      (post) => post.author.id === userId && !post.prop1
+    )
+    const postPined = allPosts.filter(
+      (post) => post.author.id === userId && post.prop1
+    )
     setUserPosts([...postPined, ...post])
   }, [allPosts])
 
@@ -88,23 +95,33 @@ const Feed = ({ externalId }) => {
                 color: Color.wHITESPORTSMATCH
               }}
             >
-              {externalId ? 'El usuario aun no tiene publicaciones' : 'No tienes publicaciones'}
+              {externalId
+                ? 'El usuario aun no tiene publicaciones'
+                : 'No tienes publicaciones'}
             </Text>
           </View>
         )}
         {modal && (
-          <ScrollableModal visible={modal} options={!postSelected.prop1 ? ['Fijar post'] : ['Quitar post fijo']} onSelectItem={async (e) => {
-            if (e == 'Fijar post') {
-              axiosInstance.patch(`post/${postSelected.id}`, { prop1: { pined: true } })
-
+          <ScrollableModal
+            visible={modal}
+            options={
+              !postSelected.prop1 || postSelected.prop1.pined === false
+                ? ['Fijar post']
+                : ['Quitar post fijo']
             }
-            if (e == 'Quitar post fijo') {
-              axiosInstance.patch(`post/${postSelected.id}`, { prop1: null })
-
-            }
-            dispatch(getAllPosts())
-          }
-          } closeModal={() => setModal(false)}></ScrollableModal>
+            onSelectItem={async (e) => {
+              if (e == 'Fijar post') {
+                axiosInstance.patch(`post/${postSelected.id}`, {
+                  prop1: { pined: true }
+                })
+              }
+              if (e == 'Quitar post fijo') {
+                axiosInstance.patch(`post/${postSelected.id}`, { prop1: null })
+              }
+              dispatch(getAllPosts())
+            }}
+            closeModal={() => setModal(false)}
+          ></ScrollableModal>
         )}
       </View>
     </ScrollView>

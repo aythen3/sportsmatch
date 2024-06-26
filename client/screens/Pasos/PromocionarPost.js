@@ -32,6 +32,7 @@ import { useRoute } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { useStripe } from '@stripe/stripe-react-native'
 import axiosInstance from '../../utils/apiBackend'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const PromocionarPost = () => {
   const { mainColor } = useSelector((state) => state.users)
@@ -432,7 +433,7 @@ const PromocionarPost = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         ...styles.escogerDeporte,
         height: height,
@@ -524,7 +525,7 @@ const PromocionarPost = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -587,7 +588,8 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   escogerDeporte: {
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    backgroundColor: Color.bLACK1SPORTSMATCH,
+    paddingTop: 5
   },
   nextText: {
     fontSize: FontSize.button_size,

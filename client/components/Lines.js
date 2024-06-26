@@ -11,14 +11,16 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
       if (color) {
         return setColorSelect(color)
       }
+      if (profesional) {
+        setColorSelect('#00F0FF')
+        return
+      }
       if (index == 1 && !color && club) return setColorSelect('#E1451E')
       if (selectedSport == null) {
         return setColorSelect('#E1451E')
-      }
-      if (profesional) {
-        setColorSelect('#00F0FF')
       } else {
         setColorSelect(setColor(selectedSport?.name))
+        return
       }
     }
     setcolor()
@@ -38,7 +40,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 1 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '24%' : '18%',
+          width: club || profesional ? '24%' : '18%',
           marginTop: 10
         }}
       />
@@ -46,7 +48,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 2 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '24%' : '18%',
+          width: club || profesional ? '24%' : '18%',
           marginTop: 10
         }}
       />
@@ -54,7 +56,7 @@ const Lines = ({ index, club, profesional, selectedSport, color }) => {
         style={{
           borderWidth: 2,
           borderColor: index === 3 ? colorSelect : Color.colorDimgray_100,
-          width: club ? '24%' : '18%',
+          width: club || profesional ? '24%' : '18%',
           marginTop: 10
         }}
       />

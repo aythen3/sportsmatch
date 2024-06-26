@@ -2,10 +2,75 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
+import axiosInstance from '../utils/apiBackend'
+import { deletePost, getAllPosts } from '../redux/actions/post'
+import { useDispatch } from 'react-redux'
 
-const ModalOptionOffers = ({ onClose, offerId }) => {
+const ModalOptionOffers = ({
+  onClose,
+  offerId,
+  post,
+  postId,
+  data,
+  setShowDeletePostModal
+}) => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  console.log('data.prop1', data.prop1)
+  if (post)
+    return (
+      <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
+        {!data.prop1 || data?.prop1?.pined === false ? (
+          <Pressable
+            onPress={() => {
+              onClose()
+              console.log('Fijando post...')
+              axiosInstance
+                .patch(`post/${postId}`, { prop1: { pined: true } })
+                .then((res) => dispatch(getAllPosts()))
+            }}
+          >
+            <View>
+              <Text style={styles.editar}>Fijar post</Text>
+            </View>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => {
+              onClose()
+              console.log('Quitando post fijo...')
+              axiosInstance
+                .patch(`post/${postId}`, { prop1: { pined: false } })
+                .then((res) => dispatch(getAllPosts()))
+            }}
+          >
+            <View>
+              <Text style={styles.editar}>Quitar post fijo</Text>
+            </View>
+          </Pressable>
+        )}
 
+        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+        <Pressable
+          onPress={() => {
+            onClose()
+            navigation.navigate('PostPromocion', data)
+          }}
+        >
+          <Text style={styles.editar2}>Promocionar</Text>
+        </Pressable>
+
+        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+        <Pressable
+          onPress={() => {
+            onClose()
+            setShowDeletePostModal(true)
+          }}
+        >
+          <Text style={styles.editar}>Eliminar</Text>
+        </Pressable>
+      </View>
+    )
   return (
     <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
       <Pressable
@@ -29,17 +94,17 @@ const ModalOptionOffers = ({ onClose, offerId }) => {
         <Text style={styles.editar}>Eliminar</Text>
       </Pressable>
 
-      {/* <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+      <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
       <Pressable onPress={onClose}>
         <Text style={styles.editar2}>Promocionar</Text>
-      </Pressable> */}
+      </Pressable>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   despliegueOpciones: {
-    height: 80,
+    paddingVertical: 10,
     width: 150,
     marginTop: 30,
     backgroundColor: Color.bLACK3SPORTSMATCH,

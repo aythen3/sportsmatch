@@ -4,6 +4,8 @@ import {
   getSportman,
   updateSportman
 } from '../actions/sportman'
+import { setMainColor } from './users.slices'
+import { setColor } from '../../utils/handles/HandlerSportColor'
 
 const sportmanSlices = createSlice({
   name: 'sportman',
@@ -43,6 +45,13 @@ const sportmanSlices = createSlice({
       .addCase(getSportman.fulfilled, (state, action) => {
         state.loading = false
         state.sportman = action.payload
+        if (action.payload.type === 'coach') {
+          console.log('setting color to ', '#00F0FF')
+          setMainColor('#00F0FF')
+        } else {
+          console.log('setting color to', setColor(action.payload.sport?.name))
+          setMainColor(setColor(action.payload.sport?.name))
+        }
         state.error = false
       })
       .addCase(getSportman.rejected, (state) => {
@@ -66,6 +75,6 @@ const sportmanSlices = createSlice({
   }
 })
 
-export const { setInitialSportman ,clearSportman } = sportmanSlices.actions
+export const { setInitialSportman, clearSportman } = sportmanSlices.actions
 
 export default sportmanSlices.reducer
