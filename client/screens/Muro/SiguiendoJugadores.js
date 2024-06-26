@@ -9,7 +9,8 @@ import {
   StatusBar,
   Modal,
   TouchableWithoutFeedback,
-  Pressable
+  Pressable,
+  Image
 } from 'react-native'
 import { Color, FontFamily } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
