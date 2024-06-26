@@ -190,7 +190,7 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <View>
+          <ScrollView>
             {allNotifications?.filter(
               (notification) => notification.recipientId === userId
             ).length > 0 ? (
@@ -213,7 +213,7 @@ const TusNotificaciones1 = () => {
                 </Text>
               </View>
             )}
-          </View>
+          </ScrollView>
         )}
 
         {selectedComponent === 'messages' && (

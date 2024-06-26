@@ -19,6 +19,7 @@ import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
 
 export const detectSportColor = (sport, dispatch) => {
+  console.log(sport,"me llega sport")
   if (sport == 'Fútbol Sala') {
     dispatch(setMainColor('#0062FF'))
   }

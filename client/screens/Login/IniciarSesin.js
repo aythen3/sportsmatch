@@ -34,6 +34,8 @@ import { Context } from '../../context/Context'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
 import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
+import { detectSportColor } from './PantallaInicio'
+import { setInitialSportman } from '../../redux/slices/sportman.slices'
 
 const IniciarSesin = () => {
   const {
@@ -89,8 +91,14 @@ const IniciarSesin = () => {
           await AsyncStorage.setItem('userType', response.payload.user.type)
           setLoading(false)
           if (response.payload?.user?.club || response.payload.user?.sportman) {
+            dispatch(
+              setInitialSportman({
+                id: response.payload.user?.sportman?.id,
+                ...response.payload.user?.sportman
+              })
+            )
             dispatch(setClub(response))
-
+            detectSportColor( response.payload.user?.sportman?.info?.sport || response.payload?.user?.club?.sport  ,dispatch)
             setActiveIcon('diary')
             return navigation.reset({
 

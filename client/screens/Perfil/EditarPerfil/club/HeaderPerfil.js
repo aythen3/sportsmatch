@@ -96,7 +96,7 @@ const HeaderPerfil = ({
           <Image
             style={styles.imgFront}
             contentFit="cover"
-            source={{ uri: front }}
+            source={{ uri: avatar }}
           />
         )}
       </TouchableOpacity>
@@ -147,9 +147,9 @@ const HeaderPerfil = ({
                   height: '100%'
                 }}
                 source={
-                  avatar === ''
+                  front === ''
                     ? require('../../../../assets/whiteSport.png')
-                    : { uri: avatar }
+                    : { uri: front }
                 }
               />
             </View>

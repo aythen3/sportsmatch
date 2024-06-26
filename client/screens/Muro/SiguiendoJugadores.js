@@ -125,8 +125,7 @@ const SiguiendoJugadores = () => {
               description={publication?.description}
               imgPerfil={
                 publication?.author?.sportman
-                  ? publication?.author?.sportman?.info?.img_front
-                  : publication?.author?.club?.img_perfil
+                  && publication?.author?.sportman?.info?.img_perfil
               }
               image={[...new Set(publication?.image)]}
               club={publication?.club === user?.user?.type}
