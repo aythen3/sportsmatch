@@ -835,16 +835,16 @@ const TodasLasOfertas = () => {
                             user?.user?.sportman?.id
                           )
                         ) {
+                          ToastAndroid.show(
+                            'Te has inscrito en la oferta!',
+                            ToastAndroid.SHORT
+                          )
                           dispatch(
                             signToOffer({
                               offerId: offer?.id,
                               userId: user?.user?.sportman?.id
                             })
                           ).then((data) => {
-                            ToastAndroid.show(
-                              'Te has inscrito en la oferta!',
-                              ToastAndroid.SHORT
-                            )
                             dispatch(getAllOffers())
                           })
 

@@ -493,7 +493,19 @@ const PromocionarPost = () => {
         </View>
       </View>
       <View style={{ marginTop: -30 }}>
-        <Text style={styles.paso2}>Paso {stepsIndex}</Text>
+        <Text
+          style={{
+            fontSize: FontSize.t1TextSMALL_size,
+            lineHeight: 17,
+            color: mainColor,
+            width: '100%',
+            textAlign: 'center',
+            marginBottom: 5,
+            fontFamily: FontFamily.t4TEXTMICRO
+          }}
+        >
+          Paso {stepsIndex}
+        </Text>
         <Text style={styles.detallesDelClub}>
           {stepsIndex === 1 && 'Objetivo'}
           {stepsIndex === 2 && 'Duración y presupuesto'}
