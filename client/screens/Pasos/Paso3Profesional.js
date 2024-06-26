@@ -29,7 +29,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   const [cityTop, setCityTop] = useState(0)
   const [pickedCity, setPickedCity] = useState()
 
-  const opcionesProfesional = ['Entrenador/a', 'Preparador/a físico/a', 'Analista técnico/a','Psicologo/a','Fisioterapeuta','Nutricionista']
+  const opcionesProfesional = ['Entrenador/a', 'Preparador/a físico/a', 'Analista técnico/a','Psicólogo/a','Fisioterapeuta','Nutricionista']
   const opcionesResidencia = cities.map((city) => city.city).sort()
 
   const openModal = () => {

@@ -44,7 +44,7 @@ const Post = () => {
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <CustomHeaderBack header={'Post'}></CustomHeaderBack>
-      <View style={{ paddingBottom: 40 }}>
+      <View style={{ paddingBottom: 40,marginTop:-20 }}>
         <Carousel
           fromProfile={true}
           setShowDeletePostModal={setShowDeletePostModalFromProfile}
@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
     gap: 20,
     backgroundColor: 'black',
     paddingVertical: 20,
-    paddingHorizontal: 10
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,

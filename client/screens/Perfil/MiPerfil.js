@@ -80,7 +80,7 @@ const MiPerfil = () => {
             }}
           >
             <View style={styles.imagenInformacion1}>
-              <View style={{ position: 'relative' }}>
+              <View style={{ position: 'relative',minWidth:110 }}>
                 {sportman?.info?.img_perfil &&
                   sportman?.info?.img_perfil !== '' && (
                     <Image
@@ -98,8 +98,7 @@ const MiPerfil = () => {
                       }}
                     />
                   )}
-                {!sportman?.info?.img_perfil ||
-                  (sportman?.info?.img_perfil === '' && (
+                {!sportman?.info?.img_perfil  && (
                     <Image
                       style={{
                         height: 110,
@@ -113,7 +112,7 @@ const MiPerfil = () => {
                       contentFit="cover"
                       source={require('../../assets/whiteSport.png')}
                     />
-                  ))}
+                  )}
                 <View
                   style={{
                     position: 'absolute',

@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "3.0.0",
     "name": "SportsMatch",
-    "slug": "sportsmatch",
+    "slug": "nuevappp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -75,10 +75,13 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "80a81d0e-016b-4da7-8ed6-d55ba93fed2d"
+        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
       }
     },
-    "owner": "kraa",
-    "scheme": ["sportsmatch", "fb2654178301415308"]
+    "owner": "azschiaffino",
+    "scheme": [
+      "sportsmatch",
+      "fb2654178301415308"
+    ]
   }
 }

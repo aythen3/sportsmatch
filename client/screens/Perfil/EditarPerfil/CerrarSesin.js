@@ -79,14 +79,17 @@ quieres `}</Text>
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')
                   await AsyncStorage.removeItem('@user')
+                  
                   navigation.reset({
-
+                    
                     index: 0,
                     history: false,
                     routes:[{name:"LoginSwitch"}]
+                    
+                  })
                   
-                   })
-                
+                  dispatch(clearSportman())
+                  dispatch(clearUser())
                   firebaseLogout()
                 }}
               >

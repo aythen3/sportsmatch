@@ -366,7 +366,7 @@ const ExplorarClubs = () => {
         }}
       >
         {textValue && (
-          <View style={{ flexDirection: 'column', gap: 10 }}>
+          <ScrollView style={{ flexDirection: 'column', gap: 10 }}>
             {textValue && searchUsers.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white' }}>Usuarios</Text>
@@ -394,7 +394,7 @@ const ExplorarClubs = () => {
                         <Image
                           style={{ width: 50, height: 50, borderRadius: 50 }}
                           source={{
-                            uri: user.info.img_front
+                            uri: user.info.img_perfil
                           }}
                         ></Image>
                         <Text
@@ -531,7 +531,7 @@ const ExplorarClubs = () => {
                 ))}
               </View>
             )}
-          </View>
+          </ScrollView>
         )}
         {/* {!textValue && allPosts?.length > 0 && (
             allPosts.map((post,
