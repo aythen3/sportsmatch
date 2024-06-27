@@ -42,9 +42,10 @@ const Post = () => {
   const item = route.params
 
   return (
-    <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
+    <SafeAreaView style={{flex:1,backgroundColor:"black"}}>
+      <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
       <CustomHeaderBack header={'Post'}></CustomHeaderBack>
-      <View style={{ paddingBottom: 40,marginTop:-20 }}>
+      <View style={{ paddingBottom: 40,marginTop:-10 ,paddingHorizontal:10}}>
         <Carousel
           fromProfile={true}
           setShowDeletePostModal={setShowDeletePostModalFromProfile}
@@ -161,6 +162,7 @@ const Post = () => {
         </TouchableWithoutFeedback>
       </Modal>
     </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -203,7 +205,6 @@ const styles = StyleSheet.create({
     height: '100%',
     gap: 20,
     backgroundColor: 'black',
-    paddingVertical: 20,
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,

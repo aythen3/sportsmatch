@@ -109,14 +109,14 @@ const Notifications = ({ data }) => {
           </Text>
         )}
         {data.title === 'Follow' &&
-          !user.user.following.includes(data.prop1.userId) && (
+          !user?.user?.following?.includes(data.prop1.userId) && (
             <TouchableOpacity
               onPress={() => {
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
                   allUsers.filter((user) => user.id === data.prop1.userId)[0]
                     .followers || []
-                const newFollowers = actualFollowers.includes(user?.user?.id)
+                const newFollowers = actualFollowers?.includes(user?.user?.id)
                   ? actualFollowers.filter(
                       (follower) => follower !== user?.user?.id
                     )

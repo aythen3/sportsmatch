@@ -26,6 +26,8 @@ const Feed = ({ externalId }) => {
 
   const [userPosts, setUserPosts] = useState([])
   const { user, mainColor } = useSelector((state) => state.users)
+  const [pineable, setPineable] = useState(false)
+
   const { allPosts } = useSelector((state) => state.post)
 
   const dispatch = useDispatch()
@@ -33,31 +35,36 @@ const Feed = ({ externalId }) => {
   useEffect(() => {
     const userId = externalId || user.user.id
     const post = allPosts.filter(
-      (post) => post.author.id === userId && !post.prop1
+      (post) => post?.author?.id === userId && !post.prop1
     )
     const postPined = allPosts.filter(
-      (post) => post.author.id === userId && post.prop1
+      (post) => post?.author?.id === userId && post.prop1
     )
     setUserPosts([...postPined, ...post])
-  }, [allPosts])
 
+   if(post[0]){
+    setPineable(post[0].author.id === user.user.id)
+   }
+  }, [allPosts])
 
   const renderItem = ({ item: post, index }) => (
     <TouchableOpacity
       onLongPress={() => {
-        setPostSelected(post);
-        setModal(true);
+        if (pineable) {
+          setPostSelected(post);
+          setModal(true);
+        }
       }}
       onPress={() => {
         navigation.navigate('Post', post);
       }}
       key={index}
-      style={{flex:1 / 3,aspectRatio:1 ,margin:2 ,}}
+      style={{ flex: 1 / 3, margin: 2, }}
     >
       {post?.prop1?.pined && (
-        <View style={{position:"absolute",top:6,borderRadius:50,right:6,backgroundColor:"orange",padding:5,zIndex:999}}>
+        <View style={{ position: "absolute", top: 6, borderRadius: 50, right: 6, backgroundColor: mainColor, padding: 5, zIndex: 999 }}>
           <Image
-            style={{width:12,height:12}}
+            style={{ width: 8, height: 8 }}
             contentFit="cover"
             source={require('../assets/pinpin.png')}
           />
@@ -77,7 +84,7 @@ const Feed = ({ externalId }) => {
     <View style={styles.container}>
       {userPosts?.length > 0 ? (
         <FlatList
-        scrollEnabled={false}
+          scrollEnabled={false}
           data={userPosts}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
@@ -147,7 +154,7 @@ const styles = StyleSheet.create({
   },
   iconLayout: {
     borderRadius: Border.br_10xs,
-    height: "100%",
+    height: 160,
     alignSelf: 'stretch',
     width: "100%",
     overflow: 'hidden'

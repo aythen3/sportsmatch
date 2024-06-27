@@ -7,7 +7,7 @@ const NavigationBack = ({children}) => {
   const navigation = useNavigation()
 
   return (
-    <Pressable onPress={() => navigation.goBack()}>
+    <Pressable style={{flexDirection:"row",alignItems:"center",gap:8}} onPress={() => navigation.goBack()}>
       {children}
     </Pressable>
   )

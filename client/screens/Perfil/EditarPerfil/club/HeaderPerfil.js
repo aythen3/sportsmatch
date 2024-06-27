@@ -48,6 +48,7 @@ const HeaderPerfil = ({
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [matchSended, setMatchSended] = useState(false)
   const [liked, setLiked] = useState(false)
+  const [isTruncated, setIsTruncated] = useState(true)
 
   const { sportman } = useSelector((state) => state.sportman)
 
@@ -55,6 +56,10 @@ const HeaderPerfil = ({
     const { data } = await axiosInstance.get('offer')
     const filteredOffers = data.filter((offer) => offer.club.id === id)
     setClubOffers(filteredOffers)
+  }
+
+  const toggleTruncate = () => {
+    setIsTruncated(!isTruncated)
   }
 
   useEffect(() => {
@@ -107,8 +112,8 @@ const HeaderPerfil = ({
           marginTop: -14,
           justifyContent: 'flex-start',
           maxWidth: '60%',
-          alignItems: 'center',
-          height: 120,
+          alignItems: 'flex-start',
+          height: "auto",
           marginBottom: 10,
           paddingLeft: 15,
           paddingRight: 5
@@ -174,7 +179,7 @@ const HeaderPerfil = ({
 
         <View
           style={{
-            marginTop: 20,
+            marginTop: 25,
             width: '100%'
           }}
         >
@@ -188,7 +193,7 @@ const HeaderPerfil = ({
               style={[
                 styles.jordiEspeltPvotBaloncesto,
                 styles.jugandoAlUniTypo,
-                { fontSize: 14, color: Color.colorGoldenrod }
+                { fontSize: 16, color: mainColor }
               ]}
             >
               {sport}
@@ -199,7 +204,7 @@ const HeaderPerfil = ({
               style={[
                 styles.jordiEspeltPvotBaloncesto,
                 styles.jugandoAlUniTypo,
-                { fontSize: 14, color: Color.gREY2SPORTSMATCH }
+                { fontSize: 16, color: Color.wHITESPORTSMATCH, fontWeight: 400 }
               ]}
             >
               {position}
@@ -207,10 +212,10 @@ const HeaderPerfil = ({
           )}
 
           <Text
-            numberOfLines={1}
+            numberOfLines={isTruncated ? 2 : undefined}
             ellipsizeMode="tail"
             style={{
-              color: Color.wHITESPORTSMATCH,
+              color: Color.gREY2SPORTSMATCH,
               fontFamily: FontFamily.t4TEXTMICRO,
               marginTop: 3,
               lineHeight: 14,
@@ -220,6 +225,21 @@ const HeaderPerfil = ({
           >
             {description}
           </Text>
+          {isTruncated && description?.length > 70 ? ( // Ajusta la lógica de truncamiento
+            <TouchableOpacity onPress={toggleTruncate}>
+              <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                Ver más
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            !isTruncated && (
+              <TouchableOpacity onPress={toggleTruncate}>
+                <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                  Ver menos
+                </Text>
+              </TouchableOpacity>
+            )
+          )}
         </View>
       </View>
 
@@ -240,16 +260,16 @@ const HeaderPerfil = ({
                     .followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
+                    (follower) => follower !== user?.user?.id
+                  )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
+                    (followed) => followed !== data?.author?.id
+                  )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -311,16 +331,16 @@ const HeaderPerfil = ({
                     .followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
+                    (follower) => follower !== user?.user?.id
+                  )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
+                    (followed) => followed !== data?.author?.id
+                  )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -860,7 +880,7 @@ const HeaderPerfil = ({
             {allUsers?.filter((user) => user.id === data.author.id)[0]
               ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                  .followers?.length
+                .followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>

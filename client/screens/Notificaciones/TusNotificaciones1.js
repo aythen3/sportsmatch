@@ -67,7 +67,7 @@ const TusNotificaciones1 = () => {
 
   const filteredUsers = allUsers
     ?.filter((user) =>
-      user.nickname.toLowerCase()?.includes(value.toLowerCase())
+      user?.nickname?.toLowerCase()?.includes(value?.toLowerCase())
     )
     .sort(sortUsers)
     .reverse()
@@ -267,7 +267,7 @@ const TusNotificaciones1 = () => {
                       : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
-                  applicant={applicants?.includes(user.sportman?.id)}
+                  // applicant={applicants?.includes(user.sportman?.id)}
                 />
               ))
             )}
@@ -284,7 +284,7 @@ const TusNotificaciones1 = () => {
                       : user?.sportman?.info?.img_perfil
                   }
                   selectedUserId={user.id}
-                  applicant={applicants?.includes(user.sportman?.id)}
+                  // applicant={applicants?.includes(user.sportman?.id)}
                 />
               ))}
           </ScrollView>
