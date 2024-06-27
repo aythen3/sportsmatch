@@ -93,13 +93,13 @@ const HeaderPerfil = ({
       <TouchableOpacity>
         {front === '' || !front ? (
           <Image
-            style={styles.imgFront}
+            style={{ width: '100%', height: 150, backgroundColor: mainColor }}
             contentFit="cover"
-            source={require('../../../../assets/avatar.png')}
+            source={require('../../../../assets/whiteSport.png')}
           />
         ) : (
           <Image
-            style={styles.imgFront}
+            style={{ width: '100%', height: 150, backgroundColor: mainColor }}
             contentFit="cover"
             source={{ uri: avatar }}
           />
@@ -165,13 +165,14 @@ const HeaderPerfil = ({
                 borderRadius: 100,
                 width: 110,
                 borderWidth: 3,
-                borderColor: '#000'
+                borderColor: '#000',
+                backgroundColor: mainColor
               }}
               contentFit="cover"
               source={
                 avatar
                   ? { uri: avatar }
-                  : require('../../../../assets/avatar.png')
+                  : require('../../../../assets/whiteSport.png')
               }
             />
           )}

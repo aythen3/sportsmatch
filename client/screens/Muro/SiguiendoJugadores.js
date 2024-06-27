@@ -9,7 +9,8 @@ import {
   StatusBar,
   Modal,
   TouchableWithoutFeedback,
-  Pressable
+  Pressable,
+  Image
 } from 'react-native'
 import { Color, FontFamily } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
@@ -31,7 +32,6 @@ import { getAllNotifications } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 import { setColor } from '../../utils/handles/HandlerSportColor'
 import { setMainColor } from '../../redux/slices/users.slices'
-import { Image } from 'expo-image'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()

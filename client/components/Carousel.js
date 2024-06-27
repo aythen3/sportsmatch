@@ -374,15 +374,27 @@ function Carousel({
       </View>
       <View style={{ padding: 0 }}>
         {authorId === user?.user?.id && (
-          <TouchableOpacity
-            style={{ marginTop: -15 }}
+          <Pressable
             onPress={() => navigation.navigate('PostPromocion', data)}
+            style={{
+              width: '55%',
+              height: 28,
+              backgroundColor: Color.colorSilver,
+              justifyContent: 'center',
+              borderRadius: 50,
+              overflow: 'hidden'
+            }}
           >
             <LinearGradient
-              style={styles.botonPromocionarPublicacion}
-              start={{ x: 0, y: 1 }} // Cambiado de x: 1 a x: 0
-              end={{ x: 1, y: 0 }} // Cambiado de y: 0 a x: 1
-              locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+              style={{
+                width: '100%',
+                height: 500,
+                transform: [{ scaleY: 0.056 }],
+                position: 'absolute',
+                left: 0,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
               colors={[
                 '#e6b300',
                 '#bd9710',
@@ -391,12 +403,23 @@ function Carousel({
                 '#bd9710',
                 '#ebc02a'
               ]}
+              locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+              start={[0, 1.0]}
+              end={[1.0, 0.0]}
+            ></LinearGradient>
+            <Text
+              style={{
+                fontSize: FontSize.t1TextSMALL_size,
+                fontSize: FontSize.t1TextSMALL_size,
+                color: Color.wHITESPORTSMATCH,
+                fontFamily: FontFamily.t4TEXTMICRO,
+                fontWeight: '700',
+                textAlign: 'center'
+              }}
             >
-              <Text style={[styles.jordiEspeltMireu, styles.jordiTypo]}>
-                Promocionar publicación
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              Promocionar publicación
+            </Text>
+          </Pressable>
         )}
         <View
           style={{
@@ -415,6 +438,7 @@ function Carousel({
             image={image} // Pasa la imagen del post como prop
             doubleTap={doubleTap}
             description={description} // Pasa la descripción del post como prop
+            name={name}
           />
         </View>
         <Text
@@ -518,16 +542,23 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t1TextSMALL_size
   },
-  botonPromocionarPublicacion: {
+  container: {
     marginTop: 15,
     borderRadius: Border.br_81xl,
     maxWidth: '55%',
     justifyContent: 'center',
-    paddingHorizontal: Padding.p_5xs,
-    paddingVertical: Padding.p_11xs,
-    backgroundColor: Color.promocio,
+    height: 28,
     alignItems: 'center',
     flexDirection: 'row'
+  },
+  gradient: {
+    width: '100%',
+    height: 500,
+    transform: [{ scaleY: 0.056 }],
+    position: 'absolute',
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   jordiEspeltMireu: {
     fontSize: FontSize.t1TextSMALL_size

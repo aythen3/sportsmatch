@@ -112,7 +112,14 @@ const FeedStats = () => {
                   alignItems: 'center'
                 }}
               >
-                <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    padding: 2
+                  }}
+                >
                   <CircularStat
                     color={mainColor}
                     value={sportman?.info.attack || 0}

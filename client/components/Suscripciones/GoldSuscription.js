@@ -45,9 +45,24 @@ const GoldSuscription = ({
   return (
     <View>
       <View style={styles.goldSpaceBlock}>
-        <View style={styles.container}>
+        <View
+          style={{
+            width: '100%',
+            height: 80,
+            backgroundColor: Color.colorSilver,
+            justifyContent: 'center'
+          }}
+        >
           <LinearGradient
-            style={styles.gradient}
+            style={{
+              width: '100%',
+              height: 500,
+              transform: [{ scaleY: 0.16 }],
+              position: 'absolute',
+              left: 0,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
             colors={[
               '#e6b300',
               '#bd9710',
@@ -248,7 +263,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 80,
+    height: 28,
     backgroundColor: Color.colorSilver,
     justifyContent: 'center'
   },
@@ -327,7 +342,7 @@ const styles = StyleSheet.create({
   gradient: {
     width: '100%',
     height: 500,
-    transform: [{ scaleY: 0.16 }],
+    transform: [{ scaleY: 0.056 }],
     position: 'absolute',
     left: 0,
     justifyContent: 'center',

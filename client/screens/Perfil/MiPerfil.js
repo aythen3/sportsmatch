@@ -139,12 +139,29 @@ const MiPerfil = () => {
                     {typeof sportman?.info?.sport === 'object'
                       ? sportman?.info?.sport.name
                       : sportman?.info?.sport}
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: 'white',
+                        fontFamily: FontFamily.t4TEXTMICRO,
+                        fontSize: 16,
+                        lineHeight: 20,
+                        fontWeight: '400'
+                      }}
+                    >
+                      {' '}
+                      {'('}
+                      {sportman?.type === 'coach'
+                        ? sportman?.info?.rol
+                        : sportman?.info?.position}
+                      {')'}
+                    </Text>
                   </Text>
-                  <Text style={styles.textTypo3}>
-                    {sportman?.type === 'coach'
-                      ? sportman?.info?.rol
-                      : sportman?.info?.position}
-                  </Text>
+                  {user?.user?.sportman?.info?.city && (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.sportman?.info?.city}
+                    </Text>
+                  )}
                 </View>
                 <Text
                   numberOfLines={isTruncated ? 2 : undefined}
