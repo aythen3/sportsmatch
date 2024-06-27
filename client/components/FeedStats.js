@@ -14,21 +14,59 @@ const FeedStats = () => {
   const { user, mainColor } = useSelector((state) => state.users)
 
   const opciones = {
-    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
-    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
-    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
-    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
+    futbol: [
+      "Portero",
+      "Lateral",
+      "Central",
+      "Mediocentro",
+      "Interior",
+      "Extremo",
+      "Mediapunta",
+      "Delantero centro"
+    ],
+    baloncesto: [
+      "Base",
+      "Escolta",
+      "Alero",
+      "Ala-pivot",
+      "Pivot"
+    ],
+    futbolSala: [
+      "Portero",
+      "Cierre",
+      "Ala",
+      "Pivot"
+    ],
+    hockey: [
+      "Portero",
+      "Jugador"
+    ],
+    voleibol: [
+      "Colocador",
+      "Rematador externo",
+      "Rematador opuesto",
+      "Central",
+      "Libero",
+      "Receptor/zaguero"
+    ],
+    handball: [
+      "Portero",
+      "Central",
+      "Ala derecha",
+      "Ala izquierda",
+      "Pivot",
+      "Extremo derecho",
+      "Extremo izquierdo"
+    ]
   }
 
   const selectores = () => {
-    if (sportman.info.sport) setSelectedOptions(opciones.futbol)
-    if (sportman.info.sport) setSelectedOptions(opciones.futbolSala)
-    if (sportman.info.sport) setSelectedOptions(opciones.baloncesto)
-    if (sportman.info.sport) setSelectedOptions(opciones.hockey)
-    if (sportman.info.sport) setSelectedOptions(opciones.handball)
-    if (sportman.info.sport) setSelectedOptions(opciones.voleibol)
+    if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones.futbol)
+    if (sportman?.info?.sport === 'Fútbol Sala') setSelectedOptions(opciones.futbolSala)
+    if (sportman?.info?.sport === 'Básquetbol') setSelectedOptions(opciones.baloncesto)
+    if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones.hockey)
+    if (sportman?.info?.sport === 'Handball') setSelectedOptions(opciones.handball)
+    if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones.voleibol)
   }
   useEffect(() => {
     selectores()

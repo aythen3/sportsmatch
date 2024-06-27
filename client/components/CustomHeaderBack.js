@@ -7,16 +7,16 @@ import NavigationBack from '../utils/CustomHooks/NavigationBack'
 
 const CustomHeaderBack = ({ header, onBack }) => {
     return (
-        <NavigationBack>
-            <View style={styles.Arrowtext}>
+        <View style={styles.Arrowtext}>
+            <NavigationBack>
                 <Image
                     style={styles.icon}
                     contentFit="cover"
                     source={require('../assets/coolicon3.png')}
                 />
                 <Text style={styles.editarPerfil2}>{header}</Text>
-            </View>
         </NavigationBack>
+            </View>
     )
 }
 

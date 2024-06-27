@@ -33,6 +33,7 @@ const MiPerfil = () => {
   const { user, mainColor } = useSelector((state) => state.users)
   const isFocused = useIsFocused()
   const [sportColor, setSportColor] = useState('#E1451E')
+  const [isTruncated, setIsTruncated] = useState(true)
 
   const { setActiveIcon } = useContext(Context)
 
@@ -49,6 +50,10 @@ const MiPerfil = () => {
     } else if (selectedTab === 'FeedStats') {
       return <FeedStats />
     }
+  }
+
+  const toggleTruncate = () => {
+    setIsTruncated(!isTruncated)
   }
 
   return (
@@ -159,17 +164,32 @@ const MiPerfil = () => {
                   )}
                 </View>
                 <Text
-                  numberOfLines={2}
+                  numberOfLines={isTruncated ? 2 : undefined}
                   style={[
                     styles.jugandoAlUni,
                     styles.seguidoresTypo,
-                    { width: '100%' }
+                    { maxWidth: '80%' }
                   ]}
                 >
                   {sportman?.info?.description?.length > 0
                     ? `${sportman?.info?.description}`
                     : ''}
                 </Text>
+                {isTruncated && sportman?.info?.description?.length > 70 ? ( // Ajusta la lógica de truncamiento
+                  <TouchableOpacity onPress={toggleTruncate}>
+                    <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                      Ver más
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  !isTruncated && (
+                    <TouchableOpacity onPress={toggleTruncate}>
+                      <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                        Ver menos
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                )}
               </View>
             </View>
 
@@ -305,12 +325,12 @@ const styles = StyleSheet.create({
   },
   informacion: {
     marginLeft: 15,
-    alignSelf: 'center',
-    paddingTop: 10
+    alignSelf: 'flex-end',
+    paddingTop: 25
   },
   imagenInformacion1: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginTop: -14
   },
   botonEditarPerfilChild: {

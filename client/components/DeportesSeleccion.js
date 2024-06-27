@@ -86,7 +86,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               ? 'Baloncesto'
               : sport?.name === 'Fútbol de salón'
                 ? 'Futbol sala'
-                : sport?.name}
+                : sport?.name === 'Handball' ? "Balonmano" : sport?.name === 'Voley' ? "Voleibol" : sport.name}
           </Text>
         </View>
       </TouchableOpacity>
