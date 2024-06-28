@@ -181,6 +181,7 @@ function Carousel({
             if (data.author.type === 'club') {
               navigation.navigate('ClubProfile', data)
             } else {
+              console.log(data,"data de viaje")
               navigation.navigate('PerfilFeedVisualitzaciJug', data)
             }
           }}

@@ -70,7 +70,7 @@ const SkillSeleccion = ({
     if (sportman?.info?.sport === 'Básquetbol') setSelectedOptionsCategoria(opcionesCategoria2.baloncesto)
     if (sportman?.info?.sport === 'Handball') setSelectedOptionsCategoria(opcionesCategoria2.handball)
 
-  }, [selectedSport,sportman?.info?.sport])
+  }, [selectedSport, sportman?.info?.sport])
 
 
   const opcionesCategoria2 = {
@@ -239,13 +239,21 @@ const SkillSeleccion = ({
   }
 
   const handleData = (key, value) => {
+    console.log(key, "keyyy")
     if (
       key === 'attack' ||
       key === 'defense' ||
       key === 'speed' ||
       key === 'prop1' ||
       key === 'prop2' ||
-      key === 'prop3'
+      key === 'prop3' ||
+      key === 'prop4' ||
+      key === 'prop5' ||
+      key === 'prop6' ||
+      key === 'prop7' ||
+      key === 'prop8'
+
+
     ) {
       // Allow empty string or numbers between 0 and 100
       if (
@@ -298,13 +306,13 @@ const SkillSeleccion = ({
     setScrolledHeight(height)
   }
   const selectores = () => {
-    if (selectedSport?.name == "Fútbol" || sportman.info?.sport  == "Fútbol") setSelectedOptions(opciones.futbol)
+    if (selectedSport?.name == "Fútbol" || sportman.info?.sport == "Fútbol") setSelectedOptions(opciones.futbol)
     if (selectedSport?.name == "Fútbol Sala" || sportman.info?.sport == "Fútbol Sala") setSelectedOptions(opciones.futbolSala)
     if (selectedSport?.name == "Básquetbol" || sportman.info?.sport == "Básquetbol") setSelectedOptions(opciones.baloncesto)
     if (selectedSport?.name == "Hockey" || sportman.info?.sport == "Hockey") setSelectedOptions(opciones.hockey)
     if (selectedSport?.name == "Handball" || sportman.info?.sport == "Handball") setSelectedOptions(opciones.handball)
     if (selectedSport?.name == "Voley" || sportman.info?.sport == "Voley") setSelectedOptions(opciones.voleibol)
-      console.log(selectedOptions)
+    console.log(selectedOptions)
   }
   useEffect(() => {
     selectores()
@@ -402,7 +410,7 @@ const SkillSeleccion = ({
               selectedCategoria
                 ? selectedCategoria
                 : sportman?.info?.category?.toString() ||
-                  'Selecciona tu categoría'
+                'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
@@ -481,7 +489,24 @@ const SkillSeleccion = ({
           )}
         </View>
 
-        <View style={styles.formularioCategoria}>
+
+        {selectedOptions.length > 0 && selectedOptions.map((opt, i) =>
+        (<View key={i} style={styles.formularioCategoria}>
+          <Text style={styles.atributo}>{opt}</Text>
+          <View style={styles.rectanguloBorder}>
+            <TextInput
+              style={styles.textInput}
+              placeholder={sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'}
+              placeholderTextColor={'#999'}
+              keyboardType={'numeric'}
+              onChangeText={(value) => handleData(`prop${i + 1}`, value)}
+              maxLength={3}
+            />
+          </View>
+        </View>)
+        )}
+
+        {/* <View style={styles.formularioCategoria}>
           <Text style={styles.atributo}>{selectedOptions[0]}</Text>
           <View style={styles.rectanguloBorder}>
             <TextInput
@@ -513,8 +538,8 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
-        </View>
-        {selectedSport?.name !== 'Hockey' && (
+        </View> */}
+        {/* {selectedSport?.name !== 'Hockey' && (
           <>
             <View style={styles.formularioCategoria}>
               <Text style={styles.atributo}>{selectedOptions[2]}</Text>
@@ -557,7 +582,7 @@ const SkillSeleccion = ({
               </View>
             </View>
           </>
-        )}
+        )} */}
       </View>
       {editable && (
         <View style={styles.buttonContainer}>

@@ -134,6 +134,15 @@ const Paso1 = () => {
         prop1: data?.prop1 || '',
         prop2: data?.prop2 || '',
         prop3: data?.prop3 || '',
+        prop4: data?.prop4 || '',
+
+        prop5: data?.prop5 || '',
+
+        prop6: data?.prop6 || '',
+
+        prop7: data?.prop7 || '',
+
+        prop8: data?.prop8,
         nickname: user?.user?.nickname || '',
         city: sportmanValues.city || ''
       }
@@ -223,9 +232,19 @@ const Paso1 = () => {
           speed: data?.speed,
           height: data?.height,
           defense: data?.defense,
-          prop1: data?.prop1,
-          prop2: data?.prop2,
-          prop3: data?.prop3,
+          prop1: data?.prop1 || '',
+          prop2: data?.prop2 || '',
+          prop3: data?.prop3 || '',
+          prop4: data?.prop4 || '',
+
+          prop5: data?.prop5 || '',
+
+          prop6: data?.prop6 || '',
+
+          prop7: data?.prop7 || '',
+
+          prop8: data?.prop8 || '',
+
           nickname: user?.user?.nickname || '',
           city: sportmanValues.city || '',
           position: data?.position || ''
@@ -505,7 +524,7 @@ const Paso1 = () => {
                 !sportman && !profesional
                   ? 1
                   : (sportman && stepsSportman === 0) ||
-                      (profesional && stepsProfesional === 0)
+                    (profesional && stepsProfesional === 0)
                     ? 2
                     : stepsProfesional === 1 || stepsSportman === 1
                       ? 3
@@ -561,7 +580,7 @@ const Paso1 = () => {
                 style={[
                   styles.rectangulo,
                   selectedRole === 'Profesional del deporte' &&
-                    styles.selectedBackground
+                  styles.selectedBackground
                 ]}
                 onPress={() => handleRoleSelection('Profesional del deporte')}
               >
@@ -570,7 +589,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
+                    styles.selectedText
                   ]}
                 >
                   Profesional del deporte
@@ -599,7 +618,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
+                    styles.selectedText
                   ]}
                 >
                   Invitado
