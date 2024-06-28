@@ -77,8 +77,7 @@ const OfertasEmitidas = () => {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: mainColor,
-            borderRadius: 10,
-            borderWidth: 1
+            borderRadius: 10
           }}
           onPress={() => navigation.navigate('ConfigurarAnuncio')}
         >

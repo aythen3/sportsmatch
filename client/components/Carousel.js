@@ -196,7 +196,7 @@ function Carousel({
             source={
               data?.author?.id === user?.user?.id
                 ? user?.user?.sportman?.info?.img_perfil
-                : imgPerfil === ''
+                : imgPerfil === '' || !imgPerfil
                   ? require('../assets/whiteSport.png')
                   : imgPerfil
             }

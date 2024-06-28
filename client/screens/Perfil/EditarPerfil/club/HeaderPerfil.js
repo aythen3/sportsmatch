@@ -101,7 +101,7 @@ const HeaderPerfil = ({
           <Image
             style={{ width: '100%', height: 150, backgroundColor: mainColor }}
             contentFit="cover"
-            source={{ uri: avatar }}
+            source={{ uri: front }}
           />
         )}
       </TouchableOpacity>
@@ -113,7 +113,7 @@ const HeaderPerfil = ({
           justifyContent: 'flex-start',
           maxWidth: '60%',
           alignItems: 'flex-start',
-          height: "auto",
+          height: 'auto',
           marginBottom: 10,
           paddingLeft: 15,
           paddingRight: 5
@@ -139,7 +139,8 @@ const HeaderPerfil = ({
                 width: 110,
                 borderWidth: 3,
                 borderColor: '#000',
-                backgroundColor: avatar === '' ? mainColor : 'transparent',
+                backgroundColor:
+                  avatar === '' || !avatar ? mainColor : 'transparent',
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden'
@@ -152,7 +153,7 @@ const HeaderPerfil = ({
                   height: '100%'
                 }}
                 source={
-                  front === ''
+                  front === '' || !front
                     ? require('../../../../assets/whiteSport.png')
                     : { uri: front }
                 }
@@ -261,16 +262,16 @@ const HeaderPerfil = ({
                     .followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
+                      (follower) => follower !== user?.user?.id
+                    )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                    (followed) => followed !== data?.author?.id
-                  )
+                      (followed) => followed !== data?.author?.id
+                    )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -332,16 +333,16 @@ const HeaderPerfil = ({
                     .followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
+                      (follower) => follower !== user?.user?.id
+                    )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                    (followed) => followed !== data?.author?.id
-                  )
+                      (followed) => followed !== data?.author?.id
+                    )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -881,7 +882,7 @@ const HeaderPerfil = ({
             {allUsers?.filter((user) => user.id === data.author.id)[0]
               ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                .followers?.length
+                  .followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>
