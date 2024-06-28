@@ -153,9 +153,9 @@ const HeaderPerfil = ({
                   height: '100%'
                 }}
                 source={
-                  front === '' || !front
+                  avatar === '' || !avatar
                     ? require('../../../../assets/whiteSport.png')
-                    : { uri: front }
+                    : { uri: avatar }
                 }
               />
             </View>

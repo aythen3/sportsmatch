@@ -188,9 +188,11 @@ const ExplorarClubs = () => {
   }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
+  const { mainColor } = useSelector((state) => state.users)
+
   const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
-
+  
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
 
@@ -375,6 +377,7 @@ const ExplorarClubs = () => {
                   searchUsers.map((user, i) => (
                     <TouchableOpacity
                       onPress={() => {
+                        console.log(user,"usuario")
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
                           author: {
                             id:user.id,
@@ -393,10 +396,10 @@ const ExplorarClubs = () => {
                         }}
                       >
                         <Image
-                          style={{ width: 50, height: 50, borderRadius: 50 }}
-                          source={{
-                            uri: user.info.img_perfil
-                          }}
+                          style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: user.info.img_font ? "transparent" : mainColor }}
+                          source={ user.info.img_front ? {
+                            uri: user.info.img_front
+                          } : require('../../assets/whiteSport.png')}
                         ></Image>
                         <Text
                           style={{

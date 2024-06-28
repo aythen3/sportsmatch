@@ -189,7 +189,7 @@ export class SportmanService {
 
    async filterSportmen(filters: any): Promise<SportmanEntity[]> {
     // Obtener todas las entradas de la tabla Sportman
-    const allSportmen = await this.sportmanRepository.find();
+    const allSportmen = await this.sportmanRepository.find({relations:['user']});
 
     // Filtrar las entradas basadas en los filtros proporcionados
     const filteredSportmen = allSportmen.filter(sportman => {

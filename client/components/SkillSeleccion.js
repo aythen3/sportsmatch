@@ -495,7 +495,7 @@ const SkillSeleccion = ({
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={ sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'}
+              placeholder={ sportman?.info?.[`prop${i + 1}`]?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               value={

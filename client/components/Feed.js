@@ -32,19 +32,25 @@ const Feed = ({ externalId }) => {
 
   const dispatch = useDispatch()
 
+  
+
+
   useEffect(() => {
     const userId = externalId || user.user.id
     const post = allPosts.filter(
-      (post) => post?.author?.id === userId && !post.prop1
+      (post) => post?.author?.id == userId && !post.prop1
     )
     const postPined = allPosts.filter(
       (post) => post?.author?.id === userId && post.prop1
     )
+    
     setUserPosts([...postPined, ...post])
+    
+    if(post[0]){
+      setPineable(post[0].author.id === user.user.id)
+    }
+    console.log(externalId,"filtradooo")
 
-   if(post[0]){
-    setPineable(post[0].author.id === user.user.id)
-   }
   }, [allPosts])
 
   const renderItem = ({ item: post, index }) => (
