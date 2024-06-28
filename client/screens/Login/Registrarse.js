@@ -378,22 +378,50 @@ const Registrarse = () => {
               </Text>
             </Pressable>
           </View>
-          <View style={styles.textoLegal}>
-            <View style={styles.textoLegalFrame}>
-              <View style={{ marginTop: -4 }}>
-                <CheckBox
-                  isChecked={isChecked}
-                  onClick={handleCheckboxToggle}
-                  checkBoxColor="#999"
-                />
-              </View>
-              <Text style={[styles.texto1, styles.textoTypo]}>
+          <View
+            style={{
+              marginTop: 42,
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 15
+            }}
+          >
+            <View style={{ width: '10%' }}>
+              <CheckBox
+                isChecked={isChecked}
+                onClick={handleCheckboxToggle}
+                checkBoxColor="#999"
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                width: '90%',
+                paddingRight: 0,
+                gap: 3
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: FontSize.t4TEXTMICRO_size,
+                  color: Color.gREY2SPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
                 Estoy de acuerdo en recibir información promocional y
                 publicitaria a través del correo electrónico
               </Text>
-            </View>
-            <View style={styles.textoLegalFrame}>
-              <Text style={[styles.textoInferior, styles.textoTypo]}>
+              <Text
+                style={{
+                  fontSize: FontSize.t4TEXTMICRO_size,
+                  color: Color.gREY2SPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
                 Al continuar, aceptas automáticamente nuestras Condiciones,
                 Polítíca de privacidad y Polítíca de cookies
               </Text>

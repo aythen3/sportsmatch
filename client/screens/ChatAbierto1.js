@@ -47,7 +47,7 @@ const ChatAbierto1 = () => {
   } = useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
-  const { user, allUsers } = useSelector((state) => state.users)
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -382,16 +382,29 @@ const ChatAbierto1 = () => {
               }}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
-              <Image
+              <View
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 35,
+                  height: 35,
                   borderRadius: 50,
-                  marginRight: 10
+                  marginRight: 10,
+                  overflow: 'hidden',
+                  backgroundColor: mainColor
                 }}
-                contentFit="cover"
-                source={{ uri: route.params.profilePic }}
-              />
+              >
+                <Image
+                  style={{
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  contentFit="cover"
+                  source={
+                    route.params.profilePic === '' || !route.params.profilePic
+                      ? require('../assets/whiteSport.png')
+                      : { uri: route.params.profilePic }
+                  }
+                />
+              </View>
               <Text style={[styles.jordiEspelt, styles.jordiEspeltTypo]}>
                 {route.params.receiverName}
               </Text>

@@ -99,15 +99,28 @@ const MessagesChat = ({
         }}
       >
         <View style={{ flexDirection: 'row', gap: 15, width: '80%' }}>
-          <Image
-            style={{ height: 35, borderRadius: 50, width: 35 }}
-            contentFit="cover"
-            source={
-              profilePic === '' || !profilePic
-                ? require('../assets/avatar.png')
-                : { uri: profilePic }
-            }
-          />
+          <View
+            style={{
+              height: 35,
+              borderRadius: 50,
+              width: 35,
+              overflow: 'hidden',
+              backgroundColor: mainColor
+            }}
+          >
+            <Image
+              style={{
+                height: '100%',
+                width: '100%'
+              }}
+              contentFit="cover"
+              source={
+                profilePic === '' || !profilePic
+                  ? require('../assets/whiteSport.png')
+                  : { uri: profilePic }
+              }
+            />
+          </View>
           <View style={{ alignSelf: 'flex-start' }}>
             <Text
               style={{
