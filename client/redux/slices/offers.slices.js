@@ -10,6 +10,7 @@ import {
 const offersSlices = createSlice({
   name: 'offers',
   initialState: {
+    loading: false,
     offer: {},
     offers: [],
     usersRegistered: []

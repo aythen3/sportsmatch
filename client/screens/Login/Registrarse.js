@@ -7,7 +7,8 @@ import {
   View,
   TextInput,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -109,7 +110,7 @@ const Registrarse = () => {
   }
 
   return (
-    <View style={styles.registrarse}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.registrarse}>
       <HomeGif></HomeGif>
       <View style={styles.contenido}>
         <TouchableOpacity
@@ -354,7 +355,7 @@ const Registrarse = () => {
               <View
                 style={[
                   styles.botonRegistrate,
-                  { marginTop: nombreError ? 20 : 36 }
+                  { marginTop: nombreError ? 10 : 18 }
                 ]}
               >
                 <TouchableOpacity
@@ -368,7 +369,7 @@ const Registrarse = () => {
               </View>
             </View>
           </View>
-          <View style={[{ marginTop: nombreError ? 40 : 36 }]}>
+          <View style={[{ marginTop: nombreError ? 26 : 24 }]}>
             <Pressable
               style={styles.yaTenesUnaContainer}
               onPress={() => navigation.navigate('IniciarSesin')}
@@ -380,7 +381,7 @@ const Registrarse = () => {
           </View>
           <View
             style={{
-              marginTop: 42,
+              marginTop: 30,
               flexDirection: 'row',
               alignItems: 'center',
               paddingHorizontal: 15
@@ -429,7 +430,7 @@ const Registrarse = () => {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -644,10 +645,10 @@ const styles = StyleSheet.create({
     marginTop: 42
   },
   formulariotextoLegal: {
-    marginTop: 45
+    marginTop: 25
   },
   contenido: {
-    top: '20%',
+    justifyContent: 'center',
     height: '100%'
   },
   fondoIcon: {
