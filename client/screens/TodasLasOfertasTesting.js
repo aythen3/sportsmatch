@@ -8,7 +8,9 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid
+  ToastAndroid,
+  ActivityIndicator,
+  Dimensions
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -36,8 +38,9 @@ const TodasLasOfertas = () => {
   const _ = require('lodash')
   const dispatch = useDispatch()
   const { userMatches } = useContext(Context)
-  const { offers } = useSelector((state) => state.offers)
+  const { offers, loading } = useSelector((state) => state.offers)
   const { user, mainColor } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -62,7 +65,7 @@ const TodasLasOfertas = () => {
   useEffect(() => {
     if (offers) {
       setOffer(offers)
-      console.log(offers)
+      // console.log(offers)
     }
   }, [])
 
@@ -125,12 +128,12 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
-  console.log(
-    'O============OOFFERS',
-    offers.map((off) => {
-      return `${off?.inscriptions?.length || 0} ${off?.posit}`
-    })
-  )
+  // console.log(
+  //   'O============OOFFERS',
+  //   offers.map((off) => {
+  //     return `${off?.inscriptions?.length || 0} ${off?.posit}`
+  //   })
+  // )
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -202,16 +205,26 @@ const TodasLasOfertas = () => {
           </View>
         </Pressable>
       </View>
-
-      {selectOfferComponent === 'todas' &&
+      {loading && (
+        <ActivityIndicator
+          style={{
+            backgroundColor: 'transparent',
+            alignSelf: 'center',
+            marginTop: Dimensions.get('screen').height / 4
+          }}
+          animating={true}
+          size="xlarge"
+          color={mainColor}
+        />
+      )}
+      {!loading &&
+      selectOfferComponent === 'todas' &&
       offers &&
       offers.filter((offer) => {
         const filteredUserMatches = userMatches.filter(
           (match) => match.offerId && match.offerId !== offer.id
         )
-        const alreadyJoined = offer?.inscriptions?.includes(
-          user?.user?.sportman?.id
-        )
+        const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
         if (filteredUserMatches.length > 0) {
           return false
         }
@@ -226,9 +239,7 @@ const TodasLasOfertas = () => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
               )
-              const alreadyJoined = offer?.inscriptions?.includes(
-                user?.user?.sportman?.id
-              )
+              const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
               if (filteredUserMatches.length > 0) {
                 return false
               }
@@ -249,7 +260,7 @@ const TodasLasOfertas = () => {
                   (match) => match.offerId && match.offerId !== offer.id
                 )
                 const alreadyJoined = offer?.inscriptions?.includes(
-                  user?.user?.sportman?.id
+                  sportman?.id
                 )
                 if (filteredUserMatches.length > 0) {
                   return false
@@ -268,7 +279,7 @@ const TodasLasOfertas = () => {
               .sort((a, b) => {
                 const first = a.inscriptions?.length || 0
                 const second = b.inscriptions?.length || 0
-                console.log('first', first, 'second', second)
+                // console.log('first', first, 'second', second)
 
                 return byRelevance ? second - first : first - second
               })
@@ -334,7 +345,7 @@ const TodasLasOfertas = () => {
                         alignItems: 'center',
                         zIndex: 5,
                         backgroundColor: !offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
+                          sportman?.id
                         )
                           ? Color.wHITESPORTSMATCH
                           : '#e1451e',
@@ -343,35 +354,29 @@ const TodasLasOfertas = () => {
                     >
                       <Text
                         // onPress={() => setModalVisible(true)}
-                        disabled={offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
-                        )}
+                        disabled={offer?.inscriptions?.includes(sportman?.id)}
                         onPress={() => {
-                          if (
-                            !offer?.inscriptions?.includes(
-                              user?.user?.sportman?.id
-                            )
-                          ) {
-                            console.log('offer', offer)
-                            console.log('sp id: ', user?.user?.sportman?.id)
+                          if (!offer?.inscriptions?.includes(sportman?.id)) {
+                            // console.log('offer', offer)
+                            // console.log('sp id: ', user?.user?.sportman?.id)
                             dispatch(
                               signToOffer({
                                 offerId: offer?.id,
-                                userId: user?.user?.sportman?.id
+                                userId: sportman?.id
+                                // userId: user?.user?.sportman?.id
                               })
                             ).then((data) => {
                               ToastAndroid.show(
                                 'Te has inscrito en la oferta!',
                                 ToastAndroid.SHORT
                               )
+                              console.log('GETTING ALL OFFERS...')
                               dispatch(getAllOffers())
                             })
                           }
                         }}
                         style={{
-                          color: offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
+                          color: offer?.inscriptions?.includes(sportman?.id)
                             ? '#fff'
                             : Color.bLACK1SPORTSMATCH,
                           textAlign: 'center',
@@ -381,7 +386,7 @@ const TodasLasOfertas = () => {
                           fontSize: 17
                         }}
                       >
-                        {offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                        {offer?.inscriptions?.includes(sportman?.id)
                           ? 'Inscrito!'
                           : 'Inscríbete en la oferta'}
                       </Text>
@@ -424,6 +429,7 @@ const TodasLasOfertas = () => {
           )}
         </ScrollView>
       ) : (
+        !loading &&
         selectOfferComponent === 'todas' && (
           <View
             style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
@@ -444,218 +450,13 @@ const TodasLasOfertas = () => {
         )
       )}
 
-      {/* {selectOfferComponent === 'todas' &&
-        offers.filter((offer) => {
-          const filteredUserMatches = userMatches.filter(
-            (match) => match.offerId && match.offerId !== offer.id
-          )
-          const alreadyJoined = offer?.inscriptions?.includes(
-            user?.user?.sportman?.id
-          )
-          if (filteredUserMatches.length > 0) {
-            return false
-          }
-          if (alreadyJoined) {
-            return false
-          }
-          return true
-        }).length > 2 &&
-        user.user.plan === 'basic' && (
-          <TouchableOpacity
-            style={{
-              backgroundColor: Color.wHITESPORTSMATCH,
-              marginTop: 0,
-              width: '95%',
-              justifyContent: 'center',
-              paddingHorizontal: Padding.p_81xl,
-              paddingVertical: Padding.p_3xs,
-              alignSelf: 'center',
-              zIndex: 3,
-              marginBottom: 10,
-              backgroundColor: Color.wHITESPORTSMATCH,
-              borderRadius: Border.br_81xl,
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-            onPress={() =>
-              user.user.plan === 'pro' || user.user.plan === 'star'
-                ? null
-                : setShowPremiumModal(true)
-            }
-          >
-            <Text>Ver más ofertas</Text>
-          </TouchableOpacity>
-        )} */}
-      {/* ============================ FAVORITE OFFERS ============================ */}
-      {/* {selectOfferComponent !== 'todas' &&
-      offers &&
-      offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        return true
-      }).length > 0 ? (
-        <ScrollView keyboardShouldPersistTaps={'always'}>
-          {offers
-            .filter((offer) => {
-              const filteredUserMatches = userMatches.filter(
-                (match) => match.offerId && match.offerId !== offer.id
-              )
-              const alreadyJoined = offer?.inscriptions?.includes(
-                user?.user?.sportman?.id
-              )
-              if (filteredUserMatches.length > 0) {
-                return false
-              }
-              if (alreadyJoined) {
-                return true
-              }
-              return false
-            })
-            .map((offer, index) => (
-              <View
-                key={index}
-                style={{
-                  marginTop: 20,
-                  padding: 10,
-                  flex: 1,
-                  backgroundColor: Color.bLACK2SPORTMATCH,
-                  alignItems: 'center',
-                  opacity: 0.7
-                }}
-              >
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Sexo"
-                    value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                  />
-                  <CardInfoOffers text="Categoría" value={offer.category} />
-                </View>
-
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Posición"
-                    value={`${offer.urgency}/10`}
-                  />
-                  <CardInfoOffers text="Ubicacion" value="Random" />
-                </View>
-
-                <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers text="Urgencia" value={offer.urgency} />
-                  <CardInfoOffers
-                    text="Retribucion"
-                    value={offer.retribution ? 'Si' : 'No'}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 30,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex: 10,
-                    borderWidth: 2,
-                    borderColor: Color.bLACK3SPORTSMATCH,
-                    height: 90
-                  }}
-                >
-                  <Pressable
-                    style={{
-                      width: '70%',
-                      paddingHorizontal: Padding.p_mini,
-                      paddingVertical: Padding.p_8xs,
-                      justifyContent: 'center',
-                      borderRadius: Border.br_81xl,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      zIndex: 5,
-                      backgroundColor: !offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                        ? Color.wHITESPORTSMATCH
-                        : '#e1451e',
-                      height: 45
-                    }}
-                  >
-                    <Text
-                      // onPress={() => setModalVisible(true)}
-                      disabled={offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )}
-                      onPress={() => {
-                        if (
-                          !offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                        ) {
-                          console.log('offer', offer)
-                          console.log('sp id: ', user?.user?.sportman?.id)
-                          dispatch(
-                            signToOffer({
-                              offerId: offer?.id,
-                              userId: user?.user?.sportman?.id
-                            })
-                          ).then((data) => dispatch(getAllOffers()))
-
-                          navigation.goBack()
-                        }
-                      }}
-                      style={{
-                        color: offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
-                        )
-                          ? '#fff'
-                          : Color.bLACK1SPORTSMATCH,
-                        textAlign: 'center',
-                        fontWeight: '700',
-                        lineHeight: 17,
-                        fontFamily: FontFamily.t4TEXTMICRO,
-                        fontSize: 17
-                      }}
-                    >
-                      {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                        ? 'Inscripto!'
-                        : 'Inscríbete en la oferta'}
-                    </Text>
-                  </Pressable>
-                </View>
-                <Image
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 1,
-                    borderRadius: 8,
-                    overflow: 'hidden'
-                  }}
-                  source={require('../assets/group-4891.png')}
-                />
-              </View>
-            ))}
-        </ScrollView>
-      ) : (
-        selectOfferComponent !== 'todas' && (
-          <Text
-            style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
-          >
-            Aun no hay ofertas activas!
-          </Text>
-        )
-      )} */}
-
-      {selectOfferComponent === 'todas' &&
+      {!loading &&
+        selectOfferComponent === 'todas' &&
         offer.filter((offer) => {
           const filteredUserMatches = userMatches.filter(
             (match) => match.offerId && match.offerId !== offer.id
           )
-          const alreadyJoined = offer?.inscriptions?.includes(
-            user?.user?.sportman?.id
-          )
+          const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
           if (filteredUserMatches.length > 0) {
             return false
           }
@@ -691,15 +492,17 @@ const TodasLasOfertas = () => {
           </TouchableOpacity>
         )}
       {/* ============================ FAVORITE OFFERS ============================ */}
-      {selectOfferComponent !== 'todas' &&
+      {!loading &&
+      selectOfferComponent !== 'todas' &&
       offers &&
       offer.filter((offer) => {
         const filteredUserMatches = userMatches.filter(
           (match) => match.offerId && match.offerId !== offer.id
         )
-        const alreadyJoined = offer?.inscriptions?.includes(
-          user?.user?.sportman?.id
-        )
+        console.log('OFFER INSCRIPTIONS ', offer.inscriptions)
+        console.log('USER', user)
+        console.log('sportman', sportman)
+        const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
         if (filteredUserMatches.length > 0) {
           return false
         }
@@ -714,9 +517,7 @@ const TodasLasOfertas = () => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
               )
-              const alreadyJoined = offer?.inscriptions?.includes(
-                user?.user?.sportman?.id
-              )
+              const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
               if (filteredUserMatches.length > 0) {
                 return false
               }
@@ -817,7 +618,7 @@ const TodasLasOfertas = () => {
                       alignItems: 'center',
                       zIndex: 5,
                       backgroundColor: !offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
+                        sportman?.id
                       )
                         ? Color.wHITESPORTSMATCH
                         : mainColor,
@@ -826,15 +627,9 @@ const TodasLasOfertas = () => {
                   >
                     <Text
                       // onPress={() => setModalVisible(true)}
-                      disabled={offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )}
+                      disabled={offer?.inscriptions?.includes(sportman?.id)}
                       onPress={() => {
-                        if (
-                          !offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                        ) {
+                        if (!offer?.inscriptions?.includes(sportman?.id)) {
                           ToastAndroid.show(
                             'Te has inscrito en la oferta!',
                             ToastAndroid.SHORT
@@ -842,9 +637,10 @@ const TodasLasOfertas = () => {
                           dispatch(
                             signToOffer({
                               offerId: offer?.id,
-                              userId: user?.user?.sportman?.id
+                              userId: sportman?.id
                             })
                           ).then((data) => {
+                            console.log('GETTING ALL OFFERS...')
                             dispatch(getAllOffers())
                           })
 
@@ -852,9 +648,7 @@ const TodasLasOfertas = () => {
                         }
                       }}
                       style={{
-                        color: offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
-                        )
+                        color: offer?.inscriptions?.includes(sportman?.id)
                           ? '#fff'
                           : Color.bLACK1SPORTSMATCH,
                         textAlign: 'center',
@@ -864,7 +658,7 @@ const TodasLasOfertas = () => {
                         fontSize: 17
                       }}
                     >
-                      {offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                      {offer?.inscriptions?.includes(sportman?.id)
                         ? 'Inscrito!'
                         : 'Inscríbete en la oferta'}
                     </Text>
@@ -885,6 +679,7 @@ const TodasLasOfertas = () => {
             ))}
         </ScrollView>
       ) : (
+        !loading &&
         selectOfferComponent !== 'todas' && (
           <View
             style={{
@@ -975,7 +770,7 @@ const TodasLasOfertas = () => {
               selectedSports={selectedSports}
               setOffer={setOffer}
               offer={offers}
-              sports={user?.user?.sportman?.info?.sport}
+              sports={sportman?.info?.sport}
               onClose={() => setModalFilterSportman(false)}
             />
           </View>
