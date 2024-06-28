@@ -239,7 +239,6 @@ const SkillSeleccion = ({
   }
 
   const handleData = (key, value) => {
-    console.log(key, "keyyy")
     if (
       key === 'attack' ||
       key === 'defense' ||
@@ -262,6 +261,7 @@ const SkillSeleccion = ({
           parseInt(value, 10) >= 0 &&
           parseInt(value, 10) <= 100)
       ) {
+     
         if (!editable) {
           const newData = {
             ...data,
@@ -312,7 +312,6 @@ const SkillSeleccion = ({
     if (selectedSport?.name == "Hockey" || sportman.info?.sport == "Hockey") setSelectedOptions(opciones.hockey)
     if (selectedSport?.name == "Handball" || sportman.info?.sport == "Handball") setSelectedOptions(opciones.handball)
     if (selectedSport?.name == "Voley" || sportman.info?.sport == "Voley") setSelectedOptions(opciones.voleibol)
-    console.log(selectedOptions)
   }
   useEffect(() => {
     selectores()
@@ -496,9 +495,16 @@ const SkillSeleccion = ({
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'}
+              placeholder={ sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
+              value={
+                data?.[`prop${i + 1}`] !== undefined
+                ? String(data?.[`prop${i + 1}`])
+                : editData?.[`prop${i + 1}`]
+                  ? editData?.[`prop${i + 1}`]
+                  : ''
+              }
               onChangeText={(value) => handleData(`prop${i + 1}`, value)}
               maxLength={3}
             />
