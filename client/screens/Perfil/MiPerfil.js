@@ -132,30 +132,34 @@ const MiPerfil = () => {
                 />
               </View>
 
-              <View style={styles.informacion}>
+              <View
+                style={{
+                  marginLeft: 15,
+                  alignSelf: 'flex-end',
+                  paddingTop: 25,
+                  width: '65%'
+                }}
+              >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
                   <Text style={[styles.textTypo2, { color: mainColor }]}>
                     {typeof sportman?.info?.sport === 'object'
                       ? sportman?.info?.sport.name
                       : sportman?.info?.sport}
-                    <Text
-                      style={{
-                        textAlign: 'left',
-                        color: 'white',
-                        fontFamily: FontFamily.t4TEXTMICRO,
-                        fontSize: 16,
-                        lineHeight: 20,
-                        fontWeight: '400'
-                      }}
-                    >
-                      {' '}
-                      {'('}
-                      {sportman?.type === 'coach'
-                        ? sportman?.info?.rol
-                        : sportman?.info?.position}
-                      {')'}
-                    </Text>
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      color: 'white',
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontSize: 16,
+                      lineHeight: 20,
+                      fontWeight: '400'
+                    }}
+                  >
+                    {sportman?.type === 'coach'
+                      ? sportman?.info?.rol
+                      : sportman?.info?.position}
                   </Text>
                   {user?.user?.sportman?.info?.city && (
                     <Text style={styles.textTypo3}>
@@ -168,7 +172,7 @@ const MiPerfil = () => {
                   style={[
                     styles.jugandoAlUni,
                     styles.seguidoresTypo,
-                    { maxWidth: '80%' }
+                    { width: '100%' }
                   ]}
                 >
                   {sportman?.info?.description?.length > 0
@@ -177,14 +181,18 @@ const MiPerfil = () => {
                 </Text>
                 {isTruncated && sportman?.info?.description?.length > 70 ? ( // Ajusta la lógica de truncamiento
                   <TouchableOpacity onPress={toggleTruncate}>
-                    <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                    <Text
+                      style={{ color: Color.colorDimgray_100, marginTop: 3 }}
+                    >
                       Ver más
                     </Text>
                   </TouchableOpacity>
                 ) : (
                   !isTruncated && (
                     <TouchableOpacity onPress={toggleTruncate}>
-                      <Text style={{ color: Color.colorDimgray_100, marginTop: 3 }}>
+                      <Text
+                        style={{ color: Color.colorDimgray_100, marginTop: 3 }}
+                      >
                         Ver menos
                       </Text>
                     </TouchableOpacity>

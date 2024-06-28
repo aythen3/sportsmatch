@@ -242,6 +242,7 @@ const TusNotificaciones1 = () => {
         {selectedComponent === 'messages' && (
           <ScrollView
             keyboardShouldPersistTaps={'always'}
+            contentContainerStyle={{ paddingBottom: 68 }}
             style={{
               marginTop: 30,
               paddingHorizontal: 14
@@ -255,10 +256,10 @@ const TusNotificaciones1 = () => {
               </View>
             ) : (
               value === '' &&
-              usersWithMessages?.map((user) => (
+              usersWithMessages?.map((user, index) => (
                 <MessagesChat
                   setValue={setValue}
-                  key={user.id}
+                  key={index}
                   name={user.nickname}
                   sportmanId={user.sportman?.id}
                   profilePic={
@@ -272,10 +273,10 @@ const TusNotificaciones1 = () => {
               ))
             )}
             {value !== '' &&
-              filteredUsers.map((user) => (
+              filteredUsers.map((user, index) => (
                 <MessagesChat
                   setValue={setValue}
-                  key={user.id}
+                  key={index}
                   name={user.nickname}
                   sportmanId={user.sportman?.id}
                   profilePic={
