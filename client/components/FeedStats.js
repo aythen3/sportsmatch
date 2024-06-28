@@ -228,158 +228,52 @@ const FeedStats = () => {
             <View
               style={{
                 marginTop: 30,
-                width: '95%'
+                width: '95%',
+                gap:10
               }}
             >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      lineHeight: 14,
-                      marginBottom: 2,
-                      fontSize: 13,
-                      textAlign: 'left',
-                      color: Color.gREY2SPORTSMATCH,
-                      fontFamily: FontFamily.t4TEXTMICRO
-                    }}
-                  >
-                    {selectedOptions[0]}
-                  </Text>
-                  <BarStatSVG
-                    color={mainColor}
-                    value={sportman?.info.prop1 || 0}
-                  />
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    color: Color.gREY2SPORTSMATCH,
-                    fontSize: FontSize.t2TextSTANDARD_size,
-                    fontFamily: FontFamily.t4TEXTMICRO
-                  }}
-                >
-                  {sportman?.info.prop1}
-                </Text>
-              </View>
 
-              <View
-                style={{
-                  marginTop: 8,
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      lineHeight: 14,
-                      marginBottom: 2,
-                      fontSize: 13,
-                      textAlign: 'left',
-                      color: Color.gREY2SPORTSMATCH,
-                      fontFamily: FontFamily.t4TEXTMICRO
-                    }}
-                  >
-                    {selectedOptions[1]}
-                  </Text>
-                  <BarStatSVG
-                    color={mainColor}
-                    value={sportman?.info.prop2 || 0}
-                  />
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    color: Color.gREY2SPORTSMATCH,
-                    fontSize: FontSize.t2TextSTANDARD_size,
-                    fontFamily: FontFamily.t4TEXTMICRO
-                  }}
-                >
-                  {sportman?.info.prop2}
-                </Text>
-              </View>
+              {selectedOptions && selectedOptions.map((opt,i)=>(
+                 <View
+                 style={{
+                   flexDirection: 'row',
+                   alignItems: 'flex-end',
+                   justifyContent: 'space-between'
+                 }}
+               >
+                 <View>
+                   <Text
+                     style={{
+                       lineHeight: 14,
+                       marginBottom: 2,
+                       fontSize: 13,
+                       textAlign: 'left',
+                       color: Color.gREY2SPORTSMATCH,
+                       fontFamily: FontFamily.t4TEXTMICRO
+                     }}
+                   >
+                     {selectedOptions[i]}
+                   </Text>
+                   <BarStatSVG
+                     color={mainColor}
+                     value={sportman?.info[`prop${i+1}`] || 0}
+                   />
+                 </View>
+                 <Text
+                   style={{
+                     textAlign: 'right',
+                     color: Color.gREY2SPORTSMATCH,
+                     fontSize: FontSize.t2TextSTANDARD_size,
+                     fontFamily: FontFamily.t4TEXTMICRO
+                   }}
+                 >
+                   {sportman?.info[`prop${i+1}`]}
+                 </Text>
+               </View>
+              ))}
 
-              <View
-                style={{
-                  marginTop: 8,
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      lineHeight: 14,
-                      marginBottom: 2,
-                      fontSize: 13,
-                      textAlign: 'left',
-                      color: Color.gREY2SPORTSMATCH,
-                      fontFamily: FontFamily.t4TEXTMICRO
-                    }}
-                  >
-                    {selectedOptions[2]}
-                  </Text>
-                  <BarStatSVG
-                    color={mainColor}
-                    value={sportman?.info.prop3 || 0}
-                  />
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    color: Color.gREY2SPORTSMATCH,
-                    fontSize: FontSize.t2TextSTANDARD_size,
-                    fontFamily: FontFamily.t4TEXTMICRO
-                  }}
-                >
-                  {sportman?.info.prop3}
-                </Text>
-              </View>
-              <View
-                style={{
-                  marginTop: 8,
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      lineHeight: 14,
-                      marginBottom: 2,
-                      fontSize: 13,
-                      textAlign: 'left',
-                      color: Color.gREY2SPORTSMATCH,
-                      fontFamily: FontFamily.t4TEXTMICRO
-                    }}
-                  >
-                    {selectedOptions[3]}
-                  </Text>
-                  <BarStatSVG
-                    color={mainColor}
-                    value={sportman?.info.height || 0}
-                  />
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    color: Color.gREY2SPORTSMATCH,
-                    fontSize: FontSize.t2TextSTANDARD_size,
-                    fontFamily: FontFamily.t4TEXTMICRO
-                  }}
-                >
-                  {sportman?.info.prop3}
-                </Text>
-              </View>
+
+            
             </View>
           )}
 

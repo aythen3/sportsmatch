@@ -30,14 +30,51 @@ const PerfilFeedVisualitzaciJug = () => {
   const { mainColor } = useSelector((state) => state.users)
 
   const opciones = {
-    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
-    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
-    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
-    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
+    futbol: [
+      "Portero",
+      "Lateral",
+      "Central",
+      "Mediocentro",
+      "Interior",
+      "Extremo",
+      "Mediapunta",
+      "Delantero centro"
+    ],
+    baloncesto: [
+      "Base",
+      "Escolta",
+      "Alero",
+      "Ala-pivot",
+      "Pivot"
+    ],
+    futbolSala: [
+      "Portero",
+      "Cierre",
+      "Ala",
+      "Pivot"
+    ],
+    hockey: [
+      "Portero",
+      "Jugador"
+    ],
+    voleibol: [
+      "Colocador",
+      "Rematador externo",
+      "Rematador opuesto",
+      "Central",
+      "Libero",
+      "Receptor/zaguero"
+    ],
+    handball: [
+      "Portero",
+      "Central",
+      "Ala derecha",
+      "Ala izquierda",
+      "Pivot",
+      "Extremo derecho",
+      "Extremo izquierdo"
+    ]
   }
-
   const selectores = () => {
     if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.futbol)
     if (data?.author?.sportman.info.sport)
@@ -259,9 +296,54 @@ const PerfilFeedVisualitzaciJug = () => {
                 <View
                   style={{
                     marginTop: 30,
-                    width: '95%'
+                    width: '95%',
+                    gap:10
                   }}
                 >
+
+
+                  {selectedOptions && selectedOptions.map((opt, i) => (
+                    <View
+                    key={i}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'flex-end',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <View>
+                        <Text
+                          style={{
+                            lineHeight: 14,
+                            marginBottom: 2,
+                            fontSize: 13,
+                            textAlign: 'left',
+                            color: Color.gREY2SPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO
+                          }}
+                        >
+                          {selectedOptions[i]}
+                        </Text>
+                        <BarStatSVG
+                          color={mainColor}
+                          value={data?.author?.sportman?.info[`prop${i + 1}`] || 0}
+                        />
+                      </View>
+                      <Text
+                        style={{
+                          textAlign: 'right',
+                          color: Color.gREY2SPORTSMATCH,
+                          fontSize: FontSize.t2TextSTANDARD_size,
+                          fontFamily: FontFamily.t4TEXTMICRO
+                        }}
+                      >
+                        {data?.author?.sportman?.info[`prop${i + 1}`] || 0}
+                      </Text>
+                    </View>
+                  ))}
+
+
+{/* 
                   <View
                     style={{
                       flexDirection: 'row',
@@ -410,12 +492,14 @@ const PerfilFeedVisualitzaciJug = () => {
                     >
                       {data?.author?.sportman?.info.prop3}
                     </Text>
-                  </View>
+                  </View> */}
                 </View>
                 <View
                   style={{
                     marginTop: 30,
-                    width: '100%'
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
                   <View style={styles.circulos}>

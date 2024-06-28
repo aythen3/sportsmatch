@@ -377,6 +377,7 @@ const ExplorarClubs = () => {
                       onPress={() => {
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
                           author: {
+                            id:user.id,
                             nickname: user.info.nickname,
                             sportman: user
                           }
