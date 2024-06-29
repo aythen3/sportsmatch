@@ -53,11 +53,11 @@ const SiguiendoJugadores = () => {
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
   }
   useEffect(() => {
-    dispatch(getAllOffers())
     dispatch(getAllPosts())
-    dispatch(getAllMatchs())
     dispatch(getAllLikes())
     dispatch(getAllNotifications())
+    dispatch(getAllOffers())
+    dispatch(getAllMatchs())
   }, [post, comments])
 
   useEffect(() => {

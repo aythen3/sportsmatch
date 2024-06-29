@@ -258,8 +258,7 @@ const HeaderPerfil = ({
                 setLiked(!liked)
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
-                  allUsers?.filter((user) => user.id === data.author.id)[0]
-                    .followers || []
+                  allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
                       (follower) => follower !== user?.user?.id
@@ -330,7 +329,7 @@ const HeaderPerfil = ({
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
                   allUsers?.filter((user) => user.id === data.author.id)[0]
-                    .followers || []
+                    ?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
                       (follower) => follower !== user?.user?.id
@@ -410,7 +409,8 @@ const HeaderPerfil = ({
             </TouchableOpacity>
           )}
           {matchSended === true ? (
-            <Pressable
+            <Pressable 
+            
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -591,6 +591,7 @@ const HeaderPerfil = ({
                 match.status === 'success'
             ).length === 0 && (
               <Pressable
+              
                 style={{
                   flexDirection: 'row',
                   backgroundColor: '#7B2610',
@@ -692,12 +693,12 @@ const HeaderPerfil = ({
               marginTop: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+            <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
               {data.author.club.year}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,
                 position: 'absolute',
                 bottom: 15
@@ -722,12 +723,12 @@ const HeaderPerfil = ({
               marginTop: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+            <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
               {data.author.club.capacity}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,
                 position: 'absolute',
                 bottom: 15
@@ -752,12 +753,12 @@ const HeaderPerfil = ({
               marginTop: 10
             }}
           >
-            <Text style={{ color: '#E1451E', fontSize: 27, fontWeight: 500 }}>
+            <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
               {clubOffers?.length}
             </Text>
             <Text
               style={{
-                color: '#E1451E',
+                color: mainColor,
                 fontSize: 12,
                 position: 'absolute',
                 bottom: 15
@@ -839,7 +840,7 @@ const HeaderPerfil = ({
             Seguidores
           </Text>
           <Text style={styles.numeroText}>
-            {user.user.followers ? user.user.followers.length : '0'}
+            {user?.user?.followers ? user?.user?.followers.length : '0'}
           </Text>
         </View>
       )}
@@ -848,7 +849,7 @@ const HeaderPerfil = ({
           onPress={() => {
             const followers =
               allUsers?.filter((user) => user.id === data.author.id)[0]
-                .followers || []
+                ?.followers || []
             if (followers?.length > 0) {
               navigation.navigate('UserFollowers', {
                 author: allUsers.filter((user) => user.id === data.author.id),
@@ -882,7 +883,7 @@ const HeaderPerfil = ({
             {allUsers?.filter((user) => user.id === data.author.id)[0]
               ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                  .followers?.length
+                  ?.followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>

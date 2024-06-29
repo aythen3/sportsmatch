@@ -40,6 +40,7 @@ const Feed = ({ externalId }) => {
     const post = allPosts.filter(
       (post) => post?.author?.id == userId && !post.prop1
     )
+    console.log(post,"filtradoooalinicio")
     const postPined = allPosts.filter(
       (post) => post?.author?.id === userId && post.prop1
     )
@@ -49,7 +50,6 @@ const Feed = ({ externalId }) => {
     if(post[0]){
       setPineable(post[0].author.id === user.user.id)
     }
-    console.log(externalId,"filtradooo")
 
   }, [allPosts])
 

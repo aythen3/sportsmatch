@@ -188,7 +188,7 @@ const ExplorarClubs = () => {
   }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
-  const { mainColor } = useSelector((state) => state.users)
+  const { mainColor , user:usuario } = useSelector((state) => state.users)
 
   const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
@@ -368,7 +368,7 @@ const ExplorarClubs = () => {
         }}
       >
         {textValue && (
-          <ScrollView style={{ flexDirection: 'column', gap: 10 }}>
+          <ScrollView contentContainerStyle={{paddingBottom:120}} style={{ flexDirection: 'column', gap: 10 }}>
             {textValue && searchUsers.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white' }}>Usuarios</Text>
@@ -377,7 +377,11 @@ const ExplorarClubs = () => {
                   searchUsers.map((user, i) => (
                     <TouchableOpacity
                       onPress={() => {
-                        console.log(user,"usuario")
+                        console.log(usuario,"usuario")
+                        if(user.id ===  usuario.id ){
+                          return console.log("entra")
+                        }
+
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
                           author: {
                             id:user.id,
