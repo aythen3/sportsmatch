@@ -156,7 +156,7 @@ function Carousel({
 
     setOptionsModal(true)
   }
-
+console.log(data,"esto es la data")
   return (
     <View style={{ ...styles.container }}>
       <View

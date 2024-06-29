@@ -188,9 +188,11 @@ const ExplorarClubs = () => {
   }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
+  const { mainColor , user:usuario } = useSelector((state) => state.users)
+
   const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
-
+  
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
 
@@ -366,7 +368,7 @@ const ExplorarClubs = () => {
         }}
       >
         {textValue && (
-          <ScrollView style={{ flexDirection: 'column', gap: 10 }}>
+          <ScrollView contentContainerStyle={{paddingBottom:120}} style={{ flexDirection: 'column', gap: 10 }}>
             {textValue && searchUsers.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white' }}>Usuarios</Text>
@@ -375,6 +377,11 @@ const ExplorarClubs = () => {
                   searchUsers.map((user, i) => (
                     <TouchableOpacity
                       onPress={() => {
+                        console.log(usuario,"usuario")
+                        if(user.id ===  usuario.id ){
+                          return console.log("entra")
+                        }
+
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
                           author: {
                             id:user.id,
@@ -393,10 +400,10 @@ const ExplorarClubs = () => {
                         }}
                       >
                         <Image
-                          style={{ width: 50, height: 50, borderRadius: 50 }}
-                          source={{
-                            uri: user.info.img_perfil
-                          }}
+                          style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: user.info.img_font ? "transparent" : mainColor }}
+                          source={ user.info.img_front ? {
+                            uri: user.info.img_front
+                          } : require('../../assets/whiteSport.png')}
                         ></Image>
                         <Text
                           style={{

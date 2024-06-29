@@ -91,7 +91,6 @@ const PerfilFeedVisualitzaciJug = () => {
   }, [])
 
   const data = router.params
-  //console.log('data,', router.params)
 
   // function calculateAge(birthYear) {
   //   const birthYearNum =
@@ -154,7 +153,7 @@ const PerfilFeedVisualitzaciJug = () => {
         />
 
         {selectComponents === 'perfil' && (
-          <Feed externalId={data?.author?.id} />
+          <Feed externalId={  data?.author?.sportman?.user?.id ?? data.author.id} />
         )}
 
         {selectComponents === 'estadisticas' && (

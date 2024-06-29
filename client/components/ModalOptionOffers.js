@@ -16,7 +16,6 @@ const ModalOptionOffers = ({
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  console.log('data.prop1', data.prop1)
   if (post)
     return (
       <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
