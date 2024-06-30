@@ -656,7 +656,7 @@ const styles = StyleSheet.create({
   },
   contenido: {
     // justifyContent: 'center',
-    marginTop: '15%',
+    marginTop: '20%',
     height: '100%'
   },
   fondoIcon: {

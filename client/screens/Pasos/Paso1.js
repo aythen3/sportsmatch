@@ -639,6 +639,7 @@ const Paso1 = () => {
             selectedSport={selectedSport}
             setData={setData}
             data={data}
+            editable={false}
             setSelectPosition={setSelectPosition}
             selectPosition={selectPosition}
           />

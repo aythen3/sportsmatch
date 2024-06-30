@@ -388,6 +388,7 @@ const TodasLasOfertas = () => {
                                   }
                                 })
                               )
+                              dispatch(getAllOffers())
                               ToastAndroid.show(
                                 'Te has inscrito en la oferta!',
                                 ToastAndroid.SHORT
