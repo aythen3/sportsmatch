@@ -72,7 +72,6 @@ const IniciarSesin = () => {
     }))
   }
 
-
   const handleSubmit = () => {
     setLoading(true)
     setProvisoryProfileImage()
@@ -85,7 +84,10 @@ const IniciarSesin = () => {
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
-          await AsyncStorage.setItem('@user', JSON.stringify(response.payload.user))
+          await AsyncStorage.setItem(
+            '@user',
+            JSON.stringify(response.payload.user)
+          )
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
           await AsyncStorage.setItem('userType', response.payload.user.type)
@@ -98,15 +100,17 @@ const IniciarSesin = () => {
               })
             )
             dispatch(setClub(response))
-            detectSportColor( response.payload.user?.sportman?.info?.sport || response.payload?.user?.club?.sport  ,dispatch)
+            detectSportColor(
+              response.payload.user?.sportman?.info?.sport ||
+                response.payload?.user?.club?.sport,
+              dispatch
+            )
             setActiveIcon('diary')
             return navigation.reset({
-
               index: 0,
               history: false,
-              routes:[{name:"SiguiendoJugadores"}]
-            
-             })
+              routes: [{ name: 'SiguiendoJugadores' }]
+            })
           } else {
             if (response.payload?.user?.type === 'club') {
               if (user?.accesToken) {
@@ -125,8 +129,6 @@ const IniciarSesin = () => {
         })
     }
   }
-
-  
 
   return (
     <SafeAreaView style={styles.iniciarSesin}>

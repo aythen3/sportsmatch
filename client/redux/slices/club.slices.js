@@ -19,7 +19,7 @@ const clubSlices = createSlice({
   },
   reducers: {
     setClub: (state, action) => {
-      state.club =  action.payload.payload.user.club 
+      state.club = action.payload.payload.user.club
     }
   },
   extraReducers: (builder) => {
@@ -59,6 +59,7 @@ const clubSlices = createSlice({
       })
       .addCase(getClub.fulfilled, (state, action) => {
         state.loading = false
+        console.log('setting club data to', action.payload)
         state.club = action.payload
         state.error = false
       })

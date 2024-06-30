@@ -345,7 +345,13 @@ const LoginSwitch = () => {
     )
 
   return (
-    <View style={{ backgroundColor: 'black', height: height, width: width }}>
+    <View
+      style={{
+        backgroundColor: 'black',
+        flex: 1,
+        justifyContent: 'space-between'
+      }}
+    >
       <HomeGif></HomeGif>
       <InstagramLogin
         ref={instagramRef}
@@ -359,222 +365,237 @@ const LoginSwitch = () => {
         }}
         onLoginFailure={(data) => console.log('Instagram login failed', data)}
       />
-      <View style={styles.wrapper}>
-        <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
-          <Image
-            style={styles.icon}
-            contentFit="cover"
-            source={require('../../assets/group-1.png')}
-          />
-        </Pressable>
-        <Text style={[styles.eresJugadorO, styles.aceptarTypo]}>
-          ¿Eres jugador {'\n'} o un club?
-        </Text>
-      </View>
-      <View style={styles.frameParent}>
-        <View style={styles.frameGroup}>
-          <View>
+      <View>
+        <View
+          style={{
+            marginTop: '10%'
+          }}
+        >
+          <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
+            <Image
+              style={styles.icon}
+              contentFit="cover"
+              source={require('../../assets/group-1.png')}
+            />
+          </Pressable>
+          <Text style={[styles.eresJugadorO, styles.aceptarTypo]}>
+            ¿Eres jugador {'\n'} o un club?
+          </Text>
+        </View>
+        <View
+          style={{
+            alignItems: 'center'
+          }}
+        >
+          <View style={styles.frameGroup}>
             <View>
-              <View style={[styles.groupChild, styles.borderPosition]}>
-                <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
-                  Jugador/Profesional deporte*
-                </Text>
+              <View>
+                <View style={[styles.groupChild, styles.borderPosition]}>
+                  <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
+                    Jugador/Profesional deporte*
+                  </Text>
 
-                <Switch
-                  circleSize={16}
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                  backgroundActive={'#00FF18'}
-                  backgroundInactive={'#00FF18'}
-                  circleActiveColor={'black'}
-                  activeText={false}
-                  inActiveText={false}
-                  circleInActiveColor={'black'}
-                  barHeight={18}
-                  switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
-                  switchRightPx={5}
-                />
+                  <Switch
+                    circleSize={16}
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
+                    backgroundActive={'#00FF18'}
+                    backgroundInactive={'#00FF18'}
+                    circleActiveColor={'black'}
+                    activeText={false}
+                    inActiveText={false}
+                    circleInActiveColor={'black'}
+                    barHeight={18}
+                    switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    switchRightPx={5}
+                  />
 
-                <Text
-                  style={
-                    !isEnabled ? styles.clubScouting : styles.clubScouting2
-                  }
-                >
-                  Club/Representante/Scouter
-                </Text>
+                  <Text
+                    style={
+                      !isEnabled ? styles.clubScouting : styles.clubScouting2
+                    }
+                  >
+                    Club/Representante/Scouter
+                  </Text>
+                </View>
               </View>
             </View>
+            <View style={{ marginBottom: 15 }}>
+              <Text
+                style={[styles.entrenadoraPreparadoraFs, styles.aceptarTypo]}
+              >
+                (*) Entrenador/a, preparador/a físico/a, analista técnico/a,
+                psicólogo/a, fisioterapeuta, nutricionista.
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text style={[styles.entrenadoraPreparadoraFs, styles.aceptarTypo]}>
-              (*) Entrenador/a, preparador/a físico/a, analista técnico/a,
-              psicólogo/a, fisioterapeuta, nutricionista.
-            </Text>
-          </View>
-        </View>
-        <View style={styles.frameWrapper}>
-          <View>
-            <Text style={[styles.regstrateOInicia, styles.contnuarTypo]}>
-              Regístrate o inicia sesión
-            </Text>
-            <View style={styles.frameContainer}>
-              <View>
-                <View style={styles.frameGroup}>
+          <View style={styles.frameWrapper}>
+            <View>
+              <Text style={[styles.regstrateOInicia, styles.contnuarTypo]}>
+                Regístrate o inicia sesión
+              </Text>
+              <View style={styles.frameContainer}>
+                <View>
                   <View style={styles.frameGroup}>
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => promptAsync()}
-                        style={styles.loremIpsumParent}
-                      >
-                        <View style={styles.loremIpsum2}>
-                          <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                            Continua con Google
-                          </Text>
-                        </View>
+                    <View style={styles.frameGroup}>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => promptAsync()}
+                          style={styles.loremIpsumParent}
+                        >
+                          <View style={styles.loremIpsum2}>
+                            <Text style={[styles.aceptar, styles.aceptarTypo]}>
+                              Continua con Google
+                            </Text>
+                          </View>
 
-                        <Image
-                          style={[styles.groupItem, styles.groupPosition1]}
-                          contentFit="cover"
-                          source={require('../../assets/group-236.png')}
-                        />
-                      </TouchableOpacity>
-                      {/* <TouchableOpacity style={styles.loremIpsumGroup}>
-                        <View style={styles.loremIpsum2}>
-                        <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                            Contínua con Apple
-                          </Text>
-                        </View>
-
-                        <Image
-                          style={[styles.groupInner, styles.groupPosition1]}
-                          contentFit="cover"
-                          source={require('../../assets/group-237.png')}
+                          <Image
+                            style={[styles.groupItem, styles.groupPosition1]}
+                            contentFit="cover"
+                            source={require('../../assets/group-236.png')}
                           />
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity style={styles.loremIpsumGroup}>
+                         <View style={styles.loremIpsum2}>
+                         <Text style={[styles.aceptar, styles.aceptarTypo]}>
+                             Contínua con Apple
+                           </Text>
+                         </View>
+      
+                         <Image
+                           style={[styles.groupInner, styles.groupPosition1]}
+                           contentFit="cover"
+                           source={require('../../assets/group-237.png')}
+                           />
+                         </TouchableOpacity> */}
 
-                      <TouchableOpacity
-                        // onPress={signInWithFacebook}
-                        onPress={() => {
-                          console.log('showing Instagram popup')
-                          instagramRef.current.show()
-                        }}
-                        style={styles.loremIpsumGroup}
-                      >
-                        <View style={styles.loremIpsum2}>
-                          <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                            Continua con Instagram
-                          </Text>
-                        </View>
-                        <Image
-                          style={[styles.groupIcon, styles.groupPosition]}
-                          contentFit="cover"
-                          source={require('../../assets/instagramlogo2.png')}
-                        />
-                      </TouchableOpacity>
-                      {Platform.OS === 'ios' && (
-                        <AppleAuthentication.AppleAuthenticationButton
-                          buttonType={
-                            AppleAuthentication.AppleAuthenticationButtonType
-                              .SIGN_IN
-                          }
-                          buttonStyle={{ backgroundColor: 'black' }}
-                          cornerRadius={5}
-                          style={{
-                            width: 'auto',
-                            height: 44,
-                            borderRadius: 100,
-                            marginTop: 10,
-                            overflow: 'hidden'
+                        <TouchableOpacity
+                          // onPress={signInWithFacebook}
+                          onPress={() => {
+                            console.log('showing Instagram popup')
+                            instagramRef.current.show()
                           }}
-                          onPress={async () => {
-                            try {
-                              const credential =
-                                await AppleAuthentication.signInAsync({
-                                  requestedScopes: [
-                                    AppleAuthentication.AppleAuthenticationScope
-                                      .FULL_NAME,
-                                    AppleAuthentication.AppleAuthenticationScope
-                                      .EMAIL
-                                  ]
-                                })
-                              // LOGICA PARA LOGEARSE VA ACA
-                              const { identityToken, fullName } = credential
-
-                              // Construcción del objeto a enviar en el post
-                              const postData = {
-                                email: '',
-                                type: isSportman === true ? 'sportman' : 'club',
-                                nickname:
-                                  fullName.givenName +
-                                  ' ' +
-                                  fullName.familyName,
-                                appleId: identityToken // Se utiliza el identityToken como el valor del appleId
-                              }
-
-                              // Envío del objeto postData al servidor
-                              const response2 = await handleIos(postData)
-                            } catch (e) {
-                              console.log(e, 'entra al catch')
-                              if (e.code === 'ERR_REQUEST_CANCELED') {
-                                // handle that the user canceled the sign-in flow
-                              } else {
-                                console.log('llegue al final')
-                                // handle other errors
-                              }
+                          style={styles.loremIpsumGroup}
+                        >
+                          <View style={styles.loremIpsum2}>
+                            <Text style={[styles.aceptar, styles.aceptarTypo]}>
+                              Continua con Instagram
+                            </Text>
+                          </View>
+                          <Image
+                            style={[styles.groupIcon, styles.groupPosition]}
+                            contentFit="cover"
+                            source={require('../../assets/instagramlogo2.png')}
+                          />
+                        </TouchableOpacity>
+                        {Platform.OS === 'ios' && (
+                          <AppleAuthentication.AppleAuthenticationButton
+                            buttonType={
+                              AppleAuthentication.AppleAuthenticationButtonType
+                                .SIGN_IN
                             }
-                          }}
-                        />
-                      )}
+                            buttonStyle={{ backgroundColor: 'black' }}
+                            cornerRadius={5}
+                            style={{
+                              width: 'auto',
+                              height: 44,
+                              borderRadius: 100,
+                              marginTop: 10,
+                              overflow: 'hidden'
+                            }}
+                            onPress={async () => {
+                              try {
+                                const credential =
+                                  await AppleAuthentication.signInAsync({
+                                    requestedScopes: [
+                                      AppleAuthentication
+                                        .AppleAuthenticationScope.FULL_NAME,
+                                      AppleAuthentication
+                                        .AppleAuthenticationScope.EMAIL
+                                    ]
+                                  })
+                                // LOGICA PARA LOGEARSE VA ACA
+                                const { identityToken, fullName } = credential
+
+                                // Construcción del objeto a enviar en el post
+                                const postData = {
+                                  email: '',
+                                  type:
+                                    isSportman === true ? 'sportman' : 'club',
+                                  nickname:
+                                    fullName.givenName +
+                                    ' ' +
+                                    fullName.familyName,
+                                  appleId: identityToken // Se utiliza el identityToken como el valor del appleId
+                                }
+
+                                // Envío del objeto postData al servidor
+                                const response2 = await handleIos(postData)
+                              } catch (e) {
+                                console.log(e, 'entra al catch')
+                                if (e.code === 'ERR_REQUEST_CANCELED') {
+                                  // handle that the user canceled the sign-in flow
+                                } else {
+                                  console.log('llegue al final')
+                                  // handle other errors
+                                }
+                              }
+                            }}
+                          />
+                        )}
+                      </View>
+                      <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
+                        — o continuar con el e-mail —
+                      </Text>
                     </View>
-                    <Text style={[styles.oContnuarCon, styles.contnuarTypo]}>
-                      — o continuar con el e-mail —
-                    </Text>
+                    <Pressable
+                      style={styles.loremIpsumGroup}
+                      onPress={() =>
+                        navigation.navigate('Registrarse', {
+                          isPlayer
+                        })
+                      }
+                    >
+                      <View style={styles.loremIpsum2}>
+                        <Text style={[styles.aceptar, styles.aceptarTypo]}>
+                          Regístrate con el e-mail
+                        </Text>
+                      </View>
+
+                      <Image
+                        style={{ width: 30, height: 30 }}
+                        contentFit="cover"
+                        source={require('../../assets/registromail.png')}
+                      />
+                    </Pressable>
                   </View>
                   <Pressable
-                    style={styles.loremIpsumGroup}
+                    style={styles.yaTenesUnaContainer}
                     onPress={() =>
-                      navigation.navigate('Registrarse', {
+                      navigation.navigate('IniciarSesin', {
                         isPlayer
                       })
                     }
                   >
-                    <View style={styles.loremIpsum2}>
-                      <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                        Regístrate con el e-mail
-                      </Text>
-                    </View>
-
-                    <Image
-                      style={{ width: 30, height: 30 }}
-                      contentFit="cover"
-                      source={require('../../assets/registromail.png')}
-                    />
+                    <Text
+                      style={[
+                        styles.yaTenesUnaCuentaIniciaS,
+                        styles.aceptarTypo
+                      ]}
+                    >
+                      ¿Ya tienes una cuenta? Inicia sesión
+                    </Text>
                   </Pressable>
                 </View>
-                <Pressable
-                  style={styles.yaTenesUnaContainer}
-                  onPress={() =>
-                    navigation.navigate('IniciarSesin', {
-                      isPlayer
-                    })
-                  }
-                >
-                  <Text
-                    style={[styles.yaTenesUnaCuentaIniciaS, styles.aceptarTypo]}
-                  >
-                    ¿Ya tienes una cuenta? Inicia sesión
-                  </Text>
-                </Pressable>
               </View>
-              <Text style={[styles.alContnuarAceptas, styles.contnuarTypo]}>
-                Al continuar, aceptas automáticamente nuestras Condiciones,{' '}
-                {'\n'}
-                Polítíca de privacidad y Polítíca de cookies
-              </Text>
             </View>
           </View>
         </View>
       </View>
+      <Text style={[styles.alContnuarAceptas, styles.contnuarTypo]}>
+        Al continuar, aceptas automáticamente nuestras Condiciones, {'\n'}
+        Polítíca de privacidad y Polítíca de cookies
+      </Text>
     </View>
   )
 }
@@ -681,7 +702,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.bodyBodyXS_size,
     // lineHeight: 14,
     // width: 271,
-    marginTop: 15,
+    marginTop: 20,
     paddingHorizontal: 40,
     color: Color.gREY2SPORTSMATCH,
     textAlign: 'center'
@@ -734,7 +755,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t1TextSMALL_size,
     lineHeight: 17,
     color: Color.colorDimgray_100,
-    marginTop: 11
+    marginTop: 10
   },
   groupChild1: {
     height: '40%',
@@ -750,18 +771,17 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
-    marginTop: 27
+    marginTop: 10
   },
   alContnuarAceptas: {
     fontSize: FontSize.t4TEXTMICRO_size,
-    marginTop: 72,
     color: Color.gREY2SPORTSMATCH
   },
   frameContainer: {
-    marginTop: 9
+    marginTop: 0
   },
   frameWrapper: {
-    marginTop: 21
+    marginTop: 0
   },
   frameParent: {
     alignItems: 'center',

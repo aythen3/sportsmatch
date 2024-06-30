@@ -32,43 +32,49 @@ const Feed = ({ externalId }) => {
 
   const dispatch = useDispatch()
 
-  
-
-
   useEffect(() => {
     const userId = externalId || user.user.id
     const post = allPosts.filter(
       (post) => post?.author?.id == userId && !post.prop1
     )
-    console.log(post,"filtradoooalinicio")
+    console.log(post, 'filtradoooalinicio')
     const postPined = allPosts.filter(
       (post) => post?.author?.id === userId && post.prop1
     )
-    
+
     setUserPosts([...postPined, ...post])
-    
-    if(post[0]){
+
+    if (post[0]) {
       setPineable(post[0].author.id === user.user.id)
     }
-
   }, [allPosts])
 
   const renderItem = ({ item: post, index }) => (
     <TouchableOpacity
       onLongPress={() => {
         if (pineable) {
-          setPostSelected(post);
-          setModal(true);
+          setPostSelected(post)
+          setModal(true)
         }
       }}
       onPress={() => {
-        navigation.navigate('Post', post);
+        navigation.navigate('Post', post)
       }}
       key={index}
-      style={{ flex: 1 / 3, margin: 2, }}
+      style={{ flex: 1 / 3, margin: 2 }}
     >
       {post?.prop1?.pined && (
-        <View style={{ position: "absolute", top: 6, borderRadius: 50, right: 6, backgroundColor: mainColor, padding: 5, zIndex: 999 }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 6,
+            borderRadius: 50,
+            right: 6,
+            backgroundColor: mainColor,
+            padding: 5,
+            zIndex: 999
+          }}
+        >
           <Image
             style={{ width: 8, height: 8 }}
             contentFit="cover"
@@ -82,9 +88,7 @@ const Feed = ({ externalId }) => {
         source={{ uri: post.image[0] }}
       />
     </TouchableOpacity>
-  );
-
-
+  )
 
   return (
     <View style={styles.container}>
@@ -100,7 +104,17 @@ const Feed = ({ externalId }) => {
         />
       ) : (
         <View style={styles.noPostsContainer}>
-          <Text style={styles.noPostsText}>
+          <Text
+            style={{
+              fontSize: 14,
+              marginTop: 40,
+              color: Color.wHITESPORTSMATCH,
+              fontWeight: '400',
+              alignSelf: 'center',
+              textAlign: 'left',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
             {externalId
               ? 'El usuario aun no tiene publicaciones'
               : 'No tienes publicaciones'}
@@ -118,19 +132,21 @@ const Feed = ({ externalId }) => {
           onSelectItem={async (e) => {
             if (e === 'Fijar post') {
               await axiosInstance.patch(`post/${postSelected.id}`, {
-                prop1: { pined: true },
-              });
+                prop1: { pined: true }
+              })
             }
             if (e === 'Quitar post fijo') {
-              await axiosInstance.patch(`post/${postSelected.id}`, { prop1: null });
+              await axiosInstance.patch(`post/${postSelected.id}`, {
+                prop1: null
+              })
             }
-            dispatch(getAllPosts());
+            dispatch(getAllPosts())
           }}
           closeModal={() => setModal(false)}
         />
       )}
     </View>
-  );
+  )
 }
 const screenWidth = Dimensions.get('window').width
 const itemSize = (screenWidth * 0.9 + 10) / 3
@@ -162,7 +178,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_10xs,
     height: 160,
     alignSelf: 'stretch',
-    width: "100%",
+    width: '100%',
     overflow: 'hidden'
   }
 })

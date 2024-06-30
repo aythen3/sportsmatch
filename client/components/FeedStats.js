@@ -15,57 +15,46 @@ const FeedStats = () => {
 
   const opciones = {
     futbol: [
-      "Portero",
-      "Lateral",
-      "Central",
-      "Mediocentro",
-      "Interior",
-      "Extremo",
-      "Mediapunta",
-      "Delantero centro"
+      'Portero',
+      'Lateral',
+      'Central',
+      'Mediocentro',
+      'Interior',
+      'Extremo',
+      'Mediapunta',
+      'Delantero centro'
     ],
-    baloncesto: [
-      "Base",
-      "Escolta",
-      "Alero",
-      "Ala-pivot",
-      "Pivot"
-    ],
-    futbolSala: [
-      "Portero",
-      "Cierre",
-      "Ala",
-      "Pivot"
-    ],
-    hockey: [
-      "Portero",
-      "Jugador"
-    ],
+    baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
+    futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
+    hockey: ['Portero', 'Jugador'],
     voleibol: [
-      "Colocador",
-      "Rematador externo",
-      "Rematador opuesto",
-      "Central",
-      "Libero",
-      "Receptor/zaguero"
+      'Colocador',
+      'Rematador externo',
+      'Rematador opuesto',
+      'Central',
+      'Libero',
+      'Receptor/zaguero'
     ],
     handball: [
-      "Portero",
-      "Central",
-      "Ala derecha",
-      "Ala izquierda",
-      "Pivot",
-      "Extremo derecho",
-      "Extremo izquierdo"
+      'Portero',
+      'Central',
+      'Ala derecha',
+      'Ala izquierda',
+      'Pivot',
+      'Extremo derecho',
+      'Extremo izquierdo'
     ]
   }
 
   const selectores = () => {
     if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones.futbol)
-    if (sportman?.info?.sport === 'Fútbol Sala') setSelectedOptions(opciones.futbolSala)
-    if (sportman?.info?.sport === 'Básquetbol') setSelectedOptions(opciones.baloncesto)
+    if (sportman?.info?.sport === 'Fútbol Sala')
+      setSelectedOptions(opciones.futbolSala)
+    if (sportman?.info?.sport === 'Básquetbol')
+      setSelectedOptions(opciones.baloncesto)
     if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones.hockey)
-    if (sportman?.info?.sport === 'Handball') setSelectedOptions(opciones.handball)
+    if (sportman?.info?.sport === 'Handball')
+      setSelectedOptions(opciones.handball)
     if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones.voleibol)
   }
   useEffect(() => {
@@ -229,51 +218,48 @@ const FeedStats = () => {
               style={{
                 marginTop: 30,
                 width: '95%',
-                gap:10
+                gap: 10
               }}
             >
-
-              {selectedOptions && selectedOptions.map((opt,i)=>(
-                 <View
-                 style={{
-                   flexDirection: 'row',
-                   alignItems: 'flex-end',
-                   justifyContent: 'space-between'
-                 }}
-               >
-                 <View>
-                   <Text
-                     style={{
-                       lineHeight: 14,
-                       marginBottom: 2,
-                       fontSize: 13,
-                       textAlign: 'left',
-                       color: Color.gREY2SPORTSMATCH,
-                       fontFamily: FontFamily.t4TEXTMICRO
-                     }}
-                   >
-                     {selectedOptions[i]}
-                   </Text>
-                   <BarStatSVG
-                     color={mainColor}
-                     value={sportman?.info[`prop${i+1}`] || 0}
-                   />
-                 </View>
-                 <Text
-                   style={{
-                     textAlign: 'right',
-                     color: Color.gREY2SPORTSMATCH,
-                     fontSize: FontSize.t2TextSTANDARD_size,
-                     fontFamily: FontFamily.t4TEXTMICRO
-                   }}
-                 >
-                   {sportman?.info[`prop${i+1}`] || 0}
-                 </Text>
-               </View>
-              ))}
-
-
-            
+              {selectedOptions &&
+                selectedOptions.map((opt, i) => (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <View>
+                      <Text
+                        style={{
+                          lineHeight: 14,
+                          marginBottom: 2,
+                          fontSize: 13,
+                          textAlign: 'left',
+                          color: Color.gREY2SPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO
+                        }}
+                      >
+                        {selectedOptions[i]}
+                      </Text>
+                      <BarStatSVG
+                        color={mainColor}
+                        value={sportman?.info[`prop${i + 1}`] || 0}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        textAlign: 'right',
+                        color: Color.gREY2SPORTSMATCH,
+                        fontSize: FontSize.t2TextSTANDARD_size,
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
+                      {sportman?.info[`prop${i + 1}`]}
+                    </Text>
+                  </View>
+                ))}
             </View>
           )}
 

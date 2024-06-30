@@ -22,6 +22,7 @@ export const getAllClubs = createAsyncThunk('getAll/club', async () => {
 
 export const getClub = createAsyncThunk('get/club', async (id) => {
   try {
+    console.log('getting club data of', id)
     const { data } = await axiosInstance.get(`club/${id}`)
     return data
   } catch (error) {
@@ -32,6 +33,7 @@ export const getClub = createAsyncThunk('get/club', async (id) => {
 export const updateClubData = createAsyncThunk(
   'updateClubData/club',
   async ({ id, body }) => {
+    console.log('updating club data with ', body)
     try {
       const { data } = await axiosInstance.patch(`club/${id}`, body)
       return data

@@ -56,13 +56,22 @@ const MiPerfil = () => {
     setIsTruncated(!isTruncated)
   }
 
-  return (
-    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-      <StatusBar translucent={true} backgroundColor={'transparent'} />
+  console.log('sportman', sportman.info)
 
-      <ScrollView
-        keyboardShouldPersistTaps={'always'}
-        style={{ backgroundColor: Color.bLACK1SPORTSMATCH, overflow: 'hidden' }}
+  return (
+    <ScrollView
+      keyboardShouldPersistTaps={'always'}
+      style={{
+        flex: 1,
+        backgroundColor: Color.bLACK1SPORTSMATCH
+      }}
+    >
+      <StatusBar translucent={true} backgroundColor={'transparent'} />
+      <View
+        style={{
+          backgroundColor: Color.bLACK1SPORTSMATCH,
+          overflow: 'hidden'
+        }}
       >
         <View>
           {sportman?.info?.img_front === '' ? (
@@ -262,8 +271,8 @@ const MiPerfil = () => {
           </View>
           {renderContent()}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   )
 }
 

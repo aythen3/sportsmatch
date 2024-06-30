@@ -31,48 +31,34 @@ const PerfilFeedVisualitzaciJug = () => {
 
   const opciones = {
     futbol: [
-      "Portero",
-      "Lateral",
-      "Central",
-      "Mediocentro",
-      "Interior",
-      "Extremo",
-      "Mediapunta",
-      "Delantero centro"
+      'Portero',
+      'Lateral',
+      'Central',
+      'Mediocentro',
+      'Interior',
+      'Extremo',
+      'Mediapunta',
+      'Delantero centro'
     ],
-    baloncesto: [
-      "Base",
-      "Escolta",
-      "Alero",
-      "Ala-pivot",
-      "Pivot"
-    ],
-    futbolSala: [
-      "Portero",
-      "Cierre",
-      "Ala",
-      "Pivot"
-    ],
-    hockey: [
-      "Portero",
-      "Jugador"
-    ],
+    baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
+    futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
+    hockey: ['Portero', 'Jugador'],
     voleibol: [
-      "Colocador",
-      "Rematador externo",
-      "Rematador opuesto",
-      "Central",
-      "Libero",
-      "Receptor/zaguero"
+      'Colocador',
+      'Rematador externo',
+      'Rematador opuesto',
+      'Central',
+      'Libero',
+      'Receptor/zaguero'
     ],
     handball: [
-      "Portero",
-      "Central",
-      "Ala derecha",
-      "Ala izquierda",
-      "Pivot",
-      "Extremo derecho",
-      "Extremo izquierdo"
+      'Portero',
+      'Central',
+      'Ala derecha',
+      'Ala izquierda',
+      'Pivot',
+      'Extremo derecho',
+      'Extremo izquierdo'
     ]
   }
   const selectores = () => {
@@ -296,53 +282,53 @@ const PerfilFeedVisualitzaciJug = () => {
                   style={{
                     marginTop: 30,
                     width: '95%',
-                    gap:10
+                    gap: 10
                   }}
                 >
-
-
-                  {selectedOptions && selectedOptions.map((opt, i) => (
-                    <View
-                    key={i}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-end',
-                        justifyContent: 'space-between'
-                      }}
-                    >
-                      <View>
+                  {selectedOptions &&
+                    selectedOptions.map((opt, i) => (
+                      <View
+                        key={i}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'flex-end',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <View>
+                          <Text
+                            style={{
+                              lineHeight: 14,
+                              marginBottom: 2,
+                              fontSize: 13,
+                              textAlign: 'left',
+                              color: Color.gREY2SPORTSMATCH,
+                              fontFamily: FontFamily.t4TEXTMICRO
+                            }}
+                          >
+                            {selectedOptions[i]}
+                          </Text>
+                          <BarStatSVG
+                            color={mainColor}
+                            value={
+                              data?.author?.sportman?.info[`prop${i + 1}`] || 0
+                            }
+                          />
+                        </View>
                         <Text
                           style={{
-                            lineHeight: 14,
-                            marginBottom: 2,
-                            fontSize: 13,
-                            textAlign: 'left',
+                            textAlign: 'right',
                             color: Color.gREY2SPORTSMATCH,
+                            fontSize: FontSize.t2TextSTANDARD_size,
                             fontFamily: FontFamily.t4TEXTMICRO
                           }}
                         >
-                          {selectedOptions[i]}
+                          {data?.author?.sportman?.info[`prop${i + 1}`] || 0}
                         </Text>
-                        <BarStatSVG
-                          color={mainColor}
-                          value={data?.author?.sportman?.info[`prop${i + 1}`] || 0}
-                        />
                       </View>
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          color: Color.gREY2SPORTSMATCH,
-                          fontSize: FontSize.t2TextSTANDARD_size,
-                          fontFamily: FontFamily.t4TEXTMICRO
-                        }}
-                      >
-                        {data?.author?.sportman?.info[`prop${i + 1}`] || 0}
-                      </Text>
-                    </View>
-                  ))}
+                    ))}
 
-
-{/* 
+                  {/* 
                   <View
                     style={{
                       flexDirection: 'row',
