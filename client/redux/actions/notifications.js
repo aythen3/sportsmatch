@@ -38,6 +38,7 @@ export const getNotificationsByUserId = createAsyncThunk(
 export const sendNotification = createAsyncThunk(
   'sendNotification',
   async (body) => {
+    console.log('sending notification', body)
     try {
       const { data } = await axiosInstance.post('notification', body)
       return data

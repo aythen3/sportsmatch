@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
@@ -20,10 +20,13 @@ import {
 } from '../redux/actions/notifications'
 import { updateUser } from '../redux/slices/users.slices'
 import axiosInstance from '../utils/apiBackend'
+import { Context } from '../context/Context'
+import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 
 const Notifications = ({ data }) => {
   const _ = require('lodash')
   const [isMatch, setIsMatch] = useState(false)
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [details, setDetails] = useState(false)
   const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
@@ -45,9 +48,14 @@ const Notifications = ({ data }) => {
 
   const userFollowing = user?.user?.following || []
 
+  useEffect(() => {
+    // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
+    // console.log('notif data', data.prop1.userData?.user?.sportman)
+  }, [])
+
   return (
     <TouchableOpacity
-      style={{ marginTop: 20 , paddingHorizontal:5 }}
+      style={{ paddingHorizontal: 10 }}
       onPress={async () => {
         if (!data.read) {
           await axiosInstance
@@ -98,15 +106,107 @@ const Notifications = ({ data }) => {
             {data.message}
           </Text>
           {data.title === 'Follow' && (
-            <Text style={[styles.ayer, styles.ayerTypo]}>
-              {formatDate(data.date)}
-            </Text>
+            <View>
+              <Text
+                style={{
+                  color: Color.gREY2SPORTSMATCH,
+                  fontSize: FontSize.t1TextSMALL_size,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                {formatDate(data.date)}
+              </Text>
+              {data.title === 'Inscripción' && (
+                <Image
+                  style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                  contentFit="contain"
+                  source={require('../assets/matchButton.png')}
+                />
+              )}
+            </View>
           )}
         </View>
         {data.title !== 'Follow' && (
-          <Text style={[styles.ayer, styles.ayerTypo]}>
-            {formatDate(data.date)}
-          </Text>
+          <View
+            style={{
+              alignItems: 'flex-end'
+            }}
+          >
+            <Text
+              style={{
+                color: Color.gREY2SPORTSMATCH,
+                fontSize: FontSize.t1TextSMALL_size,
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              {formatDate(data.date)}
+            </Text>
+            {data.title === 'Inscripción' &&
+              clubMatches.filter((match) => {
+                if (match?.prop1?.sportManData?.userId === data.prop1.userId) {
+                  return true
+                }
+                return false
+              }).length === 0 && (
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('sendind match to', data.prop1.userId)
+                    dispatch(
+                      sendMatch({
+                        sportmanId: data.prop1.userData?.user?.sportman.id,
+                        clubId: user?.user?.club?.id,
+                        status: 'success',
+                        prop1: {
+                          clubId: user?.user?.club?.id,
+                          sportmanId: data.prop1.userData?.user?.sportman.id,
+                          sportManData: {
+                            userId: data.prop1.userId,
+                            profilePic:
+                              data.prop1.userData?.user?.sportman.info
+                                .img_perfil,
+                            name: data.prop1.userData?.user?.sportman.info
+                              .nickname
+                          },
+                          clubData: {
+                            userId: user?.user?.id,
+                            name: user?.user?.nickname,
+                            profilePic: user?.user?.club?.img_perfil
+                          }
+                        }
+                      })
+                    )
+                      .then((res) => {
+                        console.log('response from send match', data)
+                        dispatch(
+                          sendNotification({
+                            title: 'Match',
+                            message: 'Has hecho match!',
+                            recipientId: data.prop1.userId,
+                            date: new Date(),
+                            read: false,
+                            prop1: {
+                              matchId: res?.payload?.id,
+                              clubData: {
+                                name: user?.user?.nickname,
+                                userId: user?.user?.id,
+                                ...user?.user?.club
+                              }
+                            }
+                          })
+                        )
+                      })
+                      .then((data) => dispatch(getAllMatchs()))
+                      .then((data) => getClubMatches())
+                  }}
+                >
+                  <Image
+                    style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                    contentFit="contain"
+                    source={require('../assets/matchButton.png')}
+                  />
+                </TouchableOpacity>
+              )}
+          </View>
         )}
         {data.title === 'Follow' &&
           !user?.user?.following?.includes(data.prop1.userId) && (

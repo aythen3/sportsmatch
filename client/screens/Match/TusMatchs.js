@@ -56,6 +56,22 @@ const TusMatchs = () => {
     //   dispatch(getClubMatchs(user.user.club.id))
     // }
     dispatch(getAllMatchs())
+    console.log(
+      'clubmatches',
+      clubMatches
+        .filter((match) => match.status === 'success')
+        .reduce(
+          (accumulator, current) => {
+            const userId = current.prop1.sportManData.userId
+            if (!accumulator.seenIds.has(userId)) {
+              accumulator.seenIds.add(userId)
+              accumulator.filteredArray.push(current)
+            }
+            return accumulator
+          },
+          { seenIds: new Set(), filteredArray: [] }
+        ).filteredArray
+    )
   }, [])
 
   const [details, setDetails] = useState(false)
@@ -139,7 +155,18 @@ const TusMatchs = () => {
           <View>
             {userMatches
               .filter((match) => match.status === 'success')
-              .map((match, index) => (
+              .reduce(
+                (accumulator, current) => {
+                  const userId = current.prop1.sportManData.userId
+                  if (!accumulator.seenIds.has(userId)) {
+                    accumulator.seenIds.add(userId)
+                    accumulator.filteredArray.push(current)
+                  }
+                  return accumulator
+                },
+                { seenIds: new Set(), filteredArray: [] }
+              )
+              .filteredArray.map((match, index) => (
                 <View key={index} style={{ marginTop: 14, width: '100%' }}>
                   <Pressable
                     onPress={() => {
@@ -194,7 +221,7 @@ const TusMatchs = () => {
           </View>
         )}
 
-{user?.user?.type === 'sportman' &&
+      {user?.user?.type === 'sportman' &&
         userMatches.filter((match) => match.status === 'pending').length >
           0 && (
           <View>
@@ -254,7 +281,7 @@ const TusMatchs = () => {
               ))}
           </View>
         )}
-{/* {user?.user?.type === 'sportman' &&
+      {/* {user?.user?.type === 'sportman' &&
         userMatches.filter((match) => match.status === 'pending').length >
           0 && (
           <View>
@@ -339,7 +366,18 @@ const TusMatchs = () => {
         <View>
           {clubMatches
             .filter((match) => match.status === 'success')
-            .map((match, index) => (
+            .reduce(
+              (accumulator, current) => {
+                const userId = current.prop1.sportManData.userId
+                if (!accumulator.seenIds.has(userId)) {
+                  accumulator.seenIds.add(userId)
+                  accumulator.filteredArray.push(current)
+                }
+                return accumulator
+              },
+              { seenIds: new Set(), filteredArray: [] }
+            )
+            .filteredArray.map((match, index) => (
               <View key={index} style={{ marginTop: 14, width: '100%' }}>
                 <Pressable
                   onPress={() => {
@@ -394,7 +432,7 @@ const TusMatchs = () => {
         </View>
       )}
 
-{user?.user?.type === 'club' && clubMatches?.length > 0 && (
+      {user?.user?.type === 'club' && clubMatches?.length > 0 && (
         <View>
           {clubMatches
             .filter((match) => match.status === 'pending')

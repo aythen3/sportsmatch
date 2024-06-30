@@ -97,7 +97,7 @@ const TusNotificaciones1 = () => {
   //   getAllUsersMessages()
   // },[])
 
-   // useEffect(() => {
+  // useEffect(() => {
   //   offers.forEach((offer) => {
   //     axiosInstance.delete(`offer/${offer.id}`)
   //   })
@@ -121,7 +121,6 @@ const TusNotificaciones1 = () => {
   // useEffect(()=>{
   //   getAllUsersMessages()
   // },[])
-
 
   useEffect(() => {
     getUsersMessages()
@@ -198,7 +197,16 @@ const TusNotificaciones1 = () => {
               (notification) => notification.recipientId === userId
             ).length > 0 &&
               allNotifications
-                ?.filter((notification) => notification.recipientId === userId)
+                ?.filter((notification) => {
+                  if (user?.user?.type === 'club') {
+                    notification.recipientId === user.user.club.id
+                    return true
+                  } else if (notification.recipientId === userId) {
+                    return true
+                  } else {
+                    return false
+                  }
+                })
                 .filter((notif) => !notif.read).length > 0 && (
                 <View
                   style={{
@@ -217,11 +225,30 @@ const TusNotificaciones1 = () => {
 
         {selectedComponent === 'notifications' && (
           <ScrollView>
-            {allNotifications?.filter(
-              (notification) => notification.recipientId === userId
-            ).length > 0 ? (
+            {allNotifications?.filter((notification) => {
+              if (user?.user?.type === 'club') {
+                if (user?.user?.type === 'club') {
+                  notification.recipientId === user.user.club.id
+                  return true
+                } else if (notification.recipientId === userId) {
+                  return true
+                } else {
+                  return false
+                }
+              }
+              notification.recipientId === userId
+            }).length > 0 ? (
               allNotifications
-                ?.filter((notification) => notification.recipientId === userId)
+                ?.filter((notification) => {
+                  if (user?.user?.type === 'club') {
+                    notification.recipientId === user.user.club.id
+                    return true
+                  } else if (notification.recipientId === userId) {
+                    return true
+                  } else {
+                    return false
+                  }
+                })
                 .map((notification) => <Notifications data={notification} />)
             ) : (
               <View
