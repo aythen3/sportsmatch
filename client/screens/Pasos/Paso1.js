@@ -247,7 +247,7 @@ const Paso1 = () => {
 
           nickname: user?.user?.nickname || '',
           city: sportmanValues.city || '',
-          position: data?.position || ''
+          position: selectPosition || ''
         }
         const body = {
           sportmanData: {
@@ -524,7 +524,7 @@ const Paso1 = () => {
                 !sportman && !profesional
                   ? 1
                   : (sportman && stepsSportman === 0) ||
-                    (profesional && stepsProfesional === 0)
+                      (profesional && stepsProfesional === 0)
                     ? 2
                     : stepsProfesional === 1 || stepsSportman === 1
                       ? 3
@@ -537,12 +537,13 @@ const Paso1 = () => {
         </View>
       </View>
 
-      <View
-        style={{
-          height: '100%',
+      <ScrollView
+        contentContainerStyle={{
           justifyContent: 'space-between',
-          flex: 1,
           paddingTop: '6%'
+        }}
+        style={{
+          flex: 1
         }}
       >
         {!sportman && !profesional && !invitado && (
@@ -580,7 +581,7 @@ const Paso1 = () => {
                 style={[
                   styles.rectangulo,
                   selectedRole === 'Profesional del deporte' &&
-                  styles.selectedBackground
+                    styles.selectedBackground
                 ]}
                 onPress={() => handleRoleSelection('Profesional del deporte')}
               >
@@ -589,7 +590,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                    styles.selectedText
+                      styles.selectedText
                   ]}
                 >
                   Profesional del deporte
@@ -618,7 +619,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                    styles.selectedText
+                      styles.selectedText
                   ]}
                 >
                   Invitado
@@ -699,7 +700,7 @@ const Paso1 = () => {
             <Text style={styles.siguiente1}>Siguiente</Text>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </View>
   )
 }

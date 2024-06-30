@@ -28,7 +28,6 @@ const HeaderPerfil = ({
   button2,
   setSelectComponents,
   selectComponents,
-  club,
   myPerfil,
   position,
   sport,
@@ -45,12 +44,15 @@ const HeaderPerfil = ({
   )
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
+  const { club } = useSelector((state) => state.clubs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [matchSended, setMatchSended] = useState(false)
   const [liked, setLiked] = useState(false)
   const [isTruncated, setIsTruncated] = useState(true)
 
   const { sportman } = useSelector((state) => state.sportman)
+
+  console.log('club==============', club)
 
   const getOffersById = async (id) => {
     const { data } = await axiosInstance.get('offer')
@@ -930,7 +932,7 @@ const HeaderPerfil = ({
                   textAlign: 'center'
                 }}
               >
-                {user.user.club.year}
+                {club.year}
               </Text>
               <Text
                 style={{
@@ -974,7 +976,7 @@ const HeaderPerfil = ({
                   textAlign: 'center'
                 }}
               >
-                {user.user.club.capacity}
+                {club.capacity}
               </Text>
               <Text
                 style={{

@@ -31,6 +31,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
 import axiosInstance from '../utils/apiBackend'
 import CustomHeaderBack from '../components/CustomHeaderBack'
+import { sendNotification } from '../redux/actions/notifications'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -47,8 +48,11 @@ const TodasLasOfertas = () => {
   const [planSelected, setPlanSelected] = useState('')
   const [selectedSports, setSelectedSports] = useState([])
   const [byRelevance, setByRelevance] = useState(false)
-
   const [offer, setOffer] = useState([])
+
+  useEffect(() => {
+    console.log('USER.USER', user.user)
+  }, [])
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -124,13 +128,16 @@ const TodasLasOfertas = () => {
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
+  useEffect(() => {
+    console.log('offers changed on alloffers', offers)
+  }, [offers])
 
-  console.log(
-    'O============OOFFERS',
-    offers.map((off) => {
-      return `${off?.inscriptions?.length || 0} ${off?.posit}`
-    })
-  )
+  // console.log(
+  //   'O============OOFFERS',
+  //   offers.map((off) => {
+  //     return `${off?.inscriptions?.length || 0} ${off?.posit}`
+  //   })
+  // )
 
   return (
     <View style={styles.todasLasOfertas}>
@@ -268,7 +275,7 @@ const TodasLasOfertas = () => {
               .sort((a, b) => {
                 const first = a.inscriptions?.length || 0
                 const second = b.inscriptions?.length || 0
-                console.log('first', first, 'second', second)
+                // console.log('first', first, 'second', second)
 
                 return byRelevance ? second - first : first - second
               })
@@ -352,14 +359,32 @@ const TodasLasOfertas = () => {
                               user?.user?.sportman?.id
                             )
                           ) {
-                            console.log('offer', offer)
-                            console.log('sp id: ', user?.user?.sportman?.id)
+                            // console.log('offer', offer)
+                            // console.log('sp id: ', user?.user?.sportman?.id)
                             dispatch(
                               signToOffer({
                                 offerId: offer?.id,
                                 userId: user?.user?.sportman?.id
                               })
                             ).then((data) => {
+                              dispatch(
+                                sendNotification({
+                                  title: 'Inscripción',
+                                  message: `${user.user.nickname} se ha inscrito a tu oferta`,
+                                  recipientId: offer.clubId,
+                                  date: new Date(),
+                                  read: false,
+                                  prop2: {
+                                    rol: 'club'
+                                  },
+                                  prop1: {
+                                    userId: user?.user?.id,
+                                    userData: {
+                                      ...user
+                                    }
+                                  }
+                                })
+                              )
                               ToastAndroid.show(
                                 'Te has inscrito en la oferta!',
                                 ToastAndroid.SHORT

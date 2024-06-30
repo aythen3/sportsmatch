@@ -14,7 +14,7 @@ import { FontFamily } from '../../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { Context } from '../../../../context/Context'
-import { updateClubData } from '../../../../redux/actions/club'
+import { getClub, updateClubData } from '../../../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
@@ -117,7 +117,9 @@ const ClubDetails = () => {
       }
       return acc
     }, {})
-    dispatch(updateClubData({ id: club.id, body: filteredData }))
+    dispatch(updateClubData({ id: club.id, body: filteredData })).then((res) =>
+      dispatch(getClub(club.id))
+    )
     setProfileImage()
     setCoverImage()
     navigation.navigate('PerfilDatosPropioClub')

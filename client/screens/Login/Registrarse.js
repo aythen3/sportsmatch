@@ -110,9 +110,16 @@ const Registrarse = () => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.registrarse}>
+    <View
+      style={{
+        overflow: 'hidden',
+        width: '100%',
+        flex: 1,
+        backgroundColor: Color.bLACK1SPORTSMATCH
+      }}
+    >
       <HomeGif></HomeGif>
-      <View style={styles.contenido}>
+      <View style={{ marginTop: '13%', height: '100%' }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack()
@@ -430,7 +437,7 @@ const Registrarse = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -648,7 +655,8 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   contenido: {
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    marginTop: '15%',
     height: '100%'
   },
   fondoIcon: {

@@ -28,6 +28,7 @@ import { Context } from '../../../context/Context'
 import { deletePost, getAllPosts } from '../../../redux/actions/post'
 
 const Post = () => {
+  const { allPosts } = useSelector((state) => state.post)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -40,128 +41,131 @@ const Post = () => {
 
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params
+  const actualPost = allPosts.filter((post) => post.id === item.id)[0]
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:"black"}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <CustomHeaderBack header={'Post'}></CustomHeaderBack>
-      <View style={{ paddingBottom: 40,marginTop:-10 ,paddingHorizontal:10}}>
-        <Carousel
-          fromProfile={true}
-          setShowDeletePostModal={setShowDeletePostModalFromProfile}
-          showDeletePostModal={showDeletePostModalFromProfile}
-          key={item.id}
-          name={item?.author?.nickname}
-          description={item.description}
-          imgPerfil={
-            item?.author?.sportman
-              ? item?.author?.sportman?.info?.img_front
-              : item?.author?.club?.img_perfil
-          }
-          image={[...new Set(item?.image)]}
-          club={item?.club === user?.user?.type}
-          likes={item?.likes}
-          commentCount={item?.commentCount}
-          index={page}
-          id={item?.id}
-          userId={user?.user?.id}
-          authorId={item.author.id}
-          data={item}
-        />
-      </View>
-      <Modal visible={showDeletePostModalFromProfile} transparent={true}>
-        <TouchableWithoutFeedback
-          onPress={() => setShowDeletePostModalFromProfile(false)}
+        <CustomHeaderBack header={'Post'}></CustomHeaderBack>
+        <View
+          style={{ paddingBottom: 40, marginTop: -10, paddingHorizontal: 10 }}
         >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
+          <Carousel
+            fromProfile={true}
+            setShowDeletePostModal={setShowDeletePostModalFromProfile}
+            showDeletePostModal={showDeletePostModalFromProfile}
+            key={item.id}
+            name={item?.author?.nickname}
+            description={item.description}
+            imgPerfil={
+              item?.author?.sportman
+                ? item?.author?.sportman?.info?.img_front
+                : item?.author?.club?.img_perfil
+            }
+            image={[...new Set(item?.image)]}
+            club={item?.club === user?.user?.type}
+            likes={actualPost?.likes}
+            commentCount={actualPost?.commentCount}
+            index={page}
+            id={item?.id}
+            userId={user?.user?.id}
+            authorId={item.author.id}
+            data={item}
+          />
+        </View>
+        <Modal visible={showDeletePostModalFromProfile} transparent={true}>
+          <TouchableWithoutFeedback
+            onPress={() => setShowDeletePostModalFromProfile(false)}
           >
             <View
               style={{
-                width: 300,
-                height: 200,
-                backgroundColor: '#292929',
-                borderRadius: 10,
-                padding: 20,
-                alignItems: 'center',
-                justifyContent: 'space-between'
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.3)',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
-              <Text
-                style={{
-                  fontWeight: '600',
-                  fontSize: 18,
-                  color: '#fff',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  width: '70%',
-                  textAlign: 'center'
-                }}
-              >
-                ¿Estás seguro que quieres eliminar esta publicación?
-              </Text>
-              <Pressable
-                onPress={() => {
-                  console.log('Cancel pressed')
-                  setShowDeletePostModalFromProfile(false)
-                }}
-                style={{
-                  width: '100%',
-                  gap: 5,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: '#949494',
-                    fontFamily: FontFamily.t4TEXTMICRO,
-                    textAlign: 'center'
-                  }}
-                >
-                  Cancelar
-                </Text>
-              </Pressable>
               <View
                 style={{
-                  height: 1,
-                  backgroundColor: Color.colorDimgray_100,
-                  width: '100%'
-                }}
-              />
-              <Pressable
-                onPress={() => {
-                  console.log('Deleting post', selectedPost)
-                  setShowDeletePostModalFromProfile(false)
-                  navigation.goBack()
-                  if (selectedPost) {
-                    dispatch(deletePost(selectedPost)).then((res) =>
-                      dispatch(getAllPosts())
-                    )
-                  }
+                  width: 300,
+                  height: 200,
+                  backgroundColor: '#292929',
+                  borderRadius: 10,
+                  padding: 20,
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}
               >
                 <Text
                   style={{
+                    fontWeight: '600',
                     fontSize: 18,
                     color: '#fff',
                     fontFamily: FontFamily.t4TEXTMICRO,
+                    width: '70%',
                     textAlign: 'center'
                   }}
                 >
-                  Eliminar
+                  ¿Estás seguro que quieres eliminar esta publicación?
                 </Text>
-              </Pressable>
+                <Pressable
+                  onPress={() => {
+                    console.log('Cancel pressed')
+                    setShowDeletePostModalFromProfile(false)
+                  }}
+                  style={{
+                    width: '100%',
+                    gap: 5,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: '#949494',
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      textAlign: 'center'
+                    }}
+                  >
+                    Cancelar
+                  </Text>
+                </Pressable>
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: Color.colorDimgray_100,
+                    width: '100%'
+                  }}
+                />
+                <Pressable
+                  onPress={() => {
+                    console.log('Deleting post', selectedPost)
+                    setShowDeletePostModalFromProfile(false)
+                    navigation.goBack()
+                    if (selectedPost) {
+                      dispatch(deletePost(selectedPost)).then((res) =>
+                        dispatch(getAllPosts())
+                      )
+                    }
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: '#fff',
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      textAlign: 'center'
+                    }}
+                  >
+                    Eliminar
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-    </ScrollView>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     gap: 20,
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
   atrsTypo: {
     fontFamily: FontFamily.t4TEXTMICRO,

@@ -7,7 +7,8 @@ import {
   TextInput,
   Modal,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -80,7 +81,10 @@ const TusMatchs = () => {
   // }, [])
 
   return (
-    <View style={styles.tusMatchs}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 50 }}
+      style={styles.tusMatchs}
+    >
       <TouchableOpacity
         onPress={() => {
           navigation.goBack()
@@ -317,7 +321,7 @@ const TusMatchs = () => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </View>
+    </ScrollView>
   )
 }
 
