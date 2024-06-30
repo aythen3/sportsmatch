@@ -17,9 +17,10 @@ import { setClub } from '../../redux/slices/club.slices'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
+import { getAllPosts } from '../../redux/actions/post'
 
 export const detectSportColor = (sport, dispatch) => {
-  console.log(sport,"me llega sport")
+  console.log(sport, "me llega sport")
   if (sport == 'Fútbol Sala') {
     dispatch(setMainColor('#0062FF'))
   }
@@ -64,7 +65,7 @@ const PantallaInicio = () => {
             } else {
               detectSportColor(
                 response.payload.user.sportman?.info?.sport ||
-                  response?.payload?.user?.club?.sport,
+                response?.payload?.user?.club?.sport,
                 dispatch
               )
             }

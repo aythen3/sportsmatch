@@ -63,7 +63,7 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           <Image
             style={{ width: 50, height: 50, borderRadius: 100 }}
             contentFit="cover"
-            source={{ uri: data.sportman.info.img_perfil }}
+            source={{ uri: data?.sportman?.info?.img_perfil }}
           />
           <Text
             style={{
@@ -78,22 +78,22 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           </Text>
         </View>
         <Text style={[styles.masculino, styles.cmTypo]}>
-          {data.sportman.info.gender}
+          {data?.sportman.info.gender}
         </Text>
         <Text style={[styles.text, styles.cmTypo]}>
-          {getUserAge(data.sportman.info.birthdate)}
+          {getUserAge(data?.sportman.info.birthdate)}
         </Text>
         <Text style={[styles.snior, styles.cmTypo]}>
-          {data.sportman.info.category}
+          {data?.sportman.info.category}
         </Text>
         <Text style={[styles.pvot, styles.cmTypo]}>
-          {data.sportman.info.position}
+          {data?.sportman.info.position}
         </Text>
         <Text style={[styles.cm, styles.cmTypo]}>
-          {data.sportman.info.height}
+          {data?.sportman.info.height}
         </Text>
         <Text style={[styles.matar, styles.cmTypo]}>
-          {data.sportman.info.city}
+          {data?.sportman.info.city}
         </Text>
         <View style={[styles.ellipseParent, styles.ellipseParentPosition]}>
           <Image

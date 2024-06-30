@@ -135,7 +135,7 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    {sportman?.info.attack}
+                    {sportman?.info.attack || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
                 </View>
@@ -169,7 +169,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.defense}
+                    {sportman?.info.defense || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
                 </View>
@@ -203,7 +203,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.speed}
+                    {sportman?.info.speed || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>
                     Velocidad
@@ -333,7 +333,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.height || '-'}cm
+                    {sportman?.info.height || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>

@@ -5,6 +5,8 @@ import { NotificationEntity } from './entities/notification.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ClubEntity } from 'src/club/entities/club.entity';
+
 
 @Injectable()
 export class NotificationService {
@@ -12,29 +14,39 @@ export class NotificationService {
     @InjectRepository(NotificationEntity)
     private readonly notificationsRepository: Repository<NotificationEntity>,
     @InjectRepository(UserEntity)
-    private readonly usersRepository: Repository<UserEntity>
+    private readonly usersRepository: Repository<UserEntity>,
+    @InjectRepository(ClubEntity)
+    private readonly clubsRepository: Repository<ClubEntity>
   ) {}
 
   public async createService(createNotificationDto: CreateNotificationDto) {
-   //El que recive la notificacion
-    const user = await this.usersRepository
-      .createQueryBuilder('user')
-      .where({ id: createNotificationDto.recipientId })
-      .getOne();
-
-    if (!user) {
-      return(
-        `Usuario con ID ${createNotificationDto.recipientId} no encontrado`
-      );
+    let recipient;
+    const { rol } = createNotificationDto.prop2;
+  
+    if (rol === 'user') {
+      recipient = await this.usersRepository
+        .createQueryBuilder('user')
+        .where({ id: createNotificationDto.recipientId })
+        .getOne();
+    } else if (rol === 'club') {
+      recipient = await this.clubsRepository
+        .createQueryBuilder('club')
+        .where({ id: createNotificationDto.recipientId })
+        .getOne();
+    } else {
+      return `Rol no válido. Debe ser 'user' o 'club'`;
     }
-
-    const notification = this.notificationsRepository.create(
-      createNotificationDto
-    );
-    notification.recipientId = user.id;
-
+  
+    if (!recipient) {
+      return `Usuario o Club con ID ${createNotificationDto.recipientId} no encontrado`;
+    }
+  
+    const notification = this.notificationsRepository.create(createNotificationDto);
+    notification.recipientId = recipient.id;
+  
     return await this.notificationsRepository.save(notification);
   }
+  
 
   public async getAllService(query: { [key: string]: any }) {
     const where = { isDelete: false };

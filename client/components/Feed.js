@@ -35,11 +35,13 @@ const Feed = ({ externalId }) => {
   useEffect(() => {
     const userId = externalId || user.user.id
     const post = allPosts.filter(
-      (post) => post?.author?.id === userId && !post.prop1
+      (post) => post?.author?.id == userId && !post.prop1
     )
+    console.log(post, 'filtradoooalinicio')
     const postPined = allPosts.filter(
       (post) => post?.author?.id === userId && post.prop1
     )
+
     setUserPosts([...postPined, ...post])
 
     if (post[0]) {

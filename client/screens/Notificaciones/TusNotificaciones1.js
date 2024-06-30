@@ -97,6 +97,32 @@ const TusNotificaciones1 = () => {
   //   getAllUsersMessages()
   // },[])
 
+   // useEffect(() => {
+  //   offers.forEach((offer) => {
+  //     axiosInstance.delete(`offer/${offer.id}`)
+  //   })
+  //   allMatchs.forEach((match) => {
+  //     axiosInstance.delete(`match/${match.id}`)
+  //   })
+  //   allNotifications.forEach((notification) => {
+  //     axiosInstance.delete(`notification/${notification.id}`)
+  //   })
+  // }, [])
+
+  // const getAllUsersMessages = async () => {
+  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
+  //   filteredUsers.map(async user=>{
+  //     const { data } = await axiosInstance.get(
+  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
+  //     )
+  //     console.log('convmessages data from noti: ',data)
+  //   })
+  // }
+  // useEffect(()=>{
+  //   getAllUsersMessages()
+  // },[])
+
+
   useEffect(() => {
     getUsersMessages()
   }, [])

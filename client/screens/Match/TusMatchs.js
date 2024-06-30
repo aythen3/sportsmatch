@@ -194,6 +194,127 @@ const TusMatchs = () => {
           </View>
         )}
 
+{user?.user?.type === 'sportman' &&
+        userMatches.filter((match) => match.status === 'pending').length >
+          0 && (
+          <View>
+            {userMatches
+              .filter((match) => match.status === 'pending')
+              .map((match, index) => (
+                <View key={index} style={{ marginTop: 14, width: '100%' }}>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.fondoPastilla}
+                  >
+                    <Image
+                      style={styles.iconLayout}
+                      contentFit="cover"
+                      source={imageSource}
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.texto}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 15,
+                        marginTop: 9,
+                        marginLeft: 15,
+                        height: '100%',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40, borderRadius: 50 }}
+                        contentFit="cover"
+                        source={{ uri: match?.prop1?.clubData?.profilePic }}
+                      />
+                      <Text style={styles.clubBasquetLametlla}>
+                        {match?.prop1?.clubData?.name}
+                      </Text>
+                    </View>
+                  </Pressable>
+                </View>
+              ))}
+          </View>
+        )}
+{/* {user?.user?.type === 'sportman' &&
+        userMatches.filter((match) => match.status === 'pending').length >
+          0 && (
+          <View>
+            {userMatches
+              .filter((match) => match.status === 'pending')
+              .map((match, index) => (
+                <View key={index} style={{ marginTop: 14, width: '100%' }}>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.fondoPastilla}
+                  >
+                    <Image
+                      style={styles.iconLayout}
+                      contentFit="cover"
+                      source={imageSource}
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setDetails(true)
+                      setSelectedClubDetails(
+                        allUsers.filter(
+                          (user) => user.id === match.prop1.clubData.userId
+                        )[0]
+                      )
+                    }}
+                    style={styles.texto}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 15,
+                        marginTop: 9,
+                        marginLeft: 15,
+                        height: '100%',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40, borderRadius: 50 }}
+                        contentFit="cover"
+                        source={{ uri: match?.prop1?.clubData?.profilePic }}
+                      />
+                      <Text style={styles.clubBasquetLametlla}>
+                        {match?.prop1?.clubData?.name}
+                      </Text>
+                    </View>
+                  </Pressable>
+                </View>
+              ))}
+          </View>
+        )} */}
+
       {user?.user?.type === 'sportman' &&
         userMatches.filter((match) => match.status === 'success').length ===
           0 && (
@@ -218,6 +339,65 @@ const TusMatchs = () => {
         <View>
           {clubMatches
             .filter((match) => match.status === 'success')
+            .map((match, index) => (
+              <View key={index} style={{ marginTop: 14, width: '100%' }}>
+                <Pressable
+                  onPress={() => {
+                    setUserDetails(true)
+                    setSelectedUserDetails(
+                      allUsers.filter(
+                        (user) => user.id === match?.prop1?.sportManData?.userId
+                      )[0]
+                    )
+                  }}
+                  style={styles.fondoPastilla}
+                >
+                  <Image
+                    style={styles.iconLayout}
+                    contentFit="cover"
+                    source={imageSource}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setUserDetails(true)
+                    setSelectedUserDetails(
+                      allUsers.filter(
+                        (user) => user.id === match?.prop1?.sportManData?.userId
+                      )[0]
+                    )
+                  }}
+                  style={styles.texto}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 15,
+                      marginTop: 9,
+                      marginLeft: 15,
+                      height: '100%',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image
+                      style={{ width: 40, height: 40, borderRadius: 50 }}
+                      contentFit="cover"
+                      source={{ uri: match?.prop1?.sportManData?.profilePic }}
+                    />
+                    <Text style={styles.clubBasquetLametlla}>
+                      {match?.prop1?.sportManData?.name}
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
+            ))}
+        </View>
+      )}
+
+{user?.user?.type === 'club' && clubMatches?.length > 0 && (
+        <View>
+          {clubMatches
+            .filter((match) => match.status === 'pending')
             .map((match, index) => (
               <View key={index} style={{ marginTop: 14, width: '100%' }}>
                 <Pressable
