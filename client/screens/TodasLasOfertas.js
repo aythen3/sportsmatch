@@ -25,6 +25,7 @@ import { updateUser } from '../redux/slices/users.slices'
 import {
   getAllUsers,
   getUserData,
+  login,
   updateUserData
 } from '../redux/actions/users'
 import { FontAwesome } from '@expo/vector-icons'
@@ -32,6 +33,7 @@ import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
 import axiosInstance from '../utils/apiBackend'
 import CustomHeaderBack from '../components/CustomHeaderBack'
 import { sendNotification } from '../redux/actions/notifications'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -50,8 +52,19 @@ const TodasLasOfertas = () => {
   const [byRelevance, setByRelevance] = useState(false)
   const [offer, setOffer] = useState([])
 
+  const fetchUserData = async () => {
+    console.log('Fetching user data...')
+    const userData = await AsyncStorage.getItem('userAuth')
+    console.log('userData', userData)
+    dispatch(login(JSON.parse(userData)))
+  }
+
   useEffect(() => {
     console.log('USER.USER', user.user)
+    console.log('USER.USER.SPORTMAN', user.user.sportman)
+    if (!user?.user?.sportman) {
+      fetchUserData()
+    }
   }, [])
 
   useEffect(() => {
@@ -66,7 +79,7 @@ const TodasLasOfertas = () => {
   useEffect(() => {
     if (offers) {
       setOffer(offers)
-      console.log(offers)
+      // console.log(offers)
     }
   }, [offers])
 
@@ -129,7 +142,7 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
   useEffect(() => {
-    console.log('offers changed on alloffers', offers)
+    // console.log('offers changed on alloffers', offers)
   }, [offers])
 
   // console.log(
@@ -364,36 +377,38 @@ const TodasLasOfertas = () => {
                           ) {
                             // console.log('offer', offer)
                             // console.log('sp id: ', user?.user?.sportman?.id)
-                            dispatch(
-                              signToOffer({
-                                offerId: offer?.id,
-                                userId: user?.user?.sportman?.id
-                              })
-                            ).then((data) => {
+                            if (user?.user?.sportman) {
                               dispatch(
-                                sendNotification({
-                                  title: 'Inscripción',
-                                  message: `${user.user.nickname} se ha inscrito a tu oferta`,
-                                  recipientId: offer.clubId,
-                                  date: new Date(),
-                                  read: false,
-                                  prop2: {
-                                    rol: 'club'
-                                  },
-                                  prop1: {
-                                    userId: user?.user?.id,
-                                    userData: {
-                                      ...user
-                                    }
-                                  }
+                                signToOffer({
+                                  offerId: offer?.id,
+                                  userId: user?.user?.sportman?.id
                                 })
-                              )
-                              dispatch(getAllOffers())
-                              ToastAndroid.show(
-                                'Te has inscrito en la oferta!',
-                                ToastAndroid.SHORT
-                              )
-                            })
+                              ).then((data) => {
+                                dispatch(
+                                  sendNotification({
+                                    title: 'Inscripción',
+                                    message: `${user.user.nickname} se ha inscrito a tu oferta`,
+                                    recipientId: offer.clubId,
+                                    date: new Date(),
+                                    read: false,
+                                    prop2: {
+                                      rol: 'club'
+                                    },
+                                    prop1: {
+                                      userId: user?.user?.id,
+                                      userData: {
+                                        ...user
+                                      }
+                                    }
+                                  })
+                                )
+                                dispatch(getAllOffers())
+                                ToastAndroid.show(
+                                  'Te has inscrito en la oferta!',
+                                  ToastAndroid.SHORT
+                                )
+                              })
+                            }
                           }
                         }}
                         style={{
@@ -574,10 +589,7 @@ const TodasLasOfertas = () => {
                 </View>
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Posicion"
-                    value={`${offer.urgency}/10`}
-                  />
+                  <CardInfoOffers text="Posición" value={offer?.posit} />
                   <CardInfoOffers text="Ubicacion" value="Random" />
                 </View>
 
@@ -602,6 +614,10 @@ const TodasLasOfertas = () => {
                   }}
                 >
                   <TouchableOpacity
+                    // disabled={
+                    //   offer?.inscriptions?.includes(user?.user?.sportman?.id) ||
+                    //   !user.user.sportman.data
+                    // }
                     style={{
                       width: '70%',
                       paddingHorizontal: Padding.p_mini,
@@ -621,27 +637,47 @@ const TodasLasOfertas = () => {
                   >
                     <Text
                       // onPress={() => setModalVisible(true)}
-                      disabled={offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )}
+
                       onPress={() => {
                         if (
                           !offer?.inscriptions?.includes(
                             user?.user?.sportman?.id
                           )
                         ) {
-                          ToastAndroid.show(
-                            'Te has inscrito en la oferta!',
-                            ToastAndroid.SHORT
-                          )
-                          dispatch(
-                            signToOffer({
-                              offerId: offer?.id,
-                              userId: user?.user?.sportman?.id
+                          // console.log('offer', offer)
+                          // console.log('sp id: ', user?.user?.sportman?.id)
+                          if (user?.user?.sportman) {
+                            dispatch(
+                              signToOffer({
+                                offerId: offer?.id,
+                                userId: user?.user?.sportman?.id
+                              })
+                            ).then((data) => {
+                              dispatch(
+                                sendNotification({
+                                  title: 'Inscripción',
+                                  message: `${user.user.nickname} se ha inscrito a tu oferta`,
+                                  recipientId: offer.clubId,
+                                  date: new Date(),
+                                  read: false,
+                                  prop2: {
+                                    rol: 'club'
+                                  },
+                                  prop1: {
+                                    userId: user?.user?.id,
+                                    userData: {
+                                      ...user
+                                    }
+                                  }
+                                })
+                              )
+                              dispatch(getAllOffers())
+                              ToastAndroid.show(
+                                'Te has inscrito en la oferta!',
+                                ToastAndroid.SHORT
+                              )
                             })
-                          )
-                          dispatch(getAllOffers())
-                          navigation.goBack()
+                          }
                         }
                       }}
                       style={{

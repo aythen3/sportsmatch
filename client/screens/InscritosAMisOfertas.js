@@ -108,10 +108,10 @@ const InscritosAMisOfertas = () => {
                     source={{
                       uri: allUsers
                         .filter(
-                          (user) => user.type === 'sportman' && user.sportman
+                          (user) => user.type === 'sportman' && user?.sportman
                         )
-                        .filter((user) => user.sportman.id === inscription)[0]
-                        .sportman.info.img_perfil
+                        .filter((user) => user?.sportman.id === inscription)[0]
+                        ?.sportman?.info?.img_perfil
                     }}
                   />
                   <Text
@@ -120,10 +120,10 @@ const InscritosAMisOfertas = () => {
                     {
                       allUsers
                         .filter(
-                          (user) => user.type === 'sportman' && user.sportman
+                          (user) => user?.type === 'sportman' && user?.sportman
                         )
-                        .filter((user) => user.sportman.id === inscription)[0]
-                        .nickname
+                        .filter((user) => user?.sportman?.id === inscription)[0]
+                        ?.nickname
                     }
                   </Text>
                 </View>
