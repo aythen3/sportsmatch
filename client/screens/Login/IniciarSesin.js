@@ -60,8 +60,6 @@ const IniciarSesin = () => {
 
   const { user, loged } = useSelector((state) => state.users)
 
-  // const { isPlayer } = route.params
-
   const [valuesUser, setValuesUser] = useState({
     email: '',
     password: ''
