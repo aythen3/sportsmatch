@@ -20,7 +20,10 @@ const clubSlices = createSlice({
   reducers: {
     setClub: (state, action) => {
       state.club = action.payload.payload.user.club
-    }
+    },
+    cleanClub :(state, action) => {
+      state.club = {}
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -127,6 +130,6 @@ const clubSlices = createSlice({
   }
 })
 
-export const { setClub } = clubSlices.actions
+export const { setClub , cleanClub } = clubSlices.actions
 
 export default clubSlices.reducer

@@ -9,7 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
+  useWindowDimensions
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -49,6 +50,8 @@ const IniciarSesin = () => {
   const navigation = useNavigation()
   const [passview2, setPassview2] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
 
   const route = useRoute()
 
@@ -81,6 +84,8 @@ const IniciarSesin = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
         .then(async (response) => {
+          console.log(response,"responde el login")
+
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
           )
@@ -102,7 +107,7 @@ const IniciarSesin = () => {
             dispatch(setClub(response))
             detectSportColor(
               response.payload.user?.sportman?.info?.sport ||
-                response.payload?.user?.club?.sport,
+              response.payload?.user?.club?.sport,
               dispatch
             )
             setActiveIcon('diary')
@@ -125,39 +130,44 @@ const IniciarSesin = () => {
           dispatch(setClub(response))
         })
         .catch((error) => {
+          setLoading(false)
+          setError(error)
+
           console.error(error)
         })
     }
   }
+  const { height, width } = useWindowDimensions();
+
 
   return (
-    <SafeAreaView style={styles.iniciarSesin}>
+    <ScrollView style={{ ...styles.iniciarSesin }}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
 
       <HomeGif></HomeGif>
 
-      <View style={styles.contenido}>
+      <View style={{ ...styles.contenido, height }}>
         {/* <Image
           style={styles.fondoIcon}
           contentFit="cover"
           source={require('../../assets/fondo1.png')}
         /> */}
-        <View style={styles.botonAtrasFrame}>
-          <Image
-            style={styles.simboloIcon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-          <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
-            <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formulario}>
             <View style={styles.formularioFrame}>
-              <View>
+              <View style={{ flex: 1, justifyContent: "center" ,paddingHorizontal:20,alignItems:"center"}}>
+                <View style={styles.botonAtrasFrame}>
+                  <Image
+                    style={styles.simboloIcon}
+                    contentFit="cover"
+                    source={require('../../assets/coolicon3.png')}
+                  />
+                  <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
+                    <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
+                  </Pressable>
+                </View>
                 <View style={styles.titularcampos}>
                   <Text style={styles.titular}>Inicia sesión</Text>
                   <View style={styles.campos}>
@@ -233,8 +243,11 @@ const IniciarSesin = () => {
                 <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
                   ¿Has olvidado tu contraseña? Clica aquí
                 </Text>
-              </View>
-
+               {error && (
+                 <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
+                 {error.message}
+               </Text>
+               )}
               <TouchableOpacity
                 style={styles.botonIniciaSesin2}
                 onPress={handleSubmit}
@@ -242,7 +255,9 @@ const IniciarSesin = () => {
                 {!loading ? (
                   <Text style={styles.aceptar}>Inicia sesión</Text>
                 ) : (
-                  <ActivityIndicator></ActivityIndicator>
+                  <View style={{width:"100%"}}>
+                    <ActivityIndicator></ActivityIndicator>
+                  </View>
                 )}
               </TouchableOpacity>
               <Pressable
@@ -255,6 +270,7 @@ const IniciarSesin = () => {
                   ¿No tienes una cuenta? Regístrate
                 </Text>
               </Pressable>
+              </View>
             </View>
           </View>
           <View>
@@ -265,7 +281,7 @@ const IniciarSesin = () => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 
@@ -335,6 +351,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
     alignItems: 'center',
+    alignSelf:"flex-start",
+    position: "absolute",
+    top: 100,
     flexDirection: 'row'
   },
   titular: {
@@ -377,7 +396,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Color.bLACK1SPORTSMATCH,
     textAlign: 'center',
-    fontFamily: FontFamily.t4TEXTMICRO
+    fontFamily: FontFamily.t4TEXTMICRO,
+    width:"100%"
   },
   botonIniciaSesin2: {
     justifyContent: 'center',
@@ -385,7 +405,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: 360,
+    width: "100%",
     alignItems: 'center',
     flexDirection: 'row',
     top: '5%'
@@ -404,17 +424,15 @@ const styles = StyleSheet.create({
   },
   alContnuarAceptas: {
     fontSize: FontSize.t4TEXTMICRO_size,
-    marginTop: 153,
-    alignSelf: 'stretch',
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingHorizontal:15
   },
   formulariotextoLegal: {
     marginTop: 45,
-    flex: 1
+    flex: 1,
   },
   contenido: {
-    top: '30%',
-    height: '100%'
+    flex: 1,
   },
   fondoIcon: {
     width: '150%',

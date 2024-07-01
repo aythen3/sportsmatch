@@ -404,6 +404,7 @@ const SkillSeleccion = ({
         </View>
       </View>
       <View style={{ ...styles.formulariosInferiores }}>
+     
         <View
           collapsable={false}
           onLayout={(event) => {
@@ -419,7 +420,7 @@ const SkillSeleccion = ({
               selectedCategoria
                 ? selectedCategoria
                 : sportman?.info?.category?.toString() ||
-                  'Selecciona tu categoría'
+                'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
@@ -459,6 +460,7 @@ const SkillSeleccion = ({
             />
           </View>
         </View> */}
+       
         <View
           collapsable={false}
           onLayout={(event) => {
@@ -476,7 +478,7 @@ const SkillSeleccion = ({
                 : selectedPosition
                   ? selectedPosition
                   : sportman?.info?.position?.toString() ||
-                    'Selecciona tu posición '
+                  'Selecciona tu posición '
             }
             isAccordeon={true}
             open={openPositionModal}
@@ -507,6 +509,28 @@ const SkillSeleccion = ({
             />
           )}
         </View>
+        <View  style={styles.formularioCategoria}>
+        <Text style={styles.atributo}>Altura</Text>
+        <View style={styles.rectanguloBorder}>
+          <TextInput
+            style={styles.textInput}
+            placeholder={
+              sportman?.info?.height.toString() || '0 - 100'
+            }
+            placeholderTextColor={'#999'}
+            keyboardType={'numeric'}
+            value={
+              data?.height !== undefined
+                ? String(data?.height)
+                : editData?.height
+                  ? editData?.height
+                  : ''
+            }
+            onChangeText={(value) => handleData(`height`, value)}
+            maxLength={3}
+          />
+        </View>
+      </View>
 
         {selectedOptions.length > 0 &&
           selectedOptions.map((opt, i) => (

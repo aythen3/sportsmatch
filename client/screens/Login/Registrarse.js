@@ -8,7 +8,9 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  useWindowDimensions
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -108,18 +110,18 @@ const Registrarse = () => {
       Alert.alert('Debes llenar todos los campos')
     }
   }
+  const { height, width } = useWindowDimensions();
 
   return (
-    <View
+    <ScrollView
       style={{
-        overflow: 'hidden',
         width: '100%',
         flex: 1,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
       <HomeGif></HomeGif>
-      <View style={{ marginTop: '13%', height: '100%' }}>
+      <View style={{ flex: 1, height, justifyContent: "center" }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack()
@@ -386,58 +388,67 @@ const Registrarse = () => {
               </Text>
             </Pressable>
           </View>
-          <View
-            style={{
-              marginTop: 30,
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: 15
-            }}
-          >
-            <View style={{ width: '10%' }}>
-              <CheckBox
-                isChecked={isChecked}
-                onClick={handleCheckboxToggle}
-                checkBoxColor="#999"
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                width: '90%',
-                paddingRight: 0,
-                gap: 3
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: FontSize.t4TEXTMICRO_size,
-                  color: Color.gREY2SPORTSMATCH,
-                  textAlign: 'center',
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                Estoy de acuerdo en recibir información promocional y
-                publicitaria a través del correo electrónico
-              </Text>
-              <Text
-                style={{
-                  fontSize: FontSize.t4TEXTMICRO_size,
-                  color: Color.gREY2SPORTSMATCH,
-                  textAlign: 'center',
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                Al continuar, aceptas automáticamente nuestras Condiciones,
-                Polítíca de privacidad y Polítíca de cookies
-              </Text>
-            </View>
-          </View>
         </View>
       </View>
-    </View>
+      <View
+        style={{
+          marginTop: 30,
+          flexDirection: 'row',
+          alignItems: 'center',
+          position: "absolute",
+          width:"90%",
+          alignSelf:"center",
+          justifyContent:"center",
+          bottom: 0
+        }}
+      >
+
+        <View
+          style={{
+            flexDirection: 'column',
+            width: '100%',
+            gap: 10,
+
+          }}
+        >
+        <View style={{flexDirection:"row",alignItems:"flex-start",width:"100%"}}>
+        <View style={{
+            width: 20,
+            justifyContent: "center"
+          }}>
+            <CheckBox
+              isChecked={isChecked}
+              onClick={handleCheckboxToggle}
+              checkBoxColor="#999"
+            />
+          </View>
+          <Text
+            style={{
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.gREY2SPORTSMATCH,
+              textAlign: 'center',
+              fontFamily: FontFamily.t4TEXTMICRO,
+              width:"95%"
+            }}
+          >
+            Estoy de acuerdo en recibir información promocional y
+            publicitaria a través del correo electrónico
+          </Text>
+        </View>
+          <Text
+            style={{
+              fontSize: FontSize.t4TEXTMICRO_size,
+              color: Color.gREY2SPORTSMATCH,
+              textAlign: 'center',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Al continuar, aceptas automáticamente nuestras Condiciones,
+            Polítíca de privacidad y Polítíca de cookies
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   )
 }
 

@@ -26,6 +26,11 @@ export class NotificationController {
     return this.notificationsService.getAllService(query);
   }
 
+  @Get('user/:userId')
+  public async findAllByUserId(@Param('userId') userId: string) {
+    return this.notificationsService.findAllByUserId(userId);
+  }
+
   @Get(':id')
   public async findOne(@Param('id') id: string) {
     return this.notificationsService.getOneService(id);

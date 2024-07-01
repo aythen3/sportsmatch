@@ -191,6 +191,9 @@ const Notifications = ({ data }) => {
                                 userId: user?.user?.id,
                                 ...user?.user?.club
                               }
+                            },
+                            prop2:{
+                              rol:"user"
                             }
                           })
                         )

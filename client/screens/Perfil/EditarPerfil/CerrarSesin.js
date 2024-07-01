@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { clearSportman } from '../../../redux/slices/sportman.slices'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { cleanClub } from '../../../redux/slices/club.slices'
 
 
 const CerrarSesin = () => {
@@ -87,7 +88,7 @@ quieres `}</Text>
                     routes:[{name:"LoginSwitch"}]
                     
                   })
-                  
+                  dispatch(cleanClub())
                   dispatch(clearSportman())
                   dispatch(clearUser())
                   firebaseLogout()
