@@ -30,7 +30,9 @@ const TusNotificaciones1 = () => {
   const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
   const dispatch = useDispatch()
-  const { allNotifications , userNotifications } = useSelector((state) => state.notifications)
+  const { allNotifications, userNotifications } = useSelector(
+    (state) => state.notifications
+  )
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
@@ -44,7 +46,7 @@ const TusNotificaciones1 = () => {
   useEffect(() => {}, [allUsers, usersWithMessages])
 
   useEffect(() => {
-    console.log(userNotifications,"notifications")
+    console.log(userNotifications, 'notifications')
     dispatch(getAllUsers())
   }, [])
 
@@ -61,7 +63,7 @@ const TusNotificaciones1 = () => {
     if (isInMessagesA && !isInMessagesB) {
       return -1 // userA has messages, should come before userB
     } else if (!isInMessagesA && isInMessagesB) {
-      return 1 // userB has messages, should come before userA
+      return 1
     } else {
       return 0 // maintain current order if both have messages or neither have messages
     }
@@ -126,9 +128,9 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
     getUsersMessages()
-    if(user.user.type == 'club'){
-      console.log(user.user.club.id ,"club")
-    dispatch(getNotificationsByUserId(user.user.club.id))
+    if (user.user.type == 'club') {
+      console.log(user.user.club.id, 'club')
+      dispatch(getNotificationsByUserId(user.user.club.id))
     } else {
       dispatch(getNotificationsByUserId(user.user.id))
     }
@@ -233,8 +235,11 @@ const TusNotificaciones1 = () => {
 
         {selectedComponent === 'notifications' && (
           <ScrollView>
-            {userNotifications.length > 0 ? userNotifications.map((notification) => <Notifications data={notification} />)
-             : (
+            {userNotifications.length > 0 ? (
+              userNotifications.map((notification) => (
+                <Notifications data={notification} />
+              ))
+            ) : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
               >
