@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
-  useWindowDimensions
+  useWindowDimensions,
+  Dimensions
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -110,345 +111,370 @@ const Registrarse = () => {
       Alert.alert('Debes llenar todos los campos')
     }
   }
-  const { height, width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions()
 
   return (
-    <ScrollView
+    <View
       style={{
         width: '100%',
         flex: 1,
-        backgroundColor: Color.bLACK1SPORTSMATCH
+        backgroundColor: Color.bLACK1SPORTSMATCH,
+        justifyContent: 'flex-end'
       }}
     >
-      <HomeGif></HomeGif>
-      <View style={{ flex: 1, height, justifyContent: "center" }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack()
-          }}
-          style={styles.botonAtrasFrame}
-        >
-          <Image
-            style={styles.simboloIcon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-          <Pressable
+      <View style={{ position: 'absolute', top: 0, right: 0, width: '100%' }}>
+        <HomeGif></HomeGif>
+      </View>
+      <View
+        style={{
+          justifyContent: 'space-between',
+          height: '85%'
+        }}
+      >
+        <View>
+          <TouchableOpacity
             onPress={() => {
               navigation.goBack()
             }}
-            style={styles.atrs}
+            style={styles.botonAtrasFrame}
           >
-            <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
-          </Pressable>
-        </TouchableOpacity>
-        <View style={styles.formulariotextoLegal}>
-          <View style={styles.formularioFrame}>
-            <View style={styles.camposFormulario}>
-              <View style={styles.titularcampos}>
-                <Text style={[styles.titular, styles.titularLayout]}>
-                  Regístrate
-                </Text>
+            <Image
+              style={styles.simboloIcon}
+              contentFit="cover"
+              source={require('../../assets/coolicon3.png')}
+            />
+            <Pressable
+              onPress={() => {
+                navigation.goBack()
+              }}
+              style={styles.atrs}
+            >
+              <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
+            </Pressable>
+          </TouchableOpacity>
+          <View style={styles.formulariotextoLegal}>
+            <View style={styles.formularioFrame}>
+              <View style={styles.camposFormulario}>
+                <View style={styles.titularcampos}>
+                  <Text style={[styles.titular, styles.titularLayout]}>
+                    Regístrate
+                  </Text>
 
-                <View style={styles.campos}>
-                  <View style={styles.campo1}>
-                    <View
-                      style={{
-                        gap: 5,
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        paddingHorizontal: Padding.p_mini,
-                        borderColor: Color.gREY2SPORTSMATCH,
-                        borderWidth: 1,
-                        borderRadius: Border.br_81xl,
-                        flexDirection: 'row',
-                        height: 40
-                      }}
-                    >
-                      <Image
-                        style={styles.simboloIcon1}
-                        contentFit="cover"
-                        source={require('../../assets/simbolo4.png')}
-                      />
-                      <TextInput
+                  <View style={styles.campos}>
+                    <View style={styles.campo1}>
+                      <View
                         style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: FontSize.t2TextSTANDARD_size,
-                          marginLeft: 10,
-                          textAlign: 'left',
-                          width: '80%'
+                          gap: 5,
+                          alignItems: 'center',
+                          justifyContent: 'flex-start',
+                          paddingHorizontal: Padding.p_mini,
+                          borderColor: Color.gREY2SPORTSMATCH,
+                          borderWidth: 1,
+                          borderRadius: Border.br_81xl,
+                          flexDirection: 'row',
+                          height: 40
                         }}
-                        placeholder="Nombre"
-                        placeholderTextColor="#999"
-                        value={valuesUser.nickname}
-                        onChangeText={(value) => {
-                          if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
-                            // Si la entrada coincide con la expresión regular o está vacía, actualizar el estado y limpiar el mensaje de error
-                            console.log(`nickname: ${value}`) // Log nickname value
-                            seterValues('nickname', value)
-                            setNombreError('')
-                          } else {
-                            // Si la entrada no coincide con la expresión regular, establecer el mensaje de error apropiado
-                            setNombreError(
-                              'Nombre no puede contener números ni caracteres especiales'
-                            )
-                          }
-
-                          // Verificar si se excedió el máximo de caracteres
-                          if (value.length > 60) {
-                            // Si se excede el máximo de caracteres, establecer el mensaje de error correspondiente
-                            setNombreError('Caracteres excedidos')
-                          }
-                        }}
-                        onSubmitEditing={() => {
-                          emailInputRef.current.focus()
-                        }}
-                        maxLength={60}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.campo2}>
-                    <View
-                      style={{
-                        gap: 5,
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        paddingHorizontal: Padding.p_mini,
-                        borderColor: Color.gREY2SPORTSMATCH,
-                        borderWidth: 1,
-                        borderRadius: Border.br_81xl,
-                        flexDirection: 'row',
-                        height: 40
-                      }}
-                    >
-                      <Image
-                        style={styles.vectorIcon}
-                        contentFit="cover"
-                        source={require('../../assets/vector4.png')}
-                      />
-                      <TextInput
-                        style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: FontSize.t2TextSTANDARD_size,
-                          marginLeft: 10,
-                          textAlign: 'left',
-                          width: '80%'
-                        }}
-                        placeholder="E-mail"
-                        placeholderTextColor="#999"
-                        autoCapitalize="none"
-                        value={valuesUser.email}
-                        onChangeText={(value) => {
-                          console.log(`email: ${value}`) // Log email value
-                          seterValues('email', value)
-                        }}
-                        ref={emailInputRef}
-                        onSubmitEditing={() => {
-                          passwordInputRef.current.focus()
-                        }}
-                      />
-
-                      {!isEmailValid ? (
-                        <View
-                          style={{ position: 'absolute', right: 14, top: 9 }}
-                        >
-                          <AntDesign name="close" color={'#ff0000'} size={20} />
-                        </View>
-                      ) : (
-                        <View
-                          style={{ position: 'absolute', right: 14, top: 9 }}
-                        >
-                          <AntDesign name="check" color={'#00ff00'} size={20} />
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                  <View style={[styles.campo3Frame, styles.framePosition]}>
-                    <View style={styles.contraseaFrame}>
-                      <Image
-                        style={styles.simboloIcon2}
-                        contentFit="cover"
-                        source={require('../../assets/simbolo3.png')}
-                      />
-                      <TextInput
-                        style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: FontSize.t2TextSTANDARD_size,
-                          marginLeft: 10,
-                          textAlign: 'left',
-                          width: '87%'
-                        }}
-                        placeholder="Contraseña"
-                        placeholderTextColor="#999"
-                        secureTextEntry={passview1}
-                        value={valuesUser.password}
-                        onChangeText={(value) => {
-                          console.log(`password: ${value}`) // Log password value
-                          seterValues('password', value)
-                        }}
-                        ref={passwordInputRef}
-                        onSubmitEditing={() => {
-                          confirmPasswordInputRef.current.focus()
-                        }}
-                      />
-                      <TouchableOpacity
-                        onPress={() => setPassview1(!passview1)}
                       >
-                        {passview1 ? (
-                          <PassView></PassView>
-                        ) : (
-                          <OjoCerradoSVG></OjoCerradoSVG>
-                        )}
-                      </TouchableOpacity>
+                        <Image
+                          style={styles.simboloIcon1}
+                          contentFit="cover"
+                          source={require('../../assets/simbolo4.png')}
+                        />
+                        <TextInput
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            textAlign: 'left',
+                            width: '80%'
+                          }}
+                          placeholder="Nombre"
+                          placeholderTextColor="#999"
+                          value={valuesUser.nickname}
+                          onChangeText={(value) => {
+                            if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
+                              // Si la entrada coincide con la expresión regular o está vacía, actualizar el estado y limpiar el mensaje de error
+                              console.log(`nickname: ${value}`) // Log nickname value
+                              seterValues('nickname', value)
+                              setNombreError('')
+                            } else {
+                              // Si la entrada no coincide con la expresión regular, establecer el mensaje de error apropiado
+                              setNombreError(
+                                'Nombre no puede contener números ni caracteres especiales'
+                              )
+                            }
+
+                            // Verificar si se excedió el máximo de caracteres
+                            if (value.length > 60) {
+                              // Si se excede el máximo de caracteres, establecer el mensaje de error correspondiente
+                              setNombreError('Caracteres excedidos')
+                            }
+                          }}
+                          onSubmitEditing={() => {
+                            emailInputRef.current.focus()
+                          }}
+                          maxLength={60}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={[styles.campo3Frame, styles.framePosition]}>
-                    <View style={styles.contraseaFrame}>
-                      <Image
-                        style={styles.simboloIcon2}
-                        contentFit="cover"
-                        source={require('../../assets/simbolo3.png')}
-                      />
-                      <TextInput
+                    <View style={styles.campo2}>
+                      <View
                         style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: FontSize.t2TextSTANDARD_size,
-                          marginLeft: 10,
-                          textAlign: 'left',
-                          width: '87%'
+                          gap: 5,
+                          alignItems: 'center',
+                          justifyContent: 'flex-start',
+                          paddingHorizontal: Padding.p_mini,
+                          borderColor: Color.gREY2SPORTSMATCH,
+                          borderWidth: 1,
+                          borderRadius: Border.br_81xl,
+                          flexDirection: 'row',
+                          height: 40
                         }}
-                        placeholder="Confirmar contraseña"
-                        placeholderTextColor="#999"
-                        secureTextEntry={passview2}
-                        value={confirmPassword}
-                        onChangeText={(value) => {
-                          console.log(`confirmPassword: ${value}`) // Log confirmPassword value
-                          setConfirmPassword(value)
-                        }}
-                        ref={confirmPasswordInputRef}
-                        onSubmitEditing={submit}
-                      />
-                      <TouchableOpacity
-                        onPress={() => setPassview2(!passview2)}
                       >
-                        {passview2 ? (
-                          <PassView></PassView>
+                        <Image
+                          style={styles.vectorIcon}
+                          contentFit="cover"
+                          source={require('../../assets/vector4.png')}
+                        />
+                        <TextInput
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            textAlign: 'left',
+                            width: '80%'
+                          }}
+                          placeholder="E-mail"
+                          placeholderTextColor="#999"
+                          autoCapitalize="none"
+                          value={valuesUser.email}
+                          onChangeText={(value) => {
+                            console.log(`email: ${value}`) // Log email value
+                            seterValues('email', value)
+                          }}
+                          ref={emailInputRef}
+                          onSubmitEditing={() => {
+                            passwordInputRef.current.focus()
+                          }}
+                        />
+
+                        {!isEmailValid ? (
+                          <View
+                            style={{ position: 'absolute', right: 14, top: 9 }}
+                          >
+                            <AntDesign
+                              name="close"
+                              color={'#ff0000'}
+                              size={20}
+                            />
+                          </View>
                         ) : (
-                          <OjoCerradoSVG></OjoCerradoSVG>
+                          <View
+                            style={{ position: 'absolute', right: 14, top: 9 }}
+                          >
+                            <AntDesign
+                              name="check"
+                              color={'#00ff00'}
+                              size={20}
+                            />
+                          </View>
                         )}
-                      </TouchableOpacity>
+                      </View>
+                    </View>
+                    <View style={[styles.campo3Frame, styles.framePosition]}>
+                      <View style={styles.contraseaFrame}>
+                        <Image
+                          style={styles.simboloIcon2}
+                          contentFit="cover"
+                          source={require('../../assets/simbolo3.png')}
+                        />
+                        <TextInput
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            textAlign: 'left',
+                            width: '87%'
+                          }}
+                          placeholder="Contraseña"
+                          placeholderTextColor="#999"
+                          secureTextEntry={passview1}
+                          value={valuesUser.password}
+                          onChangeText={(value) => {
+                            console.log(`password: ${value}`) // Log password value
+                            seterValues('password', value)
+                          }}
+                          ref={passwordInputRef}
+                          onSubmitEditing={() => {
+                            confirmPasswordInputRef.current.focus()
+                          }}
+                        />
+                        <TouchableOpacity
+                          onPress={() => setPassview1(!passview1)}
+                        >
+                          {passview1 ? (
+                            <PassView></PassView>
+                          ) : (
+                            <OjoCerradoSVG></OjoCerradoSVG>
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                    <View style={[styles.campo3Frame, styles.framePosition]}>
+                      <View style={styles.contraseaFrame}>
+                        <Image
+                          style={styles.simboloIcon2}
+                          contentFit="cover"
+                          source={require('../../assets/simbolo3.png')}
+                        />
+                        <TextInput
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: FontSize.t2TextSTANDARD_size,
+                            marginLeft: 10,
+                            textAlign: 'left',
+                            width: '87%'
+                          }}
+                          placeholder="Confirmar contraseña"
+                          placeholderTextColor="#999"
+                          secureTextEntry={passview2}
+                          value={confirmPassword}
+                          onChangeText={(value) => {
+                            console.log(`confirmPassword: ${value}`) // Log confirmPassword value
+                            setConfirmPassword(value)
+                          }}
+                          ref={confirmPasswordInputRef}
+                          onSubmitEditing={submit}
+                        />
+                        <TouchableOpacity
+                          onPress={() => setPassview2(!passview2)}
+                        >
+                          {passview2 ? (
+                            <PassView></PassView>
+                          ) : (
+                            <OjoCerradoSVG></OjoCerradoSVG>
+                          )}
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
-            <View style={{ height: 40, marginTop: 36, width: 360 }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 5
-                }}
-              >
-                {nombreError !== '' && (
-                  <Text style={{ color: 'red', fontWeight: '400' }}>
-                    {nombreError}
-                  </Text>
-                )}
-              </View>
-
-              <View
-                style={[
-                  styles.botonRegistrate,
-                  { marginTop: nombreError ? 10 : 18 }
-                ]}
-              >
-                <TouchableOpacity
-                  style={[styles.loremIpsum, styles.loremPosition]}
-                  onPress={submit}
+              <View style={{ height: 40, marginTop: 36, width: 360 }}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginHorizontal: 5
+                  }}
                 >
-                  <View style={styles.loremIpsum1}>
-                    <Text style={styles.aceptar}>Regístrate</Text>
-                  </View>
-                </TouchableOpacity>
+                  {nombreError !== '' && (
+                    <Text style={{ color: 'red', fontWeight: '400' }}>
+                      {nombreError}
+                    </Text>
+                  )}
+                </View>
+
+                <View
+                  style={[
+                    styles.botonRegistrate,
+                    { marginTop: nombreError ? 10 : 18 }
+                  ]}
+                >
+                  <TouchableOpacity
+                    style={[styles.loremIpsum, styles.loremPosition]}
+                    onPress={submit}
+                  >
+                    <View style={styles.loremIpsum1}>
+                      <Text style={styles.aceptar}>Regístrate</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-          <View style={[{ marginTop: nombreError ? 26 : 24 }]}>
-            <Pressable
-              style={styles.yaTenesUnaContainer}
-              onPress={() => navigation.navigate('IniciarSesin')}
-            >
-              <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
-                ¿Ya tienes una cuenta? Inicia sesión
-              </Text>
-            </Pressable>
+            <View style={[{ marginTop: nombreError ? 26 : 24 }]}>
+              <Pressable
+                style={styles.yaTenesUnaContainer}
+                onPress={() => navigation.navigate('IniciarSesin')}
+              >
+                <Text
+                  style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}
+                >
+                  ¿Ya tienes una cuenta? Inicia sesión
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          marginTop: 30,
-          flexDirection: 'row',
-          alignItems: 'center',
-          position: "absolute",
-          width:"90%",
-          alignSelf:"center",
-          justifyContent:"center",
-          bottom: 0
-        }}
-      >
-
         <View
           style={{
-            flexDirection: 'column',
-            width: '100%',
-            gap: 10,
-
+            flexDirection: 'row',
+            alignItems: 'center',
+            // position: 'absolute',
+            width: '90%',
+            alignSelf: 'center',
+            justifyContent: 'center'
+            // bottom: 0
           }}
         >
-        <View style={{flexDirection:"row",alignItems:"flex-start",width:"100%"}}>
-        <View style={{
-            width: 20,
-            justifyContent: "center"
-          }}>
-            <CheckBox
-              isChecked={isChecked}
-              onClick={handleCheckboxToggle}
-              checkBoxColor="#999"
-            />
+          <View
+            style={{
+              flexDirection: 'column',
+              width: '100%',
+              gap: 10
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                width: '100%'
+              }}
+            >
+              <View
+                style={{
+                  width: 20,
+                  justifyContent: 'center'
+                }}
+              >
+                <CheckBox
+                  isChecked={isChecked}
+                  onClick={handleCheckboxToggle}
+                  checkBoxColor="#999"
+                />
+              </View>
+              <Text
+                style={{
+                  fontSize: FontSize.t4TEXTMICRO_size,
+                  color: Color.gREY2SPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  width: '95%'
+                }}
+              >
+                Estoy de acuerdo en recibir información promocional y
+                publicitaria a través del correo electrónico
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: FontSize.t4TEXTMICRO_size,
+                color: Color.gREY2SPORTSMATCH,
+                textAlign: 'center',
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Al continuar, aceptas automáticamente nuestras Condiciones,
+              Polítíca de privacidad y Polítíca de cookies
+            </Text>
           </View>
-          <Text
-            style={{
-              fontSize: FontSize.t4TEXTMICRO_size,
-              color: Color.gREY2SPORTSMATCH,
-              textAlign: 'center',
-              fontFamily: FontFamily.t4TEXTMICRO,
-              width:"95%"
-            }}
-          >
-            Estoy de acuerdo en recibir información promocional y
-            publicitaria a través del correo electrónico
-          </Text>
-        </View>
-          <Text
-            style={{
-              fontSize: FontSize.t4TEXTMICRO_size,
-              color: Color.gREY2SPORTSMATCH,
-              textAlign: 'center',
-              fontFamily: FontFamily.t4TEXTMICRO
-            }}
-          >
-            Al continuar, aceptas automáticamente nuestras Condiciones,
-            Polítíca de privacidad y Polítíca de cookies
-          </Text>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 

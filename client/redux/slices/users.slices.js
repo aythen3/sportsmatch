@@ -14,8 +14,8 @@ import {
 const usersSlices = createSlice({
   name: 'users',
   initialState: {
-    mainColor:'#E1451E',
-    loged:false,
+    mainColor: '#E1451E',
+    loged: false,
     user: {},
     userChild: {},
     sportmanGender: '',
@@ -92,6 +92,7 @@ const usersSlices = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false
+        console.log('LOGIN, setting user to ', action.payload)
         state.user = action.payload
         state.error = false
       })
@@ -149,7 +150,8 @@ const usersSlices = createSlice({
       })
       .addCase(getUserData.fulfilled, (state, action) => {
         state.loading = false
-        state.user = {user:action.payload}
+        console.log('setting user to:', { user: action.payload })
+        state.user = { user: action.payload }
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false

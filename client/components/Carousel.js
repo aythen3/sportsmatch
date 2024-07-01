@@ -156,7 +156,7 @@ function Carousel({
 
     setOptionsModal(true)
   }
-console.log(data,"esto es la data")
+  // console.log(data,"esto es la data")
   return (
     <View style={{ ...styles.container }}>
       <View
@@ -181,7 +181,7 @@ console.log(data,"esto es la data")
             if (data.author.type === 'club') {
               navigation.navigate('ClubProfile', data)
             } else {
-              console.log(data,"data de viaje")
+              console.log(data, 'data de viaje')
               navigation.navigate('PerfilFeedVisualitzaciJug', data)
             }
           }}

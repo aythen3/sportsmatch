@@ -30,6 +30,7 @@ const sportmanSlices = createSlice({
       })
       .addCase(createSportman.fulfilled, (state, action) => {
         state.loading = false
+        console.log('setting sportman to', action.payload)
         state.sportman = action.payload
         state.error = false
       })

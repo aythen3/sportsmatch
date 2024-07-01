@@ -93,6 +93,7 @@ export const create = createAsyncThunk('create/user', async (body) => {
 export const login = createAsyncThunk('login/user', async (body) => {
   try {
     const { data } = await axiosInstance.post('auth/login', body)
+    console.log('returning data from login', data)
     return data
   } catch (error) {
     throw new Error(error)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -223,6 +223,21 @@ const ExplorarClubs = () => {
     setPosts(allPosts)
   }, [allPosts])
 
+
+  const timeoutRef = useRef(null);
+
+  const handleChange = (value) => {
+    setTextValue(value);
+    
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      handleSearch(value)
+    }, 1000); // 1000ms = 1 segundo
+  };
+
   const onFilterSportman = () => {
     setModalFilterSportman(true)
   }
@@ -351,7 +366,7 @@ const ExplorarClubs = () => {
 
       <FiltersHome
         textValue={textValue}
-        setTextValue={setTextValue}
+        setTextValue={handleChange}
         modalActive={onFilters}
         modalSportmanActive={onFilterSportman}
         action={handleSearch}
@@ -377,7 +392,7 @@ const ExplorarClubs = () => {
                   searchUsers.map((user, i) => (
                     <TouchableOpacity
                       onPress={() => {
-                        console.log(usuario,"usuario")
+                        console.log(usuario,"usuario")  
                         if(user.id ===  usuario.id ){
                           return console.log("entra")
                         }
@@ -483,8 +498,8 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
-                        source={{ uri: position.info.img_front }}
+                        style={{ width: 50, height: 50, borderRadius: 50, backgroundColor: position.info.img_front ? "transparent" : mainColor }}
+                        source={ position.info.img_front ? { uri: position.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
                       <Text
@@ -524,8 +539,8 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
-                        source={{ uri: city.info.img_front }}
+                        style={{ width: 50, height: 50, borderRadius: 50 , backgroundColor: city.info.img_front ? "transparent" : mainColor }}
+                        source={city.info.img_front ? { uri: city.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
                       <Text
@@ -535,7 +550,7 @@ const ExplorarClubs = () => {
                           fontWeight: 600
                         }}
                       >
-                        {city.info.nickname}
+                        {city.info.nickname}2
                       </Text>
                     </View>
                   </TouchableOpacity>
