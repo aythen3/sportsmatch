@@ -40,7 +40,7 @@ const TodasLasOfertas = () => {
   const dispatch = useDispatch()
   const { userMatches } = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
-  const { user, mainColor } = useSelector((state) => state.users)
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -82,6 +82,14 @@ const TodasLasOfertas = () => {
       // console.log(offers)
     }
   }, [offers])
+
+  useEffect(() => {
+    // console.log('offer', offers[0].clubId)
+    // console.log(
+    //   'allusers',
+    //   allUsers.filter((user) => user?.club?.id === offers[0].clubId)[0].id
+    // )
+  }, [])
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)

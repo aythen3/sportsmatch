@@ -52,7 +52,6 @@ const IniciarSesin = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-
   const route = useRoute()
 
   const dispatch = useDispatch()
@@ -84,7 +83,7 @@ const IniciarSesin = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
         .then(async (response) => {
-          console.log(response,"responde el login")
+          console.log(response, 'responde el login')
 
           dispatch(
             setIsSpotMan(response.payload.user.type === 'club' ? false : true)
@@ -107,7 +106,7 @@ const IniciarSesin = () => {
             dispatch(setClub(response))
             detectSportColor(
               response.payload.user?.sportman?.info?.sport ||
-              response.payload?.user?.club?.sport,
+                response.payload?.user?.club?.sport,
               dispatch
             )
             setActiveIcon('diary')
@@ -137,11 +136,10 @@ const IniciarSesin = () => {
         })
     }
   }
-  const { height, width } = useWindowDimensions();
-
+  const { height, width } = useWindowDimensions()
 
   return (
-    <ScrollView style={{ ...styles.iniciarSesin }}>
+    <View style={{ ...styles.iniciarSesin }}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
@@ -157,17 +155,27 @@ const IniciarSesin = () => {
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formulario}>
             <View style={styles.formularioFrame}>
-              <View style={{ flex: 1, justifyContent: "center" ,paddingHorizontal:20,alignItems:"center"}}>
-                <View style={styles.botonAtrasFrame}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  paddingHorizontal: 20,
+                  alignItems: 'center'
+                }}
+              >
+                {/* <View style={styles.botonAtrasFrame}>
                   <Image
                     style={styles.simboloIcon}
                     contentFit="cover"
                     source={require('../../assets/coolicon3.png')}
                   />
-                  <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
+                  <Pressable
+                    style={styles.atrs}
+                    onPress={() => navigation.goBack()}
+                  >
                     <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
                   </Pressable>
-                </View>
+                </View> */}
                 <View style={styles.titularcampos}>
                   <Text style={styles.titular}>Inicia sesión</Text>
                   <View style={styles.campos}>
@@ -243,33 +251,36 @@ const IniciarSesin = () => {
                 <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
                   ¿Has olvidado tu contraseña? Clica aquí
                 </Text>
-               {error && (
-                 <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
-                 {error.message}
-               </Text>
-               )}
-              <TouchableOpacity
-                style={styles.botonIniciaSesin2}
-                onPress={handleSubmit}
-              >
-                {!loading ? (
-                  <Text style={styles.aceptar}>Inicia sesión</Text>
-                ) : (
-                  <View style={{width:"100%"}}>
-                    <ActivityIndicator></ActivityIndicator>
-                  </View>
+                {error && (
+                  <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
+                    {error.message}
+                  </Text>
                 )}
-              </TouchableOpacity>
-              <Pressable
-                style={{ marginTop: 37 }}
-                onPress={() => navigation.navigate('LoginSwitch')}
-              >
-                <Text
-                  style={[styles.noTenesUnaCuentaRegstra, styles.contraseaClr]}
+                <TouchableOpacity
+                  style={styles.botonIniciaSesin2}
+                  onPress={handleSubmit}
                 >
-                  ¿No tienes una cuenta? Regístrate
-                </Text>
-              </Pressable>
+                  {!loading ? (
+                    <Text style={styles.aceptar}>Inicia sesión</Text>
+                  ) : (
+                    <View style={{ width: '100%' }}>
+                      <ActivityIndicator></ActivityIndicator>
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <Pressable
+                  style={{ marginTop: 37 }}
+                  onPress={() => navigation.navigate('LoginSwitch')}
+                >
+                  <Text
+                    style={[
+                      styles.noTenesUnaCuentaRegstra,
+                      styles.contraseaClr
+                    ]}
+                  >
+                    ¿No tienes una cuenta? Regístrate
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -281,7 +292,7 @@ const IniciarSesin = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -351,9 +362,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_xl,
     paddingVertical: 0,
     alignItems: 'center',
-    alignSelf:"flex-start",
-    position: "absolute",
+    alignSelf: 'flex-start',
+    position: 'absolute',
     top: 100,
+    left: 10,
     flexDirection: 'row'
   },
   titular: {
@@ -397,7 +409,7 @@ const styles = StyleSheet.create({
     color: Color.bLACK1SPORTSMATCH,
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    width:"100%"
+    width: '100%'
   },
   botonIniciaSesin2: {
     justifyContent: 'center',
@@ -405,7 +417,7 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
-    width: "100%",
+    width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
     top: '5%'
@@ -425,14 +437,14 @@ const styles = StyleSheet.create({
   alContnuarAceptas: {
     fontSize: FontSize.t4TEXTMICRO_size,
     textAlign: 'center',
-    paddingHorizontal:15
+    paddingHorizontal: 15
   },
   formulariotextoLegal: {
     marginTop: 45,
-    flex: 1,
+    flex: 1
   },
   contenido: {
-    flex: 1,
+    flex: 1
   },
   fondoIcon: {
     width: '150%',

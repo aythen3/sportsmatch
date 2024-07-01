@@ -12,12 +12,12 @@ const EditarSkills = () => {
   const [editable, setEditable] = useState(true)
 
   return (
-  <SafeAreaView style={{flex:1 ,backgroundColor:"#000"}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-      <CustomHeaderBack header={'Define tus Skills'}></CustomHeaderBack>
-      <SkillSeleccion editable={editable} setEditable={setEditable} />
-    </ScrollView>
-  </SafeAreaView>
+        <CustomHeaderBack header={'Define tus Skills'}></CustomHeaderBack>
+        <SkillSeleccion editable={editable} setEditable={setEditable} />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
