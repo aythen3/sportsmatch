@@ -498,8 +498,8 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
-                        source={{ uri: position.info.img_front }}
+                        style={{ width: 50, height: 50, borderRadius: 50, backgroundColor: position.info.img_front ? "transparent" : mainColor }}
+                        source={ position.info.img_front ? { uri: position.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
                       <Text
@@ -539,8 +539,8 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
-                        source={{ uri: city.info.img_front }}
+                        style={{ width: 50, height: 50, borderRadius: 50 , backgroundColor: city.info.img_front ? "transparent" : mainColor }}
+                        source={city.info.img_front ? { uri: city.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
                       <Text
@@ -550,7 +550,7 @@ const ExplorarClubs = () => {
                           fontWeight: 600
                         }}
                       >
-                        {city.info.nickname}
+                        {city.info.nickname}2
                       </Text>
                     </View>
                   </TouchableOpacity>
