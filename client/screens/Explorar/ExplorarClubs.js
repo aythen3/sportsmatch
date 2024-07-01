@@ -498,7 +498,7 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
+                        style={{ width: 50, height: 50, borderRadius: 50, backgroundColor: position.info.img_front ? "transparent" : mainColor }}
                         source={ position.info.img_front ? { uri: position.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
@@ -539,7 +539,7 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 }}
+                        style={{ width: 50, height: 50, borderRadius: 50 , backgroundColor: city.info.img_front ? "transparent" : mainColor }}
                         source={city.info.img_front ? { uri: city.info.img_front } : require('../../assets/whiteSport.png')}
                       ></Image>
 
