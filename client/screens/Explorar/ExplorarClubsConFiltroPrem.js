@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, View, Text, Pressable, TouchableOpacity,Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  Platform
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker'
 import {
   FontFamily,
   FontSize,
@@ -11,43 +18,48 @@ import {
   Color
 } from '../../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons'
-import axiosInstance from '../../utils/apiBackend';
+import axiosInstance from '../../utils/apiBackend'
 
-const ExplorarClubsConFiltroPrem = ({ onClose, filter, setFilter , setSearchUsers,setTextValue }) => {
+const ExplorarClubsConFiltroPrem = ({
+  onClose,
+  filter,
+  setFilter,
+  setSearchUsers,
+  setTextValue
+}) => {
   const navigation = useNavigation()
 
   const [checkedAttack, setCheckedAttack] = useState(false)
   const [checkedSpeed, setCheckedSpeed] = useState(false)
   const [checkedDefense, setCheckedDefense] = useState(false)
-  const [selectedValue, setSelectedValue] = useState("valor1");
+  const [selectedValue, setSelectedValue] = useState('valor1')
 
-const submit = async()=> {
-    const filteredFilter = {};
+  const submit = async () => {
+    const filteredFilter = {}
 
     for (const key in filter) {
-        if (filter.hasOwnProperty(key)) {
-            // Verificar si el valor de la propiedad es verdadero o no una cadena vacía
-            if (filter[key] || filter[key] === 0) {
-                filteredFilter[key] = filter[key];
-            }
+      if (filter.hasOwnProperty(key)) {
+        // Verificar si el valor de la propiedad es verdadero o no una cadena vacía
+        if (filter[key] || filter[key] === 0) {
+          filteredFilter[key] = filter[key]
         }
+      }
     }
 
-
-  const res = await axiosInstance.post("sportman/filter",filteredFilter)
-  setSearchUsers(res.data)
-  setTextValue(" ")
-}
+    const res = await axiosInstance.post('sportman/filter', filteredFilter)
+    setSearchUsers(res.data)
+    setTextValue(' ')
+  }
 
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
-      <View style={{flexDirection:"column"}}>
+      <View style={{ flexDirection: 'column' }}>
         <View style={styles.cerrarFiltros}>
           <Image
             style={styles.cerrarFiltrosChild}
             contentFit="cover"
             source={require('../../assets/line-66.png')}
-          /> 
+          />
           <Text
             style={[styles.cerrarFiltros1, styles.sexoTypo]}
             onPress={onClose}
@@ -66,10 +78,16 @@ const submit = async()=> {
                 source={require('../../assets/coolicon5.png')}
               /> */}
               <Picker
-                style={{ color: "white",width:"100%",height:"auto",backgroundColor:Platform.OS === "ios"?"gray":""}}
-
-                selectedValue={filter["gender"]}
-                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["gender"]:itemValue})}
+                style={{
+                  color: 'white',
+                  width: '100%',
+                  height: 'auto',
+                  backgroundColor: Platform.OS === 'ios' ? 'gray' : ''
+                }}
+                selectedValue={filter['gender']}
+                onValueChange={(itemValue, itemIndex) =>
+                  setFilter({ ...filter, ['gender']: itemValue })
+                }
               >
                 <Picker.Item label="Masculino" value="Masculino" />
                 <Picker.Item label="Femenino" value="Femenino" />
@@ -79,15 +97,30 @@ const submit = async()=> {
           <View style={styles.campo2}>
             <Text style={[styles.sexo, styles.sexoTypo]}>Categoría</Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-            <Picker
-                style={{ color: "white",width:"100%",height:"auto",backgroundColor:Platform.OS === "ios"?"gray":"" }}
-                selectedValue={filter["category"]}
-                
-                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["category"]:itemValue})}
+              <Picker
+                style={{
+                  color: 'white',
+                  width: '100%',
+                  height: 'auto',
+                  backgroundColor: Platform.OS === 'ios' ? 'gray' : ''
+                }}
+                selectedValue={filter['category']}
+                onValueChange={(itemValue, itemIndex) =>
+                  setFilter({ ...filter, ['category']: itemValue })
+                }
               >
-                <Picker.Item label="Prebenjamín (6-8 años)" value="Prebenjamín (6-8 años)" />
-                <Picker.Item label="Benjamín (8-10 años)" value="Benjamín (8-10 años)" />
-                <Picker.Item label="Cadete (14-16 años)" value="Cadete (14-16 años)" />
+                <Picker.Item
+                  label="Prebenjamín (6-8 años)"
+                  value="Prebenjamín (6-8 años)"
+                />
+                <Picker.Item
+                  label="Benjamín (8-10 años)"
+                  value="Benjamín (8-10 años)"
+                />
+                <Picker.Item
+                  label="Cadete (14-16 años)"
+                  value="Cadete (14-16 años)"
+                />
               </Picker>
             </View>
           </View>
@@ -96,12 +129,17 @@ const submit = async()=> {
               Posición principal
             </Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-            <Picker
-                style={{ color: "white",width:"100%",height:"auto" ,backgroundColor:Platform.OS === "ios"?"gray":""
-              }}
-
-                selectedValue={filter["position"]}
-                onValueChange={(itemValue, itemIndex) => setFilter({...filter,["position"]:itemValue})}
+              <Picker
+                style={{
+                  color: 'white',
+                  width: '100%',
+                  height: 'auto',
+                  backgroundColor: Platform.OS === 'ios' ? 'gray' : ''
+                }}
+                selectedValue={filter['position']}
+                onValueChange={(itemValue, itemIndex) =>
+                  setFilter({ ...filter, ['position']: itemValue })
+                }
               >
                 <Picker.Item label="Disparo" value="Disparo" />
                 <Picker.Item label="Resistencia" value="Resistencia" />
@@ -114,7 +152,9 @@ const submit = async()=> {
             <Text style={[styles.ataque, styles.sexoTypo]}>Ataque</Text>
             <Pressable
               style={[styles.circle, filter.attack && styles.checkedCircle]}
-              onPress={() => setFilter({...filter,["attack"]: !filter["attack"]})}
+              onPress={() =>
+                setFilter({ ...filter, ['attack']: !filter['attack'] })
+              }
             >
               {filter.attack && (
                 <Ionicons name="checkmark" size={10} color="white" />
@@ -127,9 +167,11 @@ const submit = async()=> {
             <Text style={[styles.ataque, styles.sexoTypo]}>Defensa</Text>
             <Pressable
               style={[styles.circle, filter.defense && styles.checkedCircle]}
-              onPress={() => setFilter({...filter,["defense"]: !filter["defense"]})}
+              onPress={() =>
+                setFilter({ ...filter, ['defense']: !filter['defense'] })
+              }
             >
-              {filter.defense  && (
+              {filter.defense && (
                 <Ionicons name="checkmark" size={10} color="white" />
               )}
             </Pressable>
@@ -140,7 +182,9 @@ const submit = async()=> {
             <Text style={[styles.ataque, styles.sexoTypo]}>Velocidad</Text>
             <Pressable
               style={[styles.circle, filter.speed && styles.checkedCircle]}
-              onPress={() => setFilter({...filter,["speed"]: !filter["speed"]})}
+              onPress={() =>
+                setFilter({ ...filter, ['speed']: !filter['speed'] })
+              }
             >
               {filter.speed && (
                 <Ionicons name="checkmark" size={10} color="white" />
@@ -150,10 +194,10 @@ const submit = async()=> {
         </View>
       </View>
       <View style={styles.botonesInferiores}>
-        <TouchableOpacity onPress={()=> submit()}>
-        <View style={[styles.aplicar, styles.aplicarBg]}>
-          <Text style={[styles.aceptar, styles.clubs1Typo]}>Aplicar</Text>
-        </View>
+        <TouchableOpacity onPress={() => submit()}>
+          <View style={[styles.aplicar, styles.aplicarBg]}>
+            <Text style={[styles.aceptar, styles.clubs1Typo]}>Aplicar</Text>
+          </View>
         </TouchableOpacity>
 
         <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
@@ -336,7 +380,7 @@ const styles = StyleSheet.create({
     borderWidth: Platform.OS === 'ios' ? 0 : 1,
     borderStyle: 'solid',
     overflow: 'hidden',
-    height:50
+    height: 50
   },
   campo1: {
     height: 61,
@@ -357,7 +401,6 @@ const styles = StyleSheet.create({
   camposIniciales: {
     paddingTop: 30,
     alignItems: 'center'
-
   },
   ataque: {
     textAlign: 'left',

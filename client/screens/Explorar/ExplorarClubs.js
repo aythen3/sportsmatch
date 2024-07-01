@@ -188,11 +188,15 @@ const ExplorarClubs = () => {
   }, [isFocused])
   // const { allUsers } = useSelector((state) => state.users)
   const { allPosts } = useSelector((state) => state.post)
-  const { mainColor , user:usuario } = useSelector((state) => state.users)
+  const {
+    mainColor,
+    user: usuario,
+    allUsers
+  } = useSelector((state) => state.users)
 
   const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
-  
+
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
 
@@ -223,20 +227,19 @@ const ExplorarClubs = () => {
     setPosts(allPosts)
   }, [allPosts])
 
-
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef(null)
 
   const handleChange = (value) => {
-    setTextValue(value);
-    
+    setTextValue(value)
+
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+      clearTimeout(timeoutRef.current)
     }
 
     timeoutRef.current = setTimeout(() => {
       handleSearch(value)
-    }, 1000); // 1000ms = 1 segundo
-  };
+    }, 1000) // 1000ms = 1 segundo
+  }
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -314,7 +317,8 @@ const ExplorarClubs = () => {
                 style={{
                   width: '100%',
                   height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                  marginBottom: 8
+                  marginBottom: 8,
+                  borderRadius: 5
                 }}
               />
             </TouchableOpacity>
@@ -332,7 +336,8 @@ const ExplorarClubs = () => {
                 style={{
                   width: '100%',
                   height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                  marginBottom: 8
+                  marginBottom: 8,
+                  borderRadius: 5
                 }}
               />
             </TouchableOpacity>
@@ -349,8 +354,9 @@ const ExplorarClubs = () => {
             <Image
               source={{ uri: posts[index + 2]?.image[0] }}
               style={{
-                width: ((screenWidth - 8) * 2) / 3 + 8, // ancho de dos columnas
-                height: ((screenWidth - 8) * 2) / 3 + 8 // altura de dos filas de imagen pequeña
+                width: ((screenWidth - 45) / 3) * 2,
+                height: ((screenWidth + 5) / 3) * 2,
+                borderRadius: 5
               }}
             />
           </TouchableOpacity>
@@ -383,7 +389,10 @@ const ExplorarClubs = () => {
         }}
       >
         {textValue && (
-          <ScrollView contentContainerStyle={{paddingBottom:120}} style={{ flexDirection: 'column', gap: 10 }}>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 120 }}
+            style={{ flexDirection: 'column', gap: 10 }}
+          >
             {textValue && searchUsers.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white' }}>Usuarios</Text>
@@ -392,17 +401,19 @@ const ExplorarClubs = () => {
                   searchUsers.map((user, i) => (
                     <TouchableOpacity
                       onPress={() => {
-                        console.log(usuario,"usuario")  
-                        if(user.id ===  usuario.id ){
-                          return console.log("entra")
+                        const actualUser = allUsers.filter(
+                          (userr) => userr.id === user.user.id
+                        )[0]
+                        if (user.user.id === usuario.id) {
+                          if (usuario?.user?.type !== 'club') {
+                            navigation.navigate('MiPerfil')
+                          } else {
+                            navigation.navigate('PerfilDatosPropioClub')
+                          }
                         }
 
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
-                          author: {
-                            id:user.id,
-                            nickname: user.info.nickname,
-                            sportman: user
-                          }
+                          author: actualUser
                         })
                       }}
                       key={i}
@@ -415,10 +426,21 @@ const ExplorarClubs = () => {
                         }}
                       >
                         <Image
-                          style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: user.info.img_font ? "transparent" : mainColor }}
-                          source={ user.info.img_perfil ? {
-                            uri: user.info.img_perfil
-                          } : require('../../assets/whiteSport.png')}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: user.info.img_font
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          source={
+                            user.info.img_perfil
+                              ? {
+                                  uri: user.info.img_perfil
+                                }
+                              : require('../../assets/whiteSport.png')
+                          }
                         ></Image>
                         <Text
                           style={{
@@ -454,12 +476,22 @@ const ExplorarClubs = () => {
                           gap: 10
                         }}
                       >
-                       
-                         <Image
-                          style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: club.img_perfil ? "transparent" : mainColor }}
-                          source={ club.img_perfil ? {
-                            uri: club.img_perfil
-                          } : require('../../assets/whiteSport.png')}
+                        <Image
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: club.img_perfil
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          source={
+                            club.img_perfil
+                              ? {
+                                  uri: club.img_perfil
+                                }
+                              : require('../../assets/whiteSport.png')
+                          }
                         ></Image>
                         <Text
                           style={{
@@ -498,8 +530,19 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50, backgroundColor: position.info.img_front ? "transparent" : mainColor }}
-                        source={ position.info.img_front ? { uri: position.info.img_front } : require('../../assets/whiteSport.png')}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 50,
+                          backgroundColor: position.info.img_front
+                            ? 'transparent'
+                            : mainColor
+                        }}
+                        source={
+                          position.info.img_front
+                            ? { uri: position.info.img_front }
+                            : require('../../assets/whiteSport.png')
+                        }
                       ></Image>
 
                       <Text
@@ -539,8 +582,19 @@ const ExplorarClubs = () => {
                       }}
                     >
                       <Image
-                        style={{ width: 50, height: 50, borderRadius: 50 , backgroundColor: city.info.img_front ? "transparent" : mainColor }}
-                        source={city.info.img_front ? { uri: city.info.img_front } : require('../../assets/whiteSport.png')}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 50,
+                          backgroundColor: city.info.img_front
+                            ? 'transparent'
+                            : mainColor
+                        }}
+                        source={
+                          city.info.img_front
+                            ? { uri: city.info.img_front }
+                            : require('../../assets/whiteSport.png')
+                        }
                       ></Image>
 
                       <Text
