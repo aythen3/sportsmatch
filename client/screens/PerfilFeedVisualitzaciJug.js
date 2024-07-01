@@ -139,7 +139,9 @@ const PerfilFeedVisualitzaciJug = () => {
         />
 
         {selectComponents === 'perfil' && (
-          <Feed externalId={  data?.author?.sportman?.user?.id ?? data.author.id} />
+          <Feed
+            externalId={data?.author?.sportman?.user?.id ?? data.author.id}
+          />
         )}
 
         {selectComponents === 'estadisticas' && (

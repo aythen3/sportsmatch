@@ -58,7 +58,7 @@ const Feed = ({ externalId }) => {
         }
       }}
       onPress={() => {
-        navigation.navigate('Post', post)
+        navigation.push('Post', post)
       }}
       key={index}
       style={{ flex: 1 / 3, margin: 2 }}

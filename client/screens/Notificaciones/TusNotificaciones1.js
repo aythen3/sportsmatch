@@ -236,9 +236,9 @@ const TusNotificaciones1 = () => {
         {selectedComponent === 'notifications' && (
           <ScrollView>
             {userNotifications.length > 0 ? (
-              userNotifications.map((notification) => (
-                <Notifications data={notification} />
-              ))
+              [...userNotifications]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((notification) => <Notifications data={notification} />)
             ) : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
