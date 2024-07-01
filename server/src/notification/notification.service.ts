@@ -47,7 +47,17 @@ export class NotificationService {
     return await this.notificationsRepository.save(notification);
   }
   
+  public async findAllByUserId(userId: string) {
+    const notifications = await this.notificationsRepository.find({
+      where: { recipientId: userId, isDelete: false }
+    });
 
+    if (!notifications.length) {
+     return []
+    }
+
+    return notifications;
+  }
   public async getAllService(query: { [key: string]: any }) {
     const where = { isDelete: false };
     Object.keys(query).forEach((key) => {

@@ -691,6 +691,7 @@ const Paso1 = () => {
           />
         )}
 
+      </ScrollView>
         <View style={styles.botonesRoles}>
           <Pressable
             style={styles.siguiente}
@@ -701,7 +702,6 @@ const Paso1 = () => {
             <Text style={styles.siguiente1}>Siguiente</Text>
           </Pressable>
         </View>
-      </ScrollView>
     </View>
   )
 }
@@ -759,7 +759,7 @@ const styles = StyleSheet.create({
   botonesRoles: {
     width: '100%',
     paddingVertical: 25,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   siguiente1: {
     fontWeight: '700',

@@ -28,7 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAllOffers } from '../../redux/actions/offers'
-import { getAllNotifications } from '../../redux/actions/notifications'
+import { getAllNotifications, getNotificationsByUserId } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 import { setColor } from '../../utils/handles/HandlerSportColor'
 import { setMainColor } from '../../redux/slices/users.slices'
@@ -56,6 +56,16 @@ const SiguiendoJugadores = () => {
     dispatch(getAllPosts())
     dispatch(getAllLikes())
     dispatch(getAllNotifications())
+    if(user.user.type == 'club'){
+      console.log(user.user.club.id ,"club")
+    dispatch(getNotificationsByUserId(user.user.club.id))
+    } else {
+
+      dispatch(getNotificationsByUserId(user.user.id))
+    }
+
+
+
     dispatch(getAllOffers())
     dispatch(getAllMatchs())
   }, [post, comments])
@@ -182,7 +192,7 @@ const SiguiendoJugadores = () => {
                   description={publication?.description}
                   imgPerfil={
                     publication?.author?.sportman
-                      ? publication?.author?.sportman?.info?.img_front
+                      ? publication?.author?.sportman?.info?.img_perfil
                       : publication?.author?.club?.img_perfil
                   }
                   image={[...new Set(publication?.image)]}

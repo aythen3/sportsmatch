@@ -263,16 +263,16 @@ const HeaderPerfil = ({
                   allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
+                    (follower) => follower !== user?.user?.id
+                  )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
+                    (followed) => followed !== data?.author?.id
+                  )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -283,6 +283,7 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
+                    console.log(data, "es cuando ojeo")
                     dispatch(
                       updateUserData({
                         id: user.user.id,
@@ -296,7 +297,7 @@ const HeaderPerfil = ({
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.author?.id,
+                          recipientId: data?.author?.sportman?.user?.id,
                           date: new Date(),
                           read: false,
                           prop1: {
@@ -304,6 +305,9 @@ const HeaderPerfil = ({
                             userData: {
                               ...user
                             }
+                          },
+                          prop2: {
+                            rol: "user"
                           }
                         })
                       )
@@ -334,16 +338,16 @@ const HeaderPerfil = ({
                     ?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
+                    (follower) => follower !== user?.user?.id
+                  )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
+                    (followed) => followed !== data?.author?.id
+                  )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -375,6 +379,9 @@ const HeaderPerfil = ({
                             userData: {
                               ...user
                             }
+                          },
+                          prop2: {
+                            rol:"user"
                           }
                         })
                       )
@@ -411,8 +418,9 @@ const HeaderPerfil = ({
             </TouchableOpacity>
           )}
           {matchSended === true ? (
-            <Pressable 
-            
+            <Pressable
+
+
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -460,68 +468,72 @@ const HeaderPerfil = ({
               (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
             )?.length === 0 ? (
             <Pressable
-              onPress={() => {
-                setMatchSended(true)
-                dispatch(
-                  sendMatch({
-                    sportmanId: data?.author?.sportman?.id,
+            onPress={() => {
+              const userIdd = data?.author?.sportman?.user?.id
+              setMatchSended(true)
+              console.log(data, "datrita")
+              dispatch(
+                sendMatch({
+                  sportmanId: data?.author?.sportman?.id,
+                  clubId: user?.user?.club?.id,
+                  status: 'pending',
+                  prop1: {
                     clubId: user?.user?.club?.id,
-                    status: 'pending',
-                    prop1: {
-                      clubId: user?.user?.club?.id,
-                      sportmanId: data?.author?.sportman?.id,
-                      sportManData: {
-                        userId: data?.author?.id,
-                        profilePic:
-                          data?.author?.sportman?.info?.img_perfil || '',
-                        name: data?.author?.nickname
-                      },
-                      clubData: {
-                        userId: user?.user?.id,
-                        name: user?.user?.nickname,
-                        profilePic: user?.user?.club?.img_perfil
-                      }
+                    sportmanId: data?.author?.sportman?.id,
+                    sportManData: {
+                      userId: userIdd,
+                      profilePic:
+                        data?.author?.sportman?.info?.img_perfil || '',
+                      name: data?.author?.nickname
+                    },
+                    clubData: {
+                      userId: user?.user?.id,
+                      name: user?.user?.nickname,
+                      profilePic: user?.user?.club?.img_front
                     }
-                  })
-                )
-                  .then((data) => {
-                    // console.log('data from match: ', data.payload)
-                    // console.log('body to sendNotification: ', {
-                    //   title: 'Solicitud',
-                    //   message: 'Recibiste una solicitud de match!',
-                    //   recipientId: data?.payload?.sportManData?.userId,
-                    //   date: new Date(),
-                    //   read: false,
-                    //   prop1: {
-                    //     matchId: data?.payload?.id,
-                    //     clubData: {
-                    //       name: user?.user?.nickname,
-                    //       userId: user.user.id,
-                    //       ...user?.user?.club
-                    //     }
-                    //   }
-                    // })
-                    dispatch(
-                      sendNotification({
-                        title: 'Solicitud',
-                        message: 'Recibiste una solicitud de match!',
-                        recipientId: data?.payload?.prop1?.sportManData?.userId,
-                        date: new Date(),
-                        read: false,
-                        prop1: {
-                          matchId: data?.payload?.id,
-                          clubData: {
-                            name: user?.user?.nickname,
-                            userId: user.user.id,
-                            ...user?.user?.club
-                          }
+                  }
+                })
+              )
+                .then((data) => {
+                  console.log('data from match: ', userIdd)
+                  // console.log('body to sendNotification: ', {
+                  //   title: 'Solicitud',
+                  //   message: 'Recibiste una solicitud de match!',
+                  //   recipientId: data?.payload?.sportManData?.userId,
+                  //   date: new Date(),
+                  //   read: false,
+                  //   prop1: {
+                  //     matchId: data?.payload?.id,
+                  //     clubData: {
+                  //       name: user?.user?.nickname,
+                  //       userId: user.user.id,
+                  //       ...user?.user?.club
+                  //     }
+                  //   }
+                  // })
+                  dispatch(
+                    sendNotification({
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: userIdd,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...user?.user?.club
                         }
-                      })
-                    )
-                  })
-                  .then((data) => dispatch(getAllMatchs()))
-                  .then((data) => getClubMatches())
-              }}
+                      },
+                      prop2: { rol: 'user' }
+
+                    })
+                  ).then((r) => console.log(r, "rrrrrrrrrrrrrrrrr"))
+                })
+                .then((data) => dispatch(getAllMatchs()))
+                .then((data) => getClubMatches())
+            }}
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#7B2610',
@@ -885,7 +897,7 @@ const HeaderPerfil = ({
             {allUsers?.filter((user) => user.id === data.author.id)[0]
               ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                  ?.followers?.length
+                ?.followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>

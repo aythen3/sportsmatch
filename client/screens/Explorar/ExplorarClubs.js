@@ -401,8 +401,8 @@ const ExplorarClubs = () => {
                       >
                         <Image
                           style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: user.info.img_font ? "transparent" : mainColor }}
-                          source={ user.info.img_front ? {
-                            uri: user.info.img_front
+                          source={ user.info.img_perfil ? {
+                            uri: user.info.img_perfil
                           } : require('../../assets/whiteSport.png')}
                         ></Image>
                         <Text
@@ -439,9 +439,12 @@ const ExplorarClubs = () => {
                           gap: 10
                         }}
                       >
-                        <Image
-                          style={{ width: 50, height: 50, borderRadius: 50 }}
-                          source={{ uri: club.img_perfil }}
+                       
+                         <Image
+                          style={{ width: 50, height: 50, borderRadius: 50 ,backgroundColor: club.img_perfil ? "transparent" : mainColor }}
+                          source={ club.img_perfil ? {
+                            uri: club.img_perfil
+                          } : require('../../assets/whiteSport.png')}
                         ></Image>
                         <Text
                           style={{

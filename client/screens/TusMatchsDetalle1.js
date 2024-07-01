@@ -15,7 +15,7 @@ import { useContext } from 'react'
 const TusMatchsDetalle1 = ({ onClose, data }) => {
   const navigation = useNavigation()
   const { getUserAge } = useContext(Context)
-
+console.log(data,"dataa")
   return (
     <View style={styles.tusMatchsDetalle}>
       <View style={styles.matchParent}>
@@ -74,7 +74,7 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
               fontSize: FontSize.h3TitleMEDIUM_size
             }}
           >
-            {data.nickname}
+            {data?.nickname}
           </Text>
         </View>
         <Text style={[styles.masculino, styles.cmTypo]}>

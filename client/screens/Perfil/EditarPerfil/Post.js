@@ -59,7 +59,7 @@ const Post = () => {
             description={item.description}
             imgPerfil={
               item?.author?.sportman
-                ? item?.author?.sportman?.info?.img_front
+                ? item?.author?.sportman?.info?.img_perfil
                 : item?.author?.club?.img_perfil
             }
             image={[...new Set(item?.image)]}

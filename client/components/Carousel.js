@@ -196,7 +196,7 @@ console.log(data,"esto es la data")
             resizeMode="cover"
             source={
               data?.author?.id === user?.user?.id
-                ? user?.user?.sportman?.info?.img_perfil
+                ? user?.user?.sportman?.info?.img_front
                 : imgPerfil === '' || !imgPerfil
                   ? require('../assets/whiteSport.png')
                   : imgPerfil

@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux'
 import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
 import CustomHeaderBack from '../../components/CustomHeaderBack'
+import { getNotificationsByUserId } from '../../redux/actions/notifications'
 
 const TusNotificaciones1 = () => {
   const [value, setValue] = useState('')
@@ -29,7 +30,7 @@ const TusNotificaciones1 = () => {
   const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
   const dispatch = useDispatch()
-  const { allNotifications } = useSelector((state) => state.notifications)
+  const { allNotifications , userNotifications } = useSelector((state) => state.notifications)
   const { sportman } = useSelector((state) => state.sportman)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
@@ -43,6 +44,7 @@ const TusNotificaciones1 = () => {
   useEffect(() => {}, [allUsers, usersWithMessages])
 
   useEffect(() => {
+    console.log(userNotifications,"notifications")
     dispatch(getAllUsers())
   }, [])
 
@@ -124,6 +126,12 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
     getUsersMessages()
+    if(user.user.type == 'club'){
+      console.log(user.user.club.id ,"club")
+    dispatch(getNotificationsByUserId(user.user.club.id))
+    } else {
+      dispatch(getNotificationsByUserId(user.user.id))
+    }
   }, [])
 
   useEffect(() => {
@@ -225,32 +233,8 @@ const TusNotificaciones1 = () => {
 
         {selectedComponent === 'notifications' && (
           <ScrollView>
-            {allNotifications?.filter((notification) => {
-              if (user?.user?.type === 'club') {
-                if (user?.user?.type === 'club') {
-                  notification.recipientId === user.user.club.id
-                  return true
-                } else if (notification.recipientId === userId) {
-                  return true
-                } else {
-                  return false
-                }
-              }
-              notification.recipientId === userId
-            }).length > 0 ? (
-              allNotifications
-                ?.filter((notification) => {
-                  if (user?.user?.type === 'club') {
-                    notification.recipientId === user.user.club.id
-                    return true
-                  } else if (notification.recipientId === userId) {
-                    return true
-                  } else {
-                    return false
-                  }
-                })
-                .map((notification) => <Notifications data={notification} />)
-            ) : (
+            {userNotifications.length > 0 ? userNotifications.map((notification) => <Notifications data={notification} />)
+             : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
               >
