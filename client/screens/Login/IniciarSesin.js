@@ -139,14 +139,19 @@ const IniciarSesin = () => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <View style={{ ...styles.iniciarSesin }}>
+    <ScrollView style={{ ...styles.iniciarSesin }}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
 
       <HomeGif></HomeGif>
 
-      <View style={{ ...styles.contenido, height }}>
+      <View
+        style={{
+          ...styles.contenido,
+          height: height - StatusBar.currentHeight
+        }}
+      >
         {/* <Image
           style={styles.fondoIcon}
           contentFit="cover"
@@ -163,7 +168,7 @@ const IniciarSesin = () => {
                   alignItems: 'center'
                 }}
               >
-                {/* <View style={styles.botonAtrasFrame}>
+                <View style={styles.botonAtrasFrame}>
                   <Image
                     style={styles.simboloIcon}
                     contentFit="cover"
@@ -175,7 +180,7 @@ const IniciarSesin = () => {
                   >
                     <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
                   </Pressable>
-                </View> */}
+                </View>
                 <View style={styles.titularcampos}>
                   <Text style={styles.titular}>Inicia sesión</Text>
                   <View style={styles.campos}>
@@ -292,7 +297,7 @@ const IniciarSesin = () => {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -365,7 +370,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     position: 'absolute',
     top: 100,
-    left: 10,
     flexDirection: 'row'
   },
   titular: {

@@ -11,7 +11,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   useWindowDimensions,
-  Dimensions
+  StatusBar,
+  Platform
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -114,24 +115,24 @@ const Registrarse = () => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <View
-      style={{
-        width: '100%',
-        flex: 1,
-        backgroundColor: Color.bLACK1SPORTSMATCH,
-        justifyContent: 'flex-end'
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
     >
-      <View style={{ position: 'absolute', top: 0, right: 0, width: '100%' }}>
-        <HomeGif></HomeGif>
-      </View>
-      <View
+      <ScrollView
         style={{
-          justifyContent: 'space-between',
-          height: '85%'
+          flex: 1,
+          backgroundColor: Color.bLACK1SPORTSMATCH
         }}
       >
-        <View>
+        <HomeGif></HomeGif>
+        <View
+          style={{
+            flex: 1,
+            height: height - StatusBar.currentHeight,
+            justifyContent: 'center'
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack()
@@ -412,13 +413,14 @@ const Registrarse = () => {
         </View>
         <View
           style={{
+            marginTop: 30,
             flexDirection: 'row',
             alignItems: 'center',
-            // position: 'absolute',
+            position: 'absolute',
             width: '90%',
             alignSelf: 'center',
-            justifyContent: 'center'
-            // bottom: 0
+            justifyContent: 'center',
+            bottom: 0
           }}
         >
           <View
@@ -473,8 +475,8 @@ const Registrarse = () => {
             </Text>
           </View>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -689,7 +691,7 @@ const styles = StyleSheet.create({
     marginTop: 42
   },
   formulariotextoLegal: {
-    marginTop: 25
+    marginTop: 15
   },
   contenido: {
     // justifyContent: 'center',
