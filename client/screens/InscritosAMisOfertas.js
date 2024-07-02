@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -18,16 +18,30 @@ import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { updateOffer } from '../redux/actions/offers'
 import { sendNotification } from '../redux/actions/notifications'
 import { BlurView } from 'expo-blur'
+import { getColorsWithOpacity } from '../utils/colorUtils'
+import { Context } from '../context/Context'
 
 const InscritosAMisOfertas = () => {
   const dispatch = useDispatch()
+  const { getClubMatches, clubMatches } = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
-  const { allUsers, user } = useSelector((state) => state.users)
+  const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [modalPremium, setModalPremium] = useState(false)
   const route = useRoute()
 
   const inscriptions = route.params.inscriptions
+  const moreOpacity = 0.8 // 80% opacity
+  const lessOpacity = 0.4 // 40% opacity
+  const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
+
+  useEffect(() => {
+    getClubMatches()
+  }, [])
+
+  useEffect(() => {
+    console.log('clubMatches', clubMatches[0])
+  }, [clubMatches])
 
   return (
     <View style={styles.inscritosAMisOfertas}>
@@ -128,6 +142,15 @@ const InscritosAMisOfertas = () => {
                   </Text>
                 </View>
                 <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    backgroundColor: colors.lessOpaque,
+                    borderRadius: Border.br_81xl,
+                    height: 25,
+                    width: 90,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
                   onPress={() => {
                     const currentOffer = offers.filter(
                       (offer) =>
@@ -207,11 +230,43 @@ const InscritosAMisOfertas = () => {
                     )
                   }}
                 >
-                  <Image
+                  {/* <Image
                     style={{ height: 58 * 0.7, width: 111 * 0.7 }}
                     contentFit="contain"
                     source={require('../assets/matchButton.png')}
-                  />
+                  /> */}
+                  <Text
+                    style={{
+                      width: '70%',
+                      fontSize: 13,
+                      textAlign: 'center',
+
+                      marginLeft: '30%',
+                      color: colors.lessOpaque,
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontWeight: '700'
+                    }}
+                  >
+                    {'Match'}
+                  </Text>
+                  <View
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 100,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: colors.moreOpaque,
+                      position: 'absolute',
+                      left: 0
+                    }}
+                  >
+                    <Image
+                      style={{ width: '80%', height: '80%' }}
+                      contentFit="cover"
+                      source={require('../assets/whiteSport.png')}
+                    />
+                  </View>
                 </TouchableOpacity>
               </View>
             ))}
