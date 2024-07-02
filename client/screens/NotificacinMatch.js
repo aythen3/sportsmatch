@@ -69,10 +69,13 @@ const NotificacinMatch = ({ onClose, data }) => {
                 style={[styles.verPerfil, styles.aceptarFlexBox]}
                 onPress={() => {
                   onClose()
+                  let user = allUsers.filter(
+                    (user) => user.id === data.prop1.clubData.userId
+                  )[0]
+                  const modificacion = {...user, club:{...user.club,user}}
+                  console.log(modificacion,"data")
                   navigation.navigate('ClubProfile', {
-                    author: allUsers.filter(
-                      (user) => user.id === data.prop1.clubData.userId
-                    )[0]
+                    author: modificacion
                   })
                 }}
               >

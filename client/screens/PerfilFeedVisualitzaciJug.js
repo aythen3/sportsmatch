@@ -72,7 +72,7 @@ const PerfilFeedVisualitzaciJug = () => {
     if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.voleibol)
   }
   useEffect(() => {
-    console.log('A===========', data.author)
+    console.log('A===========', data)
     selectores()
   }, [])
 
@@ -703,9 +703,9 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   moduloSpaceBlock: {
-    paddingVertical: Padding.p_7xs,
-    paddingHorizontal: 0,
+    width:"46%",
     height: 80,
+    justifyContent:"center",
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: Border.br_8xs,
     alignItems: 'center',
@@ -737,7 +737,9 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   circulos: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width:"100%",
+    justifyContent:"center"
   },
   concepto: {
     lineHeight: 14,

@@ -48,6 +48,7 @@ export class ClubService {
       const newClub = await this.clubRepository.create(clubData);
       newClub.sports = [sport];
       newClub.sport = clubData.sport // Relate the club with the sport
+      newClub.user = user
       const saveClub = await this.clubRepository.save(newClub);
       if (!saveClub) {
         throw new ErrorManager({

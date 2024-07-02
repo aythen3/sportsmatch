@@ -75,7 +75,7 @@ const Notifications = ({ data }) => {
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-        {data.title === 'Match' && data.title === 'Solicitud' && (
+        {data.title === 'Solicitud' && (
           <Image
             style={[styles.groupIconLayout]}
             contentFit="cover"
@@ -250,6 +250,7 @@ const Notifications = ({ data }) => {
                   })
                   .then((response) => {
                     if (newFollowers.includes(user?.user?.id)) {
+                      console.log("esdto vas a cmaiawr",data)
                       dispatch(
                         sendNotification({
                           title: 'Follow',
@@ -262,6 +263,9 @@ const Notifications = ({ data }) => {
                             userData: {
                               ...user
                             }
+                          },
+                          prop2:{
+                            rol: data.prop1.userData.user.club ? 'club' : 'user'
                           }
                         })
                       )
