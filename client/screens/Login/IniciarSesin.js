@@ -287,12 +287,12 @@ const IniciarSesin = () => {
               </View>
             </View>
           </View>
-          <View>
+          {/* <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
               Al continuar, aceptas automáticamente nuestras Condiciones,
               Polítíca de privacidad y Polítíca de cookies
             </Text>
-          </View>
+          </View> */}
         </View>
       </View>
     </ScrollView>
