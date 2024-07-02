@@ -53,7 +53,7 @@ const TusNotificaciones1 = () => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000)
+    setTimeout(() => setLoading(false), 700)
   }, [])
 
   React.useEffect(() => {
@@ -244,7 +244,9 @@ const TusNotificaciones1 = () => {
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .map((notification) => <Notifications data={notification} />)
+                .map((notification) => (
+                  <Notifications key={notification.id} data={notification} />
+                ))
             ) : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}

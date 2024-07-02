@@ -38,9 +38,11 @@ const ClubDetails = () => {
     setProfileImage,
     provisoryCoverImage,
     provisoryProfileImage,
-    pickImageFromCamera
+    pickImageFromCamera,
+    pickImageLoading,
+    setPickImageLoading
   } = useContext(Context)
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
 
   const { club } = useSelector((state) => state.clubs)
 
@@ -111,12 +113,14 @@ const ClubDetails = () => {
       img_front: coverImage,
       year: foundationDate
     }
+
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
       if (value !== undefined) {
         acc[key] = value
       }
       return acc
     }, {})
+    console.log('updating club data with', filteredData)
     dispatch(updateClubData({ id: club.id, body: filteredData })).then((res) =>
       dispatch(getClub(club.id))
     )
@@ -317,7 +321,14 @@ const ClubDetails = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.orangeButton}
+              style={{
+                backgroundColor: mainColor,
+                borderRadius: 50,
+                minWidth: 158,
+                height: 25,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
               onPress={() => pickImage('profile')}
             >
               <Text style={styles.mediumText}>Subir foto de perfil</Text>
@@ -372,7 +383,14 @@ const ClubDetails = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.orangeButton}
+              style={{
+                backgroundColor: mainColor,
+                borderRadius: 50,
+                minWidth: 158,
+                height: 25,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
               onPress={() => pickImage('cover')}
             >
               <Text style={styles.mediumText}>Subir foto de portada</Text>
@@ -436,7 +454,12 @@ const ClubDetails = () => {
               !coverImage &&
               !foundationDate
             }
-            onPress={handleUpdateClubData}
+            onPress={() => {
+              console.log('pickImageLoading', pickImageLoading)
+              if (pickImageLoading === false) {
+                handleUpdateClubData()
+              }
+            }}
           >
             <Text style={{ fontSize: 18, color: '#000', fontWeight: 700 }}>
               Aceptar

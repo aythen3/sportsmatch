@@ -28,8 +28,7 @@ const usersSlices = createSlice({
     error: false,
     loading: false,
     isSportman: true,
-    profiles: [
-    ]
+    profiles: []
   },
   reducers: {
     setIsSpotMan: (state, action) => {
@@ -69,22 +68,22 @@ const usersSlices = createSlice({
       state.loged = false
     },
     cleanUser: (state) => {
-         state.mainColor = '#E1451E';
-state.loged = false;
-state.user = {};
-state.userChild = {};
-state.sportmanGender = '';
-state.birthdate = '';
-state.city = '';
-state.profesionalType = '';
-state.category = '';
-state.position = '';
-state.allUsers = [];
-state.error = false;
-state.loading = false;
-state.isSportman = true;
-state.profiles = []
-}
+      state.mainColor = '#E1451E'
+      state.loged = false
+      state.user = {}
+      state.userChild = {}
+      state.sportmanGender = ''
+      state.birthdate = ''
+      state.city = ''
+      state.profesionalType = ''
+      state.category = ''
+      state.position = ''
+      state.allUsers = []
+      state.error = false
+      state.loading = false
+      state.isSportman = true
+      state.profiles = []
+    }
   },
   extraReducers: (builder) => {
     builder
