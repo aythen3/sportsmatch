@@ -6,7 +6,12 @@ const positionsSlices = createSlice({
   initialState: {
     allPositions: []
   },
-  reducers: {},
+  reducers: {
+    cleanPosition: (state, action) => {
+      state.allPositions = []
+
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Todos las posiciones
@@ -25,5 +30,8 @@ const positionsSlices = createSlice({
       })
   }
 })
+
+export const { cleanPosition } = positionsSlices.actions
+
 
 export default positionsSlices.reducer
