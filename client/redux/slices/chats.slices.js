@@ -4,9 +4,15 @@ import { getChatHistory, updateMessages } from '../actions/chats'
 const clubSlices = createSlice({
   name: 'chats',
   initialState: {
-    allMessages: []
+    allMessages: [],
+    loading: false,
+    error: false
   },
   reducers: {
+    resetChatsSlices: (state, action) => {
+      state.allMessages = []
+      ;(state.loading = false), (state.error = false)
+    },
     setAllMessages: (state, action) => {
       state.allMessages = action.payload
     },
@@ -62,7 +68,10 @@ const clubSlices = createSlice({
   }
 })
 
-export const { setAllMessages, setAllConversationMessagesToRead } =
-  clubSlices.actions
+export const {
+  setAllMessages,
+  setAllConversationMessagesToRead,
+  resetChatsSlices
+} = clubSlices.actions
 
 export default clubSlices.reducer
