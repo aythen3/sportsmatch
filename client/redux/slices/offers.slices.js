@@ -16,11 +16,19 @@ const offersSlices = createSlice({
     usersRegistered: []
   },
   reducers: {
+    updateOffers: (state, action) => {
+      console.log('filtering out offer', idToFilterOut)
+      const idToFilterOut = action.payload
+      const acutalOffers = [...state.offers]
+      const filteredOffers = acutalOffers.filter(
+        (offer) => offer.id !== idToFilterOut
+      )
+      state.offers = filteredOffers
+    },
     cleanOffers: (state, action) => {
       state.offer = {}
       state.offers = []
       state.usersRegistered = []
-
     }
   },
   extraReducers: (builder) => {
@@ -101,6 +109,6 @@ const offersSlices = createSlice({
   }
 })
 
-export const { cleanOffers } = offersSlices.actions
+export const { cleanOffers, updateOffers } = offersSlices.actions
 
 export default offersSlices.reducer

@@ -421,6 +421,7 @@ export const ContextProvider = ({ children }) => {
     const { data } = await axiosInstance.post('chat/chats', {
       userId
     })
+    console.log('DATA', data)
     const convs = Object.keys(data)
     const notReaded = convs
       .map(
@@ -438,9 +439,19 @@ export const ContextProvider = ({ children }) => {
           .split('_')
           .filter((singleId) => singleId !== userId)[0]
         const userData = allUsers.filter((user) => user.id === otherUserId)[0]
-        return { room: key, ...userData }
+        const lastMessage = data[key].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+        return { room: key, ...userData, lastMessage }
       })
-      setUsersWithMessages(finalInfo)
+      console.log('Setting users with messages to: ', finalInfo)
+      setUsersWithMessages(
+        finalInfo.sort(
+          (a, b) =>
+            new Date(b.lastMessage.createdAt) -
+            new Date(a.lastMessage.createdAt)
+        )
+      )
     }
   }
 

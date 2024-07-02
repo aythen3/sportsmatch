@@ -25,7 +25,7 @@ const FiltersHome = ({
           source={require('../assets/group-428.png')}
         />
         <TextInput
-          onBlur={action ? action : console.log('blur')}
+          onBlur={action ? action : ''}
           style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
           placeholderTextColor={Color.gREY2SPORTSMATCH}
           value={textValue}

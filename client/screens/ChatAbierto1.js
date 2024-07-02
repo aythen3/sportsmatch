@@ -10,7 +10,8 @@ import {
   Touchable,
   Modal,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native'
 import contact from '../assets/contact.png'
 import { Image } from 'expo-image'
@@ -35,6 +36,7 @@ const ChatAbierto1 = () => {
   const _ = require('lodash')
   const [selectedUserDetails, setSelectedUserDetails] = useState()
   const [showOptionsModal, setShowOptionsModal] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showDeletePopUp, setShowDeletePopUp] = useState(false)
   const isFocused = useIsFocused()
   const {
@@ -54,27 +56,29 @@ const ChatAbierto1 = () => {
   const scrollViewRef = useRef()
 
   const handleSendMessage = () => {
-    sendMessage(message, user.user.id, route.params.receiverId)
+    sendMessage(message, user?.user?.id, route?.params?.receiverId)
     setMessage()
   }
 
   useEffect(() => {
-    const userrr =  allUsers.filter((user) => user.id === route.params.receiverId)[0]
-     
+    const userrr = allUsers.filter(
+      (user) => user?.id === route?.params?.receiverId
+    )[0]
+
     setSelectedUserDetails(userrr)
-    console.log(userrr,"Dettt")
+    console.log(userrr, 'Dettt')
   }, [])
   useEffect(() => {
-    joinRoom(user.user.id, route.params.receiverId)
+    joinRoom(user?.user?.id, route?.params?.receiverId)
     dispatch(
       getChatHistory({
-        sender: user.user.id,
-        receiver: route.params.receiverId
+        sender: user?.user?.id,
+        receiver: route?.params?.receiverId
       })
     )
     return () => {
       dispatch(emptyAllMessages())
-      leaveRoom(user.user.id, route.params.receiverId)
+      leaveRoom(user?.user?.id, route.params.receiverId)
     }
   }, [])
 
@@ -82,12 +86,12 @@ const ChatAbierto1 = () => {
     console.log('on setAllToRead')
     const messagesToSetReaded = allMessages?.filter(
       (message) =>
-        message.senderId !== user.user.id && message.isReaded === false
+        message.senderId !== user?.user?.id && message?.isReaded === false
     )
     console.log('messagesToSetReaded', messagesToSetReaded)
     if (messagesToSetReaded.length > 0) {
       await messagesToSetReaded.forEach((message) => {
-        axiosInstance.put(`chat/readed/${message.id}`)
+        axiosInstance.put(`chat/readed/${message?.id}`)
         dispatch(setAllConversationMessagesToRead())
       })
       getUsersMessages()
@@ -100,33 +104,37 @@ const ChatAbierto1 = () => {
     }
   }, [allMessages])
 
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500)
+  }, [])
+
   const userFollowing = user?.user?.following || []
 
   const handleFollow = () => {
     setShowOptionsModal(false)
     let actualUser = _.cloneDeep(user)
     const actualFollowers =
-      allUsers.filter((user) => user.id === selectedUserDetails.id)[0]
+      allUsers.filter((user) => user?.id === selectedUserDetails?.id)[0]
         .followers || []
     const newFollowers = actualFollowers.includes(user?.user?.id)
       ? actualFollowers.filter((follower) => follower !== user?.user?.id)
       : [...actualFollowers, user?.user?.id]
 
-    const newFollowingArray = userFollowing?.includes(selectedUserDetails.id)
-      ? userFollowing.filter((followed) => followed !== selectedUserDetails.id)
-      : [...userFollowing, selectedUserDetails.id]
+    const newFollowingArray = userFollowing?.includes(selectedUserDetails?.id)
+      ? userFollowing.filter((followed) => followed !== selectedUserDetails?.id)
+      : [...userFollowing, selectedUserDetails?.id]
     actualUser.user.following = newFollowingArray
 
     dispatch(
       updateUserData({
-        id: selectedUserDetails.id,
+        id: selectedUserDetails?.id,
         body: { followers: newFollowers }
       })
     )
       .then((data) => {
         dispatch(
           updateUserData({
-            id: user.user.id,
+            id: user?.user?.id,
             body: { following: newFollowingArray }
           })
         )
@@ -137,7 +145,7 @@ const ChatAbierto1 = () => {
             sendNotification({
               title: 'Follow',
               message: `${user.user.nickname} ha comenzado a seguirte`,
-              recipientId: selectedUserDetails.id,
+              recipientId: selectedUserDetails?.id,
               date: new Date(),
               read: false,
               prop1: {
@@ -159,7 +167,7 @@ const ChatAbierto1 = () => {
     setShowDeletePopUp(false)
     const body = {
       senderId: user?.user?.id.toString(),
-      receiverId: route.params.receiverId.toString(),
+      receiverId: route?.params?.receiverId?.toString(),
       room: roomId
     }
     axiosInstance.post('chat/marcarMensajesComoEliminados', body)
@@ -204,7 +212,7 @@ const ChatAbierto1 = () => {
                       }}
                     >
                       <Text style={{ color: '#fff', fontSize: 14 }}>
-                        {userFollowing?.includes(selectedUserDetails.id)
+                        {userFollowing?.includes(selectedUserDetails?.id)
                           ? 'Dejar de seguir'
                           : 'Seguir'}
                       </Text>
@@ -423,31 +431,51 @@ const ChatAbierto1 = () => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
-          ref={scrollViewRef}
-          onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({ animated: true })
-          }
-        >
+        {loading ? (
           <View
             style={{
-              flexDirection: 'column-reverse',
-              paddingRight: 10,
-              paddingLeft: 10
+              flexGrow: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            {allMessages?.map((chat) => (
-              <Chat
-                hour={getTimeFromDate(chat.createdAt)}
-                key={chat.id}
-                text={chat.message}
-                isMy={chat.senderId === user.user.id}
-                read={chat.isReaded}
-              />
-            ))}
+            <ActivityIndicator
+              style={{
+                backgroundColor: 'transparent',
+                alignSelf: 'center'
+              }}
+              animating={true}
+              size="xlarge"
+              color={mainColor}
+            />
           </View>
-        </ScrollView>
+        ) : (
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+          >
+            <View
+              style={{
+                flexDirection: 'column-reverse',
+                paddingRight: 10,
+                paddingLeft: 10
+              }}
+            >
+              {allMessages?.map((chat) => (
+                <Chat
+                  hour={getTimeFromDate(chat?.createdAt)}
+                  key={chat?.id}
+                  text={chat?.message}
+                  isMy={chat?.senderId === user?.user?.id}
+                  read={chat?.isReaded}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
         <View
           style={{
             height: 50,

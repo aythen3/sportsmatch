@@ -98,25 +98,24 @@ quieres `}</Text>
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')
                   await AsyncStorage.removeItem('@user')
-
+                  await dispatch(cleanSportman())
+                  await dispatch(cleanUser())
+                  await dispatch(cleanPost())
+                  await dispatch(cleanClub())
+                  await dispatch(resetChatsSlices())
+                  await dispatch(resetCommentsSlices())
+                  await dispatch(resetMatchsSlices())
+                  await dispatch(resetMuroSlices())
+                  await dispatch(resetNotificationsSlices())
+                  await dispatch(cleanOffers())
+                  await dispatch(cleanPosition())
+                  await dispatch(cleanSports())
+                  await firebaseLogout()
                   navigation.reset({
                     index: 0,
                     history: false,
                     routes: [{ name: 'LoginSwitch' }]
                   })
-                  dispatch(cleanSportman())
-                  dispatch(cleanUser())
-                  dispatch(cleanPost())
-                  dispatch(cleanClub())
-                  dispatch(resetChatsSlices())
-                  dispatch(resetCommentsSlices())
-                  dispatch(resetMatchsSlices())
-                  dispatch(resetMuroSlices())
-                  dispatch(resetNotificationsSlices())
-                  dispatch(cleanOffers())
-                  dispatch(cleanPosition())
-                  dispatch(cleanSports())
-                  firebaseLogout()
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

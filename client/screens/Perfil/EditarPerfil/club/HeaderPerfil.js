@@ -96,7 +96,7 @@ const HeaderPerfil = ({
 
   return (
     <View>
-      <TouchableOpacity>
+      <View>
         {front === '' || !front ? (
           <Image
             style={{ width: '100%', height: 150, backgroundColor: mainColor }}
@@ -110,7 +110,7 @@ const HeaderPerfil = ({
             source={{ uri: front }}
           />
         )}
-      </TouchableOpacity>
+      </View>
       <View
         style={{
           flexDirection: 'row',
@@ -429,7 +429,7 @@ const HeaderPerfil = ({
             <Pressable
               style={{
                 flexDirection: 'row',
-                backgroundColor: colors.lessOpaque,
+                backgroundColor: colors.moreOpaque,
                 borderRadius: Border.br_81xl,
                 height: 35,
                 width: '47%',
@@ -443,7 +443,7 @@ const HeaderPerfil = ({
                   textAlign: 'center',
                   marginRight: '10%',
                   fontSize: 14,
-                  color: colors.moreOpaque,
+                  color: 'rgba(255,255,255,0.7)',
                   fontFamily: FontFamily.t4TEXTMICRO,
                   fontWeight: '700'
                 }}
@@ -457,7 +457,7 @@ const HeaderPerfil = ({
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: colors.moreOpaque,
+                  backgroundColor: mainColor,
                   position: 'absolute',
                   right: 0
                 }}
@@ -613,7 +613,7 @@ const HeaderPerfil = ({
               <Pressable
                 style={{
                   flexDirection: 'row',
-                  backgroundColor: '#7B2610',
+                  backgroundColor: colors.moreOpaque,
                   borderRadius: Border.br_81xl,
                   height: 35,
                   width: '47%',
@@ -627,7 +627,7 @@ const HeaderPerfil = ({
                     textAlign: 'center',
                     marginRight: '10%',
                     fontSize: 14,
-                    color: '#E1451E',
+                    color: 'rgba(255,255,255,0.7)',
                     fontFamily: FontFamily.t4TEXTMICRO,
                     fontWeight: '700'
                   }}
@@ -641,7 +641,7 @@ const HeaderPerfil = ({
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: colors.lessOpaque,
+                    backgroundColor: mainColor,
                     position: 'absolute',
                     right: 0
                   }}

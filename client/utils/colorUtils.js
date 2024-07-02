@@ -29,7 +29,8 @@ const hexToRgba = (hex, opacity) => {
 const getColorsWithOpacity = (hex, moreOpacity, lessOpacity) => {
   return {
     moreOpaque: hexToRgba(hex, moreOpacity),
-    lessOpaque: hexToRgba(hex, lessOpacity)
+    lessOpaque: hexToRgba(hex, lessOpacity),
+    opaque: hexToRgba(hex, 0.85)
   }
 }
 

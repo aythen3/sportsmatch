@@ -17,7 +17,7 @@ const EditarPerfil = () => {
       <CustomHeaderBack header={'Editar perfil'}></CustomHeaderBack>
       <View style={styles.groupParent}>
         <View style={styles.defineTusSkillsParent}>
-          {user.user.type !== 'club' && sportman.type !== 'coach' && (
+          {user?.user?.type !== 'club' && sportman?.type !== 'coach' && (
             <Text
               style={[styles.defineTusSkills, styles.eliminarCuentaTypo]}
               onPress={() => navigation.navigate('EditarSkills')}
@@ -25,12 +25,12 @@ const EditarPerfil = () => {
               Define tus skills
             </Text>
           )}
-          <View style={user.user.type !== 'club' && styles.frameChild} />
+          <View style={user?.user?.type !== 'club' && styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
             onPress={() =>
               navigation.navigate(
-                user.user.type === 'club'
+                user?.user?.type === 'club'
                   ? 'ClubDetails'
                   : sportman.type === 'coach'
                     ? 'ProDetails'
@@ -38,9 +38,9 @@ const EditarPerfil = () => {
               )
             }
           >
-            {user.user.type === 'club'
+            {user?.user?.type === 'club'
               ? 'Detalles del club'
-              : sportman.type === 'coach'
+              : sportman?.type === 'coach'
                 ? 'Detalles del profesional'
                 : 'Detalles del usuario'}
           </Text>

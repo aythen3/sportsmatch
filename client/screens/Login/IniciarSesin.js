@@ -150,11 +150,16 @@ const IniciarSesin = () => {
           height: height - StatusBar.currentHeight
         }}
       >
-        {/* <Image
-          style={styles.fondoIcon}
-          contentFit="cover"
-          source={require('../../assets/fondo1.png')}
-        /> */}
+        <View style={styles.botonAtrasFrame}>
+          <Image
+            style={styles.simboloIcon}
+            contentFit="cover"
+            source={require('../../assets/coolicon3.png')}
+          />
+          <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
+            <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
+          </Pressable>
+        </View>
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formulario}>
             <View style={styles.formularioFrame}>
@@ -166,19 +171,6 @@ const IniciarSesin = () => {
                   alignItems: 'center'
                 }}
               >
-                <View style={styles.botonAtrasFrame}>
-                  <Image
-                    style={styles.simboloIcon}
-                    contentFit="cover"
-                    source={require('../../assets/coolicon3.png')}
-                  />
-                  <Pressable
-                    style={styles.atrs}
-                    onPress={() => navigation.goBack()}
-                  >
-                    <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
-                  </Pressable>
-                </View>
                 <View style={styles.titularcampos}>
                   <Text style={styles.titular}>Inicia sesión</Text>
                   <View style={styles.campos}>
@@ -287,12 +279,12 @@ const IniciarSesin = () => {
               </View>
             </View>
           </View>
-          {/* <View>
+          <View>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
               Al continuar, aceptas automáticamente nuestras Condiciones,
               Polítíca de privacidad y Polítíca de cookies
             </Text>
-          </View> */}
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -363,12 +355,10 @@ const styles = StyleSheet.create({
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,
-    paddingVertical: 0,
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    flexDirection: 'row',
     position: 'absolute',
-    top: 100,
-    flexDirection: 'row'
+    top: '15%'
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,

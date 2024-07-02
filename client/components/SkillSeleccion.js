@@ -56,7 +56,7 @@ const SkillSeleccion = ({
     } else if (categorias_deporte[sportmanSportName]) {
       setSelectedOptionsCategoria(categorias_deporte[sportmanSportName]);
     }
-    
+
   }, [selectedSport, sportman?.info?.sport]);
 
 

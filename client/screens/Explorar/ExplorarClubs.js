@@ -228,7 +228,7 @@ const ExplorarClubs = () => {
   }, [allPosts])
 
   useEffect(() => {
-    console.log('CANTIDAD DE POSTS', allPosts.length)
+    // console.log('CANTIDAD DE POSTS', allPosts.length)
   }, [allPosts])
 
   const timeoutRef = useRef(null)
@@ -477,7 +477,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchClubes.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' ,paddingTop:10}}>Clubes</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
                 {searchClubes.length > 0 &&
                   searchClubes.map((club, i) => (
                     <TouchableOpacity
@@ -528,7 +528,9 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchPosition.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white',paddingTop:10 }}>Posiciones</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>
+                  Posiciones
+                </Text>
                 {searchPosition.map((position, i) => (
                   <TouchableOpacity
                     key={i}
@@ -553,13 +555,13 @@ const ExplorarClubs = () => {
                           width: 50,
                           height: 50,
                           borderRadius: 50,
-                          backgroundColor: position.info.img_front
+                          backgroundColor: position.info.img_perfil
                             ? 'transparent'
                             : mainColor
                         }}
                         source={
-                          position.info.img_front
-                            ? { uri: position.info.img_front }
+                          position.info.img_perfil
+                            ? { uri: position.info.img_perfil }
                             : require('../../assets/whiteSport.png')
                         }
                       ></Image>
@@ -580,7 +582,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchCity.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white',paddingTop:10 }}>Ciudades</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
                 {searchCity.map((city, i) => (
                   <TouchableOpacity
                     key={i}
@@ -605,13 +607,13 @@ const ExplorarClubs = () => {
                           width: 50,
                           height: 50,
                           borderRadius: 50,
-                          backgroundColor: city.info.img_front
+                          backgroundColor: city.info.img_perfil
                             ? 'transparent'
                             : mainColor
                         }}
                         source={
-                          city.info.img_front
-                            ? { uri: city.info.img_front }
+                          city.info.img_perfil
+                            ? { uri: city.info.img_perfil }
                             : require('../../assets/whiteSport.png')
                         }
                       ></Image>

@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
-import { Color, FontFamily, FontSize } from '../GlobalStyles'
+import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
 import { useDispatch, useSelector } from 'react-redux'
 import TusMatchsDetalle from './../screens/TusMatchsDetalle'
@@ -22,6 +22,7 @@ import { updateUser } from '../redux/slices/users.slices'
 import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
 import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
+import { getColorsWithOpacity } from '../utils/colorUtils'
 
 const Notifications = ({ data }) => {
   const _ = require('lodash')
@@ -31,6 +32,9 @@ const Notifications = ({ data }) => {
   const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
   const dispatch = useDispatch()
+  const moreOpacity = 0.65 // 80% opacity
+  const lessOpacity = 0.4 // 40% opacity
+  const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
   function formatDate(timestamp) {
     const date = new Date(timestamp)
     // Extract the day, month, and year components
@@ -192,8 +196,8 @@ const Notifications = ({ data }) => {
                                 ...user?.user?.club
                               }
                             },
-                            prop2:{
-                              rol:"user"
+                            prop2: {
+                              rol: 'user'
                             }
                           })
                         )
@@ -201,12 +205,53 @@ const Notifications = ({ data }) => {
                       .then((data) => dispatch(getAllMatchs()))
                       .then((data) => getClubMatches())
                   }}
+                  style={{
+                    flexDirection: 'row',
+                    backgroundColor: colors.lessOpaque,
+                    borderRadius: Border.br_81xl,
+                    height: 22,
+                    width: 69,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 4
+                  }}
                 >
-                  <Image
+                  {/* <Image
                     style={{ height: 58 * 0.7, width: 111 * 0.7 }}
                     contentFit="contain"
                     source={require('../assets/matchButton.png')}
-                  />
+                  /> */}
+                  <Text
+                    style={{
+                      width: '70%',
+                      fontSize: 11,
+                      textAlign: 'center',
+                      marginLeft: '35%',
+                      color: colors.moreOpaque,
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontWeight: '700'
+                    }}
+                  >
+                    {'Match'}
+                  </Text>
+                  <View
+                    style={{
+                      width: 27,
+                      height: 27,
+                      borderRadius: 100,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: mainColor,
+                      position: 'absolute',
+                      left: 0
+                    }}
+                  >
+                    <Image
+                      style={{ width: '80%', height: '80%' }}
+                      contentFit="cover"
+                      source={require('../assets/whiteSport.png')}
+                    />
+                  </View>
                 </TouchableOpacity>
               )}
           </View>
@@ -250,7 +295,7 @@ const Notifications = ({ data }) => {
                   })
                   .then((response) => {
                     if (newFollowers.includes(user?.user?.id)) {
-                      console.log("esdto vas a cmaiawr",data)
+                      console.log('esdto vas a cmaiawr', data)
                       dispatch(
                         sendNotification({
                           title: 'Follow',
@@ -264,7 +309,7 @@ const Notifications = ({ data }) => {
                               ...user
                             }
                           },
-                          prop2:{
+                          prop2: {
                             rol: data.prop1.userData.user.club ? 'club' : 'user'
                           }
                         })
