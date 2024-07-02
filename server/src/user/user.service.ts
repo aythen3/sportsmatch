@@ -216,7 +216,7 @@ export class UserService {
   public async findAll() {
     try {
       const users: UserEntity[] = await this.userRepository.find({
-        where: { isDelete: false }
+        where: { isDelete: false },relations:['club','sportman']
       });
 
       for (let i = 0; i < users.length; i++) {

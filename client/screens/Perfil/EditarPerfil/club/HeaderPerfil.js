@@ -297,7 +297,7 @@ const HeaderPerfil = ({
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.author?.sportman?.user?.id,
+                          recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
                           date: new Date(),
                           read: false,
                           prop1: {
@@ -310,7 +310,7 @@ const HeaderPerfil = ({
                             rol: "user"
                           }
                         })
-                      )
+                      ).then((res)=>console.log("respuesta",res))
                     }
                     dispatch(updateUser(actualUser))
                     dispatch(getAllUsers())
@@ -367,11 +367,12 @@ const HeaderPerfil = ({
                   })
                   .then((response) => {
                     if (newFollowers.includes(user?.user?.id)) {
+                      console.log("respuesta2",data?.author)
                       dispatch(
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.author?.id,
+                          recipientId: data?.author?.sportman?.user?.id,
                           date: new Date(),
                           read: false,
                           prop1: {
@@ -384,7 +385,7 @@ const HeaderPerfil = ({
                             rol:"user"
                           }
                         })
-                      )
+                      ).then((res)=>console.log("respuesta",data?.author))
                     }
                     dispatch(updateUser(actualUser))
                     dispatch(getAllUsers())
@@ -426,16 +427,16 @@ const HeaderPerfil = ({
                 backgroundColor: '#7B2610',
                 borderRadius: Border.br_81xl,
                 height: 35,
-                width: 170,
+                width: "47%",
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
               <Text
                 style={{
-                  marginLeft: 35,
                   width: '100%',
-                  textAlign: 'left',
+                  textAlign: 'center',
+                  marginRight:"10%",
                   fontSize: 14,
                   color: '#E1451E',
                   fontFamily: FontFamily.t4TEXTMICRO,
@@ -469,7 +470,7 @@ const HeaderPerfil = ({
             )?.length === 0 ? (
             <Pressable
             onPress={() => {
-              const userIdd = data?.author?.sportman?.user?.id
+              const userIdd = data?.author?.sportman?.user?.id ?? data?.author?.id
               setMatchSended(true)
               console.log(data, "datrita")
               dispatch(
@@ -539,17 +540,17 @@ const HeaderPerfil = ({
                 backgroundColor: '#7B2610',
                 borderRadius: Border.br_81xl,
                 height: 35,
-                width: 170,
+                width: "47%",
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
               <Text
                 style={{
-                  marginRight: 35,
                   width: '100%',
-                  textAlign: 'right',
                   fontSize: 14,
+                  textAlign:"center",
+                  marginLeft:"10%",
                   color: '#E1451E',
                   fontSize: FontSize.t2TextSTANDARD_size,
                   fontFamily: FontFamily.t4TEXTMICRO,
@@ -560,8 +561,8 @@ const HeaderPerfil = ({
               </Text>
               <View
                 style={{
-                  width: 50,
-                  height: 50,
+                  width: 40,
+                  height: 40,
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -611,16 +612,16 @@ const HeaderPerfil = ({
                   backgroundColor: '#7B2610',
                   borderRadius: Border.br_81xl,
                   height: 35,
-                  width: 170,
+                  width: "47%",
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
               >
                 <Text
                   style={{
-                    marginLeft: 35,
                     width: '100%',
-                    textAlign: 'left',
+                    textAlign: 'center',
+                    marginRight:"10%",
                     fontSize: 14,
                     color: '#E1451E',
                     fontFamily: FontFamily.t4TEXTMICRO,
@@ -656,11 +657,17 @@ const HeaderPerfil = ({
         data.author.type === 'club' && (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('ChatAbierto1', {
-                receiverId: data.author.id,
+            {  console.log({
+                receiverId:data?.author?.club,
                 receiverName: data.author.nickname,
                 profilePic: avatar
               })
+              
+              navigation.navigate('ChatAbierto1', {
+                receiverId:data?.author?.club?.user?.id,
+                receiverName: data.author.nickname,
+                profilePic: avatar
+              })}
             }
             style={{
               flexDirection: 'row',
@@ -806,7 +813,7 @@ const HeaderPerfil = ({
               backgroundColor: '#fff',
               borderRadius: Border.br_81xl,
               height: 35,
-              width: 170,
+              width: "47%",
               justifyContent: 'center',
               alignItems: 'center'
             }}
@@ -1167,7 +1174,7 @@ const styles = StyleSheet.create({
     opacity: 0.9
   },
   timeTypo: {
-    fontSize: FontSize.t2TextSTANDARD_size
+    fontSize: 14
   },
   timeTypo2: {
     marginRight: 20,
@@ -1229,7 +1236,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.colorDimgray_100,
     borderRadius: Border.br_81xl,
     height: 35,
-    width: 170,
+    width: "47%",
     justifyContent: 'center',
     alignItems: 'center'
   },

@@ -242,7 +242,7 @@ const ExplorarClubs = () => {
 
     timeoutRef.current = setTimeout(() => {
       handleSearch(value)
-    }, 1000) // 1000ms = 1 segundo
+    }, 200) // 1000ms = 1 segundo
   }
 
   const onFilterSportman = () => {
@@ -271,7 +271,7 @@ const ExplorarClubs = () => {
       value: textValue
     })
     setSearchClubes(clubes.data.data)
-    // console.log(clubes, 'usuarios estado')
+    console.log(clubes, 'usuarios estado')
   }
 
   const screenWidth = Dimensions.get('window').width
@@ -477,7 +477,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchClubes.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' }}>Clubes</Text>
+                <Text style={{ color: 'white' ,paddingTop:10}}>Clubes</Text>
                 {searchClubes.length > 0 &&
                   searchClubes.map((club, i) => (
                     <TouchableOpacity
@@ -528,7 +528,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchPosition.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' }}>Posiciones</Text>
+                <Text style={{ color: 'white',paddingTop:10 }}>Posiciones</Text>
                 {searchPosition.map((position, i) => (
                   <TouchableOpacity
                     key={i}
@@ -580,7 +580,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchCity.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' }}>Ciudades</Text>
+                <Text style={{ color: 'white',paddingTop:10 }}>Ciudades</Text>
                 {searchCity.map((city, i) => (
                   <TouchableOpacity
                     key={i}

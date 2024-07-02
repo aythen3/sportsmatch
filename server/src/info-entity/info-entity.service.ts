@@ -101,25 +101,26 @@ export class InfoEntityService {
   
 
  
-async filterProperty(entity: string, property: string, filterValue: string) {
-  const repository = this.getRepositoryByEntity(entity);
-  if (!repository) {
-    throw new NotFoundException('Entidad no encontrada');
+  async filterProperty(entity: string, property: string, filterValue: string) {
+    const repository = this.getRepositoryByEntity(entity);
+    if (!repository) {
+      throw new NotFoundException('Entidad no encontrada');
+    }
+  
+    try {
+      const results = await repository
+        .createQueryBuilder('entity')
+        .leftJoinAndSelect('entity.user', 'user')
+        .select()
+        .where(`entity.${property} ILIKE :filterValue`, { filterValue: `%${filterValue}%` })
+        .getMany();
+  console.log(results,"results")
+      return results;
+    } catch (error) {
+      console.log(error)
+      throw new Error('Error al realizar la consulta');
+    }
   }
-
-  try {
-    const results = await repository
-      .createQueryBuilder()
-      .select()
-      .where(`${property} ILIKE :filterValue`, { filterValue: `%${filterValue}%` })
-      .getMany();
-
-    return results;
-  } catch (error) {
-    console.log(error)
-    throw new Error('Error al realizar la consulta');
-  }
-}
   
 
 async dynamicFilter(entity: string, filters: any) {

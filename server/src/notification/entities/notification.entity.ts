@@ -15,7 +15,7 @@ export class NotificationEntity extends BaseEntity {
   @Column()
   recipientId: string;
 
-  @Column({ default: false })
+  @Column({ default: false, nullable: true })
   read: boolean;
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })

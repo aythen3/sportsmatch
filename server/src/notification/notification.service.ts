@@ -20,7 +20,8 @@ export class NotificationService {
   ) {}
 
   public async createService(createNotificationDto: CreateNotificationDto) {
-    let recipient;
+    try {
+      let recipient;
     const { rol } = createNotificationDto.prop2;
   
     if (rol === 'user') {
@@ -34,10 +35,14 @@ export class NotificationService {
         .where({ id: createNotificationDto.recipientId })
         .getOne();
     } else {
+      console.log("aca rompe1")
+
       return `Rol no válido. Debe ser 'user' o 'club'`;
     }
   
     if (!recipient) {
+      console.log("aca rompe2")
+
       return `Usuario o Club con ID ${createNotificationDto.recipientId} no encontrado`;
     }
   
@@ -45,6 +50,9 @@ export class NotificationService {
     notification.recipientId = recipient.id;
   
     return await this.notificationsRepository.save(notification);
+    } catch (error) {
+      console.log("error",error)
+    }
   }
   
   public async findAllByUserId(userId: string) {

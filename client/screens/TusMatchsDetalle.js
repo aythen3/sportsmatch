@@ -29,7 +29,10 @@ const TusMatchsDetalle = ({ onClose, data }) => {
 
   return (
     <View style={styles.tusMatchsDetalle}>
-      <Image
+    <View style={{alignItems:"center",width:"100%",height:"65%",justifyContent:"center",
+      paddingTop:10
+    }}>
+    <Image
         style={[styles.fondoColorIcon, styles.iconGroupLayout]}
         contentFit="cover"
         source={imageSource}
@@ -47,7 +50,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
         <Image
           style={{ width: 45, height: 45, borderRadius: 50 }}
           contentFit="cover"
-          source={{ uri: data?.club?.img_perfil }}
+          source={  data?.club?.img_perfil ?{ uri: data?.club?.img_perfil } : require("../assets/whiteSport.png")}
         />
         <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
           {data?.nickname}
@@ -76,6 +79,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
       >
         <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
       </Pressable>
+    </View>
     </View>
   )
 }
@@ -191,10 +195,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   fondoColorIcon: {
-    height: '80.24%',
+    height: '100%',
     width: '100%',
     position: 'absolute',
-    borderRadius: 8
   },
   tusMatchsDetalleChild: {
     top: 156,
@@ -328,7 +331,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   aceptar: {
-    marginTop: 20,
+    marginTop: 30,
     paddingVertical: Padding.p_8xs,
     alignItems: 'center',
     borderRadius: Border.br_81xl
@@ -541,8 +544,9 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   tusMatchsDetalle: {
-    padding: 20,
+    padding: 10,
     width: '100%',
+    height:"100%",
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
