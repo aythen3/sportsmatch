@@ -39,26 +39,8 @@ const MessagesChat = ({
     const { data } = await axiosInstance.get(
       `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
     )
-    // const receiverMessages = await axiosInstance.get(
-    //   `chat/room?limit=${1000}&senderId=${selectedUserId}&receiverId=${user.user.id}`
-    // )
-    // console.log('CONV MESSAGES ON', selectedUserId, data)
     setConvMessages(data)
   }
-  useEffect(() => {
-    selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
-  }, [])
-
-  useEffect(() => {
-    lastMessage &&
-      console.log('==LAST MESSAGE', {
-        message: lastMessage.message.message,
-        receiverId: lastMessage.message.receiverId,
-        senderId: lastMessage.message.senderId,
-        roomId: lastMessage.message.room
-      })
-  }, [lastMessage])
-  // console.log('name:',name,'sportmanId: ', sportmanId)
 
   useEffect(() => {
     getChatMessages()
@@ -79,6 +61,7 @@ const MessagesChat = ({
     }
   }, [convMessages])
 
+  if (!lastMessage) return null
   return (
     <View>
       <Pressable
@@ -140,11 +123,7 @@ const MessagesChat = ({
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {lastMessage
-                ? lastMessage?.message?.message?.length >= 20
-                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
-                  : lastMessage?.message?.message
-                : 'Inicia una conversacion!'}
+              {lastMessage?.message?.message.slice(0, 20).concat('...')}
             </Text>
           </View>
         </View>

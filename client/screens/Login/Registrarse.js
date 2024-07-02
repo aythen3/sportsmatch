@@ -148,7 +148,7 @@ const Registrarse = () => {
               onPress={() => {
                 navigation.goBack()
               }}
-              style={styles.atrs}
+              style={{ marginLeft: 5 }}
             >
               <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
             </Pressable>
@@ -560,11 +560,10 @@ const styles = StyleSheet.create({
   },
   botonAtrasFrame: {
     paddingHorizontal: Padding.p_xl,
-    paddingVertical: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    width: 393,
-    zIndex: 9999
+    position: 'absolute',
+    top: '15%'
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,

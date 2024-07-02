@@ -223,8 +223,10 @@ const OfertasEmitidas = () => {
                     }
                   >
                     <Text style={[styles.inscritos1, styles.pausar1Typo]}>
-                      {offer.inscriptions
-                        ? `${offer.inscriptions.length} inscritos`
+                      {offer.inscriptions &&
+                      offer.inscriptions.filter((item) => item !== 'undefined')
+                        .length > 0
+                        ? `${offer?.inscriptions?.filter((item) => item !== 'undefined')?.length} inscritos`
                         : '0 inscritos'}
                     </Text>
                   </Pressable>

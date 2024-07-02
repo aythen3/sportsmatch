@@ -499,9 +499,9 @@ const TodasLasOfertas = () => {
         const filteredUserMatches = userMatches.filter(
           (match) => match.offerId && match.offerId !== offer.id
         )
-        console.log('OFFER INSCRIPTIONS ', offer.inscriptions)
-        console.log('USER', user)
-        console.log('sportman', sportman)
+        // console.log('OFFER INSCRIPTIONS ', offer.inscriptions)
+        // console.log('USER', user)
+        // console.log('sportman', sportman)
         const alreadyJoined = offer?.inscriptions?.includes(sportman?.id)
         if (filteredUserMatches.length > 0) {
           return false

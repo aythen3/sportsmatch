@@ -7,7 +7,11 @@ import {
   View,
   TouchableOpacity
 } from 'react-native'
-import { useNavigation ,StackActions , CommonActions } from '@react-navigation/native'
+import {
+  useNavigation,
+  StackActions,
+  CommonActions
+} from '@react-navigation/native'
 import {
   FontSize,
   Color,
@@ -16,17 +20,32 @@ import {
   Padding
 } from '../../../GlobalStyles'
 import { useDispatch } from 'react-redux'
-import { clearUser, logedOut } from '../../../redux/slices/users.slices'
+import {
+  cleanUser,
+  clearUser,
+  logedOut
+} from '../../../redux/slices/users.slices'
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager } from 'react-native-fbsdk-next'
 import { auth } from '../../../firebaseConfig'
 import { signOut } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { clearSportman } from '../../../redux/slices/sportman.slices'
+import {
+  cleanSportman,
+  clearSportman
+} from '../../../redux/slices/sportman.slices'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { cleanClub } from '../../../redux/slices/club.slices'
-
+import { cleanPost } from '../../../redux/slices/post.slices'
+import { resetChatsSlices } from '../../../redux/slices/chats.slices'
+import { resetCommentsSlices } from '../../../redux/slices/comments.slices'
+import { resetMatchsSlices } from '../../../redux/slices/matchs.slices'
+import { resetMuroSlices } from '../../../redux/slices/muro.slices'
+import { resetNotificationsSlices } from '../../../redux/slices/notifications.slices'
+import { cleanOffers } from '../../../redux/slices/offers.slices'
+import { cleanPosition } from '../../../redux/slices/positions.slices'
+import { cleanSports } from '../../../redux/slices/sports.slices'
 
 const CerrarSesin = () => {
   const navigation = useNavigation()
@@ -57,7 +76,6 @@ const CerrarSesin = () => {
     <SafeAreaView style={styles.cerrarSesin}>
       <CustomHeaderBack header={'Cerrar sesión'}></CustomHeaderBack>
       <View style={styles.cabezera}>
-
         <View
           style={{
             justifyContent: 'center',
@@ -80,18 +98,24 @@ quieres `}</Text>
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')
                   await AsyncStorage.removeItem('@user')
-                  
+                  await dispatch(cleanSportman())
+                  await dispatch(cleanUser())
+                  await dispatch(cleanPost())
+                  await dispatch(cleanClub())
+                  await dispatch(resetChatsSlices())
+                  await dispatch(resetCommentsSlices())
+                  await dispatch(resetMatchsSlices())
+                  await dispatch(resetMuroSlices())
+                  await dispatch(resetNotificationsSlices())
+                  await dispatch(cleanOffers())
+                  await dispatch(cleanPosition())
+                  await dispatch(cleanSports())
+                  await firebaseLogout()
                   navigation.reset({
-                    
                     index: 0,
                     history: false,
-                    routes:[{name:"LoginSwitch"}]
-                    
+                    routes: [{ name: 'LoginSwitch' }]
                   })
-                  dispatch(cleanClub())
-                  dispatch(clearSportman())
-                  dispatch(clearUser())
-                  firebaseLogout()
                 }}
               >
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>

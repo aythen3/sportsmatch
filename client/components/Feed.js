@@ -33,19 +33,19 @@ const Feed = ({ externalId }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const userId = externalId || user.user.id
+    const userId = externalId || user?.user?.id
     const post = allPosts.filter(
-      (post) => post?.author?.id == userId && !post.prop1
+      (post) => post?.author?.id == userId && !post?.prop1
     )
-    console.log(post, 'filtradoooalinicio')
+    // console.log(post, 'filtradoooalinicio')
     const postPined = allPosts.filter(
-      (post) => post?.author?.id === userId && post.prop1
+      (post) => post?.author?.id === userId && post?.prop1
     )
 
     setUserPosts([...postPined, ...post])
 
     if (post[0]) {
-      setPineable(post[0].author.id === user.user.id)
+      setPineable(post[0]?.author?.id === user?.user?.id)
     }
   }, [allPosts])
 
@@ -61,7 +61,7 @@ const Feed = ({ externalId }) => {
         navigation.push('Post', post)
       }}
       key={index}
-      style={{ flex: 1 / 3, margin: 2 }}
+      style={{ flex: 1 / 3, margin: 3 }}
     >
       {post?.prop1?.pined && (
         <View
@@ -83,15 +83,20 @@ const Feed = ({ externalId }) => {
         </View>
       )}
       <Image
-        style={styles.iconLayout}
-        contentFit="cover"
+        style={{
+          borderRadius: Border.br_10xs,
+          height: Dimensions.get('screen').width / 3 - 6,
+          width: '100%',
+          overflow: 'hidden'
+        }}
+        resizeMode="cover"
         source={{ uri: post.image[0] }}
       />
     </TouchableOpacity>
   )
 
   return (
-    <View style={styles.container}>
+    <View style={{ paddingHorizontal: 3 }}>
       {userPosts?.length > 0 ? (
         <FlatList
           scrollEnabled={false}
@@ -131,12 +136,12 @@ const Feed = ({ externalId }) => {
           }
           onSelectItem={async (e) => {
             if (e === 'Fijar post') {
-              await axiosInstance.patch(`post/${postSelected.id}`, {
+              await axiosInstance.patch(`post/${postSelected?.id}`, {
                 prop1: { pined: true }
               })
             }
             if (e === 'Quitar post fijo') {
-              await axiosInstance.patch(`post/${postSelected.id}`, {
+              await axiosInstance.patch(`post/${postSelected?.id}`, {
                 prop1: null
               })
             }
@@ -177,7 +182,8 @@ const styles = StyleSheet.create({
   iconLayout: {
     borderRadius: Border.br_10xs,
     height: 160,
-    alignSelf: 'stretch',
+    borderWidth: 2,
+    borderColor: '#fff',
     width: '100%',
     overflow: 'hidden'
   }

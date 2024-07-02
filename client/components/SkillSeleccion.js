@@ -29,7 +29,7 @@ const SkillSeleccion = ({
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
 
-  console.log('sportman', sportman)
+  // console.log('sportman', sportman)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
@@ -515,7 +515,7 @@ const SkillSeleccion = ({
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={sportman?.info?.height.toString() || '0 - 100'}
+              placeholder={sportman?.info?.height?.toString() || '0 - 100'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               value={
@@ -539,7 +539,7 @@ const SkillSeleccion = ({
                 <TextInput
                   style={styles.textInput}
                   placeholder={
-                    sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'
+                    sportman?.info?.[`prop${i + 1}`]?.toString() || '0 - 100'
                   }
                   placeholderTextColor={'#999'}
                   keyboardType={'numeric'}

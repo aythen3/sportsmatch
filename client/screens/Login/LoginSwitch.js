@@ -593,8 +593,8 @@ const LoginSwitch = () => {
         </View>
       </View>
       <Text style={[styles.alContnuarAceptas, styles.contnuarTypo]}>
-        Al continuar, aceptas automáticamente nuestras Condiciones, {'\n'}
-        Polítíca de privacidad y Polítíca de cookies
+        {/* Al continuar, aceptas automáticamente nuestras Condiciones, {'\n'}
+        Polítíca de privacidad y Polítíca de cookies */}
       </Text>
     </View>
   )

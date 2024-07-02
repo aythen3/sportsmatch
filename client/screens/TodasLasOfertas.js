@@ -34,6 +34,7 @@ import axiosInstance from '../utils/apiBackend'
 import CustomHeaderBack from '../components/CustomHeaderBack'
 import { sendNotification } from '../redux/actions/notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { updateOffers } from '../redux/slices/offers.slices'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -51,6 +52,7 @@ const TodasLasOfertas = () => {
   const [selectedSports, setSelectedSports] = useState([])
   const [byRelevance, setByRelevance] = useState(false)
   const [offer, setOffer] = useState([])
+  const [signinToOffer, setSigninToOffer] = useState(false)
 
   const fetchUserData = async () => {
     console.log('Fetching user data...')
@@ -60,8 +62,8 @@ const TodasLasOfertas = () => {
   }
 
   useEffect(() => {
-    console.log('USER.USER', user.user)
-    console.log('USER.USER.SPORTMAN', user.user.sportman)
+    // console.log('USER.USER', user.user)
+    // console.log('USER.USER.SPORTMAN', user.user.sportman)
     if (!user?.user?.sportman) {
       fetchUserData()
     }
@@ -373,49 +375,52 @@ const TodasLasOfertas = () => {
                       }}
                     >
                       <Text
-                        // onPress={() => setModalVisible(true)}
-                        disabled={offer?.inscriptions?.includes(
-                          user?.user?.sportman?.id
-                        )}
-                        onPress={() => {
+                        disabled={signinToOffer}
+                        onPress={async () => {
                           if (
                             !offer?.inscriptions?.includes(
                               user?.user?.sportman?.id
                             )
                           ) {
-                            // console.log('offer', offer)
-                            // console.log('sp id: ', user?.user?.sportman?.id)
+                            setSigninToOffer(true)
                             if (user?.user?.sportman) {
-                              dispatch(
-                                signToOffer({
-                                  offerId: offer?.id,
-                                  userId: user?.user?.sportman?.id
-                                })
-                              ).then((data) => {
+                              try {
+                                await dispatch(updateOffers(offer?.id))
                                 dispatch(
-                                  sendNotification({
-                                    title: 'Inscripción',
-                                    message: `${user.user.nickname} se ha inscrito a tu oferta`,
-                                    recipientId: offer.clubId,
-                                    date: new Date(),
-                                    read: false,
-                                    prop2: {
-                                      rol: 'club'
-                                    },
-                                    prop1: {
-                                      userId: user?.user?.id,
-                                      userData: {
-                                        ...user
-                                      }
-                                    }
+                                  signToOffer({
+                                    offerId: offer?.id,
+                                    userId: user?.user?.sportman?.id
                                   })
-                                )
-                                dispatch(getAllOffers())
-                                ToastAndroid.show(
-                                  'Te has inscrito en la oferta!',
-                                  ToastAndroid.SHORT
-                                )
-                              })
+                                ).then((data) => {
+                                  dispatch(
+                                    sendNotification({
+                                      title: 'Inscripción',
+                                      message: `${user.user.nickname} se ha inscrito a tu oferta`,
+                                      recipientId: offer.clubId,
+                                      date: new Date(),
+                                      read: false,
+                                      prop2: {
+                                        rol: 'club'
+                                      },
+                                      prop1: {
+                                        userId: user?.user?.id,
+                                        userData: {
+                                          ...user
+                                        }
+                                      }
+                                    })
+                                  )
+                                  dispatch(getAllOffers())
+                                  ToastAndroid.show(
+                                    'Te has inscrito en la oferta!',
+                                    ToastAndroid.SHORT
+                                  )
+                                })
+                              } catch (error) {
+                                console.log('Error on inscription..', error)
+                              } finally {
+                                setSigninToOffer(false)
+                              }
                             }
                           }
                         }}
@@ -645,46 +650,52 @@ const TodasLasOfertas = () => {
                   >
                     <Text
                       // onPress={() => setModalVisible(true)}
-
-                      onPress={() => {
+                      disabled={signinToOffer}
+                      onPress={async () => {
                         if (
                           !offer?.inscriptions?.includes(
                             user?.user?.sportman?.id
                           )
                         ) {
-                          // console.log('offer', offer)
-                          // console.log('sp id: ', user?.user?.sportman?.id)
+                          setSigninToOffer(true)
                           if (user?.user?.sportman) {
-                            dispatch(
-                              signToOffer({
-                                offerId: offer?.id,
-                                userId: user?.user?.sportman?.id
-                              })
-                            ).then((data) => {
+                            try {
+                              await dispatch(updateOffers(offer?.id))
                               dispatch(
-                                sendNotification({
-                                  title: 'Inscripción',
-                                  message: `${user.user.nickname} se ha inscrito a tu oferta`,
-                                  recipientId: offer.clubId,
-                                  date: new Date(),
-                                  read: false,
-                                  prop2: {
-                                    rol: 'club'
-                                  },
-                                  prop1: {
-                                    userId: user?.user?.id,
-                                    userData: {
-                                      ...user
-                                    }
-                                  }
+                                signToOffer({
+                                  offerId: offer?.id,
+                                  userId: user?.user?.sportman?.id
                                 })
-                              )
-                              dispatch(getAllOffers())
-                              ToastAndroid.show(
-                                'Te has inscrito en la oferta!',
-                                ToastAndroid.SHORT
-                              )
-                            })
+                              ).then((data) => {
+                                dispatch(
+                                  sendNotification({
+                                    title: 'Inscripción',
+                                    message: `${user.user.nickname} se ha inscrito a tu oferta`,
+                                    recipientId: offer.clubId,
+                                    date: new Date(),
+                                    read: false,
+                                    prop2: {
+                                      rol: 'club'
+                                    },
+                                    prop1: {
+                                      userId: user?.user?.id,
+                                      userData: {
+                                        ...user
+                                      }
+                                    }
+                                  })
+                                )
+                                dispatch(getAllOffers())
+                                ToastAndroid.show(
+                                  'Te has inscrito en la oferta!',
+                                  ToastAndroid.SHORT
+                                )
+                              })
+                            } catch (error) {
+                              console.log('Error on inscription..', error)
+                            } finally {
+                              setSigninToOffer(false)
+                            }
                           }
                         }
                       }}
