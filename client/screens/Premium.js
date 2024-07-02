@@ -5,7 +5,8 @@ import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
 
 const Premium = () => {
   return (
-    <View style={styles.premium}>
+   <View style={{flex:1,justifyContent:"center",alignItems:"center",backgroundColor:"black",paddingHorizontal:10}}>
+     <View style={styles.premium}>
       <View style={styles.rectanguloIcon}>
         <Text style={[styles.texto, styles.textoTypo]}>
           Visualización inscritos
@@ -94,6 +95,7 @@ const Premium = () => {
         </View>
       </View>
     </View>
+   </View>
   )
 }
 
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   targetaStarSpaceBlock: {
-    width: '32%',
+    width: '30%',
     height: 170,
     alignItems: 'center',
     paddingVertical: Padding.p_6xs,
@@ -160,14 +162,14 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl,
     alignItems: 'center',
     flexDirection: 'row',
-    width: '90%'
+    width: '90%',
   },
   rectanguloIcon: {
     height: 124,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 0,
-    backgroundColor: Color.colorGainsboro
+    backgroundColor: '#D9D9D9'
   },
   texto: {
     fontSize: FontSize.h3TitleMEDIUM_size,
@@ -268,14 +270,16 @@ const styles = StyleSheet.create({
   texto2: {
     fontSize: FontSize.button_size,
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontWeight: '700'
+    fontWeight: '700',
+    width:"100%"
   },
   botonContinuar: {
     backgroundColor: Color.colorDimgray_100,
     width: '90%'
   },
   taxto: {
-    fontSize: FontSize.button_size
+    fontSize: FontSize.button_size,
+    width:"100%"
   },
   botonesInferiores: {
     marginTop: 16,
@@ -283,10 +287,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   premium: {
-    flex: 1,
     width: '100%',
-    position: 'absolute',
-    bottom: 0
   },
   midBg: {
     backgroundColor: '#f5edd0',
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   boxContainer: {
-    width: 130,
+    width: "40%",
     borderRadius: Border.br_mini,
     overflow: 'hidden',
     borderColor: '#e6b300',
@@ -306,7 +307,8 @@ const styles = StyleSheet.create({
   },
   topTextContainer: {
     backgroundColor: Color.colorWhitesmoke,
-    paddingBottom: 15
+    paddingBottom: 15,
+    paddingTop: 15,
   },
   secondBox: {
     flexDirection: 'row',

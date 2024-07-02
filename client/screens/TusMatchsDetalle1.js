@@ -19,21 +19,21 @@ console.log(data,"dataa")
   return (
     <View style={styles.tusMatchsDetalle}>
       <View style={styles.matchParent}>
-        <Pressable
+        {/* <Pressable
           style={[styles.match, styles.framePosition]}
           onPress={() => {
             navigation.goBack()
           }}
         >
           <Text style={styles.match1Typo}>Match</Text>
-        </Pressable>
-        <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
+        </Pressable> */}
+        {/* <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
           <Image
             style={[styles.icon, styles.iconFrameLayout]}
             contentFit="cover"
             source={require('../assets/coolicon4.png')}
           />
-        </Pressable>
+        </Pressable> */}
       </View>
       <View style={{ ...styles.vectorParent }}>
         <Image
@@ -283,22 +283,12 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   coolicon: {
-    top: '18.18%',
-    right: '89.27%',
-    bottom: '13.64%',
-    width: '10.73%',
-    height: '68.18%',
-    left: '0%',
-    position: 'absolute'
+   width:40,
+   height:20
   },
   matchParent: {
-    height: '2.61%',
-    width: '21.03%',
-    top: '7.11%',
-    right: '74.87%',
-    bottom: '90.28%',
-    left: '4.1%',
-    position: 'absolute'
+   height:40,
+   width:"100%",
   },
   frameChild: {
     height: '86.96%',
@@ -393,7 +383,7 @@ const styles = StyleSheet.create({
     width: '91.64%',
     right: '3.9%',
     height: 27,
-    top: '50%',
+    top: '55%',
     left: '4.46%',
     position: 'absolute'
   },
@@ -448,12 +438,9 @@ const styles = StyleSheet.create({
     bottom: '34.85%'
   },
   vectorParent: {
-    marginLeft: -179,
-    top: 134,
-    width: 359,
-    height: 575,
-    left: '50%',
-    position: 'absolute'
+    width: "96%",
+    height: "80%",
+
   },
   maskGroupIcon1: {
     height: '5.33%',
@@ -662,6 +649,8 @@ const styles = StyleSheet.create({
   tusMatchsDetalle: {
     flex: 1,
     overflow: 'hidden',
+    justifyContent:"center",
+    alignItems:"center",
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

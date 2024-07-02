@@ -59,9 +59,10 @@ const ChatAbierto1 = () => {
   }
 
   useEffect(() => {
-    setSelectedUserDetails(
-      allUsers.filter((user) => user.id === route.params.receiverId)[0]
-    )
+    const userrr =  allUsers.filter((user) => user.id === route.params.receiverId)[0]
+     
+    setSelectedUserDetails(userrr)
+    console.log(userrr,"Dettt")
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
