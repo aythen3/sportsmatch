@@ -56,7 +56,7 @@ const MiPerfil = () => {
     setIsTruncated(!isTruncated)
   }
 
-  console.log('sportman', sportman.info)
+  // console.log('sportman', sportman.info)
 
   return (
     <ScrollView

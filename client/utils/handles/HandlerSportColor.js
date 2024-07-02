@@ -1,5 +1,5 @@
 export const setColor = (sport) => {
-  console.log('sport', sport)
+  //console.log('sport', sport)
   let color
 
   switch (sport) {

@@ -11,35 +11,45 @@ import { useNavigation } from '@react-navigation/native'
 import { FontSize, Color, FontFamily, Padding, Border } from '../GlobalStyles'
 import { Context } from '../context/Context'
 import { useContext } from 'react'
+import { useSelector } from 'react-redux'
 
 const TusMatchsDetalle1 = ({ onClose, data }) => {
   const navigation = useNavigation()
+  const { mainColor } = useSelector((state) => state.users)
   const { getUserAge } = useContext(Context)
-console.log(data,"dataa")
+
+  const images = {
+    '#6A1C4F': require('../assets/expandedMatchCards/6A1C4F.png'),
+    '#E1451E': require('../assets/expandedMatchCards/E1451E.png'),
+    '#00FF18': require('../assets/expandedMatchCards/00FF18.png'),
+    '#0062FF': require('../assets/expandedMatchCards/0062FF.png'),
+    '#E1AA1E': require('../assets/expandedMatchCards/E1AA1E.png'),
+    '#A8154A': require('../assets/expandedMatchCards/A8154A.png')
+  }
+  const imageSource = images[mainColor] || images['#E1451E']
+
+  console.log(data, 'dataa')
   return (
     <View style={styles.tusMatchsDetalle}>
-      <View style={styles.matchParent}>
-        {/* <Pressable
-          style={[styles.match, styles.framePosition]}
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <Text style={styles.match1Typo}>Match</Text>
-        </Pressable> */}
-        {/* <Pressable style={styles.coolicon} onPress={() => navigation.goBack()}>
-          <Image
-            style={[styles.icon, styles.iconFrameLayout]}
-            contentFit="cover"
-            source={require('../assets/coolicon4.png')}
-          />
-        </Pressable> */}
-      </View>
-      <View style={{ ...styles.vectorParent }}>
+      <View
+        style={{
+          width: '96%',
+          height: '80%',
+          backgroundColor: mainColor,
+          borderRadius: 25,
+          overflow: 'hidden'
+        }}
+      >
         <Image
-          style={[styles.frameChild, styles.iconFrameLayout]}
+          style={{
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            maxHeight: '100%',
+            maxWidth: '100%'
+          }}
           contentFit="cover"
-          source={require('../assets/rectangle-172.png')}
+          source={imageSource}
         />
         <Image
           style={[styles.frameItem, styles.iconFrameLayout]}
@@ -283,12 +293,12 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   coolicon: {
-   width:40,
-   height:20
+    width: 40,
+    height: 20
   },
   matchParent: {
-   height:40,
-   width:"100%",
+    height: 40,
+    width: '100%'
   },
   frameChild: {
     height: '86.96%',
@@ -371,11 +381,13 @@ const styles = StyleSheet.create({
   aceptar: {
     width: '47.42%',
     right: '52.58%',
+    height: 40,
     left: '0%'
   },
   aceptar1: {
     width: '47.72%',
     left: '52.28%',
+    height: 40,
     right: '0%'
   },
   aceptarParent: {
@@ -438,9 +450,8 @@ const styles = StyleSheet.create({
     bottom: '34.85%'
   },
   vectorParent: {
-    width: "96%",
-    height: "80%",
-
+    width: '96%',
+    height: '80%'
   },
   maskGroupIcon1: {
     height: '5.33%',
@@ -649,8 +660,8 @@ const styles = StyleSheet.create({
   tusMatchsDetalle: {
     flex: 1,
     overflow: 'hidden',
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

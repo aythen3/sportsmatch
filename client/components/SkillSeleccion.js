@@ -29,7 +29,7 @@ const SkillSeleccion = ({
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
 
-  console.log('sportman', sportman)
+  // console.log('sportman', sportman)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)

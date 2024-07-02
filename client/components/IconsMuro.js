@@ -25,8 +25,11 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
   const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
   useEffect(() => {
-    // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike?.includes(id))
+    if (findedLike.length > 0) {
+      setLiked(findedLike?.includes(id))
+      return
+    }
+    setLiked(false)
   }, [findedLike, id])
 
   // const handleShare = async () => {
