@@ -79,6 +79,7 @@ const MessagesChat = ({
     }
   }, [convMessages])
 
+  if (!lastMessage) return null
   return (
     <View>
       <Pressable
@@ -140,11 +141,7 @@ const MessagesChat = ({
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {lastMessage
-                ? lastMessage?.message?.message?.length >= 20
-                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
-                  : lastMessage?.message?.message
-                : 'Inicia una conversacion!'}
+              {lastMessage?.message?.message.slice(0, 20).concat('...')}
             </Text>
           </View>
         </View>

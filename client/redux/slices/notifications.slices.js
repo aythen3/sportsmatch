@@ -11,6 +11,9 @@ const notificationsSlices = createSlice({
     userNotifications: []
   },
   reducers: {
+    resetNotificationsSlices: (state, action) => {
+      ;(state.allNotifications = []), (state.userNotifications = [])
+    },
     setUserNotifications: (state, action) => {
       state.userNotifications = action.payload
     }
@@ -48,6 +51,7 @@ const notificationsSlices = createSlice({
   }
 })
 
-export const { setUserNotifications } = notificationsSlices.actions
+export const { setUserNotifications, resetNotificationsSlices } =
+  notificationsSlices.actions
 
 export default notificationsSlices.reducer
