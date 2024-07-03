@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   getAllNotifications,
-  getNotificationsByUserId
+  getNotificationsByUserId,
+  removeNotification
 } from '../actions/notifications'
 
 const notificationsSlices = createSlice({
@@ -45,6 +46,25 @@ const notificationsSlices = createSlice({
         state.error
       })
       .addCase(getNotificationsByUserId.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      .addCase(removeNotification.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(removeNotification.fulfilled, (state, action) => {
+        console.log('removing notification', action.payload)
+        const actualNotif = [...state.allNotifications]
+        const filteredNotif = actualNotif.filter(
+          (notif) => notif.id !== action.payload
+        )
+        state.loading = false
+        console.log('setting allNotifications to', filteredNotif)
+        state.allNotifications = filteredNotif
+        state.error
+      })
+      .addCase(removeNotification.rejected, (state) => {
         state.loading = false
         state.error = true
       })
