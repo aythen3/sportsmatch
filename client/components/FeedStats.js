@@ -40,7 +40,7 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info?.birthdate) || 2000
 
-  if (user)
+  if (user && sportman)
     return (
       <ScrollView
         keyboardShouldPersistTaps={'always'}
@@ -194,7 +194,7 @@ const FeedStats = () => {
               }}
             >
               {selectedOptions &&
-                selectedOptions.map((opt, i) => (
+                selectedOptions?.map((opt, i) => (
                   <View
                     style={{
                       flexDirection: 'row',

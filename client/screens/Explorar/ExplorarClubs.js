@@ -27,166 +27,19 @@ import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { Context } from '../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-// const Grilla = ({ group, img1, img2, img3 }) => {
-//   const navigation = useNavigation()
-
-//   return (
-//     <View style={{ width: '100%', height: 320, paddingHorizontal: 2, gap: 6 }}>
-//       <View
-//         style={{
-//           flexDirection: 'row',
-//           alignItems: 'center',
-//           gap: 7
-//         }}
-//       >
-//         <View
-//           style={{
-//             flexDirection: 'column',
-//             height: '100%',
-//             justifyContent: 'space-between'
-//           }}
-//         >
-//           <TouchableOpacity
-//             onPress={() => {
-//               if (group[0].author.type === 'club') {
-//                 navigation.navigate('ClubProfile', group[0])
-//               } else {
-//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[0])
-//               }
-//             }}
-//           >
-//             <Image
-//               style={styles.iconLayout}
-//               contentFit="cover"
-//               source={{ uri: group[0]?.image[0] }}
-//             />
-//           </TouchableOpacity>
-//           <TouchableOpacity
-//             onPress={() => {
-//               if (group[1].author.type === 'club') {
-//                 navigation.navigate('ClubProfile', group[1])
-//               } else {
-//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[1])
-//               }
-//             }}
-//           >
-//             <Image
-//               style={styles.iconLayout}
-//               contentFit="cover"
-//               source={{ uri: group[1]?.image[0] }}
-//             />
-//           </TouchableOpacity>
-//         </View>
-//         <TouchableOpacity
-//           onPress={() => {
-//             if (group[2].author.type === 'club') {
-//               navigation.navigate('ClubProfile', group[2])
-//             } else {
-//               navigation.navigate('PerfilFeedVisualitzaciJug', group[2])
-//             }
-//           }}
-//           style={{
-//             height: '100%',
-//             borderRadius: Border.br_10xs,
-//             overflow: 'hidden'
-//           }}
-//         >
-//           <Image
-//             style={{
-//               width: itemSize2 - 100,
-//               height: '100%',
-//               objectFit: 'contain'
-//             }}
-//             contentFit="cover"
-//             source={{ uri: group[2]?.image[0] }}
-//           />
-//         </TouchableOpacity>
-//       </View>
-//       <View
-//         style={{
-//           flexDirection: 'row',
-//           alignItems: 'center',
-//           gap: 7
-//         }}
-//       >
-//         <TouchableOpacity
-//           onPress={() => {
-//             if (group[4].author.type === 'club') {
-//               navigation.navigate('ClubProfile', group[4])
-//             } else {
-//               navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
-//             }
-//           }}
-//           style={{
-//             height: '100%',
-//             borderRadius: Border.br_10xs,
-//             overflow: 'hidden'
-//           }}
-//         >
-//           <Image
-//             style={{
-//               width: itemSize2 - 100,
-//               height: '100%',
-//               objectFit: 'contain'
-//             }}
-//             contentFit="cover"
-//             source={{ uri: group[4]?.image[0] }}
-//           />
-//         </TouchableOpacity>
-//         <View
-//           style={{
-//             flexDirection: 'column',
-//             height: '100%',
-//             justifyContent: 'space-between'
-//           }}
-//         >
-//           <TouchableOpacity
-//             onPress={() => {
-//               if (group[4].author.type === 'club') {
-//                 navigation.navigate('ClubProfile', group[4])
-//               } else {
-//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
-//               }
-//             }}
-//           >
-//             <Image
-//               style={styles.iconLayout}
-//               contentFit="cover"
-//               source={{ uri: group[4]?.image[0] }}
-//             />
-//           </TouchableOpacity>
-//           <TouchableOpacity
-//             onPress={() => {
-//               if (group[5].author.type === 'club') {
-//                 navigation.navigate('ClubProfile', group[5])
-//               } else {
-//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[5])
-//               }
-//             }}
-//           >
-//             <Image
-//               style={styles.iconLayout}
-//               contentFit="cover"
-//               source={{ uri: group[5]?.image[0] }}
-//             />
-//           </TouchableOpacity>
-//         </View>
-//       </View>
-//     </View>
-//   )
-// }
 
 const ExplorarClubs = () => {
-  // const navigation = useNavigation()
 
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
 
   const { setActiveIcon } = React.useContext(Context)
+
   React.useEffect(() => {
     setActiveIcon('lens')
   }, [isFocused])
-  // const { allUsers } = useSelector((state) => state.users)
+
+
   const { allPosts } = useSelector((state) => state.post)
   const {
     mainColor,
@@ -194,12 +47,16 @@ const ExplorarClubs = () => {
     allUsers
   } = useSelector((state) => state.users)
 
+  const navigation = useNavigation()
+
+  const [modalFilters, setModalFilters] = useState(false)
+  const [textValue, setTextValue] = useState('')
+  const [posts, setPosts] = useState([])
+  const [modalFilterSportman, setModalFilterSportman] = useState(false)
   const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
-
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
-
   const [searchClubes, setSearchClubes] = useState([])
   const [filter, setFilter] = useState({
     gender: '',
@@ -210,40 +67,13 @@ const ExplorarClubs = () => {
     speed: false
   })
 
-  const [modalFilters, setModalFilters] = useState(false)
-  const [textValue, setTextValue] = useState('')
-  const [posts, setPosts] = useState([])
-
-  const [modalFilterSportman, setModalFilterSportman] = useState(false)
-  const navigation = useNavigation()
-
   useEffect(() => {
-    // dispatch(getAllUsers())
     dispatch(getAllPosts())
-    // console.log(allPosts, 'allpost')
   }, [])
 
   useEffect(() => {
     setPosts(allPosts)
   }, [allPosts])
-
-  useEffect(() => {
-    // console.log('CANTIDAD DE POSTS', allPosts.length)
-  }, [allPosts])
-
-  const timeoutRef = useRef(null)
-
-  const handleChange = (value) => {
-    setTextValue(value)
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      handleSearch(value)
-    }, 1000) // 1000ms = 1 segundo
-  }
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -253,15 +83,20 @@ const ExplorarClubs = () => {
     setModalFilters(true)
   }
 
-  const handleSearch = async () => {
+
+  const timeoutRef = useRef(null)
+
+ 
+
+  const handleSearch = async (textValue) => {
     const users = await axiosInstance.post('sportman/filter', {
       nickname: textValue
     })
+    console.log(users,"usuarios")
     setSearchUsers(users.data)
     const position = await axiosInstance.post('sportman/filter', {
       position: textValue
     })
-    // console.log(position.data, 'esto es el data')
     setSearchPosition(position.data)
     const city = await axiosInstance.post('sportman/filter', {
       city: textValue
@@ -271,8 +106,21 @@ const ExplorarClubs = () => {
       value: textValue
     })
     setSearchClubes(clubes.data.data)
-    console.log(clubes, 'usuarios estado')
   }
+
+  const handleChange = (value) => {
+    console.log(value,"valor que no anda")
+    setTextValue(value);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      handleSearch(value);
+    }, 1000); // 1000ms = 1 segundo
+  };
+
 
   const screenWidth = Dimensions.get('window').width
   const renderGroupedItem = ({ item }) => {
@@ -325,56 +173,6 @@ const ExplorarClubs = () => {
     )
   }
 
-  const renderItem = ({ item, index }) => {
-    const isRightItem = index % 3 === 2
-
-    if (isRightItem) {
-      return (
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Post', item)
-            }}
-          >
-            <Image
-              source={{ uri: item.image[0] }}
-              style={{
-                width: ((screenWidth - 45) / 3) * 2,
-                height: ((screenWidth + 5) / 3) * 2,
-                borderRadius: 5
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-      )
-    } else {
-      return (
-        <View
-          style={{
-            flexDirection: 'column',
-            width: (screenWidth - 8) / 3,
-            marginRight: 8
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Post', item)
-            }}
-          >
-            <Image
-              source={{ uri: item.image[0] }}
-              style={{
-                width: '100%',
-                height: (screenWidth - 8) / 3,
-                marginBottom: 8,
-                borderRadius: 5
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-      )
-    }
-  }
 
   const groupedPosts = []
 
@@ -456,8 +254,8 @@ const ExplorarClubs = () => {
                           source={
                             user.info.img_perfil
                               ? {
-                                  uri: user.info.img_perfil
-                                }
+                                uri: user.info.img_perfil
+                              }
                               : require('../../assets/whiteSport.png')
                           }
                         ></Image>
@@ -507,8 +305,8 @@ const ExplorarClubs = () => {
                           source={
                             club.img_perfil
                               ? {
-                                  uri: club.img_perfil
-                                }
+                                uri: club.img_perfil
+                              }
                               : require('../../assets/whiteSport.png')
                           }
                         ></Image>
