@@ -58,6 +58,8 @@ const ExplorarClubs = () => {
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
   const [searchClubes, setSearchClubes] = useState([])
+  const [groupedPosts, setGroupedPosts] = useState([])
+
   const [filter, setFilter] = useState({
     gender: '',
     category: '',
@@ -86,13 +88,13 @@ const ExplorarClubs = () => {
 
   const timeoutRef = useRef(null)
 
- 
+
 
   const handleSearch = async (textValue) => {
     const users = await axiosInstance.post('sportman/filter', {
       nickname: textValue
     })
-    console.log(users,"usuarios")
+    console.log(users, "usuarios")
     setSearchUsers(users.data)
     const position = await axiosInstance.post('sportman/filter', {
       position: textValue
@@ -109,7 +111,7 @@ const ExplorarClubs = () => {
   }
 
   const handleChange = (value) => {
-    console.log(value,"valor que no anda")
+    console.log(value, "valor que no anda")
     setTextValue(value);
 
     if (timeoutRef.current) {
@@ -173,15 +175,23 @@ const ExplorarClubs = () => {
     )
   }
 
+  const posttt = () => {
+    const groupedPostsTotal = []
 
-  const groupedPosts = []
-
-  for (let i = 0; i < allPosts.length; i += 3) {
-    groupedPosts.push({
-      columnItems: allPosts.slice(i, i + 2),
-      rightItem: allPosts[i + 2]
-    })
+    for (let i = 0; i < allPosts.length; i += 3) {
+      groupedPostsTotal.push({
+        columnItems: allPosts.slice(i, i + 2),
+        rightItem: allPosts[i + 2]
+      })
+    }
+    setGroupedPosts(groupedPostsTotal)
   }
+
+
+  useEffect(() => {
+    posttt()
+  }, [])
+
 
   return (
     <SafeAreaView style={styles.explorarClubs}>
@@ -432,28 +442,7 @@ const ExplorarClubs = () => {
             )}
           </ScrollView>
         )}
-        {/* {!textValue && allPosts?.length > 0 && (
-            allPosts.map((post,
-              index) => (
-              <TouchableOpacity key={post.id}>
-                <Image
-                  style={styles.iconLayout}
-                  contentFit="cover"
-                  source={{ uri: post.image[0] }}
-                />
-              </TouchableOpacity>
-            ))
-          )} */}
-        {/* {!textValue && groupedPosts?.length > 0 && (
-            groupedPosts.map((group,
-              index) => {
-              if (group.length === 6) {
-                return (
-                  <Grilla group={group}></Grilla>
-                )
-              }
-            })
-          )} */}
+
         {!textValue && allPosts?.length > 0 && (
           <FlatList
             data={groupedPosts}
@@ -484,8 +473,8 @@ const ExplorarClubs = () => {
               <FiltersSportman
                 setFilterSelected={setFilterSelected}
                 filterSelected={filterSelected}
-                posts={posts}
-                setPosts={setPosts}
+                posts={groupedPosts}
+                setPosts={setGroupedPosts}
                 allPosts={allPosts}
                 onClose={() => setModalFilterSportman(false)}
               />
