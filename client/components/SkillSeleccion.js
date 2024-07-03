@@ -15,6 +15,9 @@ import Acordeon from './Acordeon'
 import { setCategory, setPosition } from '../redux/slices/users.slices'
 import { updateSportman } from '../redux/actions/sportman'
 import ScrollableModal from './modals/ScrollableModal'
+import { opciones_categoria, opciones_posicion, opciones_skills , categorias_deporte } from '../utils/SkillUserLocal'
+
+
 
 const SkillSeleccion = ({
   editable,
@@ -25,182 +28,37 @@ const SkillSeleccion = ({
   selectPosition,
   setSelectPosition
 }) => {
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
+
+
   const { sportman } = useSelector((state) => state.sportman)
 
-  console.log('sportman', sportman)
-
+  const [categoryTop, setCategoryTop] = useState(0)
+  const [positionTop, setPositionTop] = useState(0)
+  const [scrolledHeight, setScrolledHeight] = useState(0)
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategoria, setSelectedCategoria] = useState(null)
-
   const [positionModalVisible, setPositionModalVisible] = useState(false)
   const [selectedPosition, setSelectedPosition] = useState(null)
   const [selectedOptions, setSelectedOptions] = useState([])
   const [selectedOptionsCategoria, setSelectedOptionsCategoria] = useState([])
-
   const [selectedOptionsInputs, setSelectedOptionsInputs] = useState('')
-
   const [editData, setEditData] = useState(null)
 
-  console.log(selectedSport, 'selectedsport')
-
-  const opcionesCategoria = [
-    'Escuela (4-6 años)',
-    'Prebenjamín (6-8 años)',
-    'Benjamín (8-10 años)',
-    'Alevín (10-12 años)',
-    'Infantil (12-14 años)',
-    'Cadete (14-16 años)',
-    'Juvenil (16-18 años)',
-    'Senior (+18 años)',
-    'Veteranos (+30 años)'
-  ]
 
   useEffect(() => {
-    if (selectedSport?.name === 'Fútbol')
-      setSelectedOptionsCategoria(opcionesCategoria2.futbol)
-    if (selectedSport?.name === 'Fútbol Sala')
-      setSelectedOptionsCategoria(opcionesCategoria2.futbolSala)
-    if (selectedSport?.name === 'Voley')
-      setSelectedOptionsCategoria(opcionesCategoria2.voleibol)
-    if (selectedSport?.name === 'Hockey')
-      setSelectedOptionsCategoria(opcionesCategoria2.hockey)
-    if (selectedSport?.name === 'Básquetbol')
-      setSelectedOptionsCategoria(opcionesCategoria2.baloncesto)
-    if (selectedSport?.name === 'Handball')
-      setSelectedOptionsCategoria(opcionesCategoria2.handball)
+    const selectedSportName = selectedSport?.name;
+    const sportmanSportName = sportman?.info?.sport;
+  
+    if (categorias_deporte[selectedSportName]) {
+      setSelectedOptionsCategoria(categorias_deporte[selectedSportName]);
+    } else if (categorias_deporte[sportmanSportName]) {
+      setSelectedOptionsCategoria(categorias_deporte[sportmanSportName]);
+    }
 
-    if (sportman?.info?.sport === 'Fútbol')
-      setSelectedOptionsCategoria(opcionesCategoria2.futbol)
-    if (sportman?.info?.sport === 'Fútbol Sala')
-      setSelectedOptionsCategoria(opcionesCategoria2.futbolSala)
-    if (sportman?.info?.sport === 'Voley')
-      setSelectedOptionsCategoria(opcionesCategoria2.voleibol)
-    if (sportman?.info?.sport === 'Hockey')
-      setSelectedOptionsCategoria(opcionesCategoria2.hockey)
-    if (sportman?.info?.sport === 'Básquetbol')
-      setSelectedOptionsCategoria(opcionesCategoria2.baloncesto)
-    if (sportman?.info?.sport === 'Handball')
-      setSelectedOptionsCategoria(opcionesCategoria2.handball)
-  }, [selectedSport, sportman?.info?.sport])
+  }, [selectedSport, sportman?.info?.sport]);
 
-  const opcionesCategoria2 = {
-    futbol: [
-      'Escuela (4-6 años)',
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Cadete (14-16 años)',
-      'Juvenil (16-18 años)',
-      'Senior (+18 años)',
-      'Veteranos (+30 años)'
-    ],
-    baloncesto: [
-      'Minibasket (4-5 años)',
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Cadete (14-16 años)',
-      'Junior (16-18 años)',
-      'Sub 23 (18 a 23 años)',
-      'Senior (+23 años)',
-      'Veteranos (+30 años)'
-    ],
-    futbolSala: [
-      'Escuela (4-6 años)',
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Cadete (14-15 años)',
-      'Juvenil (16-18 años)',
-      'Senior (+18 años)',
-      'Veteranos (+30 años)'
-    ],
-    hockey: [
-      'Minihoquei (4-6 años)',
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Juvenil (14-16 años)',
-      'Junior (16-18 años)',
-      'Senior (+18 años)',
-      'Veteranos (+30 años)'
-    ],
-    voleibol: [
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Cadete (14-16 años)',
-      'Juvenil (16-18 años)',
-      'Senior (+18 años)',
-      'Veteranos (+30 años)'
-    ],
-    handball: [
-      'Escuela (4-6 años)',
-      'Pre benjamin (6-8 años)',
-      'Benjamin (8-10 años)',
-      'Alevin (10-12 años)',
-      'Infantil (12-14 años)',
-      'Cadete (14-16 años)',
-      'Juvenil (16-18 años)',
-      'Senior (+18 años)',
-      'Veteranos (+30 años)'
-    ]
-  }
-
-  const opcionesPosicion = ['Pase', 'Resistencia', 'Disparo', 'Regate']
-  const opcionesPosicionBaloncesto = [
-    'Altura',
-    'Bote',
-    'Lanzamiento',
-    'Dribling'
-  ]
-  const opcionesPosicionFutbolSala = [
-    'Pase',
-    'Resistencia',
-    'Disparo',
-    'Regate'
-  ]
-  const opcionesPosicionHockey = ['Pase', 'Resistencia', 'Disparo', 'Regate']
-
-  const opciones = {
-    futbol: [
-      'Portero',
-      'Lateral',
-      'Central',
-      'Mediocentro',
-      'Interior',
-      'Extremo',
-      'Mediapunta',
-      'Delantero centro'
-    ],
-    baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
-    futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
-    hockey: ['Portero', 'Jugador'],
-    voleibol: [
-      'Colocador',
-      'Rematador externo',
-      'Rematador opuesto',
-      'Central',
-      'Libero',
-      'Receptor/zaguero'
-    ],
-    handball: [
-      'Portero',
-      'Central',
-      'Ala derecha',
-      'Ala izquierda',
-      'Pivot',
-      'Extremo derecho',
-      'Extremo izquierdo'
-    ]
-  }
 
   useEffect(() => {
     if (setData) {
@@ -246,6 +104,7 @@ const SkillSeleccion = ({
       key === 'attack' ||
       key === 'defense' ||
       key === 'speed' ||
+      key === 'height' ||
       key === 'prop1' ||
       key === 'prop2' ||
       key === 'prop3' ||
@@ -271,6 +130,21 @@ const SkillSeleccion = ({
         } else {
           setEditData({ ...editData, [key]: value })
         }
+      } if(
+        value === '' ||
+        (/^\d+$/.test(value) &&
+          parseInt(value, 10) >= 0 &&
+          parseInt(value, 10) <= 250)
+      ){
+        if (!editable) {
+          const newData = {
+            ...data,
+            [key]: value
+          }
+          setData(newData)
+        } else {
+          setEditData({ ...editData, [key]: value })
+        } 
       }
       return
     }
@@ -292,42 +166,38 @@ const SkillSeleccion = ({
       id: sportman?.id,
       newData: editData
     }
-    // console.log('body from handleEdit:', body)
+
     dispatch(updateSportman(body))
   }
 
-  const [categoryTop, setCategoryTop] = useState(0)
-  const [positionTop, setPositionTop] = useState(0)
-  const [scrolledHeight, setScrolledHeight] = useState(0)
+  
 
-  const handleScroll = (event) => {
-    const { contentOffset } = event.nativeEvent
-    const height = contentOffset.y // Get the scrolled height
-    setScrolledHeight(height)
-  }
   const selectores = () => {
     if (selectedSport?.name == 'Fútbol' || sportman.info?.sport == 'Fútbol')
-      setSelectedOptions(opciones.futbol)
+      setSelectedOptions(opciones_skills.futbol)
     if (
       selectedSport?.name == 'Fútbol Sala' ||
       sportman.info?.sport == 'Fútbol Sala'
     )
-      setSelectedOptions(opciones.futbolSala)
+      setSelectedOptions(opciones_skills.futbolSala)
     if (
       selectedSport?.name == 'Básquetbol' ||
       sportman.info?.sport == 'Básquetbol'
     )
-      setSelectedOptions(opciones.baloncesto)
+      setSelectedOptions(opciones_skills.baloncesto)
     if (selectedSport?.name == 'Hockey' || sportman.info?.sport == 'Hockey')
-      setSelectedOptions(opciones.hockey)
+      setSelectedOptions(opciones_skills.hockey)
     if (selectedSport?.name == 'Handball' || sportman.info?.sport == 'Handball')
-      setSelectedOptions(opciones.handball)
+      setSelectedOptions(opciones_skills.handball)
     if (selectedSport?.name == 'Voley' || sportman.info?.sport == 'Voley')
-      setSelectedOptions(opciones.voleibol)
+      setSelectedOptions(opciones_skills.voleibol)
   }
+
+
   useEffect(() => {
     selectores()
   }, [selectedSport])
+
 
   const placeholderText =
     editable === false && selectPosition.length > 0
@@ -428,7 +298,7 @@ const SkillSeleccion = ({
               selectedCategoria
                 ? selectedCategoria
                 : sportman?.info?.category?.toString() ||
-                  'Selecciona tu categoría'
+                'Selecciona tu categoría'
             }
             isAccordeon={true}
             open={openModal}
@@ -493,19 +363,19 @@ const SkillSeleccion = ({
               closeModal={closeModal}
               onSelectItem={handleSelectPosition}
               options={
-                (sportman.info?.sport == 'Fútbol' && opciones.futbol) ||
-                (selectedSport?.name == 'Fútbol' && opciones.futbol) ||
+                (sportman.info?.sport == 'Fútbol' && opciones_posicion.futbol) ||
+                (selectedSport?.name == 'Fútbol' && opciones_posicion.futbol) ||
                 (sportman.info?.sport == 'Fútbol Sala' &&
-                  opciones.futbolSala) ||
-                (selectedSport?.name == 'Fútbol Sala' && opciones.futbolSala) ||
-                (selectedSport?.name == 'Básquetbol' && opciones.baloncesto) ||
-                (sportman.info?.sport == 'Básquetbol' && opciones.baloncesto) ||
-                (selectedSport?.name == 'Hockey' && opciones.hockey) ||
-                (sportman.info?.sport == 'Hockey' && opciones.hockey) ||
-                (selectedSport?.name == 'Voley' && opciones.voleibol) ||
-                (sportman.info?.sport == 'Voley' && opciones.voleibol) ||
-                (selectedSport?.name == 'Handball' && opciones.handball) ||
-                (sportman.info?.sport == 'Handball' && opciones.handball)
+                  opciones_posicion.futbolSala) ||
+                (selectedSport?.name == 'Fútbol Sala' && opciones_posicion.futbolSala) ||
+                (selectedSport?.name == 'Básquetbol' && opciones_posicion.baloncesto) ||
+                (sportman.info?.sport == 'Básquetbol' && opciones_posicion.baloncesto) ||
+                (selectedSport?.name == 'Hockey' && opciones_posicion.hockey) ||
+                (sportman.info?.sport == 'Hockey' && opciones_posicion.hockey) ||
+                (selectedSport?.name == 'Voley' && opciones_posicion.voleibol) ||
+                (sportman.info?.sport == 'Voley' && opciones_posicion.voleibol) ||
+                (selectedSport?.name == 'Handball' && opciones_posicion.handball) ||
+                (sportman.info?.sport == 'Handball' && opciones_posicion.handball)
               }
             />
           )}
@@ -515,7 +385,7 @@ const SkillSeleccion = ({
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
-              placeholder={sportman?.info?.height.toString() || '0 - 100'}
+              placeholder={sportman?.info?.height?.toString() || '0 - 250'}
               placeholderTextColor={'#999'}
               keyboardType={'numeric'}
               value={
@@ -539,7 +409,7 @@ const SkillSeleccion = ({
                 <TextInput
                   style={styles.textInput}
                   placeholder={
-                    sportman?.info?.[`prop${i + 1}`].toString() || '0 - 100'
+                    sportman?.info?.[`prop${i + 1}`]?.toString() || '0 - 100'
                   }
                   placeholderTextColor={'#999'}
                   keyboardType={'numeric'}
@@ -557,83 +427,7 @@ const SkillSeleccion = ({
             </View>
           ))}
 
-        {/* <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>{selectedOptions[0]}</Text>
-          <View style={styles.rectanguloBorder}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={sportman?.info?.height?.toString() || '0 - 100'}
-              placeholderTextColor={'#999'}
-              keyboardType={'numeric'}
-              onChangeText={(value) => handleData('height', value)}
-              maxLength={4}
-            />
-          </View>
-        </View>
-        <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>{selectedOptions[1]}</Text>
-          <View style={styles.rectanguloBorder}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={sportman?.info?.prop1?.toString() || '0 - 100'}
-              placeholderTextColor={'#999'}
-              keyboardType={'numeric'}
-              value={
-                data?.prop1 !== undefined
-                  ? String(data?.prop1)
-                  : editData?.prop1
-                    ? editData?.prop1
-                    : ''
-              }
-              onChangeText={(value) => handleData('prop1', value)}
-              maxLength={3}
-            />
-          </View>
-        </View> */}
-        {/* {selectedSport?.name !== 'Hockey' && (
-          <>
-            <View style={styles.formularioCategoria}>
-              <Text style={styles.atributo}>{selectedOptions[2]}</Text>
-              <View style={styles.rectanguloBorder}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder={sportman?.info?.prop2?.toString() || '0 - 100'}
-                  placeholderTextColor={'#999'}
-                  keyboardType={'numeric'}
-                  value={
-                    data?.prop2 !== undefined
-                      ? String(data?.prop2)
-                      : editData?.prop2
-                        ? editData?.prop2
-                        : ''
-                  }
-                  onChangeText={(value) => handleData('prop2', value)}
-                  maxLength={3}
-                />
-              </View>
-            </View>
-            <View style={styles.formularioCategoria}>
-              <Text style={styles.atributo}>{selectedOptions[3]}</Text>
-              <View style={styles.rectanguloBorder}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder={sportman?.info?.prop3?.toString() || '0 - 100'}
-                  placeholderTextColor={'#999'}
-                  value={
-                    data?.prop3 !== undefined
-                      ? String(data?.prop3)
-                      : editData?.prop3
-                        ? editData?.prop3
-                        : ''
-                  }
-                  keyboardType={'numeric'}
-                  onChangeText={(value) => handleData('prop3', value)}
-                  maxLength={3}
-                />
-              </View>
-            </View>
-          </>
-        )} */}
+
       </View>
       {editable && (
         <View style={styles.buttonContainer}>

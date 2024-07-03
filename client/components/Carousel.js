@@ -84,7 +84,11 @@ function Carousel({
 
   useEffect(() => {
     // Actualizar el estado de liked cuando se reciba la lista de likes del post
-    setLiked(findedLike?.includes(id))
+    if (findedLike.length > 0) {
+      setLiked(findedLike?.includes(id))
+      return
+    }
+    setLiked(false)
   }, [findedLike, id])
 
   const handleDoubleTap = () => {
@@ -169,7 +173,7 @@ function Carousel({
         <Pressable
           style={styles.topContainer}
           onPress={() => {
-            if (data.author.id === user.user.id) {
+            if (data?.author?.id === user?.user?.id) {
               if (user.user.type !== 'club') {
                 navigation.navigate('MiPerfil')
                 return
@@ -205,7 +209,7 @@ function Carousel({
           <Text style={styles.nameText}>{name}</Text>
         </Pressable>
 
-        {authorId === user.user.id ? (
+        {authorId === user?.user?.id ? (
           <View
             style={{
               flexDirection: 'row',

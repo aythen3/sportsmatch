@@ -23,8 +23,10 @@ import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
 import CustomHeaderBack from '../../components/CustomHeaderBack'
 import { getNotificationsByUserId } from '../../redux/actions/notifications'
+import { ActivityIndicator } from 'react-native-paper'
 
 const TusNotificaciones1 = () => {
+  const [loading, setLoading] = useState(true)
   const [value, setValue] = useState('')
   const isFocused = useIsFocused()
   const navigation = useNavigation()
@@ -46,8 +48,12 @@ const TusNotificaciones1 = () => {
   useEffect(() => {}, [allUsers, usersWithMessages])
 
   useEffect(() => {
-    console.log(userNotifications, 'notifications')
+    // console.log(userNotifications, 'notifications')
     dispatch(getAllUsers())
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 700)
   }, [])
 
   React.useEffect(() => {
@@ -76,60 +82,14 @@ const TusNotificaciones1 = () => {
     .sort(sortUsers)
     .reverse()
 
-  // useEffect(() => {
-  //   offers.forEach((offer) => {
-  //     axiosInstance.delete(`offer/${offer.id}`)
-  //   })
-  //   allMatchs.forEach((match) => {
-  //     axiosInstance.delete(`match/${match.id}`)
-  //   })
-  //   allNotifications.forEach((notification) => {
-  //     axiosInstance.delete(`notification/${notification.id}`)
-  //   })
-  // }, [])
-
-  // const getAllUsersMessages = async () => {
-  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
-  //   filteredUsers.map(async user=>{
-  //     const { data } = await axiosInstance.get(
-  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
-  //     )
-  //     console.log('convmessages data from noti: ',data)
-  //   })
-  // }
-  // useEffect(()=>{
-  //   getAllUsersMessages()
-  // },[])
-
-  // useEffect(() => {
-  //   offers.forEach((offer) => {
-  //     axiosInstance.delete(`offer/${offer.id}`)
-  //   })
-  //   allMatchs.forEach((match) => {
-  //     axiosInstance.delete(`match/${match.id}`)
-  //   })
-  //   allNotifications.forEach((notification) => {
-  //     axiosInstance.delete(`notification/${notification.id}`)
-  //   })
-  // }, [])
-
-  // const getAllUsersMessages = async () => {
-  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
-  //   filteredUsers.map(async user=>{
-  //     const { data } = await axiosInstance.get(
-  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
-  //     )
-  //     console.log('convmessages data from noti: ',data)
-  //   })
-  // }
-  // useEffect(()=>{
-  //   getAllUsersMessages()
-  // },[])
+  useEffect(() => {
+    // console.log('filteredUsers changed', filteredUsers)
+  }, [value, filteredUsers])
 
   useEffect(() => {
     getUsersMessages()
     if (user.user.type == 'club') {
-      console.log(user.user.club.id, 'club')
+      // console.log(user.user.club.id, 'club')
       dispatch(getNotificationsByUserId(user.user.club.id))
     } else {
       dispatch(getNotificationsByUserId(user.user.id))
@@ -146,6 +106,12 @@ const TusNotificaciones1 = () => {
       allApplications.length > 0 && setApplicants(allApplications)
     }
   }, [offers])
+
+  useEffect(() => {
+    console.log('ALL NOTIF CHANGED===========', allNotifications)
+  }, [allNotifications])
+
+  useEffect(() => {}, [usersWithMessages])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
   // console.log('allusers: ', allUsers)
@@ -234,11 +200,13 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .map((notification) => <Notifications data={notification} />)
+                .map((notification) => (
+                  <Notifications key={notification.id} data={notification} />
+                ))
             ) : (
               <View
                 style={{ marginTop: 30, width: '100%', alignItems: 'center' }}
@@ -282,55 +250,74 @@ const TusNotificaciones1 = () => {
           </View>
         )}
         {selectedComponent === 'messages' && (
-          <ScrollView
-            keyboardShouldPersistTaps={'always'}
-            contentContainerStyle={{ paddingBottom: 68 }}
-            style={{
-              marginTop: 30,
-              paddingHorizontal: 14
-            }}
-          >
-            {value === '' && usersWithMessages.length === 0 ? (
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <Text style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}>
-                  Inicia una conversación!
-                </Text>
-              </View>
+          <View>
+            {loading ? (
+              <ActivityIndicator
+                style={{
+                  backgroundColor: 'transparent',
+                  alignSelf: 'center',
+                  marginTop: '20%'
+                }}
+                animating={true}
+                size="xlarge"
+                color={mainColor}
+              />
             ) : (
-              value === '' &&
-              usersWithMessages?.map((user, index) => (
-                <MessagesChat
-                  setValue={setValue}
-                  key={index}
-                  name={user.nickname}
-                  sportmanId={user.sportman?.id}
-                  profilePic={
-                    user?.type === 'club'
-                      ? user?.club?.img_perfil
-                      : user?.sportman?.info?.img_perfil
-                  }
-                  selectedUserId={user.id}
-                  // applicant={applicants?.includes(user.sportman?.id)}
-                />
-              ))
+              <ScrollView
+                keyboardShouldPersistTaps={'always'}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                style={{
+                  marginTop: 30,
+                  paddingHorizontal: 14
+                }}
+              >
+                {value === '' && usersWithMessages.length === 0 ? (
+                  <View style={{ width: '100%', alignItems: 'center' }}>
+                    <Text
+                      style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}
+                    >
+                      Inicia una conversación!
+                    </Text>
+                  </View>
+                ) : (
+                  value === '' &&
+                  usersWithMessages?.map((user, index) => (
+                    <MessagesChat
+                      setValue={setValue}
+                      key={index + 999}
+                      name={user.nickname}
+                      sportmanId={user.sportman?.id}
+                      profilePic={
+                        user?.type === 'club'
+                          ? user?.club?.img_perfil
+                          : user?.sportman?.info?.img_perfil
+                      }
+                      selectedUserId={user.id}
+                      // applicant={applicants?.includes(user.sportman?.id)}
+                    />
+                  ))
+                )}
+                {value !== '' &&
+                  filteredUsers.map((user, index) => (
+                    <View style={{ borderWidth: 2, borderColor: 'green' }}>
+                      <MessagesChat
+                        setValue={setValue}
+                        key={index + 99999}
+                        name={user.nickname}
+                        sportmanId={user.sportman?.id}
+                        profilePic={
+                          user?.type === 'club'
+                            ? user?.club?.img_perfil
+                            : user?.sportman?.info?.img_perfil
+                        }
+                        selectedUserId={user.id}
+                        // applicant={applicants?.includes(user.sportman?.id)}
+                      />
+                    </View>
+                  ))}
+              </ScrollView>
             )}
-            {value !== '' &&
-              filteredUsers.map((user, index) => (
-                <MessagesChat
-                  setValue={setValue}
-                  key={index}
-                  name={user.nickname}
-                  sportmanId={user.sportman?.id}
-                  profilePic={
-                    user?.type === 'club'
-                      ? user?.club?.img_perfil
-                      : user?.sportman?.info?.img_perfil
-                  }
-                  selectedUserId={user.id}
-                  // applicant={applicants?.includes(user.sportman?.id)}
-                />
-              ))}
-          </ScrollView>
+          </View>
         )}
       </View>
     </SafeAreaView>

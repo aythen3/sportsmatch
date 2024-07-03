@@ -29,7 +29,8 @@ const MessagesChat = ({
     clubMatches,
     getClubMatches,
     userMatches,
-    getUsersMessages
+    getUsersMessages,
+    usersWithMessages
   } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState([])
@@ -39,30 +40,12 @@ const MessagesChat = ({
     const { data } = await axiosInstance.get(
       `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
     )
-    // const receiverMessages = await axiosInstance.get(
-    //   `chat/room?limit=${1000}&senderId=${selectedUserId}&receiverId=${user.user.id}`
-    // )
-    // console.log('CONV MESSAGES ON', selectedUserId, data)
     setConvMessages(data)
   }
-  useEffect(() => {
-    selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
-  }, [])
-
-  useEffect(() => {
-    lastMessage &&
-      console.log('==LAST MESSAGE', {
-        message: lastMessage.message.message,
-        receiverId: lastMessage.message.receiverId,
-        senderId: lastMessage.message.senderId,
-        roomId: lastMessage.message.room
-      })
-  }, [lastMessage])
-  // console.log('name:',name,'sportmanId: ', sportmanId)
 
   useEffect(() => {
     getChatMessages()
-  }, [])
+  }, [usersWithMessages])
 
   const getLastMessage = (messages) => {
     const received = messages[0].senderId === user.user.id
@@ -79,6 +62,21 @@ const MessagesChat = ({
     }
   }, [convMessages])
 
+  useEffect(() => {
+    // selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
+  }, [])
+
+  useEffect(() => {
+    lastMessage &&
+      console.log(
+        '==LAST MESSAGE FROM ',
+        name,
+        ':',
+        lastMessage.message.message
+      )
+  }, [lastMessage])
+
+  // if (!lastMessage) return null
   return (
     <View>
       <Pressable
@@ -149,7 +147,7 @@ const MessagesChat = ({
           </View>
         </View>
 
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
@@ -190,7 +188,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type !== 'club' &&
+        {user?.user?.type !== 'club' &&
           userMatches?.filter(
             (match) =>
               match?.prop1?.clubData.userId === selectedUserId &&
@@ -231,7 +229,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&

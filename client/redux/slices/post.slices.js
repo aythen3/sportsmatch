@@ -19,6 +19,14 @@ const postSlices = createSlice({
     loading: false
   },
   reducers: {
+    cleanPost: (state, action) => {
+      state.allPosts = [],
+      state.post = {},
+      state.likes = [],
+      state.findedLike = []
+
+    },
+
     setFilterPost: (state, action) => {
       return {
         ...state,
@@ -151,5 +159,8 @@ const postSlices = createSlice({
     // })
   }
 })
-export const { setFindedLikes ,setFilterPost} = postSlices.actions
+
+
+
+export const { cleanPost , setFindedLikes ,setFilterPost} = postSlices.actions
 export default postSlices.reducer

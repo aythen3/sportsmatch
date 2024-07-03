@@ -29,57 +29,68 @@ const TusMatchsDetalle = ({ onClose, data }) => {
 
   return (
     <View style={styles.tusMatchsDetalle}>
-    <View style={{alignItems:"center",width:"100%",height:"65%",justifyContent:"center",
-      paddingTop:10
-    }}>
-    <Image
-        style={[styles.fondoColorIcon, styles.iconGroupLayout]}
-        contentFit="cover"
-        source={imageSource}
-      />
-
       <View
         style={{
-          flexDirection: 'row',
           alignItems: 'center',
-          gap: 5,
           width: '100%',
-          marginLeft: 20
+          justifyContent: 'center',
+          backgroundColor: mainColor,
+          paddingVertical: 20,
+          borderRadius: 20
         }}
       >
         <Image
-          style={{ width: 45, height: 45, borderRadius: 50 }}
+          style={[styles.fondoColorIcon, styles.iconGroupLayout]}
           contentFit="cover"
-          source={  data?.club?.img_perfil ?{ uri: data?.club?.img_perfil } : require("../assets/whiteSport.png")}
+          source={imageSource}
         />
-        <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
-          {data?.nickname}
-        </Text>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 5,
+            width: '100%',
+            marginLeft: 20
+          }}
+        >
+          <Image
+            style={{ width: 45, height: 45, borderRadius: 50 }}
+            contentFit="cover"
+            source={
+              data?.club?.img_perfil
+                ? { uri: data?.club?.img_perfil }
+                : require('../assets/whiteSport.png')
+            }
+          />
+          <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
+            {data?.nickname}
+          </Text>
+        </View>
+
+        <MatchDetailsInfo title="Año de fundación" value={data?.club?.year} />
+        <MatchDetailsInfo title="Aforo" value={data?.club?.capacity} />
+        <MatchDetailsInfo
+          title="Nombre del estadio o pabellón"
+          value={data?.club?.field}
+        />
+        <MatchDetailsInfo title=" Población" value={data?.club?.city} />
+        <MatchDetailsInfo title=" País" value={data?.club?.country} />
+
+        <Pressable
+          style={[styles.aceptar, styles.aceptarFlexBox]}
+          onPress={() => {
+            onClose()
+            navigation.navigate('ChatAbierto1', {
+              receiverId: data?.id,
+              receiverName: data?.nickname,
+              profilePic: data?.club?.img_perfil
+            })
+          }}
+        >
+          <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
+        </Pressable>
       </View>
-
-      <MatchDetailsInfo title="Año de fundación" value={data?.club?.year} />
-      <MatchDetailsInfo title="Aforo" value={data?.club?.capacity} />
-      <MatchDetailsInfo
-        title="Nombre del estadio o pabellón"
-        value={data?.club?.field}
-      />
-      <MatchDetailsInfo title=" Población" value={data?.club?.city} />
-      <MatchDetailsInfo title=" País" value={data?.club?.country} />
-
-      <Pressable
-        style={[styles.aceptar, styles.aceptarFlexBox]}
-        onPress={() => {
-          onClose()
-          navigation.navigate('ChatAbierto1', {
-            receiverId: data?.id,
-            receiverName: data?.nickname,
-            profilePic: data?.club?.img_perfil
-          })
-        }}
-      >
-        <Text style={[styles.verOferta, styles.verTypo]}>Enviar mensaje</Text>
-      </Pressable>
-    </View>
     </View>
   )
 }
@@ -197,7 +208,7 @@ const styles = StyleSheet.create({
   fondoColorIcon: {
     height: '100%',
     width: '100%',
-    position: 'absolute',
+    position: 'absolute'
   },
   tusMatchsDetalleChild: {
     top: 156,
@@ -546,7 +557,7 @@ const styles = StyleSheet.create({
   tusMatchsDetalle: {
     padding: 10,
     width: '100%',
-    height:"100%",
+    height: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

@@ -20,7 +20,7 @@ import { getAll } from '../../redux/actions/sports'
 import { getAllPosts } from '../../redux/actions/post'
 
 export const detectSportColor = (sport, dispatch) => {
-  console.log(sport, "me llega sport")
+  // console.log(sport, "me llega sport")
   if (sport == 'Fútbol Sala') {
     dispatch(setMainColor('#0062FF'))
   }
@@ -52,26 +52,28 @@ const PantallaInicio = () => {
 
   const navigateToOtraPantalla = async (user) => {
     const valuesUser = (await JSON.parse(user)) || {}
-    if (valuesUser.email && !valuesUser.uid) {
+    if (valuesUser?.email && !valuesUser?.uid) {
       dispatch(login(valuesUser))
         .then(async (response) => {
           // console.log("response", response.payload.user)
           if (
-            response.payload?.user?.sportman ||
-            response.payload?.user?.club
+            response?.payload?.user?.sportman ||
+            response?.payload?.user?.club
           ) {
-            if (response.payload?.user?.sportman?.type === 'coach') {
+            if (response?.payload?.user?.sportman?.type === 'coach') {
               detectSportColor('coach', dispatch)
             } else {
               detectSportColor(
-                response.payload.user.sportman?.info?.sport ||
-                response?.payload?.user?.club?.sport,
+                response?.payload?.user?.sportman?.info?.sport ||
+                  response?.payload?.user?.club?.sport,
                 dispatch
               )
             }
 
             dispatch(
-              setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+              setIsSpotMan(
+                response?.payload?.user?.type === 'club' ? false : true
+              )
             )
             dispatch(setClub(response))
             return navigation.reset({
@@ -80,7 +82,7 @@ const PantallaInicio = () => {
               routes: [{ name: 'SiguiendoJugadores' }]
             })
           } else {
-            if (response.payload.user.type == 'club') {
+            if (response?.payload?.user?.type == 'club') {
               return navigation.navigate('stepsClub')
             }
             return navigation.navigate('Paso1')
@@ -90,31 +92,32 @@ const PantallaInicio = () => {
           console.error(error)
         })
     }
-    if (valuesUser.uid) {
-      dispatch(login({ googleId: valuesUser.uid })).then(async (res) => {
+    if (valuesUser?.uid) {
+      dispatch(login({ googleId: valuesUser?.uid })).then(async (res) => {
         dispatch(setClub(res))
 
         detectSportColor(
-          res.payload.user.sportman?.info?.sport || res.payload.user.club.sport,
+          res?.payload?.user?.sportman?.info?.sport ||
+            res?.payload?.user?.club?.sport,
           dispatch
         )
 
         dispatch(setIsSpotMan(valuesUser.type === 'club' ? false : true))
-        if (res.payload.user.sportman || res.payload.user.club) {
+        if (res?.payload?.user?.sportman || res?.payload?.user?.club) {
           return navigation.reset({
             index: 0,
             history: false,
             routes: [{ name: 'SiguiendoJugadores' }]
           })
         }
-        if (res.payload.user.type === 'sportman') {
+        if (res?.payload?.user?.type === 'sportman') {
           return navigation.navigate('Paso1')
         }
-        if (res.payload.user.type === 'club') {
+        if (res?.payload?.user?.type === 'club') {
           return navigation.navigate('StepsClub')
         }
 
-        console.log(res.payload.user, 'reeeee')
+        console.log(res?.payload?.user, 'reeeee')
         // navigation.navigate('SiguiendoJugadores')
       })
     } else {

@@ -1,11 +1,17 @@
 import * as React from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TouchableOpacity
+} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontFamily, Border, FontSize, Padding } from '../GlobalStyles'
 
-const MonetizarOfertaPRO = ({ onClose , handle }) => {
+const MonetizarOfertaPRO = ({ onClose, handle }) => {
   const navigation = useNavigation()
 
   return (
@@ -15,23 +21,53 @@ const MonetizarOfertaPRO = ({ onClose , handle }) => {
         overflow: 'hidden',
         justifyContent: 'center',
         backgroundColor: Color.colorWhitesmoke,
-        paddingBottom: 20
+        paddingBottom: 20,
+        width: '100%'
       }}
     >
-      <LinearGradient
-        style={styles.loremIpsum}
-        locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
-        colors={[
-          '#e6b300',
-          '#bd9710',
-          '#ebc02a',
-          '#e6b300',
-          '#bd9710',
-          '#ebc02a'
-        ]}
+      <View
+        style={{
+          width: '100%',
+          height: 80,
+          backgroundColor: Color.colorSilver,
+          justifyContent: 'center'
+        }}
       >
-        <Text style={[styles.pro, styles.proTypo]}>PRO</Text>
-      </LinearGradient>
+        <LinearGradient
+          style={{
+            width: '100%',
+            height: 500,
+            transform: [{ scaleY: 0.16 }],
+            position: 'absolute',
+            left: 0,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+          colors={[
+            '#e6b300',
+            '#bd9710',
+            '#ebc02a',
+            '#e6b300',
+            '#bd9710',
+            '#ebc02a'
+          ]}
+          locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+          start={[0.0, 1.0]}
+          end={[1.0, 0.0]}
+        ></LinearGradient>
+        <Text
+          style={{
+            zIndex: 1,
+            textAlign: 'center',
+            color: Color.wHITESPORTSMATCH,
+            fontSize: FontSize.h3TitleMEDIUM_size,
+            fontWeight: '700',
+            fontFamily: FontFamily.t4TEXTMICRO
+          }}
+        >
+          PRO
+        </Text>
+      </View>
 
       <View style={{ paddingHorizontal: 50 }}>
         <Text
@@ -63,22 +99,53 @@ const MonetizarOfertaPRO = ({ onClose , handle }) => {
           deportívas de forma ilimitada!
         </Text>
 
-        <TouchableOpacity onPress={()=> handle() }> 
-        <LinearGradient
-          
-          style={styles.loremIpsum1}
-          locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
-          colors={[
-            '#e6b300',
-            '#bd9710',
-            '#ebc02a',
-            '#e6b300',
-            '#bd9710',
-            '#ebc02a'
-          ]}
-        >
-        <Text style={[styles.pro, styles.proTypo]}>Continuar</Text>
-        </LinearGradient>
+        <TouchableOpacity onPress={() => handle()}>
+          <View
+            style={{
+              width: '100%',
+              height: 50,
+              marginTop: 5,
+              backgroundColor: Color.colorSilver,
+              justifyContent: 'center',
+              borderRadius: 50,
+              overflow: 'hidden'
+            }}
+          >
+            <LinearGradient
+              style={{
+                width: '100%',
+                height: 500,
+                transform: [{ scaleY: 0.16 }],
+                position: 'absolute',
+                left: 0,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              colors={[
+                '#e6b300',
+                '#bd9710',
+                '#ebc02a',
+                '#e6b300',
+                '#bd9710',
+                '#ebc02a'
+              ]}
+              locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
+              start={[0.0, 1.0]}
+              end={[1.0, 0.0]}
+            ></LinearGradient>
+            <Text
+              style={{
+                zIndex: 1,
+                textAlign: 'center',
+                color: Color.wHITESPORTSMATCH,
+                fontSize: FontSize.h3TitleMEDIUM_size,
+                fontWeight: '700',
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Continuar
+            </Text>
+          </View>
         </TouchableOpacity>
         <Pressable style={[styles.pressableFlexBox]} onPress={onClose}>
           <Text style={[styles.aceptar4, styles.aceptarTypo]}>No, gracias</Text>

@@ -13,7 +13,11 @@ const matchsSlices = createSlice({
     userMatchs: [],
     allMatchs: []
   },
-  reducers: {},
+  reducers: {
+    resetMatchsSlices: (state, action) => {
+      ;(state.clubMatchs = []), (state.userMatchs = []), (state.allMatchs = [])
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Get user matches
@@ -61,4 +65,5 @@ const matchsSlices = createSlice({
   }
 })
 
+export const { resetMatchsSlices } = matchsSlices.actions
 export default matchsSlices.reducer

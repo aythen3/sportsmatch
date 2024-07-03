@@ -27,154 +27,154 @@ import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { Context } from '../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const Grilla = ({ group, img1, img2, img3 }) => {
-  const navigation = useNavigation()
+// const Grilla = ({ group, img1, img2, img3 }) => {
+//   const navigation = useNavigation()
 
-  return (
-    <View style={{ width: '100%', height: 320, paddingHorizontal: 2, gap: 6 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 7
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'column',
-            height: '100%',
-            justifyContent: 'space-between'
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              if (group[0].author.type === 'club') {
-                navigation.navigate('ClubProfile', group[0])
-              } else {
-                navigation.navigate('PerfilFeedVisualitzaciJug', group[0])
-              }
-            }}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={{ uri: group[0]?.image[0] }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (group[1].author.type === 'club') {
-                navigation.navigate('ClubProfile', group[1])
-              } else {
-                navigation.navigate('PerfilFeedVisualitzaciJug', group[1])
-              }
-            }}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={{ uri: group[1]?.image[0] }}
-            />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            if (group[2].author.type === 'club') {
-              navigation.navigate('ClubProfile', group[2])
-            } else {
-              navigation.navigate('PerfilFeedVisualitzaciJug', group[2])
-            }
-          }}
-          style={{
-            height: '100%',
-            borderRadius: Border.br_10xs,
-            overflow: 'hidden'
-          }}
-        >
-          <Image
-            style={{
-              width: itemSize2 - 100,
-              height: '100%',
-              objectFit: 'contain'
-            }}
-            contentFit="cover"
-            source={{ uri: group[2]?.image[0] }}
-          />
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 7
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            if (group[4].author.type === 'club') {
-              navigation.navigate('ClubProfile', group[4])
-            } else {
-              navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
-            }
-          }}
-          style={{
-            height: '100%',
-            borderRadius: Border.br_10xs,
-            overflow: 'hidden'
-          }}
-        >
-          <Image
-            style={{
-              width: itemSize2 - 100,
-              height: '100%',
-              objectFit: 'contain'
-            }}
-            contentFit="cover"
-            source={{ uri: group[4]?.image[0] }}
-          />
-        </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: 'column',
-            height: '100%',
-            justifyContent: 'space-between'
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              if (group[4].author.type === 'club') {
-                navigation.navigate('ClubProfile', group[4])
-              } else {
-                navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
-              }
-            }}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={{ uri: group[4]?.image[0] }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (group[5].author.type === 'club') {
-                navigation.navigate('ClubProfile', group[5])
-              } else {
-                navigation.navigate('PerfilFeedVisualitzaciJug', group[5])
-              }
-            }}
-          >
-            <Image
-              style={styles.iconLayout}
-              contentFit="cover"
-              source={{ uri: group[5]?.image[0] }}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  )
-}
+//   return (
+//     <View style={{ width: '100%', height: 320, paddingHorizontal: 2, gap: 6 }}>
+//       <View
+//         style={{
+//           flexDirection: 'row',
+//           alignItems: 'center',
+//           gap: 7
+//         }}
+//       >
+//         <View
+//           style={{
+//             flexDirection: 'column',
+//             height: '100%',
+//             justifyContent: 'space-between'
+//           }}
+//         >
+//           <TouchableOpacity
+//             onPress={() => {
+//               if (group[0].author.type === 'club') {
+//                 navigation.navigate('ClubProfile', group[0])
+//               } else {
+//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[0])
+//               }
+//             }}
+//           >
+//             <Image
+//               style={styles.iconLayout}
+//               contentFit="cover"
+//               source={{ uri: group[0]?.image[0] }}
+//             />
+//           </TouchableOpacity>
+//           <TouchableOpacity
+//             onPress={() => {
+//               if (group[1].author.type === 'club') {
+//                 navigation.navigate('ClubProfile', group[1])
+//               } else {
+//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[1])
+//               }
+//             }}
+//           >
+//             <Image
+//               style={styles.iconLayout}
+//               contentFit="cover"
+//               source={{ uri: group[1]?.image[0] }}
+//             />
+//           </TouchableOpacity>
+//         </View>
+//         <TouchableOpacity
+//           onPress={() => {
+//             if (group[2].author.type === 'club') {
+//               navigation.navigate('ClubProfile', group[2])
+//             } else {
+//               navigation.navigate('PerfilFeedVisualitzaciJug', group[2])
+//             }
+//           }}
+//           style={{
+//             height: '100%',
+//             borderRadius: Border.br_10xs,
+//             overflow: 'hidden'
+//           }}
+//         >
+//           <Image
+//             style={{
+//               width: itemSize2 - 100,
+//               height: '100%',
+//               objectFit: 'contain'
+//             }}
+//             contentFit="cover"
+//             source={{ uri: group[2]?.image[0] }}
+//           />
+//         </TouchableOpacity>
+//       </View>
+//       <View
+//         style={{
+//           flexDirection: 'row',
+//           alignItems: 'center',
+//           gap: 7
+//         }}
+//       >
+//         <TouchableOpacity
+//           onPress={() => {
+//             if (group[4].author.type === 'club') {
+//               navigation.navigate('ClubProfile', group[4])
+//             } else {
+//               navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
+//             }
+//           }}
+//           style={{
+//             height: '100%',
+//             borderRadius: Border.br_10xs,
+//             overflow: 'hidden'
+//           }}
+//         >
+//           <Image
+//             style={{
+//               width: itemSize2 - 100,
+//               height: '100%',
+//               objectFit: 'contain'
+//             }}
+//             contentFit="cover"
+//             source={{ uri: group[4]?.image[0] }}
+//           />
+//         </TouchableOpacity>
+//         <View
+//           style={{
+//             flexDirection: 'column',
+//             height: '100%',
+//             justifyContent: 'space-between'
+//           }}
+//         >
+//           <TouchableOpacity
+//             onPress={() => {
+//               if (group[4].author.type === 'club') {
+//                 navigation.navigate('ClubProfile', group[4])
+//               } else {
+//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[4])
+//               }
+//             }}
+//           >
+//             <Image
+//               style={styles.iconLayout}
+//               contentFit="cover"
+//               source={{ uri: group[4]?.image[0] }}
+//             />
+//           </TouchableOpacity>
+//           <TouchableOpacity
+//             onPress={() => {
+//               if (group[5].author.type === 'club') {
+//                 navigation.navigate('ClubProfile', group[5])
+//               } else {
+//                 navigation.navigate('PerfilFeedVisualitzaciJug', group[5])
+//               }
+//             }}
+//           >
+//             <Image
+//               style={styles.iconLayout}
+//               contentFit="cover"
+//               source={{ uri: group[5]?.image[0] }}
+//             />
+//           </TouchableOpacity>
+//         </View>
+//       </View>
+//     </View>
+//   )
+// }
 
 const ExplorarClubs = () => {
   // const navigation = useNavigation()
@@ -227,6 +227,10 @@ const ExplorarClubs = () => {
     setPosts(allPosts)
   }, [allPosts])
 
+  useEffect(() => {
+    // console.log('CANTIDAD DE POSTS', allPosts.length)
+  }, [allPosts])
+
   const timeoutRef = useRef(null)
 
   const handleChange = (value) => {
@@ -238,7 +242,7 @@ const ExplorarClubs = () => {
 
     timeoutRef.current = setTimeout(() => {
       handleSearch(value)
-    }, 200) // 1000ms = 1 segundo
+    }, 1000) // 1000ms = 1 segundo
   }
 
   const onFilterSportman = () => {
@@ -270,89 +274,70 @@ const ExplorarClubs = () => {
     console.log(clubes, 'usuarios estado')
   }
 
-  // const renderItem = ({ item, index }) => {
-  //   return (
-  //     <TouchableOpacity
-  //       onPress={() => {
-  //         if (item.author.type === 'club') {
-  //           navigation.navigate('Post', item)
-  //         } else {
-  //           navigation.navigate('Post', item)
-  //         }
-  //       }}
-  //       style={{ width: '100%', flex: 2 }}
-  //       key={index}
-  //     >
-  //       <Image
-  //         style={styles.iconLayout}
-  //         resizeMode="cover"
-  //         source={{ uri: item.image[0] }}
-  //       />
-  //     </TouchableOpacity>
-  //   )
-  // }
   const screenWidth = Dimensions.get('window').width
-  const renderItem = ({ item, index }) => {
-    if (index % 4 === 0) {
-      return (
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'column',
-              width: (screenWidth - 8) / 3, // ancho de una columna
-              marginRight: 8
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                if (item.author.type === 'club') {
-                  navigation.navigate('Post', posts[index])
-                } else {
-                  navigation.navigate('Post', posts[index])
-                }
-              }}
-            >
-              <Image
-                source={{ uri: posts[index]?.image[0] }}
-                style={{
-                  width: '100%',
-                  height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                  marginBottom: 8,
-                  borderRadius: 5
+  const renderGroupedItem = ({ item }) => {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            width: (screenWidth - 8) / 3,
+            marginRight: 8
+          }}
+        >
+          {item.columnItems &&
+            item.columnItems.map((columnItem, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  navigation.navigate('Post', columnItem)
                 }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                if (item.author.type === 'club') {
-                  navigation.navigate('Post', posts[index + 1])
-                } else {
-                  navigation.navigate('Post', posts[index + 1])
-                }
-              }}
-            >
-              <Image
-                source={{ uri: posts[index + 1]?.image[0] }}
-                style={{
-                  width: '100%',
-                  height: (screenWidth - 8) / 3, // altura de una imagen pequeña
-                  marginBottom: 8,
-                  borderRadius: 5
-                }}
-              />
-            </TouchableOpacity>
-          </View>
+              >
+                <Image
+                  source={{ uri: columnItem.image[0] }}
+                  style={{
+                    width: '100%',
+                    height: (screenWidth - 8) / 3,
+                    marginBottom: 8,
+                    borderRadius: 5
+                  }}
+                />
+              </TouchableOpacity>
+            ))}
+        </View>
+        {item.rightItem && (
           <TouchableOpacity
             onPress={() => {
-              if (item.author.type === 'club') {
-                navigation.navigate('Post', posts[index + 2])
-              } else {
-                navigation.navigate('Post', posts[index + 2])
-              }
+              navigation.navigate('Post', item.rightItem)
             }}
           >
             <Image
-              source={{ uri: posts[index + 2]?.image[0] }}
+              source={{ uri: item.rightItem.image[0] }}
+              style={{
+                width: ((screenWidth - 45) / 3) * 2,
+                height: ((screenWidth + 5) / 3) * 2,
+                borderRadius: 5
+              }}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+    )
+  }
+
+  const renderItem = ({ item, index }) => {
+    const isRightItem = index % 3 === 2
+
+    if (isRightItem) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Post', item)
+            }}
+          >
+            <Image
+              source={{ uri: item.image[0] }}
               style={{
                 width: ((screenWidth - 45) / 3) * 2,
                 height: ((screenWidth + 5) / 3) * 2,
@@ -362,8 +347,42 @@ const ExplorarClubs = () => {
           </TouchableOpacity>
         </View>
       )
+    } else {
+      return (
+        <View
+          style={{
+            flexDirection: 'column',
+            width: (screenWidth - 8) / 3,
+            marginRight: 8
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Post', item)
+            }}
+          >
+            <Image
+              source={{ uri: item.image[0] }}
+              style={{
+                width: '100%',
+                height: (screenWidth - 8) / 3,
+                marginBottom: 8,
+                borderRadius: 5
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      )
     }
-    return null
+  }
+
+  const groupedPosts = []
+
+  for (let i = 0; i < allPosts.length; i += 3) {
+    groupedPosts.push({
+      columnItems: allPosts.slice(i, i + 2),
+      rightItem: allPosts[i + 2]
+    })
   }
 
   return (
@@ -458,7 +477,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchClubes.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' ,paddingTop:10}}>Clubes</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
                 {searchClubes.length > 0 &&
                   searchClubes.map((club, i) => (
                     <TouchableOpacity
@@ -509,7 +528,9 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchPosition.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white',paddingTop:10 }}>Posiciones</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>
+                  Posiciones
+                </Text>
                 {searchPosition.map((position, i) => (
                   <TouchableOpacity
                     key={i}
@@ -534,13 +555,13 @@ const ExplorarClubs = () => {
                           width: 50,
                           height: 50,
                           borderRadius: 50,
-                          backgroundColor: position.info.img_front
+                          backgroundColor: position.info.img_perfil
                             ? 'transparent'
                             : mainColor
                         }}
                         source={
-                          position.info.img_front
-                            ? { uri: position.info.img_front }
+                          position.info.img_perfil
+                            ? { uri: position.info.img_perfil }
                             : require('../../assets/whiteSport.png')
                         }
                       ></Image>
@@ -561,7 +582,7 @@ const ExplorarClubs = () => {
             )}
             {textValue && searchCity.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white',paddingTop:10 }}>Ciudades</Text>
+                <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
                 {searchCity.map((city, i) => (
                   <TouchableOpacity
                     key={i}
@@ -586,13 +607,13 @@ const ExplorarClubs = () => {
                           width: 50,
                           height: 50,
                           borderRadius: 50,
-                          backgroundColor: city.info.img_front
+                          backgroundColor: city.info.img_perfil
                             ? 'transparent'
                             : mainColor
                         }}
                         source={
-                          city.info.img_front
-                            ? { uri: city.info.img_front }
+                          city.info.img_perfil
+                            ? { uri: city.info.img_perfil }
                             : require('../../assets/whiteSport.png')
                         }
                       ></Image>
@@ -637,9 +658,9 @@ const ExplorarClubs = () => {
           )} */}
         {!textValue && allPosts?.length > 0 && (
           <FlatList
-            data={posts}
+            data={groupedPosts}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItem}
+            renderItem={renderGroupedItem}
             numColumns={1}
             contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
           ></FlatList>

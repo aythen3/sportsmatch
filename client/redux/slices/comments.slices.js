@@ -9,7 +9,14 @@ const commentSlices = createSlice({
     loading: false,
     error: false
   },
-  reducers: {},
+  reducers: {
+    resetCommentsSlices: (state, action) => {
+      ;(state.comments = []),
+        (state.postComments = []),
+        (state.loading = false),
+        (state.error = false)
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Crear comentario
@@ -44,4 +51,5 @@ const commentSlices = createSlice({
   }
 })
 
+export const { resetCommentsSlices } = commentSlices.actions
 export default commentSlices.reducer

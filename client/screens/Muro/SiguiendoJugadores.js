@@ -21,14 +21,21 @@ import {
   getAllPosts,
   listLikes
 } from '../../redux/actions/post'
-import { getUserChild, getUserData } from '../../redux/actions/users'
+import {
+  getAllUsers,
+  getUserChild,
+  getUserData
+} from '../../redux/actions/users'
 import { Context } from '../../context/Context'
 import { getSportman } from '../../redux/actions/sportman'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAllOffers } from '../../redux/actions/offers'
-import { getAllNotifications, getNotificationsByUserId } from '../../redux/actions/notifications'
+import {
+  getAllNotifications,
+  getNotificationsByUserId
+} from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 import { setColor } from '../../utils/handles/HandlerSportColor'
 import { setMainColor } from '../../redux/slices/users.slices'
@@ -56,15 +63,12 @@ const SiguiendoJugadores = () => {
     dispatch(getAllPosts())
     dispatch(getAllLikes())
     dispatch(getAllNotifications())
-    if(user.user.type == 'club'){
-      console.log(user.user.club.id ,"club")
-    dispatch(getNotificationsByUserId(user.user.club.id))
+    if (user?.user?.type == 'club') {
+      console.log(user?.user?.club?.id, 'club')
+      dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
-
-      dispatch(getNotificationsByUserId(user.user.id))
+      dispatch(getNotificationsByUserId(user?.user?.id))
     }
-
-
 
     dispatch(getAllOffers())
     dispatch(getAllMatchs())
@@ -121,13 +125,17 @@ const SiguiendoJugadores = () => {
         .filter(
           (post) =>
             user?.user?.following?.includes(post?.author?.id) ||
-            user.user.id === post.author.id
+            user?.user?.id === post?.author?.id
         )
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       console.log('Setting initial posts...')
       setFilteredPosts(sortedPosts)
     }
   }, [allPosts, user])
+
+  useEffect(() => {
+    dispatch(getAllUsers())
+  }, [])
 
   // if (user?.user?.id) {
   //   return (
@@ -187,7 +195,7 @@ const SiguiendoJugadores = () => {
                 <Carousel
                   showDeletePostModal={showDeletePostModal}
                   setShowDeletePostModal={setShowDeletePostModal}
-                  key={publication.id}
+                  key={publication?.id}
                   name={publication?.author?.nickname}
                   description={publication?.description}
                   imgPerfil={
@@ -202,7 +210,7 @@ const SiguiendoJugadores = () => {
                   index={i}
                   id={publication?.id}
                   userId={user?.user?.id}
-                  authorId={publication.author.id}
+                  authorId={publication?.author?.id}
                   data={publication}
                 />
               ))

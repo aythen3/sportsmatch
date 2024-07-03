@@ -71,6 +71,9 @@ const muroSlices = createSlice({
     ]
   },
   reducers: {
+    resetMuroSlices: (state, action) => {
+      ;(state.publication = {}), (state.publications = [])
+    },
     setIsSpotMan: (state, action) => {
       state.isSportMan = action.payload
     },
@@ -80,6 +83,6 @@ const muroSlices = createSlice({
   }
 })
 
-export const { setPublication } = muroSlices.actions
+export const { setPublication, resetMuroSlices } = muroSlices.actions
 
 export default muroSlices.reducer

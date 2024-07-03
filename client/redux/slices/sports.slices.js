@@ -9,7 +9,14 @@ const sportsSlices = createSlice({
     loading: false,
     positions: []
   },
-  reducers: {},
+  reducers: {
+    cleanSports: (state, action) => {
+      state.sports = [],
+      state.sport = {},
+      state.positions = []
+    }
+
+  },
   extraReducers: (builder) => {
     builder
       // Todos los deportes
@@ -56,5 +63,7 @@ const sportsSlices = createSlice({
       })
   }
 })
+
+export const { cleanSports } = sportsSlices.actions
 
 export default sportsSlices.reducer

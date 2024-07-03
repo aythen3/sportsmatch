@@ -75,15 +75,26 @@ const GoldSuscription = ({
             start={[0.0, 1.0]}
             end={[1.0, 0.0]}
           ></LinearGradient>
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>PRO</Text>
+          <Text
+            style={{
+              zIndex: 1,
+              textAlign: 'center',
+              color: Color.wHITESPORTSMATCH,
+              fontSize: FontSize.h3TitleMEDIUM_size,
+              fontWeight: '700',
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            PRO
+          </Text>
         </View>
 
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>125€</Text>
-                <Text style={styles.timeTypo}>Pago único</Text>
+                <Text style={styles.gratuito}>12,90€</Text>
+                <Text style={styles.timeTypo}>124,40€/año</Text>
               </View>
             </View>
             <View style={styles.frameView}>

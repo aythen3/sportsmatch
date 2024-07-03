@@ -20,6 +20,7 @@ import { getAllMatchs, sendMatch } from '../../../../redux/actions/matchs'
 import { updateUser } from '../../../../redux/slices/users.slices'
 import { getAllUsers, updateUserData } from '../../../../redux/actions/users'
 import { sendNotification } from '../../../../redux/actions/notifications'
+import { getColorsWithOpacity } from '../../../../utils/colorUtils.js'
 
 const HeaderPerfil = ({
   name,
@@ -36,6 +37,8 @@ const HeaderPerfil = ({
   data,
   external
 }) => {
+  const moreOpacity = 0.8 // 80% opacity
+  const lessOpacity = 0.4 // 40% opacity
   const _ = require('lodash')
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -87,12 +90,13 @@ const HeaderPerfil = ({
       setLiked(true)
     }
   }, [user])
+  const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
   const userFollowing = user?.user?.following || []
 
   return (
     <View>
-      <TouchableOpacity>
+      <View>
         {front === '' || !front ? (
           <Image
             style={{ width: '100%', height: 150, backgroundColor: mainColor }}
@@ -106,7 +110,7 @@ const HeaderPerfil = ({
             source={{ uri: front }}
           />
         )}
-      </TouchableOpacity>
+      </View>
       <View
         style={{
           flexDirection: 'row',
@@ -260,19 +264,20 @@ const HeaderPerfil = ({
                 setLiked(!liked)
                 let actualUser = _.cloneDeep(user)
                 const actualFollowers =
-                  allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
+                  allUsers?.filter((user) => user.id === data.author.id)[0]
+                    ?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
+                      (follower) => follower !== user?.user?.id
+                    )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                    (followed) => followed !== data?.author?.id
-                  )
+                      (followed) => followed !== data?.author?.id
+                    )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -283,7 +288,7 @@ const HeaderPerfil = ({
                   })
                 )
                   .then((data) => {
-                    console.log(data, "es cuando ojeo")
+                    console.log(data, 'es cuando ojeo')
                     dispatch(
                       updateUserData({
                         id: user.user.id,
@@ -297,7 +302,9 @@ const HeaderPerfil = ({
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
+                          recipientId:
+                            data?.author?.sportman?.user?.id ??
+                            data?.author?.id,
                           date: new Date(),
                           read: false,
                           prop1: {
@@ -307,10 +314,10 @@ const HeaderPerfil = ({
                             }
                           },
                           prop2: {
-                            rol: "user"
+                            rol: 'user'
                           }
                         })
-                      ).then((res)=>console.log("respuesta",res))
+                      ).then((res) => console.log('respuesta', res))
                     }
                     dispatch(updateUser(actualUser))
                     dispatch(getAllUsers())
@@ -338,16 +345,16 @@ const HeaderPerfil = ({
                     ?.followers || []
                 const newFollowers = actualFollowers.includes(user?.user?.id)
                   ? actualFollowers.filter(
-                    (follower) => follower !== user?.user?.id
-                  )
+                      (follower) => follower !== user?.user?.id
+                    )
                   : [...actualFollowers, user?.user?.id]
 
                 const newFollowingArray = userFollowing?.includes(
                   data?.author?.id
                 )
                   ? userFollowing.filter(
-                    (followed) => followed !== data?.author?.id
-                  )
+                      (followed) => followed !== data?.author?.id
+                    )
                   : [...userFollowing, data?.author?.id]
                 actualUser.user.following = newFollowingArray
 
@@ -367,7 +374,7 @@ const HeaderPerfil = ({
                   })
                   .then((response) => {
                     if (newFollowers.includes(user?.user?.id)) {
-                      console.log("respuesta2",data?.author)
+                      console.log('respuesta2', data?.author)
                       dispatch(
                         sendNotification({
                           title: 'Follow',
@@ -382,10 +389,10 @@ const HeaderPerfil = ({
                             }
                           },
                           prop2: {
-                            rol:"user"
+                            rol: 'user'
                           }
                         })
-                      ).then((res)=>console.log("respuesta",data?.author))
+                      ).then((res) => console.log('respuesta', data?.author))
                     }
                     dispatch(updateUser(actualUser))
                     dispatch(getAllUsers())
@@ -420,14 +427,12 @@ const HeaderPerfil = ({
           )}
           {matchSended === true ? (
             <Pressable
-
-
               style={{
                 flexDirection: 'row',
-                backgroundColor: '#7B2610',
+                backgroundColor: colors.moreOpaque,
                 borderRadius: Border.br_81xl,
                 height: 35,
-                width: "47%",
+                width: '47%',
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
@@ -436,9 +441,9 @@ const HeaderPerfil = ({
                 style={{
                   width: '100%',
                   textAlign: 'center',
-                  marginRight:"10%",
+                  marginRight: '10%',
                   fontSize: 14,
-                  color: '#E1451E',
+                  color: 'rgba(255,255,255,0.7)',
                   fontFamily: FontFamily.t4TEXTMICRO,
                   fontWeight: '700'
                 }}
@@ -452,7 +457,7 @@ const HeaderPerfil = ({
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: Color.bALONCESTO,
+                  backgroundColor: mainColor,
                   position: 'absolute',
                   right: 0
                 }}
@@ -469,78 +474,78 @@ const HeaderPerfil = ({
               (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
             )?.length === 0 ? (
             <Pressable
-            onPress={() => {
-              const userIdd = data?.author?.sportman?.user?.id ?? data?.author?.id
-              setMatchSended(true)
-              console.log(data, "datrita")
-              dispatch(
-                sendMatch({
-                  sportmanId: data?.author?.sportman?.id,
-                  clubId: user?.user?.club?.id,
-                  status: 'pending',
-                  prop1: {
-                    clubId: user?.user?.club?.id,
+              onPress={() => {
+                const userIdd =
+                  data?.author?.sportman?.user?.id ?? data?.author?.id
+                setMatchSended(true)
+                console.log(data, 'datrita')
+                dispatch(
+                  sendMatch({
                     sportmanId: data?.author?.sportman?.id,
-                    sportManData: {
-                      userId: userIdd,
-                      profilePic:
-                        data?.author?.sportman?.info?.img_perfil || '',
-                      name: data?.author?.nickname
-                    },
-                    clubData: {
-                      userId: user?.user?.id,
-                      name: user?.user?.nickname,
-                      profilePic: user?.user?.club?.img_front
-                    }
-                  }
-                })
-              )
-                .then((data) => {
-                  console.log('data from match: ', userIdd)
-                  // console.log('body to sendNotification: ', {
-                  //   title: 'Solicitud',
-                  //   message: 'Recibiste una solicitud de match!',
-                  //   recipientId: data?.payload?.sportManData?.userId,
-                  //   date: new Date(),
-                  //   read: false,
-                  //   prop1: {
-                  //     matchId: data?.payload?.id,
-                  //     clubData: {
-                  //       name: user?.user?.nickname,
-                  //       userId: user.user.id,
-                  //       ...user?.user?.club
-                  //     }
-                  //   }
-                  // })
-                  dispatch(
-                    sendNotification({
-                      title: 'Solicitud',
-                      message: 'Recibiste una solicitud de match!',
-                      recipientId: userIdd,
-                      date: new Date(),
-                      read: false,
-                      prop1: {
-                        matchId: data?.payload?.id,
-                        clubData: {
-                          name: user?.user?.nickname,
-                          userId: user.user.id,
-                          ...user?.user?.club
-                        }
+                    clubId: user?.user?.club?.id,
+                    status: 'pending',
+                    prop1: {
+                      clubId: user?.user?.club?.id,
+                      sportmanId: data?.author?.sportman?.id,
+                      sportManData: {
+                        userId: userIdd,
+                        profilePic:
+                          data?.author?.sportman?.info?.img_perfil || '',
+                        name: data?.author?.nickname
                       },
-                      prop2: { rol: 'user' }
-
-                    })
-                  ).then((r) => console.log(r, "rrrrrrrrrrrrrrrrr"))
-                })
-                .then((data) => dispatch(getAllMatchs()))
-                .then((data) => getClubMatches())
-            }}
+                      clubData: {
+                        userId: user?.user?.id,
+                        name: user?.user?.nickname,
+                        profilePic: user?.user?.club?.img_front
+                      }
+                    }
+                  })
+                )
+                  .then((data) => {
+                    console.log('data from match: ', userIdd)
+                    // console.log('body to sendNotification: ', {
+                    //   title: 'Solicitud',
+                    //   message: 'Recibiste una solicitud de match!',
+                    //   recipientId: data?.payload?.sportManData?.userId,
+                    //   date: new Date(),
+                    //   read: false,
+                    //   prop1: {
+                    //     matchId: data?.payload?.id,
+                    //     clubData: {
+                    //       name: user?.user?.nickname,
+                    //       userId: user.user.id,
+                    //       ...user?.user?.club
+                    //     }
+                    //   }
+                    // })
+                    dispatch(
+                      sendNotification({
+                        title: 'Solicitud',
+                        message: 'Recibiste una solicitud de match!',
+                        recipientId: userIdd,
+                        date: new Date(),
+                        read: false,
+                        prop1: {
+                          matchId: data?.payload?.id,
+                          clubData: {
+                            name: user?.user?.nickname,
+                            userId: user.user.id,
+                            ...user?.user?.club
+                          }
+                        },
+                        prop2: { rol: 'user' }
+                      })
+                    ).then((r) => console.log(r, 'rrrrrrrrrrrrrrrrr'))
+                  })
+                  .then((data) => dispatch(getAllMatchs()))
+                  .then((data) => getClubMatches())
+              }}
               style={{
                 flexDirection: 'row',
-                backgroundColor: '#7B2610',
+                backgroundColor: colors.lessOpaque,
                 borderRadius: Border.br_81xl,
                 height: 35,
-                width: "47%",
+                width: '47%',
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
@@ -549,9 +554,9 @@ const HeaderPerfil = ({
                 style={{
                   width: '100%',
                   fontSize: 14,
-                  textAlign:"center",
-                  marginLeft:"10%",
-                  color: '#E1451E',
+                  textAlign: 'center',
+                  marginLeft: '10%',
+                  color: colors.lessOpaque,
                   fontSize: FontSize.t2TextSTANDARD_size,
                   fontFamily: FontFamily.t4TEXTMICRO,
                   fontWeight: '700'
@@ -566,7 +571,7 @@ const HeaderPerfil = ({
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: Color.bALONCESTO,
+                  backgroundColor: colors.moreOpaque,
                   position: 'absolute',
                   left: 0
                 }}
@@ -574,7 +579,7 @@ const HeaderPerfil = ({
                 <Image
                   style={styles.groupIcon}
                   contentFit="cover"
-                  source={require('../../../../assets/group13.png')}
+                  source={require('../../../../assets/whiteSport.png')}
                 />
               </View>
             </Pressable>
@@ -606,13 +611,12 @@ const HeaderPerfil = ({
                 match.status === 'success'
             ).length === 0 && (
               <Pressable
-              
                 style={{
                   flexDirection: 'row',
-                  backgroundColor: '#7B2610',
+                  backgroundColor: colors.moreOpaque,
                   borderRadius: Border.br_81xl,
                   height: 35,
-                  width: "47%",
+                  width: '47%',
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -621,9 +625,9 @@ const HeaderPerfil = ({
                   style={{
                     width: '100%',
                     textAlign: 'center',
-                    marginRight:"10%",
+                    marginRight: '10%',
                     fontSize: 14,
-                    color: '#E1451E',
+                    color: 'rgba(255,255,255,0.7)',
                     fontFamily: FontFamily.t4TEXTMICRO,
                     fontWeight: '700'
                   }}
@@ -637,7 +641,7 @@ const HeaderPerfil = ({
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: Color.bALONCESTO,
+                    backgroundColor: mainColor,
                     position: 'absolute',
                     right: 0
                   }}
@@ -656,19 +660,19 @@ const HeaderPerfil = ({
         external &&
         data.author.type === 'club' && (
           <TouchableOpacity
-            onPress={() =>
-            {  console.log({
-                receiverId:data?.author?.club,
+            onPress={() => {
+              console.log({
+                receiverId: data?.author?.club,
                 receiverName: data.author.nickname,
                 profilePic: avatar
               })
-              
+
               navigation.navigate('ChatAbierto1', {
-                receiverId:data?.author?.club?.user?.id,
+                receiverId: data?.author?.club?.user?.id,
                 receiverName: data.author.nickname,
                 profilePic: avatar
-              })}
-            }
+              })
+            }}
             style={{
               flexDirection: 'row',
               marginTop: 10,
@@ -813,7 +817,7 @@ const HeaderPerfil = ({
               backgroundColor: '#fff',
               borderRadius: Border.br_81xl,
               height: 35,
-              width: "47%",
+              width: '47%',
               justifyContent: 'center',
               alignItems: 'center'
             }}
@@ -904,7 +908,7 @@ const HeaderPerfil = ({
             {allUsers?.filter((user) => user.id === data.author.id)[0]
               ?.followers
               ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                ?.followers?.length
+                  ?.followers?.length
               : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>
@@ -1236,7 +1240,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.colorDimgray_100,
     borderRadius: Border.br_81xl,
     height: 35,
-    width: "47%",
+    width: '47%',
     justifyContent: 'center',
     alignItems: 'center'
   },

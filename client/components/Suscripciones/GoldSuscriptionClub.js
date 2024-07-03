@@ -29,7 +29,7 @@ const GoldSuscriptionClub = ({
   const handleGetGold = async () => {
     console.log('entra')
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
+      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
       customerId: user.user.stripeId
     })
 
@@ -70,8 +70,8 @@ const GoldSuscriptionClub = ({
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-              <Text style={styles.gratuito}>12,90€/mes</Text>
-              <Text style={styles.timeTypo}>O también 124,40€/año</Text>
+              <Text style={styles.gratuito}>125€/mes</Text>
+              <Text style={styles.timeTypo}>Pago único</Text>
               </View>
             </View>
             <View style={styles.frameView}>

@@ -28,22 +28,7 @@ const usersSlices = createSlice({
     error: false,
     loading: false,
     isSportman: true,
-    profiles: [
-      {
-        id: 1,
-        name: 'Club Deportivo Rosario Central',
-        description: 'Presidente: Amuch Joel',
-        image: require('../../assets/logo-uem21removebgpreview-11.png'),
-        club: true
-      },
-      {
-        id: 2,
-        name: 'Alfredo Carrion',
-        description: 'Lateral izquierdo',
-        image: require('../../assets/mask-group8.png'),
-        club: false
-      }
-    ]
+    profiles: []
   },
   reducers: {
     setIsSpotMan: (state, action) => {
@@ -81,6 +66,23 @@ const usersSlices = createSlice({
     },
     logedOut: (state, action) => {
       state.loged = false
+    },
+    cleanUser: (state) => {
+      state.mainColor = '#E1451E'
+      state.loged = false
+      state.user = {}
+      state.userChild = {}
+      state.sportmanGender = ''
+      state.birthdate = ''
+      state.city = ''
+      state.profesionalType = ''
+      state.category = ''
+      state.position = ''
+      state.allUsers = []
+      state.error = false
+      state.loading = false
+      state.isSportman = true
+      state.profiles = []
     }
   },
   extraReducers: (builder) => {
@@ -200,7 +202,8 @@ export const {
   updateUser,
   logedIn,
   logedOut,
-  clearUser
+  clearUser,
+  cleanUser
 } = usersSlices.actions
 
 export default usersSlices.reducer

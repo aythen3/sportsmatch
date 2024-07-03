@@ -26,16 +26,20 @@ import { Context } from '../../context/Context'
 import { useIsFocused } from '@react-navigation/native'
 
 const MiPerfil = () => {
+  const isFocused = useIsFocused()
+  
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  
+  const { setActiveIcon } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
-  const isFocused = useIsFocused()
+  
   const [sportColor, setSportColor] = useState('#E1451E')
   const [isTruncated, setIsTruncated] = useState(true)
+  const [selectedTab, setSelectedTab] = useState('Feed')
 
-  const { setActiveIcon } = useContext(Context)
 
   useEffect(() => {
     if (isFocused) {
@@ -43,7 +47,8 @@ const MiPerfil = () => {
     }
   }, [isFocused])
 
-  const [selectedTab, setSelectedTab] = useState('Feed')
+
+
   const renderContent = () => {
     if (selectedTab === 'Feed') {
       return <Feed />
@@ -56,7 +61,7 @@ const MiPerfil = () => {
     setIsTruncated(!isTruncated)
   }
 
-  console.log('sportman', sportman.info)
+  // console.log('sportman', sportman.info)
 
   return (
     <ScrollView
