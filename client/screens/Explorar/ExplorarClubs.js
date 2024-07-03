@@ -242,7 +242,7 @@ const ExplorarClubs = () => {
 
     timeoutRef.current = setTimeout(() => {
       handleSearch(value)
-    }, 200) // 1000ms = 1 segundo
+    }, 1000) // 1000ms = 1 segundo
   }
 
   const onFilterSportman = () => {

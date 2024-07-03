@@ -19,75 +19,36 @@ import { useSelector } from 'react-redux'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
 import Feed from '../components/Feed'
+import { opciones_skills , skills_deporte } from '../utils/SkillUserLocal'
+
 
 const PerfilFeedVisualitzaciJug = () => {
+
   const navigation = useNavigation()
   const router = useRoute()
-  const { isSportman } = useSelector((state) => state.users)
-  const { club } = useSelector((state) => state.clubs)
-  const [selectComponents, setSelectComponents] = useState('perfil')
-  const [selectedOptions, setSelectedOptions] = useState([])
-  const { mainColor } = useSelector((state) => state.users)
-
-  const opciones = {
-    futbol: [
-      'Portero',
-      'Lateral',
-      'Central',
-      'Mediocentro',
-      'Interior',
-      'Extremo',
-      'Mediapunta',
-      'Delantero centro'
-    ],
-    baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
-    futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
-    hockey: ['Portero', 'Jugador'],
-    voleibol: [
-      'Colocador',
-      'Rematador externo',
-      'Rematador opuesto',
-      'Central',
-      'Libero',
-      'Receptor/zaguero'
-    ],
-    handball: [
-      'Portero',
-      'Central',
-      'Ala derecha',
-      'Ala izquierda',
-      'Pivot',
-      'Extremo derecho',
-      'Extremo izquierdo'
-    ]
-  }
-  const selectores = () => {
-    if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.futbol)
-    if (data?.author?.sportman.info.sport)
-      setSelectedOptions(opciones.futbolSala)
-    if (data?.author?.sportman.info.sport)
-      setSelectedOptions(opciones.baloncesto)
-    if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.hockey)
-    if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.handball)
-    if (data?.author?.sportman.info.sport) setSelectedOptions(opciones.voleibol)
-  }
-  useEffect(() => {
-    console.log('A===========', data)
-    selectores()
-  }, [])
 
   const data = router.params
 
-  // function calculateAge(birthYear) {
-  //   const birthYearNum =
-  //     typeof birthYear === 'string' ? parseInt(birthYear, 10) : birthYear
-  //   if (isNaN(birthYearNum)) {
-  //     throw new Error('Invalid birth year')
-  //   }
-  //   const currentYear = new Date().getFullYear()
-  //   const age = currentYear - birthYearNum
-  //   return age
-  // }
+  const { mainColor } = useSelector((state) => state.users)
+  const [selectComponents, setSelectComponents] = useState('perfil')
+  const [selectedOptions, setSelectedOptions] = useState([])
+
+
+  const selectores = () => {
+    const sport = data?.author?.sportman.info.sport;
+    const selectedSkills = skills_deporte[sport];
+
+    if (selectedSkills) {
+      setSelectedOptions(selectedSkills);
+    }
+  };
+  
+  useEffect(() => {
+    selectores();
+  }, []);
+
+
+
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -140,7 +101,7 @@ const PerfilFeedVisualitzaciJug = () => {
 
         {selectComponents === 'perfil' && (
           <Feed
-            externalId={data?.author?.sportman?.user?.id ?? data.author.id}
+            externalId={data?.author?.sportman?.user?.id ?? data?.author?.id}
           />
         )}
 
@@ -703,9 +664,9 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   moduloSpaceBlock: {
-    width:"46%",
+    width: "46%",
     height: 80,
-    justifyContent:"center",
+    justifyContent: "center",
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: Border.br_8xs,
     alignItems: 'center',
@@ -738,8 +699,8 @@ const styles = StyleSheet.create({
   },
   circulos: {
     flexDirection: 'row',
-    width:"100%",
-    justifyContent:"center"
+    width: "100%",
+    justifyContent: "center"
   },
   concepto: {
     lineHeight: 14,

@@ -48,10 +48,6 @@ const InscritosAMisOfertas = () => {
     }
   }, [])
 
-  useEffect(() => {
-    // console.log('clubMatches', clubMatches.filter(match=>match?.prop1?.sportmanId === inscription))
-  }, [])
-
   return (
     <ScrollView
       style={{
@@ -366,7 +362,7 @@ const InscritosAMisOfertas = () => {
               </View>
             )}
 
-            {inscriptions.filter((item) => item !== 'undefined').length > 2 && (
+            {user.user.plan !== 'pro' && user.user.plan !== 'star' && inscriptions.filter((item) => item !== 'undefined').length > 2 && (
               <View
                 style={{
                   flexDirection: 'row',
@@ -386,22 +382,6 @@ const InscritosAMisOfertas = () => {
                     alignItems: 'center'
                   }}
                 >
-                  {/* <View style={{borderRadius:100,overflow:'hidden'}}>
-                      <BlurView style={{zIndex:1000, borderRadius:100}} intensity={160}>
-                      <Image
-                        style={{ width: 50, height: 50, borderRadius: 100,zIndex:-1000 }}
-                        contentFit="contain"
-                        source={{
-                          uri: allUsers
-                            .filter(
-                              (user) => user.type === 'sportman' && user.sportman
-                            )
-                            .filter((user) => user.sportman.id === inscriptions[2])[0]
-                            .sportman.info.img_perfil
-                        }}
-                      />
-                      </BlurView>
-                      </View> */}
                   <View style={{ position: 'relative' }}>
                     <Image
                       style={{ width: 50, height: 50, borderRadius: 100 }}
@@ -439,41 +419,43 @@ const InscritosAMisOfertas = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 10 }}>
-          <View style={{ alignItems: 'center' }}>
-            <Image
-              style={styles.simboloIcon}
-              contentFit="cover"
-              source={require('../assets/simbolo.png')}
-            />
-            <Text
-              style={[styles.texto1, styles.textoSpaceBlock]}
-            >{`Con tu modelo de suscripción no puedes 
-      alizar todas las inscripciones`}</Text>
-            <Text
-              style={[styles.texto2, styles.textoSpaceBlock]}
-            >{`¡Sube de nivel en tu cuenta para 
-      alizar todas las inscripciones!`}</Text>
-            <Pressable
-              style={{
-                backgroundColor: Color.wHITESPORTSMATCH,
-                marginTop: 14,
-                width: '95%',
-                justifyContent: 'center',
-                paddingHorizontal: Padding.p_81xl,
-                paddingVertical: Padding.p_3xs,
-                zIndex: 3,
-                backgroundColor: Color.wHITESPORTSMATCH,
-                borderRadius: Border.br_81xl,
-                flexDirection: 'row',
-                alignItems: 'center'
-              }}
-              onPress={() => setModalPremium(true)}
-            >
-              <Text style={styles.textoBoton}>Hazte premium</Text>
-            </Pressable>
-          </View>
-        </View>
+       {user.user.plan !== 'pro' && user.user.plan !== 'star' && (
+         <View style={{ marginTop: 10 }}>
+         <View style={{ alignItems: 'center' }}>
+           <Image
+             style={styles.simboloIcon}
+             contentFit="cover"
+             source={require('../assets/simbolo.png')}
+           />
+           <Text
+             style={[styles.texto1, styles.textoSpaceBlock]}
+           >{`Con tu modelo de suscripción no puedes 
+     alizar todas las inscripciones`}</Text>
+           <Text
+             style={[styles.texto2, styles.textoSpaceBlock]}
+           >{`¡Sube de nivel en tu cuenta para 
+     alizar todas las inscripciones!`}</Text>
+           <Pressable
+             style={{
+               backgroundColor: Color.wHITESPORTSMATCH,
+               marginTop: 14,
+               width: '95%',
+               justifyContent: 'center',
+               paddingHorizontal: Padding.p_81xl,
+               paddingVertical: Padding.p_3xs,
+               zIndex: 3,
+               backgroundColor: Color.wHITESPORTSMATCH,
+               borderRadius: Border.br_81xl,
+               flexDirection: 'row',
+               alignItems: 'center'
+             }}
+             onPress={() => setModalPremium(true)}
+           >
+             <Text style={styles.textoBoton}>Hazte premium</Text>
+           </Pressable>
+         </View>
+       </View>
+       )}
 
         <Modal visible={modalPremium} transparent={true} animationType="slide">
           <TouchableWithoutFeedback onPress={() => setModalPremium(false)}>

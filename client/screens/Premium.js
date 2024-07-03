@@ -1,9 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FontFamily, FontSize, Color, Border, Padding } from '../GlobalStyles'
+import { useNavigation } from '@react-navigation/core'
 
 const Premium = () => {
+
+const navigate = useNavigation()
+
   return (
    <View style={{flex:1,justifyContent:"center",alignItems:"center",backgroundColor:"black",paddingHorizontal:10}}>
      <View style={styles.premium}>
@@ -86,9 +90,9 @@ const Premium = () => {
           ofertas
         </Text>
         <View style={styles.botonesInferiores}>
-          <View style={[styles.botonContinuar, styles.botonFlexBox]}>
+          <TouchableOpacity onPress={()=> navigate.navigate('MiSuscripcin')} style={[styles.botonContinuar, styles.botonFlexBox]}>
             <Text style={[styles.texto2, styles.timeClr]}>Continuar</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.botonFlexBox}>
             <Text style={[styles.taxto, styles.aoTypo]}>No, gracias</Text>
           </View>

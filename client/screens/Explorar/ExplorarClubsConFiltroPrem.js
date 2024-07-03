@@ -19,6 +19,30 @@ import {
 } from '../../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons'
 import axiosInstance from '../../utils/apiBackend'
+import { opciones_categoria , opciones_posicion } from '../../utils/SkillUserLocal'
+
+
+let total_categorias = []
+let total_posiciones = []
+
+  for (const key in opciones_categoria) {
+    for (const val of opciones_categoria[key]) {
+      if (!total_categorias.includes(val)) {
+        total_categorias.push(val)
+      }
+    }
+
+  }
+
+  for (const key in opciones_posicion) {
+    for (const val of opciones_posicion[key]) {
+      if (!total_posiciones.includes(val)) {
+        total_posiciones.push(val)
+      }
+    }
+
+  }
+
 
 const ExplorarClubsConFiltroPrem = ({
   onClose,
@@ -27,12 +51,7 @@ const ExplorarClubsConFiltroPrem = ({
   setSearchUsers,
   setTextValue
 }) => {
-  const navigation = useNavigation()
 
-  const [checkedAttack, setCheckedAttack] = useState(false)
-  const [checkedSpeed, setCheckedSpeed] = useState(false)
-  const [checkedDefense, setCheckedDefense] = useState(false)
-  const [selectedValue, setSelectedValue] = useState('valor1')
 
   const submit = async () => {
     const filteredFilter = {}
@@ -50,6 +69,8 @@ const ExplorarClubsConFiltroPrem = ({
     setSearchUsers(res.data)
     setTextValue(' ')
   }
+
+
 
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
@@ -71,12 +92,6 @@ const ExplorarClubsConFiltroPrem = ({
           <View style={styles.campo1}>
             <Text style={[styles.sexo, styles.sexoTypo]}>Sexo</Text>
             <View style={[styles.campoFrame, styles.aplicarFlexBox]}>
-              {/* <Text style={[styles.masculino, styles.sexoTypo]}>Masculino</Text>
-              <Image
-                style={styles.coolicon}
-                contentFit="cover"
-                source={require('../../assets/coolicon5.png')}
-              /> */}
               <Picker
                 style={{
                   color: 'white',
@@ -109,18 +124,13 @@ const ExplorarClubsConFiltroPrem = ({
                   setFilter({ ...filter, ['category']: itemValue })
                 }
               >
-                <Picker.Item
-                  label="Prebenjamín (6-8 años)"
-                  value="Prebenjamín (6-8 años)"
-                />
-                <Picker.Item
-                  label="Benjamín (8-10 años)"
-                  value="Benjamín (8-10 años)"
-                />
-                <Picker.Item
-                  label="Cadete (14-16 años)"
-                  value="Cadete (14-16 años)"
-                />
+           
+                {total_categorias && total_categorias.map((e)=>(
+                     <Picker.Item
+                     label={e}
+                     value={e}
+                   />
+                ))}
               </Picker>
             </View>
           </View>
@@ -141,8 +151,10 @@ const ExplorarClubsConFiltroPrem = ({
                   setFilter({ ...filter, ['position']: itemValue })
                 }
               >
-                <Picker.Item label="Disparo" value="Disparo" />
-                <Picker.Item label="Resistencia" value="Resistencia" />
+           
+                {total_posiciones && total_posiciones.map((e)=>(
+                  <Picker.Item label={e} value={e} />
+                ))}
               </Picker>
             </View>
           </View>
@@ -200,9 +212,11 @@ const ExplorarClubsConFiltroPrem = ({
           </View>
         </TouchableOpacity>
 
-        <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
+       <TouchableOpacity onPress={()=> setTextValue('')}>
+       <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
           Quitar filtros
         </Text>
+       </TouchableOpacity>
       </View>
     </View>
   )

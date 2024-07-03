@@ -5,6 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Border, Color, Padding } from '../GlobalStyles'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
+import {  opciones_skills } from '../utils/SkillUserLocal'
+
+
 
 const FeedStats = () => {
   const navigation = useNavigation()
@@ -13,53 +16,21 @@ const FeedStats = () => {
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
 
-  const opciones = {
-    futbol: [
-      'Portero',
-      'Lateral',
-      'Central',
-      'Mediocentro',
-      'Interior',
-      'Extremo',
-      'Mediapunta',
-      'Delantero centro'
-    ],
-    baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
-    futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
-    hockey: ['Portero', 'Jugador'],
-    voleibol: [
-      'Colocador',
-      'Rematador externo',
-      'Rematador opuesto',
-      'Central',
-      'Libero',
-      'Receptor/zaguero'
-    ],
-    handball: [
-      'Portero',
-      'Central',
-      'Ala derecha',
-      'Ala izquierda',
-      'Pivot',
-      'Extremo derecho',
-      'Extremo izquierdo'
-    ]
-  }
 
-  const selectores = () => {
-    if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones.futbol)
-    if (sportman?.info?.sport === 'Fútbol Sala')
-      setSelectedOptions(opciones.futbolSala)
-    if (sportman?.info?.sport === 'Básquetbol')
-      setSelectedOptions(opciones.baloncesto)
-    if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones.hockey)
-    if (sportman?.info?.sport === 'Handball')
-      setSelectedOptions(opciones.handball)
-    if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones.voleibol)
-  }
   useEffect(() => {
     selectores()
   }, [])
+
+
+  const selectores = () => {
+    if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones_skills.futbol)
+    if (sportman?.info?.sport === 'Fútbol Sala') setSelectedOptions(opciones_skills.futbolSala)
+    if (sportman?.info?.sport === 'Básquetbol') setSelectedOptions(opciones_skills.baloncesto)
+    if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones_skills.hockey)
+    if (sportman?.info?.sport === 'Handball') setSelectedOptions(opciones_skills.handball)
+    if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones_skills.voleibol)
+  }
+
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
