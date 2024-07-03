@@ -27,7 +27,7 @@ import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { createSportman, updateSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
-import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import { cleanSportman, setInitialSportman } from '../../redux/slices/sportman.slices'
 import Visores from './visores'
 import StepsJugador from './StepsJugador'
 import Paso2Jugador from './Paso2Jugador'
@@ -114,46 +114,53 @@ const Paso1 = () => {
   }
 
   const handleNext = () => {
+    const fullData = {
+      ...sportmanValues,
+      sport: 'Invitado',
+      img_perfil: profileImage || '',
+      img_front: coverImage || '',
+      attack: data?.attack || '100',
+      speed: data?.speed || '100',
+      height: data?.height || '100',
+      defense: data?.defense || '100',
+      prop1: data?.prop1 || '',
+      prop2: data?.prop2 || '',
+      prop3: data?.prop3 || '',
+      prop4: data?.prop4 || '',
+
+      prop5: data?.prop5 || '',
+
+      prop6: data?.prop6 || '',
+
+      prop7: data?.prop7 || '',
+
+      prop8: data?.prop8,
+      nickname: user?.user?.nickname || '',
+      city: sportmanValues.city || ''
+    }
+    const body = {
+      sportmanData: {
+        type: 'invitado',
+        info: fullData,
+        club: null
+      },
+      userId: user.user.id
+    }
+
     if (selectedRole == null) {
       return
     }
     if (selectedRole === 'Invitado') {
       if (Object.keys(sportmanRedux).length !== 0) {
         navigation.navigate('SiguiendoJugadores')
+        dispatch(
+          setInitialSportman({
+            id: "invitado",
+            ...body.sportmanData
+          }))
         return
       }
-      const fullData = {
-        ...sportmanValues,
-        sport: 'Invitado',
-        img_perfil: profileImage || '',
-        img_front: coverImage || '',
-        attack: data?.attack || '100',
-        speed: data?.speed || '100',
-        height: data?.height || '100',
-        defense: data?.defense || '100',
-        prop1: data?.prop1 || '',
-        prop2: data?.prop2 || '',
-        prop3: data?.prop3 || '',
-        prop4: data?.prop4 || '',
 
-        prop5: data?.prop5 || '',
-
-        prop6: data?.prop6 || '',
-
-        prop7: data?.prop7 || '',
-
-        prop8: data?.prop8,
-        nickname: user?.user?.nickname || '',
-        city: sportmanValues.city || ''
-      }
-      const body = {
-        sportmanData: {
-          type: 'invitado',
-          info: fullData,
-          club: null
-        },
-        userId: user.user.id
-      }
 
       dispatch(createSportman(body)).then((response) => {
         dispatch(
@@ -177,37 +184,6 @@ const Paso1 = () => {
       setSportman(true)
     }
   }
-
-  // const backAction = async () => {
-  //   // Despacha tu acción de Redux aquí
-  //   await handleBackSteps();
-  //   return true; // Indica que el evento fue manejado
-  // };
-
-  // const backHandlerr = BackHandler.addEventListener(
-  //   'hardwareBackPress',
-  //   backAction // Cambiado de handleBackSteps a backAction
-  // );
-
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     if (navigation.isFocused()) {
-  //       handleBackSteps()
-  //       return true;
-  //     }
-
-  //   };
-  //   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-  //   return () => {
-  //     backHandler.remove();}
-  // }, [])
-
-  // useEffect(() => {
-
-  //   return async () => {
-  //     console.log("me despido de ti y me voy")
-  //   } // Remueve el listener al desmontar el componente
-  // }, [stepsSportman, stepsProfesional, loged]);
 
   useEffect(() => {
     const color = setColor(selectedSport?.name)
@@ -259,6 +235,7 @@ const Paso1 = () => {
         }
         if (Object.keys(sportmanRedux).length == 0) {
           dispatch(createSportman(body)).then((response) => {
+            console.log("esto responde el sportman",response)
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
@@ -371,7 +348,11 @@ const Paso1 = () => {
   const handleBackSteps = async () => {
     if (!loged) {
       if (!sportman && !profesional && !invitado) {
-        await dispatch(clearUser())
+        dispatch(clearUser())
+        dispatch(cleanSportman())
+        await AsyncStorage.removeItem('userAuth')
+        await AsyncStorage.removeItem('@user')
+        await AsyncStorage.removeItem('facebookAuth')
         navigation.navigate('LoginSwitch')
         return true
       }
@@ -389,7 +370,6 @@ const Paso1 = () => {
       }
       return true
     } else {
-      BackHandler.removeEventListener('hardwareBackPress', backHandler)
       navigation.goBack()
     }
   }
@@ -524,7 +504,7 @@ const Paso1 = () => {
                 !sportman && !profesional
                   ? 1
                   : (sportman && stepsSportman === 0) ||
-                      (profesional && stepsProfesional === 0)
+                    (profesional && stepsProfesional === 0)
                     ? 2
                     : stepsProfesional === 1 || stepsSportman === 1
                       ? 3
@@ -581,7 +561,7 @@ const Paso1 = () => {
                 style={[
                   styles.rectangulo,
                   selectedRole === 'Profesional del deporte' &&
-                    styles.selectedBackground
+                  styles.selectedBackground
                 ]}
                 onPress={() => handleRoleSelection('Profesional del deporte')}
               >
@@ -590,7 +570,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
+                    styles.selectedText
                   ]}
                 >
                   Profesional del deporte
@@ -619,7 +599,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                      styles.selectedText
+                    styles.selectedText
                   ]}
                 >
                   Invitado
@@ -692,16 +672,16 @@ const Paso1 = () => {
         )}
 
       </ScrollView>
-        <View style={styles.botonesRoles}>
-          <Pressable
-            style={styles.siguiente}
-            onPress={() =>
-              !sportman && !profesional ? handleNext() : handleNavigation()
-            }
-          >
-            <Text style={styles.siguiente1}>Siguiente</Text>
-          </Pressable>
-        </View>
+      <View style={styles.botonesRoles}>
+        <Pressable
+          style={styles.siguiente}
+          onPress={() =>
+            !sportman && !profesional ? handleNext() : handleNavigation()
+          }
+        >
+          <Text style={styles.siguiente1}>Siguiente</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }

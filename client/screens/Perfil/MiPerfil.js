@@ -45,6 +45,7 @@ const MiPerfil = () => {
     if (isFocused) {
       setActiveIcon('profile')
     }
+    console.log(user,"esto tengo")
   }, [isFocused])
 
 

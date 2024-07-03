@@ -37,8 +37,7 @@ import {
   getNotificationsByUserId
 } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
-import { setColor } from '../../utils/handles/HandlerSportColor'
-import { setMainColor } from '../../redux/slices/users.slices'
+
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
@@ -89,19 +88,6 @@ const SiguiendoJugadores = () => {
     }
   }, [user])
 
-  // const getUserId = async () => {
-  //   const userId = await AsyncStorage.getItem('userId')
-  //   return userId
-  // }
-
-  // useEffect(() => {
-  //   if (sportman?.info?.sport.name == 'Fútbol Sala' || sportman?.info?.sport == 'Fútbol Sala') { dispatch(setMainColor('#0062FF')) }
-  //   if (sportman?.info?.sport.name == 'Hockey' || sportman?.info?.sport == 'Hockey') { dispatch(setMainColor('#E1AA1E')) }
-  //   if (sportman?.info?.sport.name == 'Voley' || sportman?.info?.sport.name == 'Voley') { dispatch(setMainColor('#A8154A')) }
-  //   if (sportman?.info?.sport.name == 'Handball' || sportman?.info?.sport == 'Handball') { dispatch(setMainColor('#6A1C4F')) }
-  //   if (sportman?.info?.sport.name == 'Fútbol' || sportman?.info?.sport == 'Fútbol') { dispatch(setMainColor('#00FF18')) }
-  //   if (sportman?.info?.sport.name == 'Básquetbol' || sportman?.info?.sport == 'Básquetbol') { dispatch(setMainColor('#E1451E')) }
-  // }, [sportman?.info])
 
   useEffect(() => {
     setActiveIcon('diary')
@@ -128,7 +114,6 @@ const SiguiendoJugadores = () => {
             user?.user?.id === post?.author?.id
         )
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      console.log('Setting initial posts...')
       setFilteredPosts(sortedPosts)
     }
   }, [allPosts, user])
@@ -137,13 +122,7 @@ const SiguiendoJugadores = () => {
     dispatch(getAllUsers())
   }, [])
 
-  // if (user?.user?.id) {
-  //   return (
-  //     <View>
-  //       <Text>Loading</Text>
-  //     </View>
-  //   )
-  // }
+
   return (
     <SafeAreaView style={styles.siguiendoJugadores}>
       {isFocused && (
