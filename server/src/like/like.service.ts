@@ -87,7 +87,7 @@ export class LikeService {
       }
       return list.map((like) => like.post_id);
     } catch (error) {
-      throw ErrorManager.createSignatureError(error.message);
+      return [];
     }
   }
 
