@@ -163,7 +163,7 @@ const LoginSwitch = () => {
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
-            // console.log('data from back:', data);
+            console.log('data from back:', data)
             try {
               const response = await dispatch(login({ googleId: user.uid }))
               detectSportColor(

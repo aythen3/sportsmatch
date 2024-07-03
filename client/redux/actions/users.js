@@ -82,8 +82,10 @@ export const deleteUserById = createAsyncThunk(
 )
 
 export const create = createAsyncThunk('create/user', async (body) => {
+  console.log('creating user with ', body)
   try {
     const { data } = await axiosInstance.post('user', body)
+    console.log('response from create action', data)
     return data
   } catch (error) {
     console.log('Error creating user: ', error)

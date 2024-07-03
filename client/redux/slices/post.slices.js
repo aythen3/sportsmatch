@@ -3,10 +3,7 @@ import {
   createPost,
   getAllLikes,
   getAllPosts,
-  like,
-  listLikes,
-  updateLike,
-  filterPost
+  listLikes
 } from '../actions/post'
 
 const postSlices = createSlice({
@@ -20,11 +17,10 @@ const postSlices = createSlice({
   },
   reducers: {
     cleanPost: (state, action) => {
-      state.allPosts = [],
-      state.post = {},
-      state.likes = [],
-      state.findedLike = []
-
+      ;(state.findedLike = []),
+        (state.allPosts = []),
+        (state.post = {}),
+        (state.likes = [])
     },
 
     setFilterPost: (state, action) => {
@@ -44,7 +40,9 @@ const postSlices = createSlice({
         })
       }
 
-      const alreadyLiked = state.findedLike.includes(action.payload.post)
+      const alreadyLiked = state?.findedLike
+        ? state?.findedLike?.includes(action?.payload?.post)
+        : [].includes(action?.payload?.post)
 
       const operation = alreadyLiked ? 'substract' : 'add'
 
@@ -101,20 +99,6 @@ const postSlices = createSlice({
         state.loading = false
         state.error = true
       })
-      // Dar like
-      // .addCase(like.pending, (state) => {
-      //   state.loading = true
-      //   state.error = false
-      // })
-      // .addCase(like.fulfilled, (state, action) => {
-      //   state.loading = false
-      //   state.post = action.payload
-      //   state.error = false
-      // })
-      // .addCase(like.rejected, (state) => {
-      //   state.loading = false
-      //   state.error = true
-      // })
       // Traer todos los likes
       .addCase(getAllLikes.pending, (state) => {
         state.loading = true
@@ -136,31 +120,15 @@ const postSlices = createSlice({
       })
       .addCase(listLikes.fulfilled, (state, action) => {
         state.loading = false
-        state.findedLike = action.payload
+        state.findedLike = [...action.payload]
         state.error = false
       })
       .addCase(listLikes.rejected, (state) => {
         state.loading = false
         state.error = true
       })
-    // edit post
-    // .addCase(filterPost.pending, (state) => {
-    //   state.loading = true
-    //   state.error = false
-    // })
-    // .addCase(filterPost.fulfilled, (state, action) => {
-    //   state.loading = false
-    //   state.allPosts = action.payload
-    //   state.error = false
-    // })
-    // .addCase(filterPost.rejected, (state) => {
-    //   state.loading = false
-    //   state.error = true
-    // })
   }
 })
 
-
-
-export const { cleanPost , setFindedLikes ,setFilterPost} = postSlices.actions
+export const { cleanPost, setFindedLikes, setFilterPost } = postSlices.actions
 export default postSlices.reducer

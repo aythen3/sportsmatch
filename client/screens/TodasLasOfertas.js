@@ -53,6 +53,7 @@ const TodasLasOfertas = () => {
   const [byRelevance, setByRelevance] = useState(false)
   const [offer, setOffer] = useState([])
   const [signinToOffer, setSigninToOffer] = useState(false)
+  const [search, setSearch] = useState('')
 
   const fetchUserData = async () => {
     console.log('Fetching user data...')
@@ -168,7 +169,7 @@ const TodasLasOfertas = () => {
 
       <FiltersHome
         modalSportmanActive={onFilterSportman}
-        setTextValue={(e) => console.log(e)}
+        setTextValue={(e) => setSearch(e)}
       />
       <View
         style={{
@@ -238,21 +239,36 @@ const TodasLasOfertas = () => {
 
       {selectOfferComponent === 'todas' &&
       offers &&
-      offers.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        const alreadyJoined = offer?.inscriptions?.includes(
-          user?.user?.sportman?.id
-        )
-        if (filteredUserMatches.length > 0) {
-          return false
-        }
-        if (alreadyJoined) {
-          return false
-        }
-        return true
-      }).length > 0 ? (
+      offers
+        .filter((off) => {
+          if (search.length > 0) {
+            if (
+              off.province.toLowerCase().includes(search.toLowerCase()) ||
+              off.posit.toLowerCase().includes(search.toLowerCase())
+            ) {
+              return true
+            } else {
+              return false
+            }
+          } else {
+            return true
+          }
+        })
+        .filter((offer) => {
+          const filteredUserMatches = userMatches.filter(
+            (match) => match.offerId && match.offerId !== offer.id
+          )
+          const alreadyJoined = offer?.inscriptions?.includes(
+            user?.user?.sportman?.id
+          )
+          if (filteredUserMatches.length > 0) {
+            return false
+          }
+          if (alreadyJoined) {
+            return false
+          }
+          return true
+        }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {offer
             .filter((offer) => {
@@ -277,6 +293,20 @@ const TodasLasOfertas = () => {
                 : 20
             ).length > 0 ? (
             offer
+              .filter((off) => {
+                if (search.length > 0) {
+                  if (
+                    off.province.toLowerCase().includes(search.toLowerCase()) ||
+                    off.posit.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return true
+                  } else {
+                    return false
+                  }
+                } else {
+                  return true
+                }
+              })
               .filter((offer) => {
                 const filteredUserMatches = userMatches.filter(
                   (match) => match.offerId && match.offerId !== offer.id
@@ -332,7 +362,10 @@ const TodasLasOfertas = () => {
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
                     <CardInfoOffers text="Posición" value={offer?.posit} />
-                    <CardInfoOffers text="Ubicacion" value="Random" />
+                    <CardInfoOffers
+                      text="Ubicacion"
+                      value={offer?.province || 'Random'}
+                    />
                   </View>
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -490,7 +523,7 @@ const TodasLasOfertas = () => {
           >
             <Text
               style={{
-                marginTop: 30,
+                marginTop: 60,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: 400,
                 fontSize: 14,
@@ -498,28 +531,45 @@ const TodasLasOfertas = () => {
                 bottom: 4
               }}
             >
-              Aun no hay ofertas activas!
+              {search?.length > 0
+                ? 'No encontramos resultados para su busqueda!'
+                : 'Aun no hay ofertas activas!'}
             </Text>
           </View>
         )
       )}
 
       {selectOfferComponent === 'todas' &&
-        offer.filter((offer) => {
-          const filteredUserMatches = userMatches.filter(
-            (match) => match.offerId && match.offerId !== offer.id
-          )
-          const alreadyJoined = offer?.inscriptions?.includes(
-            user?.user?.sportman?.id
-          )
-          if (filteredUserMatches.length > 0) {
-            return false
-          }
-          if (alreadyJoined) {
-            return false
-          }
-          return true
-        }).length > 2 &&
+        offer
+          .filter((off) => {
+            if (search.length > 0) {
+              if (
+                off.province.toLowerCase().includes(search.toLowerCase()) ||
+                off.posit.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return true
+              } else {
+                return false
+              }
+            } else {
+              return true
+            }
+          })
+          .filter((offer) => {
+            const filteredUserMatches = userMatches.filter(
+              (match) => match.offerId && match.offerId !== offer.id
+            )
+            const alreadyJoined = offer?.inscriptions?.includes(
+              user?.user?.sportman?.id
+            )
+            if (filteredUserMatches.length > 0) {
+              return false
+            }
+            if (alreadyJoined) {
+              return false
+            }
+            return true
+          }).length > 2 &&
         user?.user?.plan === 'basic' && (
           <TouchableOpacity
             style={{
@@ -549,23 +599,52 @@ const TodasLasOfertas = () => {
       {/* ============================ FAVORITE OFFERS ============================ */}
       {selectOfferComponent !== 'todas' &&
       offers &&
-      offer.filter((offer) => {
-        const filteredUserMatches = userMatches.filter(
-          (match) => match.offerId && match.offerId !== offer.id
-        )
-        const alreadyJoined = offer?.inscriptions?.includes(
-          user?.user?.sportman?.id
-        )
-        if (filteredUserMatches.length > 0) {
+      offer
+        .filter((off) => {
+          if (search.length > 0) {
+            if (
+              off.province.toLowerCase().includes(search.toLowerCase()) ||
+              off.posit.toLowerCase().includes(search.toLowerCase())
+            ) {
+              return true
+            } else {
+              return false
+            }
+          } else {
+            return true
+          }
+        })
+        .filter((offer) => {
+          const filteredUserMatches = userMatches.filter(
+            (match) => match.offerId && match.offerId !== offer.id
+          )
+          const alreadyJoined = offer?.inscriptions?.includes(
+            user?.user?.sportman?.id
+          )
+          if (filteredUserMatches.length > 0) {
+            return false
+          }
+          if (alreadyJoined) {
+            return true
+          }
           return false
-        }
-        if (alreadyJoined) {
-          return true
-        }
-        return false
-      }).length > 0 ? (
+        }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {offer
+            .filter((off) => {
+              if (search.length > 0) {
+                if (
+                  off.province.toLowerCase().includes(search.toLowerCase()) ||
+                  off.posit.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return true
+                } else {
+                  return false
+                }
+              } else {
+                return true
+              }
+            })
             .filter((offer) => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
@@ -607,7 +686,10 @@ const TodasLasOfertas = () => {
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
                   <CardInfoOffers text="Posición" value={offer?.posit} />
-                  <CardInfoOffers text="Ubicacion" value="Random" />
+                  <CardInfoOffers
+                    text="Ubicacion"
+                    value={offer?.province || 'Random'}
+                  />
                 </View>
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -631,59 +713,6 @@ const TodasLasOfertas = () => {
                   }}
                 >
                   <TouchableOpacity
-                    // disabled={
-                    //   offer?.inscriptions?.includes(user?.user?.sportman?.id) ||
-                    //   !user.user.sportman.data
-                    // }
-                    disabled={signinToOffer}
-                    onPress={async () => {
-                      if (
-                        !offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                      ) {
-                        setSigninToOffer(true)
-                        if (user?.user?.sportman) {
-                          try {
-                            await dispatch(updateOffers(offer?.id))
-                            dispatch(
-                              signToOffer({
-                                offerId: offer?.id,
-                                userId: user?.user?.sportman?.id
-                              })
-                            ).then((data) => {
-                              dispatch(
-                                sendNotification({
-                                  title: 'Inscripción',
-                                  message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
-                                  recipientId: offer.clubId,
-                                  date: new Date(),
-                                  read: false,
-                                  prop2: {
-                                    rol: 'club'
-                                  },
-                                  prop1: {
-                                    userId: user?.user?.id,
-                                    userData: {
-                                      ...user
-                                    }
-                                  }
-                                })
-                              )
-                              dispatch(getAllOffers())
-                              ToastAndroid.show(
-                                'Te has inscrito en la oferta!',
-                                ToastAndroid.SHORT
-                              )
-                            })
-                          } catch (error) {
-                            console.log('Error on inscription..', error)
-                          } finally {
-                            setSigninToOffer(false)
-                          }
-                        } else {
-                          console.log('SPORTMAN NOT FOUND')
-                        }
-                      }
-                    }}
                     style={{
                       width: '70%',
                       paddingHorizontal: Padding.p_mini,
@@ -702,8 +731,6 @@ const TodasLasOfertas = () => {
                     }}
                   >
                     <Text
-                      // onPress={() => setModalVisible(true)}
-
                       style={{
                         color: offer?.inscriptions?.includes(
                           user?.user?.sportman?.id
@@ -740,25 +767,21 @@ const TodasLasOfertas = () => {
       ) : (
         selectOfferComponent !== 'todas' && (
           <View
-            style={{
-              width: '100%',
-              top: 200,
-              alignSelf: 'flex-start',
-              alignItems: 'center',
-              flex: 1
-            }}
+            style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
           >
             <Text
               style={{
-                marginTop: 30,
+                marginTop: 60,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: 400,
-                fontSize: 15,
+                fontSize: 14,
                 color: Color.wHITESPORTSMATCH,
                 bottom: 4
               }}
             >
-              Aún no te has inscrito en ninguna oferta!
+              {search?.length > 0
+                ? 'No encontramos resultados para su busqueda!'
+                : 'Aun no hay ofertas activas!'}
             </Text>
           </View>
         )

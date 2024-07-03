@@ -256,7 +256,7 @@ const IniciarSesin = () => {
                     justifyContent: 'center',
                     backgroundColor: Color.wHITESPORTSMATCH,
                     borderRadius: Border.br_81xl,
-                    width: '95.5%',
+                    width: '100%',
                     alignItems: 'center',
                     flexDirection: 'row',
                     height: 45,
