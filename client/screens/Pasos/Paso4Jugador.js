@@ -6,7 +6,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Modal
+  Modal,
+  Dimensions
 } from 'react-native'
 import {
   Color,
@@ -27,11 +28,15 @@ const Paso4Jugador = ({
   selectedCity,
   selectedSport
 }) => {
-  const { pickImage, provisoryProfileImage, pickImageFromCamera, provisoryCoverImage } =
-    useContext(Context)
+  const {
+    pickImage,
+    provisoryProfileImage,
+    pickImageFromCamera,
+    provisoryCoverImage
+  } = useContext(Context)
 
-  const [facing, setFacing] = useState('back');
-  const [permission, requestPermission] = useCameraPermissions();
+  const [facing, setFacing] = useState('back')
+  const [permission, requestPermission] = useCameraPermissions()
 
   const [showCamera, setShowCamera] = useState(false)
   const [sportColor, setSportColor] = useState('')
@@ -43,18 +48,30 @@ const Paso4Jugador = ({
   const handlePickImage = async (type) => {
     await pickImage(type)
   }
-  const cameraReff = useRef(null);
+  const cameraReff = useRef(null)
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
-    if (selectedSport.name == 'Fútbol Sala') { setSportColor('#0062FF') }
-    if (selectedSport.name == 'Hockey') { setSportColor('#E1AA1E') }
-    if (selectedSport.name == 'Voley') { setSportColor('#A8154A') }
-    if (selectedSport.name == 'Handball') { setSportColor('#6A1C4F') }
-    if (selectedSport.name == 'Fútbol') { setSportColor('#00FF18') }
-    if (selectedSport.name == 'Básquetbol') { setSportColor('#E1451E') }
-    (async () => {
+    if (selectedSport.name == 'Fútbol Sala') {
+      setSportColor('#0062FF')
+    }
+    if (selectedSport.name == 'Hockey') {
+      setSportColor('#E1AA1E')
+    }
+    if (selectedSport.name == 'Voley') {
+      setSportColor('#A8154A')
+    }
+    if (selectedSport.name == 'Handball') {
+      setSportColor('#6A1C4F')
+    }
+    if (selectedSport.name == 'Fútbol') {
+      setSportColor('#00FF18')
+    }
+    if (selectedSport.name == 'Básquetbol') {
+      setSportColor('#E1451E')
+    }
+    ;(async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
@@ -70,24 +87,21 @@ const Paso4Jugador = ({
     //     ? Camera?.Constants?.Type?.front
     //     : Camera?.Constants?.Type?.back
     // )
-    setFacing((prev) => prev == "back" ? "front" : "back")
+    setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
-  useEffect(() => {
- 
-  }, [selectedImage, selectedPicture])
+  useEffect(() => {}, [selectedImage, selectedPicture])
 
   const takePicture = async () => {
-    if (cameraReff?.current) { // Check if cameraRef is not null
-      const photo = await cameraReff.current.takePictureAsync(); // Use cameraRef.current
-      setSelectedImage(photo);
-      pickImageFromCamera(selectedPicture, photo.uri);
-      setShowCamera(false);
+    if (cameraReff?.current) {
+      // Check if cameraRef is not null
+      const photo = await cameraReff.current.takePictureAsync() // Use cameraRef.current
+      setSelectedImage(photo)
+      pickImageFromCamera(selectedPicture, photo.uri)
+      setShowCamera(false)
       // You can handle the taken photo here, such as displaying it or saving it.
     }
-  };
-
-
+  }
 
   const [scrolledHeight, setScrolledHeight] = useState(0)
 
@@ -97,16 +111,13 @@ const Paso4Jugador = ({
     setScrolledHeight(height)
   }
   if (!showCamera) {
-
     return (
-
       <ScrollView
         onScroll={handleScroll}
         keyboardShouldPersistTaps={'always'}
         style={{ height: '70%' }}
       >
-
-        <View style={{ paddingBottom: 80, height: "100%" }}>
+        <View style={{ paddingBottom: 80, height: '100%' }}>
           <View style={{ marginBottom: 30 }}>
             <View style={styles.headersubirImagenesPerfil}>
               <View>
@@ -126,7 +137,7 @@ const Paso4Jugador = ({
                   }}
                   style={{
                     right: 0,
-                    position: "absolute",
+                    position: 'absolute',
                     width: 35,
                     height: 35,
                     borderRadius: 100,
@@ -143,7 +154,10 @@ const Paso4Jugador = ({
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={[styles.botonSubirImagen, { backgroundColor: sportColor }]}
+                style={[
+                  styles.botonSubirImagen,
+                  { backgroundColor: sportColor }
+                ]}
                 onPress={() => handlePickImage('profile')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -188,7 +202,7 @@ const Paso4Jugador = ({
                     style={{
                       top: -17,
                       right: 0,
-                      position: "absolute",
+                      position: 'absolute',
                       width: 35,
                       height: 35,
                       borderRadius: 100,
@@ -211,7 +225,10 @@ const Paso4Jugador = ({
                 </View>
               )}
               <TouchableOpacity
-                style={[styles.botonSubirImagen, { backgroundColor: sportColor }]}
+                style={[
+                  styles.botonSubirImagen,
+                  { backgroundColor: sportColor }
+                ]}
                 onPress={() => handlePickImage('cover')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -233,15 +250,22 @@ const Paso4Jugador = ({
         </View>
       </ScrollView>
     )
-
   } else {
-
     return (
-      <View style={{ zIndex: 9999, height: "85%" }}>
+      <View
+        style={{
+          zIndex: 9999,
+          height: Dimensions.get('screen').height * 0.6
+        }}
+      >
+        <CameraView
+          ref={cameraReff}
+          facing={facing}
+          style={{ flex: 1 }}
+          mode="picture"
+          FocusMode="on"
 
-        <CameraView ref={cameraReff} facing={facing} style={{ flex: 1 }} mode='picture' FocusMode="on" 
-
-        // cameraType="back"
+          // cameraType="back"
         >
           <View
             style={{
@@ -301,7 +325,6 @@ const Paso4Jugador = ({
             </TouchableOpacity>
           </View>
         </CameraView>
-
       </View>
     )
   }

@@ -39,7 +39,11 @@ const NotificacinMatch = ({ onClose, data }) => {
           >{`¡Has hecho un Match!`}</Text>
           <Text
             style={[styles.pareceQueUni, styles.seguirTypo1]}
-          >{`¡Parece que ${data?.prop1?.clubData?.name} se interesa por ti! `}</Text>
+          >{`¡Parece que ${
+            allUsers.filter(
+              (user) => user.id === data?.prop1?.clubData?.userId
+            )[0]?.nickname
+          } se interesa por ti! `}</Text>
         </View>
 
         <View style={[styles.botones, styles.botonesLayout]}>

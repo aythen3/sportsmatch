@@ -43,19 +43,19 @@ const NavBarInferior = () => {
         break
       case 'post':
         if (sportman.type == 'invitado') {
-          navigation.navigate('Paso1')
+          return navigation.navigate('Paso1')
         }
         if (user.user.club) {
-          navigation.navigate('ConfigurarAnuncio')
+          return navigation.navigate('ConfigurarAnuncio')
         } else {
           navigation.navigate('SeleccionarImagen')
         }
         break
       case 'message':
         if (sportman.type == 'invitado') {
-          navigation.navigate('Paso1')
+          return navigation.navigate('Paso1')
         } else {
-          navigation.navigate('TusNotificaciones1')
+          return navigation.navigate('TusNotificaciones1')
         }
 
         break

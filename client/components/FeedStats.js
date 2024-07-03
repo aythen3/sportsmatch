@@ -5,9 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Border, Color, Padding } from '../GlobalStyles'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
-import {  opciones_skills } from '../utils/SkillUserLocal'
-
-
+import { opciones_skills } from '../utils/SkillUserLocal'
 
 const FeedStats = () => {
   const navigation = useNavigation()
@@ -16,21 +14,24 @@ const FeedStats = () => {
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
 
-
   useEffect(() => {
     selectores()
   }, [])
 
-
   const selectores = () => {
-    if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones_skills.futbol)
-    if (sportman?.info?.sport === 'Fútbol Sala') setSelectedOptions(opciones_skills.futbolSala)
-    if (sportman?.info?.sport === 'Básquetbol') setSelectedOptions(opciones_skills.baloncesto)
-    if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones_skills.hockey)
-    if (sportman?.info?.sport === 'Handball') setSelectedOptions(opciones_skills.handball)
-    if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones_skills.voleibol)
+    if (sportman?.info?.sport === 'Fútbol')
+      setSelectedOptions(opciones_skills.futbol)
+    if (sportman?.info?.sport === 'Fútbol Sala')
+      setSelectedOptions(opciones_skills.futbolSala)
+    if (sportman?.info?.sport === 'Básquetbol')
+      setSelectedOptions(opciones_skills.baloncesto)
+    if (sportman?.info?.sport === 'Hockey')
+      setSelectedOptions(opciones_skills.hockey)
+    if (sportman?.info?.sport === 'Handball')
+      setSelectedOptions(opciones_skills.handball)
+    if (sportman?.info?.sport === 'Voley')
+      setSelectedOptions(opciones_skills.voleibol)
   }
-
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -39,7 +40,7 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info?.birthdate) || 2000
 
-  if (user)
+  if (user && sportman)
     return (
       <ScrollView
         keyboardShouldPersistTaps={'always'}
@@ -82,7 +83,7 @@ const FeedStats = () => {
                 >
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.attack || 0}
+                    value={sportman?.info?.attack || 0}
                   />
                 </View>
                 <View
@@ -106,7 +107,7 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    {sportman?.info.attack || 0}
+                    {sportman?.info?.attack || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
                 </View>
@@ -122,7 +123,7 @@ const FeedStats = () => {
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.defense || 0}
+                    value={sportman?.info?.defense || 0}
                   />
                 </View>
                 <View
@@ -140,7 +141,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.defense || 0}
+                    {sportman?.info?.defense || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
                 </View>
@@ -156,7 +157,7 @@ const FeedStats = () => {
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.speed || 0}
+                    value={sportman?.info?.speed || 0}
                   />
                 </View>
                 <View
@@ -174,7 +175,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.speed || 0}
+                    {sportman?.info?.speed || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>
                     Velocidad
@@ -193,7 +194,7 @@ const FeedStats = () => {
               }}
             >
               {selectedOptions &&
-                selectedOptions.map((opt, i) => (
+                selectedOptions?.map((opt, i) => (
                   <View
                     style={{
                       flexDirection: 'row',
@@ -246,7 +247,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.gender || '-'}
+                    {sportman?.info?.gender || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -274,7 +275,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.category || '-'}
+                    {sportman?.info?.category || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -288,7 +289,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.position || '-'}
+                    {sportman?.info?.position || '-'}
                   </Text>
                 </View>
               </View>
@@ -304,7 +305,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.height || '-'}
+                    {sportman?.info?.height || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -318,7 +319,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.city || '-'}
+                    {sportman?.info?.city || '-'}
                   </Text>
                 </View>
               </View>
@@ -337,7 +338,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info.city}
+                    {sportman.info?.city}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -351,7 +352,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info.yearsOfExperience}
+                    {sportman.info?.yearsOfExperience}
                   </Text>
                 </View>
               </View>
@@ -367,7 +368,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.sport.name || 'sin deporte'}
+                    {sportman?.info?.sport?.name || 'sin deporte'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -379,7 +380,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.rol || 'sin rol'}
+                    {sportman?.info?.rol || 'sin rol'}
                   </Text>
                 </View>
               </View>
@@ -412,7 +413,7 @@ const FeedStats = () => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {sportman?.info.description || 'sin descripcion'}
+              {sportman?.info?.description || 'sin descripcion'}
             </Text>
           </View>
         </View>

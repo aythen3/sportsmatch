@@ -11,7 +11,7 @@ import LineaVertical from './svg/LineaVerticalSVG'
 
 const HeaderIcons = () => {
   const navigation = useNavigation()
-  const { isSportman , mainColor } = useSelector((state) => state.users)
+  const { isSportman, mainColor } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
 
   const [sportColor, setSportColor] = useState('#E1451E')
@@ -66,22 +66,29 @@ const HeaderIcons = () => {
         }}
       >
         <Pressable
-          onPress={() =>
-            isSportman
-              ? navigation.navigate('TodasLasOfertas')
-              : navigation.navigate('OfertasEmitidas')
+          onPress={() => {
+            if(sportman.type === 'invitado'){
+              return navigation.navigate('Paso1')
+            }
+            if (isSportman) {
+              navigation.navigate('TodasLasOfertas')
+            } 
+            else {
+              navigation.navigate('OfertasEmitidas')
+            }
+          }
           }
         >
-          {/* <Image
-            style={styles.frameInner}
-            contentFit="cover"
-            source={require('../assets/group-6583.png')}
-          /> */}
-
           {!isSportman ? <LogoTopSportman></LogoTopSportman> : <LogoTopClub></LogoTopClub>}
         </Pressable>
         <LineaVertical />
-        <Pressable onPress={() => navigation.navigate('TusMatchs')}>
+        <Pressable onPress={() => {
+          if (sportman.type === 'invitado') {
+            return navigation.navigate('Paso1')
+          } else {
+            return navigation.navigate('TusMatchs')
+          }
+        }}>
           <Image
             style={[styles.groupIcon1, styles.iconGroupLayout]}
             contentFit="cover"

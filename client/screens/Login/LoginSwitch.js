@@ -168,7 +168,7 @@ const LoginSwitch = () => {
               const response = await dispatch(login({ googleId: user.uid }))
               detectSportColor(
                 response.payload.user.sportman?.info?.sport ||
-                  response.payload.user.club.sport,
+                  response?.payload?.user?.club?.sport,
                 dispatch
               )
               //  console.log('response google:', response.payload)
@@ -304,21 +304,21 @@ const LoginSwitch = () => {
 
   // =========================FACEBOOK================================
 
-  const signInWithFacebook = async () => {
-    try {
-      await LoginManager.logInWithPermissions(['public_profile', 'email'])
-      const data = await AccessToken.getCurrentAccessToken()
-      if (!data) {
-        return
-      }
-      const facebookCredential = FacebookAuthProvider.credential(
-        data.accessToken
-      )
-      await signInWithCredential(auth, facebookCredential)
-    } catch (error) {
-      console.log('error: ', error)
-    }
-  }
+  // const signInWithFacebook = async () => {
+  //   try {
+  //     await LoginManager.logInWithPermissions(['public_profile', 'email'])
+  //     const data = await AccessToken.getCurrentAccessToken()
+  //     if (!data) {
+  //       return
+  //     }
+  //     const facebookCredential = FacebookAuthProvider.credential(
+  //       data.accessToken
+  //     )
+  //     await signInWithCredential(auth, facebookCredential)
+  //   } catch (error) {
+  //     console.log('error: ', error)
+  //   }
+  // }
   const handleIos = async (user) => {
     console.log('=====LOGIN WITH APPLE=====')
     dispatch(create(user)).then(async (data) => {

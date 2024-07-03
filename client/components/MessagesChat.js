@@ -35,30 +35,45 @@ const MessagesChat = ({
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState([])
   const [lastMessage, setLastMessage] = useState()
+  const [loading, setLoading] = useState(true)
   const { user, allUsers } = useSelector((state) => state.users)
+
   const getChatMessages = async () => {
-    const { data } = await axiosInstance.get(
-      `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
-    )
-    setConvMessages(data)
+    if (user?.user?.id && selectedUserId) {
+      console.log('getting messages from', user.user.id, 'and', selectedUserId)
+      const { data } = await axiosInstance.get(
+        `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
+      )
+      setConvMessages(data)
+    }
   }
 
   useEffect(() => {
     getChatMessages()
   }, [usersWithMessages])
 
+  useEffect(() => {
+    setLoading(true)
+    console.log('CLEAN USEEFFECT GETCHAT')
+    getChatMessages()
+  }, [])
+
   const getLastMessage = (messages) => {
     const received = messages[0].senderId === user.user.id
     setLastMessage({ message: messages[0], received })
+    setLoading(false)
   }
 
   useEffect(() => {
-    if (convMessages?.length) {
+    if (convMessages?.length > 0) {
       getLastMessage(
         convMessages.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )
       )
+    } else {
+      setLastMessage('')
+      setLoading(false)
     }
   }, [convMessages])
 
@@ -76,6 +91,7 @@ const MessagesChat = ({
       )
   }, [lastMessage])
 
+  if (loading === true || !lastMessage) return null
   // if (!lastMessage) return null
   return (
     <View>

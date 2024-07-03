@@ -288,43 +288,53 @@ export const ContextProvider = ({ children }) => {
     return `${formattedHours}:${formattedMinutes}`
   }
 
-  // http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010
-  // http://192.168.0.8:3010
-  const socket = io(
-    'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-    {
-      transports: ['websocket']
-      // auth: {
-      //   autoConnect: true,
-      //   forceNew: true,
-      //   addTrailingSlash: false,
-      //   withCredentials: true
-      // }
+  const [socket, setSocket] = useState(null)
+
+  useEffect(() => {
+    const newSocket = io(
+      'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+      {
+        transports: ['websocket']
+      }
+    )
+
+    newSocket.on('connect', () => {})
+
+    newSocket.on('disconnect', () => {
+      setRoomId()
+    })
+
+    newSocket.on('error', (error) => {
+      console.log('ERROR FROM SOCKET', error)
+    })
+
+    newSocket.on('joinedRoom', (room) => {
+      setRoomId(room)
+    })
+
+    newSocket.on('leaveRoom', (room) => {
+      // console.log('Leaving room: ', room)
+      setRoomId()
+    })
+
+    newSocket.on('message-server', (msg) => {
+      // console.log('New message:', msg)
+      dispatch(updateMessages(msg))
+      // getUsersMessages()
+    })
+
+    setSocket(newSocket)
+
+    return () => {
+      newSocket.disconnect()
     }
-  )
+  }, [])
 
-  socket.on('connect', () => {})
-
-  socket.on('disconnect', () => {
-    setRoomId()
-  })
-
-  socket.on('error', (error) => {})
-
-  socket.on('joinedRoom', (room) => {
-    setRoomId(room)
-  })
-
-  socket.on('leaveRoom', (room) => {
-    // console.log('Leaving room: ', room)
-    setRoomId()
-  })
-
-  socket.on('message-server', (msg) => {
-    // console.log('New message:', msg)
-    dispatch(updateMessages(msg))
-    getUsersMessages()
-  })
+  const disconnectFromSocket = () => {
+    if (socket) {
+      socket.disconnect()
+    }
+  }
 
   const joinRoom = (sender, receiver) => {
     socket.emit('joinRoom', { sender, receiver })
@@ -366,59 +376,6 @@ export const ContextProvider = ({ children }) => {
   const [notReaded, setNotReaded] = useState(0)
 
   const getUsersMessages = async () => {
-    // const getConvMessages = async (user) => {
-    //   try {
-    //     const { data } = await axiosInstance.get(
-    //       `chat/room?limit=${10}&senderId=${userId}&receiverId=${user.id}`
-    //     )
-    //     const filterByDelete = data.filter((message) => {
-    //       const senderOrReceiver =
-    //         message.senderId === userId ? 'sender' : 'receiver'
-    //       if (senderOrReceiver === 'sender') {
-    //         if (message.senderDelete === true) {
-    //           return false
-    //         }
-    //         return true
-    //       }
-    //       if (senderOrReceiver === 'receiver') {
-    //         if (message.receiverDelete === true) {
-    //           return false
-    //         }
-    //         return true
-    //       }
-    //     })
-    //     return filterByDelete
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error)
-    //     return []
-    //   }
-    // }
-    // Promise.all(
-    //   allUsers
-    //     ?.filter((user) => user?.id !== userId)
-    //     .map(async (user) => ({
-    //       user,
-    //       data: await getConvMessages(user)
-    //     }))
-    // )
-    //   .then((filteredUsers) => {
-    //     const usersWithMessages = filteredUsers.filter(
-    //       (user) => user?.data && user?.data.length > 0
-    //     )
-
-    //     const sortedUsersWithMessages = usersWithMessages.sort(
-    //       (a, b) =>
-    //         new Date(b.data[0].createdAt) - new Date(a.data[0].createdAt)
-    //     )
-    //     console.log(
-    //       'setting users with messages to',
-    //       sortedUsersWithMessages.map(({ user }) => user)
-    //     )
-    //     setUsersWithMessages(sortedUsersWithMessages.map(({ user }) => user))
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching messages for users:', error)
-    //   })
     const { data } = await axiosInstance.post('chat/chats', {
       userId
     })
@@ -477,6 +434,7 @@ export const ContextProvider = ({ children }) => {
         setProvisoryCoverImage,
         getUserAge,
         joinRoom,
+        disconnectFromSocket,
         sendMessage,
         roomId,
         setRoomId,

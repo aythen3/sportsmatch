@@ -2,9 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily } from '../GlobalStyles'
 import { Image } from 'expo-image'
-import { useDispatch } from 'react-redux'
-import { filterPost } from '../redux/actions/post'
-import { setFilterPost } from '../redux/slices/post.slices'
+
 
 const FiltersSportman = ({
   posts,
@@ -29,12 +27,6 @@ const FiltersSportman = ({
     'Hockey',
     'Handball'
   ]
-  const copy = posts ? [...posts] : []
-  const change = copy.sort((a, b) => b.likes - a.likes)
-
-  const change2 = copy.sort((a, b) => b.commentCount - a.commentCount)
-
-  const dispatch = useDispatch()
 
   const toggleSport = (sport) => {
     setSelectedSports((prevSports) => {
@@ -46,6 +38,55 @@ const FiltersSportman = ({
       }
     })
   }
+
+
+  const reorganizeAndSortPostsLikes = (postGroups) => {
+    // Aplanar todos los posts en un solo array
+    let allPosts = [];
+    postGroups.forEach(group => {
+      allPosts = allPosts.concat(group.columnItems, group.rightItem);
+    });
+  
+    // Ordenar los posts por likes
+    const sortedPosts = allPosts.sort((a, b) => b.likes - a.likes);
+  
+    // Redistribuir los posts en la estructura original
+    const newPostGroups = postGroups.map(group => {
+      const newColumnItems = sortedPosts.splice(0, group.columnItems.length);
+      const newRightItem = sortedPosts.splice(0, 1)[0];
+      return {
+        columnItems: newColumnItems,
+        rightItem: newRightItem
+      };
+    });
+  
+    return newPostGroups;
+  };
+
+  const reorganizeAndSortPostsComment = (postGroups) => {
+    // Aplanar todos los posts en un solo array
+    let allPosts = [];
+    postGroups.forEach(group => {
+      allPosts = allPosts.concat(group.columnItems, group.rightItem);
+    });
+  
+    // Ordenar los posts por likes
+    const sortedPosts = allPosts.sort((a, b) => b.commentCount - a.commentCount);
+  
+    // Redistribuir los posts en la estructura original
+    const newPostGroups = postGroups.map(group => {
+      const newColumnItems = sortedPosts.splice(0, group.columnItems.length);
+      const newRightItem = sortedPosts.splice(0, 1)[0];
+      return {
+        columnItems: newColumnItems,
+        rightItem: newRightItem
+      };
+    });
+  
+    return newPostGroups;
+  };
+
+
 
   if (posts) {
     return (
@@ -79,10 +120,9 @@ const FiltersSportman = ({
         <TouchableOpacity
           onPress={() => {
             // Genera una nueva copia del array de posts ordenado por la cantidad de likes
-            const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes)
             // Actualiza el estado de los posts con la nueva copia ordenada
             setFilterSelected('Por proximidad')
-            setPosts(sortedPosts)
+            setPosts(reorganizeAndSortPostsLikes(posts))
           }}
           style={{
             flexDirection: 'row',
@@ -122,14 +162,10 @@ const FiltersSportman = ({
         />
         <TouchableOpacity
           onPress={() => {
-            // Genera una nueva copia del array de posts ordenado por la cantidad de likes
-            const sortedPosts = [...posts].sort(
-              (a, b) => b.commentCount - a.commentCount
-            )
-            // Actualiza el estado de los posts con la nueva copia ordenada
+   
             setFilterSelected('Por relevancia')
 
-            setPosts(sortedPosts)
+            setPosts(reorganizeAndSortPostsComment(posts))
           }}
           style={{
             flexDirection: 'row',

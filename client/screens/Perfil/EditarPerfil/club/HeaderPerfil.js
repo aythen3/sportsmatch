@@ -55,7 +55,7 @@ const HeaderPerfil = ({
 
   const { sportman } = useSelector((state) => state.sportman)
 
-  console.log('club==============', club)
+  // console.log('club==============', club)
 
   const getOffersById = async (id) => {
     const { data } = await axiosInstance.get('offer')
@@ -335,7 +335,7 @@ const HeaderPerfil = ({
               </Text>
             </Pressable>
           ) : (
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 if (sportman?.type == 'invitado') return
                 setLiked(!liked)
@@ -405,7 +405,7 @@ const HeaderPerfil = ({
               <Text style={[styles.ojear, styles.timeTypo]}>
                 {liked ? 'Dejar de seguir' : 'Seguir'}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           )}
           {isSportman && external && (
             <TouchableOpacity

@@ -6,11 +6,9 @@ import {
   View,
   TextInput,
   ScrollView,
-  StatusBar,
-  TouchableOpacity
+  StatusBar
 } from 'react-native'
 import { Image } from 'expo-image'
-import { useNavigation } from '@react-navigation/native'
 import { FontSize, FontFamily, Color, Border } from '../../GlobalStyles'
 import { useSelector } from 'react-redux'
 import Notifications from '../../components/Notifications'
@@ -19,7 +17,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
-import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
 import CustomHeaderBack from '../../components/CustomHeaderBack'
 import { getNotificationsByUserId } from '../../redux/actions/notifications'
@@ -29,51 +26,19 @@ const TusNotificaciones1 = () => {
   const [loading, setLoading] = useState(true)
   const [value, setValue] = useState('')
   const isFocused = useIsFocused()
-  const navigation = useNavigation()
   const [applicants, setApplicants] = useState([])
   const dispatch = useDispatch()
+  const { offers } = useSelector((state) => state.offers)
   const { allNotifications, userNotifications } = useSelector(
     (state) => state.notifications
   )
-  const { sportman } = useSelector((state) => state.sportman)
-  const { allMatchs } = useSelector((state) => state.matchs)
-  const { user, allUsers, mainColor } = useSelector((state) => state.users)
 
-  const { offers } = useSelector((state) => state.offers)
+  const { allMessages } = useSelector((state) => state.chats)
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const { getUsersMessages, usersWithMessages, setActiveIcon } =
     useContext(Context)
 
   const userId = user?.user?.id
-
-  useEffect(() => {}, [allUsers, usersWithMessages])
-
-  useEffect(() => {
-    // console.log(userNotifications, 'notifications')
-    dispatch(getAllUsers())
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 700)
-  }, [])
-
-  React.useEffect(() => {
-    setActiveIcon('message')
-  }, [isFocused])
-
-  const sortUsers = (userA, userB) => {
-    const isInMessagesB =
-      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
-    const isInMessagesA =
-      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
-
-    if (isInMessagesA && !isInMessagesB) {
-      return -1 // userA has messages, should come before userB
-    } else if (!isInMessagesA && isInMessagesB) {
-      return 1
-    } else {
-      return 0 // maintain current order if both have messages or neither have messages
-    }
-  }
 
   const filteredUsers = allUsers
     ?.filter((user) =>
@@ -82,17 +47,45 @@ const TusNotificaciones1 = () => {
     .sort(sortUsers)
     .reverse()
 
+  // useEffect(() => {}, [value, filteredUsers])
+
   useEffect(() => {
-    // console.log('filteredUsers changed', filteredUsers)
-  }, [value, filteredUsers])
+    console.log('USERSWITHMESSAGES', usersWithMessages.length)
+  }, [usersWithMessages])
+
+  useEffect(() => {
+    getUsersMessages()
+  }, [allMessages])
 
   useEffect(() => {
     getUsersMessages()
     if (user.user.type == 'club') {
-      // console.log(user.user.club.id, 'club')
       dispatch(getNotificationsByUserId(user.user.club.id))
     } else {
       dispatch(getNotificationsByUserId(user.user.id))
+    }
+  }, [])
+
+  const sortUsers = (userA, userB) => {
+    const isInMessagesB =
+      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
+    const isInMessagesA =
+      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
+
+    if (isInMessagesA && !isInMessagesB) {
+      return -1
+    } else if (!isInMessagesA && isInMessagesB) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
+  // ================ NOTIFICATIONS/OFFERS =====================
+
+  useEffect(() => {
+    if (allUsers.length === 0) {
+      dispatch(getAllUsers())
     }
   }, [])
 
@@ -107,14 +100,17 @@ const TusNotificaciones1 = () => {
     }
   }, [offers])
 
-  useEffect(() => {
-    console.log('ALL NOTIF CHANGED===========', allNotifications)
-  }, [allNotifications])
+  useEffect(() => {}, [allNotifications])
 
-  useEffect(() => {}, [usersWithMessages])
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 900)
+  }, [])
+
+  useEffect(() => {
+    setActiveIcon('message')
+  }, [isFocused])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
-  // console.log('allusers: ', allUsers)
 
   if (!allUsers)
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
@@ -265,7 +261,7 @@ const TusNotificaciones1 = () => {
             ) : (
               <ScrollView
                 keyboardShouldPersistTaps={'always'}
-                contentContainerStyle={{ paddingBottom: 100 }}
+                contentContainerStyle={{ paddingBottom: 160 }}
                 style={{
                   marginTop: 30,
                   paddingHorizontal: 14
