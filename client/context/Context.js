@@ -323,6 +323,7 @@ export const ContextProvider = ({ children }) => {
   socket.on('message-server', (msg) => {
     // console.log('New message:', msg)
     dispatch(updateMessages(msg))
+    getUsersMessages()
   })
 
   const joinRoom = (sender, receiver) => {
@@ -421,7 +422,7 @@ export const ContextProvider = ({ children }) => {
     const { data } = await axiosInstance.post('chat/chats', {
       userId
     })
-    console.log('DATA', data)
+    // console.log('DATA', data)
     const convs = Object.keys(data)
     const notReaded = convs
       .map(
@@ -444,7 +445,7 @@ export const ContextProvider = ({ children }) => {
         )[0]
         return { room: key, ...userData, lastMessage }
       })
-      console.log('Setting users with messages to: ', finalInfo)
+      // console.log('Setting users with messages to: ', finalInfo)
       setUsersWithMessages(
         finalInfo.sort(
           (a, b) =>

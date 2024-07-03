@@ -106,35 +106,35 @@ const MiSuscripcin = () => {
         </View>
 
         <View style={{ marginTop: 30, gap: 30 }}>
-          {user.user.plan === 'basic' && !user.user.club && <SilverSuscription />}
-          {user.user.plan === 'basic' && user.user.club && <SilverSuscriptionClub />}
+          {user?.user?.plan === 'basic' && !user.user.club && <SilverSuscription />}
+          {user?.user?.plan === 'basic' && user.user.club && <SilverSuscriptionClub />}
 
-          {user.user.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
-          {user.user.plan === 'star' && <StarSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+          {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+          {user?.user?.plan === 'star' && <StarSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
 
           <View>
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Otros planes
             </Text>
           </View>
-          {user.user.plan === 'star' && <SilverSuscription />}
-          {user.user.plan === 'pro' && <SilverSuscription />}
+          {user?.user?.plan === 'star' && <SilverSuscription />}
+          {user?.user?.plan === 'pro' && <SilverSuscription />}
 
-          {user.user.plan !== 'pro'  && !user.user.club && (
+          {user.user?.plan !== 'pro'  && !user.user.club && (
             <GoldSuscription
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}
               setPlanSelectedId={setPlanSelectedId}
             />
           )}
-           {user.user.plan !== 'gold' && user.user.club && (
+           {user?.user?.plan !== 'gold' && user.user.club && (
             <GoldSuscriptionClub
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}
               setPlanSelectedId={setPlanSelectedId}
             />
           )}
-          {user.user.plan !== 'star' && user.user.club && (
+          {user?.user?.plan !== 'star' && user.user.club && (
             <StarSuscription
               setPlanSelected={setPlanSelected}
               setClientSecret={setClientSecret}

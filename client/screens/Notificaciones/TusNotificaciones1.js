@@ -82,55 +82,9 @@ const TusNotificaciones1 = () => {
     .sort(sortUsers)
     .reverse()
 
-  // useEffect(() => {
-  //   offers.forEach((offer) => {
-  //     axiosInstance.delete(`offer/${offer.id}`)
-  //   })
-  //   allMatchs.forEach((match) => {
-  //     axiosInstance.delete(`match/${match.id}`)
-  //   })
-  //   allNotifications.forEach((notification) => {
-  //     axiosInstance.delete(`notification/${notification.id}`)
-  //   })
-  // }, [])
-
-  // const getAllUsersMessages = async () => {
-  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
-  //   filteredUsers.map(async user=>{
-  //     const { data } = await axiosInstance.get(
-  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
-  //     )
-  //     console.log('convmessages data from noti: ',data)
-  //   })
-  // }
-  // useEffect(()=>{
-  //   getAllUsersMessages()
-  // },[])
-
-  // useEffect(() => {
-  //   offers.forEach((offer) => {
-  //     axiosInstance.delete(`offer/${offer.id}`)
-  //   })
-  //   allMatchs.forEach((match) => {
-  //     axiosInstance.delete(`match/${match.id}`)
-  //   })
-  //   allNotifications.forEach((notification) => {
-  //     axiosInstance.delete(`notification/${notification.id}`)
-  //   })
-  // }, [])
-
-  // const getAllUsersMessages = async () => {
-  //   const filteredUsers = allUsers.filter(user=>user.id!== userId)
-  //   filteredUsers.map(async user=>{
-  //     const { data } = await axiosInstance.get(
-  //       `chat/room?limit=${10}&senderId=${user.user.id}&receiverId=${selectedUserId}`
-  //     )
-  //     console.log('convmessages data from noti: ',data)
-  //   })
-  // }
-  // useEffect(()=>{
-  //   getAllUsersMessages()
-  // },[])
+  useEffect(() => {
+    // console.log('filteredUsers changed', filteredUsers)
+  }, [value, filteredUsers])
 
   useEffect(() => {
     getUsersMessages()
@@ -152,6 +106,8 @@ const TusNotificaciones1 = () => {
       allApplications.length > 0 && setApplicants(allApplications)
     }
   }, [offers])
+
+  useEffect(() => {}, [usersWithMessages])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
   // console.log('allusers: ', allUsers)
@@ -324,7 +280,7 @@ const TusNotificaciones1 = () => {
                   usersWithMessages?.map((user, index) => (
                     <MessagesChat
                       setValue={setValue}
-                      key={index}
+                      key={index + 999}
                       name={user.nickname}
                       sportmanId={user.sportman?.id}
                       profilePic={
@@ -339,19 +295,21 @@ const TusNotificaciones1 = () => {
                 )}
                 {value !== '' &&
                   filteredUsers.map((user, index) => (
-                    <MessagesChat
-                      setValue={setValue}
-                      key={index}
-                      name={user.nickname}
-                      sportmanId={user.sportman?.id}
-                      profilePic={
-                        user?.type === 'club'
-                          ? user?.club?.img_perfil
-                          : user?.sportman?.info?.img_perfil
-                      }
-                      selectedUserId={user.id}
-                      // applicant={applicants?.includes(user.sportman?.id)}
-                    />
+                    <View style={{ borderWidth: 2, borderColor: 'green' }}>
+                      <MessagesChat
+                        setValue={setValue}
+                        key={index + 99999}
+                        name={user.nickname}
+                        sportmanId={user.sportman?.id}
+                        profilePic={
+                          user?.type === 'club'
+                            ? user?.club?.img_perfil
+                            : user?.sportman?.info?.img_perfil
+                        }
+                        selectedUserId={user.id}
+                        // applicant={applicants?.includes(user.sportman?.id)}
+                      />
+                    </View>
                   ))}
               </ScrollView>
             )}
