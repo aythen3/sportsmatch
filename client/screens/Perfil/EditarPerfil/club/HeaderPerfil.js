@@ -55,7 +55,7 @@ const HeaderPerfil = ({
 
   const { sportman } = useSelector((state) => state.sportman)
 
-  console.log('club==============', club)
+  // console.log('club==============', club)
 
   const getOffersById = async (id) => {
     const { data } = await axiosInstance.get('offer')

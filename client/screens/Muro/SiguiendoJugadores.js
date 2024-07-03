@@ -42,8 +42,13 @@ import { getAllMatchs } from '../../redux/actions/matchs'
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-  const { getClubMatches, getUserMatches, setActiveIcon, selectedPost } =
-    useContext(Context)
+  const {
+    getClubMatches,
+    getUserMatches,
+    usersWithMessages,
+    setActiveIcon,
+    selectedPost
+  } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
@@ -121,7 +126,6 @@ const SiguiendoJugadores = () => {
   useEffect(() => {
     dispatch(getAllUsers())
   }, [])
-
 
   return (
     <SafeAreaView style={styles.siguiendoJugadores}>

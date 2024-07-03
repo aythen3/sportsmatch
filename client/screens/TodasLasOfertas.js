@@ -100,7 +100,7 @@ const TodasLasOfertas = () => {
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
       priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
-      customerId: user.user.stripeId
+      customerId: user?.user?.stripeId
     })
 
     if (res.data) {
@@ -138,10 +138,10 @@ const TodasLasOfertas = () => {
           console.log(error, 'error')
         } else {
           const updUser = await axiosInstance
-            .patch(`user/${user.user.id}`, {
+            .patch(`user/${user?.user?.id}`, {
               plan: planSelected
             })
-            .then(() => dispatch(getUserData(user.user.id)))
+            .then(() => dispatch(getUserData(user?.user?.id)))
 
           setShowPremiumModal(false)
         }
@@ -357,6 +357,59 @@ const TodasLasOfertas = () => {
                     }}
                   >
                     <TouchableOpacity
+                      disabled={signinToOffer}
+                      onPress={async () => {
+                        console.log('PRESSED')
+                        if (
+                          !offer?.inscriptions?.includes(
+                            user?.user?.sportman?.id
+                          )
+                        ) {
+                          setSigninToOffer(true)
+                          if (user?.user?.sportman) {
+                            try {
+                              await dispatch(updateOffers(offer?.id))
+                              dispatch(
+                                signToOffer({
+                                  offerId: offer?.id,
+                                  userId: user?.user?.sportman?.id
+                                })
+                              ).then((data) => {
+                                dispatch(
+                                  sendNotification({
+                                    title: 'Inscripción',
+                                    message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
+                                    recipientId: offer.clubId,
+                                    date: new Date(),
+                                    read: false,
+                                    prop2: {
+                                      rol: 'club'
+                                    },
+                                    prop1: {
+                                      userId: user?.user?.id,
+                                      userData: {
+                                        ...user
+                                      }
+                                    }
+                                  })
+                                )
+                                dispatch(getAllOffers())
+                                ToastAndroid.show(
+                                  'Te has inscrito en la oferta!',
+                                  ToastAndroid.SHORT
+                                )
+                              })
+                            } catch (error) {
+                              console.log('Error on inscription..', error)
+                              setSigninToOffer(false)
+                            } finally {
+                              setSigninToOffer(false)
+                            }
+                          } else {
+                            console.log('SPORTMAN NOT FOUND!.')
+                          }
+                        }
+                      }}
                       style={{
                         width: '70%',
                         paddingHorizontal: Padding.p_mini,
@@ -375,55 +428,6 @@ const TodasLasOfertas = () => {
                       }}
                     >
                       <Text
-                        disabled={signinToOffer}
-                        onPress={async () => {
-                          if (
-                            !offer?.inscriptions?.includes(
-                              user?.user?.sportman?.id
-                            )
-                          ) {
-                            setSigninToOffer(true)
-                            if (user?.user?.sportman) {
-                              try {
-                                await dispatch(updateOffers(offer?.id))
-                                dispatch(
-                                  signToOffer({
-                                    offerId: offer?.id,
-                                    userId: user?.user?.sportman?.id
-                                  })
-                                ).then((data) => {
-                                  dispatch(
-                                    sendNotification({
-                                      title: 'Inscripción',
-                                      message: `${user.user.nickname} se ha inscrito a tu oferta`,
-                                      recipientId: offer.clubId,
-                                      date: new Date(),
-                                      read: false,
-                                      prop2: {
-                                        rol: 'club'
-                                      },
-                                      prop1: {
-                                        userId: user?.user?.id,
-                                        userData: {
-                                          ...user
-                                        }
-                                      }
-                                    })
-                                  )
-                                  dispatch(getAllOffers())
-                                  ToastAndroid.show(
-                                    'Te has inscrito en la oferta!',
-                                    ToastAndroid.SHORT
-                                  )
-                                })
-                              } catch (error) {
-                                console.log('Error on inscription..', error)
-                              } finally {
-                                setSigninToOffer(false)
-                              }
-                            }
-                          }
-                        }}
                         style={{
                           color: offer?.inscriptions?.includes(
                             user?.user?.sportman?.id
@@ -516,7 +520,7 @@ const TodasLasOfertas = () => {
           }
           return true
         }).length > 2 &&
-        user.user.plan === 'basic' && (
+        user?.user?.plan === 'basic' && (
           <TouchableOpacity
             style={{
               backgroundColor: Color.wHITESPORTSMATCH,
@@ -534,7 +538,7 @@ const TodasLasOfertas = () => {
               alignItems: 'center'
             }}
             onPress={() =>
-              user.user.plan === 'pro' || user.user.plan === 'star'
+              user?.user?.plan === 'pro' || user?.user?.plan === 'star'
                 ? null
                 : setShowPremiumModal(true)
             }
@@ -631,6 +635,55 @@ const TodasLasOfertas = () => {
                     //   offer?.inscriptions?.includes(user?.user?.sportman?.id) ||
                     //   !user.user.sportman.data
                     // }
+                    disabled={signinToOffer}
+                    onPress={async () => {
+                      if (
+                        !offer?.inscriptions?.includes(user?.user?.sportman?.id)
+                      ) {
+                        setSigninToOffer(true)
+                        if (user?.user?.sportman) {
+                          try {
+                            await dispatch(updateOffers(offer?.id))
+                            dispatch(
+                              signToOffer({
+                                offerId: offer?.id,
+                                userId: user?.user?.sportman?.id
+                              })
+                            ).then((data) => {
+                              dispatch(
+                                sendNotification({
+                                  title: 'Inscripción',
+                                  message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
+                                  recipientId: offer.clubId,
+                                  date: new Date(),
+                                  read: false,
+                                  prop2: {
+                                    rol: 'club'
+                                  },
+                                  prop1: {
+                                    userId: user?.user?.id,
+                                    userData: {
+                                      ...user
+                                    }
+                                  }
+                                })
+                              )
+                              dispatch(getAllOffers())
+                              ToastAndroid.show(
+                                'Te has inscrito en la oferta!',
+                                ToastAndroid.SHORT
+                              )
+                            })
+                          } catch (error) {
+                            console.log('Error on inscription..', error)
+                          } finally {
+                            setSigninToOffer(false)
+                          }
+                        } else {
+                          console.log('SPORTMAN NOT FOUND')
+                        }
+                      }
+                    }}
                     style={{
                       width: '70%',
                       paddingHorizontal: Padding.p_mini,
@@ -650,55 +703,7 @@ const TodasLasOfertas = () => {
                   >
                     <Text
                       // onPress={() => setModalVisible(true)}
-                      disabled={signinToOffer}
-                      onPress={async () => {
-                        if (
-                          !offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                        ) {
-                          setSigninToOffer(true)
-                          if (user?.user?.sportman) {
-                            try {
-                              await dispatch(updateOffers(offer?.id))
-                              dispatch(
-                                signToOffer({
-                                  offerId: offer?.id,
-                                  userId: user?.user?.sportman?.id
-                                })
-                              ).then((data) => {
-                                dispatch(
-                                  sendNotification({
-                                    title: 'Inscripción',
-                                    message: `${user.user.nickname} se ha inscrito a tu oferta`,
-                                    recipientId: offer.clubId,
-                                    date: new Date(),
-                                    read: false,
-                                    prop2: {
-                                      rol: 'club'
-                                    },
-                                    prop1: {
-                                      userId: user?.user?.id,
-                                      userData: {
-                                        ...user
-                                      }
-                                    }
-                                  })
-                                )
-                                dispatch(getAllOffers())
-                                ToastAndroid.show(
-                                  'Te has inscrito en la oferta!',
-                                  ToastAndroid.SHORT
-                                )
-                              })
-                            } catch (error) {
-                              console.log('Error on inscription..', error)
-                            } finally {
-                              setSigninToOffer(false)
-                            }
-                          }
-                        }
-                      }}
+
                       style={{
                         color: offer?.inscriptions?.includes(
                           user?.user?.sportman?.id
