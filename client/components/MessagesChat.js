@@ -147,7 +147,7 @@ const MessagesChat = ({
           </View>
         </View>
 
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
@@ -188,7 +188,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type !== 'club' &&
+        {user?.user?.type !== 'club' &&
           userMatches?.filter(
             (match) =>
               match?.prop1?.clubData.userId === selectedUserId &&
@@ -229,7 +229,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
