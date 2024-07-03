@@ -252,14 +252,23 @@ const IniciarSesin = () => {
                   </Text>
                 )}
                 <TouchableOpacity
-                  style={styles.botonIniciaSesin2}
+                  style={{
+                    justifyContent: 'center',
+                    backgroundColor: Color.wHITESPORTSMATCH,
+                    borderRadius: Border.br_81xl,
+                    width: '95.5%',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    height: 45,
+                    top: '5%'
+                  }}
                   onPress={handleSubmit}
                 >
                   {!loading ? (
                     <Text style={styles.aceptar}>Inicia sesión</Text>
                   ) : (
                     <View style={{ width: '100%' }}>
-                      <ActivityIndicator></ActivityIndicator>
+                      <ActivityIndicator color={'#000'} size={'small'} />
                     </View>
                   )}
                 </TouchableOpacity>
