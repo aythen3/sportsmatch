@@ -362,7 +362,7 @@ const InscritosAMisOfertas = () => {
               </View>
             )}
 
-            {user.user.plan !== 'pro' && user.user.plan !== 'star' && inscriptions.filter((item) => item !== 'undefined').length > 2 && (
+            {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && inscriptions.filter((item) => item !== 'undefined').length > 2 && (
               <View
                 style={{
                   flexDirection: 'row',
@@ -419,7 +419,7 @@ const InscritosAMisOfertas = () => {
           </View>
         </View>
 
-       {user.user.plan !== 'pro' && user.user.plan !== 'star' && (
+       {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && (
          <View style={{ marginTop: 10 }}>
          <View style={{ alignItems: 'center' }}>
            <Image
