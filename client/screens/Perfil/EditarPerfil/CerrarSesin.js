@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -46,8 +46,10 @@ import { resetNotificationsSlices } from '../../../redux/slices/notifications.sl
 import { cleanOffers } from '../../../redux/slices/offers.slices'
 import { cleanPosition } from '../../../redux/slices/positions.slices'
 import { cleanSports } from '../../../redux/slices/sports.slices'
+import { Context } from '../../../context/Context'
 
 const CerrarSesin = () => {
+  const { setUsersWithMessages } = useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const firebaseLogout = () => {
@@ -94,6 +96,8 @@ quieres `}</Text>
               <TouchableOpacity
                 style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
                 onPress={async () => {
+                  console.log('setting userswithmessages to []...')
+                  setUsersWithMessages([])
                   await AsyncStorage.removeItem('userAuth')
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')

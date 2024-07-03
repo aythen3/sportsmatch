@@ -5,9 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontFamily, FontSize, Border, Color, Padding } from '../GlobalStyles'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
-import {  opciones_skills } from '../utils/SkillUserLocal'
-
-
+import { opciones_skills } from '../utils/SkillUserLocal'
 
 const FeedStats = () => {
   const navigation = useNavigation()
@@ -16,21 +14,24 @@ const FeedStats = () => {
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
 
-
   useEffect(() => {
     selectores()
   }, [])
 
-
   const selectores = () => {
-    if (sportman?.info?.sport === 'Fútbol') setSelectedOptions(opciones_skills.futbol)
-    if (sportman?.info?.sport === 'Fútbol Sala') setSelectedOptions(opciones_skills.futbolSala)
-    if (sportman?.info?.sport === 'Básquetbol') setSelectedOptions(opciones_skills.baloncesto)
-    if (sportman?.info?.sport === 'Hockey') setSelectedOptions(opciones_skills.hockey)
-    if (sportman?.info?.sport === 'Handball') setSelectedOptions(opciones_skills.handball)
-    if (sportman?.info?.sport === 'Voley') setSelectedOptions(opciones_skills.voleibol)
+    if (sportman?.info?.sport === 'Fútbol')
+      setSelectedOptions(opciones_skills.futbol)
+    if (sportman?.info?.sport === 'Fútbol Sala')
+      setSelectedOptions(opciones_skills.futbolSala)
+    if (sportman?.info?.sport === 'Básquetbol')
+      setSelectedOptions(opciones_skills.baloncesto)
+    if (sportman?.info?.sport === 'Hockey')
+      setSelectedOptions(opciones_skills.hockey)
+    if (sportman?.info?.sport === 'Handball')
+      setSelectedOptions(opciones_skills.handball)
+    if (sportman?.info?.sport === 'Voley')
+      setSelectedOptions(opciones_skills.voleibol)
   }
-
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -82,7 +83,7 @@ const FeedStats = () => {
                 >
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.attack || 0}
+                    value={sportman?.info?.attack || 0}
                   />
                 </View>
                 <View
@@ -106,7 +107,7 @@ const FeedStats = () => {
                       fontFamily: FontFamily.t4TEXTMICRO
                     }}
                   >
-                    {sportman?.info.attack || 0}
+                    {sportman?.info?.attack || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
                 </View>

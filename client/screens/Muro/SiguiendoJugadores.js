@@ -43,8 +43,13 @@ import { setMainColor } from '../../redux/slices/users.slices'
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
-  const { getClubMatches, getUserMatches, setActiveIcon, selectedPost } =
-    useContext(Context)
+  const {
+    getClubMatches,
+    getUserMatches,
+    usersWithMessages,
+    setActiveIcon,
+    selectedPost
+  } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
@@ -135,6 +140,13 @@ const SiguiendoJugadores = () => {
 
   useEffect(() => {
     dispatch(getAllUsers())
+  }, [])
+
+  useEffect(() => {
+    console.log(
+      '=========USERS WITH MESSAGES FROM HOME ==========',
+      usersWithMessages
+    )
   }, [])
 
   // if (user?.user?.id) {
