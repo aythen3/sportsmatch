@@ -82,19 +82,43 @@ const ChatAbierto1 = () => {
     }
   }, [])
 
+  // const setAllToRead = async () => {
+  //   console.log('on setAllToRead')
+  //   const messagesToSetReaded = allMessages?.filter(
+  //     (message) =>
+  //       message.senderId !== user?.user?.id && message?.isReaded === false
+  //   )
+  //   console.log('messagesToSetReaded', messagesToSetReaded)
+  //   if (messagesToSetReaded.length > 0) {
+  //     await messagesToSetReaded.forEach((message) => {
+  //       axiosInstance.put(`chat/readed/${message?.id}`)
+  //       dispatch(setAllConversationMessagesToRead())
+  //     })
+  //     getUsersMessages()
+  //   }
+  // }
+
   const setAllToRead = async () => {
     console.log('on setAllToRead')
+
     const messagesToSetReaded = allMessages?.filter(
       (message) =>
         message.senderId !== user?.user?.id && message?.isReaded === false
     )
+
     console.log('messagesToSetReaded', messagesToSetReaded)
+
     if (messagesToSetReaded.length > 0) {
-      await messagesToSetReaded.forEach((message) => {
-        axiosInstance.put(`chat/readed/${message?.id}`)
+      try {
+        const promises = messagesToSetReaded.map((message) =>
+          axiosInstance.put(`chat/readed/${message?.id}`)
+        )
+        await Promise.all(promises)
         dispatch(setAllConversationMessagesToRead())
-      })
-      getUsersMessages()
+        getUsersMessages()
+      } catch (error) {
+        console.error('Error setting messages to read', error)
+      }
     }
   }
 

@@ -29,7 +29,8 @@ const MessagesChat = ({
     clubMatches,
     getClubMatches,
     userMatches,
-    getUsersMessages
+    getUsersMessages,
+    usersWithMessages
   } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState([])
@@ -44,7 +45,7 @@ const MessagesChat = ({
 
   useEffect(() => {
     getChatMessages()
-  }, [])
+  }, [usersWithMessages])
 
   const getLastMessage = (messages) => {
     const received = messages[0].senderId === user.user.id
@@ -61,7 +62,21 @@ const MessagesChat = ({
     }
   }, [convMessages])
 
-  if (!lastMessage) return null
+  useEffect(() => {
+    // selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
+  }, [])
+
+  useEffect(() => {
+    lastMessage &&
+      console.log(
+        '==LAST MESSAGE FROM ',
+        name,
+        ':',
+        lastMessage.message.message
+      )
+  }, [lastMessage])
+
+  // if (!lastMessage) return null
   return (
     <View>
       <Pressable
@@ -123,12 +138,16 @@ const MessagesChat = ({
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {lastMessage?.message?.message.slice(0, 20).concat('...')}
+              {lastMessage
+                ? lastMessage?.message?.message?.length >= 20
+                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
+                  : lastMessage?.message?.message
+                : 'Inicia una conversacion!'}
             </Text>
           </View>
         </View>
 
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
@@ -169,7 +188,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type !== 'club' &&
+        {user?.user?.type !== 'club' &&
           userMatches?.filter(
             (match) =>
               match?.prop1?.clubData.userId === selectedUserId &&
@@ -210,7 +229,7 @@ const MessagesChat = ({
               </Text>
             </View>
           )}
-        {user.user.type === 'club' &&
+        {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&

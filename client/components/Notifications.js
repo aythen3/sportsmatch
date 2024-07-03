@@ -56,7 +56,7 @@ const Notifications = ({ data }) => {
     // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
     // console.log('notif data', data.prop1.userData?.user?.sportman)
   }, [])
-
+  console.log('data', data)
   return (
     <TouchableOpacity
       style={{ paddingHorizontal: 10 }}
@@ -81,9 +81,20 @@ const Notifications = ({ data }) => {
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
         {data.title === 'Solicitud' && (
           <Image
-            style={[styles.groupIconLayout]}
+            style={{
+              height: 45,
+              width: 45,
+              alignSelf: 'flex-start',
+              borderRadius: 50,
+              backgroundColor:
+                data?.prop1?.clubData?.img_perfil === '' && mainColor
+            }}
             contentFit="cover"
-            source={require('../assets/avatar.png')}
+            source={
+              data?.prop1?.clubData?.img_perfil !== ''
+                ? { uri: data.prop1.clubData.img_perfil }
+                : require('../assets/whiteSport.png')
+            }
           />
         )}
         {!data.read && (

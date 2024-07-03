@@ -15,16 +15,19 @@ const NotificacinMatch = ({ onClose, data }) => {
   const { getUserMatches } = useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { allUsers } = useSelector((state) => state.users)
+  const { allUsers, mainColor } = useSelector((state) => state.users)
   const { allNotifications } = useSelector((state) => state.notifications)
 
   useEffect(() => {}, [allNotifications])
 
   return (
-    <LinearGradient
-      style={styles.grupo}
-      locations={[0, 0.5, 1]}
-      colors={['#ac3010', '#e1451e', '#ac3010']}
+    <View
+      style={{
+        borderRadius: Border.br_mini,
+        backgroundColor: mainColor,
+        paddingVertical: 50,
+        width: '100%'
+      }}
     >
       <View style={styles.informacionFlexBox}>
         <Text style={[styles.cerrar, styles.hanTypo]} onPress={onClose}>
@@ -44,20 +47,25 @@ const NotificacinMatch = ({ onClose, data }) => {
             <View>
               <Pressable
                 style={styles.aceptarFlexBox}
-                onPress={() => {
+                onPress={async () => {
                   onClose()
                   try {
-                    dispatch(
+                    await dispatch(
                       updateMatchById({
                         id: data?.prop1?.matchId,
                         body: { status: 'success' }
                       })
                     )
-                      .then((response) => dispatch(removeNotification(data.id)))
-                      .then((res) => dispatch(getAllNotifications()))
-                      .then((data) => getUserMatches())
+                    await dispatch(removeNotification(data.id))
+                    await dispatch(getAllNotifications())
+                    getUserMatches()
+                    navigation.navigate('TusMatchs')
                   } catch (error) {
-                    console.log('Error updating match', data?.prop1?.matchId)
+                    console.log(
+                      'Error updating match',
+                      data?.prop1?.matchId,
+                      error
+                    )
                   }
                 }}
               >
@@ -72,8 +80,8 @@ const NotificacinMatch = ({ onClose, data }) => {
                   let user = allUsers.filter(
                     (user) => user.id === data.prop1.clubData.userId
                   )[0]
-                  const modificacion = {...user, club:{...user.club,user}}
-                  console.log(modificacion,"data")
+                  const modificacion = { ...user, club: { ...user.club, user } }
+                  console.log(modificacion, 'data')
                   navigation.navigate('ClubProfile', {
                     author: modificacion
                   })
@@ -87,7 +95,7 @@ const NotificacinMatch = ({ onClose, data }) => {
           </View>
         </View>
       </View>
-    </LinearGradient>
+    </View>
   )
 }
 
@@ -264,7 +272,7 @@ const styles = StyleSheet.create({
     height: 61
   },
   aceptarFlexBox: {
-    paddingVertical: Padding.p_8xs,
+    paddingVertical: 9,
     paddingHorizontal: Padding.p_91xl,
     borderRadius: Border.br_81xl,
     alignSelf: 'stretch',
