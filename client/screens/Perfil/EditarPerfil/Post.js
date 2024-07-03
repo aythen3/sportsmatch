@@ -41,7 +41,7 @@ const Post = () => {
 
   const { user, allUsers } = useSelector((state) => state.users)
   const item = route.params
-  const actualPost = allPosts.filter((post) => post.id === item.id)[0]
+  const actualPost = allPosts?.filter((post) => post?.id === item?.id)[0]
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
