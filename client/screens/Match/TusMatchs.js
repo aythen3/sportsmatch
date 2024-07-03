@@ -36,7 +36,7 @@ const TusMatchs = () => {
   const [selectedUserDetails, setSelectedUserDetails] = useState()
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { clubMatches, userMatches , setUserMatches } = useContext(Context)
+  const { clubMatches, userMatches, setUserMatches } = useContext(Context)
   const { allUsers, mainColor, user } = useSelector((state) => state.users)
 
   const images = {
@@ -234,7 +234,6 @@ const TusMatchs = () => {
                 <View key={index} style={{ marginTop: 14, width: '100%' }}>
                   <Pressable
                     onPress={() => {
-
                       setDetails(true)
                       setSelectedClubDetails(
                         allUsers.filter(
@@ -253,7 +252,7 @@ const TusMatchs = () => {
                   <Pressable
                     onPress={() => {
                       setDetails(true)
-                      
+
                       setSelectedClubDetails(
                         allUsers.filter(
                           (user) => user.id === match.prop1.clubData.userId
@@ -275,10 +274,18 @@ const TusMatchs = () => {
                       <Image
                         style={{ width: 40, height: 40, borderRadius: 50 }}
                         contentFit="cover"
-                        source={match?.prop1?.clubData?.profilePic ?  { uri: match?.prop1?.clubData?.profilePic } : require('../../assets/whiteSport.png')}
+                        source={{
+                          uri: allUsers.filter(
+                            (user) => user.id === match?.prop1?.clubData?.userId
+                          )[0]?.club.img_perfil
+                        }}
                       />
                       <Text style={styles.clubBasquetLametlla}>
-                        {match?.prop1?.clubData?.name}
+                        {
+                          allUsers.filter(
+                            (user) => user.id === match?.prop1?.clubData?.userId
+                          )[0]?.nickname
+                        }
                       </Text>
                     </View>
                   </Pressable>
@@ -286,7 +293,6 @@ const TusMatchs = () => {
               ))}
           </View>
         )}
-    
 
       {user?.user?.type === 'sportman' &&
         userMatches.filter((match) => match.status === 'success').length ===
@@ -327,9 +333,9 @@ const TusMatchs = () => {
               <View key={index} style={{ marginTop: 14, width: '100%' }}>
                 <Pressable
                   onPress={() => {
-                    console.log(match,"matchhhhhhhhhhhh")
+                    console.log(match, 'matchhhhhhhhhhhh')
                     setUserDetails(true)
-               
+
                     setSelectedUserDetails(
                       allUsers.filter(
                         (user) => user.id === match?.prop1?.sportManData?.userId
@@ -368,7 +374,11 @@ const TusMatchs = () => {
                     <Image
                       style={{ width: 40, height: 40, borderRadius: 50 }}
                       contentFit="cover"
-                      source={ match?.prop1?.sportManData?.profilePic ? { uri: match?.prop1?.sportManData?.profilePic } : require("../../assets/whiteSport.png")}
+                      source={
+                        match?.prop1?.sportManData?.profilePic
+                          ? { uri: match?.prop1?.sportManData?.profilePic }
+                          : require('../../assets/whiteSport.png')
+                      }
                     />
                     <Text style={styles.clubBasquetLametlla}>
                       {match?.prop1?.sportManData?.name}
