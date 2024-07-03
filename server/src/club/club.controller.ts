@@ -27,7 +27,7 @@ export class ClubController {
     return this.clubService.create(createClubDto);
   }
 
-  @Post('creadordeclub')
+  @Post('creadordeclub222')
   create2(@Body() createClubDto: CreateClubDto) {
     return this.clubService.create(createClubDto);
   }
