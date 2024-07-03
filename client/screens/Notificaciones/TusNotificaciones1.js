@@ -107,6 +107,10 @@ const TusNotificaciones1 = () => {
     }
   }, [offers])
 
+  useEffect(() => {
+    console.log('ALL NOTIF CHANGED===========', allNotifications)
+  }, [allNotifications])
+
   useEffect(() => {}, [usersWithMessages])
 
   const [selectedComponent, setSelectedComponent] = useState('messages')
@@ -196,7 +200,7 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -261,7 +265,7 @@ const TusNotificaciones1 = () => {
             ) : (
               <ScrollView
                 keyboardShouldPersistTaps={'always'}
-                contentContainerStyle={{ paddingBottom: 68 }}
+                contentContainerStyle={{ paddingBottom: 100 }}
                 style={{
                   marginTop: 30,
                   paddingHorizontal: 14

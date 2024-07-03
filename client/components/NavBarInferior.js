@@ -27,7 +27,9 @@ const NavBarInferior = () => {
     }
   }, [])
 
-  useEffect(() => {}, [notReaded])
+  useEffect(() => {
+    console.log('notReaded changed', notReaded)
+  }, [notReaded])
 
   // console.log(user.user,'asdasdas')
   const handleIconPress = (iconName) => {
