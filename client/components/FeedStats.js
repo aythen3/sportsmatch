@@ -123,7 +123,7 @@ const FeedStats = () => {
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.defense || 0}
+                    value={sportman?.info?.defense || 0}
                   />
                 </View>
                 <View
@@ -141,7 +141,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.defense || 0}
+                    {sportman?.info?.defense || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
                 </View>
@@ -157,7 +157,7 @@ const FeedStats = () => {
                 <View style={{ position: 'absolute', top: 0, left: 0 }}>
                   <CircularStat
                     color={mainColor}
-                    value={sportman?.info.speed || 0}
+                    value={sportman?.info?.speed || 0}
                   />
                 </View>
                 <View
@@ -175,7 +175,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.speed || 0}
+                    {sportman?.info?.speed || 0}
                   </Text>
                   <Text style={[styles.ataque, styles.ataqueClr]}>
                     Velocidad
@@ -247,7 +247,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.gender || '-'}
+                    {sportman?.info?.gender || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -275,7 +275,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.category || '-'}
+                    {sportman?.info?.category || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -289,7 +289,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.position || '-'}
+                    {sportman?.info?.position || '-'}
                   </Text>
                 </View>
               </View>
@@ -305,7 +305,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.height || '-'}
+                    {sportman?.info?.height || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -319,7 +319,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.city || '-'}
+                    {sportman?.info?.city || '-'}
                   </Text>
                 </View>
               </View>
@@ -338,7 +338,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info.city}
+                    {sportman.info?.city}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -352,7 +352,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info.yearsOfExperience}
+                    {sportman.info?.yearsOfExperience}
                   </Text>
                 </View>
               </View>
@@ -368,7 +368,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.sport.name || 'sin deporte'}
+                    {sportman?.info?.sport?.name || 'sin deporte'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -380,7 +380,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info.rol || 'sin rol'}
+                    {sportman?.info?.rol || 'sin rol'}
                   </Text>
                 </View>
               </View>
@@ -413,7 +413,7 @@ const FeedStats = () => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {sportman?.info.description || 'sin descripcion'}
+              {sportman?.info?.description || 'sin descripcion'}
             </Text>
           </View>
         </View>

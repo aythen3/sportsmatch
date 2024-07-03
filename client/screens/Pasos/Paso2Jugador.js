@@ -9,6 +9,7 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
   const handleSportSelection = (sport) => {
     setSelectedSport(sport)
   }
+  console.log(sports)
 
   return (
     <View
@@ -16,19 +17,11 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        // height:"100%",
         paddingHorizontal: 20,
         gap: 15
       }}
     >
-      {/* {sports.map((sport) => (
-        <DeportesSeleccion
-          key={sport.id}
-          sport={sport}
-          selectedSport={selectedSport}
-          onSelect={handleSportSelection}
-        />
-      ))} */}
+
       {sports.map(
         (sport) =>
           sport.name === 'Fútbol' && (

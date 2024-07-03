@@ -70,15 +70,16 @@ const Paso1 = () => {
   const [selectPosition, setSelectPosition] = useState('')
 
   const [sportmanValues, setSportmanValues] = useState({
-    sport: sport?.name || 'Voley',
-    gender: sportmanGender || 'Masculino',
-    birthdate: birthdate || 2020,
-
-    city: city || 'otra',
+    sport: sport?.name || '',
+    gender: sportmanGender || '',
+    birthdate: birthdate || 0,
+    city: city || '',
     actualClub: '',
     description: '',
-    category: category || 'Prebenjamín (6-8 años)"'
+    category: category || ''
   })
+
+
   const [profesionalValues, setProfesionalValues] = useState({
     rol: profesionalType,
     sport: sport.name,
@@ -87,6 +88,8 @@ const Paso1 = () => {
     actualClub: '',
     description: ''
   })
+
+
   const [data, setData] = useState({})
 
   useEffect(() => {
@@ -127,14 +130,10 @@ const Paso1 = () => {
       prop2: data?.prop2 || '',
       prop3: data?.prop3 || '',
       prop4: data?.prop4 || '',
-
       prop5: data?.prop5 || '',
-
       prop6: data?.prop6 || '',
-
       prop7: data?.prop7 || '',
-
-      prop8: data?.prop8,
+      prop8: data?.prop8 || '',
       nickname: user?.user?.nickname || '',
       city: sportmanValues.city || ''
     }
@@ -190,6 +189,9 @@ const Paso1 = () => {
     setSportColor(color)
   }, [selectedSport, profesional, sportman])
 
+
+
+  
   const handleNavigation = async () => {
     if (selectedRole === 'Jugador' && selectedSport == null) {
       return
@@ -233,7 +235,7 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        if (Object.keys(sportmanRedux).length == 0) {
+        if (body) {
           dispatch(createSportman(body)).then((response) => {
             console.log("esto responde el sportman",response)
             dispatch(
@@ -242,8 +244,7 @@ const Paso1 = () => {
                 ...body.sportmanData
               })
             )
-            // const color = !sportman && !profesional
-            //   && "#E1451E" || profesional && '#00F0FF' || !selectedSport && '#E1451E' || sportColor
+           
             const color =
               !sportman && !profesional
                 ? '#E1451E'
@@ -604,11 +605,6 @@ const Paso1 = () => {
                 >
                   Invitado
                 </Text>
-                {/* <Image
-                    style={styles.simboloIconLayout}
-                    contentFit="cover"
-                    source={require('../../assets/simbolo7.png')}
-                  /> */}
               </TouchableOpacity>
             </View>
           </View>
@@ -624,15 +620,9 @@ const Paso1 = () => {
             selectPosition={selectPosition}
           />
 
-          // <Paso4Jugador
-          //   selectedCity={selectedCity}
-          //   setSelectedCity={setSelectedCity}
-          //   sportmanValues={sportmanValues}
-          //   setSportmanValues={setSportmanValues}
-          // />
         )}
         {sportman && stepsSportman === 2 && (
-          //  <SkillSeleccion setData={setData} data={data} />
+
 
           <Paso4Jugador
             selectedSport={selectedSport}
