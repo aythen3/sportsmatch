@@ -25,7 +25,7 @@ export const opciones_posicion = {
     ],
     hockey: [
         'Portero'
-        ,'Jugador'
+        , 'Jugador'
     ],
     voleibol: [
         'Colocador',
@@ -118,46 +118,36 @@ export const opciones_categoria = {
 
 export const opciones_skills = {
     futbol: [
-        "Control de balon",
-        "Conduccion de balon",
-        "Pase",
-        "Regate",
+        "Resistencia",
         "Disparo",
-        "Orientación corporal/perfil"
+        "Regate",
     ],
     baloncesto: [
         "Bote",
-        "Lanzamiento corta distancia",
-        "Lanzamiento larga distancia",
-        "Pase",
-        "Captura de rebote",
-        "Capacidad defensiva",
-        "Regate/finta"
+        "Lanzamiento",
+        "Dribling"
     ],
     futbolSala: [
-        "Control de balon",
-        "Conduccion de balon",
-        "Pase",
-        "Regate",
+        "Resistencia",
         "Disparo",
-        "Orientación corporal/perfil"
+        "Regate"
+     
     ],
     hockey: [
-        "Control de balon",
-        "Pase",
-        "Regate",
+        "Resistencia",
         "Disparo",
-        "Orientación corporal/perfil"
+        "Dribling"
+    
     ],
     voleibol: [
-        "Concienciación espacial",
-        "Conocimiento tactico",
-        "Evaluacion de riesgos"
+        "Servicio",
+        "Recepción",
+        "Salto"
     ],
     handball: [
-        "Concienciación espacial",
-        "Conocimiento tactico",
-        "Evaluacion de riesgos"
+        "Fuerza",
+        "Finta",
+        "Lanzamiento"
     ]
 
 }
@@ -169,13 +159,13 @@ export const categorias_deporte = {
     'Hockey': opciones_categoria.hockey,
     'Básquetbol': opciones_categoria.baloncesto,
     'Handball': opciones_categoria.handball,
-  };
+};
 
-  export const skills_deporte = {
+export const skills_deporte = {
     'Fútbol': opciones_skills.futbol,
     'Fútbol Sala': opciones_skills.futbolSala,
     'Básquetbol': opciones_skills.baloncesto,
     'Hockey': opciones_skills.hockey,
     'Handball': opciones_skills.handball,
     'Voley': opciones_skills.voleibol,
-  };
+};

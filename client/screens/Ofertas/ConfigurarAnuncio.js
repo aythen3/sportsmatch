@@ -34,20 +34,20 @@ const ConfigurarAnuncio = () => {
 
   const dispatch = useDispatch()
 
-  const { offer } = useSelector((state) => state.offers)
+  const { offer, offers } = useSelector((state) => state.offers)
   const { club } = useSelector((state) => state.clubs)
   const { user } = useSelector((state) => state.users)
   const { allPositions } = useSelector((state) => state.positions)
 
   const [selectedProvince, setSelectedProvince] = useState('')
 
-  const [selectedGender, setSelectedGender] = useState()
+  const [selectedGender, setSelectedGender] = useState('')
   const [retribucion, setRetribucion] = useState('')
 
-  const [selectedRemuneration, setSelectedRemuneration] = useState()
-  const [selectedCategory, setSelectedCategory] = useState()
-  const [selectedPriority, setSelectedPriority] = useState()
-  const [selectedPosition, setSelectedPosition] = useState()
+  const [selectedRemuneration, setSelectedRemuneration] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedPriority, setSelectedPriority] = useState('')
+  const [selectedPosition, setSelectedPosition] = useState('')
   const [selectedSport, setSelectedSport] = useState('')
 
   const [showRemunerationModal, setShowRemunerationModal] = useState()
@@ -62,6 +62,10 @@ const ConfigurarAnuncio = () => {
   const [clubData, setClubData] = useState()
   const { editOffer } = route.params || false
   const { offerId } = route.params || false
+  const { offerData } = route.params || false
+  const { promocionar } = route.params || false
+
+
 
   const statesCleanUp = (stateToUpdate) => {
     const stateSetters = {
@@ -79,6 +83,18 @@ const ConfigurarAnuncio = () => {
       }
     }
   }
+
+  useEffect(() => {
+
+    if (offerData?.retribution) {
+      setSelectedRemuneration('Si')
+    }
+    if (promocionar) {
+      handleRegister()
+    }
+
+  }, [])
+
 
   const [values, setValues] = useState({
     sexo: '',
@@ -111,16 +127,6 @@ const ConfigurarAnuncio = () => {
   const remunerationData = ['Si', 'No']
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  const handleChange = (name, value) => {
-    setValues((prev) => ({
-      ...prev,
-      [name]: value
-    }))
-    if (name === 'province') {
-      setSelectedProvince(value)
-    }
-  }
 
   const getClubData = async (id) => {
     try {
@@ -192,6 +198,7 @@ const ConfigurarAnuncio = () => {
   const handleRegister = async () => {
     handleGetGold()
   }
+  console.log(offer, "esto es de la oferta")
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -220,9 +227,9 @@ const ConfigurarAnuncio = () => {
             </Text>
             <View style={{ width: '100%' }}>
               <TextInput
-                value={selectedPosition}
+                value={selectedPosition || offerData?.posit}
                 placeholderTextColor={'#fff'}
-                placeholder={selectedPosition || 'Indique una posición'}
+                placeholder={selectedPosition || offerData?.posit || 'Indique una posición'}
                 onChangeText={(text) => setSelectedPosition(text)}
                 style={{ ...styles.containerBox, paddingHorizontal: 18 }}
               ></TextInput>
@@ -239,52 +246,11 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 9000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {!selectedGender
-                  ? 'Selecciona un género'
-                  : selectedGender === 'Female'
-                    ? 'Mujer'
-                    : 'Hombre'}
+                {selectedGender == '' && offerData?.sexo && offerData?.sexo === 'Male' ? 'Hombre' : 'Mujer'}
+                {!selectedGender && !offerData?.sexo && 'Selecciona un género'}
+
               </Text>
-              {/* {showGenderModal && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    width: '100%',
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    backgroundColor: Color.bLACK1SPORTSMATCH
-                  }}
-                >
-                  {['Male', 'Female'].map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        paddingVertical: 3,
-                        width: '100%',
-                        alignItems: 'center'
-                      }}
-                      onPress={() => {
-                        setSelectedGender(item)
-                        setShowGenderModal(false)
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 200,
-                          paddingBottom: 5,
-                          textAlign: 'center',
-                          borderBottomWidth: index !== 1 ? 1 : 0,
-                          borderBottomColor: '#ccc',
-                          ...styles.optionText
-                        }}
-                      >
-                        {item === 'Female' ? 'Mujer' : 'Hombre'}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )} */}
+
               {showGenderModal && (
                 <ScrollableModal
                   visible={showGenderModal}
@@ -306,49 +272,11 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 8000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {selectedCategory || 'Selecciona una categoría'}
+                {!selectedCategory && !offerData && 'Selecciona una categoría'}
+                {selectedCategory == '' && offerData?.category}
+                {selectedCategory}
               </Text>
-              {/* {showCategoryModal && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    width: '100%',
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    backgroundColor: Color.bLACK1SPORTSMATCH
-                  }}
-                >
-                  {categories.map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        paddingVertical: 3,
-                        width: '100%',
-                        alignItems: 'center'
-                      }}
-                      onPress={() => {
-                        setSelectedCategory(item)
-                        setShowCategoryModal(false)
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 200,
-                          paddingBottom: 5,
-                          textAlign: 'center',
-                          borderBottomWidth:
-                            index !== categories.length - 1 ? 1 : 0,
-                          borderBottomColor: '#ccc',
-                          ...styles.optionText
-                        }}
-                      >
-                        {item}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )} */}
+
               {showCategoryModal && (
                 <ScrollableModal
                   visible={showCategoryModal}
@@ -365,9 +293,9 @@ const ConfigurarAnuncio = () => {
             </Text>
             <View style={{ width: '100%' }}>
               <TextInput
-                value={selectedProvince}
+                value={selectedProvince || offerData?.province}
                 placeholderTextColor={'#fff'}
-                placeholder={selectedProvince || 'Indique la provincia'}
+                placeholder={selectedProvince || offerData?.province || 'Indique la provincia'}
                 onChangeText={(text) => setSelectedProvince(text)}
                 style={{ ...styles.containerBox, paddingHorizontal: 18 }}
               ></TextInput>
@@ -384,49 +312,11 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 7000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {selectedPriority || 'Seleccione el nivel de urgencia'}
+                {!selectedPriority && !offerData?.urgency && 'Seleccione el nivel de urgencia'}
+                {selectedPriority == '' && offerData?.urgency}
+                {selectedPriority}
               </Text>
-              {/* {showPriorityModal && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    width: '100%',
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    backgroundColor: Color.bLACK1SPORTSMATCH
-                  }}
-                >
-                  {numbers.map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        paddingVertical: 3,
-                        width: '100%',
-                        alignItems: 'center'
-                      }}
-                      onPress={() => {
-                        setSelectedPriority(item)
-                        setShowPriorityModal(false)
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 200,
-                          paddingBottom: 5,
-                          textAlign: 'center',
-                          borderBottomWidth:
-                            index !== numbers.length - 1 ? 1 : 0,
-                          borderBottomColor: '#ccc',
-                          ...styles.optionText
-                        }}
-                      >
-                        {item}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )} */}
+
               {showPriorityModal && (
                 <ScrollableModal
                   visible={showPriorityModal}
@@ -449,50 +339,11 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 6000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {selectedRemuneration || 'Seleccione retribución'}
+                {!selectedRemuneration && !offerData?.retribution && 'Seleccione retribución'}
+                {selectedRemuneration == '' ? offerData?.retribution === true ? 'Si' : 'No' : selectedRemuneration}
               </Text>
 
-              {/* {showRemunerationModal && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    width: '100%',
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    backgroundColor: Color.bLACK1SPORTSMATCH
-                  }}
-                >
-                  {remunerationData.map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        paddingVertical: 3,
-                        width: '100%',
-                        alignItems: 'center'
-                      }}
-                      onPress={() => {
-                        setSelectedRemuneration(item)
-                        setShowRemunerationModal(false)
-                      }}
-                    >
-                      <Text
-                        style={{
-                          width: 200,
-                          paddingBottom: 5,
-                          textAlign: 'center',
-                          borderBottomWidth:
-                            index !== remunerationData.length - 1 ? 1 : 0,
-                          borderBottomColor: '#ccc',
-                          ...styles.optionText
-                        }}
-                      >
-                        {item}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )} */}
+
               {showRemunerationModal && (
                 <ScrollableModal
                   visible={showRemunerationModal}
@@ -512,9 +363,9 @@ const ConfigurarAnuncio = () => {
               <View style={{ width: '100%' }}>
                 <TextInput
                   inputMode="numeric"
-                  value={retribucion}
+                  value={retribucion || offerData?.prop1}
                   placeholderTextColor={'#fff'}
-                  placeholder={retribucion || 'Ingrese retribución anual'}
+                  placeholder={offerData?.prop1 || retribucion || 'Ingrese retribución anual'}
                   onChangeText={(e) => setRetribucion(e)}
                   style={{ ...styles.containerBox, paddingHorizontal: 18 }}
                 ></TextInput>
