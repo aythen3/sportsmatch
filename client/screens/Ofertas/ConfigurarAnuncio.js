@@ -339,7 +339,7 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 6000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {!selectedRemuneration && !offerData?.retribution && 'Seleccione retribución'}
+                {offerData?.retribution !== false && offerData?.retribution !== true  && ('Seleccione retribución') }
                 {selectedRemuneration == '' ? offerData?.retribution === true ? 'Si' : 'No' : selectedRemuneration}
               </Text>
 
