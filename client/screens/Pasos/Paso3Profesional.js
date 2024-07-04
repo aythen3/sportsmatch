@@ -74,6 +74,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   }
 
   const handlesValues = (field, value) => {
+    if(field === 'yearsOfExperience' && value > 80 ) return
     setProfesionalValues((prev) => ({
       ...prev,
       [field]: value
