@@ -26,6 +26,7 @@ import axiosInstance from '../../utils/apiBackend'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { Context } from '../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import Thumbnail from '../../components/Thumbnail'
 
 const ExplorarClubs = () => {
   const dispatch = useDispatch()
@@ -136,9 +137,9 @@ const ExplorarClubs = () => {
                   navigation.navigate('Post', columnItem)
                 }}
               >
-                <Image
-                  source={{ uri: columnItem.image[0] }}
-                  style={{
+                <Thumbnail
+                  url={columnItem.image[0]}
+                  styles={{
                     width: '100%',
                     height: (screenWidth - 8) / 3,
                     marginBottom: 8,
@@ -154,9 +155,9 @@ const ExplorarClubs = () => {
               navigation.navigate('Post', item.rightItem)
             }}
           >
-            <Image
-              source={{ uri: item.rightItem.image[0] }}
-              style={{
+            <Thumbnail
+              url={item.rightItem.image[0]}
+              styles={{
                 width: ((screenWidth - 45) / 3) * 2,
                 height: ((screenWidth + 5) / 3) * 2,
                 borderRadius: 5
@@ -245,23 +246,32 @@ const ExplorarClubs = () => {
                           gap: 10
                         }}
                       >
-                        <Image
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: user.info.img_font
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          source={
-                            user.info.img_perfil
-                              ? {
-                                  uri: user.info.img_perfil
-                                }
-                              : require('../../assets/whiteSport.png')
-                          }
-                        ></Image>
+                        {user.info.img_perfil ? (
+                          <Thumbnail
+                            styles={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              backgroundColor: user.info.img_font
+                                ? 'transparent'
+                                : mainColor
+                            }}
+                            url={user.info.img_perfil}
+                          ></Thumbnail>
+                        ) : (
+                          <Image
+                            style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              backgroundColor: user.info.img_font
+                                ? 'transparent'
+                                : mainColor
+                            }}
+                            source={require('../../assets/whiteSport.png')}
+                            contentFit="cover"
+                          />
+                        )}
                         <Text
                           style={{
                             color: 'white',
@@ -296,23 +306,32 @@ const ExplorarClubs = () => {
                           gap: 10
                         }}
                       >
-                        <Image
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: club.img_perfil
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          source={
-                            club.img_perfil
-                              ? {
-                                  uri: club.img_perfil
-                                }
-                              : require('../../assets/whiteSport.png')
-                          }
-                        ></Image>
+                        {club.img_perfil ? (
+                          <Thumbnail
+                            styles={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              backgroundColor: club.img_perfil
+                                ? 'transparent'
+                                : mainColor
+                            }}
+                            url={club.img_perfil}
+                          />
+                        ) : (
+                          <Image
+                            style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              backgroundColor: club.img_perfil
+                                ? 'transparent'
+                                : mainColor
+                            }}
+                            contentFit="cover"
+                            source={require('../../assets/whiteSport.png')}
+                          />
+                        )}
                         <Text
                           style={{
                             color: 'white',
@@ -351,21 +370,32 @@ const ExplorarClubs = () => {
                         gap: 10
                       }}
                     >
-                      <Image
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 50,
-                          backgroundColor: position.info.img_perfil
-                            ? 'transparent'
-                            : mainColor
-                        }}
-                        source={
-                          position.info.img_perfil
-                            ? { uri: position.info.img_perfil }
-                            : require('../../assets/whiteSport.png')
-                        }
-                      ></Image>
+                      {position.info.img_perfil ? (
+                        <Thumbnail
+                          styles={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: position.info.img_perfil
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          url={position.info.img_perfil}
+                        />
+                      ) : (
+                        <Image
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: position.info.img_perfil
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          contentFit="cover"
+                          source={require('../../assets/whiteSport.png')}
+                        ></Image>
+                      )}
 
                       <Text
                         style={{
@@ -403,21 +433,32 @@ const ExplorarClubs = () => {
                         gap: 10
                       }}
                     >
-                      <Image
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 50,
-                          backgroundColor: city.info.img_perfil
-                            ? 'transparent'
-                            : mainColor
-                        }}
-                        source={
-                          city.info.img_perfil
-                            ? { uri: city.info.img_perfil }
-                            : require('../../assets/whiteSport.png')
-                        }
-                      ></Image>
+                      {city.info.img_perfil ? (
+                        <Thumbnail
+                          styles={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: city.info.img_perfil
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          url={city.info.img_perfil}
+                        />
+                      ) : (
+                        <Image
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: city.info.img_perfil
+                              ? 'transparent'
+                              : mainColor
+                          }}
+                          contentFit="cover"
+                          source={require('../../assets/whiteSport.png')}
+                        ></Image>
+                      )}
 
                       <Text
                         style={{

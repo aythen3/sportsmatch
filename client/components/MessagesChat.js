@@ -38,7 +38,8 @@ const MessagesChat = ({
     clubMatches,
     getClubMatches,
     userMatches,
-    getUsersMessages,
+    notReaded,
+    notReadedMessages,
     usersWithMessages
   } = useContext(Context)
   const navigation = useNavigation()
@@ -52,22 +53,23 @@ const MessagesChat = ({
 
   const getChatMessages = async () => {
     if (user?.user?.id && selectedUserId) {
-      console.log('getting messages from', user.user.id, 'and', selectedUserId)
+      // console.log('getting messages from', user.user.id, 'and', selectedUserId)
       const { data } = await axiosInstance.get(
         `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
       )
-      console.log('====SETTING CONV MESSAGES TO', data)
+      // console.log('====SETTING CONV MESSAGES TO', data)
       setConvMessages(data)
     }
   }
-
+  // console.log('NOT READED MESSAGES LENGTH=====', notReaded)
+  // console.log('NOTREADEDMESSAGES========', notReadedMessages)
   useEffect(() => {
     getChatMessages()
   }, [usersWithMessages, value])
 
   useEffect(() => {
     setLoading(true)
-    console.log('CLEAN USEEFFECT GETCHAT')
+    // console.log('CLEAN USEEFFECT GETCHAT')
     getChatMessages()
   }, [])
 
@@ -91,17 +93,38 @@ const MessagesChat = ({
   }, [convMessages])
 
   useEffect(() => {
-    // selectedUserId && console.log('==SELECTEDUSERID', selectedUserId)
+    console.log(
+      name,
+      'INSCRIPT?',
+      offers.filter(
+        (offer) => offer.inscriptions && offer.inscriptions.includes(sportmanId)
+      )
+    )
+    console.log(
+      'TIENE QUE PODER MATCHEAR? =========',
+      user?.user?.type === 'club' &&
+        clubMatches?.filter(
+          (match) =>
+            match?.prop1?.sportmanId === sportmanId &&
+            match.status === 'success'
+        )?.length === 0 &&
+        offers.filter(
+          (offer) =>
+            offer.inscriptions &&
+            offer.inscriptions.includes(sportmanId) &&
+            offer.club.id === club.id
+        ).length > 0
+    )
   }, [])
 
   useEffect(() => {
-    lastMessage &&
-      console.log(
-        '==LAST MESSAGE FROM ',
-        name,
-        ':',
-        lastMessage.message.message
-      )
+    // lastMessage &&
+    //   console.log(
+    //     '==LAST MESSAGE FROM ',
+    //     name,
+    //     ':',
+    //     lastMessage.message.message
+    //   )
   }, [lastMessage])
 
   if (loading === true || lastMessage === null) return null
@@ -168,15 +191,15 @@ const MessagesChat = ({
               }}
             >
               {lastMessage
-                ? lastMessage?.message?.message?.length >= 20
-                  ? lastMessage?.message?.message.slice(0, 20).concat('...')
+                ? lastMessage?.message?.message?.length >= 22
+                  ? lastMessage?.message?.message.slice(0, 22).concat('...')
                   : lastMessage?.message?.message
                 : 'Inicia una conversacion!'}
             </Text>
           </View>
         </View>
 
-        {user?.user?.type === 'club' &&
+        {/* {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
               match?.prop1?.sportmanId === sportmanId &&
@@ -216,48 +239,41 @@ const MessagesChat = ({
                   : ''}
               </Text>
             </View>
-          )}
-        {user?.user?.type !== 'club' &&
-          userMatches?.filter(
-            (match) =>
-              match?.prop1?.clubData.userId === selectedUserId &&
-              match.status === 'pending'
-          )?.length === 0 && (
-            <View
+          )} */}
+        {
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 5
+            }}
+          >
+            {notReadedMessages.some(
+              (message) => message.senderId === selectedUserId
+            ) && (
+              <View
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: 100,
+                  backgroundColor: mainColor
+                }}
+              />
+            )}
+            <Text
               style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 5
+                color: Color.gREY2SPORTSMATCH,
+                fontSize: FontSize.t1TextSMALL_size,
+                fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {userMatches?.filter(
-                (match) =>
-                  match?.prop1?.clubData.userId === selectedUserId &&
-                  match.status === 'success'
-              )?.length > 0 && (
-                <View
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: 100,
-                    backgroundColor: mainColor
-                  }}
-                />
-              )}
-              <Text
-                style={{
-                  color: Color.gREY2SPORTSMATCH,
-                  fontSize: FontSize.t1TextSMALL_size,
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                {lastMessage
-                  ? getTimeFromDate(lastMessage?.message?.createdAt)
-                  : ''}
-              </Text>
-            </View>
-          )}
+              {lastMessage
+                ? getTimeFromDate(lastMessage?.message?.createdAt)
+                : ''}
+            </Text>
+          </View>
+        }
         {user?.user?.type === 'club' &&
           clubMatches?.filter(
             (match) =>
@@ -317,22 +333,6 @@ const MessagesChat = ({
                   })
                 )
                   .then((data) => {
-                    // console.log('data from match: ', data.payload)
-                    // console.log('body to sendNotification: ', {
-                    //   title: 'Match',
-                    //   message: 'Has hecho match!',
-                    //   recipientId: data?.payload?.prop1?.sportManData?.userId,
-                    //   date: new Date(),
-                    //   read: false,
-                    //   prop1: {
-                    //     matchId: data?.payload?.id,
-                    //     clubData: {
-                    //       name: user?.user?.nickname,
-                    //       userId: user.user.id,
-                    //       ...user?.user?.club
-                    //     }
-                    //   }
-                    // })
                     dispatch(
                       sendNotification({
                         title: 'Match',
@@ -363,7 +363,7 @@ const MessagesChat = ({
               }}
               style={{
                 position: 'absolute',
-                right: 40,
+                right: 50,
                 flexDirection: 'row',
                 backgroundColor: colors.lessOpaque,
                 borderRadius: Border.br_81xl,
@@ -374,11 +374,6 @@ const MessagesChat = ({
                 marginTop: 4
               }}
             >
-              {/* <Image
-                    style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-                    contentFit="contain"
-                    source={require('../assets/matchButton.png')}
-                  /> */}
               <Text
                 style={{
                   width: '70%',

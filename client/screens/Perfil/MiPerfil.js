@@ -24,6 +24,7 @@ import Feed from '../../components/Feed'
 import FeedStats from '../../components/FeedStats'
 import { Context } from '../../context/Context'
 import { useIsFocused } from '@react-navigation/native'
+import Thumbnail from '../../components/Thumbnail'
 
 const MiPerfil = () => {
   const isFocused = useIsFocused()
@@ -79,10 +80,9 @@ const MiPerfil = () => {
               source={require('../../assets/whiteSport.png')}
             />
           ) : (
-            <Image
-              style={styles.imagenPosition}
-              contentFit="cover"
-              source={{ uri: sportman?.info?.img_front }}
+            <Thumbnail
+              styles={{ height: 150 }}
+              url={sportman?.info?.img_front}
             />
           )}
           <View
@@ -95,18 +95,16 @@ const MiPerfil = () => {
               <View style={{ position: 'relative', minWidth: 110 }}>
                 {sportman?.info?.img_perfil &&
                   sportman?.info?.img_perfil !== '' && (
-                    <Image
-                      style={{
+                    <Thumbnail
+                      url={sportman?.info?.img_perfil}
+                      styles={{
                         height: 110,
                         borderRadius: 100,
                         width: 110,
                         zIndex: 1000,
+                        backgroundColor: mainColor,
                         borderWidth: 3,
                         borderColor: '#000'
-                      }}
-                      contentFit="cover"
-                      source={{
-                        uri: sportman?.info?.img_perfil
                       }}
                     />
                   )}

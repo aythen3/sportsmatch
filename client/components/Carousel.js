@@ -23,6 +23,7 @@ import { sendNotification } from '../redux/actions/notifications'
 import Like2SVG from './svg/Like2SVG'
 import { Modal } from 'react-native'
 import ModalOptionOffers from './ModalOptionOffers'
+import Thumbnail from './Thumbnail'
 
 function Carousel({
   name,
@@ -46,7 +47,8 @@ function Carousel({
     const { position } = event.nativeEvent
     setCurrentPage(position)
   }
-  const { setSelectedPost, selectedPost } = useContext(Context)
+  const { setSelectedPost, selectedPost, generateLowResUrl } =
+    useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
   const { sportman } = useSelector((state) => state.sportman)
@@ -160,6 +162,7 @@ function Carousel({
 
     setOptionsModal(true)
   }
+  //console.log('image========', image)
   // console.log(data,"esto es la data")
   return (
     <View style={{ ...styles.container }}>
@@ -200,10 +203,10 @@ function Carousel({
             resizeMode="cover"
             source={
               data?.author?.id === user?.user?.id
-                ? user?.user?.sportman?.info?.img_front
+                ? generateLowResUrl(user?.user?.sportman?.info?.img_perfil)
                 : imgPerfil === '' || !imgPerfil
                   ? require('../assets/whiteSport.png')
-                  : imgPerfil
+                  : generateLowResUrl(imgPerfil, 30)
             }
           />
           <Text style={styles.nameText}>{name}</Text>
@@ -302,10 +305,7 @@ function Carousel({
                   </TouchableOpacity>
                 )}
 
-                <Image
-                  style={{ ...styles.postImage, zIndex: 990 }}
-                  source={e}
-                />
+                <Thumbnail url={e} />
               </View>
             </DoubleTap>
           </View>

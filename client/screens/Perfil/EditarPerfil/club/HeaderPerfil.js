@@ -21,6 +21,7 @@ import { updateUser } from '../../../../redux/slices/users.slices'
 import { getAllUsers, updateUserData } from '../../../../redux/actions/users'
 import { sendNotification } from '../../../../redux/actions/notifications'
 import { getColorsWithOpacity } from '../../../../utils/colorUtils.js'
+import Thumbnail from '../../../../components/Thumbnail.js'
 
 const HeaderPerfil = ({
   name,
@@ -104,10 +105,9 @@ const HeaderPerfil = ({
             source={require('../../../../assets/whiteSport.png')}
           />
         ) : (
-          <Image
-            style={{ width: '100%', height: 150, backgroundColor: mainColor }}
-            contentFit="cover"
-            source={{ uri: front }}
+          <Thumbnail
+            styles={{ width: '100%', height: 150, backgroundColor: mainColor }}
+            url={front}
           />
         )}
       </View>
@@ -145,43 +145,61 @@ const HeaderPerfil = ({
                 width: 110,
                 borderWidth: 3,
                 borderColor: '#000',
-                backgroundColor:
-                  avatar === '' || !avatar ? mainColor : 'transparent',
+                backgroundColor: mainColor,
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden'
               }}
             >
-              <Image
-                resizeMode="cover"
-                style={{
-                  width: '100%',
-                  height: '100%'
-                }}
-                source={
-                  avatar === '' || !avatar
-                    ? require('../../../../assets/whiteSport.png')
-                    : { uri: avatar }
-                }
-              />
+              {avatar === '' || !avatar ? (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    borderWidth: 3,
+                    borderColor: '#000',
+                    backgroundColor: mainColor,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    overflow: 'hidden'
+                  }}
+                  contentFit="cover"
+                  source={require('../../../../assets/whiteSport.png')}
+                />
+              ) : (
+                <Thumbnail url={avatar} />
+              )}
             </View>
           ) : (
-            <Image
-              style={{
-                height: 110,
-                borderRadius: 100,
-                width: 110,
-                borderWidth: 3,
-                borderColor: '#000',
-                backgroundColor: mainColor
-              }}
-              contentFit="cover"
-              source={
-                avatar
-                  ? { uri: avatar }
-                  : require('../../../../assets/whiteSport.png')
-              }
-            />
+            <View>
+              {avatar ? (
+                <Thumbnail
+                  styles={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    borderWidth: 3,
+                    borderColor: '#000',
+                    backgroundColor: mainColor
+                  }}
+                  url={avatar}
+                />
+              ) : (
+                <Image
+                  style={{
+                    height: 110,
+                    borderRadius: 100,
+                    width: 110,
+                    borderWidth: 3,
+                    borderColor: '#000',
+                    backgroundColor: mainColor
+                  }}
+                  contentFit="cover"
+                  source={require('../../../../assets/whiteSport.png')}
+                />
+              )}
+            </View>
           )}
         </View>
 
@@ -379,8 +397,9 @@ const HeaderPerfil = ({
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId:   data?.author?.sportman?.user?.id ??
-                          data?.author?.id,
+                          recipientId:
+                            data?.author?.sportman?.user?.id ??
+                            data?.author?.id,
                           date: new Date(),
                           read: false,
                           prop1: {

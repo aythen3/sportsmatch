@@ -28,7 +28,7 @@ export const ContextProvider = ({ children }) => {
   const userId = user?.user?.id
 
   function transformHttpToHttps(url) {
-    if (url.startsWith('http://')) {
+    if (url?.startsWith('http://')) {
       return url.replace('http://', 'https://')
     } else {
       return url
@@ -374,6 +374,7 @@ export const ContextProvider = ({ children }) => {
 
   const [usersWithMessages, setUsersWithMessages] = useState([])
   const [notReaded, setNotReaded] = useState(0)
+  const [notReadedMessages, setNotReadedMessages] = useState()
 
   const getUsersMessages = async () => {
     const { data } = await axiosInstance.post('chat/chats', {
@@ -381,6 +382,14 @@ export const ContextProvider = ({ children }) => {
     })
     // console.log('DATA', data)
     const convs = Object.keys(data)
+    const notReadedConvMessages = convs
+      .map((conv) =>
+        data[conv].filter(
+          (message) => message.senderId !== userId && message.isReaded === false
+        )
+      )
+      .flat()
+    setNotReadedMessages(notReadedConvMessages)
     const notReaded = convs
       .map(
         (conv) =>
@@ -413,10 +422,28 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  const generateLowResUrl = (imageUrl, quality) => {
+    const imgQuality = quality || 80
+    const baseUrl = 'https://res.cloudinary.com'
+    const cloudName = 'der45x19c'
+
+    if (!imageUrl?.startsWith(baseUrl)) {
+      return imageUrl
+    }
+
+    const imagePathStartIndex = imageUrl.indexOf('/upload/') + 8
+    const imagePath = imageUrl.substring(imagePathStartIndex)
+
+    const lowResUrl = `${baseUrl}/${cloudName}/image/upload/q_${imgQuality}/${imagePath}`
+
+    return lowResUrl
+  }
+
   return (
     <Context.Provider
       value={{
         notReaded,
+        generateLowResUrl,
         setNotReaded,
         getUsersMessages,
         setUsersWithMessages,
@@ -429,6 +456,8 @@ export const ContextProvider = ({ children }) => {
         profileImage,
         setProfileImage,
         provisoryProfileImage,
+        notReadedMessages,
+        setNotReadedMessages,
         setProvisoryProfileImage,
         provisoryCoverImage,
         setProvisoryCoverImage,

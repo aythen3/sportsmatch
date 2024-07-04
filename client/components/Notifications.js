@@ -97,17 +97,20 @@ const Notifications = ({ data }) => {
             }
           />
         )}
-        {!data.read && (
-          <Text
-            style={{
-              color: mainColor,
-              fontSize: 35,
-              top: -12
-            }}
-          >
-            .
-          </Text>
-        )}
+        <View
+          style={{
+            backgroundColor: !data.read ? mainColor : 'transparent',
+            fontSize: 20,
+            width: 4,
+            height: 4,
+            borderRadius: 50,
+            marginRight: -2,
+            alignSelf: 'center',
+            marginTop: 3.5
+            // borderWidth: 2,
+            // borderColor: 'red'
+          }}
+        />
         <View
           style={{
             flex: 1,
@@ -131,26 +134,6 @@ const Notifications = ({ data }) => {
           >
             {data.message}
           </Text>
-          {data.title === 'Follow' && (
-            <View>
-              <Text
-                style={{
-                  color: Color.gREY2SPORTSMATCH,
-                  fontSize: FontSize.t1TextSMALL_size,
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                {formatDate(data.date)}
-              </Text>
-              {data.title === 'Inscripción' && (
-                <Image
-                  style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-                  contentFit="contain"
-                  source={require('../assets/matchButton.png')}
-                />
-              )}
-            </View>
-          )}
         </View>
         {data.title !== 'Follow' && (
           <View
@@ -278,99 +261,120 @@ const Notifications = ({ data }) => {
               )}
           </View>
         )}
-        {data.title === 'Follow' &&
-          !user?.user?.following?.includes(data.prop1.userId) && (
-            <TouchableOpacity
-              onPress={() => {
-                let actualUser = _.cloneDeep(user)
-                const actualFollowers =
-                  allUsers.filter((user) => user.id === data.prop1.userId)[0]
-                    .followers || []
-                const newFollowers = actualFollowers?.includes(user?.user?.id)
-                  ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
-                  : [...actualFollowers, user?.user?.id]
-
-                const newFollowingArray = userFollowing?.includes(
-                  data.prop1.userId
-                )
-                  ? userFollowing.filter(
-                      (followed) => followed !== data.prop1.userId
-                    )
-                  : [...userFollowing, data.prop1.userId]
-                actualUser.user.following = newFollowingArray
-
-                dispatch(
-                  updateUserData({
-                    id: data.prop1.userId,
-                    body: { followers: newFollowers }
-                  })
-                )
-                  .then((data) => {
-                    dispatch(
-                      updateUserData({
-                        id: user.user.id,
-                        body: { following: newFollowingArray }
-                      })
-                    )
-                  })
-                  .then((response) => {
-                    if (newFollowers.includes(user?.user?.id)) {
-                      console.log('esdto vas a cmaiawr', data)
-                      dispatch(
-                        sendNotification({
-                          title: 'Follow',
-                          message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.prop1?.userId,
-                          date: new Date(),
-                          read: false,
-                          prop1: {
-                            userId: user?.user?.id,
-                            userData: {
-                              ...user
-                            }
-                          },
-                          prop2: {
-                            rol: data.prop1.userData.user.club ? 'club' : 'user'
-                          }
-                        })
-                      )
-                    }
-                    dispatch(getAllUsers())
-                    dispatch(updateUser(actualUser))
-                  })
-              }}
+        {data.title === 'Follow' && (
+          <View
+            style={{
+              alignItems: 'flex-end',
+              gap: 3
+            }}
+          >
+            <Text
               style={{
-                borderRadius: 50,
-                paddingVertical: 4,
-                paddingHorizontal: 14,
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 5,
-                backgroundColor: '#505050',
-                flexDirection: 'row'
+                color: Color.gREY2SPORTSMATCH,
+                fontSize: FontSize.t1TextSMALL_size,
+                fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              <Image
-                style={{ width: 16, height: 16 }}
-                contentFit="cover"
-                source={require('../assets/pictograma1.png')}
-              />
-              <Text
+              {formatDate(data.date)}
+            </Text>
+            {!user?.user?.following?.includes(data.prop1.userId) && (
+              <TouchableOpacity
+                onPress={() => {
+                  let actualUser = _.cloneDeep(user)
+                  const actualFollowers =
+                    allUsers.filter((user) => user.id === data.prop1.userId)[0]
+                      .followers || []
+                  const newFollowers = actualFollowers?.includes(user?.user?.id)
+                    ? actualFollowers.filter(
+                        (follower) => follower !== user?.user?.id
+                      )
+                    : [...actualFollowers, user?.user?.id]
+
+                  const newFollowingArray = userFollowing?.includes(
+                    data.prop1.userId
+                  )
+                    ? userFollowing.filter(
+                        (followed) => followed !== data.prop1.userId
+                      )
+                    : [...userFollowing, data.prop1.userId]
+                  actualUser.user.following = newFollowingArray
+
+                  dispatch(
+                    updateUserData({
+                      id: data.prop1.userId,
+                      body: { followers: newFollowers }
+                    })
+                  )
+                    .then((data) => {
+                      dispatch(
+                        updateUserData({
+                          id: user.user.id,
+                          body: { following: newFollowingArray }
+                        })
+                      )
+                    })
+                    .then((response) => {
+                      if (newFollowers.includes(user?.user?.id)) {
+                        console.log('esdto vas a cmaiawr', data)
+                        dispatch(
+                          sendNotification({
+                            title: 'Follow',
+                            message: `${user.user.nickname} ha comenzado a seguirte`,
+                            recipientId: data?.prop1?.userId,
+                            date: new Date(),
+                            read: false,
+                            prop1: {
+                              userId: user?.user?.id,
+                              userData: {
+                                ...user
+                              }
+                            },
+                            prop2: {
+                              rol: data.prop1.userData.user.club
+                                ? 'club'
+                                : 'user'
+                            }
+                          })
+                        )
+                      }
+                      dispatch(getAllUsers())
+                      dispatch(updateUser(actualUser))
+                    })
+                }}
                 style={{
-                  fontWeight: '600',
-                  color:
-                    data.title === 'Like' ? '#999999' : Color.wHITESPORTSMATCH,
-                  alignSelf: 'flex-start',
-                  fontSize: FontSize.t1TextSMALL_size,
-                  fontFamily: FontFamily.t4TEXTMICRO
+                  borderRadius: 50,
+                  paddingVertical: 4,
+                  paddingHorizontal: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 5,
+                  backgroundColor: '#505050',
+                  flexDirection: 'row'
                 }}
               >
-                Seguir
-              </Text>
-            </TouchableOpacity>
-          )}
+                <Image
+                  style={{ width: 16, height: 16 }}
+                  contentFit="cover"
+                  source={require('../assets/pictograma1.png')}
+                />
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    color:
+                      data.title === 'Like'
+                        ? '#999999'
+                        : Color.wHITESPORTSMATCH,
+                    alignSelf: 'flex-start',
+                    fontSize: FontSize.t1TextSMALL_size,
+                    fontFamily: FontFamily.t4TEXTMICRO
+                  }}
+                >
+                  Seguir
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </View>
       <View
         style={{
@@ -380,7 +384,8 @@ const Notifications = ({ data }) => {
         }}
       />
       <Modal visible={isMatch} transparent={true} animationType="slide">
-        <View
+        <Pressable
+          onPress={() => setIsMatch(false)}
           style={{
             flex: 1,
             justifyContent: 'center',
@@ -390,7 +395,7 @@ const Notifications = ({ data }) => {
           }}
         >
           <NotificacinMatch data={data} onClose={() => setIsMatch(false)} />
-        </View>
+        </Pressable>
       </Modal>
       <Modal visible={details} animationType="slide">
         <Pressable

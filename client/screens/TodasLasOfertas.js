@@ -533,7 +533,7 @@ const TodasLasOfertas = () => {
             >
               {search?.length > 0
                 ? 'No encontramos resultados para su búsqueda!'
-                : 'Aun no hay ofertas activas!'}
+                : 'Aún no hay ofertas activas!'}
             </Text>
           </View>
         )
@@ -781,7 +781,7 @@ const TodasLasOfertas = () => {
             >
               {search?.length > 0
                 ? 'No encontramos resultados para su búsqueda!'
-                : 'Aun no hay ofertas activas!'}
+                : 'Aún no hay ofertas activas!'}
             </Text>
           </View>
         )

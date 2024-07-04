@@ -11,8 +11,13 @@ import { getSportman } from '../redux/actions/sportman'
 import { Context } from '../context/Context'
 
 const NavBarInferior = () => {
-  const { activeIcon, setActiveIcon, getUsersMessages, notReaded } =
-    useContext(Context)
+  const {
+    activeIcon,
+    generateLowResUrl,
+    setActiveIcon,
+    getUsersMessages,
+    notReaded
+  } = useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [sportColor, setSportColor] = useState('#E1451E')
@@ -31,8 +36,8 @@ const NavBarInferior = () => {
     console.log('notReaded changed', notReaded)
   }, [notReaded])
 
-  console.log('=========== USER.USER ============', user.user)
-  console.log('=========== SPORTMAN ============', sportman)
+  // console.log('=========== USER.USER ============', user.user)
+  // console.log('=========== SPORTMAN ============', sportman)
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {
@@ -175,7 +180,7 @@ const NavBarInferior = () => {
           <Image
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
             contentFit="cover"
-            source={{ uri: imgPerfil }}
+            source={{ uri: generateLowResUrl(imgPerfil, 90) }}
           />
         )}
         {!sportman?.info?.img_front && !imgPerfil && (

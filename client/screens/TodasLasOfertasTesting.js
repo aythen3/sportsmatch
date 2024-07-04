@@ -444,7 +444,7 @@ const TodasLasOfertas = () => {
                 bottom: 4
               }}
             >
-              Aun no hay ofertas activas!
+              Aún no hay ofertas activas!
             </Text>
           </View>
         )

@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 const TusMatchsDetalle1 = ({ onClose, data }) => {
   const navigation = useNavigation()
   const { mainColor } = useSelector((state) => state.users)
-  const { getUserAge } = useContext(Context)
+  const { getUserAge, generateLowResUrl } = useContext(Context)
 
   const images = {
     '#6A1C4F': require('../assets/expandedMatchCards/6A1C4F.png'),
@@ -77,7 +77,14 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           <Image
             style={{ width: 50, height: 50, borderRadius: 100 }}
             contentFit="cover"
-            source={{ uri: data?.sportman?.info?.img_perfil }}
+            source={
+              !data?.sportman?.info?.img_perfil ||
+              data?.sportman?.info?.img_perfil === ''
+                ? require('../assets/whiteSport.png')
+                : {
+                    uri: generateLowResUrl(data?.sportman?.info?.img_perfil, 70)
+                  }
+            }
           />
           <Text
             style={{
@@ -106,15 +113,21 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
             ? data?.sportman?.info?.rol || '-'
             : data?.sportman.info.category}
         </Text>
-        <Text style={[styles.pvot, styles.cmTypo]}>
-          {data?.sportman.info.position}
-        </Text>
-        <Text style={[styles.cm, styles.cmTypo]}>
-          {data?.sportman.info.height}
-        </Text>
-        <Text style={[styles.matar, styles.cmTypo]}>
-          {data?.sportman.info.city}
-        </Text>
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.pvot, styles.cmTypo]}>
+            {data?.sportman.info.position}
+          </Text>
+        )}
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.cm, styles.cmTypo]}>
+            {data?.sportman.info.height}
+          </Text>
+        )}
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.matar, styles.cmTypo]}>
+            {data?.sportman.info.city}
+          </Text>
+        )}
         <View style={[styles.ellipseParent, styles.ellipseParentPosition]}>
           <Image
             style={[styles.groupChild, styles.childPosition]}

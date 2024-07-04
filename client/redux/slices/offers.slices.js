@@ -29,6 +29,9 @@ const offersSlices = createSlice({
       state.offer = {}
       state.offers = []
       state.usersRegistered = []
+    },
+    setOfferSelected:(state, action) => {
+      state.offer = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -109,6 +112,6 @@ const offersSlices = createSlice({
   }
 })
 
-export const { cleanOffers, updateOffers } = offersSlices.actions
+export const { cleanOffers, updateOffers ,setOfferSelected } = offersSlices.actions
 
 export default offersSlices.reducer

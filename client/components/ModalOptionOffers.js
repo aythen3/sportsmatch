@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -12,10 +12,12 @@ const ModalOptionOffers = ({
   post,
   postId,
   data,
+  offerData,
   setShowDeletePostModal
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  console.log(offerData,"data de offer")
   if (post)
     return (
       <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
@@ -72,43 +74,48 @@ const ModalOptionOffers = ({
     )
   return (
     <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
-      <Pressable
+      <TouchableOpacity
+        style={{ width: "100%" }}
         onPress={() => {
           onClose()
-          navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId })
+          navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId , offerData })
         }}
       >
         <View>
           <Text style={styles.editar}>Editar</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
 
       <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
-      <Pressable
+      <TouchableOpacity
+        style={{ width: "100%" }}
         onPress={() => {
           onClose()
           navigation.navigate('EliminarOferta', { offerId })
         }}
       >
         <Text style={styles.editar}>Eliminar</Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
-      <Pressable onPress={onClose}>
+      <TouchableOpacity style={{ width: "100%" }} onPress={()=>{
+          onClose()
+        navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId , offerData , promocionar:true })
+      }}>
         <Text style={styles.editar2}>Promocionar</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   despliegueOpciones: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     width: 150,
     marginTop: 30,
     backgroundColor: Color.bLACK3SPORTSMATCH,
     paddingHorizontal: Padding.p_3xs,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     borderRadius: Border.br_8xs
   },
   pausarFlexBox: {
@@ -133,7 +140,7 @@ const styles = StyleSheet.create({
   },
   despliegueOpcionesChild: {
     borderTopWidth: 1,
-    marginVertical: 5,
+    marginVertical: 10,
     width: '100%',
     borderColor: Color.colorDimgray_100
   }
