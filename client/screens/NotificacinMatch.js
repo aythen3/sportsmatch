@@ -25,7 +25,8 @@ const NotificacinMatch = ({ onClose, data }) => {
       style={{
         borderRadius: Border.br_mini,
         backgroundColor: mainColor,
-        paddingVertical: 50,
+        paddingVertical: 35,
+        paddingTop: 80,
         width: '100%'
       }}
     >
@@ -36,7 +37,7 @@ const NotificacinMatch = ({ onClose, data }) => {
         <View style={[styles.textoCuerpo, styles.informacionFlexBox]}>
           <Text
             style={[styles.teHanSolicitado3, styles.seguirTypo]}
-          >{`¡Has hecho un Match!`}</Text>
+          >{`¡Te han solicitado un Match!`}</Text>
           <Text
             style={[styles.pareceQueUni, styles.seguirTypo1]}
           >{`¡Parece que ${
@@ -270,13 +271,14 @@ const styles = StyleSheet.create({
   },
   informacionFlexBox: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 17
   },
   botonesLayout: {
     height: 61
   },
   aceptarFlexBox: {
-    paddingVertical: 9,
+    paddingVertical: 7,
     paddingHorizontal: Padding.p_91xl,
     borderRadius: Border.br_81xl,
     alignSelf: 'stretch',

@@ -15,9 +15,11 @@ import { Color, FontFamily } from '../../GlobalStyles'
 import { getCommentByPost } from '../../redux/actions/comments'
 import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
+import { Context } from '../../context/Context'
 
 const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
+  const { generateLowResUrl } = useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
@@ -77,21 +79,28 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                 sortedComments?.map((comment) => (
                   <View key={comment.id} style={styles.commentContainer}>
                     <View style={styles.authorContainer}>
-                      <Image
-                        contentFit="cover"
-                        source={
-                          comment.author.sportman
-                            ? comment.author?.sportman?.info?.img_perfil
-                            : comment.author?.club?.img_perfil ||
-                              require('../../assets/whiteSport.png')
-                        }
-                        style={{
-                          height: 28,
-                          width: 28,
-                          borderRadius: 15,
-                          backgroundColor: mainColor
-                        }}
-                      />
+                      {
+                        <Image
+                          contentFit="cover"
+                          source={
+                            comment.author.sportman
+                              ? generateLowResUrl(
+                                  comment.author?.sportman?.info?.img_perfil,
+                                  40
+                                )
+                              : generateLowResUrl(
+                                  comment.author?.club?.img_perfil,
+                                  40
+                                ) || require('../../assets/whiteSport.png')
+                          }
+                          style={{
+                            height: 28,
+                            width: 28,
+                            borderRadius: 15,
+                            backgroundColor: mainColor
+                          }}
+                        />
+                      }
                       <Text style={styles.authorText}>
                         {comment.author.nickname}
                       </Text>

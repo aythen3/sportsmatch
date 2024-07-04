@@ -134,13 +134,6 @@ const Notifications = ({ data }) => {
           >
             {data.message}
           </Text>
-          {data.title === 'Inscripción' && (
-            <Image
-              style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-              contentFit="contain"
-              source={require('../assets/matchButton.png')}
-            />
-          )}
         </View>
         {data.title !== 'Follow' && (
           <View
@@ -391,7 +384,8 @@ const Notifications = ({ data }) => {
         }}
       />
       <Modal visible={isMatch} transparent={true} animationType="slide">
-        <View
+        <Pressable
+          onPress={() => setIsMatch(false)}
           style={{
             flex: 1,
             justifyContent: 'center',
@@ -401,7 +395,7 @@ const Notifications = ({ data }) => {
           }}
         >
           <NotificacinMatch data={data} onClose={() => setIsMatch(false)} />
-        </View>
+        </Pressable>
       </Modal>
       <Modal visible={details} animationType="slide">
         <Pressable
