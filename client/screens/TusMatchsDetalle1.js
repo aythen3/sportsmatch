@@ -29,24 +29,26 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
   const imageSource = images[mainColor] || images['#E1451E']
 
   console.log(data, 'dataa')
+
   return (
     <View style={styles.tusMatchsDetalle}>
       <View
         style={{
           width: '96%',
           height: '80%',
-          backgroundColor: mainColor,
           borderRadius: 25,
+          backgroundColor: data?.sportman?.type !== 'coach' && mainColor,
           overflow: 'hidden'
         }}
       >
         <Image
           style={{
-            height: '100%',
+            height: data?.sportman?.type === 'coach' ? '70%' : '100%',
             width: '100%',
             position: 'absolute',
             maxHeight: '100%',
-            maxWidth: '100%'
+            maxWidth: '100%',
+            borderRadius: 25
           }}
           contentFit="cover"
           source={imageSource}
@@ -56,11 +58,13 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           contentFit="cover"
           source={require('../assets/group-4141.png')}
         />
-        <Image
-          style={[styles.frameChild, styles.iconFrameLayout]}
-          contentFit="cover"
-          source={require('../assets/mask-group16.png')}
-        />
+        {data?.sportman?.type !== 'coach' && (
+          <Image
+            style={[styles.frameChild, styles.iconFrameLayout]}
+            contentFit="cover"
+            source={require('../assets/mask-group16.png')}
+          />
+        )}
         <View
           style={{
             flexDirection: 'row',
@@ -88,13 +92,19 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           </Text>
         </View>
         <Text style={[styles.masculino, styles.cmTypo]}>
-          {data?.sportman.info.gender}
+          {data?.sportman?.type === 'coach'
+            ? data.sportman.info.yearsOfExperience
+            : data?.sportman.info.gender}
         </Text>
         <Text style={[styles.text, styles.cmTypo]}>
-          {getUserAge(data?.sportman.info.birthdate)}
+          {data?.sportman?.type === 'coach'
+            ? data.sportman.info.city || '-'
+            : getUserAge(data?.sportman.info.birthdate)}
         </Text>
         <Text style={[styles.snior, styles.cmTypo]}>
-          {data?.sportman.info.category}
+          {data?.sportman?.type === 'coach'
+            ? data?.sportman?.info?.rol || '-'
+            : data?.sportman.info.category}
         </Text>
         <Text style={[styles.pvot, styles.cmTypo]}>
           {data?.sportman.info.position}
@@ -120,7 +130,17 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
             source={require('../assets/logo-uem21removebgpreview-13.png')}
           />
         </View>
-        <View style={styles.aceptarParent}>
+        <View
+          style={{
+            marginTop: data.sportman.type === 'coach' ? 0 : 162.5,
+            width: '91.64%',
+            right: '3.9%',
+            height: 27,
+            top: '55%',
+            left: '4.46%',
+            position: 'absolute'
+          }}
+        >
           <Pressable
             style={[styles.aceptar, styles.aceptarSpaceBlock]}
             onPress={() => {
@@ -143,21 +163,37 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
             <Text style={styles.verOferta}>Ver perfil</Text>
           </TouchableOpacity>
         </View>
-        <Text style={[styles.edad, styles.edadTypo]}>Edad</Text>
-        <Text style={[styles.categora, styles.edadTypo]}>Categoría</Text>
-        <Text style={[styles.posicinPrincipal, styles.edadTypo]}>
-          Posición principal
+        <Text style={[styles.edad, styles.edadTypo]}>
+          {data?.sportman?.type === 'coach' ? 'Lugar de residencia' : 'Edad'}
         </Text>
-        <Text style={[styles.altura, styles.edadTypo]}>Altura</Text>
-        <Text style={[styles.sexo, styles.edadTypo]}>Sexo</Text>
-        <Text style={[styles.lugarDeResidencia, styles.edadTypo]}>
-          Lugar de residencia
+        <Text style={[styles.categora, styles.edadTypo]}>
+          {data?.sportman?.type === 'coach' ? 'Rol' : 'Categoría'}
         </Text>
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.posicinPrincipal, styles.edadTypo]}>
+            Posición principal
+          </Text>
+        )}
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.altura, styles.edadTypo]}>Altura</Text>
+        )}
+        <Text style={[styles.sexo, styles.edadTypo]}>
+          {data?.sportman?.type === 'coach' ? 'Años de experiencia' : 'Sexo'}
+        </Text>
+        {data?.sportman?.type !== 'coach' && (
+          <Text style={[styles.lugarDeResidencia, styles.edadTypo]}>
+            Lugar de residencia
+          </Text>
+        )}
         <View style={[styles.frameInner, styles.frameChildPosition]} />
         <View style={[styles.lineView, styles.frameChildPosition]} />
         <View style={[styles.frameChild1, styles.frameChildPosition]} />
-        <View style={[styles.frameChild2, styles.frameChildPosition]} />
-        <View style={[styles.frameChild3, styles.frameChildPosition]} />
+        {data?.sportman?.type !== 'coach' && (
+          <View style={[styles.frameChild2, styles.frameChildPosition]} />
+        )}
+        {data?.sportman?.type !== 'coach' && (
+          <View style={[styles.frameChild3, styles.frameChildPosition]} />
+        )}
       </View>
     </View>
   )
@@ -326,13 +362,13 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   masculino: {
-    top: '20%'
+    top: '21%'
   },
   text: {
     top: '30.09%'
   },
   snior: {
-    top: '39.65%'
+    top: '40.4%'
   },
   pvot: {
     top: '49.57%'
@@ -401,7 +437,7 @@ const styles = StyleSheet.create({
   },
   edad: {
     top: '27.3%',
-    width: '22.28%',
+    width: '100%',
     height: '2.96%',
     fontSize: FontSize.size_smi_9
   },
@@ -422,7 +458,7 @@ const styles = StyleSheet.create({
   },
   sexo: {
     top: '17.22%',
-    width: '22.28%',
+    width: '100%',
     height: '2.96%',
     fontSize: FontSize.size_smi_9
   },

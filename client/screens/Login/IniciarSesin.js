@@ -84,7 +84,9 @@ const IniciarSesin = () => {
           console.log(response, 'responde el login')
 
           dispatch(
-            setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+            setIsSpotMan(
+              response?.payload?.user?.type === 'club' ? false : true
+            )
           )
           await AsyncStorage.setItem(
             '@user',
@@ -92,7 +94,7 @@ const IniciarSesin = () => {
           )
           await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
           await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
-          await AsyncStorage.setItem('userType', response.payload.user.type)
+          await AsyncStorage.setItem('userType', response?.payload?.user?.type)
           setLoading(false)
           if (response.payload?.user?.club || response.payload.user?.sportman) {
             dispatch(
@@ -114,7 +116,7 @@ const IniciarSesin = () => {
               routes: [{ name: 'SiguiendoJugadores' }]
             })
           } else {
-            if (response.payload?.user?.type === 'club') {
+            if (response?.payload?.user?.type === 'club') {
               if (user?.accesToken) {
                 navigation.navigate('stepsClub')
               }
@@ -256,7 +258,7 @@ const IniciarSesin = () => {
                     justifyContent: 'center',
                     backgroundColor: Color.wHITESPORTSMATCH,
                     borderRadius: Border.br_81xl,
-                    width: '95.5%',
+                    width: 360,
                     alignItems: 'center',
                     flexDirection: 'row',
                     height: 45,

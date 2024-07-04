@@ -60,6 +60,7 @@ export const getAllLikes = createAsyncThunk('getAllLikes/post', async () => {
 export const listLikes = createAsyncThunk(
   'findLikes/post',
   async (authorId) => {
+    console.log('DISPATCHING LISTLIKES WITH', authorId)
     try {
       const { data } = await axiosInstance.get(`like/list?authorId=${authorId}`)
       return data

@@ -30,7 +30,11 @@ const FiltersHome = ({
           placeholderTextColor={Color.gREY2SPORTSMATCH}
           value={textValue}
           onChangeText={(e) => setTextValue(e)}
-          placeholder={text ? text : 'Posición de juego, población, club...'}
+          placeholder={
+            textValue?.length > 0
+              ? textValue
+              : 'Posición de juego, población, club...'
+          }
         />
       </View>
       <Pressable

@@ -20,11 +20,10 @@ const postSlices = createSlice({
   },
   reducers: {
     cleanPost: (state, action) => {
-      state.allPosts = [],
-      state.post = {},
-      state.likes = [],
-      state.findedLike = []
-
+      ;(state.allPosts = []),
+        (state.post = {}),
+        (state.likes = []),
+        (state.findedLike = [])
     },
 
     setFilterPost: (state, action) => {
@@ -135,6 +134,7 @@ const postSlices = createSlice({
         state.error = false
       })
       .addCase(listLikes.fulfilled, (state, action) => {
+        console.log('setting findedlike to', action.payload)
         state.loading = false
         state.findedLike = action.payload
         state.error = false
@@ -160,7 +160,5 @@ const postSlices = createSlice({
   }
 })
 
-
-
-export const { cleanPost , setFindedLikes ,setFilterPost} = postSlices.actions
+export const { cleanPost, setFindedLikes, setFilterPost } = postSlices.actions
 export default postSlices.reducer

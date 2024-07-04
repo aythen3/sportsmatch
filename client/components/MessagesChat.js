@@ -17,7 +17,8 @@ const MessagesChat = ({
   profilePic,
   applicant,
   sportmanId,
-  setValue
+  setValue,
+  value
 }) => {
   const dispatch = useDispatch()
   const { mainColor } = useSelector((state) => state.users)
@@ -44,13 +45,14 @@ const MessagesChat = ({
       const { data } = await axiosInstance.get(
         `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
       )
+      console.log('====SETTING CONV MESSAGES TO', data)
       setConvMessages(data)
     }
   }
 
   useEffect(() => {
     getChatMessages()
-  }, [usersWithMessages])
+  }, [usersWithMessages, value])
 
   useEffect(() => {
     setLoading(true)
@@ -91,7 +93,7 @@ const MessagesChat = ({
       )
   }, [lastMessage])
 
-  if (loading === true || !lastMessage) return null
+  if (loading === true || lastMessage === null) return null
   // if (!lastMessage) return null
   return (
     <View>

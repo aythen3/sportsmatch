@@ -38,7 +38,6 @@ import {
 } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
 
-
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
@@ -92,7 +91,6 @@ const SiguiendoJugadores = () => {
       }
     }
   }, [user])
-
 
   useEffect(() => {
     setActiveIcon('diary')

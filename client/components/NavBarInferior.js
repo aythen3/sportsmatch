@@ -31,7 +31,8 @@ const NavBarInferior = () => {
     console.log('notReaded changed', notReaded)
   }, [notReaded])
 
-  // console.log(user.user,'asdasdas')
+  console.log('=========== USER.USER ============', user.user)
+  console.log('=========== SPORTMAN ============', sportman)
   const handleIconPress = (iconName) => {
     setActiveIcon(iconName)
     switch (iconName) {

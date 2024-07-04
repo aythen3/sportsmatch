@@ -18,7 +18,7 @@ import GestureRecognizer from 'react-native-swipe-gestures'
 
 const CommentSection = ({ visible, closeModal, postId }) => {
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
 
@@ -64,7 +64,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               paddingHorizontal: 10,
               borderWidth: 0.5,
               borderColor: Color.wHITESPORTSMATCH,
-              paddingBottom:85
+              paddingBottom: 85
             }}
           >
             <TouchableOpacity onPress={closeModal} style={styles.topContainer}>
@@ -72,98 +72,109 @@ const CommentSection = ({ visible, closeModal, postId }) => {
               <Text style={styles.text}>Comentarios</Text>
               <View style={styles.line} />
             </TouchableOpacity>
-           <ScrollView>
-           {postComments?.length > 0 ? (
-              sortedComments?.map((comment) => (
-                <View key={comment.id} style={styles.commentContainer}>
-                  <View style={styles.authorContainer}>
-                    <Image
-                      contentFit="cover"
-                      source={
-                        comment.author.sportman
-                          ? comment.author?.sportman?.info?.img_perfil
-                          : comment.author?.club?.img_perfil || require("../../assets/whiteSport.png")
-                      }
-                      style={styles.authorImg}
-                    />
-                    <Text style={styles.authorText}>
-                      {comment.author.nickname}
-                    </Text>
-                    <Text style={styles.timeText}>
-                      {formatDateDifference(comment.createdAt)}
-                    </Text>
+            <ScrollView>
+              {postComments?.length > 0 ? (
+                sortedComments?.map((comment) => (
+                  <View key={comment.id} style={styles.commentContainer}>
+                    <View style={styles.authorContainer}>
+                      <Image
+                        contentFit="cover"
+                        source={
+                          comment.author.sportman
+                            ? comment.author?.sportman?.info?.img_perfil
+                            : comment.author?.club?.img_perfil ||
+                              require('../../assets/whiteSport.png')
+                        }
+                        style={{
+                          height: 28,
+                          width: 28,
+                          borderRadius: 15,
+                          backgroundColor: mainColor
+                        }}
+                      />
+                      <Text style={styles.authorText}>
+                        {comment.author.nickname}
+                      </Text>
+                      <Text style={styles.timeText}>
+                        {formatDateDifference(comment.createdAt)}
+                      </Text>
+                    </View>
+                    <Text style={styles.input}>{comment.content}</Text>
                   </View>
-                  <Text style={styles.input}>{comment.content}</Text>
+                ))
+              ) : (
+                <Text style={styles.input}>
+                  Aun no hay ningún comentario, ¡sé el primero!
+                </Text>
+              )}
+            </ScrollView>
+            {sportman.type !== 'invitado' && (
+              <View
+                style={{
+                  width: '100%',
+                  left: 10,
+                  height: 70,
+                  justifyContent: 'space-between',
+                  position: 'absolute',
+                  bottom: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: 'black'
+                }}
+              >
+                <View
+                  style={{
+                    borderRadius: 13,
+                    borderWidth: 0.5,
+                    borderColor: Color.wHITESPORTSMATCH,
+                    width: '80%',
+                    height: '100%',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                    display: 'flex',
+                    paddingHorizontal: 8
+                  }}
+                >
+                  <TextInput
+                    placeholder="Escribe un comentario..."
+                    placeholderTextColor={Color.wHITESPORTSMATCH}
+                    onChangeText={setComment}
+                    value={comment}
+                    multiline
+                    style={styles.input2}
+                  />
                 </View>
-              ))
-            ) : (
-              <Text style={styles.input}>
-                Aun no hay ningún comentario, ¡sé el primero!
-              </Text>
+                <TouchableOpacity
+                  style={{
+                    zIndex: 9999999
+                  }}
+                  onPress={() => {
+                    Keyboard.dismiss()
+                    handleSubmit({
+                      comment,
+                      user,
+                      postId,
+                      dispatch,
+                      setComment
+                    })
+                    closeModal()
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: Color.wHITESPORTSMATCH,
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontSize: 16,
+                      fontWeight: '700',
+                      marginLeft: 15,
+                      zIndex: 5000
+                    }}
+                  >
+                    Publicar
+                  </Text>
+                </TouchableOpacity>
+              </View>
             )}
-
-           </ScrollView>
-           {sportman.type !== 'invitado' && (
-             <View
-             style={{
-               width: '100%',
-               left: 10,
-               height: 70,
-               justifyContent: 'space-between',
-               position: 'absolute',
-               bottom: 10,
-               flexDirection: 'row',
-               alignItems: 'center',
-               backgroundColor:"black"
-             }}
-           >
-             <View
-               style={{
-                 borderRadius: 13,
-                 borderWidth: 0.5,
-                 borderColor: Color.wHITESPORTSMATCH,
-                 width: '80%',
-                 height: '100%',
-                 justifyContent: 'flex-start',
-                 flexDirection: 'column',
-                 display: 'flex',
-                 paddingHorizontal: 8
-               }}
-             >
-               <TextInput
-                 placeholder="Escribe un comentario..."
-                 placeholderTextColor={Color.wHITESPORTSMATCH}
-                 onChangeText={setComment}
-                 value={comment}
-                 multiline
-                 style={styles.input2}
-               />
-             </View>
-             <TouchableOpacity
-               style={{
-                 zIndex: 9999999
-               }}
-               onPress={() => {
-                 Keyboard.dismiss()
-                 handleSubmit({ comment, user, postId, dispatch, setComment })
-                 closeModal()
-               }}
-             >
-               <Text
-                 style={{
-                   color: Color.wHITESPORTSMATCH,
-                   fontFamily: FontFamily.t4TEXTMICRO,
-                   fontSize: 16,
-                   fontWeight: '700',
-                   marginLeft: 15,
-                   zIndex: 5000
-                 }}
-               >
-                 Publicar
-               </Text>
-             </TouchableOpacity>
-           </View>
-           )}
           </View>
         </View>
       </Modal>
@@ -210,7 +221,7 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: 15,
-    alignItems: "center"
+    alignItems: 'center'
   },
   commentContainer: {
     padding: 15,

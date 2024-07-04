@@ -171,21 +171,55 @@ const Paso4Jugador = ({
             </View>
             <View style={styles.rectangulobotonpesoMaximo}>
               {provisoryCoverImage ? (
-                <Image
+                <View
                   style={{
-                    width: '100%',
+                    width: '95%',
                     height: 170,
-                    backgroundColor: 'white',
+                    backgroundColor: '#fff',
                     marginTop: 30,
-                    borderRadius: 8
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
-                  contentFit="cover"
-                  source={{ uri: provisoryCoverImage }}
-                />
+                >
+                  <Image
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'white',
+                      borderRadius: 8
+                    }}
+                    contentFit="cover"
+                    source={{ uri: provisoryCoverImage }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedPicture('cover')
+                      setShowCamera(true)
+                    }}
+                    style={{
+                      top: -17,
+                      right: 0,
+                      position: 'absolute',
+                      width: 35,
+                      height: 35,
+                      borderRadius: 100,
+                      backgroundColor: '#252525',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image
+                      style={{ width: 14, height: 14 }}
+                      contentFit="cover"
+                      source={require('../../assets/camera.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
               ) : (
                 <View
                   style={{
-                    width: '100%',
+                    width: '95%',
                     height: 170,
                     backgroundColor: '#fff',
                     marginTop: 30,
