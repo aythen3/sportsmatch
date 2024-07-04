@@ -112,7 +112,17 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={styles.botonSubirImagen}
+                style={{
+                  paddingHorizontal: Padding.p_mid,
+                  paddingVertical: Padding.p_9xs,
+                  backgroundColor: '#00F0FF',
+                  borderRadius: Border.br_81xl,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  overflow: 'hidden',
+                  marginTop: 15,
+                  alignItems: 'center'
+                }}
                 onPress={() => handlePickImage('profile')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>
@@ -214,7 +224,17 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
                 </View>
               )}
               <TouchableOpacity
-                style={styles.botonSubirImagen}
+                style={{
+                  paddingHorizontal: Padding.p_mid,
+                  paddingVertical: Padding.p_9xs,
+                  backgroundColor: '#00F0FF',
+                  borderRadius: Border.br_81xl,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  overflow: 'hidden',
+                  marginTop: 15,
+                  alignItems: 'center'
+                }}
                 onPress={() => handlePickImage('cover')}
               >
                 <Text style={[styles.subirFotoDe, styles.paso4Typo]}>

@@ -40,12 +40,28 @@ const TusNotificaciones1 = () => {
 
   const userId = user?.user?.id
 
+  const sortUsers = (userA, userB) => {
+    const isInMessagesA = usersWithMessages?.some(
+      (user) => user.id === userA.id
+    )
+    const isInMessagesB = usersWithMessages?.some(
+      (user) => user.id === userB.id
+    )
+
+    if (isInMessagesA && !isInMessagesB) {
+      return -1
+    } else if (!isInMessagesA && isInMessagesB) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
   const filteredUsers = allUsers
     ?.filter((user) =>
       user?.nickname?.toLowerCase()?.includes(value?.toLowerCase())
     )
     .sort(sortUsers)
-    .reverse()
 
   // useEffect(() => {}, [value, filteredUsers])
 
@@ -65,21 +81,6 @@ const TusNotificaciones1 = () => {
       dispatch(getNotificationsByUserId(user.user.id))
     }
   }, [])
-
-  const sortUsers = (userA, userB) => {
-    const isInMessagesB =
-      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
-    const isInMessagesA =
-      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
-
-    if (isInMessagesA && !isInMessagesB) {
-      return -1
-    } else if (!isInMessagesA && isInMessagesB) {
-      return 1
-    } else {
-      return 0
-    }
-  }
 
   // ================ NOTIFICATIONS/OFFERS =====================
 

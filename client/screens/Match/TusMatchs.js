@@ -176,6 +176,7 @@ const TusMatchs = () => {
           <View>
             {userMatches
               .filter((match) => match.status === 'success')
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((match, index) => (
                 <View key={index} style={{ marginTop: 14, width: '100%' }}>
                   <Pressable
@@ -345,7 +346,10 @@ const TusMatchs = () => {
                 },
                 { seenIds: new Set(), filteredArray: [] }
               )
-              .filteredArray.map((match, index) => (
+              .filteredArray.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+              )
+              .map((match, index) => (
                 <View key={index} style={{ marginTop: 14, width: '100%' }}>
                   <Pressable
                     onPress={() => {
