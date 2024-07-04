@@ -247,7 +247,7 @@ const ConfigurarAnuncio = () => {
             >
               <Text style={styles.inputText}>
                 {selectedGender == '' && offerData?.sexo && offerData?.sexo === 'Male' ? 'Hombre' : 'Mujer'}
-                {!selectedGender && !offerData?.sexo && 'Selecciona un género'}
+                {!selectedGender && offerData?.sexo ==  "" && 'Selecciona un género'}
 
               </Text>
 
@@ -340,7 +340,7 @@ const ConfigurarAnuncio = () => {
             >
               <Text style={styles.inputText}>
                 {offerData?.retribution !== false && offerData?.retribution !== true  && ('Seleccione retribución') }
-                {selectedRemuneration == '' ? offerData?.retribution === true ? 'Si' : 'No' : selectedRemuneration}
+                {selectedRemuneration == '' ? offerData?.retribution : selectedRemuneration}
               </Text>
 
 
