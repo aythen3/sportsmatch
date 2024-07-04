@@ -247,6 +247,7 @@ const OfertasEmitidas = () => {
                           <ModalOptionOffers
                             offerId={selectedOffer}
                             onClose={() => setModalVisible(false)}
+                            offerData={ offers?.filter(off => selectedOffer === off?.id)[0]}
                           />
                         </View>
                       </View>
