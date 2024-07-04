@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  StatusBar,
+  TouchableOpacity
+} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
@@ -10,6 +17,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { updateOffer } from '../redux/actions/offers'
 import { sendNotification } from '../redux/actions/notifications'
+import { getColorsWithOpacity } from '../utils/colorUtils'
 
 const MessagesChat = ({
   name,
@@ -17,7 +25,8 @@ const MessagesChat = ({
   profilePic,
   applicant,
   sportmanId,
-  setValue
+  setValue,
+  value
 }) => {
   const dispatch = useDispatch()
   const { mainColor } = useSelector((state) => state.users)
@@ -37,6 +46,9 @@ const MessagesChat = ({
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
   const { user, allUsers } = useSelector((state) => state.users)
+  const moreOpacity = 0.65 // 80% opacity
+  const lessOpacity = 0.4 // 40% opacity
+  const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
   const getChatMessages = async () => {
     if (user?.user?.id && selectedUserId) {
@@ -44,13 +56,14 @@ const MessagesChat = ({
       const { data } = await axiosInstance.get(
         `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
       )
+      console.log('====SETTING CONV MESSAGES TO', data)
       setConvMessages(data)
     }
   }
 
   useEffect(() => {
     getChatMessages()
-  }, [usersWithMessages])
+  }, [usersWithMessages, value])
 
   useEffect(() => {
     setLoading(true)
@@ -91,7 +104,7 @@ const MessagesChat = ({
       )
   }, [lastMessage])
 
-  if (loading === true || !lastMessage) return null
+  if (loading === true || lastMessage === null) return null
   // if (!lastMessage) return null
   return (
     <View>
@@ -257,7 +270,7 @@ const MessagesChat = ({
               offer.inscriptions.includes(sportmanId) &&
               offer.club.id === club.id
           ).length > 0 && (
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 const currentOffer = offers.filter(
                   (offer) =>
@@ -349,21 +362,55 @@ const MessagesChat = ({
                 )
               }}
               style={{
-                height: 40,
                 position: 'absolute',
-                right: 0,
-                zIndex: 10000,
-                alignItems: 'center',
+                right: 40,
+                flexDirection: 'row',
+                backgroundColor: colors.lessOpaque,
+                borderRadius: Border.br_81xl,
+                height: 22,
+                width: 69,
                 justifyContent: 'center',
-                borderRadius: Border.br_81xl
+                alignItems: 'center',
+                marginTop: 4
               }}
             >
-              <Image
-                style={{ height: 58 * 0.7, width: 111 * 0.7 }}
-                contentFit="contain"
-                source={require('../assets/matchButton.png')}
-              />
-            </Pressable>
+              {/* <Image
+                    style={{ height: 58 * 0.7, width: 111 * 0.7 }}
+                    contentFit="contain"
+                    source={require('../assets/matchButton.png')}
+                  /> */}
+              <Text
+                style={{
+                  width: '70%',
+                  fontSize: 11,
+                  textAlign: 'center',
+                  marginLeft: '35%',
+                  color: colors.moreOpaque,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: '700'
+                }}
+              >
+                {'Match'}
+              </Text>
+              <View
+                style={{
+                  width: 27,
+                  height: 27,
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: mainColor,
+                  position: 'absolute',
+                  left: 0
+                }}
+              >
+                <Image
+                  style={{ width: '80%', height: '80%' }}
+                  contentFit="cover"
+                  source={require('../assets/whiteSport.png')}
+                />
+              </View>
+            </TouchableOpacity>
           )}
       </Pressable>
       <View

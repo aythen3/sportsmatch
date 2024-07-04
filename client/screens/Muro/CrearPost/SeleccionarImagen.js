@@ -428,13 +428,13 @@ const SeleccionarImagen = () => {
             }}
           >
             <TouchableOpacity
-              style={{ position: 'absolute', top: 22, left: 18 }}
+              style={{ position: 'absolute', top: 49, left: 20 }}
               onPress={() => setShowCamera(false)}
             >
               <Image
                 style={{
-                  height: 15,
-                  width: 15
+                  height: 16,
+                  width: 16
                 }}
                 contentFit="cover"
                 source={require('../../../assets/group-565.png')}

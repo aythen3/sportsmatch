@@ -40,12 +40,28 @@ const TusNotificaciones1 = () => {
 
   const userId = user?.user?.id
 
+  const sortUsers = (userA, userB) => {
+    const isInMessagesA = usersWithMessages?.some(
+      (user) => user.id === userA.id
+    )
+    const isInMessagesB = usersWithMessages?.some(
+      (user) => user.id === userB.id
+    )
+
+    if (isInMessagesA && !isInMessagesB) {
+      return -1
+    } else if (!isInMessagesA && isInMessagesB) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
   const filteredUsers = allUsers
     ?.filter((user) =>
       user?.nickname?.toLowerCase()?.includes(value?.toLowerCase())
     )
     .sort(sortUsers)
-    .reverse()
 
   // useEffect(() => {}, [value, filteredUsers])
 
@@ -65,22 +81,7 @@ const TusNotificaciones1 = () => {
       dispatch(getNotificationsByUserId(user.user.id))
     }
   }, [])
-
-  const sortUsers = (userA, userB) => {
-    const isInMessagesB =
-      usersWithMessages?.filter((user) => user.id === userA.id).length > 0
-    const isInMessagesA =
-      usersWithMessages?.filter((user) => user.id === userB.id).length > 0
-
-    if (isInMessagesA && !isInMessagesB) {
-      return -1
-    } else if (!isInMessagesA && isInMessagesB) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-
+  console.log('userNotifications', userNotifications)
   // ================ NOTIFICATIONS/OFFERS =====================
 
   useEffect(() => {
@@ -279,6 +280,7 @@ const TusNotificaciones1 = () => {
                   value === '' &&
                   usersWithMessages?.map((user, index) => (
                     <MessagesChat
+                      value={value}
                       setValue={setValue}
                       key={index + 999}
                       name={user.nickname}
@@ -293,10 +295,10 @@ const TusNotificaciones1 = () => {
                     />
                   ))
                 )}
-                {value !== '' &&
-                  filteredUsers.map((user, index) => (
-                    <View style={{ borderWidth: 2, borderColor: 'green' }}>
+                {value !== '' && filteredUsers.length > 0
+                  ? filteredUsers.map((user, index) => (
                       <MessagesChat
+                        value={value}
                         setValue={setValue}
                         key={index + 99999}
                         name={user.nickname}
@@ -309,8 +311,27 @@ const TusNotificaciones1 = () => {
                         selectedUserId={user.id}
                         // applicant={applicants?.includes(user.sportman?.id)}
                       />
-                    </View>
-                  ))}
+                    ))
+                  : value !== '' && (
+                      <View
+                        style={{
+                          marginTop: 30,
+                          width: '100%',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: '400',
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            color: Color.wHITESPORTSMATCH
+                          }}
+                        >
+                          No encontramos resultados para tu búsqueda!
+                        </Text>
+                      </View>
+                    )}
               </ScrollView>
             )}
           </View>

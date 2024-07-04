@@ -68,6 +68,7 @@ const Paso1 = () => {
   const [stepsProfesional, setStepsProfesional] = useState(0)
   const [selectedSport, setSelectedSport] = useState(null)
   const [selectPosition, setSelectPosition] = useState('')
+  const [selectedProfesional, setSelectedProfesional] = useState('')
 
   const [sportmanValues, setSportmanValues] = useState({
     sport: sport?.name || '',
@@ -81,8 +82,8 @@ const Paso1 = () => {
 
 
   const [profesionalValues, setProfesionalValues] = useState({
-    rol: profesionalType,
-    sport: sport.name,
+    rol: '',
+    sport: sport?.name || '',
     yearsOfExperience: '',
     city: '',
     actualClub: '',
@@ -117,6 +118,10 @@ const Paso1 = () => {
   }
 
   const handleNext = () => {
+    if (selectedRole == null) {
+      return
+    }
+
     const fullData = {
       ...sportmanValues,
       sport: 'Invitado',
@@ -146,17 +151,16 @@ const Paso1 = () => {
       userId: user.user.id
     }
 
-    if (selectedRole == null) {
-      return
-    }
+  
     if (selectedRole === 'Invitado') {
       if (Object.keys(sportmanRedux).length !== 0) {
-        navigation.navigate('SiguiendoJugadores')
+
         dispatch(
           setInitialSportman({
             id: "invitado",
             ...body.sportmanData
           }))
+          navigation.navigate('SiguiendoJugadores')
         return
       }
 
@@ -237,7 +241,6 @@ const Paso1 = () => {
         }
         if (body) {
           dispatch(createSportman(body)).then((response) => {
-            console.log("esto responde el sportman",response)
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
@@ -291,30 +294,28 @@ const Paso1 = () => {
           img_perfil: profileImage,
           img_front: coverImage,
           nickname: user?.user?.nickname || '',
-          city: selectedCity || ''
+     
         }
         const body = {
           sportmanData: {
-            type: selectedRole === 'Jugador' ? 'player' : 'coach',
+            type:  'coach',
             info: fullData,
             club: null
           },
           userId: user.user.id
         }
-        if (Object.keys(sportmanRedux).length == 0) {
+        if (body) {
           dispatch(createSportman(body)).then((response) => {
+            console.log("esto responde el sportman",response,"Y ESTO ERA EL BODY",body)
+
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
                 ...body.sportmanData
               })
             )
-            const color =
-              (!sportman && !profesional && '#E1451E') ||
-              (profesional && '#00F0FF') ||
-              (!selectedSport && '#E1451E') ||
-              sportColor
-            dispatch(setMainColor(color))
+      
+            dispatch(setMainColor('#00F0FF'))
 
             return navigation.reset({
               index: 0,
@@ -326,7 +327,7 @@ const Paso1 = () => {
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
-            type: 'player'
+            type: selectedRole === 'Jugador' ? 'player' : 'coach'
           }
           dispatch(updateSportman(upd)).then((response) => {
             dispatch(
@@ -642,6 +643,9 @@ const Paso1 = () => {
         )}
         {profesional && stepsProfesional === 0 && (
           <Paso3Profesional
+          selectedProfesional={selectedProfesional}
+          setSelectedProfesional={setSelectedProfesional}
+
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
             profesionalValues={profesionalValues}

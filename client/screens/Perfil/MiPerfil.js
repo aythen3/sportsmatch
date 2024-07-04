@@ -27,28 +27,22 @@ import { useIsFocused } from '@react-navigation/native'
 
 const MiPerfil = () => {
   const isFocused = useIsFocused()
-  
+
   const navigation = useNavigation()
-  const dispatch = useDispatch()
-  
+
   const { setActiveIcon } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
-  
-  const [sportColor, setSportColor] = useState('#E1451E')
+
   const [isTruncated, setIsTruncated] = useState(true)
   const [selectedTab, setSelectedTab] = useState('Feed')
-
 
   useEffect(() => {
     if (isFocused) {
       setActiveIcon('profile')
     }
-    console.log(user,"esto tengo")
   }, [isFocused])
-
-
 
   const renderContent = () => {
     if (selectedTab === 'Feed') {
@@ -61,8 +55,6 @@ const MiPerfil = () => {
   const toggleTruncate = () => {
     setIsTruncated(!isTruncated)
   }
-
-  // console.log('sportman', sportman.info)
 
   return (
     <ScrollView
@@ -80,7 +72,7 @@ const MiPerfil = () => {
         }}
       >
         <View>
-          {sportman?.info?.img_front === '' ? (
+          {!sportman?.info?.img_front || sportman?.info?.img_front === '' ? (
             <Image
               style={{ height: 150, backgroundColor: mainColor }}
               contentFit="cover"
@@ -157,11 +149,13 @@ const MiPerfil = () => {
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                  <Text style={[styles.textTypo2, { color: mainColor }]}>
-                    {typeof sportman?.info?.sport === 'object'
-                      ? sportman?.info?.sport.name
-                      : sportman?.info?.sport}
-                  </Text>
+                  {sportman?.info?.sport?.length > 0 && (
+                    <Text style={[styles.textTypo2, { color: mainColor }]}>
+                      {typeof sportman?.info?.sport === 'object'
+                        ? sportman?.info?.sport.name
+                        : sportman?.info?.sport}
+                    </Text>
+                  )}
                   <Text
                     style={{
                       textAlign: 'left',
@@ -176,6 +170,7 @@ const MiPerfil = () => {
                       ? sportman?.info?.rol
                       : sportman?.info?.position}
                   </Text>
+
                   {user?.user?.sportman?.info?.city && (
                     <Text style={styles.textTypo3}>
                       {user?.user?.sportman?.info?.city}

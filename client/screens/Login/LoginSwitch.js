@@ -163,7 +163,7 @@ const LoginSwitch = () => {
               type: isSportman === true ? 'sportman' : 'club'
             })
           ).then(async (data) => {
-            // console.log('data from back:', data);
+            console.log('data from back:', data)
             try {
               const response = await dispatch(login({ googleId: user.uid }))
               detectSportColor(
@@ -171,17 +171,13 @@ const LoginSwitch = () => {
                   response?.payload?.user?.club?.sport,
                 dispatch
               )
-              //  console.log('response google:', response.payload)
 
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
                 )
               )
-              // await AsyncStorage.setItem(
-              //   'userToken',
-              //   response?.payload?.accesToken
-              // )
+
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))

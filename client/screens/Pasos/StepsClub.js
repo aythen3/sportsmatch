@@ -302,7 +302,8 @@ const styles = StyleSheet.create({
   touchable: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    alignSelf: 'center',
+    width: '94%',
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
     paddingHorizontal: Padding.p_81xl,

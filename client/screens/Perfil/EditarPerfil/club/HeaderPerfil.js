@@ -379,7 +379,8 @@ const HeaderPerfil = ({
                         sendNotification({
                           title: 'Follow',
                           message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId: data?.author?.sportman?.user?.id,
+                          recipientId:   data?.author?.sportman?.user?.id ??
+                          data?.author?.id,
                           date: new Date(),
                           read: false,
                           prop1: {
@@ -392,7 +393,7 @@ const HeaderPerfil = ({
                             rol: 'user'
                           }
                         })
-                      ).then((res) => console.log('respuesta', data?.author))
+                      ).then((res) => console.log('respuesta', res))
                     }
                     dispatch(updateUser(actualUser))
                     dispatch(getAllUsers())
@@ -503,21 +504,7 @@ const HeaderPerfil = ({
                 )
                   .then((data) => {
                     console.log('data from match: ', userIdd)
-                    // console.log('body to sendNotification: ', {
-                    //   title: 'Solicitud',
-                    //   message: 'Recibiste una solicitud de match!',
-                    //   recipientId: data?.payload?.sportManData?.userId,
-                    //   date: new Date(),
-                    //   read: false,
-                    //   prop1: {
-                    //     matchId: data?.payload?.id,
-                    //     clubData: {
-                    //       name: user?.user?.nickname,
-                    //       userId: user.user.id,
-                    //       ...user?.user?.club
-                    //     }
-                    //   }
-                    // })
+
                     dispatch(
                       sendNotification({
                         title: 'Solicitud',

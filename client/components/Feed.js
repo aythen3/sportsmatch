@@ -33,6 +33,7 @@ const Feed = ({ externalId }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('allPosts from feed', allPosts)
     const userId = externalId || user?.user?.id
     const post = allPosts.filter(
       (post) => post?.author?.id == userId && !post?.prop1

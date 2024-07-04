@@ -40,6 +40,8 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info?.birthdate) || 2000
 
+console.log(sportman,"sssss")
+
   if (user && sportman)
     return (
       <ScrollView
@@ -338,12 +340,12 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info?.city}
+                    {sportman.info?.city || "-"}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                   <Text style={[styles.concepto, styles.ataqueClr]}>
-                    Años de expereiencia
+                    Años de experiencia
                   </Text>
                   <Text
                     style={[
@@ -368,7 +370,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info?.sport?.name || 'sin deporte'}
+                    {sportman?.info?.sport?.name || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -380,7 +382,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info?.rol || 'sin rol'}
+                    {sportman?.info?.rol || '-'}
                   </Text>
                 </View>
               </View>
@@ -413,7 +415,7 @@ const FeedStats = () => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {sportman?.info?.description || 'sin descripcion'}
+              {sportman?.info?.description || ''}
             </Text>
           </View>
         </View>
