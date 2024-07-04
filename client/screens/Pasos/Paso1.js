@@ -301,7 +301,7 @@ const Paso1 = () => {
           },
           userId: user.user.id
         }
-        if (Object.keys(sportmanRedux).length == 0) {
+        if (body) {
           dispatch(createSportman(body)).then((response) => {
             dispatch(
               setInitialSportman({
@@ -309,12 +309,8 @@ const Paso1 = () => {
                 ...body.sportmanData
               })
             )
-            const color =
-              (!sportman && !profesional && '#E1451E') ||
-              (profesional && '#00F0FF') ||
-              (!selectedSport && '#E1451E') ||
-              sportColor
-            dispatch(setMainColor(color))
+      
+            dispatch(setMainColor('#00F0FF'))
 
             return navigation.reset({
               index: 0,
