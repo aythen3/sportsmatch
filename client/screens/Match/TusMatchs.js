@@ -288,7 +288,7 @@ const TusMatchs = () => {
               }}
             >
               {search?.length > 0
-                ? 'No encontramos matchs relacionados con su busqueda.'
+                ? 'No encontramos matchs relacionados con su búsqueda.'
                 : 'Aun no tienes matchs!'}
             </Text>
           </View>
@@ -464,7 +464,7 @@ const TusMatchs = () => {
               }}
             >
               {search?.length > 0
-                ? 'No encontramos matchs relacionados con su busqueda.'
+                ? 'No encontramos matchs relacionados con su búsqueda.'
                 : 'Aun no tienes matchs!'}
             </Text>
           </View>

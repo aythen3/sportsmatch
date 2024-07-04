@@ -172,13 +172,12 @@ const LoginSwitch = () => {
                 dispatch
               )
 
-
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
                 )
               )
-        
+
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))

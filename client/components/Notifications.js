@@ -108,9 +108,20 @@ const Notifications = ({ data }) => {
             .
           </Text>
         )}
-        <View style={{ flex: 1, marginLeft: 4 }}>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 4,
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
             style={{
+              maxWidth: '80%',
               fontWeight: '600',
               color: data.title === 'Like' ? '#999999' : Color.wHITESPORTSMATCH,
               alignSelf: 'flex-start',

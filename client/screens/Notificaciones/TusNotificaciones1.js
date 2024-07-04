@@ -81,7 +81,7 @@ const TusNotificaciones1 = () => {
       dispatch(getNotificationsByUserId(user.user.id))
     }
   }, [])
-
+  console.log('userNotifications', userNotifications)
   // ================ NOTIFICATIONS/OFFERS =====================
 
   useEffect(() => {
@@ -295,23 +295,43 @@ const TusNotificaciones1 = () => {
                     />
                   ))
                 )}
-                {value !== '' &&
-                  filteredUsers.map((user, index) => (
-                    <MessagesChat
-                      value={value}
-                      setValue={setValue}
-                      key={index + 99999}
-                      name={user.nickname}
-                      sportmanId={user.sportman?.id}
-                      profilePic={
-                        user?.type === 'club'
-                          ? user?.club?.img_perfil
-                          : user?.sportman?.info?.img_perfil
-                      }
-                      selectedUserId={user.id}
-                      // applicant={applicants?.includes(user.sportman?.id)}
-                    />
-                  ))}
+                {value !== '' && filteredUsers.length > 0
+                  ? filteredUsers.map((user, index) => (
+                      <MessagesChat
+                        value={value}
+                        setValue={setValue}
+                        key={index + 99999}
+                        name={user.nickname}
+                        sportmanId={user.sportman?.id}
+                        profilePic={
+                          user?.type === 'club'
+                            ? user?.club?.img_perfil
+                            : user?.sportman?.info?.img_perfil
+                        }
+                        selectedUserId={user.id}
+                        // applicant={applicants?.includes(user.sportman?.id)}
+                      />
+                    ))
+                  : value !== '' && (
+                      <View
+                        style={{
+                          marginTop: 30,
+                          width: '100%',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: '400',
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            color: Color.wHITESPORTSMATCH
+                          }}
+                        >
+                          No encontramos resultados para tu búsqueda!
+                        </Text>
+                      </View>
+                    )}
               </ScrollView>
             )}
           </View>
