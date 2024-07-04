@@ -29,14 +29,12 @@ const MiPerfil = () => {
   const isFocused = useIsFocused()
   
   const navigation = useNavigation()
-  const dispatch = useDispatch()
   
   const { setActiveIcon } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
   
-  const [sportColor, setSportColor] = useState('#E1451E')
   const [isTruncated, setIsTruncated] = useState(true)
   const [selectedTab, setSelectedTab] = useState('Feed')
 
@@ -45,7 +43,6 @@ const MiPerfil = () => {
     if (isFocused) {
       setActiveIcon('profile')
     }
-    console.log(user,"esto tengo")
   }, [isFocused])
 
 
@@ -62,7 +59,6 @@ const MiPerfil = () => {
     setIsTruncated(!isTruncated)
   }
 
-  // console.log('sportman', sportman.info)
 
   return (
     <ScrollView
@@ -157,11 +153,6 @@ const MiPerfil = () => {
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                  <Text style={[styles.textTypo2, { color: mainColor }]}>
-                    {typeof sportman?.info?.sport === 'object'
-                      ? sportman?.info?.sport.name
-                      : sportman?.info?.sport}
-                  </Text>
                   <Text
                     style={{
                       textAlign: 'left',
@@ -175,6 +166,11 @@ const MiPerfil = () => {
                     {sportman?.type === 'coach'
                       ? sportman?.info?.rol
                       : sportman?.info?.position}
+                  </Text>
+                  <Text style={[styles.textTypo2, { color: mainColor }]}>
+                    {typeof sportman?.info?.sport === 'object'
+                      ? sportman?.info?.sport.name
+                      : sportman?.info?.sport}
                   </Text>
                   {user?.user?.sportman?.info?.city && (
                     <Text style={styles.textTypo3}>
