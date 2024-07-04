@@ -200,7 +200,7 @@ function Carousel({
             resizeMode="cover"
             source={
               data?.author?.id === user?.user?.id
-                ? user?.user?.sportman?.info?.img_front
+                ? user?.user?.sportman?.info?.img_perfil
                 : imgPerfil === '' || !imgPerfil
                   ? require('../assets/whiteSport.png')
                   : imgPerfil

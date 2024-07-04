@@ -104,7 +104,7 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                 ))
               ) : (
                 <Text style={styles.input}>
-                  Aun no hay ningún comentario, ¡sé el primero!
+                  Aún no hay ningún comentario, ¡sé el primero!
                 </Text>
               )}
             </ScrollView>

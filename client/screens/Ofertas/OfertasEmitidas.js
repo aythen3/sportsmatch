@@ -100,7 +100,7 @@ const OfertasEmitidas = () => {
                 bottom: 4
               }}
             >
-              Aun no has creado ninguna oferta!
+              Aún no has creado ninguna oferta!
             </Text>
           ) : (
             offers

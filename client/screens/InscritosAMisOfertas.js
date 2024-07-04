@@ -357,105 +357,108 @@ const InscritosAMisOfertas = () => {
                     bottom: 4
                   }}
                 >
-                  Aun no hay ningun inscrito en esta oferta!
+                  Aún no hay ningun inscrito en esta oferta!
                 </Text>
               </View>
             )}
 
-            {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && inscriptions.filter((item) => item !== 'undefined').length > 2 && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '95%',
-                  height: 80,
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#cecece'
-                }}
-              >
+            {user?.user?.plan !== 'pro' &&
+              user?.user?.plan !== 'star' &&
+              inscriptions.filter((item) => item !== 'undefined').length >
+                2 && (
                 <View
                   style={{
                     flexDirection: 'row',
-                    gap: 10,
-                    alignItems: 'center'
+                    justifyContent: 'space-between',
+                    width: '95%',
+                    height: 80,
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#cecece'
                   }}
                 >
-                  <View style={{ position: 'relative' }}>
-                    <Image
-                      style={{ width: 50, height: 50, borderRadius: 100 }}
-                      contentFit="contain"
-                      source={require('../assets/blurryProfile2.png')}
-                    />
-                    {inscriptions.filter((item) => item !== 'undefined')
-                      .length > 3 && (
-                      <Image
-                        style={{
-                          position: 'absolute',
-                          top: 4,
-                          left: 7,
-                          width: 50,
-                          height: 50,
-                          borderRadius: 100
-                        }}
-                        contentFit="contain"
-                        source={require('../assets/blurryProfile.png')}
-                      />
-                    )}
-                  </View>
-
-                  <Text
-                    style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center'
+                    }}
                   >
-                    {inscriptions.filter((item) => item !== 'undefined')
-                      .length > 3
-                      ? `+ ${inscriptions.filter((item) => item !== 'undefined').length - 2} inscripciones más`
-                      : '+ 1 inscripción más'}
-                  </Text>
+                    <View style={{ position: 'relative' }}>
+                      <Image
+                        style={{ width: 50, height: 50, borderRadius: 100 }}
+                        contentFit="contain"
+                        source={require('../assets/blurryProfile2.png')}
+                      />
+                      {inscriptions.filter((item) => item !== 'undefined')
+                        .length > 3 && (
+                        <Image
+                          style={{
+                            position: 'absolute',
+                            top: 4,
+                            left: 7,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 100
+                          }}
+                          contentFit="contain"
+                          source={require('../assets/blurryProfile.png')}
+                        />
+                      )}
+                    </View>
+
+                    <Text
+                      style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
+                    >
+                      {inscriptions.filter((item) => item !== 'undefined')
+                        .length > 3
+                        ? `+ ${inscriptions.filter((item) => item !== 'undefined').length - 2} inscripciones más`
+                        : '+ 1 inscripción más'}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )}
+              )}
           </View>
         </View>
 
-       {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && (
-         <View style={{ marginTop: 10 }}>
-         <View style={{ alignItems: 'center' }}>
-           <Image
-             style={styles.simboloIcon}
-             contentFit="cover"
-             source={require('../assets/simbolo.png')}
-           />
-           <Text
-             style={[styles.texto1, styles.textoSpaceBlock]}
-           >{`Con tu modelo de suscripción no puedes 
+        {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && (
+          <View style={{ marginTop: 10 }}>
+            <View style={{ alignItems: 'center' }}>
+              <Image
+                style={styles.simboloIcon}
+                contentFit="cover"
+                source={require('../assets/simbolo.png')}
+              />
+              <Text
+                style={[styles.texto1, styles.textoSpaceBlock]}
+              >{`Con tu modelo de suscripción no puedes 
      alizar todas las inscripciones`}</Text>
-           <Text
-             style={[styles.texto2, styles.textoSpaceBlock]}
-           >{`¡Sube de nivel en tu cuenta para 
+              <Text
+                style={[styles.texto2, styles.textoSpaceBlock]}
+              >{`¡Sube de nivel en tu cuenta para 
      alizar todas las inscripciones!`}</Text>
-           <Pressable
-             style={{
-               backgroundColor: Color.wHITESPORTSMATCH,
-               marginTop: 14,
-               width: '95%',
-               justifyContent: 'center',
-               paddingHorizontal: Padding.p_81xl,
-               paddingVertical: Padding.p_3xs,
-               zIndex: 3,
-               backgroundColor: Color.wHITESPORTSMATCH,
-               borderRadius: Border.br_81xl,
-               flexDirection: 'row',
-               alignItems: 'center'
-             }}
-             onPress={() => setModalPremium(true)}
-           >
-             <Text style={styles.textoBoton}>Hazte premium</Text>
-           </Pressable>
-         </View>
-       </View>
-       )}
+              <Pressable
+                style={{
+                  backgroundColor: Color.wHITESPORTSMATCH,
+                  marginTop: 14,
+                  width: '95%',
+                  justifyContent: 'center',
+                  paddingHorizontal: Padding.p_81xl,
+                  paddingVertical: Padding.p_3xs,
+                  zIndex: 3,
+                  backgroundColor: Color.wHITESPORTSMATCH,
+                  borderRadius: Border.br_81xl,
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+                onPress={() => setModalPremium(true)}
+              >
+                <Text style={styles.textoBoton}>Hazte premium</Text>
+              </Pressable>
+            </View>
+          </View>
+        )}
 
         <Modal visible={modalPremium} transparent={true} animationType="slide">
           <TouchableWithoutFeedback onPress={() => setModalPremium(false)}>
