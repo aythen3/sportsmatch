@@ -19,11 +19,9 @@ import { useSelector } from 'react-redux'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
 import Feed from '../components/Feed'
-import { opciones_skills , skills_deporte } from '../utils/SkillUserLocal'
-
+import { opciones_skills, skills_deporte } from '../utils/SkillUserLocal'
 
 const PerfilFeedVisualitzaciJug = () => {
-
   const navigation = useNavigation()
   const router = useRoute()
 
@@ -33,22 +31,18 @@ const PerfilFeedVisualitzaciJug = () => {
   const [selectComponents, setSelectComponents] = useState('perfil')
   const [selectedOptions, setSelectedOptions] = useState([])
 
-
   const selectores = () => {
-    const sport = data?.author?.sportman.info.sport;
-    const selectedSkills = skills_deporte[sport];
+    const sport = data?.author?.sportman.info.sport
+    const selectedSkills = skills_deporte[sport]
 
     if (selectedSkills) {
-      setSelectedOptions(selectedSkills);
+      setSelectedOptions(selectedSkills)
     }
-  };
-  
+  }
+
   useEffect(() => {
-    selectores();
-  }, []);
-
-
-
+    selectores()
+  }, [])
 
   const calculateAge = () => {
     const actualYear = new Date().getFullYear()
@@ -528,7 +522,7 @@ const PerfilFeedVisualitzaciJug = () => {
                     <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                       <Text
                         style={[styles.concepto, styles.ataqueClr]}
-                      >{`Lugar de residencia `}</Text>
+                      >{`Lugar de residencia`}</Text>
                       <Text
                         style={[
                           styles.masculino,
@@ -574,37 +568,101 @@ const PerfilFeedVisualitzaciJug = () => {
                 </View>
               </View>
             ) : (
-              <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                <View style={styles.circulos}>
+              <View
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 20
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start'
+                  }}
+                >
                   <View style={styles.moduloSpaceBlock}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
                       Lugar de residencia
                     </Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman.info.city}
+                    <Text
+                      style={{
+                        marginTop: 10,
+                        lineHeight: 22,
+                        fontSize: FontSize.h3TitleMEDIUM_size,
+                        width: 173,
+                        color: mainColor,
+                        fontWeight: '500',
+                        textAlign: 'center',
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
+                      {data?.author?.sportman.info.city || '-'}
                     </Text>
                   </View>
                   <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
                       Años de expereiencia
                     </Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
+                    <Text
+                      style={{
+                        marginTop: 10,
+                        lineHeight: 22,
+                        fontSize: FontSize.h3TitleMEDIUM_size,
+                        width: 173,
+                        color: mainColor,
+                        fontWeight: '500',
+                        textAlign: 'center',
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
                       {data?.author?.sportman.info.yearsOfExperience}
                     </Text>
                   </View>
                 </View>
-                <View style={styles.modulosMedio}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    marginTop: 15
+                  }}
+                >
                   <View style={styles.moduloSpaceBlock}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>
                       Deporte
                     </Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
-                      {data?.author?.sportman?.info.sport.name}
+                    <Text
+                      style={{
+                        marginTop: 10,
+                        lineHeight: 22,
+                        fontSize: FontSize.h3TitleMEDIUM_size,
+                        width: 173,
+                        color: mainColor,
+                        fontWeight: '500',
+                        textAlign: 'center',
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
+                      {data?.author?.sportman?.info.sport.name || '-'}
                     </Text>
                   </View>
                   <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
                     <Text style={[styles.concepto, styles.ataqueClr]}>Rol</Text>
-                    <Text style={[styles.masculino, styles.text1Typo]}>
+                    <Text
+                      style={{
+                        marginTop: 10,
+                        lineHeight: 22,
+                        fontSize: FontSize.h3TitleMEDIUM_size,
+                        width: 173,
+                        color: mainColor,
+                        fontWeight: '500',
+                        textAlign: 'center',
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
                       {data?.author?.sportman?.info.rol}
                     </Text>
                   </View>
@@ -664,9 +722,9 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   moduloSpaceBlock: {
-    width: "46%",
+    width: '46%',
     height: 80,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Color.bLACK2SPORTMATCH,
     borderRadius: Border.br_8xs,
     alignItems: 'center',
@@ -699,8 +757,8 @@ const styles = StyleSheet.create({
   },
   circulos: {
     flexDirection: 'row',
-    width: "100%",
-    justifyContent: "center"
+    width: '100%',
+    justifyContent: 'center'
   },
   concepto: {
     lineHeight: 14,

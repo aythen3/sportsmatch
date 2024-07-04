@@ -184,7 +184,7 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
               ) : (
                 <View
                   style={{
-                    width: '100%',
+                    width: '95%',
                     height: 170,
                     backgroundColor: '#fff',
                     marginTop: 30,
