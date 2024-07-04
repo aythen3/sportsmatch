@@ -423,7 +423,7 @@ const TodasLasOfertas = () => {
                   bottom: 4
                 }}
               >
-                No hay ofertas disponibles basadas en su busqueda!
+                No hay ofertas disponibles basadas en su búsqueda!
               </Text>
             </View>
           )}

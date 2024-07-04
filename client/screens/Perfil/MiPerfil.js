@@ -38,14 +38,11 @@ const MiPerfil = () => {
   const [isTruncated, setIsTruncated] = useState(true)
   const [selectedTab, setSelectedTab] = useState('Feed')
 
-
   useEffect(() => {
     if (isFocused) {
       setActiveIcon('profile')
     }
   }, [isFocused])
-
-
 
   const renderContent = () => {
     if (selectedTab === 'Feed') {
@@ -58,7 +55,6 @@ const MiPerfil = () => {
   const toggleTruncate = () => {
     setIsTruncated(!isTruncated)
   }
-
 
   return (
     <ScrollView
@@ -153,7 +149,7 @@ const MiPerfil = () => {
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
-                  {sportman?.info?.sport && (
+                  {sportman?.info?.sport?.length > 0 && (
                     <Text style={[styles.textTypo2, { color: mainColor }]}>
                       {typeof sportman?.info?.sport === 'object'
                         ? sportman?.info?.sport.name

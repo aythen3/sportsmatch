@@ -27,9 +27,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { Context } from '../../context/Context'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-
 const ExplorarClubs = () => {
-
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
 
@@ -38,7 +36,6 @@ const ExplorarClubs = () => {
   React.useEffect(() => {
     setActiveIcon('lens')
   }, [isFocused])
-
 
   const { allPosts } = useSelector((state) => state.post)
   const {
@@ -85,16 +82,13 @@ const ExplorarClubs = () => {
     setModalFilters(true)
   }
 
-
   const timeoutRef = useRef(null)
-
-
 
   const handleSearch = async (textValue) => {
     const users = await axiosInstance.post('sportman/filter', {
       nickname: textValue
     })
-    console.log(users, "usuarios")
+    console.log(users, 'usuarios')
     setSearchUsers(users.data)
     const position = await axiosInstance.post('sportman/filter', {
       position: textValue
@@ -111,18 +105,17 @@ const ExplorarClubs = () => {
   }
 
   const handleChange = (value) => {
-    console.log(value, "valor que no anda")
-    setTextValue(value);
+    console.log(value, 'valor que no anda')
+    setTextValue(value)
 
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+      clearTimeout(timeoutRef.current)
     }
 
     timeoutRef.current = setTimeout(() => {
-      handleSearch(value);
-    }, 1000); // 1000ms = 1 segundo
-  };
-
+      handleSearch(value)
+    }, 1000) // 1000ms = 1 segundo
+  }
 
   const screenWidth = Dimensions.get('window').width
   const renderGroupedItem = ({ item }) => {
@@ -187,11 +180,11 @@ const ExplorarClubs = () => {
     setGroupedPosts(groupedPostsTotal)
   }
 
-
   useEffect(() => {
     posttt()
   }, [])
 
+  console.log('searchUsers', searchUsers)
 
   return (
     <SafeAreaView style={styles.explorarClubs}>
@@ -264,8 +257,8 @@ const ExplorarClubs = () => {
                           source={
                             user.info.img_perfil
                               ? {
-                                uri: user.info.img_perfil
-                              }
+                                  uri: user.info.img_perfil
+                                }
                               : require('../../assets/whiteSport.png')
                           }
                         ></Image>
@@ -315,8 +308,8 @@ const ExplorarClubs = () => {
                           source={
                             club.img_perfil
                               ? {
-                                uri: club.img_perfil
-                              }
+                                  uri: club.img_perfil
+                                }
                               : require('../../assets/whiteSport.png')
                           }
                         ></Image>
