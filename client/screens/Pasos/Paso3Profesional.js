@@ -18,19 +18,28 @@ import { setCity, setProfesionalType } from '../../redux/slices/users.slices'
 import { cities } from '../../utils/cities'
 import ScrollableModal from '../../components/modals/ScrollableModal'
 
-const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCity, setSelectedCity}) => {
-  const navigation = useNavigation()
+const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCity, setSelectedCity, setSelectedProfesional, selectedProfesional }) => {
+
+  const ROL = profesionalValues?.rol
+  const CITY = profesionalValues?.city
+  const ACTUAL_CLUB = profesionalValues?.actualClub
+
+  
   const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedProfesional, setSelectedProfesional] = useState(null)
   const [cityModal, setCityModal] = useState(false)
 
-  const [cityTop, setCityTop] = useState(0)
-  const [pickedCity, setPickedCity] = useState()
 
-  const opcionesProfesional = ['Entrenador/a', 'Preparador/a físico/a', 'Analista técnico/a','Psicólogo/a','Fisioterapeuta','Nutricionista']
-  const opcionesResidencia = cities.map((city) => city.city).sort()
+
+  const opcionesProfesional = [
+    'Entrenador/a',
+    'Preparador/a físico/a',
+    'Analista técnico/a'
+    , 'Psicólogo/a'
+    , 'Fisioterapeuta'
+    , 'Nutricionista'
+  ]
 
   const openModal = () => {
     setModalVisible(!modalVisible)
@@ -46,8 +55,8 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   }
 
   const handleSelectProfesional = (profesional) => {
-    dispatch(setProfesionalType(profesional))
     setSelectedProfesional(profesional)
+    dispatch(setProfesionalType(profesional))
   }
 
   const handleSelectCity = (city) => {
@@ -60,7 +69,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
 
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent
-    const height = contentOffset.y 
+    const height = contentOffset.y
     setScrolledHeight(height)
   }
 
@@ -72,94 +81,62 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   }
 
   return (
-   <ScrollView onScroll={handleScroll}>
-     <View style={styles.paso6}>
-      <Acordeon
-        title="Tipo de profesional"
-        placeholderText={
-          selectedProfesional ? selectedProfesional : 'Entrenador'
-        }
-        isAccordeon={true}
-        open={openModal}
-      />
-      {/* {modalVisible && (
-        <CustomModal
-          visible={modalVisible}
-          closeModal={closeModal}
-          onSelectItem={handleSelectProfesional}
-          options={opcionesProfesional}
-        />
-      )} */}
-      {modalVisible && (
-        <ScrollableModal
-          visible={modalVisible}
-          closeModal={closeModal}
-          onSelectItem={handleSelectProfesional}
-          options={opcionesProfesional}
-        />
-      )}
-      <Input
-        title="Años en activo"
-        placeholderText="+5"
-        field="yearsOfExperience"
-        onValues={handlesValues}
-        value={profesionalValues.yearsOfExperience}
-        keyboardType="numeric"
-      />
-       <Input
-        title="Lugar de residencia"
-        placeholderText="Lugar de residencia"
-        field="city"
-        onValues={handlesValues}
-        value={profesionalValues.city}
-      />
-      {/* <View
-        collapsable={false}
-        onLayout={(event) => {
-          event.target.measure((x, y, width, height, pageX, pageY) => {
-            console.log(pageY)
-            setCityTop(pageY)
-          })
-        }}
-        style={{
-          position: 'relative',
-          width: '100%'
-        }}
-      >
+    <ScrollView onScroll={handleScroll}>
+      <View style={styles.paso6}>
         <Acordeon
-          title="Lugar de residencia"
-          placeholderText={pickedCity ? pickedCity : 'Lugar de residencia'}
+          title="Tipo de profesional"
+          placeholderText={
+            ROL ? ROL : 'Entrenador'
+          }
           isAccordeon={true}
-          open={openCityModal}
+          open={openModal}
         />
-        {cityModal && (
+
+        {modalVisible && (
           <ScrollableModal
-            scrollHeight={scrolledHeight}
-            parentTop={cityTop}
-            visible={cityModal}
+            visible={modalVisible}
             closeModal={closeModal}
-            onSelectItem={handleSelectCity}
-            options={opcionesResidencia}
+            onSelectItem={(e) => setProfesionalValues((prev) => {
+              return {
+                ...prev,
+                rol: e
+              }
+            })}
+            options={opcionesProfesional}
           />
         )}
-      </View> */}
-      <Input
-        title="Club actual"
-        placeholderText="Rellena sólo si estas en algún club"
-        field="actualClub"
-        onValues={handlesValues}
-        value={profesionalValues.actualClub}
-      />
-      <Input
-        title="¿Cómo te defines como profesional?"
-        placeholderText="Describe tu juego, tu condición física, tu personalidad en el campo"
-        isMultiLine={true}
-        field="description"
-        onValues={handlesValues}
-        value={profesionalValues.description}
-      />
-    </View>
-   </ScrollView>
+        <Input
+          title="Años en activo"
+          placeholderText="+5"
+          field="yearsOfExperience"
+          onValues={handlesValues}
+          value={profesionalValues.yearsOfExperience}
+          keyboardType="numeric"
+        />
+        <Input
+          title="Lugar de residencia"
+          placeholderText="Lugar de residencia"
+          field="city"
+          onValues={handlesValues}
+          value={CITY}
+        />
+        <Input
+          title="Club actual"
+          placeholderText="Rellena sólo si estas en algún club"
+          field="actualClub"
+          onValues={handlesValues}
+          value={ACTUAL_CLUB}
+        />
+        <Input
+          title="¿Cómo te defines como profesional?"
+          placeholderText="Describe tu juego, tu condición física, tu personalidad en el campo"
+          isMultiLine={true}
+          field="description"
+          onValues={handlesValues}
+          value={profesionalValues.description}
+        />
+      </View>
+    </ScrollView>
   )
 }
 
