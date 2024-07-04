@@ -101,48 +101,12 @@ export const opciones_categoria = {
 }
 
 export const opciones_skills = {
-  futbol: [
-    'Control de balón',
-    'Conducción de balón',
-    'Pase',
-    'Regate',
-    'Disparo',
-    'Orientación corporal/perfil'
-  ],
-  baloncesto: [
-    'Bote',
-    'Lanzamiento corta distancia',
-    'Lanzamiento larga distancia',
-    'Pase',
-    'Captura de rebote',
-    'Capacidad defensiva',
-    'Regate/finta'
-  ],
-  futbolSala: [
-    'Control de balón',
-    'Conducción de balón',
-    'Pase',
-    'Regate',
-    'Disparo',
-    'Orientación corporal/perfil'
-  ],
-  hockey: [
-    'Control de balón',
-    'Pase',
-    'Regate',
-    'Disparo',
-    'Orientación corporal/perfil'
-  ],
-  voleibol: [
-    'Concienciación espacial',
-    'Conocimiento tactico',
-    'Evaluación de riesgos'
-  ],
-  handball: [
-    'Concienciación espacial',
-    'Conocimiento táctico',
-    'Evaluación de riesgos'
-  ]
+  futbol: ['Resistencia', 'Disparo', 'Regate'],
+  baloncesto: ['Bote', 'Lanzamiento', 'Dribling'],
+  futbolSala: ['Resistencia', 'Disparo', 'Regate'],
+  hockey: ['Resistencia', 'Disparo', 'Dribling'],
+  voleibol: ['Servicio', 'Recepción', 'Salto'],
+  handball: ['Fuerza', 'Finta', 'Lanzamiento']
 }
 
 export const categorias_deporte = {
