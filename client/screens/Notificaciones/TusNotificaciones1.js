@@ -279,6 +279,7 @@ const TusNotificaciones1 = () => {
                   value === '' &&
                   usersWithMessages?.map((user, index) => (
                     <MessagesChat
+                      value={value}
                       setValue={setValue}
                       key={index + 999}
                       name={user.nickname}
@@ -295,21 +296,20 @@ const TusNotificaciones1 = () => {
                 )}
                 {value !== '' &&
                   filteredUsers.map((user, index) => (
-                    <View style={{ borderWidth: 2, borderColor: 'green' }}>
-                      <MessagesChat
-                        setValue={setValue}
-                        key={index + 99999}
-                        name={user.nickname}
-                        sportmanId={user.sportman?.id}
-                        profilePic={
-                          user?.type === 'club'
-                            ? user?.club?.img_perfil
-                            : user?.sportman?.info?.img_perfil
-                        }
-                        selectedUserId={user.id}
-                        // applicant={applicants?.includes(user.sportman?.id)}
-                      />
-                    </View>
+                    <MessagesChat
+                      value={value}
+                      setValue={setValue}
+                      key={index + 99999}
+                      name={user.nickname}
+                      sportmanId={user.sportman?.id}
+                      profilePic={
+                        user?.type === 'club'
+                          ? user?.club?.img_perfil
+                          : user?.sportman?.info?.img_perfil
+                      }
+                      selectedUserId={user.id}
+                      // applicant={applicants?.includes(user.sportman?.id)}
+                    />
                   ))}
               </ScrollView>
             )}
