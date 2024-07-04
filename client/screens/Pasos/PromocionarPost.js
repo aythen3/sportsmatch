@@ -76,10 +76,10 @@ const PromocionarPost = () => {
 
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
+      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
       customerId: user.user.stripeId
     })
-
+console.log(res.data,"dataaaaaaaa")
     if (res.data) {
       setClientSecret(
         res.data.subscription.clientSecret.latest_invoice.payment_intent

@@ -154,7 +154,13 @@ export class UserService {
       if (existingUser) {
        return {user:existingUser,message:"el usuario existe"}
       }
+      const stripeCustomer = await this.stripe.customers.create({
+        email: createUserDto.email,
+        name: createUserDto.nickname, // Puedes ajustar esto según tu lógica de aplicación
+      });
 
+      // Guardar el ID de cliente de Stripe en el DTO del usuario
+      createUserDto.stripeId = stripeCustomer.id;
       // Crear el nuevo perfil del usuario en tu base de datos
       createUserDto.club = null
       createUserDto.sportman = null
