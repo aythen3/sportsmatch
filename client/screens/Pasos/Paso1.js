@@ -294,11 +294,11 @@ const Paso1 = () => {
           img_perfil: profileImage,
           img_front: coverImage,
           nickname: user?.user?.nickname || '',
-          city: selectedCity || ''
+     
         }
         const body = {
           sportmanData: {
-            type: selectedRole === 'Jugador' ? 'player' : 'coach',
+            type:  'coach',
             info: fullData,
             club: null
           },
@@ -327,7 +327,7 @@ const Paso1 = () => {
           const upd = {
             id: sportmanRedux.id,
             newData: fullData,
-            type: 'player'
+            type: selectedRole === 'Jugador' ? 'player' : 'coach'
           }
           dispatch(updateSportman(upd)).then((response) => {
             dispatch(

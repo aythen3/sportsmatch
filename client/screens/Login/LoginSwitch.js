@@ -171,17 +171,14 @@ const LoginSwitch = () => {
                   response?.payload?.user?.club?.sport,
                 dispatch
               )
-              //  console.log('response google:', response.payload)
+
 
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
                 )
               )
-              // await AsyncStorage.setItem(
-              //   'userToken',
-              //   response?.payload?.accesToken
-              // )
+        
               await AsyncStorage.setItem('googleAuth', user.uid)
               await AsyncStorage.setItem('userType', response.payload.user.type)
               dispatch(setClub(response))

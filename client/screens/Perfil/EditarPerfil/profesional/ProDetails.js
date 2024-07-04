@@ -20,6 +20,7 @@ import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
+import ScrollableModal from '../../../../components/modals/ScrollableModal'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -91,7 +92,7 @@ const PlayerDetails = () => {
 
   const handleUpdateUserData = () => {
     const data = {
-      city,
+      city:residencia,
       description: userDescription,
       actualClub: actualClubName,
       img_perfil: profileImage,
@@ -358,18 +359,33 @@ const PlayerDetails = () => {
                 <CustomPicker
                   zIndex={10000}
                   array={[
-                    'Jugador',
-                    'Entrenador',
-                    'Masajista',
-                    'Ayudante de campo'
+                    'Entrenador/a',
+                    'Preparador/a físico/a',
+                    'Analista técnico/a'
+                    , 'Psicólogo/a'
+                    , 'Fisioterapeuta'
+                    , 'Nutricionista'
                   ]}
                   placeholder={sportman?.info?.rol ?? 'Selecciona tu posición'}
                   state={profesionalType}
                   setState={setProfesionalTpye}
-                  showModal={showTypeModal}
+                  showModal={false}
                   setShowModal={setShowTypeModal}
                 />
               </View>
+                  <ScrollableModal
+                    visible={showTypeModal}
+                    closeModal={() => setShowTypeModal(false)}
+                    onSelectItem={setProfesionalTpye}
+                    options={[
+                      'Entrenador/a',
+                      'Preparador/a físico/a',
+                      'Analista técnico/a'
+                      , 'Psicólogo/a'
+                      , 'Fisioterapeuta'
+                      , 'Nutricionista'
+                    ]}
+                  />
   
               <View style={{ gap: 5, zIndex: 9000 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
@@ -439,7 +455,7 @@ const PlayerDetails = () => {
                 justifyContent: 'center'
               }}
               disabled={
-                !city &&
+                !residencia &&
                 !profileImage &&
                 !coverImage &&
                 !userDescription &&

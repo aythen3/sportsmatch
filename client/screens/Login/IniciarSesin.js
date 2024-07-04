@@ -130,7 +130,7 @@ const IniciarSesin = () => {
         })
         .catch((error) => {
           setLoading(false)
-          setError(error)
+          setError('Usuario o contraseña incorrecto/s')
 
           console.error(error)
         })
@@ -250,7 +250,7 @@ const IniciarSesin = () => {
                 </Text>
                 {error && (
                   <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
-                    {error.message}
+                    {error}
                   </Text>
                 )}
                 <TouchableOpacity

@@ -27,14 +27,14 @@ import { useIsFocused } from '@react-navigation/native'
 
 const MiPerfil = () => {
   const isFocused = useIsFocused()
-  
+
   const navigation = useNavigation()
-  
+
   const { setActiveIcon } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
-  
+
   const [isTruncated, setIsTruncated] = useState(true)
   const [selectedTab, setSelectedTab] = useState('Feed')
 
@@ -76,7 +76,7 @@ const MiPerfil = () => {
         }}
       >
         <View>
-          {sportman?.info?.img_front === '' ? (
+          {!sportman?.info?.img_front || sportman?.info?.img_front === '' ? (
             <Image
               style={{ height: 150, backgroundColor: mainColor }}
               contentFit="cover"
@@ -153,6 +153,13 @@ const MiPerfil = () => {
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
+                  {sportman?.info?.sport && (
+                    <Text style={[styles.textTypo2, { color: mainColor }]}>
+                      {typeof sportman?.info?.sport === 'object'
+                        ? sportman?.info?.sport.name
+                        : sportman?.info?.sport}
+                    </Text>
+                  )}
                   <Text
                     style={{
                       textAlign: 'left',
@@ -167,11 +174,7 @@ const MiPerfil = () => {
                       ? sportman?.info?.rol
                       : sportman?.info?.position}
                   </Text>
-                  <Text style={[styles.textTypo2, { color: mainColor }]}>
-                    {typeof sportman?.info?.sport === 'object'
-                      ? sportman?.info?.sport.name
-                      : sportman?.info?.sport}
-                  </Text>
+
                   {user?.user?.sportman?.info?.city && (
                     <Text style={styles.textTypo3}>
                       {user?.user?.sportman?.info?.city}
