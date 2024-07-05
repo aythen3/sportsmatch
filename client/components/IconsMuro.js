@@ -157,7 +157,7 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
           style={styles.shareView}
           onPress={() =>
             onShare(
-              `Da un vistazo a la publicación de ${name}!. Si aún no te bajaste la app descargala en Google Play https://play.google.com/store/apps/details?id=com.aythenapps.sportsmatch`
+              `¡Da un vistazo a la publicación de ${name}!. Si aún no te bajaste la app descargala en Google Play https://play.google.com/store/apps/details?id=com.aythenapps.sportsmatch`
             )
           }
         >

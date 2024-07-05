@@ -8,15 +8,15 @@ const Thumbnail = ({ url, notUrl, styles }) => {
   const { generateLowResUrl } = useContext(Context)
   const [originalImageLoaded, setOriginalImageLoaded] = useState(false)
 
-  console.log('STYLES===', styles)
+  // console.log('STYLES===', styles)
 
   const handleLoad = () => {
-    console.log('Original image loaded successfully')
+    //console.log('Original image loaded successfully')
     setOriginalImageLoaded(true)
   }
 
   const handleLoadError = () => {
-    console.log('Failed to load original image, switching to low resolution')
+    // console.log('Failed to load original image, switching to low resolution')
     setOriginalImageLoaded(false)
   }
 
@@ -24,7 +24,7 @@ const Thumbnail = ({ url, notUrl, styles }) => {
     ? url
     : originalImageLoaded
       ? generateLowResUrl(url, 90)
-      : generateLowResUrl(url, 50)
+      : generateLowResUrl(url, 40)
 
   if (notUrl === true)
     return (

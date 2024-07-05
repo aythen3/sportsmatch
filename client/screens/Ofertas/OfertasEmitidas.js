@@ -100,7 +100,7 @@ const OfertasEmitidas = () => {
                 bottom: 4
               }}
             >
-              Aún no has creado ninguna oferta!
+              ¡Aún no has creado ninguna oferta!
             </Text>
           ) : (
             offers
@@ -247,7 +247,11 @@ const OfertasEmitidas = () => {
                           <ModalOptionOffers
                             offerId={selectedOffer}
                             onClose={() => setModalVisible(false)}
-                            offerData={ offers?.filter(off => selectedOffer === off?.id)[0]}
+                            offerData={
+                              offers?.filter(
+                                (off) => selectedOffer === off?.id
+                              )[0]
+                            }
                           />
                         </View>
                       </View>

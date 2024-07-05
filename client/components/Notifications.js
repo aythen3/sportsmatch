@@ -16,6 +16,7 @@ import TusMatchsDetalle from './../screens/TusMatchsDetalle'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
 import {
   getAllNotifications,
+  getNotificationsByUserId,
   sendNotification
 } from '../redux/actions/notifications'
 import { updateUser } from '../redux/slices/users.slices'
@@ -56,7 +57,7 @@ const Notifications = ({ data }) => {
     // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
     // console.log('notif data', data.prop1.userData?.user?.sportman)
   }, [])
-  console.log('data', data)
+  //console.log('data', data)
   return (
     <TouchableOpacity
       style={{ paddingHorizontal: 10 }}
@@ -64,7 +65,13 @@ const Notifications = ({ data }) => {
         if (!data.read) {
           await axiosInstance
             .patch(`notification/${data.id}`, { read: true })
-            .then(async (res) => await dispatch(getAllNotifications()))
+            .then(async (res) => {
+              if (user.user.type == 'club') {
+                dispatch(getNotificationsByUserId(user.user.club.id))
+              } else {
+                dispatch(getNotificationsByUserId(user.user.id))
+              }
+            })
         }
         if (data.title === 'Solicitud') {
           setIsMatch(true)

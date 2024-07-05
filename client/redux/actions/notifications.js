@@ -24,6 +24,20 @@ export const getNotificationById = createAsyncThunk(
     }
   }
 )
+export const markAllUserNotificationsAsRead = createAsyncThunk(
+  'markAllUserNotificationsAsRead/notifications',
+  async (userId) => {
+    console.log('READING ALL NOTIF FROM', userId)
+    try {
+      const { data } = await axiosInstance.patch(
+        `notification/user/${userId}/mark-read`
+      )
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
 export const getNotificationsByUserId = createAsyncThunk(
   'getNotificationsByUserId/notifications',
   async (id) => {

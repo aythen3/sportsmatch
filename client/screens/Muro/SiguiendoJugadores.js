@@ -46,7 +46,8 @@ const SiguiendoJugadores = () => {
     getUserMatches,
     usersWithMessages,
     setActiveIcon,
-    selectedPost
+    selectedPost,
+    getUsersMessages
   } = useContext(Context)
   const { allPosts, post } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
@@ -105,6 +106,15 @@ const SiguiendoJugadores = () => {
       }
     }
   }, [allMatchs])
+
+  // useEffect(() => {
+  //   getUsersMessages()
+  //   if (user.user.type == 'club') {
+  //     dispatch(getNotificationsByUserId(user.user.club.id))
+  //   } else {
+  //     dispatch(getNotificationsByUserId(user.user.id))
+  //   }
+  // }, [])
 
   const [filteredPosts, setFilteredPosts] = useState([])
 
