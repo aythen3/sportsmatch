@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSportman } from '../redux/actions/sportman'
 import { Context } from '../context/Context'
+import { getNotificationsByUserId } from '../redux/actions/notifications'
 
 const NavBarInferior = () => {
   const {
@@ -22,8 +23,10 @@ const NavBarInferior = () => {
   const dispatch = useDispatch()
   const [sportColor, setSportColor] = useState('#E1451E')
   const { isSportman, mainColor } = useSelector((state) => state.users)
+  const { userNotifications } = useSelector((state) => state.notifications)
   const { user } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
+  const userId = user?.user?.id
 
   useEffect(() => {
     getUsersMessages()
@@ -90,7 +93,15 @@ const NavBarInferior = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => handleIconPress('diary')}
+        onPress={() => {
+          getUsersMessages()
+          if (user.user.type == 'club') {
+            dispatch(getNotificationsByUserId(user.user.club.id))
+          } else {
+            dispatch(getNotificationsByUserId(user.user.id))
+          }
+          handleIconPress('diary')
+        }}
         style={
           activeIcon === 'diary'
             ? [styles.selected, { borderTopColor: mainColor }]
@@ -147,6 +158,31 @@ const NavBarInferior = () => {
             isActive={activeIcon === 'message'}
             style={[styles.icon, activeIcon === 'message' && styles.iconActive]}
           />
+          {userNotifications.length > 0 &&
+            userNotifications
+              ?.filter((notification) => {
+                if (user?.user?.type === 'club') {
+                  notification.recipientId === user.user.club.id
+                  return true
+                } else if (notification.recipientId === userId) {
+                  return true
+                } else {
+                  return false
+                }
+              })
+              .filter((notif) => !notif.read).length > 0 && (
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  backgroundColor: mainColor,
+                  borderRadius: 100,
+                  position: 'absolute',
+                  top: 50,
+                  right: 4
+                }}
+              ></View>
+            )}
           {notReaded > 0 && (
             <View
               style={{

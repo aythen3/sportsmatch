@@ -92,30 +92,30 @@ const MessagesChat = ({
     }
   }, [convMessages])
 
-  useEffect(() => {
-    console.log(
-      name,
-      'INSCRIPT?',
-      offers.filter(
-        (offer) => offer.inscriptions && offer.inscriptions.includes(sportmanId)
-      )
-    )
-    console.log(
-      'TIENE QUE PODER MATCHEAR? =========',
-      user?.user?.type === 'club' &&
-        clubMatches?.filter(
-          (match) =>
-            match?.prop1?.sportmanId === sportmanId &&
-            match.status === 'success'
-        )?.length === 0 &&
-        offers.filter(
-          (offer) =>
-            offer.inscriptions &&
-            offer.inscriptions.includes(sportmanId) &&
-            offer.club.id === club.id
-        ).length > 0
-    )
-  }, [])
+  // useEffect(() => {
+  //   console.log(
+  //     name,
+  //     'INSCRIPT?',
+  //     offers.filter(
+  //       (offer) => offer.inscriptions && offer.inscriptions.includes(sportmanId)
+  //     )
+  //   )
+  //   console.log(
+  //     'TIENE QUE PODER MATCHEAR? =========',
+  //     user?.user?.type === 'club' &&
+  //       clubMatches?.filter(
+  //         (match) =>
+  //           match?.prop1?.sportmanId === sportmanId &&
+  //           match.status === 'success'
+  //       )?.length === 0 &&
+  //       offers.filter(
+  //         (offer) =>
+  //           offer.inscriptions &&
+  //           offer.inscriptions.includes(sportmanId) &&
+  //           offer.club.id === club.id
+  //       ).length > 0
+  //   )
+  // }, [])
 
   useEffect(() => {
     // lastMessage &&

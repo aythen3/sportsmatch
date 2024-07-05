@@ -185,7 +185,7 @@ const ExplorarClubs = () => {
     posttt()
   }, [])
 
-  console.log('searchUsers', searchUsers)
+  // console.log('searchUsers', searchUsers)
 
   return (
     <SafeAreaView style={styles.explorarClubs}>

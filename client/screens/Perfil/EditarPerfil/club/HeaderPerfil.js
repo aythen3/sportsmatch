@@ -22,6 +22,7 @@ import { getAllUsers, updateUserData } from '../../../../redux/actions/users'
 import { sendNotification } from '../../../../redux/actions/notifications'
 import { getColorsWithOpacity } from '../../../../utils/colorUtils.js'
 import Thumbnail from '../../../../components/Thumbnail.js'
+import { debounce } from 'lodash'
 
 const HeaderPerfil = ({
   name,
@@ -91,6 +92,57 @@ const HeaderPerfil = ({
       setLiked(true)
     }
   }, [user])
+  const handleFollow = debounce(() => {
+    if (sportman?.type == 'invitado') return
+
+    setLiked(!liked)
+    let actualUser = _.cloneDeep(user)
+    const actualFollowers =
+      allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
+    const newFollowers = actualFollowers.includes(user?.user?.id)
+      ? actualFollowers.filter((follower) => follower !== user?.user?.id)
+      : [...actualFollowers, user?.user?.id]
+
+    const newFollowingArray = userFollowing?.includes(data?.author?.id)
+      ? userFollowing.filter((followed) => followed !== data?.author?.id)
+      : [...userFollowing, data?.author?.id]
+    actualUser.user.following = newFollowingArray
+
+    dispatch(
+      updateUserData({ id: data.author.id, body: { followers: newFollowers } })
+    )
+      .then((data) => {
+        console.log(data, 'es cuando ojeo')
+        dispatch(
+          updateUserData({
+            id: user.user.id,
+            body: { following: newFollowingArray }
+          })
+        )
+      })
+      .then((response) => {
+        if (newFollowers.includes(user?.user?.id)) {
+          dispatch(
+            sendNotification({
+              title: 'Follow',
+              message: `${user.user.nickname} ha comenzado a seguirte`,
+              recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
+              date: new Date(),
+              read: false,
+              prop1: {
+                userId: user?.user?.id,
+                userData: { ...user }
+              },
+              prop2: {
+                rol: 'user'
+              }
+            })
+          ).then((res) => console.log('respuesta', res))
+        }
+        dispatch(updateUser(actualUser))
+        dispatch(getAllUsers())
+      })
+  }, 300)
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
   const userFollowing = user?.user?.following || []
@@ -354,73 +406,74 @@ const HeaderPerfil = ({
             </Pressable>
           ) : (
             <TouchableOpacity
-              onPress={() => {
-                if (sportman?.type == 'invitado') return
-                setLiked(!liked)
-                let actualUser = _.cloneDeep(user)
-                const actualFollowers =
-                  allUsers?.filter((user) => user.id === data.author.id)[0]
-                    ?.followers || []
-                const newFollowers = actualFollowers.includes(user?.user?.id)
-                  ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
-                  : [...actualFollowers, user?.user?.id]
+              // onPress={() => {
+              //   if (sportman?.type == 'invitado') return
+              //   setLiked(!liked)
+              //   let actualUser = _.cloneDeep(user)
+              //   const actualFollowers =
+              //     allUsers?.filter((user) => user.id === data.author.id)[0]
+              //       ?.followers || []
+              //   const newFollowers = actualFollowers.includes(user?.user?.id)
+              //     ? actualFollowers.filter(
+              //         (follower) => follower !== user?.user?.id
+              //       )
+              //     : [...actualFollowers, user?.user?.id]
 
-                const newFollowingArray = userFollowing?.includes(
-                  data?.author?.id
-                )
-                  ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
-                  : [...userFollowing, data?.author?.id]
-                actualUser.user.following = newFollowingArray
+              //   const newFollowingArray = userFollowing?.includes(
+              //     data?.author?.id
+              //   )
+              //     ? userFollowing.filter(
+              //         (followed) => followed !== data?.author?.id
+              //       )
+              //     : [...userFollowing, data?.author?.id]
+              //   actualUser.user.following = newFollowingArray
 
-                dispatch(
-                  updateUserData({
-                    id: data.author.id,
-                    body: { followers: newFollowers }
-                  })
-                )
-                  .then((data) => {
-                    dispatch(
-                      updateUserData({
-                        id: user.user.id,
-                        body: { following: newFollowingArray }
-                      })
-                    )
-                  })
-                  .then((response) => {
-                    if (newFollowers.includes(user?.user?.id)) {
-                      console.log('respuesta2', data?.author)
-                      dispatch(
-                        sendNotification({
-                          title: 'Follow',
-                          message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId:
-                            data?.author?.sportman?.user?.id ??
-                            data?.author?.id,
-                          date: new Date(),
-                          read: false,
-                          prop1: {
-                            userId: user?.user?.id,
-                            userData: {
-                              ...user
-                            }
-                          },
-                          prop2: {
-                            rol: 'user'
-                          }
-                        })
-                      ).then((res) => console.log('respuesta', res))
-                    }
-                    dispatch(updateUser(actualUser))
-                    dispatch(getAllUsers())
-                  })
-              }}
+              //   dispatch(
+              //     updateUserData({
+              //       id: data.author.id,
+              //       body: { followers: newFollowers }
+              //     })
+              //   )
+              //     .then((data) => {
+              //       dispatch(
+              //         updateUserData({
+              //           id: user.user.id,
+              //           body: { following: newFollowingArray }
+              //         })
+              //       )
+              //     })
+              //     .then((response) => {
+              //       if (newFollowers.includes(user?.user?.id)) {
+              //         console.log('respuesta2', data?.author)
+              //         dispatch(
+              //           sendNotification({
+              //             title: 'Follow',
+              //             message: `${user.user.nickname} ha comenzado a seguirte`,
+              //             recipientId:
+              //               data?.author?.sportman?.user?.id ??
+              //               data?.author?.id,
+              //             date: new Date(),
+              //             read: false,
+              //             prop1: {
+              //               userId: user?.user?.id,
+              //               userData: {
+              //                 ...user
+              //               }
+              //             },
+              //             prop2: {
+              //               rol: 'user'
+              //             }
+              //           })
+              //         ).then((res) => console.log('respuesta', res))
+              //       }
+              //       dispatch(updateUser(actualUser))
+              //       dispatch(getAllUsers())
+              //     })
+              // }}
               style={{
                 ...styles.leftButton
               }}
+              onPress={() => handleFollow()}
             >
               <Text style={[styles.ojear, styles.timeTypo]}>
                 {liked ? 'Dejar de seguir' : 'Seguir'}
