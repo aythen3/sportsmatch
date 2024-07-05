@@ -246,8 +246,11 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 9000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {selectedGender == '' && offerData?.sexo && offerData?.sexo === 'Male' ? 'Hombre' : 'Mujer'}
                 {!selectedGender && !offerData?.sexo && 'Selecciona un género'}
+                {selectedGender === '' && offerData?.sexo && (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
+                {selectedGender}
+
+
 
               </Text>
 
@@ -339,8 +342,9 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 6000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {!selectedRemuneration && !offerData?.retribution && 'Seleccione retribución'}
-                {selectedRemuneration == '' ? offerData?.retribution === true ? 'Si' : 'No' : selectedRemuneration}
+              {offerData?.retribution !== false && offerData?.retribution !== true  && selectedRemuneration == '' && 'Seleccione retribución'}
+{selectedRemuneration === '' ? offerData?.retribution : selectedRemuneration}
+
               </Text>
 
 
