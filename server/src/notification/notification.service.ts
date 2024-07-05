@@ -19,6 +19,23 @@ export class NotificationService {
     private readonly clubsRepository: Repository<ClubEntity>
   ) {}
 
+  public async markAllAsRead(userId: string): Promise<void> {
+    // Busca todas las notificaciones del usuario que no están leídas
+    const notifications = await this.notificationsRepository.find({
+      where: { recipientId: userId, read: false, isDelete: false },
+    });
+
+    if (!notifications.length) {
+      throw new NotFoundException(`No se encontraron notificaciones no leídas para el usuario con ID ${userId}`);
+    }
+
+    // Actualiza todas las notificaciones encontradas a read: true
+    await this.notificationsRepository.update(
+      { recipientId: userId, read: false, isDelete: false },
+      { read: true }
+    );
+  }
+
   public async createService(createNotificationDto: CreateNotificationDto) {
     try {
       let recipient;
