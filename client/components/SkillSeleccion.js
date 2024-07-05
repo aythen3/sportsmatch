@@ -240,6 +240,7 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
+          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
         </View>
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Defensa</Text>
@@ -260,6 +261,8 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
+          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
+
         </View>
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Velocidad</Text>
@@ -280,7 +283,10 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
+          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
+
         </View>
+        
       </View>
       <View style={{ ...styles.formulariosInferiores }}>
         <View
@@ -314,30 +320,6 @@ const SkillSeleccion = ({
             />
           )}
         </View>
-
-        {/* <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Posición Principal</Text>
-          <View style={styles.rectanguloBorder}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={
-                selectPosition
-                  ? selectPosition
-                  : sportman?.info?.position?.toString() ||
-                    'Selecciona tu posición '
-              }
-              placeholderTextColor={'#999'}
-              onChangeText={(e) => {
-                const newData = {
-                  ...data,
-                  position: e
-                }
-                setSelectedOptionsInputs(e)
-              }}
-              maxLength={40}
-            />
-          </View>
-        </View> */}
 
         <View
           collapsable={false}
@@ -381,7 +363,10 @@ const SkillSeleccion = ({
           )}
         </View>
         <View style={styles.formularioCategoria}>
-          <Text style={styles.atributo}>Altura</Text>
+        <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+             <Text style={styles.atributo}>Altura</Text>
+             <Text style={{...styles.atributo,fontSize:10,color:"gray"}}>{`Valor en centimetros (P.ej: 180)`}</Text>
+             </View>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
@@ -404,7 +389,10 @@ const SkillSeleccion = ({
         {selectedOptions.length > 0 &&
           selectedOptions.map((opt, i) => (
             <View key={i} style={styles.formularioCategoria}>
-              <Text style={styles.atributo}>{opt}</Text>
+             <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+             <Text style={styles.atributo}>{opt}</Text>
+             <Text style={{...styles.atributo,fontSize:10,color:"gray"}}>Valor entre 0 y 100</Text>
+             </View>
               <View style={styles.rectanguloBorder}>
                 <TextInput
                   style={styles.textInput}

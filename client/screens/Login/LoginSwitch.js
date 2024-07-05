@@ -54,6 +54,7 @@ import Linea from '../../components/svg/Linea'
 import InstagramSVG from '../../components/svg/InstagramSVG'
 import HomeGif from '../../utils/HomeGif'
 import { detectSportColor } from './PantallaInicio'
+import { setInitialSportman } from '../../redux/slices/sportman.slices'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -171,7 +172,15 @@ const LoginSwitch = () => {
                   response?.payload?.user?.club?.sport,
                 dispatch
               )
+            if(response.payload.user.sportman !== null){
+              dispatch(
+                setInitialSportman({
+                  id: response.payload.user?.sportman?.id,
+                  ...response.payload.user?.sportman
+                })
+              )
 
+            }
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
