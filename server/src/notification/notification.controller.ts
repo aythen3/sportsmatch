@@ -66,5 +66,10 @@ export class NotificationController {
     return this.notificationsService.findInfoRelation(notificationId, relationsArray);
   }
 
+  @Patch('user/:userId/mark-read')
+  public async markAllAsRead(@Param('userId') userId: string) {
+    return this.notificationsService.markAllAsRead(userId);
+  }
+
  
 }
