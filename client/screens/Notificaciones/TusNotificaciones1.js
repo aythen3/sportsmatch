@@ -19,7 +19,10 @@ import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
 import { Context } from '../../context/Context'
 import CustomHeaderBack from '../../components/CustomHeaderBack'
-import { getNotificationsByUserId } from '../../redux/actions/notifications'
+import {
+  getNotificationsByUserId,
+  markAllUserNotificationsAsRead
+} from '../../redux/actions/notifications'
 import { ActivityIndicator } from 'react-native-paper'
 
 const TusNotificaciones1 = () => {
@@ -81,7 +84,7 @@ const TusNotificaciones1 = () => {
       dispatch(getNotificationsByUserId(user.user.id))
     }
   }, [])
-  console.log('userNotifications', userNotifications)
+  // console.log('userNotifications', userNotifications)
   // ================ NOTIFICATIONS/OFFERS =====================
 
   useEffect(() => {
@@ -150,7 +153,19 @@ const TusNotificaciones1 = () => {
           </Pressable>
           <Pressable
             style={{ width: '50%', height: 40 }}
-            onPress={() => setSelectedComponent('notifications')}
+            onPress={() => {
+              console.log('marking...')
+              dispatch(markAllUserNotificationsAsRead(user.user.id)).then(
+                (res) => {
+                  if (user.user.type == 'club') {
+                    dispatch(getNotificationsByUserId(user.user.club.id))
+                  } else {
+                    dispatch(getNotificationsByUserId(user.user.id))
+                  }
+                }
+              )
+              setSelectedComponent('notifications')
+            }}
           >
             <Text
               style={[
@@ -166,10 +181,8 @@ const TusNotificaciones1 = () => {
             >
               Notificaciones
             </Text>
-            {allNotifications?.filter(
-              (notification) => notification.recipientId === userId
-            ).length > 0 &&
-              allNotifications
+            {userNotifications.length > 0 &&
+              userNotifications
                 ?.filter((notification) => {
                   if (user?.user?.type === 'club') {
                     notification.recipientId === user.user.club.id
@@ -216,7 +229,7 @@ const TusNotificaciones1 = () => {
                     color: Color.wHITESPORTSMATCH
                   }}
                 >
-                  No tienes notificaciones!
+                  ¡No tienes notificaciones!
                 </Text>
               </View>
             )}
@@ -328,7 +341,7 @@ const TusNotificaciones1 = () => {
                             color: Color.wHITESPORTSMATCH
                           }}
                         >
-                          No encontramos resultados para tu búsqueda!
+                          No encontramos resultados para su búsqueda.
                         </Text>
                       </View>
                     )}

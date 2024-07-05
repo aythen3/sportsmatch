@@ -122,7 +122,7 @@ const Feed = ({ externalId }) => {
             }}
           >
             {externalId
-              ? 'El usuario aún no tiene publicaciones'
+              ? 'El usuario aún no tiene publicaciones.'
               : '¡No tienes publicaciones!'}
           </Text>
         </View>

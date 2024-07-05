@@ -423,7 +423,7 @@ const TodasLasOfertas = () => {
                   bottom: 4
                 }}
               >
-                No hay ofertas disponibles basadas en su búsqueda!
+                No hay ofertas disponibles basadas en su búsqueda.
               </Text>
             </View>
           )}
@@ -444,7 +444,7 @@ const TodasLasOfertas = () => {
                 bottom: 4
               }}
             >
-              Aún no hay ofertas activas!
+              ¡Aún no hay ofertas activas!
             </Text>
           </View>
         )
@@ -700,7 +700,7 @@ const TodasLasOfertas = () => {
                 bottom: 4
               }}
             >
-              Aún no te has inscrito en ninguna oferta!
+              ¡Aún no te has inscrito en ninguna oferta!
             </Text>
           </View>
         )
