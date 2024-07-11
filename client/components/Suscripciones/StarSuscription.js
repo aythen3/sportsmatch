@@ -25,7 +25,7 @@ const GoldSuscription = ({
 
   const handleGetStar = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
+      priceId: 'price_1PbQpkGmE60O5ob7SvyvMLml',
       customerId: user.user.stripeId
     })
     if (res.data) {

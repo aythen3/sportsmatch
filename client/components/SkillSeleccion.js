@@ -216,8 +216,9 @@ const SkillSeleccion = ({
         style={{
           height: 40,
           flexDirection: 'row',
-          gap: 20,
-          justifyContent: 'center'
+          justifyContent: 'space-between',
+          paddingHorizontal:14,
+          marginBottom:7
         }}
       >
         <View style={styles.atributoContainer}>
@@ -306,7 +307,7 @@ const SkillSeleccion = ({
                 : sportman?.info?.category?.toString() ||
                 'Selecciona tu categoría'
             }
-            isAccordeon={true}
+            isAccordeon={modalVisible}
             open={openModal}
           />
           {modalVisible && (
@@ -333,7 +334,7 @@ const SkillSeleccion = ({
           <Acordeon
             title="Posición Principal"
             placeholderText={placeholderText}
-            isAccordeon={true}
+            isAccordeon={positionModalVisible}
             open={openPositionModal}
           />
 

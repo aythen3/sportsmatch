@@ -22,7 +22,7 @@ const SilverSuscriptionClub = () => {
             end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
             colors={['#747474', '#c9c9c9', '#b1adad', '#838383']}
           ></LinearGradient>
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>FREEMIUM</Text>
+          <Text style={[styles.freemium2, styles.ofertasTypo]}>SILVER</Text>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>

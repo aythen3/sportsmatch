@@ -26,6 +26,7 @@ import { getClub } from '../../redux/actions/club'
 import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
 import ScrollableModal from '../../components/modals/ScrollableModal'
 import { useStripe } from '@stripe/stripe-react-native'
+import { Entypo } from '@expo/vector-icons'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -253,6 +254,12 @@ const ConfigurarAnuncio = () => {
 
 
               </Text>
+              <Entypo
+                style={{ color: '#fff', marginRight: 15 }}
+                name={showGenderModal ? 'chevron-up' : 'chevron-down'}
+                color="#fff"
+                size={18}
+              />
 
               {showGenderModal && (
                 <ScrollableModal
@@ -279,6 +286,12 @@ const ConfigurarAnuncio = () => {
                 {selectedCategory == '' && offerData?.category}
                 {selectedCategory}
               </Text>
+              <Entypo
+                style={{ color: '#fff', marginRight: 15 }}
+                name={showCategoryModal ? 'chevron-up' : 'chevron-down'}
+                color="#fff"
+                size={18}
+              />
 
               {showCategoryModal && (
                 <ScrollableModal
@@ -319,6 +332,12 @@ const ConfigurarAnuncio = () => {
                 {selectedPriority == '' && offerData?.urgency}
                 {selectedPriority}
               </Text>
+              <Entypo
+                style={{ color: '#fff', marginRight: 15 }}
+                name={showPriorityModal ? 'chevron-up' : 'chevron-down'}
+                color="#fff"
+                size={18}
+              />
 
               {showPriorityModal && (
                 <ScrollableModal
@@ -347,7 +366,12 @@ const ConfigurarAnuncio = () => {
 
               </Text>
 
-
+              <Entypo
+                style={{ color: '#fff', marginRight: 15 }}
+                name={showRemunerationModal ? 'chevron-up' : 'chevron-down'}
+                color="#fff"
+                size={18}
+              />
               {showRemunerationModal && (
                 <ScrollableModal
                   visible={showRemunerationModal}
@@ -379,7 +403,7 @@ const ConfigurarAnuncio = () => {
         </View>
 
         <View style={styles.botonsOferta}>
-          <View>
+          <View style={{width:"100%",paddingHorizontal:14}}>
             <TouchableOpacity
               onPress={() => handleRegister()}
               style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
@@ -420,21 +444,7 @@ const ConfigurarAnuncio = () => {
                   )
                   navigation.navigate('OfertasEmitidas')
                 } else {
-                  // const data = {
-                  //   offerData: {
-                  //     ...(selectedGender && { sexo: selectedGender }),
-                  //     ...(selectedCategory && { category: selectedCategory }),
-                  //     ...(selectedPriority && { urgency: selectedPriority }),
-                  //     ...(selectedRemuneration && {
-                  //       retribution:
-                  //         selectedRemuneration === 'Si' ? true : false
-                  //     })
-                  //   },
-                  //   ...(selectedPosition && {
-                  //     positionId: selectedPosition.id
-                  //   }),
-                  //   ...(club && { clubId: club.id })
-                  // }
+              
                   const data = {
                     ...(selectedGender && {
                       sexo:
@@ -540,6 +550,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   containerBox: {
+    flexDirection:"row",
     borderWidth: 0.5,
     color: 'white',
     position: 'relative',
@@ -547,7 +558,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: '100%',
     height: 40,
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    alignItems:"center"
   },
   innerContainer: {
     alignItems: 'center',

@@ -95,7 +95,7 @@ const MiSuscripcin = () => {
 
   return (
     <SafeAreaView style={styles.miSuscripcin}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView contentContainerStyle={{paddingBottom:10}} keyboardShouldPersistTaps={'always'}>
      <CustomHeaderBack header={'Mi suscripción'}></CustomHeaderBack>
 
         <View style={{paddingHorizontal:10}}>
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   miSuscripcin: {
     backgroundColor: Color.bLACK1SPORTSMATCH,
     flex: 1,
-    paddingBottom: 20,
+    paddingBottom: 0,
     width: '100%'
   }
 })

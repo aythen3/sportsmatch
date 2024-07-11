@@ -95,7 +95,7 @@ const SkillSeleccion = ({
           placeholderText={
             selectedGenero ? selectedGenero : 'Selecciona tu sexo'
           }
-          isAccordeon={true}
+          isAccordeon={modalVisible}
           open={openModal}
         />
         {modalVisible && (
