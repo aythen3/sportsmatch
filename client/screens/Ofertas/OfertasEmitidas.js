@@ -60,7 +60,10 @@ const OfertasEmitidas = () => {
   }
 
   useEffect(() => {
-    console.log(offers.map((off) => off.province))
+    console.log(
+      'ALL CLUB OFFERS:',
+      offers.filter((offer) => offer.club.id === club.id)
+    )
   }, [])
 
   return (

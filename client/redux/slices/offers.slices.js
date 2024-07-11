@@ -30,7 +30,7 @@ const offersSlices = createSlice({
       state.offers = []
       state.usersRegistered = []
     },
-    setOfferSelected:(state, action) => {
+    setOfferSelected: (state, action) => {
       state.offer = action.payload
     }
   },
@@ -56,11 +56,11 @@ const offersSlices = createSlice({
         state.error = false
       })
       .addCase(getAllOffers.fulfilled, (state, action) => {
-        const unpausedOffers = action.payload.filter(
-          (offer) => offer.paused === false
-        )
+        // const unpausedOffers = action.payload.filter(
+        //   (offer) => offer.paused === false
+        // )
         state.loading = false
-        state.offers = unpausedOffers
+        state.offers = action.payload
         state.error = false
       })
       .addCase(getAllOffers.rejected, (state) => {
@@ -112,6 +112,7 @@ const offersSlices = createSlice({
   }
 })
 
-export const { cleanOffers, updateOffers ,setOfferSelected } = offersSlices.actions
+export const { cleanOffers, updateOffers, setOfferSelected } =
+  offersSlices.actions
 
 export default offersSlices.reducer
