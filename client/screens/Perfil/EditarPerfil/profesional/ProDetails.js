@@ -92,7 +92,7 @@ const PlayerDetails = () => {
 
   const handleUpdateUserData = () => {
     const data = {
-      city:residencia,
+      city: residencia,
       description: userDescription,
       actualClub: actualClubName,
       img_perfil: profileImage,
@@ -137,7 +137,7 @@ const PlayerDetails = () => {
     }
   }
 
-  if(!showCamera){
+  if (!showCamera) {
     return (
       <SafeAreaView style={styles.clubDetailsContainer}>
         {showCamera && (
@@ -171,7 +171,7 @@ const PlayerDetails = () => {
                     source={require('../../../../assets/group-565.png')}
                   />
                 </TouchableOpacity>
-  
+
                 <TouchableOpacity
                   style={{
                     alignSelf: 'flex-end',
@@ -190,7 +190,7 @@ const PlayerDetails = () => {
                       height: 60,
                       borderRadius: 100,
                       backgroundColor: '#cecece',
-  
+
                       color: 'white'
                     }}
                   ></TouchableOpacity>
@@ -341,7 +341,7 @@ const PlayerDetails = () => {
               </View>
               <TouchableOpacity
                 style={{ ...styles.orangeButton, backgroundColor: mainColor }}
-  
+
                 onPress={() => pickImage('cover')}
               >
                 <Text style={styles.mediumText}>Subir foto de portada</Text>
@@ -354,7 +354,7 @@ const PlayerDetails = () => {
             <View style={{ gap: 20, flex: 1 }}>
               <View style={{ gap: 5 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
-                  {'Selecciona tu posición'}
+                  {'Tipo de profesional'}
                 </Text>
                 <CustomPicker
                   zIndex={10000}
@@ -366,27 +366,27 @@ const PlayerDetails = () => {
                     , 'Fisioterapeuta'
                     , 'Nutricionista'
                   ]}
-                  placeholder={sportman?.info?.rol ?? 'Selecciona tu posición'}
+                  placeholder={sportman?.info?.rol ?? 'Tipo de profesional'}
                   state={profesionalType}
                   setState={setProfesionalTpye}
                   showModal={false}
                   setShowModal={setShowTypeModal}
                 />
               </View>
-                  <ScrollableModal
-                    visible={showTypeModal}
-                    closeModal={() => setShowTypeModal(false)}
-                    onSelectItem={setProfesionalTpye}
-                    options={[
-                      'Entrenador/a',
-                      'Preparador/a físico/a',
-                      'Analista técnico/a'
-                      , 'Psicólogo/a'
-                      , 'Fisioterapeuta'
-                      , 'Nutricionista'
-                    ]}
-                  />
-  
+              <ScrollableModal
+                visible={showTypeModal}
+                closeModal={() => setShowTypeModal(false)}
+                onSelectItem={setProfesionalTpye}
+                options={[
+                  'Entrenador/a',
+                  'Preparador/a físico/a',
+                  'Analista técnico/a'
+                  , 'Psicólogo/a'
+                  , 'Fisioterapeuta'
+                  , 'Nutricionista'
+                ]}
+              />
+
               <View style={{ gap: 5, zIndex: 9000 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {'Años en activo'}
@@ -409,8 +409,8 @@ const PlayerDetails = () => {
                   }}
                 />
               </View>
-  
-  
+
+
               {inputs.map((input, index) => (
                 <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
                   <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
@@ -479,75 +479,75 @@ const PlayerDetails = () => {
   } else {
     return (
       <View style={{ zIndex: 9999, height: '100%' }}>
-      <CameraView
-        ref={cameraReff}
-        facing={facing}
-        style={{ flex: 1 }}
-        mode="picture"
-        FocusMode="on"
-        onCameraReady={(e) => console.log(e, 'esto es e')}
+        <CameraView
+          ref={cameraReff}
+          facing={facing}
+          style={{ flex: 1 }}
+          mode="picture"
+          FocusMode="on"
+          onCameraReady={(e) => console.log(e, 'esto es e')}
 
         // cameraType="back"
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            flexDirection: 'row'
-          }}
         >
-          <TouchableOpacity
-            style={{ position: 'absolute', top: 50, left: 18 }}
-            onPress={() => setShowCamera(false)}
-          >
-            <Image
-              style={{
-                height: 15,
-                width: 15
-              }}
-              contentFit="cover"
-              source={require('../../../../assets/group-565.png')}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
+          <View
             style={{
-              alignSelf: 'flex-end',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              width: '100%',
-              marginBottom: 30,
-              position: 'relative'
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
             }}
           >
             <TouchableOpacity
-              onPress={takePicture}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 100,
-                backgroundColor: '#cecece',
+              style={{ position: 'absolute', top: 50, left: 18 }}
+              onPress={() => setShowCamera(false)}
+            >
+              <Image
+                style={{
+                  height: 15,
+                  width: 15
+                }}
+                contentFit="cover"
+                source={require('../../../../assets/group-565.png')}
+              />
+            </TouchableOpacity>
 
-                color: 'white'
-              }}
-            ></TouchableOpacity>
             <TouchableOpacity
-              onPress={changePictureMode}
               style={{
-                position: 'absolute',
-                right: 20,
-                color: 'white',
+                alignSelf: 'flex-end',
+                alignItems: 'center',
                 justifyContent: 'center',
-                alignItems: 'center'
+                flexDirection: 'row',
+                width: '100%',
+                marginBottom: 30,
+                position: 'relative'
               }}
             >
-              <Entypo name="cycle" color={'#fff'} size={25} />
+              <TouchableOpacity
+                onPress={takePicture}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 100,
+                  backgroundColor: '#cecece',
+
+                  color: 'white'
+                }}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                onPress={changePictureMode}
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  color: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Entypo name="cycle" color={'#fff'} size={25} />
+              </TouchableOpacity>
             </TouchableOpacity>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
-    </View>
+          </View>
+        </CameraView>
+      </View>
     )
   }
 }

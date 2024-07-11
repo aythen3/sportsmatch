@@ -97,7 +97,7 @@ const CustomPicker = ({
       )}
       <Entypo
         style={{ color: '#fff', marginRight: 15 }}
-        name={showModal ? 'chevron-down' : 'chevron-up'}
+        name={ 'chevron-down'}
         color="#fff"
         size={18}
       />

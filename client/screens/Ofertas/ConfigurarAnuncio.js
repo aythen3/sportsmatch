@@ -342,8 +342,8 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 6000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-              {offerData?.retribution !== false && offerData?.retribution !== true  && selectedRemuneration == '' && 'Seleccione retribución'}
-{selectedRemuneration === '' ? offerData?.retribution : selectedRemuneration}
+                {offerData?.retribution !== false && offerData?.retribution !== true && selectedRemuneration == '' && 'Seleccione retribución'}
+                {selectedRemuneration === '' ? offerData?.retribution : selectedRemuneration}
 
               </Text>
 
@@ -358,7 +358,7 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-          {selectedRemuneration == 'Si' && (
+          {/* {selectedRemuneration == 'Si' && (
             <View style={{ width: '100%', gap: 8 }}>
               <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
                 Importe anual
@@ -375,7 +375,7 @@ const ConfigurarAnuncio = () => {
                 ></TextInput>
               </View>
             </View>
-          )}
+          )} */}
         </View>
 
         <View style={styles.botonsOferta}>
