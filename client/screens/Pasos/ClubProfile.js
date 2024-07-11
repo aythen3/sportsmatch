@@ -33,6 +33,7 @@ const ClubProfile = () => {
             description={data?.author?.club?.description}
             myPerfil={false}
             external={true}
+            sport={data?.author?.club?.sport}
             setSelectComponents={setSelectComponents}
             selectComponents={selectComponents}
             front={data?.author?.club?.img_front}

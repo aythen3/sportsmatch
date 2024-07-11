@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 
 const UserFollowers = () => {
   const [search, setSearch] = useState('')
-  const { user } = useSelector((state) => state.users)
+  const { user, mainColor } = useSelector((state) => state.users)
   const route = useRoute()
   const navigation = useNavigation()
   const [followers, setFollowers] = useState(route.params.followers || [])
@@ -144,13 +144,23 @@ const UserFollowers = () => {
           >
             <Image
               contentfit="cover"
-              style={{ height: 40, borderRadius: 50, width: 40 }}
-              source={{
-                uri:
-                  follower.type === 'club'
-                    ? follower?.club?.img_perfil
-                    : follower?.sportman?.info?.img_perfil
+              style={{
+                height: 40,
+                borderRadius: 50,
+                width: 40,
+                backgroundColor: mainColor
               }}
+              source={
+                follower.type === 'club'
+                  ? follower?.club?.img_perfil &&
+                    follower?.club?.img_perfil !== ''
+                    ? { uri: follower.club.img_perfil }
+                    : require('../../assets/whiteSport.png')
+                  : follower?.sportman?.info?.img_perfil &&
+                      follower?.sportman?.info?.img_perfil !== ''
+                    ? { uri: follower.sportman.info.img_perfil }
+                    : require('../../assets/whiteSport.png')
+              }
             />
             <Text
               style={{

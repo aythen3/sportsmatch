@@ -40,7 +40,7 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info?.birthdate) || 2000
 
-console.log(sportman,"sssss")
+  console.log(sportman, 'sssss')
 
   if (user && sportman)
     return (
@@ -277,7 +277,7 @@ console.log(sportman,"sssss")
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info?.category || '-'}
+                    {sportman?.info?.category.split('(')[0] || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -340,7 +340,7 @@ console.log(sportman,"sssss")
                       { color: mainColor }
                     ]}
                   >
-                    {sportman.info?.city || "-"}
+                    {sportman.info?.city || '-'}
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>

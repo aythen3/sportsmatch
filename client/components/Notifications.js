@@ -55,7 +55,7 @@ const Notifications = ({ data }) => {
 
   useEffect(() => {
     // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
-    // console.log('notif data', data.prop1.userData?.user?.sportman)
+    console.log('notif data', data)
   }, [])
   //console.log('data', data)
   return (
@@ -284,102 +284,108 @@ const Notifications = ({ data }) => {
             >
               {formatDate(data.date)}
             </Text>
-            {!user?.user?.following?.includes(data.prop1.userId) && (
-              <TouchableOpacity
-                onPress={() => {
-                  let actualUser = _.cloneDeep(user)
-                  const actualFollowers =
-                    allUsers.filter((user) => user.id === data.prop1.userId)[0]
-                      .followers || []
-                  const newFollowers = actualFollowers?.includes(user?.user?.id)
-                    ? actualFollowers.filter(
-                        (follower) => follower !== user?.user?.id
-                      )
-                    : [...actualFollowers, user?.user?.id]
+            {!data?.prop1?.clubData &&
+              !user?.user?.following?.includes(data?.prop1?.userId) && (
+                <TouchableOpacity
+                  onPress={() => {
+                    let actualUser = _.cloneDeep(user)
+                    const actualFollowers =
+                      allUsers.filter(
+                        (user) => user.id === data.prop1.userId
+                      )[0].followers || []
+                    const newFollowers = actualFollowers?.includes(
+                      user?.user?.id
+                    )
+                      ? actualFollowers.filter(
+                          (follower) => follower !== user?.user?.id
+                        )
+                      : [...actualFollowers, user?.user?.id]
 
-                  const newFollowingArray = userFollowing?.includes(
-                    data.prop1.userId
-                  )
-                    ? userFollowing.filter(
-                        (followed) => followed !== data.prop1.userId
-                      )
-                    : [...userFollowing, data.prop1.userId]
-                  actualUser.user.following = newFollowingArray
+                    const newFollowingArray = userFollowing?.includes(
+                      data.prop1.userId
+                    )
+                      ? userFollowing.filter(
+                          (followed) => followed !== data.prop1.userId
+                        )
+                      : [...userFollowing, data.prop1.userId]
+                    actualUser.user.following = newFollowingArray
 
-                  dispatch(
-                    updateUserData({
-                      id: data.prop1.userId,
-                      body: { followers: newFollowers }
-                    })
-                  )
-                    .then((data) => {
-                      dispatch(
-                        updateUserData({
-                          id: user.user.id,
-                          body: { following: newFollowingArray }
-                        })
-                      )
-                    })
-                    .then((response) => {
-                      if (newFollowers.includes(user?.user?.id)) {
-                        console.log('esdto vas a cmaiawr', data)
+                    dispatch(
+                      updateUserData({
+                        id: data.prop1.userId,
+                        body: { followers: newFollowers }
+                      })
+                    )
+                      .then((data) => {
                         dispatch(
-                          sendNotification({
-                            title: 'Follow',
-                            message: `${user.user.nickname} ha comenzado a seguirte`,
-                            recipientId: data?.prop1?.userId,
-                            date: new Date(),
-                            read: false,
-                            prop1: {
-                              userId: user?.user?.id,
-                              userData: {
-                                ...user
-                              }
-                            },
-                            prop2: {
-                              rol: data.prop1.userData.user.club
-                                ? 'club'
-                                : 'user'
-                            }
+                          updateUserData({
+                            id: user.user.id,
+                            body: { following: newFollowingArray }
                           })
                         )
-                      }
-                      dispatch(getAllUsers())
-                      dispatch(updateUser(actualUser))
-                    })
-                }}
-                style={{
-                  borderRadius: 50,
-                  paddingVertical: 4,
-                  paddingHorizontal: 14,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 5,
-                  backgroundColor: '#505050',
-                  flexDirection: 'row'
-                }}
-              >
-                <Image
-                  style={{ width: 16, height: 16 }}
-                  contentFit="cover"
-                  source={require('../assets/pictograma1.png')}
-                />
-                <Text
+                      })
+                      .then((response) => {
+                        if (newFollowers.includes(user?.user?.id)) {
+                          console.log('esdto vas a cmaiawr', data)
+                          dispatch(
+                            sendNotification({
+                              title: 'Follow',
+                              message: `${user.user.nickname} ha comenzado a seguirte`,
+                              recipientId: data?.prop1?.userId,
+                              date: new Date(),
+                              read: false,
+                              prop1: {
+                                userId: user?.user?.id,
+                                userData: {
+                                  ...user
+                                }
+                              },
+                              prop2: {
+                                rol: data.prop1.userData.user.club
+                                  ? 'club'
+                                  : 'user'
+                              }
+                            })
+                          )
+                        }
+                        dispatch(getAllUsers())
+                        dispatch(updateUser(actualUser))
+                      })
+                  }}
                   style={{
-                    fontWeight: '600',
-                    color:
-                      data.title === 'Like'
-                        ? '#999999'
-                        : Color.wHITESPORTSMATCH,
-                    alignSelf: 'flex-start',
-                    fontSize: FontSize.t1TextSMALL_size,
-                    fontFamily: FontFamily.t4TEXTMICRO
+                    borderRadius: 50,
+                    paddingVertical: 4,
+                    paddingHorizontal: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 5,
+                    backgroundColor: '#505050',
+                    flexDirection: 'row'
                   }}
                 >
-                  Seguir
-                </Text>
-              </TouchableOpacity>
-            )}
+                  <Image
+                    style={{ width: 16, height: 16 }}
+                    contentFit="cover"
+                    source={require('../assets/pictograma1.png')}
+                  />
+                  {!data?.prop1?.clubData && (
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        color:
+                          data.title === 'Like'
+                            ? '#999999'
+                            : Color.wHITESPORTSMATCH,
+                        alignSelf: 'flex-start',
+                        fontSize: FontSize.t1TextSMALL_size,
+                        fontFamily: FontFamily.t4TEXTMICRO
+                      }}
+                    >
+                      Seguir
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              )}
           </View>
         )}
       </View>
