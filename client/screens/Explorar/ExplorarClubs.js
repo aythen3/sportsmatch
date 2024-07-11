@@ -467,7 +467,7 @@ const ExplorarClubs = () => {
                           fontWeight: 600
                         }}
                       >
-                        {city.info.nickname}2
+                        {city.info.nickname}
                       </Text>
                     </View>
                   </TouchableOpacity>
