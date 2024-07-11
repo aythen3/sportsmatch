@@ -27,8 +27,10 @@ export const signToOffer = createAsyncThunk(
 )
 
 export const getAllOffers = createAsyncThunk('getAllOffers', async () => {
+  console.log('GETTING ALL OFFERS')
   try {
     const { data } = await axiosInstance.get('offer')
+    console.log('ALL OFFERS FROM GETALLOFFERS', data)
     return data
   } catch (error) {
     throw new Error(error)
@@ -58,7 +60,7 @@ export const updateOffer = createAsyncThunk(
   async ({ id, body }) => {
     try {
       const { data } = await axiosInstance.patch(`offer/${id}`, body)
-      // console.log('data from updateOffer: ', data)
+      console.log('data from updateOffer: ', data)
       return data
     } catch (error) {
       throw new Error(error)

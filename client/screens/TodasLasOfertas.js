@@ -254,6 +254,7 @@ const TodasLasOfertas = () => {
             return true
           }
         })
+        .filter((offer) => offer.paused === false)
         .filter((offer) => {
           const filteredUserMatches = userMatches.filter(
             (match) => match.offerId && match.offerId !== offer.id
@@ -271,6 +272,7 @@ const TodasLasOfertas = () => {
         }).length > 0 ? (
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {offer
+            .filter((offer) => offer.paused === false)
             .filter((offer) => {
               const filteredUserMatches = userMatches.filter(
                 (match) => match.offerId && match.offerId !== offer.id
@@ -293,6 +295,7 @@ const TodasLasOfertas = () => {
                 : 20
             ).length > 0 ? (
             offer
+              .filter((offer) => offer.paused === false)
               .filter((off) => {
                 if (search.length > 0) {
                   if (
