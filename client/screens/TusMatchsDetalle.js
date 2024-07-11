@@ -23,7 +23,8 @@ const TusMatchsDetalle = ({ onClose, data }) => {
     '#00FF18': require('../assets/expandedMatchCards/00FF18.png'),
     '#0062FF': require('../assets/expandedMatchCards/0062FF.png'),
     '#E1AA1E': require('../assets/expandedMatchCards/E1AA1E.png'),
-    '#A8154A': require('../assets/expandedMatchCards/A8154A.png')
+    '#A8154A': require('../assets/expandedMatchCards/A8154A.png'),
+    '#00F0FF': require('../assets/expandedMatchCards/00F0FF.png')
   }
   const imageSource = images[mainColor] || images['#E1451E']
 
