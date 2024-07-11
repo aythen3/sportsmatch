@@ -107,14 +107,7 @@ const SiguiendoJugadores = () => {
     }
   }, [allMatchs])
 
-  // useEffect(() => {
-  //   getUsersMessages()
-  //   if (user.user.type == 'club') {
-  //     dispatch(getNotificationsByUserId(user.user.club.id))
-  //   } else {
-  //     dispatch(getNotificationsByUserId(user.user.id))
-  //   }
-  // }, [])
+
 
   const [filteredPosts, setFilteredPosts] = useState([])
 

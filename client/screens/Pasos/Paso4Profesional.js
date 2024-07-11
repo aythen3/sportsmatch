@@ -39,7 +39,6 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   }
 
   const [hasPermission, setHasPermission] = useState(null)
-  const [cameraRef, setCameraRef] = useState(null)
 
   useEffect(() => {
     ;(async () => {

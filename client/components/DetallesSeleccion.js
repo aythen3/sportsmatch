@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
 import ScrollableModal from './modals/ScrollableModal'
 import { cities } from '../utils/cities'
+import { Entypo } from '@expo/vector-icons'
 
 const SkillSeleccion = ({
   editable,
@@ -131,13 +132,19 @@ const SkillSeleccion = ({
               color: Color.gREY2SPORTSMATCH,
               fontFamily: FontFamily.t4TEXTMICRO,
               fontSize: FontSize.t2TextSTANDARD_size,
-              left: '5%'
+              paddingLeft:14
             }}
           >
             {selectedAñoNacimiento && selectedAñoNacimiento > 1933
               ? selectedAñoNacimiento
               : 'Selecciona año de nacimiento'}
           </Text>
+          <Entypo
+              style={{ color: '#fff', marginRight: 15 }}
+              name={añoNacimientoModalVisible ? 'chevron-up' : 'chevron-down'}
+              color="#fff"
+              size={18}
+            />
         </Pressable>
       </View>
 
@@ -205,7 +212,10 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_81xl,
     height: 45,
     borderStyle: 'solid',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    alignItems:"center",
+    flexDirection:"row",
+
     // width: '96%'
   },
   rectanguloBorder2: {

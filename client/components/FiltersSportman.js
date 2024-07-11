@@ -94,9 +94,9 @@ const FiltersSportman = ({
         style={{
           backgroundColor: Color.bLACK3SPORTSMATCH,
           width: 200,
-          justifyContent: 'center',
           alignItems: 'center',
-          padding: 10,
+          gap:6,
+          paddingVertical: 10,
           borderRadius: 8
         }}
       >

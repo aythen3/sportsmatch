@@ -238,14 +238,14 @@ function Carousel({
               }}
               style={{
                 width: 24,
-                height: 25,
+                height: 20,
                 top: 2,
                 alignItems: 'center'
               }}
             >
               <Image
-                style={{ width: 5, height: 21 }}
-                contentFit="cover"
+                style={{ width: 5, height: "100%" }}
+                contentFit="scale-down"
                 source={require('../assets/frame-957.png')}
               />
             </TouchableOpacity>
@@ -280,11 +280,9 @@ function Carousel({
           <View style={{ width: '100%', height: '100%' }} key={i}>
             <DoubleTap
               onDoubleTap={() => {
-                console.log('doble pressss2222')
                 handleLike()
                 setDoubleTapHeart(true)
-                // handleDoubleTap(); // Llama a la función de manejar el doble clic
-                // resetDoubleTap(); // Reinicia el estado de doubleTap
+          
               }}
             >
               <View
@@ -311,49 +309,7 @@ function Carousel({
           </View>
         ))}
 
-        {/* {image.map((e, i) => (
-          <View style={{ width: '100%', height: '100%' }} key={i}>
-            <DoubleTap
-              onDoubleTap={() => {
-                handleLike()
-                setDoubleTapHeart(true)
-                // handleDoubleTap(); // Llama a la función de manejar el doble clic
-                // resetDoubleTap(); // Reinicia el estado de doubleTap
-              }}
-            >
-              <View
-                style={{ width: '100%', height: '100%', position: 'relative' }}
-              >
-                {doubleTapHeart && liked && (
-                  <TouchableOpacity
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      zIndex: 999
-                    }}
-                  >
-                    <Like2SVG id={id}></Like2SVG>
-                  </TouchableOpacity>
-                )}
-
-                <Image
-                  style={{ ...styles.postImage, zIndex: 990 }}
-                  source={e}
-                />
-              </View>
-            </DoubleTap>
-          </View>
-        ))} */}
-
-        {/* <View key={index + 1}>
-          <Image
-            style={styles.postImage}
-            source={require('../assets/nickfithenbuugssofvounsplash-12.png')}
-          />
-        </View> */}
+       
       </PagerView>
       <View
         style={{

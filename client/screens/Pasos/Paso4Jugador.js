@@ -78,15 +78,7 @@ const Paso4Jugador = ({
   }, [])
 
   const changePictureMode = async () => {
-    // console.log(
-    //   'setting camera mode to: ',
-    //   cameraType === Camera?.Constants?.Type?.back ? 'selfie' : 'normal'
-    // )
-    // setCameraType(
-    //   cameraType === Camera?.Constants?.Type?.back
-    //     ? Camera?.Constants?.Type?.front
-    //     : Camera?.Constants?.Type?.back
-    // )
+
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 

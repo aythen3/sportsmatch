@@ -362,7 +362,7 @@ const ConfigurarAnuncio = () => {
             >
               <Text style={styles.inputText}>
                 {offerData?.retribution !== false && offerData?.retribution !== true && selectedRemuneration == '' && 'Seleccione retribución'}
-                {selectedRemuneration === '' ? offerData?.retribution : selectedRemuneration}
+                {selectedRemuneration === '' ? offerData?.retribution == false && 'No' || offerData?.retribution == true && 'Si' : selectedRemuneration}
 
               </Text>
 
