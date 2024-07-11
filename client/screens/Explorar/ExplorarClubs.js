@@ -185,7 +185,7 @@ const ExplorarClubs = () => {
     posttt()
   }, [])
 
-  // console.log('searchUsers', searchUsers)
+  console.log('searchClubes', searchClubes)
 
   return (
     <SafeAreaView style={styles.explorarClubs}>
@@ -294,9 +294,14 @@ const ExplorarClubs = () => {
                     <TouchableOpacity
                       key={i}
                       onPress={() => {
-                        navigation.navigate('ClubProfile', {
-                          author: { type: 'club', nickname: club.name, club }
-                        })
+                        if (usuario.user.id === club.user.id) {
+                          navigation.navigate('PerfilDatosPropioClub')
+                          return
+                        } else {
+                          navigation.navigate('ClubProfile', {
+                            author: { type: 'club', nickname: club.name, club }
+                          })
+                        }
                       }}
                     >
                       <View

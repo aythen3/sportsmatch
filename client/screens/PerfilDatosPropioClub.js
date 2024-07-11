@@ -21,9 +21,9 @@ const PerfilDatosPropioClub = () => {
   const [selectComponents, setSelectComponents] = useState('perfil')
   const isFocused = useIsFocused()
 
-const {setActiveIcon} = useContext(Context)
+  const { setActiveIcon } = useContext(Context)
   useEffect(() => {
-    setActiveIcon("profile")
+    setActiveIcon('profile')
   }, [isFocused])
   return (
     <View
@@ -34,7 +34,7 @@ const {setActiveIcon} = useContext(Context)
         paddingBottom: 30
       }}
     >
-      <StatusBar  translucent={true}  backgroundColor={'transparent'}/>
+      <StatusBar translucent={true} backgroundColor={'transparent'} />
 
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <View>
@@ -42,6 +42,7 @@ const {setActiveIcon} = useContext(Context)
             name={isSportman ? '' : club?.name}
             description={isSportman ? '' : club?.description}
             myPerfil={true}
+            sport={isSportman ? '' : club?.sport}
             setSelectComponents={setSelectComponents}
             selectComponents={selectComponents}
             front={club?.img_front}

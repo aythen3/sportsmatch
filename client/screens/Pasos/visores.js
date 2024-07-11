@@ -1,11 +1,11 @@
-import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import * as React from 'react'
+import Svg, { Path } from 'react-native-svg'
 
 function Visores(props) {
   return (
     <Svg
-      width={34}
-      height={30}
+      width={34 * 0.9}
+      height={30 * 0.9}
       viewBox="0 0 34 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

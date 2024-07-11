@@ -27,7 +27,10 @@ import SkillSeleccion from '../../components/SkillSeleccion'
 import Paso4Profesional from './Paso4Profesional'
 import { createSportman, updateSportman } from '../../redux/actions/sportman'
 import { Context } from '../../context/Context'
-import { cleanSportman, setInitialSportman } from '../../redux/slices/sportman.slices'
+import {
+  cleanSportman,
+  setInitialSportman
+} from '../../redux/slices/sportman.slices'
 import Visores from './visores'
 import StepsJugador from './StepsJugador'
 import Paso2Jugador from './Paso2Jugador'
@@ -80,7 +83,6 @@ const Paso1 = () => {
     category: category || ''
   })
 
-
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
     sport: sport?.name || '',
@@ -89,7 +91,6 @@ const Paso1 = () => {
     actualClub: '',
     description: ''
   })
-
 
   const [data, setData] = useState({})
 
@@ -151,19 +152,17 @@ const Paso1 = () => {
       userId: user.user.id
     }
 
-  
     if (selectedRole === 'Invitado') {
       if (Object.keys(sportmanRedux).length !== 0) {
-
         dispatch(
           setInitialSportman({
-            id: "invitado",
+            id: 'invitado',
             ...body.sportmanData
-          }))
-          navigation.navigate('SiguiendoJugadores')
+          })
+        )
+        navigation.navigate('SiguiendoJugadores')
         return
       }
-
 
       dispatch(createSportman(body)).then((response) => {
         dispatch(
@@ -193,9 +192,6 @@ const Paso1 = () => {
     setSportColor(color)
   }, [selectedSport, profesional, sportman])
 
-
-
-  
   const handleNavigation = async () => {
     if (selectedRole === 'Jugador' && selectedSport == null) {
       return
@@ -247,7 +243,7 @@ const Paso1 = () => {
                 ...body.sportmanData
               })
             )
-           
+
             const color =
               !sportman && !profesional
                 ? '#E1451E'
@@ -293,12 +289,11 @@ const Paso1 = () => {
           ...profesionalValues,
           img_perfil: profileImage,
           img_front: coverImage,
-          nickname: user?.user?.nickname || '',
-     
+          nickname: user?.user?.nickname || ''
         }
         const body = {
           sportmanData: {
-            type:  'coach',
+            type: 'coach',
             info: fullData,
             club: null
           },
@@ -306,7 +301,12 @@ const Paso1 = () => {
         }
         if (body) {
           dispatch(createSportman(body)).then((response) => {
-            console.log("esto responde el sportman",response,"Y ESTO ERA EL BODY",body)
+            console.log(
+              'esto responde el sportman',
+              response,
+              'Y ESTO ERA EL BODY',
+              body
+            )
 
             dispatch(
               setInitialSportman({
@@ -314,7 +314,7 @@ const Paso1 = () => {
                 ...body.sportmanData
               })
             )
-      
+
             dispatch(setMainColor('#00F0FF'))
 
             return navigation.reset({
@@ -506,7 +506,7 @@ const Paso1 = () => {
                 !sportman && !profesional
                   ? 1
                   : (sportman && stepsSportman === 0) ||
-                    (profesional && stepsProfesional === 0)
+                      (profesional && stepsProfesional === 0)
                     ? 2
                     : stepsProfesional === 1 || stepsSportman === 1
                       ? 3
@@ -544,7 +544,7 @@ const Paso1 = () => {
               >
                 <Image
                   style={styles.simboloIconLayout}
-                  contentFit="cover"
+                  contentFit="contain"
                   source={require('../../assets/simbolo6.png')}
                 />
                 <Text
@@ -563,7 +563,7 @@ const Paso1 = () => {
                 style={[
                   styles.rectangulo,
                   selectedRole === 'Profesional del deporte' &&
-                  styles.selectedBackground
+                    styles.selectedBackground
                 ]}
                 onPress={() => handleRoleSelection('Profesional del deporte')}
               >
@@ -572,14 +572,14 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                    styles.selectedText
+                      styles.selectedText
                   ]}
                 >
                   Profesional del deporte
                 </Text>
                 <Image
                   style={styles.simboloIconLayout}
-                  contentFit="cover"
+                  contentFit="contain"
                   source={require('../../assets/simbolo7.png')}
                 />
               </TouchableOpacity>
@@ -601,7 +601,7 @@ const Paso1 = () => {
                     styles.jugador,
                     styles.jugadorTypo,
                     selectedRole === 'Profesional del deporte' &&
-                    styles.selectedText
+                      styles.selectedText
                   ]}
                 >
                   Invitado
@@ -620,11 +620,8 @@ const Paso1 = () => {
             setSelectPosition={setSelectPosition}
             selectPosition={selectPosition}
           />
-
         )}
         {sportman && stepsSportman === 2 && (
-
-
           <Paso4Jugador
             selectedSport={selectedSport}
             selectedCity={selectedCity}
@@ -643,9 +640,8 @@ const Paso1 = () => {
         )}
         {profesional && stepsProfesional === 0 && (
           <Paso3Profesional
-          selectedProfesional={selectedProfesional}
-          setSelectedProfesional={setSelectedProfesional}
-
+            selectedProfesional={selectedProfesional}
+            setSelectedProfesional={setSelectedProfesional}
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
             profesionalValues={profesionalValues}
@@ -664,7 +660,6 @@ const Paso1 = () => {
             setProfesionalValues={setProfesionalValues}
           />
         )}
-
       </ScrollView>
       <View style={styles.botonesRoles}>
         <Pressable
@@ -691,8 +686,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   simboloIconLayout: {
-    height: 25,
-    width: 25,
+    height: 28,
+    width: 28,
     position: 'absolute',
     left: 20
   },
@@ -733,7 +728,7 @@ const styles = StyleSheet.create({
   botonesRoles: {
     width: '100%',
     paddingVertical: 25,
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
   siguiente1: {
     fontWeight: '700',

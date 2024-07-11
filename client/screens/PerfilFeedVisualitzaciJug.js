@@ -59,7 +59,7 @@ const PerfilFeedVisualitzaciJug = () => {
           name={data?.author?.nickname}
           sport={
             data?.author?.type === 'club'
-              ? null
+              ? data?.author?.club?.sport
               : data?.author?.sportman?.type === 'coach'
                 ? data?.author?.sportman?.info?.sport?.name
                 : data?.author?.sportman?.info?.sport
@@ -486,7 +486,8 @@ const PerfilFeedVisualitzaciJug = () => {
                           { color: mainColor }
                         ]}
                       >
-                        {data?.author?.sportman?.info.category || '-'}
+                        {data?.author?.sportman?.info.category.split('(')[0] ||
+                          '-'}
                       </Text>
                     </View>
                     <View style={[styles.modulo2, styles.moduloSpaceBlock]}>

@@ -8,7 +8,8 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar
+  StatusBar,
+  Pressable
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -34,7 +35,7 @@ const MiPerfil = () => {
   const { setActiveIcon } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
-  const { user, mainColor } = useSelector((state) => state.users)
+  const { user, mainColor, allUsers } = useSelector((state) => state.users)
 
   const [isTruncated, setIsTruncated] = useState(true)
   const [selectedTab, setSelectedTab] = useState('Feed')
@@ -224,12 +225,48 @@ const MiPerfil = () => {
                 <Text style={styles.miSuscripcin}>Mi suscripción</Text>
               </TouchableOpacity>
             </View>
-            {/* <View style={styles.bloqueNumeroSeguidores}>
-            <Text style={[styles.seguidores, styles.seguidoresTypo]}>
-              Seguidores
-            </Text>
-            <Text style={[styles.text, styles.textTypo]}>24</Text>
-          </View> */}
+            <Pressable
+              onPress={() => {
+                const followers = user?.user?.followers || []
+                if (followers?.length > 0) {
+                  navigation.navigate('UserFollowers', {
+                    author: allUsers.filter((user) => user.id === user.id),
+                    followers: allUsers.filter((user) =>
+                      followers.includes(user.id)
+                    )
+                  })
+                }
+              }}
+              style={{
+                width: '97%',
+                height: 50,
+                alignSelf: 'center',
+                justifyContent: 'space-around',
+                borderRadius: 5,
+                backgroundColor: Color.bLACK3SPORTSMATCH,
+                marginTop: 20,
+                paddingHorizontal: 15
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: FontSize.t4TEXTMICRO_size,
+                  color: Color.wHITESPORTSMATCH,
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                Seguidores
+              </Text>
+              <Text
+                style={{
+                  fontSize: FontSize.h3TitleMEDIUM_size,
+                  lineHeight: 22,
+                  color: Color.wHITESPORTSMATCH
+                }}
+              >
+                {user?.user?.followers ? user?.user?.followers.length : '0'}
+              </Text>
+            </Pressable>
           </View>
           <View
             style={{
