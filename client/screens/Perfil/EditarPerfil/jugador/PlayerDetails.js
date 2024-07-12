@@ -334,7 +334,7 @@ const PlayerDetails = () => {
                     }
                     state={gender}
                     setState={setGender}
-                    showModal={false}
+                    showModal={showGenderModal}
                     setShowModal={setShowGenderModal}
                   />
                   <ScrollableModal
@@ -361,7 +361,7 @@ const PlayerDetails = () => {
                     }
                     state={birthdate}
                     setState={setBirthdate}
-                    showModal={false}
+                    showModal={showBirthdateModal}
                     setShowModal={setShowBirthdateModal}
                   />
                   {/* <TextInput
