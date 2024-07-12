@@ -150,18 +150,44 @@ const InscritosAMisOfertas = () => {
                         }}
                       >
                         <Image
-                          style={{ width: 50, height: 50, borderRadius: 100 }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 100,
+                            backgroundColor: mainColor
+                          }}
                           contentFit="contain"
-                          source={{
-                            uri: allUsers
+                          source={
+                            allUsers
                               .filter(
                                 (user) =>
                                   user.type === 'sportman' && user?.sportman
                               )
                               .filter(
                                 (user) => user?.sportman.id === inscription
-                              )[0]?.sportman?.info?.img_perfil
-                          }}
+                              )[0]?.sportman?.info?.img_perfil &&
+                            allUsers
+                              .filter(
+                                (user) =>
+                                  user.type === 'sportman' && user?.sportman
+                              )
+                              .filter(
+                                (user) => user?.sportman.id === inscription
+                              )[0]?.sportman?.info?.img_perfil !== ''
+                              ? {
+                                  uri: allUsers
+                                    .filter(
+                                      (user) =>
+                                        user.type === 'sportman' &&
+                                        user?.sportman
+                                    )
+                                    .filter(
+                                      (user) =>
+                                        user?.sportman.id === inscription
+                                    )[0]?.sportman?.info?.img_perfil
+                                }
+                              : require('../assets/whiteSport.png')
+                          }
                         />
                         <Text
                           style={{
