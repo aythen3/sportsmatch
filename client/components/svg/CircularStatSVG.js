@@ -28,9 +28,9 @@ const CircularStat = ({ value, color }) => {
           fill="none"
           stroke="#252525"
           strokeWidth={5}
-          strokeDasharray={
-            (2 * Math.PI * ((Dimensions.get('screen').width * 0.8) / 3)) / 2
-          }
+          // strokeDasharray={
+          //   (2 * Math.PI * ((Dimensions.get('screen').width * 0.8) / 3)) / 2
+          // }
           strokeDashoffset={
             ((2 * Math.PI * ((Dimensions.get('screen').width * 0.8) / 3)) / 2) *
             (1 + value / 100)
