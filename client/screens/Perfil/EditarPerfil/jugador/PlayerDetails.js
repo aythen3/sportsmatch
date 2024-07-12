@@ -115,15 +115,11 @@ const PlayerDetails = () => {
   const [showCamera, setShowCamera] = useState(false)
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [sportColor, setSportColor] = useState('#E1451E')
 
-  const handlePickImage = async (type) => {
-    await pickImage(type)
-  }
+  
 
   const [hasPermission, setHasPermission] = useState(null)
-  const [cameraRef, setCameraRef] = useState(null)
   const cameraReff = useRef(null)
 
   useEffect(() => {
@@ -338,7 +334,7 @@ const PlayerDetails = () => {
                     }
                     state={gender}
                     setState={setGender}
-                    showModal={false}
+                    showModal={showGenderModal}
                     setShowModal={setShowGenderModal}
                   />
                   <ScrollableModal
@@ -365,7 +361,7 @@ const PlayerDetails = () => {
                     }
                     state={birthdate}
                     setState={setBirthdate}
-                    showModal={false}
+                    showModal={showBirthdateModal}
                     setShowModal={setShowBirthdateModal}
                   />
                   {/* <TextInput

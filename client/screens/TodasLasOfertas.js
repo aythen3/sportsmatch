@@ -100,7 +100,7 @@ const TodasLasOfertas = () => {
 
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cNLGmE60O5ob7O3hTmP9d',
+      priceId: 'price_1PbXiXGmE60O5ob7jb0U2Wap',
       customerId: user?.user?.stripeId
     })
 

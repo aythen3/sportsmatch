@@ -307,7 +307,7 @@ const FeedStats = () => {
                       { color: mainColor }
                     ]}
                   >
-                    {sportman?.info?.height || '-'}
+                    {sportman?.info?.height || '-'}cm
                   </Text>
                 </View>
                 <View style={[styles.modulo2, styles.moduloSpaceBlock]}>

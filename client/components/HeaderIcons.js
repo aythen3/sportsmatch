@@ -16,7 +16,7 @@ const HeaderIcons = () => {
 
   const [sportColor, setSportColor] = useState('#E1451E')
 
-
+console.log(mainColor,"maincolor")
 
 
   return (
@@ -50,6 +50,10 @@ const HeaderIcons = () => {
         {mainColor == '#0062FF' && (<Image
           style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
           source={require('../assets/sportfutbolsala.png')}
+        />)}
+        {mainColor === '#00F0FF' && (<Image
+          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
+          source={require('../assets/sportprop.png')}
         />)}
       </View>
       <View
@@ -90,8 +94,7 @@ const HeaderIcons = () => {
           }
         }}>
           <Image
-            style={[styles.groupIcon1, styles.iconGroupLayout]}
-            contentFit="cover"
+            style={[styles.groupIcon1, styles.iconGroupLayout,{objectFit:"scale-down"}]}
             source={require('../assets/group10.png')}
           />
         </Pressable>
@@ -131,23 +134,15 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   groupIcon1: {
-    height: 26,
+    height: 34,
     width: 38
-    // top: '24.44%',
-    // right: '11.17%',
-    // bottom: '18.44%',
-    // left: '61.08%',
-    // zIndex: 1,
-    // maxHeight: '100%'
-    // position: 'absolute'
+ 
   },
   frameInner: {
-    // top: 8,
-    // left: 16,
+  
     width: 31,
     height: 31
-    // zIndex: 3
-    // position: 'absolute'
+ 
   }
 })
 

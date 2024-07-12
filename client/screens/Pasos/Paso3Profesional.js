@@ -89,7 +89,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
           placeholderText={
             ROL ? ROL : 'Entrenador'
           }
-          isAccordeon={true}
+          isAccordeon={modalVisible}
           open={openModal}
         />
 

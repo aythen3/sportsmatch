@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, TextInput, Image } from 'react-native'
+import { View, Text, TextInput, Image, Pressable } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
+import { Entypo } from '@expo/vector-icons'
 
 function Acordeon({
   title,
@@ -30,7 +31,7 @@ function Acordeon({
           {title}
         </Text>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:"space-between" }}>
           <Text
             style={{
               flex: 1,
@@ -50,14 +51,17 @@ function Acordeon({
             onPress={open}
           >
             {placeholderText}
+        
           </Text>
-          {isAccordeon && (
-            <Image
-              style={{ width: 12, height: 12, position: 'absolute', right: 20 }}
-              contentFit="cover"
-              source={require('../assets/coolicon2.png')}
+        <Pressable   onPress={open} style={{position:"absolute",right:0}}>
+        <Entypo
+              style={{ color: '#fff', marginRight: 15 }}
+              name={isAccordeon ? 'chevron-up' : 'chevron-down'}
+              color="#fff"
+              size={18}
             />
-          )}
+        </Pressable>
+       
         </View>
       </View>
     </View>

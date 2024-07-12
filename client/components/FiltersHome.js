@@ -51,7 +51,7 @@ const FiltersHome = ({
         <Image
           style={styles.groupIcon2}
           contentFit="cover"
-          source={require('../assets/group5.png')}
+          source={require('../assets/nuevomenusetting.png')}
         />
       </Pressable>
     </View>
@@ -93,8 +93,9 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   groupIcon2: {
-    height: 17 * 1.2,
-    width: 22 * 1.2
+    height: 40,
+    width: 40,
+    objectFit:"scale-down"
   }
 })
 

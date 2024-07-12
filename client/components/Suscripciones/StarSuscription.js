@@ -25,7 +25,7 @@ const GoldSuscription = ({
 
   const handleGetStar = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
+      priceId: 'price_1PbXhFGmE60O5ob7cTUy19CD',
       customerId: user.user.stripeId
     })
     if (res.data) {
@@ -57,8 +57,16 @@ const GoldSuscription = ({
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-                <Text style={styles.gratuito}>289,25€/mes</Text>
-                <Text style={styles.timeTypo}>3.150,25€/año</Text>
+                <Text style={{...styles.gratuito,textDecorationLine:"line-through"}}>316,25€/mes</Text>
+                <Text style={{...styles.timeTypo,textDecorationLine:"line-through"}}>3.150,25€/año</Text>
+                <View style={{flexDirection:"column",gap:5}}>
+              <Text style={{...styles.gratuito,color:"red"}}>DTE. 60%</Text>
+              <Text style={{...styles.gratuito}}>126,5€/mes</Text>
+
+
+              </View>
+              <Text style={{...styles.timeTypo}}>1.260,1€/año</Text>
+
               </View>
             </View>
             <View style={styles.frameView}>

@@ -369,7 +369,7 @@ const PlayerDetails = () => {
                   placeholder={sportman?.info?.rol ?? 'Tipo de profesional'}
                   state={profesionalType}
                   setState={setProfesionalTpye}
-                  showModal={false}
+                  showModal={showTypeModal}
                   setShowModal={setShowTypeModal}
                 />
               </View>

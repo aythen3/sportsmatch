@@ -29,7 +29,7 @@ const GoldSuscriptionClub = ({
   const handleGetGold = async () => {
     console.log('entra')
     const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
+      priceId: 'price_1PbXgIGmE60O5ob7mAwCw3YQ',
       customerId: user.user.stripeId
     })
 
@@ -63,14 +63,20 @@ const GoldSuscriptionClub = ({
             start={[0.0, 1.0]}
             end={[1.0, 0.0]}
           ></LinearGradient>
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>PRO</Text>
+          <Text style={[styles.freemium2, styles.ofertasTypo]}>GOLD</Text>
         </View>
 
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
             <View>
               <View style={styles.gratuitoWrapper}>
-              <Text style={styles.gratuito}>125€/mes</Text>
+              <Text style={{...styles.gratuito,textDecorationLine:"line-through"}}>125€</Text>
+              <View style={{flexDirection:"column",gap:5}}>
+              <Text style={{...styles.gratuito,color:"red"}}>DTE. 40%</Text>
+              <Text style={{...styles.gratuito}}>75€</Text>
+
+              </View>
+
               <Text style={styles.timeTypo}>Pago único</Text>
               </View>
             </View>
