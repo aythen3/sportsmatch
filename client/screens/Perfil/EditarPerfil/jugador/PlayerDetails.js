@@ -387,59 +387,14 @@ const PlayerDetails = () => {
                     onSelectAñoNacimiento={handleSelectAñoNacimiento}
                   />
                 </View>
-                <View style={{ gap: 5 }}>
-                  <Text
-                    style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}
-                  >
-                    {'Altura'}
-                  </Text>
-                  {/* <CustomPicker
-                zIndex={8000}
-                cities={true}
-                array={cities.map((city) => city.city).sort()}
-                placeholder={ sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}
-                state={city}
-                setState={setCity}
-                showModal={showCityModal}
-                setShowModal={setShowCityModal}
-              /> */}
-                  <TextInput
-                    keyboardType="numeric"
-                    style={{
-                      flex: 1,
-                      borderWidth: 0.5,
-                      borderColor: '#fff',
-                      borderRadius: 50,
-                      paddingLeft: 15,
-                      height: 40,
-                      fontSize: 15,
-                      color: '#fff'
-                    }}
-                    value={height}
-                    onChangeText={(e) => setHeight(e)}
-                    placeholderTextColor={'white'}
-                    placeholder={
-                      (sportman.info.height && sportman.info.height) || 'Altura'
-                    }
-                  ></TextInput>
-                </View>
-
+                
                 <View style={{ gap: 5 }}>
                   <Text
                     style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}
                   >
                     {'Lugar de residencia'}
                   </Text>
-                  {/* <CustomPicker
-                zIndex={8000}
-                cities={true}
-                array={cities.map((city) => city.city).sort()}
-                placeholder={ sportman.info.city && sportman.info.city.toString() || 'Lugar de residencia'}
-                state={city}
-                setState={setCity}
-                showModal={showCityModal}
-                setShowModal={setShowCityModal}
-              /> */}
+                
                   <TextInput
                     style={{
                       flex: 1,
