@@ -225,11 +225,13 @@ const ExplorarClubs = () => {
                         const actualUser = allUsers.filter(
                           (userr) => userr.id === user.user.id
                         )[0]
-                        if (user.user.id === usuario.id) {
+                        if (user.user.id === usuario.user.id) {
                           if (usuario?.user?.type !== 'club') {
                             navigation.navigate('MiPerfil')
+                            return
                           } else {
                             navigation.navigate('PerfilDatosPropioClub')
+                            return
                           }
                         }
 
