@@ -290,8 +290,6 @@ const Paso4Jugador = ({
           style={{ flex: 1 }}
           mode="picture"
           FocusMode="on"
-
-          // cameraType="back"
         >
           <View
             style={{
