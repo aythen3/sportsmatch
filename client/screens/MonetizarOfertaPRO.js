@@ -87,10 +87,19 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
 
       <View style={styles.precio}>
         <View style={styles.parent}>
-          <Text style={styles.text}>12,90€</Text>
-          <Text style={styles.aoTypo}>/mes</Text>
+          <Text style={{...styles.text,textDecorationLine:"line-through"}}>12,90€</Text>
+          <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>/mes</Text>
         </View>
-        <Text style={styles.aoTypo}>124,40€/año</Text>
+        <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>124,40€/año</Text>
+        <Text style={{...styles.text,color:"red"}}>DTE. 40%</Text>
+        <View style={{...styles.parent,flexDirection:"column"}}>
+        <View style={{...styles.parent,justifyContent:"center"}}>
+          <Text style={{...styles.text}}>7,75€</Text>
+          <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>/mes</Text>
+        </View>
+        </View>
+        <Text style={{...styles.aoTypo}}>74,64€/año</Text>
+
       </View>
 
       <View style={{ paddingHorizontal: 15 }}>
@@ -152,92 +161,7 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
         </Pressable>
       </View>
 
-      {/* <View style={styles.popupLayout}>
-        <View style={styles.popupFrame}>
-          <View style={[styles.fondosColor, styles.popupLayout]}>
-            <View style={[styles.fondo, styles.popupLayout]} />
-            <Image
-              style={[styles.cabezeraIcon, styles.lineViewPosition]}
-              contentFit="cover"
-              source={require('../assets/cabezera.png')}
-            />
-          </View>
-          <View style={styles.contenido}>
-            <Text style={[styles.pro, styles.proTypo]}>PRO</Text>
-            <View style={styles.contenido1}>
-              <View style={styles.contenidoInner}>
-                <View style={styles.contenidoInner}>
-                  <Text
-                    style={[styles.loSentmosConContainer, styles.aceptarTypo]}
-                  >
-                    <Text style={styles.loSentmos}>{`¡Lo sentímos!
-`}</Text>
-                    <Text
-                      style={styles.conTuModelo}
-                    >{`Con tu modelo de suscripción no 
-puedes visualizar más ofertas 
-deportívas de los clubs.`}</Text>
-                  </Text>
-                  <View style={styles.precioTextoBoton}>
-                    <View style={styles.precioTexto}>
-                      <View style={styles.precio}>
-                        <View style={styles.parent}>
-                          <Text style={styles.text}>12,90€</Text>
-                          <Text style={styles.aoTypo}>/mes</Text>
-                        </View>
-                        <Text style={[styles.ao, styles.aoTypo]}>
-                          124,40€/año
-                        </Text>
-                      </View>
-                      <Text
-                        style={[styles.subeDeNivel, styles.verOfertaTypo]}
-                      >{`¡Sube de nivel en tu cuenta para visualizar todas 
-las ofertas deportívas de forma ilimitada!`}</Text>
-                    </View>
-                    <View style={styles.botonesFrame}>
-                      <View>
-                        <LinearGradient
-                          style={styles.loremIpsum}
-                          locations={[0, 0.18, 0.38, 0.58, 0.79, 1]}
-                          colors={[
-                            '#e6b300',
-                            '#bd9710',
-                            '#ebc02a',
-                            '#e6b300',
-                            '#bd9710',
-                            '#ebc02a'
-                          ]}
-                        >
-                          <Pressable
-                            style={[styles.pressable, styles.pressableFlexBox]}
-                            onPress={() =>
-                              navigation.navigate('ConfigurarAnuncio')
-                            }
-                          >
-                            <Text style={[styles.aceptar3, styles.aceptarTypo]}>
-                              Continuar
-                            </Text>
-                          </Pressable>
-                        </LinearGradient>
-                      </View>
-                      <Pressable
-                        style={[styles.loremIpsum1, styles.pressableFlexBox]}
-                        onPress={() =>
-                          navigation.navigate('SiguiendoJugadores')
-                        }
-                      >
-                        <Text style={[styles.aceptar4, styles.aceptarTypo]}>
-                          No, gracias
-                        </Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View> */}
+   
     </View>
   )
 }
@@ -656,13 +580,15 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   parent: {
-    alignItems: 'flex-end',
+    alignItems: 'baseline',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   precio: {
     // height: 85,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent:"center",
+    width:"100%"
   },
   subeDeNivel: {
     marginTop: 32
