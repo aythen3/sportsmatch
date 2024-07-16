@@ -151,8 +151,12 @@ const MiPerfil = () => {
                   {sportman?.info?.sport?.length > 0 && (
                     <Text style={[styles.textTypo2, { color: mainColor }]}>
                       {typeof sportman?.info?.sport === 'object'
-                        ? sportman?.info?.sport.name
-                        : sportman?.info?.sport}
+                        ? sportman?.info?.sport.name === 'Voley'
+                          ? 'Voleibol'
+                          : sportman?.info?.sport.name
+                        : sportman?.info?.sport === 'Voley'
+                          ? 'Voleibol'
+                          : sportman?.info?.sport}
                     </Text>
                   )}
                   <Text
