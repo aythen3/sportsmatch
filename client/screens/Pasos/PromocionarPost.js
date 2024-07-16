@@ -713,7 +713,7 @@ const PromocionarPost = () => {
                 {optionIndex == 3 && '15 días'}
               </Text>
             </View>
-            <View
+            {/* <View
               style={{
                 borderBottomColor: 'gray',
                 borderBottomWidth: 1,
@@ -724,7 +724,7 @@ const PromocionarPost = () => {
               <Text style={{ color: 'white' }}>Método de pago</Text>
               <Image source={require('../../assets/visa.png')}></Image>
               <Text style={{ color: 'gray' }}>Visa · 3691</Text>
-            </View>
+            </View> */}
           </View>
         )
       default:
