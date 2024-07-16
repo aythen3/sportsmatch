@@ -55,7 +55,7 @@ const Notifications = ({ data }) => {
 
   useEffect(() => {
     // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
-    console.log('notif data', data)
+    console.log('notif data', data?.prop1)
   }, [])
   //console.log('data', data)
   return (
@@ -284,7 +284,7 @@ const Notifications = ({ data }) => {
             >
               {formatDate(data.date)}
             </Text>
-            {!data?.prop1?.clubData &&
+            {data?.prop1?.userData?.user?.type !== 'club' &&
               !user?.user?.following?.includes(data?.prop1?.userId) && (
                 <TouchableOpacity
                   onPress={() => {
@@ -368,7 +368,7 @@ const Notifications = ({ data }) => {
                     contentFit="cover"
                     source={require('../assets/pictograma1.png')}
                   />
-                  {!data?.prop1?.clubData && (
+                  {data?.prop1?.userData?.user?.type !== 'club' && (
                     <Text
                       style={{
                         fontWeight: '600',

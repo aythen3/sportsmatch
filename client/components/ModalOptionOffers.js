@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity
+} from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -17,7 +23,7 @@ const ModalOptionOffers = ({
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  console.log(offerData,"data de offer")
+  console.log(offerData, 'data de offer')
   if (post)
     return (
       <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
@@ -75,10 +81,14 @@ const ModalOptionOffers = ({
   return (
     <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
       <TouchableOpacity
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         onPress={() => {
           onClose()
-          navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId , offerData })
+          navigation.navigate('ConfigurarAnuncio', {
+            editOffer: true,
+            offerId,
+            offerData
+          })
         }}
       >
         <View>
@@ -88,7 +98,7 @@ const ModalOptionOffers = ({
 
       <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
       <TouchableOpacity
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         onPress={() => {
           onClose()
           navigation.navigate('EliminarOferta', { offerId })
@@ -98,10 +108,16 @@ const ModalOptionOffers = ({
       </TouchableOpacity>
 
       <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
-      <TouchableOpacity style={{ width: "100%" }} onPress={()=>{
+      <TouchableOpacity
+        style={{ width: '100%' }}
+        onPress={() => {
           onClose()
-        navigation.navigate('ConfigurarAnuncio', { editOffer: true, offerId , offerData , promocionar:true })
-      }}>
+          navigation.navigate('PostPromocion', {
+            fromOffer: true,
+            ...offerData
+          })
+        }}
+      >
         <Text style={styles.editar2}>Promocionar</Text>
       </TouchableOpacity>
     </View>

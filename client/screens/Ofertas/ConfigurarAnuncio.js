@@ -66,8 +66,6 @@ const ConfigurarAnuncio = () => {
   const { offerData } = route.params || false
   const { promocionar } = route.params || false
 
-
-
   const statesCleanUp = (stateToUpdate) => {
     const stateSetters = {
       selectedGender: setSelectedGender,
@@ -86,16 +84,13 @@ const ConfigurarAnuncio = () => {
   }
 
   useEffect(() => {
-
     if (offerData?.retribution) {
       setSelectedRemuneration('Si')
     }
     if (promocionar) {
       handleRegister()
     }
-
   }, [])
-
 
   const [values, setValues] = useState({
     sexo: '',
@@ -199,7 +194,7 @@ const ConfigurarAnuncio = () => {
   const handleRegister = async () => {
     handleGetGold()
   }
-  console.log(offer, "esto es de la oferta")
+  console.log(offer, 'esto es de la oferta')
 
   if (!clubData || !allPositions)
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
@@ -230,7 +225,9 @@ const ConfigurarAnuncio = () => {
               <TextInput
                 value={selectedPosition || offerData?.posit}
                 placeholderTextColor={'#fff'}
-                placeholder={selectedPosition || offerData?.posit || 'Indique una posición'}
+                placeholder={
+                  selectedPosition || offerData?.posit || 'Indique una posición'
+                }
                 onChangeText={(text) => setSelectedPosition(text)}
                 style={{ ...styles.containerBox, paddingHorizontal: 18 }}
               ></TextInput>
@@ -248,11 +245,10 @@ const ConfigurarAnuncio = () => {
             >
               <Text style={styles.inputText}>
                 {!selectedGender && !offerData?.sexo && 'Selecciona un género'}
-                {selectedGender === '' && offerData?.sexo && (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
+                {selectedGender === '' &&
+                  offerData?.sexo &&
+                  (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
                 {selectedGender}
-
-
-
               </Text>
               <Entypo
                 style={{ color: '#fff', marginRight: 15 }}
@@ -311,7 +307,11 @@ const ConfigurarAnuncio = () => {
               <TextInput
                 value={selectedProvince || offerData?.province}
                 placeholderTextColor={'#fff'}
-                placeholder={selectedProvince || offerData?.province || 'Indique la provincia'}
+                placeholder={
+                  selectedProvince ||
+                  offerData?.province ||
+                  'Indique la provincia'
+                }
                 onChangeText={(text) => setSelectedProvince(text)}
                 style={{ ...styles.containerBox, paddingHorizontal: 18 }}
               ></TextInput>
@@ -328,7 +328,9 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 7000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {!selectedPriority && !offerData?.urgency && 'Seleccione el nivel de urgencia'}
+                {!selectedPriority &&
+                  !offerData?.urgency &&
+                  'Seleccione el nivel de urgencia'}
                 {selectedPriority == '' && offerData?.urgency}
                 {selectedPriority}
               </Text>
@@ -361,9 +363,14 @@ const ConfigurarAnuncio = () => {
               style={{ zIndex: 6000, ...styles.containerBox }}
             >
               <Text style={styles.inputText}>
-                {offerData?.retribution !== false && offerData?.retribution !== true && selectedRemuneration == '' && 'Seleccione retribución'}
-                {selectedRemuneration === '' ? offerData?.retribution == false && 'No' || offerData?.retribution == true && 'Si' : selectedRemuneration}
-
+                {offerData?.retribution !== false &&
+                  offerData?.retribution !== true &&
+                  selectedRemuneration == '' &&
+                  'Seleccione retribución'}
+                {selectedRemuneration === ''
+                  ? (offerData?.retribution == false && 'No') ||
+                    (offerData?.retribution == true && 'Si')
+                  : selectedRemuneration}
               </Text>
 
               <Entypo
@@ -403,9 +410,14 @@ const ConfigurarAnuncio = () => {
         </View>
 
         <View style={styles.botonsOferta}>
-          <View style={{width:"100%",paddingHorizontal:14}}>
+          <View style={{ width: '100%', paddingHorizontal: 14 }}>
             <TouchableOpacity
-              onPress={() => handleRegister()}
+              onPress={() =>
+                navigation.navigate('PostPromocion', {
+                  fromOffer: true,
+                  ...offerData
+                })
+              }
               style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
             >
               <Text style={[styles.promocionarOferta, styles.ofertaTypo]}>
@@ -444,7 +456,6 @@ const ConfigurarAnuncio = () => {
                   )
                   navigation.navigate('OfertasEmitidas')
                 } else {
-              
                   const data = {
                     ...(selectedGender && {
                       sexo:
@@ -550,7 +561,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   containerBox: {
-    flexDirection:"row",
+    flexDirection: 'row',
     borderWidth: 0.5,
     color: 'white',
     position: 'relative',
@@ -559,7 +570,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     justifyContent: 'space-between',
-    alignItems:"center"
+    alignItems: 'center'
   },
   innerContainer: {
     alignItems: 'center',
