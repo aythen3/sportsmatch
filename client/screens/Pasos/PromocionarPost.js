@@ -38,6 +38,7 @@ const PromocionarPost = () => {
   const { mainColor } = useSelector((state) => state.users)
   const route = useRoute()
   const data = route.params
+  console.log('data from promocionarpost', data)
 
   const navigation = useNavigation()
   const {
@@ -79,7 +80,7 @@ const PromocionarPost = () => {
       priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
       customerId: user.user.stripeId
     })
-console.log(res.data,"dataaaaaaaa")
+    console.log(res.data, 'dataaaaaaaa')
     if (res.data) {
       setClientSecret(
         res.data.subscription.clientSecret.latest_invoice.payment_intent
@@ -119,6 +120,310 @@ console.log(res.data,"dataaaaaaaa")
 
   const handleRegister = async () => {
     handleGetGold()
+  }
+
+  const ViewOfferComponent = (index) => {
+    switch (index) {
+      case 1:
+        return (
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              height: '89%',
+              paddingHorizontal: 10,
+              alignItems: 'center'
+            }}
+          >
+            {/* <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 9
+              }}
+            >
+              <Image
+                style={{ width: 130, height: 130, borderRadius: 5 }}
+                source={{ uri: data.image[0] }}
+              ></Image>
+              <Text
+                style={{
+                  color: 'gray',
+                  width: 120,
+                  textAlign: 'center',
+                  fontSize: 12
+                }}
+              >
+                Vista previa en formato cuadrado
+              </Text>
+            </View> */}
+            <View style={{ paddingHorizontal: 50, marginTop: -40 }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 30,
+                  fontWeight: 700,
+                  textAlign: 'center'
+                }}
+              >
+                Promocion de oferta
+              </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 600,
+                  fontSize: 14,
+                  textAlign: 'center'
+                }}
+              >
+                El objetivo de esta promoción es que tu oferta obtenga una mayor
+                visibilidad entre jugadores/profesionales.
+              </Text>
+            </View>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                width: '100%',
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                borderColor: 'gray',
+                paddingVertical: 8
+              }}
+            >
+              <Text style={{ color: 'gray', fontSize: 12 }}>
+                Tu oferta se destacará y tendra una visibilidad mucho mayor que
+                las no promocionadas.
+              </Text>
+            </View>
+          </View>
+        )
+      case 2:
+        return (
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              height: '89%',
+              paddingHorizontal: 10
+            }}
+          >
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'flex-start',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: 9
+              }}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  optionIndex == 1 ? setOptionIndex(0) : setOptionIndex(1)
+                }
+                style={{
+                  width: '100%',
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 1,
+                  paddingBottom: 10,
+                  flexDirection: 'row',
+                  paddingRight: 30,
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ width: '100%' }}>
+                  <Text style={{ color: 'white' }}>2 días (5,00€)</Text>
+                  <Text style={{ color: 'gray' }}>Te sale a 2,50 € al día</Text>
+                </View>
+                <Pressable
+                  style={[
+                    styles.circle,
+                    optionIndex == 1 && { backgroundColor: mainColor }
+                  ]}
+                  onPress={() =>
+                    optionIndex == 1 ? setOptionIndex(0) : setOptionIndex(1)
+                  }
+                >
+                  {optionIndex == 1 && (
+                    <Ionicons name="checkmark" size={10} color="white" />
+                  )}
+                </Pressable>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  optionIndex == 2 ? setOptionIndex(0) : setOptionIndex(2)
+                }
+                style={{
+                  width: '100%',
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 1,
+                  paddingBottom: 10,
+                  flexDirection: 'row',
+                  paddingRight: 30,
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ width: '100%' }}>
+                  <Text style={{ color: 'white' }}>5 días (10,00€)</Text>
+                  <Text style={{ color: 'gray' }}>Te sale a 2,00 € al día</Text>
+                </View>
+                <Pressable
+                  style={[
+                    styles.circle,
+                    optionIndex == 2 && { backgroundColor: mainColor }
+                  ]}
+                  onPress={() =>
+                    optionIndex == 2 ? setOptionIndex(0) : setOptionIndex(2)
+                  }
+                >
+                  {optionIndex == 2 && (
+                    <Ionicons name="checkmark" size={10} color="white" />
+                  )}
+                </Pressable>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  optionIndex == 3 ? setOptionIndex(0) : setOptionIndex(3)
+                }
+                style={{
+                  width: '100%',
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 1,
+                  paddingBottom: 10,
+                  flexDirection: 'row',
+                  paddingRight: 30,
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ width: '100%' }}>
+                  <Text style={{ color: 'white' }}>15 días (22,00€)</Text>
+                  <Text style={{ color: 'gray' }}>Te sale a 1,50€ al día</Text>
+                </View>
+                <Pressable
+                  style={[
+                    styles.circle,
+                    optionIndex == 3 && { backgroundColor: mainColor }
+                  ]}
+                  onPress={() =>
+                    optionIndex == 3 ? setOptionIndex(0) : setOptionIndex(3)
+                  }
+                >
+                  {optionIndex == 3 && (
+                    <Ionicons name="checkmark" size={10} color="white" />
+                  )}
+                </Pressable>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                width: '100%',
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                borderColor: 'gray',
+                paddingVertical: 8
+              }}
+            >
+              <Text style={{ color: 'gray' }}>Presupuesto publicitario</Text>
+              <Text style={{ color: 'white', fontSize: 30, fontWeight: 700 }}>
+                {optionIndex == 1 && '5,00€'}
+                {optionIndex == 2 && '10,00€'}
+                {optionIndex == 3 && '22,00€'}
+              </Text>
+            </View>
+          </View>
+        )
+      case 3:
+        return (
+          <View style={{ paddingHorizontal: 10 }}>
+            <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14
+              }}
+            >
+              <Text style={{ color: 'white' }}>Beneficiario y pagador</Text>
+              <Text
+                style={{ color: 'gray' }}
+              >{`Beneficiario: ${user?.user?.type !== 'club' ? user.user.nickname : club.name}`}</Text>
+              <Text
+                style={{ color: 'gray' }}
+              >{`Pagador: ${user?.user?.type !== 'club' ? user.user.nickname : club.name}`}</Text>
+            </View>
+            <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14
+              }}
+            >
+              <Text style={{ color: 'white' }}>Objetivo</Text>
+              <Text style={{ color: 'gray' }}>
+                {`Mayor visibilidad en la oferta de ${user?.user?.type !== 'club' ? user.user.nickname : club.name} seleccionada`}
+              </Text>
+            </View>
+            <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14
+              }}
+            >
+              <Text style={{ color: 'white' }}>Audiencia</Text>
+              <Text style={{ color: 'gray' }}>
+                Jugadores / Profesional deporte
+              </Text>
+            </View>
+            <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14
+              }}
+            >
+              <Text style={{ color: 'white' }}>Presupuesto</Text>
+              <Text style={{ color: 'gray' }}>
+                {optionIndex == 1 && '5,00€'}
+                {optionIndex == 2 && '10,00€'}
+                {optionIndex == 3 && '22,00€'}
+              </Text>
+            </View>
+            <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14
+              }}
+            >
+              <Text style={{ color: 'white' }}>Duración</Text>
+              <Text style={{ color: 'gray' }}>
+                {optionIndex == 1 && '2 días'}
+                {optionIndex == 2 && '5 días'}
+                {optionIndex == 3 && '15 días'}
+              </Text>
+            </View>
+            {/* <View
+              style={{
+                borderBottomColor: 'gray',
+                borderBottomWidth: 1,
+                paddingVertical: 14,
+                gap: 7
+              }}
+            >
+              <Text style={{ color: 'white' }}>Método de pago</Text>
+              <Image source={require('../../assets/visa.png')}></Image>
+              <Text style={{ color: 'gray' }}>Visa · 3691</Text>
+            </View> */}
+          </View>
+        )
+      default:
+        return null
+    }
   }
 
   const ViewComponent = (index) => {
@@ -408,7 +713,7 @@ console.log(res.data,"dataaaaaaaa")
                 {optionIndex == 3 && '15 días'}
               </Text>
             </View>
-            <View
+            {/* <View
               style={{
                 borderBottomColor: 'gray',
                 borderBottomWidth: 1,
@@ -419,7 +724,7 @@ console.log(res.data,"dataaaaaaaa")
               <Text style={{ color: 'white' }}>Método de pago</Text>
               <Image source={require('../../assets/visa.png')}></Image>
               <Text style={{ color: 'gray' }}>Visa · 3691</Text>
-            </View>
+            </View> */}
           </View>
         )
       default:
@@ -432,113 +737,227 @@ console.log(res.data,"dataaaaaaaa")
     navigation.goBack()
   }
 
-  return (
-    <SafeAreaView
-      style={{
-        ...styles.escogerDeporte,
-        height: height,
-        width: width,
-        flex: 1
-      }}
-    >
-      <Image
-        style={{
-          ...styles.escogerDeporteChild
-        }}
-        contentFit="cover"
-        source={require('../../assets/group-2412.png')}
-      />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
-          top: 10,
-          justifyContent: 'space-between',
-          right: 0,
-          paddingHorizontal: 20,
-          marginBottom: 60
-        }}
-      >
-        <View
+  if (data.fromOffer) {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'red' }}>
+        <SafeAreaView
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            ...styles.escogerDeporte,
+            height: height,
+            width: width,
+            flex: 1
           }}
         >
           <Image
-            style={styles.coolicon}
+            style={{
+              ...styles.escogerDeporteChild
+            }}
             contentFit="cover"
-            source={require('../../assets/coolicon.png')}
+            source={require('../../assets/group-2412.png')}
           />
-          <Pressable
-            onPress={() =>
-              stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
-            }
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              top: 10,
+              justifyContent: 'space-between',
+              right: 0,
+              paddingHorizontal: 20,
+              marginBottom: 60
+            }}
           >
-            <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Image
+                style={styles.coolicon}
+                contentFit="cover"
+                source={require('../../assets/coolicon.png')}
+              />
+              <Pressable
+                onPress={() =>
+                  stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
+                }
+              >
+                <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Pressable onPress={() => navigation.goBack()}>
+                <Text style={[styles.atrs, styles.atrsTypo]}>Cancelar</Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={{ marginTop: -30 }}>
+            <Text
+              style={{
+                fontSize: FontSize.t1TextSMALL_size,
+                lineHeight: 17,
+                color: mainColor,
+                width: '100%',
+                textAlign: 'center',
+                marginBottom: 5,
+                fontFamily: FontFamily.t4TEXTMICRO
+              }}
+            >
+              Paso {stepsIndex}
+            </Text>
+            <Text style={styles.detallesDelClub}>
+              {stepsIndex === 1 && 'Objetivo'}
+              {stepsIndex === 2 && 'Duración y presupuesto'}
+              {stepsIndex === 3 && 'Revisión'}
+            </Text>
+          </View>
+          <Lines club={true} index={stepsIndex} color={mainColor} />
+
+          <View
+            style={{
+              justifyContent: 'space-between',
+              height: '100%',
+              flex: 1,
+              paddingVertical: 20
+            }}
+          >
+            {ViewOfferComponent(stepsIndex)}
+
+            <TouchableOpacity
+              style={styles.touchable}
+              onPress={() => {
+                stepsIndex === 3
+                  ? handleRegister()
+                  : setstepsIndex((prev) => prev + 1)
+              }}
+            >
+              <Text style={styles.nextText}>
+                {stepsIndex == 3 ? 'Promocionar oferta' : 'Siguiente'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </View>
+    )
+  } else {
+    return (
+      <SafeAreaView
+        style={{
+          ...styles.escogerDeporte,
+          height: height,
+          width: width,
+          flex: 1
+        }}
+      >
+        <Image
+          style={{
+            ...styles.escogerDeporteChild
+          }}
+          contentFit="cover"
+          source={require('../../assets/group-2412.png')}
+        />
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
-          <Pressable onPress={() => navigation.navigate('SiguiendoJugadores')}>
-            <Text style={[styles.atrs, styles.atrsTypo]}>Cancelar</Text>
-          </Pressable>
-        </View>
-      </View>
-      <View style={{ marginTop: -30 }}>
-        <Text
-          style={{
-            fontSize: FontSize.t1TextSMALL_size,
-            lineHeight: 17,
-            color: mainColor,
             width: '100%',
-            textAlign: 'center',
-            marginBottom: 5,
-            fontFamily: FontFamily.t4TEXTMICRO
+            top: 10,
+            justifyContent: 'space-between',
+            right: 0,
+            paddingHorizontal: 20,
+            marginBottom: 60
           }}
         >
-          Paso {stepsIndex}
-        </Text>
-        <Text style={styles.detallesDelClub}>
-          {stepsIndex === 1 && 'Objetivo'}
-          {stepsIndex === 2 && 'Duración y presupuesto'}
-          {stepsIndex === 3 && 'Revisión'}
-        </Text>
-      </View>
-      <Lines club={true} index={stepsIndex} color={mainColor} />
-
-      <View
-        style={{
-          justifyContent: 'space-between',
-          height: '100%',
-          flex: 1,
-          paddingVertical: 20
-        }}
-      >
-        {ViewComponent(stepsIndex)}
-
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() => {
-            stepsIndex === 3
-              ? handleRegister()
-              : setstepsIndex((prev) => prev + 1)
-          }}
-        >
-          <Text style={styles.nextText}>
-            {stepsIndex == 3 ? 'Promocionar publicación' : 'Siguiente'}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <Image
+              style={styles.coolicon}
+              contentFit="cover"
+              source={require('../../assets/coolicon.png')}
+            />
+            <Pressable
+              onPress={() =>
+                stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
+              }
+            >
+              <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
+            </Pressable>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <Pressable
+              onPress={() => navigation.navigate('SiguiendoJugadores')}
+            >
+              <Text style={[styles.atrs, styles.atrsTypo]}>Cancelar</Text>
+            </Pressable>
+          </View>
+        </View>
+        <View style={{ marginTop: -30 }}>
+          <Text
+            style={{
+              fontSize: FontSize.t1TextSMALL_size,
+              lineHeight: 17,
+              color: mainColor,
+              width: '100%',
+              textAlign: 'center',
+              marginBottom: 5,
+              fontFamily: FontFamily.t4TEXTMICRO
+            }}
+          >
+            Paso {stepsIndex}
           </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  )
+          <Text style={styles.detallesDelClub}>
+            {stepsIndex === 1 && 'Objetivo'}
+            {stepsIndex === 2 && 'Duración y presupuesto'}
+            {stepsIndex === 3 && 'Revisión'}
+          </Text>
+        </View>
+        <Lines club={true} index={stepsIndex} color={mainColor} />
+
+        <View
+          style={{
+            justifyContent: 'space-between',
+            height: '100%',
+            flex: 1,
+            paddingVertical: 20
+          }}
+        >
+          {ViewComponent(stepsIndex)}
+
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => {
+              stepsIndex === 3
+                ? handleRegister()
+                : setstepsIndex((prev) => prev + 1)
+            }}
+          >
+            <Text style={styles.nextText}>
+              {stepsIndex == 3 ? 'Promocionar publicación' : 'Siguiente'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
