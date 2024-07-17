@@ -420,7 +420,7 @@ const ConfigurarAnuncio = () => {
               }
               style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
             >
-              <Text style={[styles.promocionarOferta, styles.ofertaTypo]}>
+              <Text numberOfLines={1} style={[styles.promocionarOferta, styles.ofertaTypo,{width:"100%"}]}>
                 Promocionar la oferta
               </Text>
             </TouchableOpacity>
@@ -492,7 +492,6 @@ const ConfigurarAnuncio = () => {
 
 const styles = StyleSheet.create({
   boitonCrearFlexBox: {
-    paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     borderRadius: Border.br_81xl,
     alignItems: 'center'

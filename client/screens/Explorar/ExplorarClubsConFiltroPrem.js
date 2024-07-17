@@ -74,7 +74,7 @@ const ExplorarClubsConFiltroPrem = ({
 
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column' ,width:"100%"}}>
         <View style={styles.cerrarFiltros}>
           <Image
             style={styles.cerrarFiltrosChild}
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   campoAtaque: {
-    marginTop: 30
+    marginTop: 30,
   },
   aceptar: {
     color: Color.bLACK1SPORTSMATCH,
@@ -732,7 +732,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    position: 'absolute',
     bottom: 0,
     // flex: 1,
     backgroundColor: Color.bLACK3SPORTSMATCH

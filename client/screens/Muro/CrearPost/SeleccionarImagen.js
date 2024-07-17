@@ -63,10 +63,6 @@ const SeleccionarImagen = () => {
     assets.map((e) => arr2.push(e))
     setAlbum(arr)
     setAlbumData(arr2)
-
-    // console.log(arr, "asssetss")
-    // const imagesArray = assets?.assets ?? []
-    // setImagenes(imagesArray)
   }
 
   const obtenerImagenesDeGalerias = async () => {
@@ -116,10 +112,8 @@ const SeleccionarImagen = () => {
       const photo = await cameraReff.current.takePictureAsync()
       pickImage('a', photo.uri)
       setSelectedImage(photo)
-      // pickImageFromCamera(selectedPicture, photo.uri);
 
       setShowCamera(false)
-      // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
 
