@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "3.0.0",
     "name": "SportsMatch",
-    "slug": "nuevappp",
+    "slug": "sportsmatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -24,6 +24,13 @@
       "bundleIdentifier": "com.aythenapps.sportsmatch",
       "usesAppleSignIn": true,
       "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        },
         "SKAdNetworkItems": [
           {
             "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
@@ -79,10 +86,10 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
+        "projectId": "bcc13ac4-e3a0-4969-ac54-3a36adecad47"
       }
     },
-    "owner": "azschiaffino",
+    "owner": "azulschiaffino2",
     "scheme": [
       "sportsmatch",
       "fb2654178301415308"

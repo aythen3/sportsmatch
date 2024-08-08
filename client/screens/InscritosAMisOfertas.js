@@ -154,9 +154,8 @@ const InscritosAMisOfertas = () => {
                             width: 50,
                             height: 50,
                             borderRadius: 100,
-                            backgroundColor: mainColor
                           }}
-                          contentFit="contain"
+                          contentFit="cover"
                           source={
                             allUsers
                               .filter(

@@ -9,7 +9,13 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Color, Padding, Border, FontFamily, FontSize } from '../../../GlobalStyles'
+import {
+  Color,
+  Padding,
+  Border,
+  FontFamily,
+  FontSize
+} from '../../../GlobalStyles'
 import SilverSuscription from '../../../components/Suscripciones/SilverSuscription'
 import GoldSuscription from '../../../components/Suscripciones/GoldSuscription'
 import StarSuscription from '../../../components/Suscripciones/StarSuscription'
@@ -26,10 +32,8 @@ const MiSuscripcin = () => {
   const navigation = useNavigation()
   const [clientSecret, setClientSecret] = useState(null)
   const [planSelected, setPlanSelected] = useState(null)
-  const [planSelectedId, setPlanSelectedId] = useState("")
+  const [planSelectedId, setPlanSelectedId] = useState('')
   const [deletePlan, setDeletePlan] = useState(false)
-
-
 
   const { user } = useSelector((state) => state.users)
 
@@ -55,13 +59,13 @@ const MiSuscripcin = () => {
         if (error) {
           console.log(error, 'error')
         } else {
+          console.log(user,"user")
           const updUser = await axiosInstance
-            .patch(`user/${user.user.id}`, {
+            .patch(`user/${user?.user?.id}`, {
               plan: planSelected,
-              planId: planSelectedId
-
+              planId: planSelectedId || "123123123"
             })
-            .then(() => dispatch(getUserData(user.user.id)))
+            .finally(async () => await dispatch(getUserData(user?.user?.id)).then((e)=> console.log(e,"eeeeeeeeeee",user)) )
         }
       }
     }
@@ -72,76 +76,112 @@ const MiSuscripcin = () => {
   }, [clientSecret, initPaymentSheet])
 
   const handleCancelSuscription = async () => {
-
     try {
-      const { data } = await axiosInstance.post("user/cancel-subscription", { planId: user.user.planId })
-      console.log(data, "datita")
+      const { data } = await axiosInstance.post('user/cancel-subscription', {
+        planId: user.user.planId
+      })
+      console.log(data, 'datita')
       if (data) {
         setDeletePlan(false)
         const updUser = await axiosInstance
           .patch(`user/${user.user.id}`, {
-            plan: "basic",
-            planId: ""
-
+            plan: 'basic',
+            planId: ''
           })
-          .then(() => dispatch(getUserData(user.user.id)))
+          .then(() => dispatch(getUserData(user?.user?.id)))
         return data
       }
     } catch (error) {
-      console.log(error, "error")
+      console.log(error, 'error')
     }
-
   }
 
   return (
     <SafeAreaView style={styles.miSuscripcin}>
-      <ScrollView contentContainerStyle={{paddingBottom:10}} keyboardShouldPersistTaps={'always'}>
-     <CustomHeaderBack header={'Mi suscripción'}></CustomHeaderBack>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 10 }}
+        keyboardShouldPersistTaps={'always'}
+      >
+        <CustomHeaderBack header={'Mi suscripción'}></CustomHeaderBack>
 
-        <View style={{paddingHorizontal:10}}>
-        <View>
-          <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
-            Este es tu plan actual
-          </Text>
-        </View>
-
-        <View style={{ marginTop: 30, gap: 30 }}>
-          {user?.user?.plan === 'basic' && !user.user.club && <SilverSuscription />}
-          {user?.user?.plan === 'basic' && user.user.club && <SilverSuscriptionClub />}
-
-          {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
-          {user?.user?.plan === 'star' && <StarSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
-
+        <View style={{ paddingHorizontal: 10 }}>
           <View>
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
-              Otros planes
+              Este es tu plan actual
             </Text>
           </View>
-          {user?.user?.plan === 'star' && <SilverSuscription />}
-          {user?.user?.plan === 'pro' && <SilverSuscription />}
 
-          {user.user?.plan !== 'pro'  && !user.user.club && (
-            <GoldSuscription
-              setPlanSelected={setPlanSelected}
-              setClientSecret={setClientSecret}
-              setPlanSelectedId={setPlanSelectedId}
-            />
-          )}
-           {user?.user?.plan !== 'gold' && user.user.club && (
-            <GoldSuscriptionClub
-              setPlanSelected={setPlanSelected}
-              setClientSecret={setClientSecret}
-              setPlanSelectedId={setPlanSelectedId}
-            />
-          )}
-          {user?.user?.plan !== 'star' && user.user.club && (
-            <StarSuscription
-              setPlanSelected={setPlanSelected}
-              setClientSecret={setClientSecret}
-              setPlanSelectedId={setPlanSelectedId}
-            />
-          )}
-        </View>
+          <View style={{ marginTop: 30, gap: 30 }}>
+            {user?.user?.plan === 'basic' && !user.user.club && (
+              <SilverSuscription />
+            )}
+            {user?.user?.plan === 'basic' && user.user.club && (
+              <SilverSuscriptionClub />
+            )}
+
+            {/* {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />} */}
+            {user?.user?.plan === 'pro' && user.user.type === 'club' && (
+              <GoldSuscriptionClub
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+              />
+            )}
+             {user?.user?.plan === 'pro' && user.user.type !== 'club' && (
+              <GoldSuscription
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+              />
+            )}
+
+            {user?.user?.plan === 'star' && (
+              <StarSuscription
+                handleCancelSuscription={handleCancelSuscription}
+                myPlan={true}
+                deletePlan={deletePlan}
+                setDeletePlan={setDeletePlan}
+              />
+            )}
+
+            <View>
+              <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+                Otros planes
+              </Text>
+            </View>
+            {user?.user?.plan !== 'basic' && user.user.type === 'club' && (
+              <SilverSuscriptionClub />
+            )}
+
+            {user?.user?.plan === 'star' && user.user.type == 'sportman' && (
+              <SilverSuscription />
+            )}
+            {user?.user?.plan === 'pro' && user.user.type == 'sportman' && (
+              <SilverSuscription />
+            )}
+
+            {user.user?.plan !== 'pro' && !user.user.club && (
+              <GoldSuscription
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+              />
+            )}
+            {user?.user?.plan !== 'pro' && user.user.type === 'club' && (
+              <GoldSuscriptionClub
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+              />
+            )}
+            {user?.user?.plan !== 'star' && user.user.type === 'club' && (
+              <StarSuscription
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+              />
+            )}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

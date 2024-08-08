@@ -527,16 +527,17 @@ const TodasLasOfertas = () => {
             <Text
               style={{
                 marginTop: 60,
+                marginBottom:20,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: 400,
                 fontSize: 14,
                 color: Color.wHITESPORTSMATCH,
-                bottom: 4
+                bottom: 4,textAlign:"center"
               }}
             >
               {search?.length > 0
                 ? 'No encontramos resultados para su búsqueda.'
-                : '¡Aún no hay ofertas activas!'}
+                : `Con tu modelo de suscripción no puedes visualizar más ofertas deportívas de los clubs.`}
             </Text>
           </View>
         )

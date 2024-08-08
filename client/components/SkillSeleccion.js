@@ -100,64 +100,55 @@ const SkillSeleccion = ({
   }
 
   const handleData = (key, value) => {
-    if (
-      key === 'attack' ||
-      key === 'defense' ||
-      key === 'speed' ||
-      key === 'height' ||
-      key === 'prop1' ||
-      key === 'prop2' ||
-      key === 'prop3' ||
-      key === 'prop4' ||
-      key === 'prop5' ||
-      key === 'prop6' ||
-      key === 'prop7' ||
-      key === 'prop8'
-    ) {
-      // Allow empty string or numbers between 0 and 100
+    // Define the keys that are allowed and their respective maximum values
+    const allowedKeys = {
+      attack: 100,
+      defense: 100,
+      speed: 100,
+      height: 250,
+      prop1: 100,
+      prop2: 100,
+      prop3: 100,
+      prop4: 100,
+      prop5: 100,
+      prop6: 100,
+      prop7: 100,
+      prop8: 100
+    };
+  
+    // Check if the key is one of the allowed keys
+    if (allowedKeys.hasOwnProperty(key)) {
+      const maxValue = allowedKeys[key];
+  
+      // Allow empty string or numbers between 0 and the respective max value
       if (
         value === '' ||
-        (/^\d+$/.test(value) &&
-          parseInt(value, 10) >= 0 &&
-          parseInt(value, 10) <= 100)
+        (/^\d+$/.test(value) && parseInt(value, 10) >= 0 && parseInt(value, 10) <= maxValue)
       ) {
         if (!editable) {
           const newData = {
             ...data,
             [key]: value
-          }
-          setData(newData)
+          };
+          setData(newData);
         } else {
-          setEditData({ ...editData, [key]: value })
+          setEditData({ ...editData, [key]: value });
         }
-      } if(
-        value === '' ||
-        (/^\d+$/.test(value) &&
-          parseInt(value, 10) >= 0 &&
-          parseInt(value, 10) <= 250)
-      ){
-        if (!editable) {
-          const newData = {
-            ...data,
-            [key]: value
-          }
-          setData(newData)
-        } else {
-          setEditData({ ...editData, [key]: value })
-        } 
       }
-      return
+      return;
     }
+  
+    // Default behavior for keys not in the allowedKeys list
     if (!editable) {
       const newData = {
         ...data,
         [key]: value
-      }
-      setData(newData)
+      };
+      setData(newData);
     } else {
-      setEditData({ ...editData, [key]: value })
+      setEditData({ ...editData, [key]: value });
     }
-  }
+  };
 
   const handleEdit = () => {
     navigation.navigate('MiPerfil')

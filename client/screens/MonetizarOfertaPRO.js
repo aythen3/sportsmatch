@@ -86,12 +86,7 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
       </View>
 
       <View style={styles.precio}>
-        <View style={styles.parent}>
-          <Text style={{...styles.text,textDecorationLine:"line-through",fontSize:54}}>12,90€</Text>
-          <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>/mes</Text>
-        </View>
-        <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>124,40€/año</Text>
-        <Text style={{...styles.text,color:"red",fontSize:54}}>DTE. 40%</Text>
+       
         <View style={{...styles.parent,flexDirection:"column"}}>
         <View style={{...styles.parent,justifyContent:"center"}}>
           <Text style={{...styles.text}}>7,75€</Text>

@@ -103,6 +103,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           />
 
           <Input
+          maxLength={250}
             title="Describe tu club"
             placeholderText="Descripción"
             isMultiLine={true}

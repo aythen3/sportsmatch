@@ -5,6 +5,7 @@ import {
   BackHandler,
   Dimensions,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -214,15 +215,10 @@ const Paso1 = () => {
           prop2: data?.prop2 || '',
           prop3: data?.prop3 || '',
           prop4: data?.prop4 || '',
-
           prop5: data?.prop5 || '',
-
           prop6: data?.prop6 || '',
-
           prop7: data?.prop7 || '',
-
           prop8: data?.prop8 || '',
-
           nickname: user?.user?.nickname || '',
           city: sportmanValues.city || '',
           position: selectPosition || ''
@@ -377,13 +373,13 @@ const Paso1 = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         height: height,
         width: width,
         flex: 1,
         paddingHorizontal: 0,
-        paddingTop: 10,
+        paddingTop: 20,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
@@ -493,10 +489,8 @@ const Paso1 = () => {
               {sportman && stepsSportman === 0 && 'Escoge tu deporte'}
               {sportman && stepsSportman === 1 && 'Define tus skills'}
               {stepsSportman === 2 && 'Unos detalles sobre ti'}
-
               {profesional && 'Unos detalles sobre ti'}
             </Text>
-
             <Lines
               selectedSport={selectedSport}
               profesional={profesional}
@@ -531,7 +525,7 @@ const Paso1 = () => {
         {!sportman && !profesional && !invitado && (
           <View
             style={{
-              ...styles.container
+              ...styles.container,width:"100%",paddingHorizontal:15,alignSelf:"center"
             }}
           >
             <View style={styles.botonLayout1}>
@@ -671,7 +665,7 @@ const Paso1 = () => {
           <Text style={styles.siguiente1}>Siguiente</Text>
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -693,7 +687,7 @@ const styles = StyleSheet.create({
   },
   botonLayout1: {
     height: 70,
-    width: 330
+    width: "100%"
   },
   imagenDeFondo: {
     position: 'absolute',

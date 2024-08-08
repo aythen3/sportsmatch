@@ -16,7 +16,7 @@ function Input({
   onSubmit,
   keyboardType,
   type,
-  state,setState
+  state,setState,maxLength
 }) {
   return (
     <View
@@ -65,6 +65,7 @@ function Input({
             onSubmitEditing={onSubmit}
             secureTextEntry={type ? true : false}
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
+            maxLength={maxLength || 40}
           />
           {isAccordeon && (
             <Image

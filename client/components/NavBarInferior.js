@@ -96,9 +96,9 @@ const NavBarInferior = () => {
         onPress={() => {
           getUsersMessages()
           if (user.user.type == 'club') {
-            dispatch(getNotificationsByUserId(user.user.club.id))
+            dispatch(getNotificationsByUserId(user.user.club?.id))
           } else {
-            dispatch(getNotificationsByUserId(user.user.id))
+            dispatch(getNotificationsByUserId(user.user?.id))
           }
           handleIconPress('diary')
         }}
@@ -162,7 +162,7 @@ const NavBarInferior = () => {
             userNotifications
               ?.filter((notification) => {
                 if (user?.user?.type === 'club') {
-                  notification.recipientId === user.user.club.id
+                  notification.recipientId === user.user.club?.id
                   return true
                 } else if (notification.recipientId === userId) {
                   return true
