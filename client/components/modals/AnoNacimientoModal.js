@@ -17,7 +17,7 @@ const años = Array.from(
   (_, index) => startYear - index
 )
 
-const AñoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) => {
+const AnoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) => {
 
   return (
     <Modal
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AñoNacimientoModal
+export default AnoNacimientoModal

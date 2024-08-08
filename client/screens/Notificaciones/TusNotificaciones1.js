@@ -45,10 +45,10 @@ const TusNotificaciones1 = () => {
 
   const sortUsers = (userA, userB) => {
     const isInMessagesA = usersWithMessages?.some(
-      (user) => user.id === userA.id
+      (user) => user?.id === userA?.id
     )
     const isInMessagesB = usersWithMessages?.some(
-      (user) => user.id === userB.id
+      (user) => user?.id === userB?.id
     )
 
     if (isInMessagesA && !isInMessagesB) {
@@ -79,9 +79,9 @@ const TusNotificaciones1 = () => {
   useEffect(() => {
     getUsersMessages()
     if (user.user.type == 'club') {
-      dispatch(getNotificationsByUserId(user.user.club.id))
+      dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
-      dispatch(getNotificationsByUserId(user.user.id))
+      dispatch(getNotificationsByUserId(user?.user?.id))
     }
   }, [])
   // console.log('userNotifications', userNotifications)
@@ -96,7 +96,7 @@ const TusNotificaciones1 = () => {
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
       const clubOffers = offers?.filter(
-        (offer) => offer.clubId === user.user.club.id
+        (offer) => offer.clubId === user.user.club?.id
       )
       const postulants = clubOffers.map((offer) => offer.inscriptions)
       const allApplications = [...new Set([].concat(...postulants))]

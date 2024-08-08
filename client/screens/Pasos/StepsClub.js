@@ -8,7 +8,8 @@ import {
   ScrollView,
   Dimensions,
   useWindowDimensions,
-  BackHandler
+  BackHandler,
+  SafeAreaView
 } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import {
@@ -126,16 +127,16 @@ const StepsClub = () => {
     switch (index) {
       case 1:
         return (
-          <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
+       <View style={{paddingVertical:20}}>
+           <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
+       </View>
         )
       case 2:
         return (
-          <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
             <EscogerDeporte2
               clubValues={clubValues}
               setClubValues={setClubValues}
             />
-          </ScrollView>
         )
       case 3:
         return (
@@ -162,13 +163,13 @@ const StepsClub = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         ...styles.escogerDeporte,
         height: height,
         width: width,
         flex: 1,
-        paddingTop: 10
+        paddingTop: 20
       }}
     >
       {stepsIndex == 1 && (
@@ -218,16 +219,15 @@ const StepsClub = () => {
         selectedSport={sportS.name}
       />
 
-      <View
+      <ScrollView
         style={{
-          justifyContent: 'space-between',
-          height: '100%',
           flex: 1,
-          paddingVertical: 20
         }}
+        contentContainerStyle={{paddingBottom:20}}
       >
         {ViewComponent(stepsIndex)}
-        <View>
+      </ScrollView>
+        <View style={{bottom:0,width:"100%",paddingVertical:20}}>
           <TouchableOpacity
             style={styles.touchable}
             onPress={() => {
@@ -239,8 +239,7 @@ const StepsClub = () => {
             <Text style={styles.nextText}>Siguiente</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

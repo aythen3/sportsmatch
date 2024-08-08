@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   },
   campo1: {
     height: 61,
-    width: 361
+    width: "100%"
   },
   snior: {
     color: Color.gREY2SPORTSMATCH,
@@ -410,7 +410,8 @@ const styles = StyleSheet.create({
   campo2: {
     height: 61,
     marginTop: 21,
-    width: 361
+    width: "100%"
+
   },
   camposIniciales: {
     paddingTop: 30,

@@ -167,10 +167,12 @@ const IniciarSesin = () => {
             <View style={styles.formularioFrame}>
               <View
                 style={{
-                  flex: 1,
+                  flex:1,
+                  width:"100%",
+
                   justifyContent: 'center',
-                  paddingHorizontal: 20,
-                  alignItems: 'center'
+                  paddingHorizontal: 15,
+                  alignItems: 'center',
                 }}
               >
                 <View style={styles.titularcampos}>
@@ -180,7 +182,7 @@ const IniciarSesin = () => {
                       <View style={[styles.campo1Frame, styles.framePosition]}>
                         <Image
                           style={styles.vectorIcon}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
@@ -188,8 +190,9 @@ const IniciarSesin = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
-                            width: '80%'
+                            paddingLeft:10,
+                            paddingRight:10,
+                            width: '100%'
                           }}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
@@ -204,10 +207,10 @@ const IniciarSesin = () => {
                       </View>
                     </View>
                     <View style={[styles.campo2, styles.campoLayout]}>
-                      <View style={styles.framePosition}>
+                     <View style={[styles.campo1Frame, styles.framePosition]}>
                         <Image
-                          style={styles.simboloIcon1}
-                          contentFit="cover"
+                          style={styles.vectorIcon}
+                          contentFit="contain"
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
@@ -215,8 +218,9 @@ const IniciarSesin = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
-                            width: '80%'
+                            paddingLeft:10,
+                            paddingRight:50,
+                            width: '100%'
                           }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
@@ -229,6 +233,7 @@ const IniciarSesin = () => {
                           onSubmitEditing={handleSubmit}
                         />
                         <TouchableOpacity
+                        style={{right:15,position:"absolute"}}
                           onPress={() => setPassview2(!passview2)}
                         >
                           {passview2 ? (
@@ -236,7 +241,7 @@ const IniciarSesin = () => {
                           ) : (
                             <Image
                               style={{ width: 28 * 0.96, height: 19 * 0.96 }}
-                              contentFit="cover\"
+                              contentFit="contain"
                               source={require('../../assets/closedEye.png')}
                             />
                           )}
@@ -258,7 +263,7 @@ const IniciarSesin = () => {
                     justifyContent: 'center',
                     backgroundColor: Color.wHITESPORTSMATCH,
                     borderRadius: Border.br_81xl,
-                    width: 360,
+                    width: "100%",
                     alignItems: 'center',
                     flexDirection: 'row',
                     height: 45,
@@ -290,7 +295,7 @@ const IniciarSesin = () => {
               </View>
             </View>
           </View>
-          <View>
+          <View style={{paddingBottom:10}}>
             <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
               Al continuar, aceptas automáticamente nuestras Condiciones,
               Polítíca de privacidad y Polítíca de cookies
@@ -341,11 +346,12 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: Border.br_81xl,
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',width:"100%"
   },
   campoLayout: {
     // height: 38,
-    width: 360
+    width: "100%",
+    paddingHorizontal:10
   },
   contraseaClr: {
     color: Color.gREY2SPORTSMATCH,
@@ -382,7 +388,7 @@ const styles = StyleSheet.create({
   },
   vectorIcon: {
     width: 21,
-    height: 16
+    height: 16,
   },
   campo1Frame: {
     alignItems: 'flex-end'
@@ -395,10 +401,11 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   campos: {
-    marginTop: 34
+    marginTop: 34,
+    width:"100%"
   },
   titularcampos: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   hasOlvidadoTu: {
     marginTop: 18,
@@ -427,7 +434,7 @@ const styles = StyleSheet.create({
   },
   formularioFrame: {
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
   noTenesUnaCuentaRegstra: {
     alignSelf: 'stretch',
@@ -444,7 +451,7 @@ const styles = StyleSheet.create({
   },
   formulariotextoLegal: {
     marginTop: 45,
-    flex: 1
+    flex: 1,
   },
   contenido: {
     flex: 1

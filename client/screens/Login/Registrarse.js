@@ -12,7 +12,8 @@ import {
   KeyboardAvoidingView,
   useWindowDimensions,
   StatusBar,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -165,20 +166,19 @@ const Registrarse = () => {
                     <View style={styles.campo1}>
                       <View
                         style={{
-                          gap: 5,
                           alignItems: 'center',
-                          justifyContent: 'flex-start',
                           paddingHorizontal: Padding.p_mini,
                           borderColor: Color.gREY2SPORTSMATCH,
                           borderWidth: 1,
                           borderRadius: Border.br_81xl,
                           flexDirection: 'row',
-                          height: 40
+                          height: 40,
+                          width: '100%'
                         }}
                       >
                         <Image
                           style={styles.simboloIcon1}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo4.png')}
                         />
                         <TextInput
@@ -186,9 +186,10 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '80%'
+                            paddingHorizontal: 10,
+
+                            flex: 1
                           }}
                           placeholder="Nombre"
                           placeholderTextColor="#999"
@@ -222,7 +223,6 @@ const Registrarse = () => {
                     <View style={styles.campo2}>
                       <View
                         style={{
-                          gap: 5,
                           alignItems: 'center',
                           justifyContent: 'flex-start',
                           paddingHorizontal: Padding.p_mini,
@@ -235,7 +235,7 @@ const Registrarse = () => {
                       >
                         <Image
                           style={styles.vectorIcon}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
@@ -243,9 +243,11 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '80%'
+                            paddingHorizontal: 10,
+
+                            flex: 1,
+                            width: '100%'
                           }}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
@@ -288,7 +290,7 @@ const Registrarse = () => {
                       <View style={styles.contraseaFrame}>
                         <Image
                           style={styles.simboloIcon2}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
@@ -296,9 +298,10 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '87%'
+                            width: '100%',
+                            paddingHorizontal: 10,
+                            flex: 1
                           }}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
@@ -314,6 +317,7 @@ const Registrarse = () => {
                           }}
                         />
                         <TouchableOpacity
+                          style={{ paddingRight: 12 }}
                           onPress={() => setPassview1(!passview1)}
                         >
                           {passview1 ? (
@@ -328,7 +332,7 @@ const Registrarse = () => {
                       <View style={styles.contraseaFrame}>
                         <Image
                           style={styles.simboloIcon2}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
@@ -336,9 +340,11 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '87%'
+                            width: '100%',
+                            paddingHorizontal: 10,
+
+                            flex: 1
                           }}
                           placeholder="Confirmar contraseña"
                           placeholderTextColor="#999"
@@ -352,6 +358,7 @@ const Registrarse = () => {
                           onSubmitEditing={submit}
                         />
                         <TouchableOpacity
+                          style={{ paddingRight: 12 }}
                           onPress={() => setPassview2(!passview2)}
                         >
                           {passview2 ? (
@@ -365,27 +372,23 @@ const Registrarse = () => {
                   </View>
                 </View>
               </View>
-              <View style={{ height: 40, marginTop: 36, width: 360 }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginHorizontal: 5
-                  }}
-                >
-                  {nombreError !== '' && (
+              <View style={{ width: '100%', paddingHorizontal: 15 }}>
+                {nombreError !== '' && (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      paddingVertical:5
+                    }}
+                  >
                     <Text style={{ color: 'red', fontWeight: '400' }}>
                       {nombreError}
                     </Text>
-                  )}
-                </View>
+                  </View>
+                )}
 
-                <View
-                  style={[
-                    styles.botonRegistrate,
-                    { marginTop: nombreError ? 10 : 18 }
-                  ]}
-                >
+                <View style={[styles.botonRegistrate]}>
                   <TouchableOpacity
                     style={[styles.loremIpsum, styles.loremPosition]}
                     onPress={submit}
@@ -397,30 +400,18 @@ const Registrarse = () => {
                 </View>
               </View>
             </View>
-            <View style={[{ marginTop: nombreError ? 26 : 24 }]}>
-              <Pressable
-                style={styles.yaTenesUnaContainer}
-                onPress={() => navigation.navigate('IniciarSesin')}
-              >
-                <Text
-                  style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}
-                >
-                  ¿Ya tienes una cuenta? Inicia sesión
-                </Text>
-              </Pressable>
-            </View>
           </View>
         </View>
         <View
           style={{
-            marginTop: 30,
             flexDirection: 'row',
             alignItems: 'center',
             position: 'absolute',
-            width: '90%',
+            width: '100%',
             alignSelf: 'center',
             justifyContent: 'center',
-            bottom: 0
+            bottom: 10,
+            paddingHorizontal: 15
           }}
         >
           <View
@@ -430,6 +421,14 @@ const Registrarse = () => {
               gap: 10
             }}
           >
+            <Pressable
+              style={styles.yaTenesUnaContainer}
+              onPress={() => navigation.navigate('IniciarSesin')}
+            >
+              <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
+                ¿Ya tienes una cuenta? Inicia sesión
+              </Text>
+            </Pressable>
             <View
               style={{
                 flexDirection: 'row',
@@ -594,12 +593,12 @@ const styles = StyleSheet.create({
     height: 40
   },
   campo1: {
-    width: 359,
+    width: '100%',
     height: 43
   },
   vectorIcon: {
-    width: 21,
-    height: 16
+    width: 22,
+    height: 22
   },
   campo2Frame: {
     paddingRight: Padding.p_12xs
@@ -607,20 +606,20 @@ const styles = StyleSheet.create({
   campo2: {
     height: 38,
     marginTop: 11,
-    width: 360
+    width: '100%'
   },
   simboloIcon2: {
-    width: 14,
-    height: 18
+    width: 22,
+    height: 22
   },
   contraseaFrame: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%'
   },
   campo3Frame: {
     height: 39,
-    paddingRight: 23,
-    width: 360,
+    width: '100%',
     marginTop: 15
   },
   campo3: {
@@ -630,15 +629,14 @@ const styles = StyleSheet.create({
   },
   campos: {
     marginTop: 34,
-    flex: 1
+    width: Dimensions.get('screen').width,
+    paddingHorizontal: 15
   },
   titularcampos: {
     alignItems: 'center',
-    flex: 1
+    width: '100%'
   },
-  camposFormulario: {
-    height: 259
-  },
+  camposFormulario: {},
   aceptar: {
     fontSize: FontSize.button_size,
     fontWeight: '700',
@@ -649,7 +647,7 @@ const styles = StyleSheet.create({
   loremIpsum1: {
     justifyContent: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
-    width: 360,
+    width: '100%',
 
     borderRadius: Border.br_81xl,
     alignItems: 'center',
@@ -660,18 +658,18 @@ const styles = StyleSheet.create({
   },
   botonRegistrate: {
     height: 40,
-    marginTop: 36,
-    width: 360
+    marginTop: 10,
+    width: '100%'
   },
   formularioFrame: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   yaTenesUnaCuentaIniciaS: {
-    width: 390,
+    width: '100%',
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
-    marginTop: 27,
     alignItems: 'center'
   },
   texto1: {
@@ -690,7 +688,8 @@ const styles = StyleSheet.create({
     marginTop: 42
   },
   formulariotextoLegal: {
-    marginTop: 15
+    marginTop: 15,
+    width: '100%'
   },
   contenido: {
     // justifyContent: 'center',

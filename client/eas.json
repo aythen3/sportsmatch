@@ -1,6 +1,8 @@
 {
   "cli": {
-    "version": ">= 7.6.0"
+    "version": ">= 7.6.0",
+    "appVersionSource":"remote"
+
   },
   "build": {
     "preview2": {
@@ -15,9 +17,18 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "autoIncrement":true
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+
+       "ios":{
+        "appleId":"sportmatch.digital@gmail.com",
+        "ascAppId":"6608959884",
+        "appleTeamId":"FBV5N83GBX"
+      }
+    }
   }
 }
