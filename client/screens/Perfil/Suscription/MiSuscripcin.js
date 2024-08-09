@@ -63,7 +63,7 @@ const MiSuscripcin = () => {
           const updUser = await axiosInstance
             .patch(`user/${user?.user?.id}`, {
               plan: planSelected,
-              planId: planSelectedId || "123123123"
+              planId: planSelectedId
             })
             .finally(async () => await dispatch(getUserData(user?.user?.id)).then((e)=> console.log(e,"eeeeeeeeeee",user)) )
         }
@@ -119,21 +119,21 @@ const MiSuscripcin = () => {
               <SilverSuscriptionClub />
             )}
 
-            {/* {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />} */}
-            {user?.user?.plan === 'pro' && user.user.type === 'club' && (
+            {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+            {/* {user?.user?.plan === 'pro' && user.user.type === 'club' && (
               <GoldSuscriptionClub
                 setPlanSelected={setPlanSelected}
                 setClientSecret={setClientSecret}
                 setPlanSelectedId={setPlanSelectedId}
               />
-            )}
-             {user?.user?.plan === 'pro' && user.user.type !== 'club' && (
+            )} */}
+             {/* {user?.user?.plan === 'pro' && user.user.type !== 'club' && (
               <GoldSuscription
                 setPlanSelected={setPlanSelected}
                 setClientSecret={setClientSecret}
                 setPlanSelectedId={setPlanSelectedId}
               />
-            )}
+            )} */}
 
             {user?.user?.plan === 'star' && (
               <StarSuscription

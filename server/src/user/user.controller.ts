@@ -29,17 +29,21 @@ export class UserController {
   @PublicAccess()
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
- try {
-  console.log("esto es createUserDto", createUserDto)
-  if (createUserDto.googleId || createUserDto.appleId || createUserDto.facebookId) {
-    console.log("entra con google")
-    return this.userService.createUserAuth(createUserDto);
-  } else {
-    return this.userService.create(createUserDto);
-  }
- } catch (error) {
-  console.log(error)
- }
+    try {
+      console.log('esto es createUserDto', createUserDto);
+      if (
+        createUserDto.googleId ||
+        createUserDto.appleId ||
+        createUserDto.facebookId
+      ) {
+        console.log('entra con google');
+        return this.userService.createUserAuth(createUserDto);
+      } else {
+        return this.userService.create(createUserDto);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   // Método para encontrar todos los usuarios
   @Get()
@@ -49,7 +53,7 @@ export class UserController {
   @Post('stripe/create-customer')
   async createCustomer(
     @Body('email') email: string,
-    @Body('name') name: string,
+    @Body('name') name: string
   ) {
     try {
       const customer = await this.userService.createCustomer(email, name);
@@ -61,14 +65,28 @@ export class UserController {
   @Post('create-subscription')
   async createSubscription(
     @Body('customerId') customerId: string,
-    @Body('priceId') priceId: string,
+    @Body('priceId') priceId: string
   ) {
     try {
-      const subscription = await this.userService.createSubscription(customerId, priceId);
+      const subscription = await this.userService.createSubscription(
+        customerId,
+        priceId
+      );
       return { success: true, subscription };
     } catch (error) {
       return { success: false, message: error.message };
     }
+  }
+  @Post('payment-sheet')
+  async createPaymentSheet(
+    @Body() payload: { customerId: string; priceId: number }
+  ) {
+    const { customerId, priceId } = payload;
+    const response = await this.userService.createPaymentSheet(
+      customerId,
+      priceId
+    );
+    return response;
   }
 
   @Post('cancel-subscription')
@@ -99,17 +117,19 @@ export class UserController {
 
   @Post(':userId/info-relation')
   async findInfoRelation(
-    @Param('userId') userId: number, 
+    @Param('userId') userId: number,
     @Body() requestBody: { relations: string }
   ): Promise<any[]> {
     // Verificar si se proporcionaron relaciones
     if (!requestBody.relations || typeof requestBody.relations !== 'string') {
-      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+      throw new Error(
+        'Debe proporcionar al menos una relación como una cadena de texto.'
+      );
     }
-  console.log(requestBody.relations)
+    console.log(requestBody.relations);
     // Convertir las relaciones en un array
     const relationsArray = requestBody.relations.split(',');
-  
+
     // Llamar al servicio para obtener la información relacionada
     return this.userService.findInfoRelation(userId, relationsArray);
   }
@@ -123,7 +143,10 @@ export class UserController {
   ) {
     try {
       // Verificar si el usuario existe y las credenciales son válidas
-      const user = await this.userService.findByEmailAndPassword(email, password);
+      const user = await this.userService.findByEmailAndPassword(
+        email,
+        password
+      );
       if (!user) {
         return { message: 'Error al cambiar la clave' };
       }
@@ -136,5 +159,4 @@ export class UserController {
       return { message: 'Catch' };
     }
   }
-
 }

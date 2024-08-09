@@ -11,6 +11,7 @@ import commentsSlices from './slices/comments.slices'
 import ChatsSlices from './slices/chats.slices'
 import positionsSlices from './slices/positions.slices'
 import matchsSlices from './slices/matchs.slices'
+import reactotron from '../ReactotronConfig'
 
 export const store = configureStore({
   reducer: {
@@ -30,7 +31,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    })
+    }),
+    enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat( __DEV__ ? reactotron.createEnhancer() : []),
 
   
 })

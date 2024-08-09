@@ -34,12 +34,31 @@ const GoldSuscriptionClub = ({
     })
 
     if (res.data) {
+      setPlanSelectedId(res.data.subscription.subscriptionId)
       setPlanSelected('pro')
       setClientSecret(
         res.data.subscription.clientSecret.latest_invoice.payment_intent
           .client_secret
       )
+    }
+
+    // console.log(user.user.stripeId, 'user')
+  }
+
+   const handleGetGoldAnual = async () => {
+    console.log('entra')
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: 'price_1PbXgIGmE60O5ob7mAwCw3YQ',
+      customerId: user.user.stripeId
+    })
+
+    if (res.data) {
       setPlanSelectedId(res.data.subscription.subscriptionId)
+      setPlanSelected('pro')
+      setClientSecret(
+        res.data.subscription.clientSecret.latest_invoice.payment_intent
+          .client_secret
+      )
     }
 
     // console.log(user.user.stripeId, 'user')

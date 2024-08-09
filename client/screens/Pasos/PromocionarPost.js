@@ -76,15 +76,14 @@ const PromocionarPost = () => {
   const [clientSecret, setClientSecret] = useState('')
 
   const handleGetGold = async () => {
-    const res = await axiosInstance.post('/user/create-subscription', {
-      priceId: 'price_1P4cOSGmE60O5ob7cqUBAyjk',
+    const res = await axiosInstance.post('/user/payment-sheet', {
+      priceId: optionIndex === 1 ? 500 : optionIndex === 2 ? 1000 : optionIndex === 3 ? 2200 : null,
       customerId: user.user.stripeId
     })
     console.log(res.data, 'dataaaaaaaa')
     if (res.data) {
       setClientSecret(
-        res.data.subscription.clientSecret.latest_invoice.payment_intent
-          .client_secret
+        res.data.paymentIntent
       )
     }
   }
@@ -168,7 +167,7 @@ const PromocionarPost = () => {
                   textAlign: 'center'
                 }}
               >
-                Promocion de oferta
+                Promoción de oferta
               </Text>
               <Text
                 style={{
@@ -760,10 +759,11 @@ const PromocionarPost = () => {
               flexDirection: 'row',
               alignItems: 'center',
               width: '100%',
-              top: 10,
+              top: 20,
               justifyContent: 'space-between',
               right: 0,
               paddingHorizontal: 20,
+
               marginBottom: 60
             }}
           >
@@ -826,7 +826,7 @@ const PromocionarPost = () => {
               justifyContent: 'space-between',
               height: '100%',
               flex: 1,
-              paddingVertical: 20
+              padding: 20
             }}
           >
             {ViewOfferComponent(stepsIndex)}

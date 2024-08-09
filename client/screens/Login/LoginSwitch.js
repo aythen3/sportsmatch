@@ -173,15 +173,14 @@ const LoginSwitch = () => {
                   response?.payload?.user?.club?.sport,
                 dispatch
               )
-            if(response.payload.user.sportman !== null){
-              dispatch(
-                setInitialSportman({
-                  id: response.payload.user?.sportman?.id,
-                  ...response.payload.user?.sportman
-                })
-              )
-
-            }
+              if (response.payload.user.sportman !== null) {
+                dispatch(
+                  setInitialSportman({
+                    id: response.payload.user?.sportman?.id,
+                    ...response.payload.user?.sportman
+                  })
+                )
+              }
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
@@ -356,7 +355,7 @@ const LoginSwitch = () => {
         backgroundColor: 'black',
         flex: 1,
         justifyContent: 'space-between',
-        width:Dimensions.get('screen').width
+        width: Dimensions.get('screen').width
       }}
     >
       <HomeGif></HomeGif>
@@ -372,11 +371,18 @@ const LoginSwitch = () => {
         }}
         onLoginFailure={(data) => console.log('Instagram login failed', data)}
       />
-      <View style={{backgroundColor:"transparent",flex:1,justifyContent:"center",width:"100%"}}>
+      <View
+        style={{
+          backgroundColor: 'transparent',
+          flex: 1,
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
         <View
           style={{
             marginTop: '10%',
-            width:"100%"
+            width: '100%'
           }}
         >
           <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
@@ -393,12 +399,12 @@ const LoginSwitch = () => {
         <View
           style={{
             alignItems: 'center',
-            width:"100%"
+            width: '100%'
           }}
         >
           <View style={styles.frameGroup}>
-            <View style={{width:"100%"}}>
-              <View style={{width:"100%",paddingHorizontal:15}}>
+            <View style={{ width: '100%' }}>
+              <View style={{ width: '100%', paddingHorizontal: 15 }}>
                 <View style={[styles.groupChild, styles.borderPosition]}>
                   <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
                     Jugador/Profesional deporte*
@@ -439,16 +445,15 @@ const LoginSwitch = () => {
             </View>
           </View>
           <View style={styles.frameWrapper}>
-            <View style={{width:"100%",alignItems:"center"}}>
+            <View style={{ width: '100%', alignItems: 'center' }}>
               <Text style={[styles.regstrateOInicia, styles.contnuarTypo]}>
                 Regístrate o inicia sesión
               </Text>
               <View style={styles.frameContainer}>
-                <View style={{width:"100%"}}>
+                <View style={{ width: '100%' }}>
                   <View style={styles.frameGroup}>
                     <View style={styles.frameGroup}>
-                    <View style={{width:"100%"}}>
-
+                      <View style={{ width: '100%' }}>
                         <TouchableOpacity
                           onPress={() => promptAsync()}
                           style={styles.loremIpsumParent}
@@ -465,7 +470,6 @@ const LoginSwitch = () => {
                             source={require('../../assets/group-236.png')}
                           />
                         </TouchableOpacity>
-                   
 
                         <TouchableOpacity
                           onPress={() => {
@@ -558,8 +562,6 @@ const LoginSwitch = () => {
                           Regístrate con el e-mail
                         </Text>
                       </View>
-
-                   
                     </Pressable>
                   </View>
                   <Pressable
@@ -603,7 +605,7 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   contnuarTypo: {
-    width: "100%",
+    width: '100%',
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
@@ -702,8 +704,8 @@ const styles = StyleSheet.create({
   },
   frameGroup: {
     alignItems: 'center',
-            width:"100%",
-            justifyContent:"center"
+    width: '100%',
+    justifyContent: 'center'
     // gap: 20
   },
   regstrateOInicia: {
@@ -717,7 +719,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   loremIpsum2: {
-    width:"100%",
+    width: '100%',
     justifyContent: 'center',
     paddingVertical: Padding.p_2xs,
     backgroundColor: Color.wHITESPORTSMATCH,
@@ -731,7 +733,7 @@ const styles = StyleSheet.create({
     width: '6.1%'
   },
   loremIpsumParent: {
-    width: "100%",
+    width: '100%',
     height: 45
   },
   groupInner: {
@@ -740,7 +742,7 @@ const styles = StyleSheet.create({
   },
   loremIpsumGroup: {
     marginTop: 10,
-    width: "100%",
+    width: '100%',
     height: 45
   },
   groupIcon: {
@@ -763,7 +765,7 @@ const styles = StyleSheet.create({
   yaTenesUnaCuentaIniciaS: {
     fontSize: FontSize.t2TextSTANDARD_size,
     color: Color.gREY2SPORTSMATCH,
-    width: "100%",
+    width: '100%',
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
@@ -775,15 +777,16 @@ const styles = StyleSheet.create({
   },
   frameContainer: {
     marginTop: 0,
-    width:"100%",
-    paddingHorizontal:15,
-    justifyContent:"center",alignItems:"center"
+    width: '100%',
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   frameWrapper: {
     marginTop: 0,
-    width:"100%",
-    justifyContent:"center",
-    alignItems:"center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   frameParent: {
     alignItems: 'center',
