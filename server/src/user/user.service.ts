@@ -1,4 +1,3 @@
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,7 +8,6 @@ import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
-import admin from 'firebase-admin';
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
@@ -17,13 +15,11 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
 
-    private readonly sendMailService: SendMailService,
-
-
+    private readonly sendMailService: SendMailService
   ) {
     this.stripe = new Stripe(
-      'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et',
-    )
+      'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et'
+    );
   }
 
   /**
@@ -34,18 +30,19 @@ export class UserService {
     try {
       const subscription = await this.stripe.subscriptions.create({
         customer: customerId,
-        items: [{
-          price: priceId,
-        }],
+        items: [
+          {
+            price: priceId
+          }
+        ],
         payment_behavior: 'default_incomplete',
         payment_settings: { save_default_payment_method: 'on_subscription' },
-        expand: ['latest_invoice.payment_intent'],
+        expand: ['latest_invoice.payment_intent']
       });
-      console.log("prueba")
-
+      console.log('prueba');
       return {
         subscriptionId: subscription.id,
-        clientSecret: subscription,
+        clientSecret: subscription
       };
     } catch (error) {
       throw new Error('Error creating subscription');
@@ -54,10 +51,41 @@ export class UserService {
 
   async cancelSubscription(subscriptionId: string) {
     try {
-      const deletedSubscription = await this.stripe.subscriptions.cancel(subscriptionId);
+      const deletedSubscription =
+        await this.stripe.subscriptions.cancel(subscriptionId);
       return deletedSubscription;
     } catch (error) {
       throw new Error('Failed to cancel subscription.');
+    }
+  }
+
+  async createPaymentSheet(customerId: string, priceId: number): Promise<any> {
+    try {
+      // Crear una llave efímera para el cliente
+      const ephemeralKey = await this.stripe.ephemeralKeys.create(
+        { customer: customerId },
+        { apiVersion: '2024-06-20' }
+      );
+
+      // Crear un intento de pago
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        amount: priceId, // Deberías obtener el monto del precio seleccionado
+        currency: 'eur', // Deberías obtener la moneda del precio seleccionado
+        customer: customerId,
+        automatic_payment_methods: {
+          enabled: true
+        }
+      });
+
+      // Devolver los datos necesarios para la hoja de pago
+      return {
+        paymentIntent: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customer: customerId,
+        publishableKey: 'pk_test_TYooMQauvdEDq54NiTphI7jx'
+      };
+    } catch (error) {
+      throw new Error('Error creating payment sheet');
     }
   }
 
@@ -72,24 +100,23 @@ export class UserService {
             country: 'US',
             line1: '27 Fredrick Ave',
             postal_code: '97712',
-            state: 'CA',
+            state: 'CA'
           },
-          name,
+          name
         },
         address: {
           city: 'Brothers',
           country: 'US',
           line1: '27 Fredrick Ave',
           postal_code: '97712',
-          state: 'CA',
-        },
+          state: 'CA'
+        }
       });
       return customer;
     } catch (error) {
       throw new Error('Error creating customer');
     }
   }
-
 
   public async create(createUserDto: CreateUserDto) {
     try {
@@ -113,7 +140,7 @@ export class UserService {
       }
       const stripeCustomer = await this.stripe.customers.create({
         email: createUserDto.email,
-        name: createUserDto.nickname, // Puedes ajustar esto según tu lógica de aplicación
+        name: createUserDto.nickname // Puedes ajustar esto según tu lógica de aplicación
       });
 
       // Guardar el ID de cliente de Stripe en el DTO del usuario
@@ -143,28 +170,35 @@ export class UserService {
 
       // Verificar si el usuario ya existe en tu base de datos local
       if (createUserDto.googleId) {
-        existingUser = await this.userRepository.findOne({ where: { googleId: createUserDto.googleId } });
+        existingUser = await this.userRepository.findOne({
+          where: { googleId: createUserDto.googleId }
+        });
       } else if (createUserDto.appleId) {
-        existingUser = await this.userRepository.findOne({ where: { appleId: createUserDto.appleId } });
+        existingUser = await this.userRepository.findOne({
+          where: { appleId: createUserDto.appleId }
+        });
       } else if (createUserDto.facebookId) {
-        existingUser = await this.userRepository.findOne({ where: { facebookId: createUserDto.facebookId } });
+        existingUser = await this.userRepository.findOne({
+          where: { facebookId: createUserDto.facebookId }
+        });
       }
 
       // Si el usuario ya existe, lanzar una excepción
       if (existingUser) {
-       return {user:existingUser,message:"el usuario existe"}
+        return { user: existingUser, message: 'el usuario existe' };
       }
       const stripeCustomer = await this.stripe.customers.create({
         email: createUserDto.email,
-        name: createUserDto.nickname, // Puedes ajustar esto según tu lógica de aplicación
+        name: createUserDto.nickname // Puedes ajustar esto según tu lógica de aplicación
       });
 
       // Guardar el ID de cliente de Stripe en el DTO del usuario
       createUserDto.stripeId = stripeCustomer.id;
       // Crear el nuevo perfil del usuario en tu base de datos
-      createUserDto.club = null
-      createUserDto.sportman = null
-      const newProfile: UserEntity = await this.userRepository.save(createUserDto);
+      createUserDto.club = null;
+      createUserDto.sportman = null;
+      const newProfile: UserEntity =
+        await this.userRepository.save(createUserDto);
       // Si no se pudo crear el nuevo perfil, lanzar una excepción
       if (!newProfile) {
         throw new ErrorManager({
@@ -181,12 +215,11 @@ export class UserService {
       // Devolver el nuevo perfil del usuario
       return newProfile;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // Manejar errores
       throw ErrorManager.createSignatureError(error.message);
     }
   }
-
 
   public async findChild(id: string, type: string) {
     let user: UserEntity | undefined;
@@ -222,7 +255,8 @@ export class UserService {
   public async findAll() {
     try {
       const users: UserEntity[] = await this.userRepository.find({
-        where: { isDelete: false },relations:['club','sportman']
+        where: { isDelete: false },
+        relations: ['club', 'sportman']
       });
 
       for (let i = 0; i < users.length; i++) {
@@ -249,16 +283,21 @@ export class UserService {
     try {
       const user = await this.userRepository
         .createQueryBuilder('user')
+        .leftJoinAndSelect('user.club', 'club')
+        .leftJoinAndSelect('user.sportman', 'sportman')
+        .leftJoinAndSelect('user.posts', 'posts')
+        .leftJoinAndSelect('user.comments', 'comments')
+        .leftJoinAndSelect('user.likes', 'likes')
         .where({ id })
         .getOne();
-      // Si no se encuentra el usuario, lanzar una excepción
+
       if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: `User id: ${id} not found`
         });
       }
-      // Devolver el usuario encontrado
+
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -347,17 +386,19 @@ export class UserService {
 
       // Construir objeto de opciones para la consulta
       const options: any = { where: { id: userId }, relations: validRelations };
-      console.log("options es", options)
+      console.log('options es', options);
       // Realizar la consulta del post con las relaciones especificadas
       const user = await this.userRepository.findOne(options);
 
       if (!user) {
-        throw new NotFoundException(`No se encontró ningún post con el ID ${userId}.`);
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${userId}.`
+        );
       }
 
       return user;
     } catch (error) {
-      console.log('este es el error ', error)
+      console.log('este es el error ', error);
     }
   }
 
@@ -368,7 +409,7 @@ export class UserService {
     const allowedRelations = ['likes', 'club', 'sportman', 'posts', 'comments']; // Agregar más según sea necesario
 
     // Filtrar relaciones válidas
-    relations.forEach(relation => {
+    relations.forEach((relation) => {
       if (allowedRelations.includes(relation)) {
         validRelations.push(relation);
       }
@@ -377,31 +418,32 @@ export class UserService {
     return validRelations;
   }
 
-
-
-
-
   async getByGoogleId(googleId: string): Promise<UserEntity> {
-
     const user = await this.userRepository.findOne({
       where: { googleId: googleId },
       relations: ['club', 'sportman']
     });
-    return user
+    return user;
   }
 
   async getByAppleId(appleId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { appleId: appleId } ,  relations: ['club', 'sportman'] });
+    return this.userRepository.findOne({
+      where: { appleId: appleId },
+      relations: ['club', 'sportman']
+    });
   }
 
   async getByFacebookId(facebookId: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { facebookId: facebookId },   relations: ['club', 'sportman'] });
+    return this.userRepository.findOne({
+      where: { facebookId: facebookId },
+      relations: ['club', 'sportman']
+    });
   }
 
-
-
-
-  async findByEmailAndPassword(email: string, password: string): Promise<UserEntity | undefined> {
+  async findByEmailAndPassword(
+    email: string,
+    password: string
+  ): Promise<UserEntity | undefined> {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
@@ -413,20 +455,19 @@ export class UserService {
     return passwordMatch ? user : undefined;
   }
 
-
-
   public async changePassword(id: string, newPassword: string): Promise<any> {
     try {
       // Encriptar la nueva contraseña
       const hashedPassword = await hash(newPassword, +process.env.HASH_SALT);
 
       // Actualizar la contraseña en la base de datos
-      const result = await this.userRepository.update(id, { password: hashedPassword });
+      const result = await this.userRepository.update(id, {
+        password: hashedPassword
+      });
 
       // Verificar si la actualización fue exitosa
       if (result.affected === 0) {
         return { message: 'Error al cambiar la clave' };
-
       }
 
       return { message: 'Clave modificada con éxito' };
@@ -434,5 +475,4 @@ export class UserService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
-
 }

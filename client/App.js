@@ -75,7 +75,9 @@ import PromocionarPost from './screens/Pasos/PromocionarPost'
 import Notificaciones from './screens/Perfil/EditarPerfil/Notificaciones'
 import { registerDevMenuItems } from 'expo-dev-menu'
 import UserFollowers from './screens/Explorar/UserFollowers'
-
+if (__DEV__) {
+  require("./ReactotronConfig");
+}
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
   const [isFooterShow, setIsFooterShow] = useState(null)

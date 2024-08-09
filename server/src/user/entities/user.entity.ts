@@ -8,38 +8,37 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
-
   @Column()
   nickname: string;
 
-  @Column({nullable:true})
-  email: string
+  @Column({ nullable: true })
+  email: string;
 
-  @Column({nullable:true ,default:null} )
-  googleId: string | null 
+  @Column({ nullable: true, default: null })
+  googleId: string | null;
 
-  @Column({ nullable:true ,default:null})
-  facebookId: string | null
+  @Column({ nullable: true, default: null })
+  facebookId: string | null;
 
-  @Column({ nullable:true ,default:null})
-  appleId: string | null
+  @Column({ nullable: true, default: null })
+  appleId: string | null;
 
-  @Column({default:""})
+  @Column({ default: '' })
   stripeId: string;
 
-  @Column({nullable:true})
-  password: string | null
+  @Column({ nullable: true })
+  password: string | null;
 
   @Column({
     type: 'enum',
-    enum: ['sportman', 'club' , 'invitado']
+    enum: ['sportman', 'club', 'invitado']
   })
   type: 'sportman' | 'club' | 'invitado';
 
   @Column({ default: 'basic' })
   plan: string;
 
-  @Column({ default: '',nullable: true })
+  @Column({ default: '', nullable: true })
   planId: string;
 
   @Column({ type: 'json', nullable: true })
