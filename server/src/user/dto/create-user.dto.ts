@@ -1,9 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from 'class-validator';
 
 export class CreateUserDto {
-
-
   @IsNotEmpty()
   @IsString()
   nickname: string;
@@ -32,6 +36,10 @@ export class CreateUserDto {
   club: any;
 
   @IsOptional()
+  @IsString()
+  tokenConfirmacion: string;
+
+  @IsOptional()
   sportman: any;
 
   @IsNotEmpty()
@@ -56,6 +64,4 @@ export class CreateUserDto {
   @IsArray()
   @IsString({ each: true })
   prop4?: string[];
-
-  
 }

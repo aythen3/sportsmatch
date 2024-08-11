@@ -7,10 +7,7 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
-  UseGuards,
-  HttpException,
-  HttpStatus
+  Query
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -87,6 +84,89 @@ export class UserController {
       priceId
     );
     return response;
+  }
+
+  @Get('confirmar-cuenta/:tokenConfirmacion')
+  async confirmarCuenta(@Param('tokenConfirmacion') tokenConfirmacion: string) {
+    const usuario = await this.userService.confirmarCuenta(tokenConfirmacion);
+    if (usuario.emailCheck && !usuario.tokenConfirmacion) {
+      return `
+      <html>
+        <head>
+          <title>Cuenta activada</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin: 40px;
+            }
+            h1 {
+              color: #333;
+            }
+            p {
+              color: #666;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Cuenta activada con éxito</h1>
+          <p>Puede iniciar sesión y empezar a usar SportsMatch</p>
+        </body>
+      </html>
+    `;
+    }
+  }
+
+  @Post('recuperar-contrasena')
+  async recuperarContrasena(@Body('email') email: string) {
+    const usuario = await this.userService.findByEmail(email);
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    const token = await this.userService.generarTokenRecuperacion(usuario);
+    await this.userService.enviarCorreoRecuperacion(usuario, token);
+    return { message: 'Correo de recuperación enviado' };
+  }
+
+  @Get('cambiar-contrasena/:token')
+  async cambiarContrasenaa(@Param('token') token: string) {
+    const usuario = await this.userService.findByTokenRecuperacion(token);
+    if (!usuario) {
+      throw new Error('Token no válido');
+    }
+    return `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 40px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Cambiar contraseña</h1>
+        <form action="/api/user/cambiar-contrasena/${token}" method="post">
+          <input type="password" name="contrasena" placeholder="Nueva contraseña">
+          <button type="submit">Cambiar contraseña</button>
+        </form>
+      </body>
+    </html>
+  `;
+  }
+
+  @Post('cambiar-contrasena/:token')
+  async cambiarContrasena(
+    @Param('token') token: string,
+    @Body('contrasena') contrasena: string
+  ) {
+    const usuario = await this.userService.findByTokenRecuperacion(token);
+    if (!usuario) {
+      throw new Error('Token no válido');
+    }
+    await this.userService.cambiarContrasena(usuario, contrasena);
+    return { message: 'Contraseña cambiada con éxito' };
   }
 
   @Post('cancel-subscription')

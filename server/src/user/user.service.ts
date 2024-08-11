@@ -8,6 +8,8 @@ import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
+import * as nodemailer from 'nodemailer';
+import * as crypto from 'crypto';
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
@@ -47,6 +49,133 @@ export class UserService {
     } catch (error) {
       throw new Error('Error creating subscription');
     }
+  }
+
+  async enviarCorreoConfirmacion(usuario: UserEntity) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'azschiaffino@gmail.com',
+          pass: 'ccuk lafv fpmh bijv'
+        }
+      });
+
+      const mailOptions = {
+        from: 'sportsmatch.digital@gmail.com',
+        to: usuario.email,
+        subject: 'Confirmación de cuenta',
+        html: `
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 40px;
+              }
+              a {
+                color: #337ab7;
+                text-decoration: none;
+              }
+              a:hover {
+                color: #23527c;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Confirmación de cuenta</h1>
+            <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+            <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+          </body>
+        </html>
+      `
+      };
+
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.log(error, 'rerrereiomfgasmf');
+      return { message: 'este es el error', error };
+    }
+  }
+
+  async confirmarCuenta(tokenConfirmacion: string) {
+    const usuario = await this.userRepository.findOneBy({
+      tokenConfirmacion
+    });
+    if (!usuario) {
+      throw new Error('Token de confirmación no válido');
+    }
+    usuario.emailCheck = true;
+    usuario.tokenConfirmacion = null;
+    await this.userRepository.save(usuario);
+    return usuario;
+  }
+
+  async eliminarTokenConfirmacion(usuario: UserEntity) {
+    usuario.tokenConfirmacion = null;
+    await this.userRepository.save(usuario);
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
+  }
+
+  async generarTokenRecuperacion(usuario: UserEntity) {
+    const token = crypto.randomBytes(20).toString('hex');
+    usuario.tokenRecuperacion = token;
+    await this.userRepository.save(usuario);
+    return token;
+  }
+
+  async enviarCorreoRecuperacion(usuario: UserEntity, token: string) {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'azschiaffino@gmail.com',
+        pass: 'ccuk lafv fpmh bijv'
+      }
+    });
+
+    const mailOptions = {
+      from: 'sportsmatch.digital@gmail.com',
+      to: usuario.email,
+      subject: 'Recuperación de contraseña',
+      html: `
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin: 40px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Recuperación de contraseña</h1>
+          <p>Haga clic en el siguiente enlace para cambiar su contraseña:</p>
+          <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/cambiar-contrasena/${token}">Click aquí</a>
+        </body>
+      </html>
+    `
+    };
+
+    await transporter.sendMail(mailOptions);
+  }
+
+  async findByTokenRecuperacion(token: string) {
+    return await this.userRepository.findOneBy({ tokenRecuperacion: token });
+  }
+
+  async cambiarContrasena(usuario: UserEntity, contrasena: string) {
+    usuario.password = await hash(contrasena, +process.env.HASH_SALT);
+    usuario.tokenRecuperacion = null;
+    await this.userRepository.save(usuario);
   }
 
   async cancelSubscription(subscriptionId: string) {
@@ -142,6 +271,8 @@ export class UserService {
         email: createUserDto.email,
         name: createUserDto.nickname // Puedes ajustar esto según tu lógica de aplicación
       });
+      const tokenConfirmacion = crypto.randomBytes(20).toString('hex');
+      createUserDto.tokenConfirmacion = tokenConfirmacion;
 
       // Guardar el ID de cliente de Stripe en el DTO del usuario
       createUserDto.stripeId = stripeCustomer.id;
@@ -157,6 +288,7 @@ export class UserService {
       }
       // Devolver el nuevo perfil del usuario
       await this.sendMailService.sendRegistrationNotification(newProfile.email);
+      await this.enviarCorreoConfirmacion(newProfile);
       return newProfile;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

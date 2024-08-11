@@ -1,4 +1,3 @@
-const Stack = createNativeStackNavigator()
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
@@ -54,29 +53,22 @@ import EditarSkills from './screens/Perfil/EditarPerfil/jugador/EditarSkills'
 import DetallesUsuario from './screens/Perfil/EditarPerfil/jugador/DetallesUsuario'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Provider, useSelector } from 'react-redux'
+import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { ContextProvider } from './context/Context'
 import ClubDetails from './screens/Perfil/EditarPerfil/club/ClubDetails'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlayerDetails from './screens/Perfil/EditarPerfil/jugador/PlayerDetails'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import {
-  AppRegistry,
-  StatusBar,
-  View,
-  DevSettings,
-  NativeModules
-} from 'react-native'
+import { StatusBar, View } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/Perfil/EditarPerfil/profesional/ProDetails'
 import Post from './screens/Perfil/EditarPerfil/Post'
 import PromocionarPost from './screens/Pasos/PromocionarPost'
 import Notificaciones from './screens/Perfil/EditarPerfil/Notificaciones'
-import { registerDevMenuItems } from 'expo-dev-menu'
 import UserFollowers from './screens/Explorar/UserFollowers'
+import RecuperarContra from './screens/Login/RecuperarContra'
+const Stack = createNativeStackNavigator()
 if (__DEV__) {
-  require("./ReactotronConfig");
+  require('./ReactotronConfig')
 }
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
@@ -125,7 +117,8 @@ const App = () => {
                         route.name !== 'Paso4Jugador' &&
                         route.name !== 'Paso4Profesional' &&
                         route.name !== 'stepsJugador' &&
-                        route.name !== 'PostPromocion'
+                        route.name !== 'PostPromocion' &&
+                        route.name !== 'RecuperarContra'
                     )
                   })}
                 >
@@ -144,6 +137,11 @@ const App = () => {
                   <Stack.Screen
                     name="Paso2Jugador"
                     component={Paso2Jugador}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="RecuperarContra"
+                    component={RecuperarContra}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
