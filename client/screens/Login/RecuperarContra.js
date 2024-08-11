@@ -37,8 +37,9 @@ import HomeGif from '../../utils/HomeGif'
 import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 import { detectSportColor } from './PantallaInicio'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import axiosInstance from '../../utils/apiBackend'
 
-const IniciarSesin = () => {
+const RecuperarContra = () => {
   const {
     setProvisoryProfileImage,
     setProvisoryCoverImage,
@@ -58,7 +59,7 @@ const IniciarSesin = () => {
 
   const passwordInputRef = useRef(null)
 
-  const { user, loged } = useSelector((state) => state.users)
+  const { user, loged, allUsers } = useSelector((state) => state.users)
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -66,76 +67,37 @@ const IniciarSesin = () => {
   })
 
   const seterValues = (field, value) => {
+    if (error) {
+      setError('')
+    }
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
     }))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true)
-    setProvisoryProfileImage()
-    setProvisoryCoverImage()
-    setProfileImage()
-    setCoverImage()
-    if (valuesUser.email && valuesUser.password) {
-      dispatch(login(valuesUser))
-        .then(async (response) => {
-          console.log(response, 'responde el login')
-
-          dispatch(
-            setIsSpotMan(
-              response?.payload?.user?.type === 'club' ? false : true
-            )
-          )
-          await AsyncStorage.setItem(
-            '@user',
-            JSON.stringify(response.payload.user)
-          )
-          await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
-          await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
-          await AsyncStorage.setItem('userType', response?.payload?.user?.type)
-          setLoading(false)
-          if (response.payload?.user?.club || response.payload.user?.sportman) {
-            dispatch(
-              setInitialSportman({
-                id: response.payload.user?.sportman?.id,
-                ...response.payload.user?.sportman
-              })
-            )
-            dispatch(setClub(response))
-            detectSportColor(
-              response.payload.user?.sportman?.info?.sport ||
-                response.payload?.user?.club?.sport,
-              dispatch
-            )
-            setActiveIcon('diary')
-            return navigation.reset({
-              index: 0,
-              history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
-            })
-          } else {
-            if (response?.payload?.user?.type === 'club') {
-              if (user?.accesToken) {
-                navigation.navigate('stepsClub')
-              }
-            } else {
-              if (response.payload.accesToken) {
-                navigation.navigate('Paso1')
-              }
-            }
-          }
-          dispatch(setClub(response))
+    const find = allUsers.find((e) => e.email === valuesUser.email)
+    if (find) {
+      console.log(
+        'email valido',
+        allUsers.find((e) => e.email === valuesUser.email)
+      )
+      await axiosInstance
+        .post('/user/recuperar-contrasena', {
+          email: valuesUser.email
         })
-        .catch((error) => {
+        .then(() => {
+          navigation.goBack()
           setLoading(false)
-          setError('Usuario o contraseña incorrecto/s')
-
-          console.error(error)
         })
+    } else {
+      setError('El email no esta registrado en SportsMatch')
+      setLoading(false)
     }
   }
+
   const { height, width } = useWindowDimensions()
 
   return (
@@ -176,7 +138,7 @@ const IniciarSesin = () => {
                 }}
               >
                 <View style={styles.titularcampos}>
-                  <Text style={styles.titular}>Inicia sesión</Text>
+                  <Text style={styles.titular}>Recuperar contraseña</Text>
                   <View style={styles.campos}>
                     <View style={styles.campoLayout}>
                       <View style={[styles.campo1Frame, styles.framePosition]}>
@@ -206,57 +168,9 @@ const IniciarSesin = () => {
                         />
                       </View>
                     </View>
-                    <View style={[styles.campo2, styles.campoLayout]}>
-                      <View style={[styles.campo1Frame, styles.framePosition]}>
-                        <Image
-                          style={styles.vectorIcon}
-                          contentFit="contain"
-                          source={require('../../assets/simbolo3.png')}
-                        />
-                        <TextInput
-                          style={{
-                            color: Color.wHITESPORTSMATCH,
-                            fontFamily: FontFamily.t4TEXTMICRO,
-                            fontSize: FontSize.t2TextSTANDARD_size,
-                            paddingLeft: 10,
-                            paddingRight: 50,
-                            width: '100%'
-                          }}
-                          placeholder="Contraseña"
-                          placeholderTextColor="#999"
-                          secureTextEntry={passview2}
-                          value={valuesUser.password}
-                          onChangeText={(value) =>
-                            seterValues('password', value)
-                          }
-                          ref={passwordInputRef}
-                          onSubmitEditing={handleSubmit}
-                        />
-                        <TouchableOpacity
-                          style={{ right: 15, position: 'absolute' }}
-                          onPress={() => setPassview2(!passview2)}
-                        >
-                          {passview2 ? (
-                            <PassView></PassView>
-                          ) : (
-                            <Image
-                              style={{ width: 28 * 0.96, height: 19 * 0.96 }}
-                              contentFit="contain"
-                              source={require('../../assets/closedEye.png')}
-                            />
-                          )}
-                        </TouchableOpacity>
-                      </View>
-                    </View>
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('RecuperarContra')}
-                >
-                  <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
-                    ¿Has olvidado tu contraseña? Click aquí
-                  </Text>
-                </TouchableOpacity>
+
                 {error && (
                   <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
                     {error}
@@ -276,34 +190,15 @@ const IniciarSesin = () => {
                   onPress={handleSubmit}
                 >
                   {!loading ? (
-                    <Text style={styles.aceptar}>Inicia sesión</Text>
+                    <Text style={styles.aceptar}>Enviar</Text>
                   ) : (
                     <View style={{ width: '100%' }}>
                       <ActivityIndicator color={'#000'} size={'small'} />
                     </View>
                   )}
                 </TouchableOpacity>
-                <Pressable
-                  style={{ marginTop: 37 }}
-                  onPress={() => navigation.navigate('LoginSwitch')}
-                >
-                  <Text
-                    style={[
-                      styles.noTenesUnaCuentaRegstra,
-                      styles.contraseaClr
-                    ]}
-                  >
-                    ¿No tienes una cuenta? Regístrate
-                  </Text>
-                </Pressable>
               </View>
             </View>
-          </View>
-          <View style={{ paddingBottom: 10 }}>
-            <Text style={[styles.alContnuarAceptas, styles.contraseaClr]}>
-              Al continuar, aceptas automáticamente nuestras Condiciones,
-              Polítíca de privacidad y Polítíca de cookies
-            </Text>
           </View>
         </View>
       </View>
@@ -475,4 +370,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default IniciarSesin
+export default RecuperarContra

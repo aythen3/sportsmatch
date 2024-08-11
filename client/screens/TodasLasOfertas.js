@@ -395,6 +395,12 @@ const TodasLasOfertas = () => {
                     <TouchableOpacity
                       disabled={signinToOffer}
                       onPress={async () => {
+                        if (!user.user.emailCheck) {
+                          return ToastAndroid.show(
+                            'Valida tu email para poder inscribirte',
+                            ToastAndroid.SHORT
+                          )
+                        }
                         console.log('PRESSED')
                         if (
                           !offer?.inscriptions?.includes(
@@ -527,12 +533,13 @@ const TodasLasOfertas = () => {
             <Text
               style={{
                 marginTop: 60,
-                marginBottom:20,
+                marginBottom: 20,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: 400,
                 fontSize: 14,
                 color: Color.wHITESPORTSMATCH,
-                bottom: 4,textAlign:"center"
+                bottom: 4,
+                textAlign: 'center'
               }}
             >
               {search?.length > 0

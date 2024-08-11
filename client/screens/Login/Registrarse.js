@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -13,7 +13,8 @@ import {
   useWindowDimensions,
   StatusBar,
   Platform,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -25,22 +26,29 @@ import {
 } from '../../GlobalStyles'
 import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
-import { create, getAllUsers } from '../../redux/actions/users'
+import { create, getAllUsers, login } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
 import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import { detectSportColor } from './PantallaInicio'
+import { setClub } from '../../redux/slices/club.slices'
+import { setIsSpotMan } from '../../redux/slices/users.slices'
+import * as EmailValidator from 'email-validator'
+import { Context } from '../../context/Context'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
 
   const route = useRoute()
 
   const dispatch = useDispatch()
 
   const { isSportman, allUsers } = useSelector((state) => state.users)
-  const { isPlayer } = route.params
 
   const emailInputRef = useRef(null)
   const passwordInputRef = useRef(null)
@@ -57,7 +65,7 @@ const Registrarse = () => {
   const [isEmailValid, setEmailValid] = useState(false)
   const [passview1, setPassview1] = useState(true)
   const [passview2, setPassview2] = useState(true)
-
+  const { setActiveIcon } = useContext(Context)
   useEffect(() => {
     dispatch(getAllUsers())
   }, [])
@@ -65,15 +73,13 @@ const Registrarse = () => {
   const isValidEmail = (email) => {
     const alreadyTaken = allUsers?.map((user) => user.email).includes(email)
     if (!alreadyTaken) {
-      return /^[^\s@]+@[^\s@]+\.(?:com|net|org|edu|gov|mil|biz|info|name|museum|us|ca|uk|fr|au|de)$/i.test(
-        email
-      )
+      return EmailValidator.validate(email)
     } else {
       return false
     }
   }
-
   const seterValues = (field, value) => {
+    setNombreError('')
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
@@ -84,36 +90,199 @@ const Registrarse = () => {
   }
 
   const handleCheckboxToggle = () => {
+    setNombreError('')
+
     setChecked(!isChecked)
   }
 
   const submit = () => {
+    setLoading(true)
+
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.])[A-Za-z\d@$!%*?.]{4,}$/
+
+    if (!isValidEmail(valuesUser.email)) {
+      setLoading(false)
+
+      return setNombreError('Ingresa un email válido')
+    }
+    if (!passwordPattern.test(valuesUser.password.trim())) {
+      setLoading(false)
+
+      return setNombreError(
+        'La contraseña debe contener almenos una Mayuscula , una minuscula , un numero y un simbolo'
+      )
+    }
     if (
       valuesUser.email &&
       valuesUser.nickname &&
       valuesUser.password &&
-      isChecked
+      confirmPassword
     ) {
       if (isValidEmail(valuesUser.email)) {
         const existingUser = allUsers?.find(
           (user) => user.email === valuesUser.email
         )
         if (existingUser) {
+          setLoading(false)
+
           Alert.alert('Este correo electrónico ya está registrado')
           return
         }
-        if (valuesUser.password === confirmPassword) {
-          dispatch(create(valuesUser))
-          navigation.navigate('IniciarSesin', { isPlayer })
+        if (
+          valuesUser.password === confirmPassword
+          // passwordPattern.test(valuesUser.password.trim())
+        ) {
+          if (!isChecked) {
+            setLoading(false)
+
+            return setNombreError('Debes aceptar las condiciones de privacidad')
+          }
+          dispatch(create(valuesUser)).then((e) => {
+            dispatch(login(valuesUser)).then(async (response) => {
+              console.log(response, 'responde el login')
+
+              dispatch(
+                setIsSpotMan(
+                  response?.payload?.user?.type === 'club' ? false : true
+                )
+              )
+              await AsyncStorage.setItem(
+                '@user',
+                JSON.stringify(response?.payload?.user)
+              )
+              await AsyncStorage.setItem(
+                'userToken',
+                response?.payload?.accesToken
+              )
+              await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
+              await AsyncStorage.setItem(
+                'userType',
+                response?.payload?.user?.type
+              )
+
+              if (
+                response.payload?.user?.club ||
+                response.payload.user?.sportman
+              ) {
+                dispatch(
+                  setInitialSportman({
+                    id: response.payload.user?.sportman?.id,
+                    ...response.payload.user?.sportman
+                  })
+                )
+                dispatch(setClub(response))
+                detectSportColor(
+                  response.payload.user?.sportman?.info?.sport ||
+                    response.payload?.user?.club?.sport,
+                  dispatch
+                )
+                setActiveIcon('diary')
+                setLoading(false)
+                return navigation.reset({
+                  index: 0,
+                  history: false,
+                  routes: [{ name: 'SiguiendoJugadores' }]
+                })
+              } else {
+                if (response?.payload?.user?.type === 'club') {
+                  if (response?.payload?.accesToken) {
+                    navigation.navigate('stepsClub')
+                    setLoading(false)
+                  }
+                } else {
+                  if (response.payload.accesToken) {
+                    navigation.navigate('Paso1')
+                    setLoading(false)
+                  }
+                }
+              }
+              dispatch(setClub(response))
+              setLoading(false)
+            })
+          })
+          // navigation.navigate('IniciarSesin', { isPlayer })
         } else {
-          Alert.alert('Las contraseñas no coinciden')
+          setNombreError('Las contraseñas no coinciden')
+          setLoading(false)
         }
+      } else {
+        setNombreError('Ingresa un email válido')
+        setLoading(false)
       }
     } else {
-      Alert.alert('Debes llenar todos los campos')
+      setNombreError('Debes llenar todos los campos')
+      setLoading(false)
     }
+    // setLoading(false)
   }
-  const { height, width } = useWindowDimensions()
+
+  // const handleSubmit = () => {
+  //   setLoading(true)
+  //   setProvisoryProfileImage()
+  //   setProvisoryCoverImage()
+  //   setProfileImage()
+  //   setCoverImage()
+  //   if (valuesUser.email && valuesUser.password) {
+  //     dispatch(login(valuesUser))
+  //       .then(async (response) => {
+  //         console.log(response, 'responde el login')
+
+  //         dispatch(
+  //           setIsSpotMan(
+  //             response?.payload?.user?.type === 'club' ? false : true
+  //           )
+  //         )
+  //         await AsyncStorage.setItem(
+  //           '@user',
+  //           JSON.stringify(response.payload.user)
+  //         )
+  //         await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
+  //         await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
+  //         await AsyncStorage.setItem('userType', response?.payload?.user?.type)
+  //         setLoading(false)
+  //         if (response.payload?.user?.club || response.payload.user?.sportman) {
+  //           dispatch(
+  //             setInitialSportman({
+  //               id: response.payload.user?.sportman?.id,
+  //               ...response.payload.user?.sportman
+  //             })
+  //           )
+  //           dispatch(setClub(response))
+  //           detectSportColor(
+  //             response.payload.user?.sportman?.info?.sport ||
+  //               response.payload?.user?.club?.sport,
+  //             dispatch
+  //           )
+  //           setActiveIcon('diary')
+  //           return navigation.reset({
+  //             index: 0,
+  //             history: false,
+  //             routes: [{ name: 'SiguiendoJugadores' }]
+  //           })
+  //         } else {
+  //           if (response?.payload?.user?.type === 'club') {
+  //             if (user?.accesToken) {
+  //               navigation.navigate('stepsClub')
+  //             }
+  //           } else {
+  //             if (response.payload.accesToken) {
+  //               navigation.navigate('Paso1')
+  //             }
+  //           }
+  //         }
+  //         dispatch(setClub(response))
+  //       })
+  //       .catch((error) => {
+  //         setLoading(false)
+  //         setError('Usuario o contraseña incorrecto/s')
+
+  //         console.error(error)
+  //       })
+  //   }
+  // }
+
+  const { height } = useWindowDimensions()
 
   return (
     <KeyboardAvoidingView
@@ -191,6 +360,7 @@ const Registrarse = () => {
 
                             flex: 1
                           }}
+                          editable={!loading}
                           placeholder="Nombre"
                           placeholderTextColor="#999"
                           value={valuesUser.nickname}
@@ -216,7 +386,7 @@ const Registrarse = () => {
                           onSubmitEditing={() => {
                             emailInputRef.current.focus()
                           }}
-                          maxLength={60}
+                          maxLength={40}
                         />
                       </View>
                     </View>
@@ -249,9 +419,11 @@ const Registrarse = () => {
                             flex: 1,
                             width: '100%'
                           }}
+                          editable={!loading}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           autoCapitalize="none"
+                          maxLength={40}
                           value={valuesUser.email}
                           onChangeText={(value) => {
                             console.log(`email: ${value}`) // Log email value
@@ -303,6 +475,8 @@ const Registrarse = () => {
                             paddingHorizontal: 10,
                             flex: 1
                           }}
+                          editable={!loading}
+                          maxLength={40}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={passview1}
@@ -346,6 +520,8 @@ const Registrarse = () => {
 
                             flex: 1
                           }}
+                          editable={!loading}
+                          maxLength={40}
                           placeholder="Confirmar contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={passview2}
@@ -379,7 +555,7 @@ const Registrarse = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       width: '100%',
-                      paddingVertical:5
+                      paddingVertical: 5
                     }}
                   >
                     <Text style={{ color: 'red', fontWeight: '400' }}>
@@ -390,11 +566,18 @@ const Registrarse = () => {
 
                 <View style={[styles.botonRegistrate]}>
                   <TouchableOpacity
+                    disabled={loading}
                     style={[styles.loremIpsum, styles.loremPosition]}
                     onPress={submit}
                   >
                     <View style={styles.loremIpsum1}>
-                      <Text style={styles.aceptar}>Regístrate</Text>
+                      {loading ? (
+                        <View style={{ width: '100%' }}>
+                          <ActivityIndicator color={'#000'} size={'small'} />
+                        </View>
+                      ) : (
+                        <Text style={styles.aceptar}>Regístrate</Text>
+                      )}
                     </View>
                   </TouchableOpacity>
                 </View>

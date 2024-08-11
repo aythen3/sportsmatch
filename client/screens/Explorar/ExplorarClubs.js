@@ -90,19 +90,19 @@ const ExplorarClubs = () => {
       nickname: textValue
     })
     console.log(users, 'usuarios')
-    setSearchUsers(users.data)
+    setSearchUsers(users.data.filter((e) => e.user.emailCheck))
     const position = await axiosInstance.post('sportman/filter', {
       position: textValue
     })
-    setSearchPosition(position.data)
+    setSearchPosition(position.data.filter((e) => e.user.emailCheck))
     const city = await axiosInstance.post('sportman/filter', {
       city: textValue
     })
-    setSearchCity(city.data)
+    setSearchCity(city.data.filter((e) => e.user.emailCheck))
     const clubes = await axiosInstance.post('info-entity/club/name/filter', {
       value: textValue
     })
-    setSearchClubes(clubes.data.data)
+    setSearchClubes(clubes.data.data.filter((e) => e.user.emailCheck))
   }
 
   const handleChange = (value) => {
@@ -171,11 +171,11 @@ const ExplorarClubs = () => {
 
   const posttt = () => {
     const groupedPostsTotal = []
-
-    for (let i = 0; i < allPosts.length; i += 3) {
+    const postChecked = allPosts.filter((e) => e.author.emailCheck)
+    for (let i = 0; i < postChecked.length; i += 3) {
       groupedPostsTotal.push({
-        columnItems: allPosts.slice(i, i + 2),
-        rightItem: allPosts[i + 2]
+        columnItems: postChecked.slice(i, i + 2),
+        rightItem: postChecked[i + 2]
       })
     }
     setGroupedPosts(groupedPostsTotal)

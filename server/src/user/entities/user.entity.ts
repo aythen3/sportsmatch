@@ -5,7 +5,6 @@ import { LikeEntity } from 'src/like/entities/like.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
-
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
   @Column()
@@ -62,6 +61,15 @@ export class UserEntity extends BaseEntity {
   @OneToOne(() => ClubEntity, { nullable: true })
   @JoinColumn()
   club: ClubEntity | null;
+
+  @Column({ default: false })
+  emailCheck: boolean;
+
+  @Column({ default: false, nullable: true })
+  tokenConfirmacion: string;
+
+  @Column({ default: null, nullable: true })
+  tokenRecuperacion: string;
 
   @OneToOne(() => SportmanEntity, { nullable: true })
   @JoinColumn()
