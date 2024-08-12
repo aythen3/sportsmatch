@@ -10,6 +10,8 @@ import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
 import * as nodemailer from 'nodemailer';
 import * as crypto from 'crypto';
+import { ConfigService } from '@nestjs/config';
+const configService = new ConfigService();
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
@@ -58,8 +60,8 @@ export class UserService {
         port: 587,
         secure: false,
         auth: {
-          user: 'azschiaffino@gmail.com',
-          pass: 'ccuk lafv fpmh bijv'
+          user: configService.get('SMTP_EMAIL'),
+          pass: configService.get('SMTP_PASS')
         }
       });
 
@@ -136,8 +138,8 @@ export class UserService {
       port: 587,
       secure: false,
       auth: {
-        user: 'azschiaffino@gmail.com',
-        pass: 'ccuk lafv fpmh bijv'
+        user: configService.get('SMTP_EMAIL'),
+        pass: configService.get('SMTP_PASS')
       }
     });
 
