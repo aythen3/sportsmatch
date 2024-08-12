@@ -47,7 +47,7 @@ import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend'
-import { create, login } from '../../redux/actions/users'
+import { create, getAllUsers, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
@@ -105,11 +105,9 @@ const LoginSwitch = () => {
   }
 
   useEffect(() => {
-    getUserAuth()
-  }, [])
-
-  useEffect(() => {
+    dispatch(getAllUsers())
     dispatch(getAll())
+    getUserAuth()
   }, [])
 
   const toggleSwitch = () => {
