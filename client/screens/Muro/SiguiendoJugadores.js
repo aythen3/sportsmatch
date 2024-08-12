@@ -107,6 +107,8 @@ const SiguiendoJugadores = () => {
     }
   }, [allMatchs])
 
+
+
   const [filteredPosts, setFilteredPosts] = useState([])
 
   useEffect(() => {

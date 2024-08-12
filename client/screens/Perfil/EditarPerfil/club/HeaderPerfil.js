@@ -274,7 +274,7 @@ const HeaderPerfil = ({
                 { fontSize: 16, color: mainColor }
               ]}
             >
-              {sport}
+              {sport == 'Voley' ? 'Voleibol' : sport == 'Handball' ? 'Balonmano' : sport}
             </Text>
           )}
           {position && (

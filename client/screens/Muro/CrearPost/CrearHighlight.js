@@ -65,7 +65,6 @@ const CrearHighlight = () => {
       dispatch(getAllPosts())
     })
   }
-  console.log('imagen', image)
   return (
     <SafeAreaView
       style={{

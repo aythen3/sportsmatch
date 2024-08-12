@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Image,
+  ScrollView,
   Dimensions,
   TouchableOpacity,
   Text,
@@ -173,12 +174,43 @@ const Feed = ({ externalId }) => {
         />
       )}
     </View>
-  );
-};
-
-const screenWidth = Dimensions.get('window').width;
+  )
+}
+const screenWidth = Dimensions.get('window').width
+const itemSize = (screenWidth * 0.9 + 10) / 3
 const styles = StyleSheet.create({
-  row: {
+  fila1: {
+    flexDirection: 'column'
+  },
+  imagen1pin: {
+    width: 117,
+    height: 146
+  },
+  fila2Layout: {
+    height: 146,
+    flexDirection: 'row'
+  },
+  imagen2pin: {
+    marginLeft: 4,
+    width: 117,
+    height: 146
+  },
+  fila2: {
+    marginTop: 2,
+    width: 359
+  },
+  imagen5Icon: {
+    marginLeft: 4
+  },
+  iconLayout: {
+    borderRadius: Border.br_10xs,
+    height: 160,
+    borderWidth: 2,
+    borderColor: '#fff',
+    width: '100%',
+    overflow: 'hidden'
+  },
+   row: {
     justifyContent: 'space-between',
   },
   listContent: {
@@ -189,6 +221,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-});
+})
 
-export default Feed;
+export default Feed

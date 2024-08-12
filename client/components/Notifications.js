@@ -326,6 +326,7 @@ const Notifications = ({ data }) => {
                       })
                       .then((response) => {
                         if (newFollowers.includes(user?.user?.id)) {
+                          console.log('esdto vas a cmaiawr', data)
                           dispatch(
                             sendNotification({
                               title: 'Follow',

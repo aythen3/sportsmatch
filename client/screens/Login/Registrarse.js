@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -12,7 +12,9 @@ import {
   KeyboardAvoidingView,
   useWindowDimensions,
   StatusBar,
-  Platform
+  Platform,
+  Dimensions,
+  ActivityIndicator
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -24,22 +26,29 @@ import {
 } from '../../GlobalStyles'
 import CheckBox from 'react-native-check-box'
 import { useDispatch, useSelector } from 'react-redux'
-import { create, getAllUsers } from '../../redux/actions/users'
+import { create, getAllUsers, login } from '../../redux/actions/users'
 import { AntDesign } from '@expo/vector-icons'
 import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
 import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import { detectSportColor } from './PantallaInicio'
+import { setClub } from '../../redux/slices/club.slices'
+import { setIsSpotMan } from '../../redux/slices/users.slices'
+import * as EmailValidator from 'email-validator'
+import { Context } from '../../context/Context'
 
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
 
   const route = useRoute()
 
   const dispatch = useDispatch()
 
   const { isSportman, allUsers } = useSelector((state) => state.users)
-  const { isPlayer } = route.params
 
   const emailInputRef = useRef(null)
   const passwordInputRef = useRef(null)
@@ -56,7 +65,7 @@ const Registrarse = () => {
   const [isEmailValid, setEmailValid] = useState(false)
   const [passview1, setPassview1] = useState(true)
   const [passview2, setPassview2] = useState(true)
-
+  const { setActiveIcon } = useContext(Context)
   useEffect(() => {
     dispatch(getAllUsers())
   }, [])
@@ -64,15 +73,13 @@ const Registrarse = () => {
   const isValidEmail = (email) => {
     const alreadyTaken = allUsers?.map((user) => user.email).includes(email)
     if (!alreadyTaken) {
-      return /^[^\s@]+@[^\s@]+\.(?:com|net|org|edu|gov|mil|biz|info|name|museum|us|ca|uk|fr|au|de)$/i.test(
-        email
-      )
+      return EmailValidator.validate(email)
     } else {
       return false
     }
   }
-
   const seterValues = (field, value) => {
+    setNombreError('')
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
@@ -83,36 +90,199 @@ const Registrarse = () => {
   }
 
   const handleCheckboxToggle = () => {
+    setNombreError('')
+
     setChecked(!isChecked)
   }
 
   const submit = () => {
+    setLoading(true)
+
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.])[A-Za-z\d@$!%*?.]{4,}$/
+
+    if (!isValidEmail(valuesUser.email)) {
+      setLoading(false)
+
+      return setNombreError('Ingresa un email válido')
+    }
+    if (!passwordPattern.test(valuesUser.password.trim())) {
+      setLoading(false)
+
+      return setNombreError(
+        'La contraseña debe contener almenos una Mayuscula , una minuscula , un numero y un simbolo'
+      )
+    }
     if (
       valuesUser.email &&
       valuesUser.nickname &&
       valuesUser.password &&
-      isChecked
+      confirmPassword
     ) {
       if (isValidEmail(valuesUser.email)) {
         const existingUser = allUsers?.find(
           (user) => user.email === valuesUser.email
         )
         if (existingUser) {
+          setLoading(false)
+
           Alert.alert('Este correo electrónico ya está registrado')
           return
         }
-        if (valuesUser.password === confirmPassword) {
-          dispatch(create(valuesUser))
-          navigation.navigate('IniciarSesin', { isPlayer })
+        if (
+          valuesUser.password === confirmPassword
+          // passwordPattern.test(valuesUser.password.trim())
+        ) {
+          if (!isChecked) {
+            setLoading(false)
+
+            return setNombreError('Debes aceptar las condiciones de privacidad')
+          }
+          dispatch(create(valuesUser)).then((e) => {
+            dispatch(login(valuesUser)).then(async (response) => {
+              console.log(response, 'responde el login')
+
+              dispatch(
+                setIsSpotMan(
+                  response?.payload?.user?.type === 'club' ? false : true
+                )
+              )
+              await AsyncStorage.setItem(
+                '@user',
+                JSON.stringify(response?.payload?.user)
+              )
+              await AsyncStorage.setItem(
+                'userToken',
+                response?.payload?.accesToken
+              )
+              await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
+              await AsyncStorage.setItem(
+                'userType',
+                response?.payload?.user?.type
+              )
+
+              if (
+                response.payload?.user?.club ||
+                response.payload.user?.sportman
+              ) {
+                dispatch(
+                  setInitialSportman({
+                    id: response.payload.user?.sportman?.id,
+                    ...response.payload.user?.sportman
+                  })
+                )
+                dispatch(setClub(response))
+                detectSportColor(
+                  response.payload.user?.sportman?.info?.sport ||
+                    response.payload?.user?.club?.sport,
+                  dispatch
+                )
+                setActiveIcon('diary')
+                setLoading(false)
+                return navigation.reset({
+                  index: 0,
+                  history: false,
+                  routes: [{ name: 'SiguiendoJugadores' }]
+                })
+              } else {
+                if (response?.payload?.user?.type === 'club') {
+                  if (response?.payload?.accesToken) {
+                    navigation.navigate('stepsClub')
+                    setLoading(false)
+                  }
+                } else {
+                  if (response.payload.accesToken) {
+                    navigation.navigate('Paso1')
+                    setLoading(false)
+                  }
+                }
+              }
+              dispatch(setClub(response))
+              setLoading(false)
+            })
+          })
+          // navigation.navigate('IniciarSesin', { isPlayer })
         } else {
-          Alert.alert('Las contraseñas no coinciden')
+          setNombreError('Las contraseñas no coinciden')
+          setLoading(false)
         }
+      } else {
+        setNombreError('Ingresa un email válido')
+        setLoading(false)
       }
     } else {
-      Alert.alert('Debes llenar todos los campos')
+      setNombreError('Debes llenar todos los campos')
+      setLoading(false)
     }
+    // setLoading(false)
   }
-  const { height, width } = useWindowDimensions()
+
+  // const handleSubmit = () => {
+  //   setLoading(true)
+  //   setProvisoryProfileImage()
+  //   setProvisoryCoverImage()
+  //   setProfileImage()
+  //   setCoverImage()
+  //   if (valuesUser.email && valuesUser.password) {
+  //     dispatch(login(valuesUser))
+  //       .then(async (response) => {
+  //         console.log(response, 'responde el login')
+
+  //         dispatch(
+  //           setIsSpotMan(
+  //             response?.payload?.user?.type === 'club' ? false : true
+  //           )
+  //         )
+  //         await AsyncStorage.setItem(
+  //           '@user',
+  //           JSON.stringify(response.payload.user)
+  //         )
+  //         await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
+  //         await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
+  //         await AsyncStorage.setItem('userType', response?.payload?.user?.type)
+  //         setLoading(false)
+  //         if (response.payload?.user?.club || response.payload.user?.sportman) {
+  //           dispatch(
+  //             setInitialSportman({
+  //               id: response.payload.user?.sportman?.id,
+  //               ...response.payload.user?.sportman
+  //             })
+  //           )
+  //           dispatch(setClub(response))
+  //           detectSportColor(
+  //             response.payload.user?.sportman?.info?.sport ||
+  //               response.payload?.user?.club?.sport,
+  //             dispatch
+  //           )
+  //           setActiveIcon('diary')
+  //           return navigation.reset({
+  //             index: 0,
+  //             history: false,
+  //             routes: [{ name: 'SiguiendoJugadores' }]
+  //           })
+  //         } else {
+  //           if (response?.payload?.user?.type === 'club') {
+  //             if (user?.accesToken) {
+  //               navigation.navigate('stepsClub')
+  //             }
+  //           } else {
+  //             if (response.payload.accesToken) {
+  //               navigation.navigate('Paso1')
+  //             }
+  //           }
+  //         }
+  //         dispatch(setClub(response))
+  //       })
+  //       .catch((error) => {
+  //         setLoading(false)
+  //         setError('Usuario o contraseña incorrecto/s')
+
+  //         console.error(error)
+  //       })
+  //   }
+  // }
+
+  const { height } = useWindowDimensions()
 
   return (
     <KeyboardAvoidingView
@@ -165,20 +335,19 @@ const Registrarse = () => {
                     <View style={styles.campo1}>
                       <View
                         style={{
-                          gap: 5,
                           alignItems: 'center',
-                          justifyContent: 'flex-start',
                           paddingHorizontal: Padding.p_mini,
                           borderColor: Color.gREY2SPORTSMATCH,
                           borderWidth: 1,
                           borderRadius: Border.br_81xl,
                           flexDirection: 'row',
-                          height: 40
+                          height: 40,
+                          width: '100%'
                         }}
                       >
                         <Image
                           style={styles.simboloIcon1}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo4.png')}
                         />
                         <TextInput
@@ -186,10 +355,12 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '80%'
+                            paddingHorizontal: 10,
+
+                            flex: 1
                           }}
+                          editable={!loading}
                           placeholder="Nombre"
                           placeholderTextColor="#999"
                           value={valuesUser.nickname}
@@ -215,14 +386,13 @@ const Registrarse = () => {
                           onSubmitEditing={() => {
                             emailInputRef.current.focus()
                           }}
-                          maxLength={60}
+                          maxLength={40}
                         />
                       </View>
                     </View>
                     <View style={styles.campo2}>
                       <View
                         style={{
-                          gap: 5,
                           alignItems: 'center',
                           justifyContent: 'flex-start',
                           paddingHorizontal: Padding.p_mini,
@@ -235,7 +405,7 @@ const Registrarse = () => {
                       >
                         <Image
                           style={styles.vectorIcon}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/vector4.png')}
                         />
                         <TextInput
@@ -243,13 +413,17 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '80%'
+                            paddingHorizontal: 10,
+
+                            flex: 1,
+                            width: '100%'
                           }}
+                          editable={!loading}
                           placeholder="E-mail"
                           placeholderTextColor="#999"
                           autoCapitalize="none"
+                          maxLength={40}
                           value={valuesUser.email}
                           onChangeText={(value) => {
                             console.log(`email: ${value}`) // Log email value
@@ -288,7 +462,7 @@ const Registrarse = () => {
                       <View style={styles.contraseaFrame}>
                         <Image
                           style={styles.simboloIcon2}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
@@ -296,10 +470,13 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '87%'
+                            width: '100%',
+                            paddingHorizontal: 10,
+                            flex: 1
                           }}
+                          editable={!loading}
+                          maxLength={40}
                           placeholder="Contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={passview1}
@@ -314,6 +491,7 @@ const Registrarse = () => {
                           }}
                         />
                         <TouchableOpacity
+                          style={{ paddingRight: 12 }}
                           onPress={() => setPassview1(!passview1)}
                         >
                           {passview1 ? (
@@ -328,7 +506,7 @@ const Registrarse = () => {
                       <View style={styles.contraseaFrame}>
                         <Image
                           style={styles.simboloIcon2}
-                          contentFit="cover"
+                          contentFit="contain"
                           source={require('../../assets/simbolo3.png')}
                         />
                         <TextInput
@@ -336,10 +514,14 @@ const Registrarse = () => {
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
                             fontSize: FontSize.t2TextSTANDARD_size,
-                            marginLeft: 10,
                             textAlign: 'left',
-                            width: '87%'
+                            width: '100%',
+                            paddingHorizontal: 10,
+
+                            flex: 1
                           }}
+                          editable={!loading}
+                          maxLength={40}
                           placeholder="Confirmar contraseña"
                           placeholderTextColor="#999"
                           secureTextEntry={passview2}
@@ -352,6 +534,7 @@ const Registrarse = () => {
                           onSubmitEditing={submit}
                         />
                         <TouchableOpacity
+                          style={{ paddingRight: 12 }}
                           onPress={() => setPassview2(!passview2)}
                         >
                           {passview2 ? (
@@ -365,62 +548,53 @@ const Registrarse = () => {
                   </View>
                 </View>
               </View>
-              <View style={{ height: 40, marginTop: 36, width: 360 }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginHorizontal: 5
-                  }}
-                >
-                  {nombreError !== '' && (
+              <View style={{ width: '100%', paddingHorizontal: 15 }}>
+                {nombreError !== '' && (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      paddingVertical: 5
+                    }}
+                  >
                     <Text style={{ color: 'red', fontWeight: '400' }}>
                       {nombreError}
                     </Text>
-                  )}
-                </View>
+                  </View>
+                )}
 
-                <View
-                  style={[
-                    styles.botonRegistrate,
-                    { marginTop: nombreError ? 10 : 18 }
-                  ]}
-                >
+                <View style={[styles.botonRegistrate]}>
                   <TouchableOpacity
+                    disabled={loading}
                     style={[styles.loremIpsum, styles.loremPosition]}
                     onPress={submit}
                   >
                     <View style={styles.loremIpsum1}>
-                      <Text style={styles.aceptar}>Regístrate</Text>
+                      {loading ? (
+                        <View style={{ width: '100%' }}>
+                          <ActivityIndicator color={'#000'} size={'small'} />
+                        </View>
+                      ) : (
+                        <Text style={styles.aceptar}>Regístrate</Text>
+                      )}
                     </View>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
-            <View style={[{ marginTop: nombreError ? 26 : 24 }]}>
-              <Pressable
-                style={styles.yaTenesUnaContainer}
-                onPress={() => navigation.navigate('IniciarSesin')}
-              >
-                <Text
-                  style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}
-                >
-                  ¿Ya tienes una cuenta? Inicia sesión
-                </Text>
-              </Pressable>
-            </View>
           </View>
         </View>
         <View
           style={{
-            marginTop: 30,
             flexDirection: 'row',
             alignItems: 'center',
             position: 'absolute',
-            width: '90%',
+            width: '100%',
             alignSelf: 'center',
             justifyContent: 'center',
-            bottom: 0
+            bottom: 10,
+            paddingHorizontal: 15
           }}
         >
           <View
@@ -430,6 +604,14 @@ const Registrarse = () => {
               gap: 10
             }}
           >
+            <Pressable
+              style={styles.yaTenesUnaContainer}
+              onPress={() => navigation.navigate('IniciarSesin')}
+            >
+              <Text style={[styles.yaTenesUnaCuentaIniciaS, styles.eMailTypo]}>
+                ¿Ya tienes una cuenta? Inicia sesión
+              </Text>
+            </Pressable>
             <View
               style={{
                 flexDirection: 'row',
@@ -594,12 +776,12 @@ const styles = StyleSheet.create({
     height: 40
   },
   campo1: {
-    width: 359,
+    width: '100%',
     height: 43
   },
   vectorIcon: {
-    width: 21,
-    height: 16
+    width: 22,
+    height: 22
   },
   campo2Frame: {
     paddingRight: Padding.p_12xs
@@ -607,20 +789,20 @@ const styles = StyleSheet.create({
   campo2: {
     height: 38,
     marginTop: 11,
-    width: 360
+    width: '100%'
   },
   simboloIcon2: {
-    width: 14,
-    height: 18
+    width: 22,
+    height: 22
   },
   contraseaFrame: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%'
   },
   campo3Frame: {
     height: 39,
-    paddingRight: 23,
-    width: 360,
+    width: '100%',
     marginTop: 15
   },
   campo3: {
@@ -630,15 +812,14 @@ const styles = StyleSheet.create({
   },
   campos: {
     marginTop: 34,
-    flex: 1
+    width: Dimensions.get('screen').width,
+    paddingHorizontal: 15
   },
   titularcampos: {
     alignItems: 'center',
-    flex: 1
+    width: '100%'
   },
-  camposFormulario: {
-    height: 259
-  },
+  camposFormulario: {},
   aceptar: {
     fontSize: FontSize.button_size,
     fontWeight: '700',
@@ -649,7 +830,7 @@ const styles = StyleSheet.create({
   loremIpsum1: {
     justifyContent: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
-    width: 360,
+    width: '100%',
 
     borderRadius: Border.br_81xl,
     alignItems: 'center',
@@ -660,18 +841,18 @@ const styles = StyleSheet.create({
   },
   botonRegistrate: {
     height: 40,
-    marginTop: 36,
-    width: 360
+    marginTop: 10,
+    width: '100%'
   },
   formularioFrame: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   yaTenesUnaCuentaIniciaS: {
-    width: 390,
+    width: '100%',
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
-    marginTop: 27,
     alignItems: 'center'
   },
   texto1: {
@@ -690,7 +871,8 @@ const styles = StyleSheet.create({
     marginTop: 42
   },
   formulariotextoLegal: {
-    marginTop: 15
+    marginTop: 15,
+    width: '100%'
   },
   contenido: {
     // justifyContent: 'center',

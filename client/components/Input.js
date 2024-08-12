@@ -65,6 +65,7 @@ function Input({
             onSubmitEditing={onSubmit}
             secureTextEntry={type ? true : false}
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
+            maxLength={maxLength || 40}
           />
           {isAccordeon && (
             <Image

@@ -68,6 +68,12 @@ import {
   DevSettings,
   NativeModules
 } from 'react-native'
+import { Provider } from 'react-redux'
+import { store } from './redux/store'
+import { ContextProvider } from './context/Context'
+import ClubDetails from './screens/Perfil/EditarPerfil/club/ClubDetails'
+import PlayerDetails from './screens/Perfil/EditarPerfil/jugador/PlayerDetails'
+import { StatusBar, View } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/Perfil/EditarPerfil/profesional/ProDetails'
 import Post from './screens/Perfil/EditarPerfil/Post'
@@ -88,6 +94,11 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+import UserFollowers from './screens/Explorar/UserFollowers'
+import RecuperarContra from './screens/Login/RecuperarContra'
+if (__DEV__) {
+  require('./ReactotronConfig')
+}
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
   const [isFooterShow, setIsFooterShow] = useState(null)

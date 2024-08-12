@@ -47,8 +47,8 @@ export class ClubService {
       }
       const newClub = await this.clubRepository.create(clubData);
       newClub.sports = [sport];
-      newClub.sport = clubData.sport; // Relate the club with the sport
-      newClub.user = user;
+      newClub.sport = clubData.sport // Relate the club with the sport
+      newClub.user = user
       const saveClub = await this.clubRepository.save(newClub);
       if (!saveClub) {
         throw new ErrorManager({
@@ -152,7 +152,7 @@ export class ClubService {
  
      // Construir objeto de opciones para la consulta
      const options: any = { where: { id: clubId }, relations: validRelations };
- console.log("options es", options);
+ console.log("options es", options)
      // Realizar la consulta del post con las relaciones especificadas
      const club = await this.clubRepository.findOne(options);
  
@@ -162,7 +162,7 @@ export class ClubService {
  
      return club;
     } catch (error) {
-     console.log('este es el error ',error);
+     console.log('este es el error ',error)
     }
    }
  

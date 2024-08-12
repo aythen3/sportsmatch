@@ -13,14 +13,15 @@ export const DataSourceConfig: DataSourceOptions = {
   host: configService.get('DB_HOST'),
   port: +configService.get('DB_PORT'),
   username: configService.get('DB_USER'),
-  password: '',
+  password: `o@c9RDO'z"?p)TR}H"5=`,
   database: configService.get('DB_NAME'),
   entities: [__dirname + '/../**/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
-  synchronize: false,
+  synchronize: true,
   migrationsRun: false,
   logging: false,
-  dropSchema: false,
+  //dropSchema: true,
+  // autoLoadEntities: true,
   namingStrategy: new SnakeNamingStrategy()
 };
 

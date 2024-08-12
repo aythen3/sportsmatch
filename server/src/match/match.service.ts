@@ -130,7 +130,7 @@ export class MatchService {
 
     // Construir objeto de opciones para la consulta
     const options: any = { where: { id: matchId }, relations: validRelations };
-console.log("options es", options);
+console.log("options es", options)
     // Realizar la consulta del post con las relaciones especificadas
     const match = await this.matchRepository.findOne(options);
 
@@ -140,9 +140,10 @@ console.log("options es", options);
 
     return match;
    } catch (error) {
-    console.log('este es el error ',error);
+    console.log('este es el error ',error)
    }
   }
+
   private validateRelations(relations: string[]): string[] {
     const validRelations: string[] = [];
 

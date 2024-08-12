@@ -29,12 +29,29 @@ const GoldSuscription = ({
       customerId: user.user.stripeId
     })
     if (res.data) {
+      setPlanSelectedId(res.data.subscription.subscriptionId)
       setPlanSelected('star')
       setClientSecret(
         res.data.subscription.clientSecret.latest_invoice.payment_intent
           .client_secret
       )
+
+      // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
+    }
+  }
+
+  const handleGetStarAnual = async () => {
+    const res = await axiosInstance.post('/user/create-subscription', {
+      priceId: 'price_1Plj8LGmE60O5ob768A57ICn',
+      customerId: user.user.stripeId
+    })
+    if (res.data) {
       setPlanSelectedId(res.data.subscription.subscriptionId)
+      setPlanSelected('star')
+      setClientSecret(
+        res.data.subscription.clientSecret.latest_invoice.payment_intent
+          .client_secret
+      )
 
       // console.log(res.data.subscription.clientSecret.latest_invoice.payment_intent.client_secret,"res dataaa")
     }
@@ -184,7 +201,25 @@ const GoldSuscription = ({
               justifyContent: 'center'
             }}
           >
-            <Text style={styles.ofertasTypo}>{'Seleccionar este plan'}</Text>
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan mensual'}</Text>
+          </TouchableOpacity>
+        )}
+          {!deletePlan && !myPlan && (
+          <TouchableOpacity
+            onPress={handleGetStarAnual}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan anual'}</Text>
           </TouchableOpacity>
         )}
         {myPlan && !deletePlan && (

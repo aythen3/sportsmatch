@@ -9,6 +9,7 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
   const handleSportSelection = (sport) => {
     setSelectedSport(sport)
   }
+  console.log(sports)
 
   return (
     <View

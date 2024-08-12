@@ -162,7 +162,7 @@ const NavBarInferior = () => {
             userNotifications
               ?.filter((notification) => {
                 if (user?.user?.type === 'club') {
-                  notification.recipientId === user.user.club.id
+                  notification.recipientId === user.user.club?.id
                   return true
                 } else if (notification.recipientId === userId) {
                   return true

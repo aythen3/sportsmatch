@@ -86,4 +86,3 @@ export class ClubEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 }
-

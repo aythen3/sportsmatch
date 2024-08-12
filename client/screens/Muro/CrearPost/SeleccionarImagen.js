@@ -20,7 +20,6 @@ import ScrollableModal from '../../../components/modals/ScrollableModal'
 import PagerView from 'react-native-pager-view'
 import SimboloSVG from './SimboloSVG'
 import { useSelector } from 'react-redux'
-import { Video } from 'expo-av'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage, pickImageFromCamera } = useContext(Context)
@@ -65,6 +64,7 @@ const SeleccionarImagen = () => {
     setAlbum(arr)
     setAlbumData(arr2)
   }
+
   const obtenerImagenesDeGalerias = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync()
     if (status !== 'granted') {
@@ -73,10 +73,7 @@ const SeleccionarImagen = () => {
     }
     const filtro = albumData.filter((e) => e.title == selectedAlbum)
 
-    const assets = await MediaLibrary.getAssetsAsync({
-      album: filtro[0],
-      mediaType: ['photo', 'video']
-    })
+    const assets = await MediaLibrary.getAssetsAsync({ album: filtro[0] })
     const arr = []
     const imagesArray = assets?.assets ?? []
     setImagenes(imagesArray)
@@ -115,10 +112,8 @@ const SeleccionarImagen = () => {
       const photo = await cameraReff.current.takePictureAsync()
       pickImage('a', photo.uri)
       setSelectedImage(photo)
-      // pickImageFromCamera(selectedPicture, photo.uri);
 
       setShowCamera(false)
-      // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
 
@@ -177,32 +172,14 @@ const SeleccionarImagen = () => {
                   </Text>
                 </View>
               )}
-              <>
-                {imagen.mediaType === 'photo' ? (
-                  <Image
-                    source={{ uri: imagen.uri }}
-                    style={{
-                      width: (Dimensions.get('window').width * 0.9 - 20) / 3,
-                      height: (Dimensions.get('window').width * 0.9 + 25) / 3,
-                      borderRadius: 4
-                    }}
-                  />
-                ) : (
-                  <Video
-                    source={{ uri: imagen.uri }}
-                    style={{
-                      width: (Dimensions.get('window').width * 0.9 - 20) / 3,
-                      height: (Dimensions.get('window').width * 0.9 + 25) / 3,
-                      borderRadius: 4
-                    }}
-                    shouldPlay
-                    isMuted
-                    isLooping
-                    useNativeControls={false}
-                    resizeMode="cover"
-                  />
-                )}
-              </>
+              <Image
+                source={{ uri: imagen.uri }}
+                style={{
+                  width: (Dimensions.get('window').width * 0.9 - 16) / 3,
+                  height: (Dimensions.get('window').width * 0.9 + 25) / 3,
+                  borderRadius: 4
+                }}
+              />
             </TouchableOpacity>
           ))}
         </View>
@@ -290,20 +267,16 @@ const SeleccionarImagen = () => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={multiSelect.length === 0 && selectedImage === null}
                 onPress={() => {
                   navigation.navigate('CrearHighlight', {
                     image:
-                      multiSelect.length == 0 ? selectedImage : multiSelect
+                      multiSelect.length == 0 ? selectedImage.uri : multiSelect
                   })
                 }}
               >
                 <Text
                   style={{
-                    color:
-                      multiSelect.length === 0 && selectedImage === null
-                        ? Color.colorDimgray_100
-                        : Color.wHITESPORTSMATCH,
+                    color: Color.wHITESPORTSMATCH,
                     fontSize: 17,
                     fontFamily: FontFamily.t4TEXTMICRO,
                     fontWeight: '500'
@@ -314,32 +287,12 @@ const SeleccionarImagen = () => {
               </TouchableOpacity>
             </View>
             {multiSelect.length === 0 ? (
-              <View
-                style={{ height: selectedImage ? 'auto' : 350, width: '100%' }}
-              >
-                {selectedImage && (
-                  <>
-                    {selectedImage.mediaType === 'photo' && (
-                      <Image
-                        style={styles.codeBlockPersonaEnCanch}
-                        contentFit="cover"
-                        source={{ uri: selectedImage?.uri }}
-                      />
-                    )}
-                    {selectedImage.mediaType === 'video' && (
-                      <Video
-                        style={styles.codeBlockPersonaEnCanch}
-                        contentFit="cover"
-                        shouldPlay
-                        isMuted
-                        isLooping
-                        useNativeControls={false}
-                        resizeMode="cover"
-                        source={{ uri: selectedImage?.uri }}
-                      />
-                    )}
-                  </>
-                )}
+              <View style={{ height: 'auto', width: '100%' }}>
+                <Image
+                  style={styles.codeBlockPersonaEnCanch}
+                  contentFit="cover"
+                  source={{ uri: selectedImage?.uri }}
+                />
               </View>
             ) : (
               <View style={{ height: 344, width: '100%' }}>
@@ -349,27 +302,11 @@ const SeleccionarImagen = () => {
                 >
                   {multiSelect.map((e, i) => (
                     <View style={{ width: '100%' }} key={i}>
-                      <>
-                        {e.mediaType === 'photo' && (
-                          <Image
-                            style={styles.codeBlockPersonaEnCanch}
-                            contentFit="cover"
-                            source={{ uri: e?.uri }}
-                          />
-                        )}
-                        {e.mediaType === 'video' && (
-                          <Video
-                            style={styles.codeBlockPersonaEnCanch}
-                            contentFit="cover"
-                            shouldPlay
-                            isMuted
-                            isLooping
-                            useNativeControls={false}
-                            resizeMode="cover"
-                            source={{ uri: e?.uri }}
-                          />
-                        )}
-                      </>
+                      <Image
+                        style={styles.codeBlockPersonaEnCanch}
+                        contentFit="cover"
+                        source={{ uri: e?.uri }}
+                      />
                     </View>
                   ))}
                 </PagerView>

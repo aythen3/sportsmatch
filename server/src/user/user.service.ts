@@ -8,7 +8,10 @@ import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
 import Stripe from 'stripe';
-import admin from 'firebase-admin';
+import * as nodemailer from 'nodemailer';
+import * as crypto from 'crypto';
+import { ConfigService } from '@nestjs/config';
+const configService = new ConfigService();
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
@@ -41,7 +44,6 @@ export class UserService {
         expand: ['latest_invoice.payment_intent']
       });
       console.log('prueba');
-
       return {
         subscriptionId: subscription.id,
         clientSecret: subscription
@@ -51,6 +53,133 @@ export class UserService {
     }
   }
 
+  async enviarCorreoConfirmacion(usuario: UserEntity) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: configService.get('SMTP_EMAIL'),
+          pass: configService.get('SMTP_PASS')
+        }
+      });
+
+      const mailOptions = {
+        from: 'sportsmatch.digital@gmail.com',
+        to: usuario.email,
+        subject: 'Confirmación de cuenta',
+        html: `
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 40px;
+              }
+              a {
+                color: #337ab7;
+                text-decoration: none;
+              }
+              a:hover {
+                color: #23527c;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Confirmación de cuenta</h1>
+            <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+            <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+          </body>
+        </html>
+      `
+      };
+
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.log(error, 'rerrereiomfgasmf');
+      return { message: 'este es el error', error };
+    }
+  }
+
+  async confirmarCuenta(tokenConfirmacion: string) {
+    const usuario = await this.userRepository.findOneBy({
+      tokenConfirmacion
+    });
+    if (!usuario) {
+      throw new Error('Token de confirmación no válido');
+    }
+    usuario.emailCheck = true;
+    usuario.tokenConfirmacion = null;
+    await this.userRepository.save(usuario);
+    return usuario;
+  }
+
+  async eliminarTokenConfirmacion(usuario: UserEntity) {
+    usuario.tokenConfirmacion = null;
+    await this.userRepository.save(usuario);
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
+  }
+
+  async generarTokenRecuperacion(usuario: UserEntity) {
+    const token = crypto.randomBytes(20).toString('hex');
+    usuario.tokenRecuperacion = token;
+    await this.userRepository.save(usuario);
+    return token;
+  }
+
+  async enviarCorreoRecuperacion(usuario: UserEntity, token: string) {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: configService.get('SMTP_EMAIL'),
+        pass: configService.get('SMTP_PASS')
+      }
+    });
+
+    const mailOptions = {
+      from: 'sportsmatch.digital@gmail.com',
+      to: usuario.email,
+      subject: 'Recuperación de contraseña',
+      html: `
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin: 40px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Recuperación de contraseña</h1>
+          <p>Haga clic en el siguiente enlace para cambiar su contraseña:</p>
+          <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/cambiar-contrasena/${token}">Click aquí</a>
+        </body>
+      </html>
+    `
+    };
+
+    await transporter.sendMail(mailOptions);
+  }
+
+  async findByTokenRecuperacion(token: string) {
+    return await this.userRepository.findOneBy({ tokenRecuperacion: token });
+  }
+
+  async cambiarContrasena(usuario: UserEntity, contrasena: string) {
+    usuario.password = await hash(contrasena, +process.env.HASH_SALT);
+    usuario.tokenRecuperacion = null;
+    await this.userRepository.save(usuario);
+  }
+
   async cancelSubscription(subscriptionId: string) {
     try {
       const deletedSubscription =
@@ -58,6 +187,36 @@ export class UserService {
       return deletedSubscription;
     } catch (error) {
       throw new Error('Failed to cancel subscription.');
+    }
+  }
+
+  async createPaymentSheet(customerId: string, priceId: number): Promise<any> {
+    try {
+      // Crear una llave efímera para el cliente
+      const ephemeralKey = await this.stripe.ephemeralKeys.create(
+        { customer: customerId },
+        { apiVersion: '2024-06-20' }
+      );
+
+      // Crear un intento de pago
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        amount: priceId, // Deberías obtener el monto del precio seleccionado
+        currency: 'eur', // Deberías obtener la moneda del precio seleccionado
+        customer: customerId,
+        automatic_payment_methods: {
+          enabled: true
+        }
+      });
+
+      // Devolver los datos necesarios para la hoja de pago
+      return {
+        paymentIntent: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customer: customerId,
+        publishableKey: 'pk_test_TYooMQauvdEDq54NiTphI7jx'
+      };
+    } catch (error) {
+      throw new Error('Error creating payment sheet');
     }
   }
 
@@ -114,6 +273,8 @@ export class UserService {
         email: createUserDto.email,
         name: createUserDto.nickname // Puedes ajustar esto según tu lógica de aplicación
       });
+      const tokenConfirmacion = crypto.randomBytes(20).toString('hex');
+      createUserDto.tokenConfirmacion = tokenConfirmacion;
 
       // Guardar el ID de cliente de Stripe en el DTO del usuario
       createUserDto.stripeId = stripeCustomer.id;
@@ -129,6 +290,7 @@ export class UserService {
       }
       // Devolver el nuevo perfil del usuario
       await this.sendMailService.sendRegistrationNotification(newProfile.email);
+      await this.enviarCorreoConfirmacion(newProfile);
       return newProfile;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -255,16 +417,20 @@ export class UserService {
     try {
       const user = await this.userRepository
         .createQueryBuilder('user')
+        .leftJoinAndSelect('user.club', 'club')
+        .leftJoinAndSelect('user.sportman', 'sportman')
+        .leftJoinAndSelect('user.posts', 'posts')
+        .leftJoinAndSelect('user.comments', 'comments')
+        .leftJoinAndSelect('user.likes', 'likes')
         .where({ id })
         .getOne();
-      // Si no se encuentra el usuario, lanzar una excepción
+
       if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: `User id: ${id} not found`
         });
       }
-      // Devolver el usuario encontrado
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

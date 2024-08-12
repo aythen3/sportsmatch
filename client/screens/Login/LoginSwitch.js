@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
-  useWindowDimensions
+  useWindowDimensions,
+  Dimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
 import {
@@ -46,7 +47,7 @@ import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend'
-import { create, login } from '../../redux/actions/users'
+import { create, getAllUsers, login } from '../../redux/actions/users'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
@@ -104,11 +105,9 @@ const LoginSwitch = () => {
   }
 
   useEffect(() => {
-    getUserAuth()
-  }, [])
-
-  useEffect(() => {
+    dispatch(getAllUsers())
     dispatch(getAll())
+    getUserAuth()
   }, [])
 
   const toggleSwitch = () => {
@@ -172,15 +171,14 @@ const LoginSwitch = () => {
                   response?.payload?.user?.club?.sport,
                 dispatch
               )
-            if(response.payload.user.sportman !== null){
-              dispatch(
-                setInitialSportman({
-                  id: response.payload.user?.sportman?.id,
-                  ...response.payload.user?.sportman
-                })
-              )
-
-            }
+              if (response.payload.user.sportman !== null) {
+                dispatch(
+                  setInitialSportman({
+                    id: response.payload.user?.sportman?.id,
+                    ...response.payload.user?.sportman
+                  })
+                )
+              }
               dispatch(
                 setIsSpotMan(
                   response.payload.user.type === 'club' ? false : true
@@ -354,7 +352,8 @@ const LoginSwitch = () => {
       style={{
         backgroundColor: 'black',
         flex: 1,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        width: Dimensions.get('screen').width
       }}
     >
       <HomeGif></HomeGif>
@@ -370,16 +369,24 @@ const LoginSwitch = () => {
         }}
         onLoginFailure={(data) => console.log('Instagram login failed', data)}
       />
-      <View>
+      <View
+        style={{
+          backgroundColor: 'transparent',
+          flex: 1,
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
         <View
           style={{
-            marginTop: '10%'
+            marginTop: '10%',
+            width: '100%'
           }}
         >
           <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
             <Image
               style={styles.icon}
-              contentFit="cover"
+              contentFit="contain"
               source={require('../../assets/group-1.png')}
             />
           </Pressable>
@@ -389,12 +396,13 @@ const LoginSwitch = () => {
         </View>
         <View
           style={{
-            alignItems: 'center'
+            alignItems: 'center',
+            width: '100%'
           }}
         >
           <View style={styles.frameGroup}>
-            <View>
-              <View>
+            <View style={{ width: '100%' }}>
+              <View style={{ width: '100%', paddingHorizontal: 15 }}>
                 <View style={[styles.groupChild, styles.borderPosition]}>
                   <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
                     Jugador/Profesional deporte*
@@ -435,15 +443,15 @@ const LoginSwitch = () => {
             </View>
           </View>
           <View style={styles.frameWrapper}>
-            <View>
+            <View style={{ width: '100%', alignItems: 'center' }}>
               <Text style={[styles.regstrateOInicia, styles.contnuarTypo]}>
                 Regístrate o inicia sesión
               </Text>
               <View style={styles.frameContainer}>
-                <View>
+                <View style={{ width: '100%' }}>
                   <View style={styles.frameGroup}>
                     <View style={styles.frameGroup}>
-                      <View>
+                      <View style={{ width: '100%' }}>
                         <TouchableOpacity
                           onPress={() => promptAsync()}
                           style={styles.loremIpsumParent}
@@ -456,26 +464,12 @@ const LoginSwitch = () => {
 
                           <Image
                             style={[styles.groupItem, styles.groupPosition1]}
-                            contentFit="cover"
+                            contentFit="contain"
                             source={require('../../assets/group-236.png')}
                           />
                         </TouchableOpacity>
-                        {/* <TouchableOpacity style={styles.loremIpsumGroup}>
-                         <View style={styles.loremIpsum2}>
-                         <Text style={[styles.aceptar, styles.aceptarTypo]}>
-                             Contínua con Apple
-                           </Text>
-                         </View>
-      
-                         <Image
-                           style={[styles.groupInner, styles.groupPosition1]}
-                           contentFit="cover"
-                           source={require('../../assets/group-237.png')}
-                           />
-                         </TouchableOpacity> */}
 
                         <TouchableOpacity
-                          // onPress={signInWithFacebook}
                           onPress={() => {
                             console.log('showing Instagram popup')
                             instagramRef.current.show()
@@ -489,7 +483,7 @@ const LoginSwitch = () => {
                           </View>
                           <Image
                             style={[styles.groupIcon, styles.groupPosition]}
-                            contentFit="cover"
+                            contentFit="contain"
                             source={require('../../assets/instagramlogo2.png')}
                           />
                         </TouchableOpacity>
@@ -566,12 +560,6 @@ const LoginSwitch = () => {
                           Regístrate con el e-mail
                         </Text>
                       </View>
-
-                      <Image
-                        style={{ width: 30, height: 30 }}
-                        contentFit="cover"
-                        source={require('../../assets/registromail.png')}
-                      />
                     </Pressable>
                   </View>
                   <Pressable
@@ -615,7 +603,7 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   contnuarTypo: {
-    width: 393,
+    width: '100%',
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },
@@ -684,7 +672,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 40,
-    width: 170,
+    width: Dimensions.get('screen').width / 2,
     marginLeft: 15
   },
   groupChild: {
@@ -695,7 +683,7 @@ const styles = StyleSheet.create({
     width: '100%',
     // left: 0,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center'
   },
   container: {
@@ -707,17 +695,19 @@ const styles = StyleSheet.create({
     fontSize: FontSize.bodyBodyXS_size,
     // lineHeight: 14,
     // width: 271,
-    marginTop: 20,
+    marginTop: 10,
     paddingHorizontal: 40,
     color: Color.gREY2SPORTSMATCH,
     textAlign: 'center'
   },
   frameGroup: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center'
     // gap: 20
   },
   regstrateOInicia: {
-    height: 25,
+    height: 35,
     fontSize: FontSize.t2TextSTANDARD_size,
     color: Color.wHITESPORTSMATCH
   },
@@ -727,6 +717,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   loremIpsum2: {
+    width: '100%',
     justifyContent: 'center',
     paddingVertical: Padding.p_2xs,
     backgroundColor: Color.wHITESPORTSMATCH,
@@ -740,7 +731,7 @@ const styles = StyleSheet.create({
     width: '6.1%'
   },
   loremIpsumParent: {
-    width: 360,
+    width: '100%',
     height: 45
   },
   groupInner: {
@@ -749,7 +740,7 @@ const styles = StyleSheet.create({
   },
   loremIpsumGroup: {
     marginTop: 10,
-    width: 360,
+    width: '100%',
     height: 45
   },
   groupIcon: {
@@ -772,7 +763,7 @@ const styles = StyleSheet.create({
   yaTenesUnaCuentaIniciaS: {
     fontSize: FontSize.t2TextSTANDARD_size,
     color: Color.gREY2SPORTSMATCH,
-    width: 390,
+    width: '100%',
     textAlign: 'center'
   },
   yaTenesUnaContainer: {
@@ -783,10 +774,17 @@ const styles = StyleSheet.create({
     color: Color.gREY2SPORTSMATCH
   },
   frameContainer: {
-    marginTop: 0
+    marginTop: 0,
+    width: '100%',
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   frameWrapper: {
-    marginTop: 0
+    marginTop: 0,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   frameParent: {
     alignItems: 'center',

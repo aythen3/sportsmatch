@@ -40,6 +40,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
   }
 
   return (
+   
         <View style={{height:"auto"}}>
           <Input
             title="Nombre del club"
@@ -102,6 +103,7 @@ const EscogerDeporte2 = ({ clubValues, setClubValues }) => {
           />
 
           <Input
+          maxLength={250}
             title="Describe tu club"
             placeholderText="Descripción"
             isMultiLine={true}
