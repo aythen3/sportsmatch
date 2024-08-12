@@ -20,8 +20,8 @@ import { getAll } from '../../redux/actions/sports'
 import { getAllPosts } from '../../redux/actions/post'
 
 export const detectSportColor = (sport, dispatch) => {
-  console.log(sport, "me llega sport")
-  if(typeof sport === 'object'){
+  console.log(sport, 'me llega sport')
+  if (typeof sport === 'object') {
     dispatch(setMainColor('#00F0FF'))
   }
   if (sport == 'Fútbol Sala') {

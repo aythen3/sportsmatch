@@ -21,45 +21,18 @@ import {
   Border,
   FontFamily
 } from '../../GlobalStyles'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../redux/actions/users'
-import { setClub } from '../../redux/slices/club.slices'
+import { useSelector } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import {
-  setIsSpotMan,
-  logedIn,
-  logedOut
-} from '../../redux/slices/users.slices'
-import { Context } from '../../context/Context'
-import PassView from './passview'
 import HomeGif from '../../utils/HomeGif'
-import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
-import { detectSportColor } from './PantallaInicio'
-import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import axiosInstance from '../../utils/apiBackend'
 
 const RecuperarContra = () => {
-  const {
-    setProvisoryProfileImage,
-    setProvisoryCoverImage,
-    setProfileImage,
-    setCoverImage,
-    setActiveIcon
-  } = useContext(Context)
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-  const [passview2, setPassview2] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const route = useRoute()
-
-  const dispatch = useDispatch()
-
-  const passwordInputRef = useRef(null)
-
-  const { user, loged, allUsers } = useSelector((state) => state.users)
+  const { allUsers } = useSelector((state) => state.users)
 
   const [valuesUser, setValuesUser] = useState({
     email: '',
@@ -77,28 +50,35 @@ const RecuperarContra = () => {
   }
 
   const handleSubmit = async () => {
-    setLoading(true)
-    const find = allUsers.find((e) => e.email === valuesUser.email)
-    if (find) {
-      console.log(
-        'email valido',
-        allUsers.find((e) => e.email === valuesUser.email)
-      )
-      await axiosInstance
-        .post('/user/recuperar-contrasena', {
-          email: valuesUser.email
-        })
-        .then(() => {
-          navigation.goBack()
-          setLoading(false)
-        })
-    } else {
-      setError('El email no esta registrado en SportsMatch')
+    try {
+      setLoading(true)
+      const find = allUsers.find((e) => e.email === valuesUser.email)
+      if (find) {
+        console.log(
+          'email valido',
+          allUsers.find((e) => e.email === valuesUser.email)
+        )
+        await axiosInstance
+          .post('/user/recuperar-contrasena', {
+            email: valuesUser.email
+          })
+          .then((e) => {
+            console.log(e, 'eeeee')
+            navigation.goBack()
+            setLoading(false)
+          })
+          .catch((e) => e)
+      } else {
+        setError('El email no esta registrado en SportsMatch')
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log('error:', error)
       setLoading(false)
     }
   }
 
-  const { height, width } = useWindowDimensions()
+  const { height } = useWindowDimensions()
 
   return (
     <ScrollView style={{ ...styles.iniciarSesin }}>
@@ -162,9 +142,7 @@ const RecuperarContra = () => {
                           capitalize="sentences"
                           autoCapitalize="none"
                           onChangeText={(value) => seterValues('email', value)}
-                          onSubmitEditing={() => {
-                            passwordInputRef.current.focus()
-                          }}
+                          onSubmitEditing={handleSubmit}
                         />
                       </View>
                     </View>
