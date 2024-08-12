@@ -1,0 +1,91 @@
+{
+  "expo": {
+    "runtimeVersion": "3.0.0",
+    "name": "SportsMatch",
+    "slug": "nuevappp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/smicon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/smsplash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/251b90c8-ec2b-4e23-a18f-23ab9affdbc4"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aythenapps.sportsmatch",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/smiconmain.png",
+        "backgroundColor": "#000"
+      },
+      "versionCode": 10,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET"
+      ],
+      "package": "com.aythenapps.sportsmatch"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-apple-authentication"
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "2654178301415308",
+          "clientToken": "46f145a4cdcb17184273c6be90fc6ec3",
+          "displayName": "Sportsmatch"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
+      }
+    },
+    "owner": "azschiaffino",
+    "scheme": [
+      "sportsmatch",
+      "fb2654178301415308"
+    ]
+  }
+}
