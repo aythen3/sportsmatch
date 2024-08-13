@@ -108,8 +108,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginTop: 20,
-    marginBottom: 15
+    paddingTop: 20,
+    paddingBottom: 15,
+    backgroundColor: '#000',
+    zIndex:99999999
   },
   superiorLayout: {
     height: 45,

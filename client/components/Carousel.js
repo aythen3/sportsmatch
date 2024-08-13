@@ -55,7 +55,6 @@ function Carousel({
 
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
-
   const [doubleTap, setDoubleTap] = useState(false)
   const [doubleTapHeart, setDoubleTapHeart] = useState(false)
 
@@ -126,6 +125,7 @@ function Carousel({
     )
 
     if (!liked) {
+      // TODO: aqui envia la notificación
       await dispatch(
         sendNotification({
           title: 'Like',
@@ -432,6 +432,7 @@ function Carousel({
 
         {modalVisible && (
           <CommentSection
+            sportman1={data.author.sportman.id}
             visible={modalVisible}
             closeModal={closeModal}
             postId={id}

@@ -22,7 +22,7 @@ import { updateSportman } from '../../../../redux/actions/sportman'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import ScrollableModal from '../../../../components/modals/ScrollableModal'
-import AnoNacimientoModal from '../../../../components/modals/AnoNacimientoModal'
+import AñoNacimientoModal from '../../../../components/modals/AñoNacimientoModal'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const PlayerDetails = () => {
@@ -381,7 +381,7 @@ const PlayerDetails = () => {
                     color: '#fff'
                   }}
                 /> */}
-                  <AnoNacimientoModal
+                  <AñoNacimientoModal
                     visible={showBirthdateModal}
                     closeModal={() => setShowBirthdateModal(false)}
                     onSelectAñoNacimiento={handleSelectAñoNacimiento}

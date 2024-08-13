@@ -24,6 +24,19 @@ export const getNotificationById = createAsyncThunk(
     }
   }
 )
+export const updatePushToken = createAsyncThunk(
+  'user/update-token',
+  async (user_id, token) => {
+    try {
+      const { data } = await axiosInstance.patch(
+        `user/update-token/${user_id}/${token}`
+      )
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
 export const markAllUserNotificationsAsRead = createAsyncThunk(
   'markAllUserNotificationsAsRead/notifications',
   async (userId) => {
@@ -52,7 +65,6 @@ export const getNotificationsByUserId = createAsyncThunk(
 export const sendNotification = createAsyncThunk(
   'sendNotification',
   async (body) => {
-    console.log('sending notification', body)
     try {
       const { data } = await axiosInstance.post('notification', body)
       return data

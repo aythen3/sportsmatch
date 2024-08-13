@@ -31,6 +31,7 @@ const PerfilDatosPropioClub = () => {
         backgroundColor: Color.bLACK1SPORTSMATCH,
         width: '100%',
         flex: 1,
+        paddingBottom: 30
       }}
     >
       <StatusBar translucent={true} backgroundColor={'transparent'} />

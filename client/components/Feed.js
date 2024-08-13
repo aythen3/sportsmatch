@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,58 +8,62 @@ import {
   TouchableOpacity,
   Text,
   FlatList
-} from 'react-native'
-import { Border, Color, FontFamily } from '../GlobalStyles'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/core'
-import ScrollableModal from './modals/ScrollableModal'
-import axiosInstance from '../utils/apiBackend'
-import { getAllPosts } from '../redux/actions/post'
-import { Context } from '../context/Context'
+} from 'react-native';
+import { Border, Color, FontFamily } from '../GlobalStyles';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
+import ScrollableModal from './modals/ScrollableModal';
+import axiosInstance from '../utils/apiBackend';
+import { getAllPosts } from '../redux/actions/post';
+import { Context } from '../context/Context';
+import { Video } from 'expo-av';
 
 const Feed = ({ externalId }) => {
-  const navigation = useNavigation()
-  const [modal, setModal] = useState(false)
+  const navigation = useNavigation();
+  const [modal, setModal] = useState(false);
   const { showDeletePostModalFromProfile, setShowDeletePostModalFromProfile } =
-    useContext(Context)
-  const [postSelected, setPostSelected] = useState({})
-
-  const [userPosts, setUserPosts] = useState([])
-  const { user, mainColor } = useSelector((state) => state.users)
-  const [pineable, setPineable] = useState(false)
-
-  const { allPosts } = useSelector((state) => state.post)
-
-  const dispatch = useDispatch()
+    useContext(Context);
+  const [postSelected, setPostSelected] = useState({});
+  const [userPosts, setUserPosts] = useState([]);
+  const { user, mainColor } = useSelector((state) => state.users);
+  const [pineable, setPineable] = useState(false);
+  const { allPosts } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('allPosts from feed', allPosts)
-    const userId = externalId || user?.user?.id
+    const userId = externalId || user?.user?.id;
     const post = allPosts.filter(
       (post) => post?.author?.id == userId && !post?.prop1
-    )
-    // console.log(post, 'filtradoooalinicio')
+    );
     const postPined = allPosts.filter(
       (post) => post?.author?.id === userId && post?.prop1
-    )
+    );
 
-    setUserPosts([...postPined, ...post])
+    setUserPosts([...postPined, ...post]);
 
     if (post[0]) {
-      setPineable(post[0]?.author?.id === user?.user?.id)
+      setPineable(post[0]?.author?.id === user?.user?.id);
     }
-  }, [allPosts])
+  }, [allPosts]);
+
+  const getFileExtension = (url) => {
+    return url.split('.').pop().toLowerCase();
+  };
+
+  const isVideo = (url) => {
+    return ['mp4', 'avi', 'mov'].includes(getFileExtension(url));
+  };
 
   const renderItem = ({ item: post, index }) => (
     <TouchableOpacity
       onLongPress={() => {
         if (pineable) {
-          setPostSelected(post)
-          setModal(true)
+          setPostSelected(post);
+          setModal(true);
         }
       }}
       onPress={() => {
-        navigation.push('Post', post)
+        navigation.push('Post', post);
       }}
       key={index}
       style={{ flex: 1 / 3, margin: 3 }}
@@ -83,18 +87,36 @@ const Feed = ({ externalId }) => {
           />
         </View>
       )}
-      <Image
-        style={{
-          borderRadius: Border.br_10xs,
-          height: Dimensions.get('screen').width / 3 - 6,
-          width: '100%',
-          overflow: 'hidden'
-        }}
-        resizeMode="cover"
-        source={{ uri: post.image[0] }}
-      />
+      {isVideo(post.image[0]) ? (
+        <Video
+          source={{ uri: post.image[0] }}
+          style={{
+            borderRadius: Border.br_10xs,
+            height: Dimensions.get('screen').width / 3 - 6,
+            width: '100%',
+            overflow: 'hidden'
+          }}
+          resizeMode="cover"
+          shouldPlay={false}
+          audioPan={1}
+          isLooping
+          isMuted
+          useNativeControls={false}
+        />
+      ) : (
+        <Image
+          style={{
+            borderRadius: Border.br_10xs,
+            height: Dimensions.get('screen').width / 3 - 6,
+            width: '100%',
+            overflow: 'hidden'
+          }}
+          resizeMode="cover"
+          source={{ uri: post.image[0] }}
+        />
+      )}
     </TouchableOpacity>
-  )
+  );
 
   return (
     <View style={{ paddingHorizontal: 3 }}>
@@ -139,14 +161,14 @@ const Feed = ({ externalId }) => {
             if (e === 'Fijar post') {
               await axiosInstance.patch(`post/${postSelected?.id}`, {
                 prop1: { pined: true }
-              })
+              });
             }
             if (e === 'Quitar post fijo') {
               await axiosInstance.patch(`post/${postSelected?.id}`, {
                 prop1: null
-              })
+              });
             }
-            dispatch(getAllPosts())
+            dispatch(getAllPosts());
           }}
           closeModal={() => setModal(false)}
         />
@@ -187,7 +209,18 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     width: '100%',
     overflow: 'hidden'
-  }
+  },
+   row: {
+    justifyContent: 'space-between',
+  },
+  listContent: {
+    paddingBottom: 10,
+  },
+  noPostsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
 })
 
 export default Feed

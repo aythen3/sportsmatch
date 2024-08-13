@@ -19,6 +19,8 @@ import { createPost, getAllPosts } from '../../../redux/actions/post'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../../../context/Context'
 import PagerView from 'react-native-pager-view'
+import { useToast } from '../../../components/Toast'
+import { Video } from 'expo-av'
 
 const CrearHighlight = () => {
   const navigation = useNavigation()
@@ -33,16 +35,17 @@ const CrearHighlight = () => {
   const { height, width } = useWindowDimensions()
   const [description, setDescription] = useState('')
   const [multis, setMultis] = useState()
+  const showToast = useToast()
 
   useEffect(() => {}, [image, provisoryProfileImage])
-
   const handleSubmit = async () => {
     if (image) {
       navigation.navigate('SiguiendoJugadores')
+      showToast('Creando el nuevo post...')
     }
     let imageFinal
     if (!Array.isArray(image)) {
-      const res = await pickImage('a', image)
+      const res = await pickImage('a', image.uri)
       imageFinal = res
     } else {
       const todas = []
@@ -62,7 +65,6 @@ const CrearHighlight = () => {
       dispatch(getAllPosts())
     })
   }
-
   return (
     <SafeAreaView
       style={{
@@ -109,15 +111,39 @@ const CrearHighlight = () => {
           </View>
           <View style={{ flex: 1, gap: 20, paddingVertical: 20 }}>
             {!Array.isArray(image) ? (
-              <Image
-                style={{
-                  borderRadius: 8,
-                  height: '50%',
-                  width: '100%'
-                }}
-                contentFit="cover"
-                source={{ uri: image ? image : provisoryProfileImage }}
-              />
+              <>
+                {image.mediaType === 'photo' && (
+                  <Image
+                    style={{
+                      marginTop: 40,
+                      marginBottom: 15,
+                      borderRadius: 8,
+                      height: 350,
+                      width: '100%'
+                    }}
+                    contentFit="cover"
+                    source={{ uri: image ? image.uri : provisoryProfileImage }}
+                  />
+                )}
+                {image.mediaType === 'video' && (
+                  <Video
+                    style={{
+                      marginTop: 40,
+                      marginBottom: 15,
+                      borderRadius: 8,
+                      height: 350,
+                      width: '100%'
+                    }}
+                    contentFit="cover"
+                    shouldPlay
+                    isMuted
+                    isLooping
+                    useNativeControls={false}
+                    resizeMode="cover"
+                    source={{ uri: image.uri }}
+                  />
+                )}
+              </>
             ) : (
               <View style={{ height: '50%', width: '100%' }}>
                 <PagerView
@@ -126,17 +152,39 @@ const CrearHighlight = () => {
                 >
                   {image.map((e, i) => (
                     <View style={{ width: '100%' }} key={i}>
-                      <Image
-                        style={{
-                          marginTop: 40,
-                          marginBottom: 15,
-                          borderRadius: 8,
-                          height: 350,
-                          width: '100%'
-                        }}
-                        contentFit="cover"
-                        source={{ uri: e?.uri }}
-                      />
+                      <>
+                        {e.mediaType === 'photo' && (
+                          <Image
+                            style={{
+                              marginTop: 40,
+                              marginBottom: 15,
+                              borderRadius: 8,
+                              height: 350,
+                              width: '100%'
+                            }}
+                            contentFit="cover"
+                            source={{ uri: e?.uri }}
+                          />
+                        )}
+                        {e.mediaType === 'video' && (
+                          <Video
+                            style={{
+                              marginTop: 40,
+                              marginBottom: 15,
+                              borderRadius: 8,
+                              height: 350,
+                              width: '100%'
+                            }}
+                            contentFit="cover"
+                            shouldPlay
+                            isMuted
+                            isLooping
+                            useNativeControls={false}
+                            resizeMode="cover"
+                            source={{ uri: e?.uri }}
+                          />
+                        )}
+                      </>
                     </View>
                   ))}
                 </PagerView>

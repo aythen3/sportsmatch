@@ -10,7 +10,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Pressable,
-  Image
+  Image,
+  Dimensions
 } from 'react-native'
 import { Color, FontFamily } from '../../GlobalStyles'
 import HeaderIcons from '../../components/HeaderIcons'
@@ -133,46 +134,22 @@ const SiguiendoJugadores = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+     {filteredPosts.length > 0 && (
+       <ScrollView
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        keyboardShouldPersistTaps={'always'}
+      >
         <HeaderIcons mainColor={mainColor} />
         <View
           style={{
-            width: '95%',
+            width: '100%',
             alignSelf: 'center',
             gap: 15,
-            paddingBottom: 20
+            paddingBottom: 20,paddingHorizontal:15
           }}
         >
-          {filteredPosts.length === 0 ? (
-            <View
-              style={{
-                marginTop: 200,
-                gap: 50,
-                width: '100%',
-                alignItems: 'center'
-              }}
-            >
-              <Image
-                contentFit="cover"
-                style={{
-                  width: 140,
-                  height: 140,
-                  marginRight: 15
-                }}
-                source={require('../../assets/group-5352.png')}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: '500',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  color: Color.wHITESPORTSMATCH
-                }}
-              >
-                Busca y sigue a tus contactos
-              </Text>
-            </View>
-          ) : (
+          {filteredPosts.length > 0 && (
             filteredPosts
               .slice(0, 15)
               ?.map((publication, i) => (
@@ -201,6 +178,42 @@ const SiguiendoJugadores = () => {
           )}
         </View>
       </ScrollView>
+     )}
+        {filteredPosts.length === 0 && (
+           <View
+              style={{
+                
+                height:"100%",
+                alignItems: 'center',
+              }}
+            >
+      <View style={{alignSelf:"flex-start"}}>
+          <HeaderIcons mainColor={mainColor} />
+      </View>
+
+             <View style={{flex:1,alignItems:"center",justifyContent:"center",gap: 30,}}>
+               <Image resizeMode='contain'
+               
+                style={{
+                  width: 140,
+                  height: 140,
+                  marginRight: 15
+                }}
+                source={require('../../assets/group-5352.png')}
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '500',
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  color: Color.wHITESPORTSMATCH
+                }}
+              >
+                Busca y sigue a tus contactos
+              </Text>
+             </View>
+            </View>
+        )}
       <Modal visible={showDeletePostModal} transparent={true}>
         <TouchableWithoutFeedback onPress={() => setShowDeletePostModal(false)}>
           <View

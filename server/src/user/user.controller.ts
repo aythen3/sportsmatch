@@ -7,7 +7,10 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  UseGuards,
+  HttpException,
+  HttpStatus
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -237,6 +240,15 @@ export class UserController {
       return { message: 'Clave modificada con éxito' };
     } catch (error) {
       return { message: 'Catch' };
+    }
+  }
+  @Patch('update-token/:id/:token')
+  async updateToken(@Param('id') id: string, @Param('token') token: string) {
+    try {
+      const message = await this.userService.updateToken(id, token);
+      return { message: message };
+    } catch (error) {
+      return { message: error };
     }
   }
 }

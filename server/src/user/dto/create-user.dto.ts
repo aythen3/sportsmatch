@@ -64,4 +64,6 @@ export class CreateUserDto {
   @IsArray()
   @IsString({ each: true })
   prop4?: string[];
+
+  
 }

@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch } from 'react-redux'
 import { getSportById } from '../redux/actions/sports'

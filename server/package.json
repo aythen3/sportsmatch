@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate:fresh": "npx typeorm schema:drop -d dist/config/data.source.js && npx typeorm migration:run -d dist/config/data.source.js"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.11.2",
@@ -38,6 +39,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cloudinary": "^2.0.3",
+    "expo-server-sdk": "^3.10.0",
     "firebase-admin": "^12.1.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",

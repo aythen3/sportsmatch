@@ -16,7 +16,7 @@ function Input({
   onSubmit,
   keyboardType,
   type,
-  state,setState,maxLength
+  state,setState
 }) {
   return (
     <View

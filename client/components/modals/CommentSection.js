@@ -17,15 +17,26 @@ import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { Context } from '../../context/Context'
 
-const CommentSection = ({ visible, closeModal, postId }) => {
+const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
   const dispatch = useDispatch()
+  
   const { generateLowResUrl } = useContext(Context)
-  const { user, mainColor } = useSelector((state) => state.users)
+  const { user, mainColor , isSportman } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
-
+  const [canSend, setCanSend] = useState(false)
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [comment, setComment] = useState('')
-
+  useEffect(() => {
+    if (clubMatches) {
+      const e =
+        clubMatches.filter(
+          (match) =>
+            match.prop1.sportmanId === sportman1 && match.status === 'success'
+        ).length > 0
+      setCanSend(e)
+    }
+  }, [])
   useEffect(() => {
     const body = {
       id: postId,
@@ -131,57 +142,83 @@ const CommentSection = ({ visible, closeModal, postId }) => {
                   backgroundColor: 'black'
                 }}
               >
-                <View
-                  style={{
-                    borderRadius: 13,
-                    borderWidth: 0.5,
-                    borderColor: Color.wHITESPORTSMATCH,
-                    width: '80%',
-                    height: '100%',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'column',
-                    display: 'flex',
-                    paddingHorizontal: 8
-                  }}
-                >
-                  <TextInput
-                    placeholder="Escribe un comentario..."
-                    placeholderTextColor={Color.wHITESPORTSMATCH}
-                    onChangeText={setComment}
-                    value={comment}
-                    multiline
-                    style={styles.input2}
-                  />
-                </View>
-                <TouchableOpacity
-                  style={{
-                    zIndex: 9999999
-                  }}
-                  onPress={() => {
-                    Keyboard.dismiss()
-                    handleSubmit({
-                      comment,
-                      user,
-                      postId,
-                      dispatch,
-                      setComment
-                    })
-                    closeModal()
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: Color.wHITESPORTSMATCH,
-                      fontFamily: FontFamily.t4TEXTMICRO,
-                      fontSize: 16,
-                      fontWeight: '700',
-                      marginLeft: 15,
-                      zIndex: 5000
-                    }}
-                  >
-                    Publicar
-                  </Text>
-                </TouchableOpacity>
+                {canSend || isSportman && (
+                  <>
+                    <View
+                      style={{
+                        borderRadius: 13,
+                        borderWidth: 0.5,
+                        borderColor: Color.wHITESPORTSMATCH,
+                        width: '80%',
+                        height: '100%',
+                        justifyContent: 'flex-start',
+                        flexDirection: 'column',
+                        display: 'flex',
+                        paddingHorizontal: 8
+                      }}
+                    >
+                      <TextInput
+                        placeholder="Escribe un comentario..."
+                        placeholderTextColor={Color.wHITESPORTSMATCH}
+                        onChangeText={setComment}
+                        value={comment}
+                        multiline
+                        style={styles.input2}
+                      />
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        zIndex: 9999999
+                      }}
+                      onPress={() => {
+                        Keyboard.dismiss()
+                        handleSubmit({
+                          comment,
+                          user,
+                          postId,
+                          dispatch,
+                          setComment
+                        })
+                        closeModal()
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginLeft: 15,
+                          zIndex: 5000
+                        }}
+                      >
+                        Publicar
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+                {!canSend && !isSportman && (
+                  <>
+                    <View
+                      style={{
+                        borderRadius: 13,
+                        borderWidth: 0.5,
+                        borderColor: Color.wHITESPORTSMATCH,
+                        width: '100%',
+                        padding: 15,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        display: 'flex',
+                        paddingHorizontal: 8
+                      }}
+                    >
+                      <Text style={{ color: '#fff' }}>
+                        No puedes comentar si no has hecho match.
+                      </Text>
+                    </View>
+                  </>
+                )}
               </View>
             )}
           </View>

@@ -83,6 +83,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
           onPress={() => {
             onClose()
             navigation.navigate('ChatAbierto1', {
+              
               receiverId: data?.id,
               receiverName: data?.nickname,
               profilePic: data?.club?.img_perfil
