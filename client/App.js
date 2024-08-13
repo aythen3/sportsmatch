@@ -76,18 +76,18 @@ import Notificaciones from './screens/Perfil/EditarPerfil/Notificaciones'
 import { registerDevMenuItems } from 'expo-dev-menu'
 import UserFollowers from './screens/Explorar/UserFollowers'
 import { ToastProvider } from './components/Toast'
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
+import Constants from 'expo-constants'
 import { registerForPushNotificationsAsync } from './utils/pushService'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+    shouldSetBadge: false
+  })
+})
 import RecuperarContra from './screens/Login/RecuperarContra'
 if (__DEV__) {
   require('./ReactotronConfig')
@@ -140,7 +140,8 @@ const App = () => {
                           route.name !== 'Paso4Jugador' &&
                           route.name !== 'Paso4Profesional' &&
                           route.name !== 'stepsJugador' &&
-                          route.name !== 'PostPromocion'
+                          route.name !== 'PostPromocion' &&
+                          route.name !== 'RecuperarContra'
                       )
                     })}
                   >
@@ -159,6 +160,11 @@ const App = () => {
                     <Stack.Screen
                       name="Paso2Jugador"
                       component={Paso2Jugador}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="RecuperarContra"
+                      component={RecuperarContra}
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
