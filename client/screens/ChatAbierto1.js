@@ -56,7 +56,9 @@ const ChatAbierto1 = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const scrollViewRef = useRef()
+
   const handleSendMessage = () => {
+    console.log(message, user?.user?.id, route?.params?.receiverId)
     sendMessage(message, user?.user?.id, route?.params?.receiverId)
     setMessage()
   }
@@ -69,6 +71,7 @@ const ChatAbierto1 = () => {
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
   }, [])
+
   useEffect(() => {
     if (clubMatches) {
       const e =
@@ -513,7 +516,7 @@ const ChatAbierto1 = () => {
             </View>
           </ScrollView>
         )}
-        {canSend || isSportman && (
+        {canSend  && (
           <View
             style={{
               height: 50,
@@ -558,7 +561,7 @@ const ChatAbierto1 = () => {
             </TouchableOpacity>
           </View>
         )}
-        {!canSend && !isSportman && (
+        {!canSend  && (
           <View
             style={{
               margin: 10,

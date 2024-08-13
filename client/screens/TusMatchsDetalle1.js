@@ -137,6 +137,7 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
             onPress={() => {
               onClose()
               navigation.navigate('ChatAbierto1', {
+                sportman:data?.sportman?.id,
                 receiverId: data?.id,
                 receiverName: data?.nickname,
                 profilePic: data?.sportman?.info?.img_perfil

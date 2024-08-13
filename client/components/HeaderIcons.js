@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 20,
     paddingBottom: 15,
-    backgroundColor: '#000'
+    backgroundColor: '#000',
+    zIndex:99999999
   },
   superiorLayout: {
     height: 45,

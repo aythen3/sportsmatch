@@ -327,7 +327,9 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const newSocket = io(
-      'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+      // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+      'http://192.168.0.77:3010',
+
       {
         transports: ['websocket']
       }
