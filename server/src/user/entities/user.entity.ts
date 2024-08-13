@@ -46,6 +46,8 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'json', nullable: true })
   prop2: Record<string, any> | null;
 
+  @Column({ nullable: true })
+  push_token: string;
   @Column({ type: 'simple-array', nullable: true })
   following: string[] | null;
 

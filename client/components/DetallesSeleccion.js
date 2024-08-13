@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize, Border } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/native'
 import CustomModal from './modals/CustomModal'
-import AnoNacimientoModal from './modals/AnoNacimientoModal'
+import AñoNacimientoModal from './modals/AñoNacimientoModal'
 import Acordeon from './Acordeon'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBirthdate, setCity, setGender } from '../redux/slices/users.slices'
@@ -120,7 +120,7 @@ const SkillSeleccion = ({
           onPress={openAñoNacimientoModal}
           style={styles.rectanguloBorder}
         >
-          <AnoNacimientoModal
+          <AñoNacimientoModal
             visible={añoNacimientoModalVisible}
             closeModal={closeAñoNacimientoModal}
             onSelectAñoNacimiento={handleSelectAñoNacimiento}

@@ -121,7 +121,6 @@ export class PostService {
           message: `Post id: ${id} not found`
         });
       }
-      // Actualizar el conteo de likes del post
       post.likes += increment;
       await this.postRepository.save(post);
     } catch (error) {

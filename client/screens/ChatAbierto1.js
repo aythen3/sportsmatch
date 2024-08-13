@@ -49,13 +49,16 @@ const ChatAbierto1 = () => {
   } = useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
-  const { user, allUsers, mainColor } = useSelector((state) => state.users)
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
+  const [canSend, setCanSend] = useState(false)
+  const { user, allUsers, mainColor, isSportman } = useSelector((state) => state.users)
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const scrollViewRef = useRef()
 
   const handleSendMessage = () => {
+    console.log(message, user?.user?.id, route?.params?.receiverId)
     sendMessage(message, user?.user?.id, route?.params?.receiverId)
     setMessage()
   }
@@ -67,6 +70,19 @@ const ChatAbierto1 = () => {
 
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
+  }, [])
+
+  useEffect(() => {
+    if (clubMatches) {
+      const e =
+        clubMatches.filter(
+          (match) =>
+            match.prop1.sportmanId === route?.params?.sportman &&
+            match.status === 'success'
+        ).length > 0
+      console.warn(route.params.sportman)
+      setCanSend(e)
+    }
   }, [])
   useEffect(() => {
     joinRoom(user?.user?.id, route?.params?.receiverId)
@@ -500,49 +516,66 @@ const ChatAbierto1 = () => {
             </View>
           </ScrollView>
         )}
-        <View
-          style={{
-            height: 50,
-            margin: 10,
-            borderRadius: 50,
-            borderWidth: 2,
-            borderColor: '#fff'
-          }}
-        >
-          <TextInput
-            value={message}
-            onChangeText={setMessage}
-            placeholder="Escribe tu mensaje..."
-            placeholderTextColor="#fff"
+        {canSend  && (
+          <View
             style={{
-              flex: 1,
-              paddingLeft: 15,
-              maxWidth: '85%',
-              fontSize: 16,
-              color: '#fff'
-            }}
-          />
-          <TouchableOpacity
-            disabled={message ? false : true}
-            onPress={handleSendMessage}
-            style={{
-              width: 25,
-              position: 'absolute',
-              right: 5,
-              top: 12,
-              right: 10
+              height: 50,
+              margin: 10,
+              borderRadius: 50,
+              borderWidth: 2,
+              borderColor: '#fff'
             }}
           >
-            <Image
-              source={contact}
+            <TextInput
+              value={message}
+              onChangeText={setMessage}
+              placeholder="Escribe tu mensaje..."
+              placeholderTextColor="#fff"
               style={{
-                tintColor: message ? '#fff' : '#cecece',
-                width: 22,
-                height: 22
+                flex: 1,
+                paddingLeft: 15,
+                maxWidth: '85%',
+                fontSize: 16,
+                color: '#fff'
               }}
             />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              disabled={message ? false : true}
+              onPress={handleSendMessage}
+              style={{
+                width: 25,
+                position: 'absolute',
+                right: 5,
+                top: 12,
+                right: 10
+              }}
+            >
+              <Image
+                source={contact}
+                style={{
+                  tintColor: message ? '#fff' : '#cecece',
+                  width: 22,
+                  height: 22
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+        {!canSend  && (
+          <View
+            style={{
+              margin: 10,
+              padding: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 50,
+              borderWidth: 1,
+              borderColor: 'rgba(255, 255, 255, 0.3)'
+            }}
+          >
+            <Text style={{color: '#fff'}}>No puedes enviar mensajes si no has hecho match.</Text>
+          </View>
+        )}
       </SafeAreaView>
     )
 }

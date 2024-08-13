@@ -653,7 +653,8 @@ const HeaderPerfil = ({
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data.author.id,
                   receiverName: data.author.nickname,
-                  profilePic: avatar
+                  profilePic: avatar,
+                  sportman: data.author.sportman.id
                 })
               }
               style={styles.leftButton}

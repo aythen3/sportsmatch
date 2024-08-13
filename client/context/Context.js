@@ -6,12 +6,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
 import { updateMessages } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
+import { registerForPushNotificationsAsync } from '../utils/pushService'
 
+const getFileType = (filePath) => {
+  const extension = filePath.split('.').pop().toLowerCase()
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']
+  const videoExtensions = ['mp4', 'avi', 'mov']
+
+  if (imageExtensions.includes(extension)) {
+    return { type: `image/${extension}`, uploadPath: 'image/upload' }
+  } else if (videoExtensions.includes(extension)) {
+    return { type: `video/${extension}`, uploadPath: 'video/upload' }
+  } else {
+    return { type: 'application/octet-stream', uploadPath: 'raw/upload' } // Default para otros tipos de archivos
+  }
+}
 export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
   const dispatch = useDispatch()
   const { allMatchs } = useSelector((state) => state.matchs)
+  const { updatePushToken } = useSelector((state) => state.notifications)
   const [activeIcon, setActiveIcon] = useState('diary')
   const [clubMatches, setClubMatches] = useState([])
   const [userMatches, setUserMatches] = useState([])
@@ -26,7 +41,24 @@ export const ContextProvider = ({ children }) => {
   const [showDeletePostModalFromProfile, setShowDeletePostModalFromProfile] =
     useState(false)
   const userId = user?.user?.id
-
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(async (token) => {
+      if(token){
+        try {
+          try {
+            const message = await axiosInstance.patch(
+              `/user/update-token/${userId}/${token}`
+            )
+            console.log(message)
+          } catch (error) {
+            throw new Error(error)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    })
+  }, [])
   function transformHttpToHttps(url) {
     if (url?.startsWith('http://')) {
       return url.replace('http://', 'https://')
@@ -37,12 +69,14 @@ export const ContextProvider = ({ children }) => {
 
   const pickImageFromCamera = async (source, imageUri) => {
     if (source && imageUri) {
+      const { type, uploadPath } = getFileType(imageUri)
+
       source === 'profile'
         ? setProvisoryProfileImage(imageUri)
         : setProvisoryCoverImage(imageUri)
       const profileImageData = {
         uri: imageUri,
-        type: 'image/jpg',
+        type: type,
         name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
       }
 
@@ -50,8 +84,9 @@ export const ContextProvider = ({ children }) => {
       profileImageForm.append('file', profileImageData)
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
       profileImageForm.append('cloud_name', 'der45x19c')
+      const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
 
-      await fetch('https://api.cloudinary.com/v1_1/der45x19c/image/upload', {
+      await fetch(uploadUrl, {
         method: 'post',
         body: profileImageForm
       })
@@ -162,97 +197,97 @@ export const ContextProvider = ({ children }) => {
     console.log('setting image loader to TRUE')
     setPickImageLoading(true)
 
+    const getFileType = (filePath) => {
+      const extension = filePath.split('.').pop().toLowerCase()
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']
+      const videoExtensions = ['mp4', 'avi', 'mov']
+
+      if (imageExtensions.includes(extension)) {
+        return { type: `image/${extension}`, uploadPath: 'image/upload' }
+      } else if (videoExtensions.includes(extension)) {
+        return { type: `video/${extension}`, uploadPath: 'video/upload' }
+      } else {
+        return { type: 'application/octet-stream', uploadPath: 'raw/upload' } // Default para otros tipos de archivos
+      }
+    }
+
     try {
       if (imageUri) {
+        // Determinar el tipo de archivo
+        const { type, uploadPath } = getFileType(imageUri)
+
         setProvisoryProfileImage(imageUri)
-        const profileImageData = {
+        const fileData = {
           uri: imageUri,
-          type: 'image/jpg',
+          type: type,
           name: imageUri?.split('/')?.reverse()[0]?.split('.')[0]
         }
 
-        const profileImageForm = new FormData()
-        profileImageForm.append('file', profileImageData)
-        profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-        profileImageForm.append('cloud_name', 'der45x19c')
+        const form = new FormData()
+        form.append('file', fileData)
+        form.append('upload_preset', 'cfbb_profile_pictures')
+        form.append('cloud_name', 'der45x19c')
 
-        const res = await fetch(
-          'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
-          {
-            method: 'post',
-            body: profileImageForm
-          }
-        )
+        // Construir la URL en función del tipo de archivo
+        const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
+
+        const res = await fetch(uploadUrl, {
+          method: 'post',
+          body: form
+        })
         const data = await res.json()
-        setLibraryImage(transformHttpToHttps(data.url))
+        const uploadedUrl = transformHttpToHttps(data.url)
+
+        if (source === 'profile') {
+          setProfileImage(uploadedUrl)
+        } else {
+          setCoverImage(uploadedUrl)
+        }
+
         console.log('setting image loader to FALSE')
         setPickImageLoading(false)
-        return transformHttpToHttps(data.url)
+        return uploadedUrl
       } else {
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          mediaTypes: ImagePicker.MediaTypeOptions.All, // Permitir todos los tipos de medios
           allowsEditing: true,
           aspect: [1, 1],
           quality: 0.1
         })
 
         if (!result.canceled) {
-          source === 'profile'
-            ? setProvisoryProfileImage(result.assets[0].uri)
-            : setProvisoryCoverImage(result.assets[0].uri)
+          const { type, uploadPath } = getFileType(result.assets[0].uri)
+          const fileData = {
+            uri: result.assets[0].uri,
+            type: type,
+            name: result.assets[0].uri?.split('/')?.reverse()[0]?.split('.')[0]
+          }
+
+          const form = new FormData()
+          form.append('file', fileData)
+          form.append('upload_preset', 'cfbb_profile_pictures')
+          form.append('cloud_name', 'der45x19c')
+
+          const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
+
+          const res = await fetch(uploadUrl, {
+            method: 'post',
+            body: form
+          })
+          const data = await res.json()
+          const uploadedUrl = transformHttpToHttps(data.url)
+
           if (source === 'profile') {
-            const profileImageData = {
-              uri: result.assets[0].uri,
-              type: 'image/jpg',
-              name: result.assets[0].uri
-                ?.split('/')
-                ?.reverse()[0]
-                ?.split('.')[0]
-            }
-
-            const profileImageForm = new FormData()
-            profileImageForm.append('file', profileImageData)
-            profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-            profileImageForm.append('cloud_name', 'der45x19c')
-
-            const res = await fetch(
-              'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
-              {
-                method: 'post',
-                body: profileImageForm
-              }
-            )
-            const data = await res.json()
-            setProfileImage(transformHttpToHttps(data.url))
+            setProvisoryProfileImage(uploadedUrl)
+            setProfileImage(uploadedUrl)
           } else {
-            const coverImageData = {
-              uri: result.assets[0].uri,
-              type: 'image/jpg',
-              name: result.assets[0].uri
-                ?.split('/')
-                ?.reverse()[0]
-                ?.split('.')[0]
-            }
-
-            const coverImageForm = new FormData()
-            coverImageForm.append('file', coverImageData)
-            coverImageForm.append('upload_preset', 'cfbb_profile_pictures')
-            coverImageForm.append('cloud_name', 'der45x19c')
-
-            const res = await fetch(
-              'https://api.cloudinary.com/v1_1/der45x19c/image/upload',
-              {
-                method: 'post',
-                body: coverImageForm
-              }
-            )
-            const data = await res.json()
-            setCoverImage(transformHttpToHttps(data.url))
+            setProvisoryCoverImage(uploadedUrl)
+            setCoverImage(uploadedUrl)
           }
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log('Error uploading file:', error)
     } finally {
       console.log('setting image loader to FALSE')
       setPickImageLoading(false)
@@ -292,7 +327,9 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const newSocket = io(
-      'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+      // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+      'http://192.168.0.77:3010',
+
       {
         transports: ['websocket']
       }

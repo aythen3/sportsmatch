@@ -403,17 +403,17 @@ const TusMatchs = () => {
                           allUsers.filter(
                             (user) =>
                               user?.id === match?.prop1?.sportManData?.userId
-                          )[0].sportman.info.img_perfil &&
+                          )[0]?.sportman.info.img_perfil &&
                           allUsers.filter(
                             (user) =>
                               user?.id === match?.prop1?.sportManData?.userId
-                          )[0].sportman.info.img_perfil !== ''
+                          )[0]?.sportman.info.img_perfil !== ''
                             ? {
                                 uri: allUsers.filter(
                                   (user) =>
                                     user?.id ===
                                     match?.prop1?.sportManData?.userId
-                                )[0].sportman.info.img_perfil
+                                )[0]?.sportman.info.img_perfil
                               }
                             : require('../../assets/whiteSport.png')
                         }

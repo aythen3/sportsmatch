@@ -118,7 +118,9 @@ const RecuperarContra = () => {
                 }}
               >
                 <View style={styles.titularcampos}>
-                  <Text style={styles.titular}>Recuperar contraseña</Text>
+                  <Text style={styles.titular}>Recuperar</Text>
+                  <Text style={styles.titular}>contraseña</Text>
+
                   <View style={styles.campos}>
                     <View style={styles.campoLayout}>
                       <View style={[styles.campo1Frame, styles.framePosition]}>

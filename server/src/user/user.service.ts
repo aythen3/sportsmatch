@@ -431,7 +431,6 @@ export class UserService {
           message: `User id: ${id} not found`
         });
       }
-
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -605,6 +604,20 @@ export class UserService {
       }
 
       return { message: 'Clave modificada con éxito' };
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+  public async updateToken(id: string, token: string): Promise<any> {
+    try {
+      const result = await this.userRepository.update(id, {
+        push_token: token
+      });
+      if (result.affected === 0) {
+        return { message: 'Error al cambiar el Push' };
+      }
+
+      return { message: 'Push modificada con éxito' };
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
