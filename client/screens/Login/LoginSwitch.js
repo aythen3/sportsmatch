@@ -155,6 +155,50 @@ const LoginSwitch = () => {
         setUserInfo(user)
         if (user.providerData[0].providerId === 'google.com') {
           console.log('=====LOGIN WITH GOOGLE=====')
+          const exist = await axiosInstance.get(`user/${user.uid}`)
+          console.log('exist', exist)
+          if (exist.existe) {
+            try {
+              const response = await dispatch(login({ googleId: user.uid }))
+              detectSportColor(
+                response.payload.user.sportman?.info?.sport ||
+                  response?.payload?.user?.club?.sport,
+                dispatch
+              )
+              if (response.payload.user.sportman !== null) {
+                dispatch(
+                  setInitialSportman({
+                    id: response.payload.user?.sportman?.id,
+                    ...response.payload.user?.sportman
+                  })
+                )
+              }
+              dispatch(
+                setIsSpotMan(
+                  response.payload.user.type === 'club' ? false : true
+                )
+              )
+
+              await AsyncStorage.setItem('googleAuth', user.uid)
+              await AsyncStorage.setItem('userType', response.payload.user.type)
+              dispatch(setClub(response))
+              if (
+                response.payload.user.sportman ||
+                response.payload.user.club
+              ) {
+                return navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'SiguiendoJugadores' }]
+                })
+              } else if (response.payload.user.type === 'sportman') {
+                return navigation.navigate('Paso1')
+              } else {
+                return navigation.navigate('StepsClub')
+              }
+            } catch (error) {
+              console.log('Error:', error)
+            }
+          }
           dispatch(
             create({
               nickname: user.displayName,
@@ -192,14 +236,14 @@ const LoginSwitch = () => {
                 response.payload.user.sportman ||
                 response.payload.user.club
               ) {
-                navigation.reset({
+                return navigation.reset({
                   index: 0,
                   routes: [{ name: 'SiguiendoJugadores' }]
                 })
               } else if (response.payload.user.type === 'sportman') {
-                navigation.navigate('Paso1')
+                return navigation.navigate('Paso1')
               } else {
-                navigation.navigate('StepsClub')
+                return navigation.navigate('StepsClub')
               }
             } catch (error) {
               console.log('Error:', error)

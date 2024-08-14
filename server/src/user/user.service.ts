@@ -608,6 +608,14 @@ export class UserService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
+
+  async existeGoogleId(googleId: string): Promise<boolean> {
+    const entidad = await this.userRepository.findOne({
+      where: { googleId }
+    });
+    return entidad !== undefined;
+  }
+
   public async updateToken(id: string, token: string): Promise<any> {
     try {
       const result = await this.userRepository.update(id, {

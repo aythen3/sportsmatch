@@ -45,6 +45,11 @@ export class UserController {
       console.log(error);
     }
   }
+  @Get(':googleId')
+  async verificarGoogleId(@Param('googleId') googleId: string) {
+    const existe = await this.userService.existeGoogleId(googleId);
+    return { existe };
+  }
   // Método para encontrar todos los usuarios
   @Get()
   findAll() {
