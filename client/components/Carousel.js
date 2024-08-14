@@ -138,6 +138,9 @@ function Carousel({
             userData: {
               ...user
             }
+          },
+          prop2: {
+            rol: user.user.type === 'sportman' ? 'user' : 'club'
           }
         })
       )
@@ -244,7 +247,7 @@ function Carousel({
               }}
             >
               <Image
-                style={{ width: 5, height: "100%" }}
+                style={{ width: 5, height: '100%' }}
                 contentFit="scale-down"
                 source={require('../assets/frame-957.png')}
               />
@@ -282,7 +285,6 @@ function Carousel({
               onDoubleTap={() => {
                 handleLike()
                 setDoubleTapHeart(true)
-          
               }}
             >
               <View
@@ -308,8 +310,6 @@ function Carousel({
             </DoubleTap>
           </View>
         ))}
-
-       
       </PagerView>
       <View
         style={{

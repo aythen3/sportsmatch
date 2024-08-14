@@ -18,6 +18,8 @@ import { getClub, updateClubData } from '../../../../redux/actions/club'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
+// import { useCameraPermission } from 'react-native-vision-camera'
+import { DeviceMotion } from 'expo-sensors'
 
 const ClubDetails = () => {
   const dispatch = useDispatch()
@@ -29,7 +31,6 @@ const ClubDetails = () => {
   const [capacity, setCapacity] = useState()
   const [description, setDescription] = useState()
   const navigation = useNavigation()
-
   const {
     pickImage,
     profileImage,
@@ -43,7 +44,21 @@ const ClubDetails = () => {
     setPickImageLoading
   } = useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
+  const [orientation, setOrientation] = useState('portrait')
 
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
   const { club } = useSelector((state) => state.clubs)
 
   const inputs = [
@@ -182,7 +197,9 @@ const ClubDetails = () => {
   // }
   const takePicture = async () => {
     if (cameraReff) {
-      const photo = await cameraReff.current.takePictureAsync()
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      })
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

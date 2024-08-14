@@ -18,7 +18,7 @@ export const setColor = (sport) => {
     case 'Handball':
       color = '#6A1C4F'
       break
-    case 'Básquetbol':
+    case 'Baloncesto':
       color = '#E1451E'
       break
     case 'Hockey':

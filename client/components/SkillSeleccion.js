@@ -15,9 +15,12 @@ import Acordeon from './Acordeon'
 import { setCategory, setPosition } from '../redux/slices/users.slices'
 import { updateSportman } from '../redux/actions/sportman'
 import ScrollableModal from './modals/ScrollableModal'
-import { opciones_categoria, opciones_posicion, opciones_skills , categorias_deporte } from '../utils/SkillUserLocal'
-
-
+import {
+  opciones_categoria,
+  opciones_posicion,
+  opciones_skills,
+  categorias_deporte
+} from '../utils/SkillUserLocal'
 
 const SkillSeleccion = ({
   editable,
@@ -28,8 +31,6 @@ const SkillSeleccion = ({
   selectPosition,
   setSelectPosition
 }) => {
-
-
   const { sportman } = useSelector((state) => state.sportman)
 
   const [categoryTop, setCategoryTop] = useState(0)
@@ -46,19 +47,16 @@ const SkillSeleccion = ({
   const [selectedOptionsInputs, setSelectedOptionsInputs] = useState('')
   const [editData, setEditData] = useState(null)
 
-
   useEffect(() => {
-    const selectedSportName = selectedSport?.name;
-    const sportmanSportName = sportman?.info?.sport;
-  
+    const selectedSportName = selectedSport?.name
+    const sportmanSportName = sportman?.info?.sport
+
     if (categorias_deporte[selectedSportName]) {
-      setSelectedOptionsCategoria(categorias_deporte[selectedSportName]);
+      setSelectedOptionsCategoria(categorias_deporte[selectedSportName])
     } else if (categorias_deporte[sportmanSportName]) {
-      setSelectedOptionsCategoria(categorias_deporte[sportmanSportName]);
+      setSelectedOptionsCategoria(categorias_deporte[sportmanSportName])
     }
-
-  }, [selectedSport, sportman?.info?.sport]);
-
+  }, [selectedSport, sportman?.info?.sport])
 
   useEffect(() => {
     if (setData) {
@@ -114,41 +112,43 @@ const SkillSeleccion = ({
       prop6: 100,
       prop7: 100,
       prop8: 100
-    };
-  
+    }
+
     // Check if the key is one of the allowed keys
     if (allowedKeys.hasOwnProperty(key)) {
-      const maxValue = allowedKeys[key];
-  
+      const maxValue = allowedKeys[key]
+
       // Allow empty string or numbers between 0 and the respective max value
       if (
         value === '' ||
-        (/^\d+$/.test(value) && parseInt(value, 10) >= 0 && parseInt(value, 10) <= maxValue)
+        (/^\d+$/.test(value) &&
+          parseInt(value, 10) >= 0 &&
+          parseInt(value, 10) <= maxValue)
       ) {
         if (!editable) {
           const newData = {
             ...data,
             [key]: value
-          };
-          setData(newData);
+          }
+          setData(newData)
         } else {
-          setEditData({ ...editData, [key]: value });
+          setEditData({ ...editData, [key]: value })
         }
       }
-      return;
+      return
     }
-  
+
     // Default behavior for keys not in the allowedKeys list
     if (!editable) {
       const newData = {
         ...data,
         [key]: value
-      };
-      setData(newData);
+      }
+      setData(newData)
     } else {
-      setEditData({ ...editData, [key]: value });
+      setEditData({ ...editData, [key]: value })
     }
-  };
+  }
 
   const handleEdit = () => {
     navigation.navigate('MiPerfil')
@@ -161,8 +161,6 @@ const SkillSeleccion = ({
     dispatch(updateSportman(body))
   }
 
-  
-
   const selectores = () => {
     if (selectedSport?.name == 'Fútbol' || sportman.info?.sport == 'Fútbol')
       setSelectedOptions(opciones_skills.futbol)
@@ -172,8 +170,8 @@ const SkillSeleccion = ({
     )
       setSelectedOptions(opciones_skills.futbolSala)
     if (
-      selectedSport?.name == 'Básquetbol' ||
-      sportman.info?.sport == 'Básquetbol'
+      selectedSport?.name == 'Baloncesto' ||
+      sportman.info?.sport == 'Baloncesto'
     )
       setSelectedOptions(opciones_skills.baloncesto)
     if (selectedSport?.name == 'Hockey' || sportman.info?.sport == 'Hockey')
@@ -184,11 +182,9 @@ const SkillSeleccion = ({
       setSelectedOptions(opciones_skills.voleibol)
   }
 
-
   useEffect(() => {
     selectores()
   }, [selectedSport])
-
 
   const placeholderText =
     editable === false && selectPosition.length > 0
@@ -208,8 +204,8 @@ const SkillSeleccion = ({
           height: 40,
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingHorizontal:14,
-          marginBottom:7
+          paddingHorizontal: 14,
+          marginBottom: 7
         }}
       >
         <View style={styles.atributoContainer}>
@@ -232,7 +228,11 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
-          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
+          <Text
+            style={{ fontSize: 10, color: 'gray', width: '100%', marginTop: 3 }}
+          >
+            Valor entre 0 y 100
+          </Text>
         </View>
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Defensa</Text>
@@ -253,8 +253,11 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
-          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
-
+          <Text
+            style={{ fontSize: 10, color: 'gray', width: '100%', marginTop: 3 }}
+          >
+            Valor entre 0 y 100
+          </Text>
         </View>
         <View style={styles.atributoContainer}>
           <Text style={styles.defensa}>Velocidad</Text>
@@ -275,10 +278,12 @@ const SkillSeleccion = ({
               maxLength={3}
             />
           </View>
-          <Text style={{fontSize:10,color:"gray",width:"100%",marginTop:3}}>Valor entre 0 y 100</Text>
-
+          <Text
+            style={{ fontSize: 10, color: 'gray', width: '100%', marginTop: 3 }}
+          >
+            Valor entre 0 y 100
+          </Text>
         </View>
-        
       </View>
       <View style={{ ...styles.formulariosInferiores }}>
         <View
@@ -296,7 +301,7 @@ const SkillSeleccion = ({
               selectedCategoria
                 ? selectedCategoria
                 : sportman?.info?.category?.toString() ||
-                'Selecciona tu categoría'
+                  'Selecciona tu categoría'
             }
             isAccordeon={modalVisible}
             open={openModal}
@@ -337,28 +342,46 @@ const SkillSeleccion = ({
               closeModal={closeModal}
               onSelectItem={handleSelectPosition}
               options={
-                (sportman.info?.sport == 'Fútbol' && opciones_posicion.futbol) ||
+                (sportman.info?.sport == 'Fútbol' &&
+                  opciones_posicion.futbol) ||
                 (selectedSport?.name == 'Fútbol' && opciones_posicion.futbol) ||
                 (sportman.info?.sport == 'Fútbol Sala' &&
                   opciones_posicion.futbolSala) ||
-                (selectedSport?.name == 'Fútbol Sala' && opciones_posicion.futbolSala) ||
-                (selectedSport?.name == 'Básquetbol' && opciones_posicion.baloncesto) ||
-                (sportman.info?.sport == 'Básquetbol' && opciones_posicion.baloncesto) ||
+                (selectedSport?.name == 'Fútbol Sala' &&
+                  opciones_posicion.futbolSala) ||
+                (selectedSport?.name == 'Baloncesto' &&
+                  opciones_posicion.baloncesto) ||
+                (sportman.info?.sport == 'Baloncesto' &&
+                  opciones_posicion.baloncesto) ||
                 (selectedSport?.name == 'Hockey' && opciones_posicion.hockey) ||
-                (sportman.info?.sport == 'Hockey' && opciones_posicion.hockey) ||
-                (selectedSport?.name == 'Voley' && opciones_posicion.voleibol) ||
-                (sportman.info?.sport == 'Voley' && opciones_posicion.voleibol) ||
-                (selectedSport?.name == 'Handball' && opciones_posicion.handball) ||
-                (sportman.info?.sport == 'Handball' && opciones_posicion.handball)
+                (sportman.info?.sport == 'Hockey' &&
+                  opciones_posicion.hockey) ||
+                (selectedSport?.name == 'Voley' &&
+                  opciones_posicion.voleibol) ||
+                (sportman.info?.sport == 'Voley' &&
+                  opciones_posicion.voleibol) ||
+                (selectedSport?.name == 'Handball' &&
+                  opciones_posicion.handball) ||
+                (sportman.info?.sport == 'Handball' &&
+                  opciones_posicion.handball)
               }
             />
           )}
         </View>
         <View style={styles.formularioCategoria}>
-        <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-             <Text style={styles.atributo}>Altura</Text>
-             <Text style={{...styles.atributo,fontSize:10,color:"gray"}}>{`Valor en centimetros (P.ej: 180)`}</Text>
-             </View>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={styles.atributo}>Altura</Text>
+            <Text
+              style={{ ...styles.atributo, fontSize: 10, color: 'gray' }}
+            >{`Valor en centimetros (P.ej: 180)`}</Text>
+          </View>
           <View style={styles.rectanguloBorder}>
             <TextInput
               style={styles.textInput}
@@ -381,10 +404,21 @@ const SkillSeleccion = ({
         {selectedOptions.length > 0 &&
           selectedOptions.map((opt, i) => (
             <View key={i} style={styles.formularioCategoria}>
-             <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-             <Text style={styles.atributo}>{opt}</Text>
-             <Text style={{...styles.atributo,fontSize:10,color:"gray"}}>Valor entre 0 y 100</Text>
-             </View>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}
+              >
+                <Text style={styles.atributo}>{opt}</Text>
+                <Text
+                  style={{ ...styles.atributo, fontSize: 10, color: 'gray' }}
+                >
+                  Valor entre 0 y 100
+                </Text>
+              </View>
               <View style={styles.rectanguloBorder}>
                 <TextInput
                   style={styles.textInput}
@@ -406,8 +440,6 @@ const SkillSeleccion = ({
               </View>
             </View>
           ))}
-
-
       </View>
       {editable && (
         <View style={styles.buttonContainer}>

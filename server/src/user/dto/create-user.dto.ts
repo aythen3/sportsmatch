@@ -27,6 +27,10 @@ export class CreateUserDto {
   password: string;
 
   @IsOptional()
+  @IsString()
+  push_token: string;
+
+  @IsOptional()
   stripeId: any;
 
   @IsOptional()
@@ -64,6 +68,4 @@ export class CreateUserDto {
   @IsArray()
   @IsString({ each: true })
   prop4?: string[];
-
-  
 }

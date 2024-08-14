@@ -24,6 +24,7 @@ import { Camera, CameraView } from 'expo-camera'
 import ScrollableModal from '../../../../components/modals/ScrollableModal'
 import AñoNacimientoModal from '../../../../components/modals/AñoNacimientoModal'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
+import { DeviceMotion } from 'expo-sensors'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -42,6 +43,22 @@ const PlayerDetails = () => {
     sportman.info.description || ''
   )
   const navigation = useNavigation()
+
+  const [orientation, setOrientation] = useState('portrait')
+
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
 
   const {
     pickImage,
@@ -117,8 +134,6 @@ const PlayerDetails = () => {
   const [selectedImage, setSelectedImage] = useState(null)
   const [sportColor, setSportColor] = useState('#E1451E')
 
-  
-
   const [hasPermission, setHasPermission] = useState(null)
   const cameraReff = useRef(null)
 
@@ -138,7 +153,7 @@ const PlayerDetails = () => {
     if (sportman?.info?.sport == 'Fútbol') {
       setSportColor('#00FF18')
     }
-    if (sportman?.info?.sport == 'Básquetbol') {
+    if (sportman?.info?.sport == 'Baloncesto') {
       setSportColor('#E1451E')
     }
     ;(async () => {
@@ -148,7 +163,6 @@ const PlayerDetails = () => {
   }, [])
 
   const changePictureMode = async () => {
-
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
   const handleSelectAñoNacimiento = (año) => {
@@ -160,7 +174,9 @@ const PlayerDetails = () => {
   const takePicture = async () => {
     if (cameraReff?.current) {
       // Check if cameraRef is not null
-      const photo = await cameraReff.current.takePictureAsync() // Use cameraRef.current
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      }) // Use cameraRef.current
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -387,14 +403,14 @@ const PlayerDetails = () => {
                     onSelectAñoNacimiento={handleSelectAñoNacimiento}
                   />
                 </View>
-                
+
                 <View style={{ gap: 5 }}>
                   <Text
                     style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}
                   >
                     {'Lugar de residencia'}
                   </Text>
-                
+
                   <TextInput
                     style={{
                       flex: 1,

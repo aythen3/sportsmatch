@@ -19,6 +19,7 @@ import {
 import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera'
+import { DeviceMotion } from 'expo-sensors'
 
 const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   const {
@@ -48,15 +49,30 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   }, [])
 
   const changePictureMode = async () => {
-
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
   useEffect(() => {}, [selectedImage, selectedPicture])
+  const [orientation, setOrientation] = useState('portrait')
 
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
   const takePicture = async () => {
     if (cameraReff) {
-      const photo = await cameraReff.current.takePictureAsync()
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      })
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

@@ -41,24 +41,26 @@ export const ContextProvider = ({ children }) => {
   const [showDeletePostModalFromProfile, setShowDeletePostModalFromProfile] =
     useState(false)
   const userId = user?.user?.id
+
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (token) => {
-      if(token){
+      if (token) {
         try {
           try {
             const message = await axiosInstance.patch(
               `/user/update-token/${userId}/${token}`
             )
-            console.log(message)
+            console.log(message, 'message')
           } catch (error) {
             throw new Error(error)
           }
         } catch (e) {
-          console.log(e)
+          console.log('elerror', e)
         }
       }
     })
-  }, [])
+  }, [user?.user?.id])
+
   function transformHttpToHttps(url) {
     if (url?.startsWith('http://')) {
       return url.replace('http://', 'https://')
@@ -86,7 +88,7 @@ export const ContextProvider = ({ children }) => {
       profileImageForm.append('cloud_name', 'der45x19c')
       const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
 
-      await fetch(uploadUrl, {
+      const res = await fetch(uploadUrl, {
         method: 'post',
         body: profileImageForm
       })
@@ -95,7 +97,9 @@ export const ContextProvider = ({ children }) => {
           source === 'profile'
             ? setProfileImage(transformHttpToHttps(data.url))
             : setCoverImage(transformHttpToHttps(data.url))
+          return data.url
         })
+      return res
     }
   }
   // const [pickImageLoading, setPickImageLoading] = useState(false)

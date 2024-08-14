@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "825698969589",
+    "project_id": "sportspot-424216",
+    "storage_bucket": "sportspot-424216.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825698969589:android:868929b5c80eeeccd522bc",
+        "android_client_info": {
+          "package_name": "com.aythenapp.spotsport"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa_yj4EPiEPMUQYw1jnyrZdONdM-Cy0Zo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

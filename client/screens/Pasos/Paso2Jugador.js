@@ -21,7 +21,6 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
         gap: 15
       }}
     >
-
       {sports.map(
         (sport) =>
           sport.name === 'Fútbol' && (
@@ -46,7 +45,7 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
       )}
       {sports.map(
         (sport) =>
-          sport.name === 'Básquetbol' && (
+          sport.name === 'Baloncesto' && (
             <DeportesSeleccion
               key={sport.id}
               sport={sport}

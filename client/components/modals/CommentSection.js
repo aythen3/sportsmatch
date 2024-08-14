@@ -19,14 +19,21 @@ import { Context } from '../../context/Context'
 
 const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
   const dispatch = useDispatch()
-  
+
   const { generateLowResUrl } = useContext(Context)
-  const { user, mainColor , isSportman } = useSelector((state) => state.users)
+  const { user, mainColor, isSportman } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
+  const { allPosts } = useSelector((state) => state.post)
+
   const [canSend, setCanSend] = useState(false)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [comment, setComment] = useState('')
+
+  const allfilter = allPosts.find((e) => e.id === postId)
+
+  console.log(allfilter, 'ALLLLL')
+
   useEffect(() => {
     if (clubMatches) {
       const e =
@@ -142,61 +149,63 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                   backgroundColor: 'black'
                 }}
               >
-                {canSend || isSportman && (
-                  <>
-                    <View
-                      style={{
-                        borderRadius: 13,
-                        borderWidth: 0.5,
-                        borderColor: Color.wHITESPORTSMATCH,
-                        width: '80%',
-                        height: '100%',
-                        justifyContent: 'flex-start',
-                        flexDirection: 'column',
-                        display: 'flex',
-                        paddingHorizontal: 8
-                      }}
-                    >
-                      <TextInput
-                        placeholder="Escribe un comentario..."
-                        placeholderTextColor={Color.wHITESPORTSMATCH}
-                        onChangeText={setComment}
-                        value={comment}
-                        multiline
-                        style={styles.input2}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      style={{
-                        zIndex: 9999999
-                      }}
-                      onPress={() => {
-                        Keyboard.dismiss()
-                        handleSubmit({
-                          comment,
-                          user,
-                          postId,
-                          dispatch,
-                          setComment
-                        })
-                        closeModal()
-                      }}
-                    >
-                      <Text
+                {canSend ||
+                  (isSportman && (
+                    <>
+                      <View
                         style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: 16,
-                          fontWeight: '700',
-                          marginLeft: 15,
-                          zIndex: 5000
+                          borderRadius: 13,
+                          borderWidth: 0.5,
+                          borderColor: Color.wHITESPORTSMATCH,
+                          width: '80%',
+                          height: '100%',
+                          justifyContent: 'flex-start',
+                          flexDirection: 'column',
+                          display: 'flex',
+                          paddingHorizontal: 8
                         }}
                       >
-                        Publicar
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                )}
+                        <TextInput
+                          placeholder="Escribe un comentario..."
+                          placeholderTextColor={Color.wHITESPORTSMATCH}
+                          onChangeText={setComment}
+                          value={comment}
+                          multiline
+                          style={styles.input2}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          zIndex: 9999999
+                        }}
+                        onPress={() => {
+                          Keyboard.dismiss()
+                          handleSubmit({
+                            comment,
+                            user,
+                            postId,
+                            dispatch,
+                            setComment,
+                            allfilter
+                          })
+                          closeModal()
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginLeft: 15,
+                            zIndex: 5000
+                          }}
+                        >
+                          Publicar
+                        </Text>
+                      </TouchableOpacity>
+                    </>
+                  ))}
                 {!canSend && !isSportman && (
                   <>
                     <View

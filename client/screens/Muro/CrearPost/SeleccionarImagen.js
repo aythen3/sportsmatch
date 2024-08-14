@@ -21,6 +21,7 @@ import PagerView from 'react-native-pager-view'
 import SimboloSVG from './SimboloSVG'
 import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
+import { DeviceMotion } from 'expo-sensors'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage, pickImageFromCamera } = useContext(Context)
@@ -112,9 +113,27 @@ const SeleccionarImagen = () => {
 
   useEffect(() => {}, [selectedImage])
 
+  const [orientation, setOrientation] = useState('portrait')
+
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
+
   const takePicture = async () => {
     if (cameraReff?.current) {
-      const photo = await cameraReff.current.takePictureAsync()
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      })
       pickImage('a', photo.uri)
       setSelectedImage(photo)
       // pickImageFromCamera(selectedPicture, photo.uri);
