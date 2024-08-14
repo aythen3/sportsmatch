@@ -149,64 +149,63 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                   backgroundColor: 'black'
                 }}
               >
-                {canSend ||
-                  (isSportman && (
-                    <>
-                      <View
+                {canSend && (
+                  <>
+                    <View
+                      style={{
+                        borderRadius: 13,
+                        borderWidth: 0.5,
+                        borderColor: Color.wHITESPORTSMATCH,
+                        width: '80%',
+                        height: '100%',
+                        justifyContent: 'flex-start',
+                        flexDirection: 'column',
+                        display: 'flex',
+                        paddingHorizontal: 8
+                      }}
+                    >
+                      <TextInput
+                        placeholder="Escribe un comentario..."
+                        placeholderTextColor={Color.wHITESPORTSMATCH}
+                        onChangeText={setComment}
+                        value={comment}
+                        multiline
+                        style={styles.input2}
+                      />
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        zIndex: 9999999
+                      }}
+                      onPress={() => {
+                        Keyboard.dismiss()
+                        handleSubmit({
+                          comment,
+                          user,
+                          postId,
+                          dispatch,
+                          setComment,
+                          allfilter
+                        })
+                        closeModal()
+                      }}
+                    >
+                      <Text
                         style={{
-                          borderRadius: 13,
-                          borderWidth: 0.5,
-                          borderColor: Color.wHITESPORTSMATCH,
-                          width: '80%',
-                          height: '100%',
-                          justifyContent: 'flex-start',
-                          flexDirection: 'column',
-                          display: 'flex',
-                          paddingHorizontal: 8
+                          color: Color.wHITESPORTSMATCH,
+                          fontFamily: FontFamily.t4TEXTMICRO,
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginLeft: 15,
+                          zIndex: 5000
                         }}
                       >
-                        <TextInput
-                          placeholder="Escribe un comentario..."
-                          placeholderTextColor={Color.wHITESPORTSMATCH}
-                          onChangeText={setComment}
-                          value={comment}
-                          multiline
-                          style={styles.input2}
-                        />
-                      </View>
-                      <TouchableOpacity
-                        style={{
-                          zIndex: 9999999
-                        }}
-                        onPress={() => {
-                          Keyboard.dismiss()
-                          handleSubmit({
-                            comment,
-                            user,
-                            postId,
-                            dispatch,
-                            setComment,
-                            allfilter
-                          })
-                          closeModal()
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: Color.wHITESPORTSMATCH,
-                            fontFamily: FontFamily.t4TEXTMICRO,
-                            fontSize: 16,
-                            fontWeight: '700',
-                            marginLeft: 15,
-                            zIndex: 5000
-                          }}
-                        >
-                          Publicar
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  ))}
-                {!canSend && !isSportman && (
+                        Publicar
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+                {!canSend && (
                   <>
                     <View
                       style={{

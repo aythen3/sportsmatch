@@ -71,13 +71,13 @@ const HeaderPerfil = ({
 
   useEffect(() => {
     if (external) {
-      if (data.author.type === 'club') {
+      if (data?.author?.type === 'club') {
         getOffersById(data.author.club.id)
       }
     }
     if (!external) {
       if (!isSportman) {
-        getOffersById(user.user.club.id)
+        getOffersById(user?.user?.club?.id)
       }
     }
   }, [])
@@ -274,7 +274,11 @@ const HeaderPerfil = ({
                 { fontSize: 16, color: mainColor }
               ]}
             >
-              {sport == 'Voley' ? 'Voleibol' : sport == 'Handball' ? 'Balonmano' : sport}
+              {sport == 'Voley'
+                ? 'Voleibol'
+                : sport == 'Handball'
+                  ? 'Balonmano'
+                  : sport}
             </Text>
           )}
           {position && (

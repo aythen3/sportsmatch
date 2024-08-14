@@ -56,88 +56,143 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
           />
         )}
         <View style={styles.infoContainer}>
-        <View style={{flexDirection:"row",alignItems:"center",marginVertical:10,gap:10}}>
-          <Image
-            style={styles.profileImage}
-            contentFit="cover"
-            source={
-              !data?.sportman?.info?.img_perfil ||
-              data?.sportman?.info?.img_perfil === ''
-                ? require('../assets/whiteSport.png')
-                : {
-                    uri: generateLowResUrl(data?.sportman?.info?.img_perfil, 70)
-                  }
-            }
-          />
-          <Text style={styles.nickname}>{data?.nickname}</Text>
-        </View>
-         <View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-         <Text style={styles.label}>
-            {data?.sportman?.type === 'coach' ? 'Años de experiencia' : 'Sexo'}
-          </Text>
-          <Text style={styles.infoText}>
-            {data?.sportman?.type === 'coach'
-              ? data.sportman.info.yearsOfExperience
-              : data?.sportman.info.gender}
-          </Text>
-         </View>
-         <View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-
-          <Text style={styles.label}>
-            {data?.sportman?.type === 'coach' ? 'Lugar de residencia' : 'Edad'}
-          </Text>
-          <Text style={styles.infoText}>
-            {data?.sportman?.type === 'coach'
-              ? data.sportman.info.city || '-'
-              : getUserAge(data?.sportman.info.birthdate)}
-          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              gap: 10
+            }}
+          >
+            <Image
+              style={styles.profileImage}
+              contentFit="cover"
+              source={
+                !data?.sportman?.info?.img_perfil ||
+                data?.sportman?.info?.img_perfil === ''
+                  ? require('../assets/whiteSport.png')
+                  : {
+                      uri: generateLowResUrl(
+                        data?.sportman?.info?.img_perfil,
+                        70
+                      )
+                    }
+              }
+            />
+            <Text style={styles.nickname}>{data?.nickname}</Text>
           </View>
-         <View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-
-          <Text style={styles.label}>
-            {data?.sportman?.type === 'coach' ? 'Rol' : 'Categoría'}
-          </Text>
-          <Text style={styles.infoText}>
-            {data?.sportman?.type === 'coach'
-              ? data?.sportman?.info?.rol || '-'
-              : data?.sportman.info.category}
-          </Text>
+          <View
+            style={{
+              width: '100%',
+              borderBottomWidth: 1,
+              borderBottomColor: 'white'
+            }}
+          >
+            <Text style={styles.label}>
+              {data?.sportman?.type === 'coach'
+                ? 'Años de experiencia'
+                : 'Sexo'}
+            </Text>
+            <Text style={styles.infoText}>
+              {data?.sportman?.type === 'coach'
+                ? data.sportman.info.yearsOfExperience
+                : data?.sportman.info.gender}
+            </Text>
           </View>
-          
+          <View
+            style={{
+              width: '100%',
+              borderBottomWidth: 1,
+              borderBottomColor: 'white'
+            }}
+          >
+            <Text style={styles.label}>
+              {data?.sportman?.type === 'coach'
+                ? 'Lugar de residencia'
+                : 'Edad'}
+            </Text>
+            <Text style={styles.infoText}>
+              {data?.sportman?.type === 'coach'
+                ? data.sportman.info.city || '-'
+                : getUserAge(data?.sportman.info.birthdate)}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              borderBottomWidth: 1,
+              borderBottomColor: 'white'
+            }}
+          >
+            <Text style={styles.label}>
+              {data?.sportman?.type === 'coach' ? 'Rol' : 'Categoría'}
+            </Text>
+            <Text style={styles.infoText}>
+              {data?.sportman?.type === 'coach'
+                ? data?.sportman?.info?.rol || '-'
+                : data?.sportman.info.category}
+            </Text>
+          </View>
+
           {data?.sportman?.type !== 'coach' && (
             <>
-         <View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-            
-              <Text style={styles.label}>Posición principal</Text>
+              <View
+                style={{
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  borderBottomColor: 'white'
+                }}
+              >
+                <Text style={styles.label}>Posición principal</Text>
 
-              <Text style={styles.infoText}>
-                {data?.sportman.info.position}
-              </Text>
-</View>
-<View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-
-              <Text style={styles.label}>Altura</Text>
-              <Text style={styles.infoText}>{data?.sportman.info.height}</Text>
+                <Text style={styles.infoText}>
+                  {data?.sportman.info.position}
+                </Text>
               </View>
-         <View style={{width:"100%",borderBottomWidth:1,borderBottomColor:"white"}}>
-
-              {data?.sportman?.type !== 'coach' && (
-                <Text style={styles.label}>Lugar de residencia</Text>
-              )}
-              <Text style={styles.infoText}>{data?.sportman.info.city}</Text>
+              <View
+                style={{
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  borderBottomColor: 'white'
+                }}
+              >
+                <Text style={styles.label}>Altura</Text>
+                <Text style={styles.infoText}>
+                  {data?.sportman.info.height}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  borderBottomColor: 'white'
+                }}
+              >
+                {data?.sportman?.type !== 'coach' && (
+                  <Text style={styles.label}>Lugar de residencia</Text>
+                )}
+                <Text style={styles.infoText}>{data?.sportman.info.city}</Text>
               </View>
             </>
           )}
         </View>
 
-      
         <View style={styles.actionsContainer}>
           <Pressable
             style={styles.actionButton}
             onPress={() => {
               onClose()
+              console.log(
+                {
+                  sportman: data?.sportman?.id,
+                  receiverId: data?.id,
+                  receiverName: data?.nickname,
+                  profilePic: data?.sportman?.info?.img_perfil
+                },
+                'rrrr'
+              )
               navigation.navigate('ChatAbierto1', {
-                sportman:data?.sportman?.id,
+                sportman: data?.sportman?.id,
                 receiverId: data?.id,
                 receiverName: data?.nickname,
                 profilePic: data?.sportman?.info?.img_perfil
@@ -203,7 +258,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 10,
     alignItems: 'flex-start',
-    width: '90%',gap:3
+    width: '90%',
+    gap: 3
   },
   infoText: {
     color: Color.wHITESPORTSMATCH,
@@ -218,9 +274,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
     marginTop: 20,
-    position:"absolute",
-    bottom:20
-    
+    position: 'absolute',
+    bottom: 20
   },
   actionButton: {
     paddingVertical: Padding.p_8xs,

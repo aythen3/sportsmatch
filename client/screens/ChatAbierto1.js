@@ -49,9 +49,13 @@ const ChatAbierto1 = () => {
   } = useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
+  const { allMatchs } = useSelector((state) => state.matchs)
+
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [canSend, setCanSend] = useState(false)
-  const { user, allUsers, mainColor, isSportman } = useSelector((state) => state.users)
+  const { user, allUsers, mainColor, isSportman } = useSelector(
+    (state) => state.users
+  )
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -73,7 +77,7 @@ const ChatAbierto1 = () => {
   }, [])
 
   useEffect(() => {
-    if (clubMatches) {
+    if (clubMatches.length > 0) {
       const e =
         clubMatches.filter(
           (match) =>
@@ -82,6 +86,16 @@ const ChatAbierto1 = () => {
         ).length > 0
       console.warn(route.params.sportman)
       setCanSend(e)
+    } else {
+      const res = allMatchs.filter(
+        (m) =>
+          m.prop1.sportmanId === user.user.sportman.id && m.status === 'success'
+      )
+      const res2 =
+        res.filter((r) => r.prop1.clubData.userId === route?.params?.receiverId)
+          .length > 0
+
+      setCanSend(res2)
     }
   }, [])
   useEffect(() => {
@@ -516,7 +530,7 @@ const ChatAbierto1 = () => {
             </View>
           </ScrollView>
         )}
-        {canSend  && (
+        {canSend && (
           <View
             style={{
               height: 50,
@@ -561,7 +575,7 @@ const ChatAbierto1 = () => {
             </TouchableOpacity>
           </View>
         )}
-        {!canSend  && (
+        {!canSend && (
           <View
             style={{
               margin: 10,
@@ -573,7 +587,9 @@ const ChatAbierto1 = () => {
               borderColor: 'rgba(255, 255, 255, 0.3)'
             }}
           >
-            <Text style={{color: '#fff'}}>No puedes enviar mensajes si no has hecho match.</Text>
+            <Text style={{ color: '#fff' }}>
+              No puedes enviar mensajes si no has hecho match.
+            </Text>
           </View>
         )}
       </SafeAreaView>

@@ -75,7 +75,7 @@ export class NotificationService {
       });
       console.log(user_push, 'user_push');
       const expo = new Expo({
-        useFcmV1: false // this can be set to true in order to use the FCM v1 API
+        useFcmV1: true // this can be set to true in order to use the FCM v1 API
       });
       await expo
         .sendPushNotificationsAsync([
