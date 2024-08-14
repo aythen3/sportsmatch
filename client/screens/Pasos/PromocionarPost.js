@@ -77,14 +77,19 @@ const PromocionarPost = () => {
 
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/payment-sheet', {
-      priceId: optionIndex === 1 ? 500 : optionIndex === 2 ? 1000 : optionIndex === 3 ? 2200 : null,
+      priceId:
+        optionIndex === 1
+          ? 500
+          : optionIndex === 2
+            ? 1000
+            : optionIndex === 3
+              ? 2200
+              : null,
       customerId: user.user.stripeId
     })
     console.log(res.data, 'dataaaaaaaa')
     if (res.data) {
-      setClientSecret(
-        res.data.paymentIntent
-      )
+      setClientSecret(res.data.paymentIntent)
     }
   }
 

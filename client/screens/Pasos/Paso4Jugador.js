@@ -20,6 +20,7 @@ import DetallesSeleccion from '../../components/DetallesSeleccion'
 import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera'
+import { DeviceMotion } from 'expo-sensors'
 
 const Paso4Jugador = ({
   sportmanValues,
@@ -68,7 +69,7 @@ const Paso4Jugador = ({
     if (selectedSport.name == 'Fútbol') {
       setSportColor('#00FF18')
     }
-    if (selectedSport.name == 'Básquetbol') {
+    if (selectedSport.name == 'Baloncesto') {
       setSportColor('#E1451E')
     }
     ;(async () => {
@@ -78,16 +79,31 @@ const Paso4Jugador = ({
   }, [])
 
   const changePictureMode = async () => {
-
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
   useEffect(() => {}, [selectedImage, selectedPicture])
+  const [orientation, setOrientation] = useState('portrait')
 
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
   const takePicture = async () => {
     if (cameraReff?.current) {
       // Check if cameraRef is not null
-      const photo = await cameraReff.current.takePictureAsync() // Use cameraRef.current
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      }) // Use cameraRef.current
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)

@@ -127,16 +127,16 @@ const StepsClub = () => {
     switch (index) {
       case 1:
         return (
-       <View style={{paddingVertical:20}}>
-           <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
-       </View>
+          <View style={{ paddingVertical: 20 }}>
+            <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
+          </View>
         )
       case 2:
         return (
-            <EscogerDeporte2
-              clubValues={clubValues}
-              setClubValues={setClubValues}
-            />
+          <EscogerDeporte2
+            clubValues={clubValues}
+            setClubValues={setClubValues}
+          />
         )
       case 3:
         return (
@@ -221,24 +221,24 @@ const StepsClub = () => {
 
       <ScrollView
         style={{
-          flex: 1,
+          flex: 1
         }}
-        contentContainerStyle={{paddingBottom:20}}
+        contentContainerStyle={{ paddingBottom: 20 }}
       >
         {ViewComponent(stepsIndex)}
       </ScrollView>
-        <View style={{bottom:0,width:"100%",paddingVertical:20}}>
-          <TouchableOpacity
-            style={styles.touchable}
-            onPress={() => {
-              stepsIndex === 3
-                ? handleRegister()
-                : setstepsIndex((prev) => prev + 1)
-            }}
-          >
-            <Text style={styles.nextText}>Siguiente</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={{ bottom: 0, width: '100%', paddingVertical: 20 }}>
+        <TouchableOpacity
+          style={styles.touchable}
+          onPress={() => {
+            stepsIndex === 3
+              ? handleRegister()
+              : setstepsIndex((prev) => prev + 1)
+          }}
+        >
+          <Text style={styles.nextText}>Siguiente</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }

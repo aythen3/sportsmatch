@@ -18,27 +18,30 @@ import { setCity, setProfesionalType } from '../../redux/slices/users.slices'
 import { cities } from '../../utils/cities'
 import ScrollableModal from '../../components/modals/ScrollableModal'
 
-const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCity, setSelectedCity, setSelectedProfesional, selectedProfesional }) => {
-
+const Paso3Profesional = ({
+  setProfesionalValues,
+  profesionalValues,
+  selectedCity,
+  setSelectedCity,
+  setSelectedProfesional,
+  selectedProfesional
+}) => {
   const ROL = profesionalValues?.rol
   const CITY = profesionalValues?.city
   const ACTUAL_CLUB = profesionalValues?.actualClub
 
-  
   const dispatch = useDispatch()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [cityModal, setCityModal] = useState(false)
 
-
-
   const opcionesProfesional = [
     'Entrenador/a',
     'Preparador/a físico/a',
-    'Analista técnico/a'
-    , 'Psicólogo/a'
-    , 'Fisioterapeuta'
-    , 'Nutricionista'
+    'Analista técnico/a',
+    'Psicólogo/a',
+    'Fisioterapeuta',
+    'Nutricionista'
   ]
 
   const openModal = () => {
@@ -74,7 +77,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
   }
 
   const handlesValues = (field, value) => {
-    if(field === 'yearsOfExperience' && value > 80 ) return
+    if (field === 'yearsOfExperience' && value > 80) return
     setProfesionalValues((prev) => ({
       ...prev,
       [field]: value
@@ -86,9 +89,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
       <View style={styles.paso6}>
         <Acordeon
           title="Tipo de profesional"
-          placeholderText={
-            ROL ? ROL : 'Entrenador'
-          }
+          placeholderText={ROL ? ROL : 'Entrenador'}
           isAccordeon={modalVisible}
           open={openModal}
         />
@@ -97,12 +98,14 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
           <ScrollableModal
             visible={modalVisible}
             closeModal={closeModal}
-            onSelectItem={(e) => setProfesionalValues((prev) => {
-              return {
-                ...prev,
-                rol: e
-              }
-            })}
+            onSelectItem={(e) =>
+              setProfesionalValues((prev) => {
+                return {
+                  ...prev,
+                  rol: e
+                }
+              })
+            }
             options={opcionesProfesional}
           />
         )}
@@ -135,6 +138,7 @@ const Paso3Profesional = ({ setProfesionalValues, profesionalValues, selectedCit
           field="description"
           onValues={handlesValues}
           value={profesionalValues.description}
+          maxLength={200}
         />
       </View>
     </ScrollView>

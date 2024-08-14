@@ -417,15 +417,19 @@ const TodasLasOfertas = () => {
                                   userId: user?.user?.sportman?.id
                                 })
                               ).then((data) => {
+                                const userr = allUsers.filter(
+                                  (e) => e?.club?.id === offer?.clubId
+                                )[0]
+                                console.log(userr, 'userrr')
                                 dispatch(
                                   sendNotification({
                                     title: 'Inscripción',
                                     message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
-                                    recipientId: offer.clubId,
+                                    recipientId: userr?.id,
                                     date: new Date(),
                                     read: false,
                                     prop2: {
-                                      rol: 'club'
+                                      rol: 'user'
                                     },
                                     prop1: {
                                       userId: user?.user?.id,

@@ -48,6 +48,7 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: true })
   push_token: string;
+
   @Column({ type: 'simple-array', nullable: true })
   following: string[] | null;
 

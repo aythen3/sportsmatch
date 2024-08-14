@@ -39,6 +39,7 @@ export class NotificationService {
   }
 
   public async createService(createNotificationDto: CreateNotificationDto) {
+    console.log(createNotificationDto, 'dto');
     try {
       let recipient;
       const { rol } = createNotificationDto.prop2;
@@ -72,18 +73,21 @@ export class NotificationService {
       const user_push = await this.usersRepository.findOneBy({
         id: createNotificationDto.recipientId
       });
+      console.log(user_push, 'user_push');
       const expo = new Expo({
-        useFcmV1: false // this can be set to true in order to use the FCM v1 API
+        useFcmV1: true // this can be set to true in order to use the FCM v1 API
       });
-      await expo.sendPushNotificationsAsync([
-        {
-          to: user_push.push_token,
-          sound: 'default',
-          title: createNotificationDto.title,
-          body: createNotificationDto.message,
-          priority: 'high'
-        }
-      ]);
+      await expo
+        .sendPushNotificationsAsync([
+          {
+            to: user_push.push_token,
+            sound: 'default',
+            title: createNotificationDto.title,
+            body: createNotificationDto.message,
+            priority: 'high'
+          }
+        ])
+        .then((e) => console.log(e, 'ee'));
       notification.recipientId = recipient.id;
       return await this.notificationsRepository.save(notification);
     } catch (error) {

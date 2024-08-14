@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 
 const TusMatchsDetalle = ({ onClose, data }) => {
   const navigation = useNavigation()
-  const { mainColor } = useSelector((state) => state.users)
+  const { mainColor, user } = useSelector((state) => state.users)
 
   const images = {
     '#6A1C4F': require('../assets/expandedMatchCards/6A1C4F.png'),
@@ -82,8 +82,9 @@ const TusMatchsDetalle = ({ onClose, data }) => {
           style={[styles.aceptar, styles.aceptarFlexBox]}
           onPress={() => {
             onClose()
+            console.log(data, 'rrrr')
             navigation.navigate('ChatAbierto1', {
-              
+              sportman: user.user.sportman.id,
               receiverId: data?.id,
               receiverName: data?.nickname,
               profilePic: data?.club?.img_perfil

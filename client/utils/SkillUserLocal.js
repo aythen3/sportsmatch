@@ -114,14 +114,14 @@ export const categorias_deporte = {
   'Fútbol Sala': opciones_categoria.futbolSala,
   Voley: opciones_categoria.voleibol,
   Hockey: opciones_categoria.hockey,
-  Básquetbol: opciones_categoria.baloncesto,
+  Baloncesto: opciones_categoria.baloncesto,
   Handball: opciones_categoria.handball
 }
 
 export const skills_deporte = {
   Fútbol: opciones_skills.futbol,
   'Fútbol Sala': opciones_skills.futbolSala,
-  Básquetbol: opciones_skills.baloncesto,
+  Baloncesto: opciones_skills.baloncesto,
   Hockey: opciones_skills.hockey,
   Handball: opciones_skills.handball,
   Voley: opciones_skills.voleibol

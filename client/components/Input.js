@@ -16,7 +16,9 @@ function Input({
   onSubmit,
   keyboardType,
   type,
-  state,setState
+  state,
+  setState,
+  maxLength
 }) {
   return (
     <View
@@ -60,12 +62,14 @@ function Input({
               textAlignVertical: isMultiLine ? 'top' : 'center'
             }}
             value={type ? state : value}
-            onChangeText={(value) => type ? setState(value) : onValues(field, value)}
+            onChangeText={(value) =>
+              type ? setState(value) : onValues(field, value)
+            }
             ref={inputRef}
             onSubmitEditing={onSubmit}
             secureTextEntry={type ? true : false}
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
-            maxLength={maxLength || 40}
+            maxLength={maxLength ? maxLength : 40}
           />
           {isAccordeon && (
             <Image

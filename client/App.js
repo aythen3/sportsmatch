@@ -81,18 +81,18 @@ import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import { registerForPushNotificationsAsync } from './utils/pushService'
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false
-  })
-})
 import RecuperarContra from './screens/Login/RecuperarContra'
 if (__DEV__) {
   require('./ReactotronConfig')
 }
 const App = () => {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false
+    })
+  })
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
   const [isFooterShow, setIsFooterShow] = useState(null)
 

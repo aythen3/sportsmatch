@@ -23,7 +23,7 @@ const FeedStats = () => {
       setSelectedOptions(opciones_skills.futbol)
     if (sportman?.info?.sport === 'Fútbol Sala')
       setSelectedOptions(opciones_skills.futbolSala)
-    if (sportman?.info?.sport === 'Básquetbol')
+    if (sportman?.info?.sport === 'Baloncesto')
       setSelectedOptions(opciones_skills.baloncesto)
     if (sportman?.info?.sport === 'Hockey')
       setSelectedOptions(opciones_skills.hockey)

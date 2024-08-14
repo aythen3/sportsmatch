@@ -121,6 +121,9 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
             userData: {
               ...user
             }
+          },
+          prop2: {
+            rol: user?.user?.type === 'sportman' ? 'user' : 'club'
           }
         })
       )

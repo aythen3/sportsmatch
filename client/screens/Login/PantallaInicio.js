@@ -42,7 +42,7 @@ export const detectSportColor = (sport, dispatch) => {
   if (sport == 'Fútbol') {
     dispatch(setMainColor('#00FF18'))
   }
-  if (sport == 'Básquetbol') {
+  if (sport == 'Baloncesto') {
     dispatch(setMainColor('#E1451E'))
   }
 }

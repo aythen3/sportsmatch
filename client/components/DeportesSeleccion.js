@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions
+} from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch } from 'react-redux'
 import { getSportById } from '../redux/actions/sports'
@@ -26,7 +33,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          {sport?.name === 'Básquetbol' && (
+          {sport?.name === 'Baloncesto' && (
             <Image
               style={styles.frameChild}
               resizeMode="contain"
@@ -82,7 +89,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
             />
           )}
           <Text style={styles.ftbolTypo}>
-            {sport?.name === 'Básquetbol'
+            {sport?.name === 'Baloncesto'
               ? 'Baloncesto'
               : sport?.name === 'Fútbol de salón'
                 ? 'Futbol sala'

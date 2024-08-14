@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Color, FontFamily } from '../GlobalStyles'
 import { Image } from 'expo-image'
 
-
 const FiltersSportman = ({
   posts,
   onClose,
@@ -22,7 +21,7 @@ const FiltersSportman = ({
   const sportsNames = [
     'Fútbol',
     'Fútbol Sala',
-    'Básquetbol',
+    'Baloncesto',
     'Voley',
     'Hockey',
     'Handball'
@@ -39,54 +38,51 @@ const FiltersSportman = ({
     })
   }
 
-
   const reorganizeAndSortPostsLikes = (postGroups) => {
     // Aplanar todos los posts en un solo array
-    let allPosts = [];
-    postGroups.forEach(group => {
-      allPosts = allPosts.concat(group.columnItems, group.rightItem);
-    });
-  
+    let allPosts = []
+    postGroups.forEach((group) => {
+      allPosts = allPosts.concat(group.columnItems, group.rightItem)
+    })
+
     // Ordenar los posts por likes
-    const sortedPosts = allPosts.sort((a, b) => b.likes - a.likes);
-  
+    const sortedPosts = allPosts.sort((a, b) => b.likes - a.likes)
+
     // Redistribuir los posts en la estructura original
-    const newPostGroups = postGroups.map(group => {
-      const newColumnItems = sortedPosts.splice(0, group.columnItems.length);
-      const newRightItem = sortedPosts.splice(0, 1)[0];
+    const newPostGroups = postGroups.map((group) => {
+      const newColumnItems = sortedPosts.splice(0, group.columnItems.length)
+      const newRightItem = sortedPosts.splice(0, 1)[0]
       return {
         columnItems: newColumnItems,
         rightItem: newRightItem
-      };
-    });
-  
-    return newPostGroups;
-  };
+      }
+    })
+
+    return newPostGroups
+  }
 
   const reorganizeAndSortPostsComment = (postGroups) => {
     // Aplanar todos los posts en un solo array
-    let allPosts = [];
-    postGroups.forEach(group => {
-      allPosts = allPosts.concat(group.columnItems, group.rightItem);
-    });
-  
+    let allPosts = []
+    postGroups.forEach((group) => {
+      allPosts = allPosts.concat(group.columnItems, group.rightItem)
+    })
+
     // Ordenar los posts por likes
-    const sortedPosts = allPosts.sort((a, b) => b.commentCount - a.commentCount);
-  
+    const sortedPosts = allPosts.sort((a, b) => b.commentCount - a.commentCount)
+
     // Redistribuir los posts en la estructura original
-    const newPostGroups = postGroups.map(group => {
-      const newColumnItems = sortedPosts.splice(0, group.columnItems.length);
-      const newRightItem = sortedPosts.splice(0, 1)[0];
+    const newPostGroups = postGroups.map((group) => {
+      const newColumnItems = sortedPosts.splice(0, group.columnItems.length)
+      const newRightItem = sortedPosts.splice(0, 1)[0]
       return {
         columnItems: newColumnItems,
         rightItem: newRightItem
-      };
-    });
-  
-    return newPostGroups;
-  };
+      }
+    })
 
-
+    return newPostGroups
+  }
 
   if (posts) {
     return (
@@ -95,7 +91,7 @@ const FiltersSportman = ({
           backgroundColor: Color.bLACK3SPORTSMATCH,
           width: 200,
           alignItems: 'center',
-          gap:6,
+          gap: 6,
           paddingVertical: 10,
           borderRadius: 8
         }}
@@ -162,7 +158,6 @@ const FiltersSportman = ({
         />
         <TouchableOpacity
           onPress={() => {
-   
             setFilterSelected('Por relevancia')
 
             setPosts(reorganizeAndSortPostsComment(posts))

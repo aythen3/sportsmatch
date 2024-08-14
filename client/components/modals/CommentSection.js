@@ -19,14 +19,21 @@ import { Context } from '../../context/Context'
 
 const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
   const dispatch = useDispatch()
-  
+
   const { generateLowResUrl } = useContext(Context)
-  const { user, mainColor , isSportman } = useSelector((state) => state.users)
+  const { user, mainColor, isSportman } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
+  const { allPosts } = useSelector((state) => state.post)
+
   const [canSend, setCanSend] = useState(false)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [comment, setComment] = useState('')
+
+  const allfilter = allPosts.find((e) => e.id === postId)
+
+  console.log(allfilter, 'ALLLLL')
+
   useEffect(() => {
     if (clubMatches) {
       const e =
@@ -142,7 +149,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                   backgroundColor: 'black'
                 }}
               >
-                {canSend || isSportman && (
+                {canSend && (
                   <>
                     <View
                       style={{
@@ -177,7 +184,8 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                           user,
                           postId,
                           dispatch,
-                          setComment
+                          setComment,
+                          allfilter
                         })
                         closeModal()
                       }}
@@ -197,7 +205,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                     </TouchableOpacity>
                   </>
                 )}
-                {!canSend && !isSportman && (
+                {!canSend && (
                   <>
                     <View
                       style={{

@@ -21,13 +21,16 @@ import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 import ScrollableModal from '../../../../components/modals/ScrollableModal'
+import { DeviceMotion } from 'expo-sensors'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
   const { sportman } = useSelector((state) => state.sportman)
   const [profesionalType, setProfesionalTpye] = useState()
   const [showCityModal, setShowCityModal] = useState(false)
-  const [yearsOfExperience, setYearsOfExperience] = useState()
+  const [yearsOfExperience, setYearsOfExperience] = useState(
+    sportman?.info?.yearsOfExperience
+  )
   const [city, setCity] = useState()
   const [actualClubName, setActualClubName] = useState()
   const [userDescription, setUserDescription] = useState()
@@ -41,12 +44,13 @@ const PlayerDetails = () => {
     setProfileImage,
     provisoryCoverImage,
     provisoryProfileImage,
-    pickImageFromCamera
+    pickImageFromCamera,
+    setProvisoryProfileImage,
+    setProvisoryCoverImage
   } = useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
 
-
-  console.log(sportman, "userrrrr")
+  console.log(sportman, 'userrrrr')
 
   const [showCamera, setShowCamera] = useState(false)
   const [selectedPicture, setSelectedPicture] = useState()
@@ -55,39 +59,48 @@ const PlayerDetails = () => {
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
-  const [residencia, setResidencia] = useState("")
+  const [residencia, setResidencia] = useState('')
   const [facing, setFacing] = useState('back')
   const cameraReff = useRef(null)
-
 
   const inputs = [
     {
       title: 'Lugar de residencia',
       type: 'text',
-      placeHolder: sportman?.info?.city && sportman?.info?.city !== '' ? sportman?.info?.city : 'Lugar de residencia',
+      placeHolder:
+        sportman?.info?.city && sportman?.info?.city !== ''
+          ? sportman?.info?.city
+          : 'Lugar de residencia',
       state: residencia,
       setState: setResidencia,
-      zIndex: 6000
+      zIndex: 6000,
+      maxLength: 40
     },
     {
       title: 'Club actual',
       type: 'text',
-      placeHolder: sportman?.info?.actualClub && sportman?.info?.actualClub !== '' ? sportman?.info?.actualClub : 'Escribe solo si estas en algun club...',
+      placeHolder:
+        sportman?.info?.actualClub && sportman?.info?.actualClub !== ''
+          ? sportman?.info?.actualClub
+          : 'Escribe solo si estas en algun club...',
       state: actualClubName,
       setState: setActualClubName,
-      zIndex: 7000
+      zIndex: 7000,
+      maxLength: 40
     },
     {
       title: '¿Cómo te defines como profesional?',
       type: 'text',
-      placeHolder: sportman?.info?.description && sportman?.info?.description !== '' ? sportman?.info?.description : 'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
+      placeHolder:
+        sportman?.info?.description && sportman?.info?.description !== ''
+          ? sportman?.info?.description
+          : 'Describe tu juego, tu condicion fisica, tu personalidad en el campo...',
       state: userDescription,
       setState: setUserDescription,
       textArea: true,
-      zIndex: 6000
+      zIndex: 6000,
+      maxLength: 200
     }
-
-
   ]
 
   const handleUpdateUserData = () => {
@@ -112,24 +125,41 @@ const PlayerDetails = () => {
     navigation.navigate('MiPerfil')
   }
 
-
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
+    return () => {
+      setProvisoryProfileImage('')
+      setProvisoryCoverImage('')
+    }
   }, [])
 
   const changePictureMode = async () => {
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
+  const [orientation, setOrientation] = useState('portrait')
 
-
-
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
   const takePicture = async () => {
     if (cameraReff?.current) {
       // Check if cameraRef is not null
-      const photo = await cameraReff.current.takePictureAsync() // Use cameraRef.current
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      }) // Use cameraRef.current
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -217,7 +247,9 @@ const PlayerDetails = () => {
             width: '100%'
           }}
         >
-          <CustomHeaderBack header={'Detalles del profesional'}></CustomHeaderBack>
+          <CustomHeaderBack
+            header={'Detalles del profesional'}
+          ></CustomHeaderBack>
           <View style={{ gap: 10, flex: 1, paddingHorizontal: 12 }}>
             {/* =========================================================== */}
             {/* ====================== TOP CONTAINER ====================== */}
@@ -235,7 +267,7 @@ const PlayerDetails = () => {
               }}
             >
               <View style={{ ...styles.profileImageContainer }}>
-                {provisoryProfileImage && (
+                {/* {provisoryProfileImage && (
                   <Image
                     style={{ width: '100%', height: '100%', borderRadius: 100 }}
                     contentFit="cover"
@@ -243,13 +275,13 @@ const PlayerDetails = () => {
                       uri: provisoryProfileImage
                     }}
                   />
-                )}
-                {sportman?.info?.img_perfil && !provisoryCoverImage && (
+                )} */}
+                {sportman?.info?.img_perfil && (
                   <Image
                     style={{ width: '100%', height: '100%', borderRadius: 100 }}
                     contentFit="cover"
                     source={{
-                      uri: sportman?.info?.img_perfil
+                      uri: provisoryProfileImage || sportman?.info?.img_perfil
                     }}
                   />
                 )}
@@ -278,6 +310,7 @@ const PlayerDetails = () => {
               </View>
               <TouchableOpacity
                 style={{ ...styles.orangeButton, backgroundColor: mainColor }}
+                // onPress={() => pickImage('profile')}
                 onPress={() => pickImage('profile')}
               >
                 <Text style={styles.mediumText}>Subir foto de perfil</Text>
@@ -341,7 +374,6 @@ const PlayerDetails = () => {
               </View>
               <TouchableOpacity
                 style={{ ...styles.orangeButton, backgroundColor: mainColor }}
-
                 onPress={() => pickImage('cover')}
               >
                 <Text style={styles.mediumText}>Subir foto de portada</Text>
@@ -361,10 +393,10 @@ const PlayerDetails = () => {
                   array={[
                     'Entrenador/a',
                     'Preparador/a físico/a',
-                    'Analista técnico/a'
-                    , 'Psicólogo/a'
-                    , 'Fisioterapeuta'
-                    , 'Nutricionista'
+                    'Analista técnico/a',
+                    'Psicólogo/a',
+                    'Fisioterapeuta',
+                    'Nutricionista'
                   ]}
                   placeholder={sportman?.info?.rol ?? 'Tipo de profesional'}
                   state={profesionalType}
@@ -380,10 +412,10 @@ const PlayerDetails = () => {
                 options={[
                   'Entrenador/a',
                   'Preparador/a físico/a',
-                  'Analista técnico/a'
-                  , 'Psicólogo/a'
-                  , 'Fisioterapeuta'
-                  , 'Nutricionista'
+                  'Analista técnico/a',
+                  'Psicólogo/a',
+                  'Fisioterapeuta',
+                  'Nutricionista'
                 ]}
               />
 
@@ -394,9 +426,10 @@ const PlayerDetails = () => {
                 <TextInput
                   value={yearsOfExperience}
                   onChangeText={setYearsOfExperience}
-                  placeholder={sportman?.info?.yearsOfExperience ?? 'Años en activo...'}
+                  placeholder={'Años en activo...'}
                   keyboardType={'numeric'}
                   placeholderTextColor="#999999"
+                  maxLength={2}
                   style={{
                     flex: 1,
                     borderWidth: 0.5,
@@ -405,15 +438,16 @@ const PlayerDetails = () => {
                     paddingLeft: 15,
                     height: 40,
                     fontSize: 15,
-                    color: '#fff'
+                    color: 'white'
                   }}
                 />
               </View>
 
-
               {inputs.map((input, index) => (
                 <View key={index} style={{ gap: 5, zIndex: input.zIndex }}>
-                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  <Text
+                    style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}
+                  >
                     {input.title}
                   </Text>
                   <TextInput
@@ -424,6 +458,7 @@ const PlayerDetails = () => {
                     placeholder={input.placeHolder}
                     keyboardType={input.type === 'text' ? 'default' : 'numeric'}
                     placeholderTextColor="#999999"
+                    maxLength={input.maxLength}
                     style={{
                       flex: 1,
                       borderWidth: 0.5,
@@ -431,7 +466,7 @@ const PlayerDetails = () => {
                       textAlignVertical: input.textArea && 'top',
                       borderRadius: input.textArea ? 10 : 50,
                       paddingTop: input.textArea && 10,
-                      paddingLeft: 15,
+                      paddingHorizontal: 15,
                       height: input.textArea ? 170 : 40,
                       fontSize: 15,
                       color: '#fff'
@@ -487,7 +522,7 @@ const PlayerDetails = () => {
           FocusMode="on"
           onCameraReady={(e) => console.log(e, 'esto es e')}
 
-        // cameraType="back"
+          // cameraType="back"
         >
           <View
             style={{
@@ -572,7 +607,7 @@ const styles = StyleSheet.create({
     width: 117,
     height: 117,
     marginBottom: 8,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: '#D9D9D9',
     borderRadius: 100
   },
   coverImageContainer: {
@@ -580,7 +615,7 @@ const styles = StyleSheet.create({
     height: 138,
     marginBottom: 8,
     borderRadius: 8,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: '#D9D9D9'
   },
   topWrapper: {
     marginBottom: 42,

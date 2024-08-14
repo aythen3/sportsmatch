@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Image } from 'expo-image'
 import {
+  Dimensions,
   Modal,
   SectionList,
   StyleSheet,
@@ -15,6 +16,7 @@ import { updateImgClub } from '../../redux/actions/club'
 import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView } from 'expo-camera'
+import { DeviceMotion } from 'expo-sensors'
 
 const EscogerDeporte1 = ({ color }) => {
   const {
@@ -64,7 +66,21 @@ const EscogerDeporte1 = ({ color }) => {
   const cameraReff = useRef(null)
 
   useEffect(() => {}, [selectedImage, selectedPicture])
+  const [orientation, setOrientation] = useState('portrait')
 
+  useEffect(() => {
+    const subscription = DeviceMotion.addListener((deviceMotionData) => {
+      const { rotation } = deviceMotionData
+      if (rotation.beta > 45 && rotation.beta < 135) {
+        setOrientation('landscape')
+      } else if (rotation.beta < -45 && rotation.beta > -135) {
+        setOrientation('landscape')
+      } else {
+        setOrientation('portrait')
+      }
+    })
+    return () => subscription.remove()
+  }, [])
   const takePicture = async () => {
     // console.log('on takePicture!')
     // if (cameraRef) {
@@ -77,7 +93,9 @@ const EscogerDeporte1 = ({ color }) => {
     // }
     if (cameraReff?.current) {
       // Check if cameraRef is not null
-      const photo = await cameraReff.current.takePictureAsync() // Use cameraRef.current
+      const photo = await cameraReff.current.takePictureAsync({
+        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+      }) // Use cameraRef.current
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -235,76 +253,79 @@ const EscogerDeporte1 = ({ color }) => {
     )
   } else {
     return (
-      <View style={{ zIndex: 9999, height: '85%' }}>
-        <CameraView
-          ref={cameraReff}
-          facing={facing}
-          style={{ flex: 1 }}
-          mode="picture"
-          FocusMode="on"
-          onCameraReady={(e) => console.log(e, 'esto es e')}
+      <Modal visible={showCamera}>
+        <View style={{ zIndex: 9999, height: '100%' }}>
+          <CameraView
+            ref={cameraReff}
+            facing={facing}
+            style={{ height: Dimensions.get('screen').height }}
+            mode="picture"
+            FocusMode="on"
+            onCameraReady={(e) => console.log(e, 'esto es e')}
 
-          // cameraType="back"
-        >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row'
-            }}
+            // cameraType="back"
           >
-            <TouchableOpacity
-              style={{ position: 'absolute', top: 22, left: 18 }}
-              onPress={() => setShowCamera(false)}
-            >
-              <Image
-                style={{
-                  height: 15,
-                  width: 15
-                }}
-                contentFit="cover"
-                source={require('../../assets/group-565.png')}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
+            <View
               style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
+                flex: 1,
+                backgroundColor: 'transparent',
                 flexDirection: 'row',
-                width: '100%',
-                marginBottom: 30,
-                position: 'relative'
+                paddingBottom: 50
               }}
             >
               <TouchableOpacity
-                onPress={takePicture}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 100,
-                  backgroundColor: '#cecece',
+                style={{ position: 'absolute', top: 22, left: 18 }}
+                onPress={() => setShowCamera(false)}
+              >
+                <Image
+                  style={{
+                    height: 15,
+                    width: 15
+                  }}
+                  contentFit="cover"
+                  source={require('../../assets/group-565.png')}
+                />
+              </TouchableOpacity>
 
-                  color: 'white'
-                }}
-              ></TouchableOpacity>
               <TouchableOpacity
-                onPress={changePictureMode}
                 style={{
-                  position: 'absolute',
-                  right: 20,
-                  color: 'white',
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginBottom: 30,
+                  position: 'relative'
                 }}
               >
-                <Entypo name="cycle" color={'#fff'} size={25} />
+                <TouchableOpacity
+                  onPress={takePicture}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 100,
+                    backgroundColor: '#cecece',
+
+                    color: 'white'
+                  }}
+                ></TouchableOpacity>
+                <TouchableOpacity
+                  onPress={changePictureMode}
+                  style={{
+                    position: 'absolute',
+                    right: 20,
+                    color: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Entypo name="cycle" color={'#fff'} size={25} />
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        </CameraView>
-      </View>
+            </View>
+          </CameraView>
+        </View>
+      </Modal>
     )
   }
 }
