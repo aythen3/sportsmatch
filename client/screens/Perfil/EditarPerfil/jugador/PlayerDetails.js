@@ -40,7 +40,7 @@ const PlayerDetails = () => {
     sportman?.info?.actualClub || ''
   )
   const [userDescription, setUserDescription] = useState(
-    sportman.info.description || ''
+    sportman?.info?.description || ''
   )
   const navigation = useNavigation()
 
@@ -68,7 +68,9 @@ const PlayerDetails = () => {
     setProfileImage,
     provisoryCoverImage,
     provisoryProfileImage,
-    pickImageFromCamera
+    pickImageFromCamera,
+    setProvisoryProfileImage,
+    setProvisoryCoverImage
   } = useContext(Context)
   const { user } = useSelector((state) => state.users)
 
@@ -160,6 +162,10 @@ const PlayerDetails = () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
+    return () => {
+      setProfileImage('')
+      setProvisoryCoverImage('')
+    }
   }, [])
 
   const changePictureMode = async () => {
@@ -177,6 +183,7 @@ const PlayerDetails = () => {
       const photo = await cameraReff.current.takePictureAsync({
         orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
       }) // Use cameraRef.current
+      console.log(photo, 'photo')
       setSelectedImage(photo)
       pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
@@ -214,7 +221,7 @@ const PlayerDetails = () => {
                 }}
               >
                 <View style={styles.profileImageContainer}>
-                  {sportman?.info?.img_perfil ? (
+                  {sportman?.info?.img_perfil || provisoryProfileImage ? (
                     <Image
                       style={{
                         width: '100%',
@@ -280,7 +287,7 @@ const PlayerDetails = () => {
                 }}
               >
                 <View style={styles.coverImageContainer}>
-                  {sportman?.info?.img_front ? (
+                  {sportman?.info?.img_front || provisoryCoverImage ? (
                     <Image
                       style={{ width: '100%', height: '100%', borderRadius: 8 }}
                       contentFit="cover"

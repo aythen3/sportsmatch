@@ -99,6 +99,7 @@ export const ContextProvider = ({ children }) => {
             : setCoverImage(transformHttpToHttps(data.url))
           return data.url
         })
+      console.log(res, 'res')
       return res
     }
   }
