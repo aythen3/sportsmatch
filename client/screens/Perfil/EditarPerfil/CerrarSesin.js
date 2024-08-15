@@ -101,6 +101,7 @@ quieres `}</Text>
                   await AsyncStorage.removeItem('userAuth')
                   await AsyncStorage.removeItem('googleAuth')
                   await AsyncStorage.removeItem('facebookAuth')
+                  await AsyncStorage.removeItem('appleUserAuth')
                   await AsyncStorage.removeItem('@user')
                   await dispatch(cleanSportman())
                   await dispatch(cleanUser())

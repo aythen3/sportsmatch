@@ -1,10 +1,10 @@
 /* fonts */
 export const FontFamily = {
   // t4TEXTMICRO: "Haffer",
-  openSansSemiBold: "OpenSans-SemiBold",
-  interBold: "Inter-Bold",
-  bodyBodyXS: "Inter-Regular",
-};
+  openSansSemiBold: 'OpenSans-SemiBold',
+  interBold: 'Inter-Bold',
+  bodyBodyXS: 'Inter-Regular'
+}
 /* font sizes */
 export const FontSize = {
   button_size: 18,
@@ -20,26 +20,26 @@ export const FontSize = {
   h2TITLEBIG_size: 30,
   size_21xl: 40,
   h1TitleHUGE_size: 38,
-  size_31xl: 50,
-};
+  size_31xl: 50
+}
 /* Colors */
 export const Color = {
-  wHITESPORTSMATCH: "#fff",
-  bLACK1SPORTSMATCH: "#000",
-  colorDimgray_100: "#505050",
-  neutralDarkLightest: "#8f9098",
-  bLACK3SPORTSMATCH: "#252525",
-  bLACK2SPORTMATCH: "#1d1d1d",
-  gREY2SPORTSMATCH: "#999",
-  bALONCESTO: "#e1451e",
-  colorGhostwhite: "rgba(235, 235, 245, 0.6)",
-  colorGainsboro: "#d9d9d9",
-  colorGoldenrod: "#e6b300",
-  colorMaroon: "#7b2610",
-  colorSilver: "#c5c6cc",
-  colorWhitesmoke: "#f4f4f4",
-  colorDarkturquoise: "#1ecae1",
-};
+  wHITESPORTSMATCH: '#fff',
+  bLACK1SPORTSMATCH: '#000',
+  colorDimgray_100: '#505050',
+  neutralDarkLightest: '#8f9098',
+  bLACK3SPORTSMATCH: '#252525',
+  bLACK2SPORTMATCH: '#1d1d1d',
+  gREY2SPORTSMATCH: '#999',
+  bALONCESTO: '#e1451e',
+  colorGhostwhite: 'rgba(235, 235, 245, 0.6)',
+  colorGainsboro: '#d9d9d9',
+  colorGoldenrod: '#e6b300',
+  colorMaroon: '#7b2610',
+  colorSilver: '#c5c6cc',
+  colorWhitesmoke: '#f4f4f4',
+  colorDarkturquoise: '#1ecae1'
+}
 /* Paddings */
 export const Padding = {
   p_81xl: 100,
@@ -62,8 +62,8 @@ export const Padding = {
   p_7xs: 6,
   p_12xs: 1,
   p_lgi: 19,
-  p_base: 16,
-};
+  p_base: 16
+}
 /* border radiuses */
 export const Border = {
   br_81xl: 100,
@@ -76,5 +76,5 @@ export const Border = {
   br_62xl_1: 81,
   br_xl: 20,
   br_xs: 12,
-  br_11xs: 2,
-};
+  br_11xs: 2
+}

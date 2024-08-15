@@ -45,9 +45,14 @@ export class UserController {
       console.log(error);
     }
   }
-  @Get(':googleId')
+  @Get('google/:googleId')
   async verificarGoogleId(@Param('googleId') googleId: string) {
     const existe = await this.userService.existeGoogleId(googleId);
+    return { existe };
+  }
+  @Get('apple/:appleId')
+  async verificarAppleId(@Param('appleId') appleId: string) {
+    const existe = await this.userService.existeAppleId(appleId);
     return { existe };
   }
   // Método para encontrar todos los usuarios

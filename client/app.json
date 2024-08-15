@@ -42,7 +42,7 @@
       }
     },
     "android": {
-         "googleServicesFile": "./utils/google-services.json",
+      "googleServicesFile": "./utils/google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/smiconmain.png",
         "backgroundColor": "#000"
@@ -59,15 +59,14 @@
     },
     "plugins": [
       "expo-font",
-        [
-      "react-native-vision-camera",
-      {
-        "cameraPermissionText": "SportsMatch needs access to your Camera.",
-
-        "enableMicrophonePermission": true,
-        "microphonePermissionText": "SportsMatch needs access to your Microphone."
-      }
-    ],
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "SportsMatch needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "SportsMatch needs access to your Microphone."
+        }
+      ],
       [
         "expo-apple-authentication"
       ],

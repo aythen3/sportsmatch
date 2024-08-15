@@ -270,7 +270,10 @@ const TodasLasOfertas = () => {
           }
           return true
         }).length > 0 ? (
-        <ScrollView keyboardShouldPersistTaps={'always'}>
+        <ScrollView
+          keyboardShouldPersistTaps={'always'}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
           {offer
             .filter((offer) => offer.paused === false)
             .filter((offer) => {
@@ -348,35 +351,86 @@ const TodasLasOfertas = () => {
                     backgroundColor: Color.bLACK2SPORTMATCH,
                     borderRadius: 10,
                     alignItems: 'center',
+                    borderColor: '#505050',
+                    borderWidth: 1,
                     opacity: 0.7
                   }}
                 >
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                    <CardInfoOffers
-                      text="Sexo"
-                      value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                    />
-                    <CardInfoOffers
-                      category={true}
-                      text="Categoría"
-                      value={offer.category}
-                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        borderEndWidth: 1,
+                        borderBottomWidth: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers
+                        text="Sexo"
+                        value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        borderBottomWidth: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers
+                        category={true}
+                        text="Categoría"
+                        value={offer.category}
+                      />
+                    </View>
                   </View>
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                    <CardInfoOffers text="Posición" value={offer?.posit} />
-                    <CardInfoOffers
-                      text="Ubicacion"
-                      value={offer?.province || 'Random'}
-                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        borderEndWidth: 1,
+                        borderBottomWidth: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers text="Posición" value={offer?.posit} />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        borderBottomWidth: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers
+                        text="Ubicacion"
+                        value={offer?.province || 'Random'}
+                      />
+                    </View>
                   </View>
 
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                    <CardInfoOffers text="Urgencia" value={offer?.urgency} />
-                    <CardInfoOffers
-                      text="Retribucion"
-                      value={offer.retribution === false ? 'No' : offer.prop1}
-                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        borderEndWidth: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers text="Urgencia" value={offer?.urgency} />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        borderColor: '#505050'
+                      }}
+                    >
+                      <CardInfoOffers
+                        text="Retribucion"
+                        value={offer.retribution === false ? 'No' : offer.prop1}
+                      />
+                    </View>
                   </View>
 
                   <View
@@ -385,10 +439,7 @@ const TodasLasOfertas = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginTop: 30,
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
                       zIndex: 10,
-                      borderWidth: 2,
-                      borderColor: Color.bLACK3SPORTSMATCH,
                       height: 90
                     }}
                   >
@@ -493,7 +544,7 @@ const TodasLasOfertas = () => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <Image
+                  {/* <Image
                     style={{
                       position: 'absolute',
                       width: '100%',
@@ -503,7 +554,7 @@ const TodasLasOfertas = () => {
                       overflow: 'hidden'
                     }}
                     source={require('../assets/group-4891.png')}
-                  />
+                  /> */}
                 </View>
               ))
           ) : (
