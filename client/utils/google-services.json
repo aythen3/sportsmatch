@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "825698969589",
-    "project_id": "sportspot-424216",
-    "storage_bucket": "sportspot-424216.appspot.com"
+    "project_number": "290667898990",
+    "project_id": "sportsmatch-a488d",
+    "storage_bucket": "sportsmatch-a488d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:825698969589:android:868929b5c80eeeccd522bc",
+        "mobilesdk_app_id": "1:290667898990:android:5645972072dd72d2c75e7f",
         "android_client_info": {
-          "package_name": "com.aythenapp.spotsport"
+          "package_name": "com.aythenapps.sportsmatch"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCa_yj4EPiEPMUQYw1jnyrZdONdM-Cy0Zo"
+          "current_key": "AIzaSyCg_C5XBDFa_iJ4c7qbFzxuIQU3hPRhz2w"
         }
       ],
       "services": {

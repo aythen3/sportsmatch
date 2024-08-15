@@ -35,7 +35,7 @@ const CardInfoOffers = ({ text, value, category }) => {
       <Text style={[styles.text]}>{text}</Text>
       {text !== 'Urgencia' && text !== 'Retribucion' ? (
         <View>
-          <Text style={styles.taxto1Clr}>{ value}</Text>
+          <Text style={styles.taxto1Clr}>{value}</Text>
         </View>
       ) : text === 'Retribucion' ? (
         <View>
@@ -81,20 +81,20 @@ const CardInfoOffers = ({ text, value, category }) => {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    marginTop: 10,
     height: 110,
-    backgroundColor: Color.bLACK3SPORTSMATCH,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 5,
-    marginRight: 5,
     borderRadius: 5,
     paddingHorizontal: 5
+    // borderEndWidth: 1,
+    // borderBottomWidth: 1,
+    // borderColor: '#505050'
   },
   text: {
-    color: Color.colorWhitesmoke,
+    color: '#999999',
     alignSelf: 'flex-start',
     alignItems: 'flex-start',
+    paddingLeft: 10,
     top: -15
   },
   taxto1Clr: {

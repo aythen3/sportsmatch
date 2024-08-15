@@ -525,7 +525,10 @@ const Paso1 = () => {
         {!sportman && !profesional && !invitado && (
           <View
             style={{
-              ...styles.container,width:"100%",paddingHorizontal:15,alignSelf:"center"
+              ...styles.container,
+              width: '100%',
+              paddingHorizontal: 15,
+              alignSelf: 'center'
             }}
           >
             <View style={styles.botonLayout1}>
@@ -687,7 +690,7 @@ const styles = StyleSheet.create({
   },
   botonLayout1: {
     height: 70,
-    width: "100%"
+    width: '100%'
   },
   imagenDeFondo: {
     position: 'absolute',

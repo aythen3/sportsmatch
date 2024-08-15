@@ -74,6 +74,8 @@ const LoginSwitch = () => {
   const getUserAuth = async () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
+    const appleUserAuth = await AsyncStorage.getItem('appleUserAuth')
+
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
     if (facebookUserAuth) {
       const facebookId = await JSON.parse(facebookUserAuth)
@@ -101,6 +103,42 @@ const LoginSwitch = () => {
         })
 
       return
+    }
+    if (appleUserAuth) {
+      try {
+        const response = await dispatch(login({ appleId: appleUserAuth }))
+        console.log(response, 'responseeeeee--------------')
+        detectSportColor(
+          response.payload.user.sportman?.info?.sport ||
+            response?.payload?.user?.club?.sport,
+          dispatch
+        )
+        if (response.payload.user.sportman !== null) {
+          dispatch(
+            setInitialSportman({
+              id: response.payload.user?.sportman?.id,
+              ...response.payload.user?.sportman
+            })
+          )
+        }
+        dispatch(
+          setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+        )
+
+        dispatch(setClub(response))
+        if (response.payload.user.sportman || response.payload.user.club) {
+          return navigation.reset({
+            index: 0,
+            routes: [{ name: 'SiguiendoJugadores' }]
+          })
+        } else if (response.payload.user.type === 'sportman') {
+          return navigation.navigate('Paso1')
+        } else {
+          return navigation.navigate('StepsClub')
+        }
+      } catch (error) {
+        console.log('Error:', error)
+      }
     }
   }
 
@@ -367,21 +405,89 @@ const LoginSwitch = () => {
   //   }
   // }
   const handleIos = async (user) => {
-    console.log('=====LOGIN WITH APPLE=====')
-    dispatch(create(user)).then(async (data) => {
+    const exist = await axiosInstance.get(`user/apple/${user.appleId}`)
+
+    console.log(exist.data, 'exist')
+
+    if (!exist.data.existe) {
+      dispatch(create(user)).then(async (data) => {
+        console.log(user, 'ususario')
+        try {
+          const response = await dispatch(login({ appleId: user.appleId }))
+          detectSportColor(
+            response.payload.user.sportman?.info?.sport ||
+              response?.payload?.user?.club?.sport,
+            dispatch
+          )
+          if (response.payload.user.sportman !== null) {
+            dispatch(
+              setInitialSportman({
+                id: response.payload.user?.sportman?.id,
+                ...response.payload.user?.sportman
+              })
+            )
+          }
+          dispatch(
+            setIsSpotMan(response.payload.user.type === 'club' ? false : true)
+          )
+          await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
+          await AsyncStorage.setItem('userType', response.payload.user.type)
+          await AsyncStorage.setItem('appleUserAuth', user.appleId)
+
+          dispatch(setClub(response))
+          if (response.payload.user.sportman || response.payload.user.club) {
+            return navigation.reset({
+              index: 0,
+              routes: [{ name: 'SiguiendoJugadores' }]
+            })
+          } else if (response.payload.user.type === 'sportman') {
+            return navigation.navigate('Paso1')
+          } else {
+            return navigation.navigate('StepsClub')
+          }
+        } catch (error) {
+          console.log('Error:', error)
+        }
+      })
+    } else {
       try {
         const response = await dispatch(login({ appleId: user.appleId }))
+        console.log(response, 'responseeeeee--------------')
+        detectSportColor(
+          response.payload.user.sportman?.info?.sport ||
+            response?.payload?.user?.club?.sport,
+          dispatch
+        )
+        if (response.payload.user.sportman !== null) {
+          dispatch(
+            setInitialSportman({
+              id: response.payload.user?.sportman?.id,
+              ...response.payload.user?.sportman
+            })
+          )
+        }
         dispatch(
           setIsSpotMan(response.payload.user.type === 'club' ? false : true)
         )
+        await AsyncStorage.setItem('appleUserAuth', user.appleId)
+
         await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
         await AsyncStorage.setItem('userType', response.payload.user.type)
         dispatch(setClub(response))
+        if (response.payload.user.sportman || response.payload.user.club) {
+          return navigation.reset({
+            index: 0,
+            routes: [{ name: 'SiguiendoJugadores' }]
+          })
+        } else if (response.payload.user.type === 'sportman') {
+          return navigation.navigate('Paso1')
+        } else {
+          return navigation.navigate('StepsClub')
+        }
       } catch (error) {
         console.log('Error:', error)
       }
-    })
-    return
+    }
   }
 
   if (loading)
@@ -557,19 +663,27 @@ const LoginSwitch = () => {
                                         .AppleAuthenticationScope.EMAIL
                                     ]
                                   })
+                                console.log(
+                                  'aaa-------------------------------------',
+                                  credential
+                                )
                                 // LOGICA PARA LOGEARSE VA ACA
-                                const { identityToken, fullName } = credential
+                                const {
+                                  identityToken,
+                                  fullName,
+                                  user: ident
+                                } = credential
 
                                 // Construcción del objeto a enviar en el post
                                 const postData = {
-                                  email: '',
+                                  email: credential.email,
                                   type:
                                     isSportman === true ? 'sportman' : 'club',
                                   nickname:
                                     fullName.givenName +
                                     ' ' +
                                     fullName.familyName,
-                                  appleId: identityToken // Se utiliza el identityToken como el valor del appleId
+                                  appleId: ident // Se utiliza el identityToken como el valor del appleId
                                 }
 
                                 // Envío del objeto postData al servidor

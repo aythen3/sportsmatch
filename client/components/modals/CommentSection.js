@@ -8,7 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions
 } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily } from '../../GlobalStyles'
@@ -71,7 +74,10 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
         visible={visible}
         onRequestClose={closeModal}
       >
-        <View style={styles.modalContainer}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.modalContainer}
+        >
           <View
             style={{
               backgroundColor: Color.bLACK1SPORTSMATCH,
@@ -138,74 +144,81 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
             {sportman.type !== 'invitado' && (
               <View
                 style={{
-                  width: '100%',
-                  left: 10,
+                  width: Dimensions.get('screen').width,
                   height: 70,
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
+
                   position: 'absolute',
-                  bottom: 10,
+                  bottom: 30,
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  backgroundColor: 'black'
+                  alignItems: 'center'
                 }}
               >
-                {canSend && (
-                  <>
+                {canSend ||
+                  (isSportman && (
                     <View
                       style={{
-                        borderRadius: 13,
-                        borderWidth: 0.5,
-                        borderColor: Color.wHITESPORTSMATCH,
-                        width: '80%',
-                        height: '100%',
-                        justifyContent: 'flex-start',
-                        flexDirection: 'column',
-                        display: 'flex',
-                        paddingHorizontal: 8
+                        width: '100%',
+                        flexDirection: 'row',
+                        minHeight: 80,
+                        alignItems: 'center'
                       }}
                     >
-                      <TextInput
-                        placeholder="Escribe un comentario..."
-                        placeholderTextColor={Color.wHITESPORTSMATCH}
-                        onChangeText={setComment}
-                        value={comment}
-                        multiline
-                        style={styles.input2}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      style={{
-                        zIndex: 9999999
-                      }}
-                      onPress={() => {
-                        Keyboard.dismiss()
-                        handleSubmit({
-                          comment,
-                          user,
-                          postId,
-                          dispatch,
-                          setComment,
-                          allfilter
-                        })
-                        closeModal()
-                      }}
-                    >
-                      <Text
+                      <View
                         style={{
-                          color: Color.wHITESPORTSMATCH,
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: 16,
-                          fontWeight: '700',
-                          marginLeft: 15,
-                          zIndex: 5000
+                          borderRadius: 13,
+                          borderWidth: 0.5,
+                          borderColor: Color.wHITESPORTSMATCH,
+                          width: '80%',
+                          minHeight: 80,
+                          justifyContent: 'flex-start',
+                          flexDirection: 'column',
+                          display: 'flex',
+                          paddingHorizontal: 8
                         }}
                       >
-                        Publicar
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-                {!canSend && (
+                        <TextInput
+                          placeholder="Escribe un comentario..."
+                          placeholderTextColor={Color.wHITESPORTSMATCH}
+                          onChangeText={setComment}
+                          value={comment}
+                          multiline
+                          style={styles.input2}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          zIndex: 9999999
+                        }}
+                        onPress={() => {
+                          Keyboard.dismiss()
+                          handleSubmit({
+                            comment,
+                            user,
+                            postId,
+                            dispatch,
+                            setComment,
+                            allfilter
+                          })
+                          closeModal()
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: Color.wHITESPORTSMATCH,
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginLeft: 15,
+                            zIndex: 5000
+                          }}
+                        >
+                          Publicar
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                {!canSend && !isSportman && (
                   <>
                     <View
                       style={{
@@ -230,7 +243,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
               </View>
             )}
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </GestureRecognizer>
   )
