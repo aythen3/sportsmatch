@@ -1077,7 +1077,8 @@ const HeaderPerfil = ({
               </Text>
             </View>
           </View>
-          <View
+          <Pressable
+            onPress={() => navigation.navigate('OfertasEmitidas')}
             style={{
               borderWidth: 4,
               gap: 9,
@@ -1120,7 +1121,7 @@ const HeaderPerfil = ({
                 Nº ofertas
               </Text>
             </View>
-          </View>
+          </Pressable>
         </View>
       )}
 

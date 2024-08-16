@@ -7,7 +7,7 @@ export const setColor = (sport) => {
       color = '#E1451E'
       break
     case 'Fútbol':
-      color = '#00FF18'
+      color = '#1FD430'
       break
     case 'Fútbol Sala':
       color = '#0062FF'

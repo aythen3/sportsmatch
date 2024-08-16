@@ -25,6 +25,7 @@ import ScrollableModal from '../../../../components/modals/ScrollableModal'
 import AñoNacimientoModal from '../../../../components/modals/AñoNacimientoModal'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 import { DeviceMotion } from 'expo-sensors'
+import { getUserData } from '../../../../redux/actions/users'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -36,6 +37,8 @@ const PlayerDetails = () => {
   const [birthdate, setBirthdate] = useState()
   const [height, setHeight] = useState(sportman?.info?.height || '')
   const [city, setCity] = useState(sportman?.info?.city || '')
+  const [name, setName] = useState(sportman?.info?.nickname || '')
+
   const [actualClubName, setActualClubName] = useState(
     sportman?.info?.actualClub || ''
   )
@@ -105,7 +108,8 @@ const PlayerDetails = () => {
       !userDescription &&
       !birthdate &&
       !actualClubName &&
-      !gender
+      !gender &&
+      !name
     ) {
       return navigation.navigate('EditarPerfil')
     }
@@ -117,7 +121,8 @@ const PlayerDetails = () => {
       img_perfil: profileImage,
       img_front: coverImage,
       height: height,
-      birthdate
+      birthdate,
+      nickname: name
     }
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
       if (value !== undefined) {
@@ -125,7 +130,9 @@ const PlayerDetails = () => {
       }
       return acc
     }, {})
-    dispatch(updateSportman({ id: sportman.id, newData: filteredData }))
+    dispatch(updateSportman({ id: sportman.id, newData: filteredData })).then(
+      () => dispatch(getUserData(user.user.id))
+    )
     setProfileImage()
     setCoverImage()
     navigation.navigate('MiPerfil')
@@ -153,7 +160,7 @@ const PlayerDetails = () => {
       setSportColor('#6A1C4F')
     }
     if (sportman?.info?.sport == 'Fútbol') {
-      setSportColor('#00FF18')
+      setSportColor('#1FD430')
     }
     if (sportman?.info?.sport == 'Baloncesto') {
       setSportColor('#E1451E')
@@ -204,13 +211,6 @@ const PlayerDetails = () => {
               header={'Detalles del usuario'}
             ></CustomHeaderBack>
             <View style={{ gap: 10, flex: 1, paddingHorizontal: 10 }}>
-              {/* =========================================================== */}
-              {/* ====================== TOP CONTAINER ====================== */}
-              {/* =========================================================== */}
-
-              {/* =========================================================== */}
-              {/* ======================= PROFILE PIC ======================= */}
-              {/* =========================================================== */}
               <View
                 style={{
                   width: '100%',
@@ -341,6 +341,31 @@ const PlayerDetails = () => {
               {/* ========================== INPUTS ========================= */}
               {/* =========================================================== */}
               <View style={{ gap: 30, flex: 1 }}>
+                <View style={{ gap: 5 }}>
+                  <Text
+                    style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}
+                  >
+                    {'Nombre'}
+                  </Text>
+
+                  <TextInput
+                    style={{
+                      flex: 1,
+                      borderWidth: 0.5,
+                      borderColor: '#fff',
+                      borderRadius: 50,
+                      paddingLeft: 15,
+                      height: 40,
+                      fontSize: 15,
+                      color: '#fff'
+                    }}
+                    value={name}
+                    onChangeText={(e) => setName(e)}
+                    placeholderTextColor={'white'}
+                    placeholder={'Nombre'}
+                  ></TextInput>
+                </View>
+
                 <View style={{ gap: 5 }}>
                   <Text
                     style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}

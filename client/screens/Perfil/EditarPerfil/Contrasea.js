@@ -42,13 +42,14 @@ const Contrasea = () => {
 
   return (
     <SafeAreaView style={styles.contrasea}>
-        <CustomHeaderBack header={'Contraseña'}></CustomHeaderBack>
-     
+      <CustomHeaderBack header={'Contraseña'}></CustomHeaderBack>
+
       <View>
         <Input
           state={password}
           setState={setPassword}
           type={'password'}
+          passView={true}
           title="Contraseña"
           placeholderText="*****"
         />
@@ -57,12 +58,16 @@ const Contrasea = () => {
           setState={setNewPassword}
           type={'newPassword'}
           title="Nueva contraseña"
+          passView={true}
+          placeholderText="*****"
         />
         <Input
           state={repeatNewPassword}
           setState={setRepeatNewPassword}
           type={'repeatNewPassword'}
+          passView={true}
           title="Repetir nueva contraseña"
+          placeholderText="*****"
         />
       </View>
 

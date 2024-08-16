@@ -147,7 +147,9 @@ const MiPerfil = () => {
                 }}
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
-                  <Text style={styles.textTypo}>{user?.user?.nickname}</Text>
+                  <Text style={styles.textTypo}>
+                    {user?.user?.sportman.info.nickname}
+                  </Text>
                   {sportman?.info?.sport?.length > 0 && (
                     <Text style={[styles.textTypo2, { color: mainColor }]}>
                       {typeof sportman?.info?.sport === 'object'
@@ -178,9 +180,18 @@ const MiPerfil = () => {
                       : sportman?.info?.position}
                   </Text>
 
-                  {user?.user?.sportman?.info?.city && (
+                  {user?.user?.sportman?.info?.city ? (
                     <Text style={styles.textTypo3}>
                       {user?.user?.sportman?.info?.city}
+                    </Text>
+                  ) : (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.sportman?.info?.actualClub}
+                    </Text>
+                  )}
+                  {user?.user?.club?.city && (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.club?.city}
                     </Text>
                   )}
                 </View>

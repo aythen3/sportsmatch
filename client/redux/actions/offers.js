@@ -26,6 +26,21 @@ export const signToOffer = createAsyncThunk(
   }
 )
 
+export const deleteSignToOffer = createAsyncThunk(
+  'signToOffer',
+  async ({ offerId, userId }) => {
+    try {
+      const { data } = await axiosInstance.delete(
+        `offer/${offerId}/eliminar-inscripcion/${userId}`
+      )
+      console.log('ELIMINADA INSCRIPCION CORRECTAMENTE!.')
+      return data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const getAllOffers = createAsyncThunk('getAllOffers', async () => {
   console.log('GETTING ALL OFFERS')
   try {

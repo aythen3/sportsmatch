@@ -248,6 +248,35 @@ export class UserService {
       throw new Error('Error creating customer');
     }
   }
+  async getSuscription(id: string): Promise<any> {
+    try {
+      const sus = await this.stripe.subscriptions.retrieve(id);
+      // const customer = await this.stripe.customers.create({
+      //   email,
+      //   name,
+      //   shipping: {
+      //     address: {
+      //       city: 'Brothers',
+      //       country: 'US',
+      //       line1: '27 Fredrick Ave',
+      //       postal_code: '97712',
+      //       state: 'CA'
+      //     },
+      //     name
+      //   },
+      //   address: {
+      //     city: 'Brothers',
+      //     country: 'US',
+      //     line1: '27 Fredrick Ave',
+      //     postal_code: '97712',
+      //     state: 'CA'
+      //   }
+      // });
+      return sus;
+    } catch (error) {
+      throw new Error('Error creating customer');
+    }
+  }
 
   public async create(createUserDto: CreateUserDto) {
     try {

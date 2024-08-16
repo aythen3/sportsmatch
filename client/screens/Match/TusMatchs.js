@@ -42,7 +42,7 @@ const TusMatchs = () => {
   const images = {
     '#6A1C4F': require('../../assets/6A1C4F.png'),
     '#E1451E': require('../../assets/E1451E.png'),
-    '#00FF18': require('../../assets/00FF18.png'),
+    '#1FD430': require('../../assets/00FF18.png'),
     '#0062FF': require('../../assets/0062FF.png'),
     '#E1AA1E': require('../../assets/E1AA1E.png'),
     '#A8154A': require('../../assets/A8154A.png'),

@@ -541,7 +541,7 @@ const LoginSwitch = () => {
             />
           </Pressable>
           <Text style={[styles.eresJugadorO, styles.aceptarTypo]}>
-            ¿Eres jugador {'\n'} o un club?
+            ¿Eres jugador o un club?
           </Text>
         </View>
         <View
@@ -562,8 +562,8 @@ const LoginSwitch = () => {
                     circleSize={16}
                     onValueChange={toggleSwitch}
                     value={isEnabled}
-                    backgroundActive={'#00FF18'}
-                    backgroundInactive={'#00FF18'}
+                    backgroundActive={'#1FD430'}
+                    backgroundInactive={'#1FD430'}
                     circleActiveColor={'black'}
                     activeText={false}
                     inActiveText={false}
@@ -786,7 +786,7 @@ const styles = StyleSheet.create({
     // top: '12%'
   },
   eresJugadorO: {
-    fontSize: FontSize.h1TitleHUGE_size,
+    fontSize: 22,
     fontWeight: '500',
     textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
@@ -829,7 +829,7 @@ const styles = StyleSheet.create({
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   icon: {
-    height: 40,
+    height: 50,
     width: Dimensions.get('screen').width / 2,
     marginLeft: 15
   },
@@ -980,7 +980,7 @@ const styles = StyleSheet.create({
   },
   jugador: {
     fontSize: 10,
-    color: '#00FF18',
+    color: '#1FD430',
     marginRight: 5
   },
   jugador2: {
@@ -994,7 +994,7 @@ const styles = StyleSheet.create({
     marginLeft: 5
   },
   clubScouting2: {
-    color: '#00FF18',
+    color: '#1FD430',
     fontSize: 10,
     marginLeft: 5
   }
