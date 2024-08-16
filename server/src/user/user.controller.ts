@@ -60,6 +60,12 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
+
+  @Get('subscription/:idSus')
+  findSuscription(@Param('idSus') idSus: string) {
+    return this.userService.getSuscription(idSus);
+  }
+
   @Post('stripe/create-customer')
   async createCustomer(
     @Body('email') email: string,

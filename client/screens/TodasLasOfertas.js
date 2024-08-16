@@ -19,7 +19,11 @@ import MonetizarOfertaPRO from './MonetizarOfertaPRO'
 import FiltersSportman from '../components/FiltersSportman'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMatch } from '../redux/actions/matchs'
-import { getAllOffers, signToOffer } from '../redux/actions/offers'
+import {
+  deleteSignToOffer,
+  getAllOffers,
+  signToOffer
+} from '../redux/actions/offers'
 import { Context } from '../context/Context'
 import { updateUser } from '../redux/slices/users.slices'
 import {
@@ -648,7 +652,6 @@ const TodasLasOfertas = () => {
               alignSelf: 'center',
               zIndex: 3,
               marginBottom: 10,
-              backgroundColor: Color.wHITESPORTSMATCH,
               borderRadius: Border.br_81xl,
               flexDirection: 'row',
               alignItems: 'center'
@@ -695,7 +698,10 @@ const TodasLasOfertas = () => {
           }
           return false
         }).length > 0 ? (
-        <ScrollView keyboardShouldPersistTaps={'always'}>
+        <ScrollView
+          keyboardShouldPersistTaps={'always'}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20 }}
+        >
           {offer
             .filter((off) => {
               if (search.length > 0) {
@@ -734,51 +740,132 @@ const TodasLasOfertas = () => {
                   padding: 10,
                   flex: 1,
                   backgroundColor: Color.bLACK2SPORTMATCH,
+                  borderRadius: 10,
                   alignItems: 'center',
+                  borderColor: '#505050',
+                  borderWidth: 1,
                   opacity: 0.7
                 }}
               >
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers
-                    text="Sexo"
-                    value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                  />
-                  <CardInfoOffers
-                    text="Categoría"
-                    category={true}
-                    value={offer.category}
-                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      borderEndWidth: 1,
+                      borderBottomWidth: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers
+                      text="Sexo"
+                      value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      borderBottomWidth: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers
+                      category={true}
+                      text="Categoría"
+                      value={offer.category}
+                    />
+                  </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers text="Posición" value={offer?.posit} />
-                  <CardInfoOffers
-                    text="Ubicacion"
-                    value={offer?.province || 'Random'}
-                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      borderEndWidth: 1,
+                      borderBottomWidth: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers text="Posición" value={offer?.posit} />
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      borderBottomWidth: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers
+                      text="Ubicacion"
+                      value={offer?.province || 'Random'}
+                    />
+                  </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', zIndex: 5 }}>
-                  <CardInfoOffers text="Urgencia" value={offer.urgency} />
-                  <CardInfoOffers
-                    text="Retribucion"
-                    value={offer.retribution === false ? 'No' : offer.prop1}
-                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      borderEndWidth: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers text="Urgencia" value={offer?.urgency} />
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      borderColor: '#505050'
+                    }}
+                  >
+                    <CardInfoOffers
+                      text="Retribucion"
+                      value={offer.retribution === false ? 'No' : offer.prop1}
+                    />
+                  </View>
                 </View>
+
                 <View
                   style={{
                     width: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 30,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     zIndex: 10,
-                    borderWidth: 2,
-                    borderColor: Color.bLACK3SPORTSMATCH,
                     height: 90
                   }}
                 >
                   <TouchableOpacity
+                    disabled={signinToOffer}
+                    onPress={async () => {
+                      if (true) {
+                        setSigninToOffer(true)
+                        if (user?.user?.sportman) {
+                          try {
+                            await dispatch(updateOffers(offer?.id))
+                            dispatch(
+                              deleteSignToOffer({
+                                offerId: offer?.id,
+                                userId: user?.user?.sportman?.id
+                              })
+                            ).then((data) => {
+                              console.log(data, 'dataaa')
+                              dispatch(getAllOffers())
+                              ToastAndroid.show(
+                                'Inscripción cancelada',
+                                ToastAndroid.SHORT
+                              )
+                            })
+                          } catch (error) {
+                            console.log('Error on inscription..', error)
+                            setSigninToOffer(false)
+                          } finally {
+                            setSigninToOffer(false)
+                          }
+                        } else {
+                          console.log('SPORTMAN NOT FOUND!.')
+                        }
+                      }
+                    }}
                     style={{
                       width: '70%',
                       paddingHorizontal: Padding.p_mini,
@@ -788,11 +875,7 @@ const TodasLasOfertas = () => {
                       flexDirection: 'row',
                       alignItems: 'center',
                       zIndex: 5,
-                      backgroundColor: !offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                        ? Color.wHITESPORTSMATCH
-                        : mainColor,
+                      backgroundColor: mainColor,
                       height: 45
                     }}
                   >
@@ -816,17 +899,17 @@ const TodasLasOfertas = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <Image
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 1,
-                    borderRadius: 8,
-                    overflow: 'hidden'
-                  }}
-                  source={require('../assets/group-4891.png')}
-                />
+                {/* <Image
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 1,
+                      borderRadius: 8,
+                      overflow: 'hidden'
+                    }}
+                    source={require('../assets/group-4891.png')}
+                  /> */}
               </View>
             ))}
         </ScrollView>

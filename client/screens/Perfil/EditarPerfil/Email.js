@@ -16,110 +16,99 @@ import {
   Padding
 } from '../../../GlobalStyles'
 import Input from '../../../components/Input'
-import { useDispatch, useSelector } from 'react-redux'
-import * as EmailValidator from 'email-validator'
-import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { useSelector } from 'react-redux'
 import axiosInstance from '../../../utils/apiBackend'
-import { updateUser } from '../../../redux/slices/users.slices'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-const CorreoElectrnico = () => {
+import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import { SafeAreaView } from 'react-native-safe-area-context'
+const CambiarEmail = () => {
+  const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
-  const [email, setEmail] = useState('')
-  const [emailCheck, setEmailCheck] = useState('')
-  const [isEmailValid, setEmailValid] = useState(false)
+  const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [repeatNewPassword, setRepeatNewPassword] = useState('')
 
-  const { user, mainColor, allUsers } = useSelector((state) => state.users)
-  const dispatch = useDispatch()
-  const isValidEmail = (email) => {
-    const alreadyTaken = allUsers?.map((user) => user?.email).includes(email)
-    if (!alreadyTaken) {
-      return EmailValidator.validate(email)
-    } else {
-      return false
-    }
-  }
-  const seterValues = (value) => {
-    setEmail(value)
-    setEmailValid(isValidEmail(value))
-  }
-
-  const submit = async () => {
-    if (email === emailCheck && isEmailValid) {
-      const res = await axiosInstance.patch(`user/${user.user.id}`, { email })
-      console.log(res.data, 'resdata')
-      await AsyncStorage.removeItem('userAuth')
-      dispatch(updateUser(res.data))
-      navigation.goBack()
-    } else {
-      console.log('no anda')
+  const handleChangePassword = () => {
+    if (newPassword === repeatNewPassword) {
+      const body = {
+        email: user.user.email,
+        password: password,
+        newPassword: newPassword
+      }
+      axiosInstance
+        .post(`user/change-password/${user.user.id}`, body)
+        .then(() => navigation.navigate('SiguiendoJugadores'))
     }
   }
 
   return (
-    <View style={styles.correoElectrnico}>
-      <View style={styles.cabezeraParent}>
-        <CustomHeaderBack header={'Correo electrónico'}></CustomHeaderBack>
-      </View>
+    <SafeAreaView style={styles.contrasea}>
+      <CustomHeaderBack header={'Contraseña'}></CustomHeaderBack>
 
-      <View style={{ marginTop: 0 }}>
+      <View>
         <Input
-          title="E-mail"
-          placeholderText={user?.user?.email}
-          disable={true}
+          state={password}
+          setState={setPassword}
+          type={'password'}
+          title="Contraseña"
+          placeholderText="*****"
         />
         <Input
-          title="Nuevo e-mail"
-          placeholderText={'Nuevo e-mail'}
-          setState={(e) => seterValues(e)}
-          value={email}
-          type={'text'}
-          emailcheked={true}
-          isEmailValid={isEmailValid}
+          state={newPassword}
+          setState={setNewPassword}
+          type={'newPassword'}
+          title="Nueva contraseña"
         />
         <Input
-          title="Repetir e-mail"
-          value={emailCheck}
-          placeholderText={'Repetir e-mail'}
-          setState={setEmailCheck}
-          emailcheked={true}
-          isEmailValid={
-            email === emailCheck && email !== '' && emailCheck !== ''
-          }
-          type={'text'}
+          state={repeatNewPassword}
+          setState={setRepeatNewPassword}
+          type={'repeatNewPassword'}
+          title="Repetir nueva contraseña"
         />
       </View>
 
-      <TouchableOpacity onPress={submit} style={styles.boton}>
+      <TouchableOpacity
+        disabled={
+          password.length <= 0 ||
+          newPassword.length <= 0 ||
+          repeatNewPassword.length <= 0
+        }
+        onPress={handleChangePassword}
+        style={styles.boton}
+      >
         <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
           <Text style={styles.aceptar}>Aceptar</Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  correoLayout: {
+  contraseaLayout: {
     maxHeight: '100%',
     position: 'absolute'
   },
   loremIpsumFlexBox: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    gap: 10
   },
-  correoElecrnico1Typo: {
-    textAlign: 'left',
+  cabezeraParent: {
+    marginTop: 30,
+    marginLeft: 15
+    // left: 15
+  },
+  textTypo: {
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  emailTypo: {
+  contraseaTypo: {
     height: 23,
     fontSize: FontSize.t2TextSTANDARD_size,
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  starusPosition: {
+  textPosition: {
     top: 10,
     left: 15
   },
@@ -143,7 +132,7 @@ const styles = StyleSheet.create({
     width: 61,
     position: 'absolute'
   },
-  correoElectrnicoChild: {
+  contraseaChild: {
     height: '112.16%',
     width: '980.1%',
     top: '-9.15%',
@@ -162,20 +151,19 @@ const styles = StyleSheet.create({
     width: 9,
     height: 15
   },
-  correoElecrnico1: {
+  contrasea2: {
     fontSize: FontSize.h3TitleMEDIUM_size,
-    lineHeight: 22,
     fontWeight: '500',
     color: Color.wHITESPORTSMATCH
   },
-  correoElecrnico: {
-    marginLeft: 9
+  contrasea1: {
+    // marginLeft: 9
   },
 
-  email1: {
+  contrasea3: {
     width: 360
   },
-  loremipsumloremipsumcom: {
+  text: {
     color: Color.gREY2SPORTSMATCH,
     width: 313,
     fontSize: FontSize.t2TextSTANDARD_size,
@@ -191,11 +179,11 @@ const styles = StyleSheet.create({
     width: 360,
     left: 0
   },
-  loremipsumloremipsumcomParent: {
+  parent: {
     alignSelf: 'stretch',
     flex: 1
   },
-  emailGroup: {
+  contraseaParent: {
     height: 63,
     left: 0,
     top: 0,
@@ -212,7 +200,7 @@ const styles = StyleSheet.create({
     height: 63,
     width: 360
   },
-  nuevoEmail: {
+  nuevaContrasea: {
     alignSelf: 'stretch'
   },
   rectangleWrapper: {
@@ -243,16 +231,13 @@ const styles = StyleSheet.create({
   boton: {
     flexDirection: 'row',
     paddingHorizontal: 15,
-    marginTop: 30
+    marginTop: 60
   },
   frameParent: {
     marginTop: 64
   },
-  cabezeraParent: {
-    marginTop: 20
-    // left: 15
-  },
-  correoElectrnicoItem: {
+
+  contraseaItem: {
     marginLeft: -74,
     top: 831,
     left: '50%',
@@ -322,11 +307,11 @@ const styles = StyleSheet.create({
     top: 10,
     left: 15
   },
-  correoElectrnico: {
+  contrasea: {
     width: '100%',
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })
 
-export default CorreoElectrnico
+export default CambiarEmail

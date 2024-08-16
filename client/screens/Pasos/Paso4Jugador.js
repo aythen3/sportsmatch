@@ -67,7 +67,7 @@ const Paso4Jugador = ({
       setSportColor('#6A1C4F')
     }
     if (selectedSport.name == 'Fútbol') {
-      setSportColor('#00FF18')
+      setSportColor('#1FD430')
     }
     if (selectedSport.name == 'Baloncesto') {
       setSportColor('#E1451E')

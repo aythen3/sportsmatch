@@ -47,6 +47,8 @@ const ConfigurarAnuncio = () => {
 
   const [selectedRemuneration, setSelectedRemuneration] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedRol, setSelectedRol] = useState('Deportista')
+
   const [selectedPriority, setSelectedPriority] = useState('')
   const [selectedPosition, setSelectedPosition] = useState('')
   const [selectedSport, setSelectedSport] = useState('')
@@ -56,6 +58,9 @@ const ConfigurarAnuncio = () => {
   const [showModal, setShowModal] = useState(false)
   const [showGenderModal, setShowGenderModal] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
+  const [showRolModal, setShowRolModal] = useState(false)
+  const [showPositionModal, setShowPositionModal] = useState(false)
+
   const [province, setProvince] = useState('')
 
   const [clubPositions, setClubPositions] = useState()
@@ -110,6 +115,15 @@ const ConfigurarAnuncio = () => {
     'Senior (+18 años)',
     'Veteranos (+30 años)'
   ]
+  const opcionesProfesional = [
+    'Entrenador/a',
+    'Preparador/a físico/a',
+    'Analista técnico/a',
+    'Psicólogo/a',
+    'Fisioterapeuta',
+    'Nutricionista'
+  ]
+  const roles = ['Deportista', 'Profesional']
 
   const opciones = {
     futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
@@ -217,56 +231,131 @@ const ConfigurarAnuncio = () => {
           </Text>
         </View>
         <View style={styles.innerContainer}>
-          <View style={{ width: '100%', gap: 8 }}>
-            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
-              Posición
-            </Text>
-            <View style={{ width: '100%' }}>
-              <TextInput
-                value={selectedPosition || offerData?.posit}
-                placeholderTextColor={'#fff'}
-                placeholder={
-                  selectedPosition || offerData?.posit || 'Indique una posición'
-                }
-                onChangeText={(text) => setSelectedPosition(text)}
-                style={{ ...styles.containerBox, paddingHorizontal: 18 }}
-              ></TextInput>
-            </View>
-          </View>
-          <View style={{ width: '100%', gap: 8 }}>
-            <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
-              Sexo
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setShowGenderModal(!showGenderModal)
-              }}
-              style={{ zIndex: 9000, ...styles.containerBox }}
-            >
-              <Text style={styles.inputText}>
-                {!selectedGender && !offerData?.sexo && 'Selecciona un género'}
-                {selectedGender === '' &&
-                  offerData?.sexo &&
-                  (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
-                {selectedGender}
+          {true && (
+            <View style={{ width: '100%', gap: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                Rol
               </Text>
-              <Entypo
-                style={{ color: '#fff', marginRight: 15 }}
-                name={showGenderModal ? 'chevron-up' : 'chevron-down'}
-                color="#fff"
-                size={18}
-              />
-
-              {showGenderModal && (
-                <ScrollableModal
-                  visible={showGenderModal}
-                  closeModal={() => setShowGenderModal(false)}
-                  onSelectItem={setSelectedGender}
-                  options={[`Hombre`, 'Mujer']}
+              <TouchableOpacity
+                onPress={() => {
+                  setShowRolModal(true)
+                }}
+                style={{ zIndex: 8000, ...styles.containerBox }}
+              >
+                <Text style={styles.inputText}>
+                  {!selectedRol && !offerData && 'Selecciona un rol'}
+                  {selectedRol === '' && offerData?.prop4}
+                  {selectedRol}
+                </Text>
+                <Entypo
+                  style={{ color: '#fff', marginRight: 15 }}
+                  name={showRolModal ? 'chevron-up' : 'chevron-down'}
+                  color="#fff"
+                  size={18}
                 />
-              )}
-            </TouchableOpacity>
-          </View>
+
+                {showRolModal && (
+                  <ScrollableModal
+                    visible={showRolModal}
+                    closeModal={() => setShowRolModal(false)}
+                    onSelectItem={setSelectedRol}
+                    options={roles}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+          {selectedRol !== 'Profesional' ? (
+            <View style={{ width: '100%', gap: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                Posición
+              </Text>
+              <View style={{ width: '100%' }}>
+                <TextInput
+                  value={selectedPosition || offerData?.posit}
+                  placeholderTextColor={'#fff'}
+                  placeholder={
+                    selectedPosition ||
+                    offerData?.posit ||
+                    'Indique una posición'
+                  }
+                  onChangeText={(text) => setSelectedPosition(text)}
+                  style={{ ...styles.containerBox, paddingHorizontal: 18 }}
+                ></TextInput>
+              </View>
+            </View>
+          ) : (
+            <View style={{ width: '100%', gap: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                Posición
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowPositionModal(true)
+                }}
+                style={{ zIndex: 8000, ...styles.containerBox }}
+              >
+                <Text style={styles.inputText}>
+                  {!selectedPosition && !offerData && 'Indique una posición'}
+                  {selectedPosition === '' && offerData?.prop4}
+                  {selectedPosition}
+                </Text>
+                <Entypo
+                  style={{ color: '#fff', marginRight: 15 }}
+                  name={showPositionModal ? 'chevron-up' : 'chevron-down'}
+                  color="#fff"
+                  size={18}
+                />
+
+                {showPositionModal && (
+                  <ScrollableModal
+                    visible={showPositionModal}
+                    closeModal={() => setShowPositionModal(false)}
+                    onSelectItem={setSelectedPosition}
+                    options={opcionesProfesional}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+          {selectedRol !== 'Profesional' && (
+            <View style={{ width: '100%', gap: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
+                Sexo
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowGenderModal(!showGenderModal)
+                }}
+                style={{ zIndex: 9000, ...styles.containerBox }}
+              >
+                <Text style={styles.inputText}>
+                  {!selectedGender &&
+                    !offerData?.sexo &&
+                    'Selecciona un género'}
+                  {selectedGender === '' &&
+                    offerData?.sexo &&
+                    (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
+                  {selectedGender}
+                </Text>
+                <Entypo
+                  style={{ color: '#fff', marginRight: 15 }}
+                  name={showGenderModal ? 'chevron-up' : 'chevron-down'}
+                  color="#fff"
+                  size={18}
+                />
+
+                {showGenderModal && (
+                  <ScrollableModal
+                    visible={showGenderModal}
+                    closeModal={() => setShowGenderModal(false)}
+                    onSelectItem={setSelectedGender}
+                    options={[`Hombre`, 'Mujer']}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={{ width: '100%', gap: 8 }}>
             <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
               Categoría
@@ -415,24 +504,12 @@ const ConfigurarAnuncio = () => {
               onPress={() =>
                 navigation.navigate('PostPromocion', {
                   fromOffer: true,
-                  ...offerData
-                })
-              }
-              style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
-            >
-              <Text numberOfLines={1} style={[styles.promocionarOferta, styles.ofertaTypo,{width:"100%"}]}>
-                Promocionar la oferta
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
-              onPress={async () => {
-                if (!editOffer) {
-                  const data = {
+                  oferta: {
                     offerData: {
                       sexo:
-                        (selectedGender == 'Hombre' && 'Male') ||
-                        (selectedGender == 'Mujer' && 'Female'),
+                        (selectedGender === 'Hombre' && 'Male') ||
+                        (selectedGender === 'Mujer' && 'Female') ||
+                        (selectedGender === '' && 'Otro'),
                       category: selectedCategory,
                       urgency: selectedPriority,
                       prop1: retribucion,
@@ -445,7 +522,53 @@ const ConfigurarAnuncio = () => {
                       posit: selectedPosition,
                       paused: false,
                       province: selectedProvince,
-                      sport: selectedSport
+                      sport: selectedSport,
+                      prop2: selectedRol
+                    },
+
+                    clubId: club?.id
+                  },
+                  ...offerData
+                })
+              }
+              style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
+            >
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.promocionarOferta,
+                  styles.ofertaTypo,
+                  { width: '100%' }
+                ]}
+              >
+                Promocionar la oferta
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.boitonCrear, styles.boitonCrearFlexBox]}
+              onPress={async () => {
+                if (!editOffer) {
+                  const data = {
+                    offerData: {
+                      sexo:
+                        (selectedGender === 'Hombre' && 'Male') ||
+                        (selectedGender === 'Mujer' && 'Female') ||
+                        (selectedGender === '' && 'Otro'),
+
+                      category: selectedCategory,
+                      urgency: selectedPriority,
+                      prop1: retribucion,
+                      retribution:
+                        selectedRemuneration === 'Si'
+                          ? true
+                          : selectedRemuneration === 'No'
+                            ? false
+                            : null,
+                      posit: selectedPosition,
+                      paused: false,
+                      province: selectedProvince,
+                      sport: selectedSport,
+                      prop4: selectedRol
                     },
 
                     clubId: club?.id
@@ -454,7 +577,7 @@ const ConfigurarAnuncio = () => {
                   await dispatch(setOffer(data)).then((data) =>
                     dispatch(getAllOffers())
                   )
-                  navigation.navigate('OfertasEmitidas')
+                  navigation.navigate('OfertaCreada')
                 } else {
                   const data = {
                     ...(selectedGender && {
@@ -466,6 +589,8 @@ const ConfigurarAnuncio = () => {
                     ...(selectedPriority && { urgency: selectedPriority }),
                     ...(retribucion && { prop1: 'asdasd' }),
                     ...(selectedPosition && { posit: selectedPosition }),
+                    ...(selectedRol && { prop4: selectedRol }),
+
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
                     }),

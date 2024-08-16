@@ -1,6 +1,9 @@
-import React from 'react'
-import { View, Text, TextInput, Image } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
+import { AntDesign } from '@expo/vector-icons'
+import PassView from '../screens/Login/passview'
+import OjoCerradoSVG from './svg/OjoCerradoSVG'
 
 function Input({
   title,
@@ -18,8 +21,14 @@ function Input({
   type,
   state,
   setState,
-  maxLength
+  maxLength,
+  disable,
+  emailcheked,
+  isEmailValid,
+  passView
 }) {
+  const [passview2, setPassview2] = useState(true)
+
   return (
     <View
       style={{
@@ -42,6 +51,7 @@ function Input({
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
+            editable={disable ? false : true}
             multiline={isMultiLine}
             placeholder={placeholderText}
             placeholderTextColor={Color.gREY2SPORTSMATCH}
@@ -67,10 +77,41 @@ function Input({
             }
             ref={inputRef}
             onSubmitEditing={onSubmit}
-            secureTextEntry={type ? true : false}
+            secureTextEntry={
+              type && !emailcheked && !passView
+                ? true
+                : passView
+                  ? passview2
+                  : false
+            }
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
             maxLength={maxLength ? maxLength : 40}
           />
+          {passView && (
+            <TouchableOpacity
+              style={{ position: 'absolute', right: 14, bottom: 14 }}
+              onPress={() => setPassview2(!passview2)}
+            >
+              {passview2 ? (
+                <PassView></PassView>
+              ) : (
+                <OjoCerradoSVG></OjoCerradoSVG>
+              )}
+            </TouchableOpacity>
+          )}
+          {emailcheked && (
+            <View>
+              {!isEmailValid ? (
+                <View style={{}}>
+                  <AntDesign name="close" color={'#ff0000'} size={20} />
+                </View>
+              ) : (
+                <View style={{ position: 'absolute', right: 14, bottom: -10 }}>
+                  <AntDesign name="check" color={'#00ff00'} size={20} />
+                </View>
+              )}
+            </View>
+          )}
           {isAccordeon && (
             <Image
               style={{

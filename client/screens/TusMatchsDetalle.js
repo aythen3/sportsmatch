@@ -20,7 +20,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
   const images = {
     '#6A1C4F': require('../assets/expandedMatchCards/6A1C4F.png'),
     '#E1451E': require('../assets/expandedMatchCards/E1451E.png'),
-    '#00FF18': require('../assets/expandedMatchCards/00FF18.png'),
+    '#1FD430': require('../assets/expandedMatchCards/00FF18.png'),
     '#0062FF': require('../assets/expandedMatchCards/0062FF.png'),
     '#E1AA1E': require('../assets/expandedMatchCards/E1AA1E.png'),
     '#A8154A': require('../assets/expandedMatchCards/A8154A.png'),

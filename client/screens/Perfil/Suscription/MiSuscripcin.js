@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
   StyleSheet,
@@ -27,12 +27,15 @@ import SilverSuscriptionClub from '../../../components/Suscripciones/SilverSuscr
 import GoldSuscriptionClub from '../../../components/Suscripciones/GoldSuscriptionClub'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import axios from 'axios'
 
 const MiSuscripcin = () => {
   const navigation = useNavigation()
   const [clientSecret, setClientSecret] = useState(null)
   const [planSelected, setPlanSelected] = useState(null)
   const [planSelectedId, setPlanSelectedId] = useState('')
+  const [nextPayment, setNextPayment] = useState('')
+
   const [deletePlan, setDeletePlan] = useState(false)
 
   const { user } = useSelector((state) => state.users)
@@ -59,13 +62,18 @@ const MiSuscripcin = () => {
         if (error) {
           console.log(error, 'error')
         } else {
-          console.log(user,"user")
+          console.log(user, 'user')
           const updUser = await axiosInstance
             .patch(`user/${user?.user?.id}`, {
               plan: planSelected,
               planId: planSelectedId
             })
-            .finally(async () => await dispatch(getUserData(user?.user?.id)).then((e)=> console.log(e,"eeeeeeeeeee",user)) )
+            .finally(
+              async () =>
+                await dispatch(getUserData(user?.user?.id)).then((e) =>
+                  console.log(e, 'eeeeeeeeeee', user)
+                )
+            )
         }
       }
     }
@@ -74,6 +82,45 @@ const MiSuscripcin = () => {
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
+
+  useEffect(() => {
+    const getinfo = async () => {
+      const res = await axiosInstance.get(
+        `user/subscription/${user?.user?.planId}`
+      )
+      return res.data
+    }
+    if (user?.user?.planId) {
+      getinfo().then((subscription) => {
+        const currentDate = new Date(subscription.current_period_end * 1000)
+        const interval = subscription.plan.interval
+        const intervalCount = subscription.plan.interval_count
+
+        if (interval === 'month') {
+          currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
+        } else if (interval === 'year') {
+          currentDate.setFullYear(
+            currentDate.getFullYear() + (intervalCount - 1)
+          )
+        }
+
+        const nextPaymentDate = currentDate.getTime() / 1000
+        const nextPaymentDate2 = new Date(nextPaymentDate * 1000)
+
+        const options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }
+
+        const formattedDate = nextPaymentDate2
+          .toLocaleDateString('es-AR', options)
+          .replace(/-/g, '/')
+        setNextPayment(formattedDate)
+        console.log(formattedDate, 'payment')
+      })
+    }
+  }, [user?.user?.planId])
 
   const handleCancelSuscription = async () => {
     try {
@@ -109,6 +156,13 @@ const MiSuscripcin = () => {
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Este es tu plan actual
             </Text>
+            {user.user.planId && (
+              <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+                {user.user.club && user.user.plan === 'pro'
+                  ? ''
+                  : `Se renueva el ${nextPayment}`}
+              </Text>
+            )}
           </View>
 
           <View style={{ marginTop: 30, gap: 30 }}>
@@ -119,7 +173,23 @@ const MiSuscripcin = () => {
               <SilverSuscriptionClub />
             )}
 
-            {user?.user?.plan === 'pro' && <GoldSuscription handleCancelSuscription={handleCancelSuscription} myPlan={true} deletePlan={deletePlan} setDeletePlan={setDeletePlan} />}
+            {user?.user?.plan === 'pro' && !user.user.club && (
+              <GoldSuscription
+                handleCancelSuscription={handleCancelSuscription}
+                myPlan={true}
+                deletePlan={deletePlan}
+                setDeletePlan={setDeletePlan}
+              />
+            )}
+
+            {user?.user?.plan === 'pro' && user.user.club && (
+              <GoldSuscriptionClub
+                handleCancelSuscription={handleCancelSuscription}
+                myPlan={true}
+                deletePlan={deletePlan}
+                setDeletePlan={setDeletePlan}
+              />
+            )}
             {/* {user?.user?.plan === 'pro' && user.user.type === 'club' && (
               <GoldSuscriptionClub
                 setPlanSelected={setPlanSelected}
@@ -127,7 +197,7 @@ const MiSuscripcin = () => {
                 setPlanSelectedId={setPlanSelectedId}
               />
             )} */}
-             {/* {user?.user?.plan === 'pro' && user.user.type !== 'club' && (
+            {/* {user?.user?.plan === 'pro' && user.user.type !== 'club' && (
               <GoldSuscription
                 setPlanSelected={setPlanSelected}
                 setClientSecret={setClientSecret}

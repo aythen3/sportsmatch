@@ -8,7 +8,6 @@ import LogoTopSportman from './svg/LogoTopSportman'
 import LogoTopClub from './svg/LogoTopClub'
 import LineaVertical from './svg/LineaVerticalSVG'
 
-
 const HeaderIcons = () => {
   const navigation = useNavigation()
   const { isSportman, mainColor } = useSelector((state) => state.users)
@@ -16,45 +15,98 @@ const HeaderIcons = () => {
 
   const [sportColor, setSportColor] = useState('#E1451E')
 
-console.log(mainColor,"maincolor")
-
+  console.log(mainColor, 'maincolor')
 
   return (
     <View style={styles.vectorParent}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image
-          style={{ width: 180, height: 42, marginLeft: -10, objectFit: "contain" }}
+          style={{
+            width: 180,
+            height: 42,
+            marginLeft: -10,
+            objectFit: 'contain'
+          }}
           contentFit=""
           source={require('../assets/sportmatchlogooo.png')}
         />
-        {mainColor == '#E1451E' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sportbaloncestoo.png')}
-        />)}
-        {mainColor == '#6A1C4F' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sporthandball.png')}
-        />)}
-        {mainColor == '#00FF18' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sportfutbol.png')}
-        />)}
-        {mainColor == '#A8154A' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sportvoley.png')}
-        />)}
-        {mainColor == '#E1AA1E' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sporthockey.png')}
-        />)}
-        {mainColor == '#0062FF' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sportfutbolsala.png')}
-        />)}
-        {mainColor === '#00F0FF' && (<Image
-          style={{ width: 68, height: 40, marginLeft: -32, objectFit: "scale-down" }}
-          source={require('../assets/sportprop.png')}
-        />)}
+        {mainColor == '#E1451E' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sportbaloncestoo.png')}
+          />
+        )}
+        {mainColor == '#6A1C4F' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sporthandball.png')}
+          />
+        )}
+        {mainColor == '#1FD430' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sportfutbol.png')}
+          />
+        )}
+        {mainColor == '#A8154A' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sportvoley.png')}
+          />
+        )}
+        {mainColor == '#E1AA1E' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sporthockey.png')}
+          />
+        )}
+        {mainColor == '#0062FF' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sportfutbolsala.png')}
+          />
+        )}
+        {mainColor === '#00F0FF' && (
+          <Image
+            style={{
+              width: 68,
+              height: 40,
+              marginLeft: -32,
+              objectFit: 'scale-down'
+            }}
+            source={require('../assets/sportprop.png')}
+          />
+        )}
       </View>
       <View
         style={{
@@ -71,30 +123,38 @@ console.log(mainColor,"maincolor")
       >
         <Pressable
           onPress={() => {
-            if(sportman.type === 'invitado'){
+            if (sportman.type === 'invitado') {
               return navigation.navigate('Paso1')
             }
             if (isSportman) {
               navigation.navigate('TodasLasOfertas')
-            } 
-            else {
+            } else {
               navigation.navigate('OfertasEmitidas')
             }
-          }
-          }
+          }}
         >
-          {!isSportman ? <LogoTopSportman></LogoTopSportman> : <LogoTopClub></LogoTopClub>}
+          {!isSportman ? (
+            <LogoTopSportman></LogoTopSportman>
+          ) : (
+            <LogoTopClub></LogoTopClub>
+          )}
         </Pressable>
         <LineaVertical />
-        <Pressable onPress={() => {
-          if (sportman.type === 'invitado') {
-            return navigation.navigate('Paso1')
-          } else {
-            return navigation.navigate('TusMatchs')
-          }
-        }}>
+        <Pressable
+          onPress={() => {
+            if (sportman.type === 'invitado') {
+              return navigation.navigate('Paso1')
+            } else {
+              return navigation.navigate('TusMatchs')
+            }
+          }}
+        >
           <Image
-            style={[styles.groupIcon1, styles.iconGroupLayout,{objectFit:"scale-down"}]}
+            style={[
+              styles.groupIcon1,
+              styles.iconGroupLayout,
+              { objectFit: 'scale-down' }
+            ]}
             source={require('../assets/group10.png')}
           />
         </Pressable>
@@ -111,7 +171,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 15,
     backgroundColor: '#000',
-    zIndex:99999999
+    zIndex: 99999999
   },
   superiorLayout: {
     height: 45,
@@ -138,13 +198,10 @@ const styles = StyleSheet.create({
   groupIcon1: {
     height: 34,
     width: 38
- 
   },
   frameInner: {
-  
     width: 31,
     height: 31
- 
   }
 })
 

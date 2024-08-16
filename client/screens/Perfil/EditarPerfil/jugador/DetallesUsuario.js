@@ -19,9 +19,7 @@ const EditarSkills = () => {
 
   return (
     <ScrollView keyboardShouldPersistTaps={'always'} style={styles.paso6}>
-   
       <CustomHeaderBack header={'Detalles del usuario'}></CustomHeaderBack>
-      
 
       <View>
         <View>

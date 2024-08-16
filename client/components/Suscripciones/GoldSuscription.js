@@ -39,7 +39,7 @@ const GoldSuscription = ({
         res.data.subscription.clientSecret.latest_invoice.payment_intent
           .client_secret
       )
-      console.log("esto da",res.data.subscription.subscriptionId)
+      console.log('esto da', res.data.subscription.subscriptionId)
     }
   }
 
@@ -56,7 +56,7 @@ const GoldSuscription = ({
         res.data.subscription.clientSecret.latest_invoice.payment_intent
           .client_secret
       )
-      console.log("esto da",res.data.subscription.subscriptionId)
+      console.log('esto da', res.data.subscription.subscriptionId)
     }
   }
 
@@ -107,20 +107,58 @@ const GoldSuscription = ({
           </Text>
         </View>
 
+        <View
+          style={{
+            backgroundColor: 'red',
+            width: '100%',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={{ textAlign: 'center', color: 'white' }}>
+            Descuento 40%
+          </Text>
+        </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
-            <View>
-            <View style={styles.gratuitoWrapper}>
-                <Text style={{...styles.gratuito,textDecorationLine:"line-through"}}>12,90€/mes</Text>
-                <Text style={{...styles.timeTypo,textDecorationLine:"line-through"}}>124,40€/año</Text>
-                <View style={{flexDirection:"column",gap:5}}>
-              <Text style={{...styles.gratuito,color:"red"}}>DTE. 40%</Text>
-              <Text style={{...styles.gratuito}}>7,75€/mes</Text>
+            <View style={{ width: '100%' }}>
+              <View style={{ width: '100%' }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    borderBottomWidth: 1,
+                    borderColor: '#e6b300'
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.timeTypo,
 
-
-              </View>
-              <Text style={{...styles.timeTypo}}>74,64€/año</Text>
-
+                      textDecorationLine: 'line-through'
+                    }}
+                  >
+                    12,90€/mes
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>7,75€/mes</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.timeTypo,
+                      textDecorationLine: 'line-through'
+                    }}
+                  >
+                    124,40€/año
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>74,64€/año</Text>
+                </View>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -224,7 +262,7 @@ const GoldSuscription = ({
             <Text style={styles.ofertasTypo}>{'Seleccionar plan mensual'}</Text>
           </TouchableOpacity>
         )}
-          {!deletePlan && !myPlan && (
+        {!deletePlan && !myPlan && (
           <TouchableOpacity
             onPress={handleGetGoldAnual}
             style={{
@@ -335,10 +373,12 @@ const styles = StyleSheet.create({
   silverInner: {
     marginTop: 30,
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    width: '100%'
   },
   frameContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   gratuito: {
     fontSize: FontSize.size_21xl,
@@ -351,7 +391,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t2TextSTANDARD_size
+    fontSize: FontSize.t2TextSTANDARD_size,
+    color: 'red'
   },
   frameView: {
     marginTop: 30

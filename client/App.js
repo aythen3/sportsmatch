@@ -69,6 +69,7 @@ import { ToastProvider } from './components/Toast'
 import * as Notifications from 'expo-notifications'
 
 import RecuperarContra from './screens/Login/RecuperarContra'
+import OfertaCreada from './screens/Ofertas/OfertaCreada'
 const Stack = createNativeStackNavigator()
 if (__DEV__) {
   require('./ReactotronConfig')
@@ -136,6 +137,11 @@ const App = () => {
                     <Stack.Screen
                       name="PantallaInicio"
                       component={PantallaInicio}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="OfertaCreada"
+                      component={OfertaCreada}
                       options={{ headerShown: false }}
                     />
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   View,
   Text,
@@ -33,6 +34,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useStripe } from '@stripe/stripe-react-native'
 import axiosInstance from '../../utils/apiBackend'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { getAllOffers, setOffer } from '../../redux/actions/offers'
 
 const PromocionarPost = () => {
   const { mainColor } = useSelector((state) => state.users)
@@ -41,16 +43,7 @@ const PromocionarPost = () => {
   console.log('data from promocionarpost', data)
 
   const navigation = useNavigation()
-  const {
-    coverImage,
-    setCoverImage,
-    profileImage,
-    setProfileImage,
-    provisoryProfileImage,
-    setProvisoryProfileImage,
-    provisoryCoverImage,
-    setProvisoryCoverImage
-  } = useContext(Context)
+
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -112,7 +105,28 @@ const PromocionarPost = () => {
         if (error) {
           console.log(error, 'error')
         } else {
-          navigation.navigate('SiguiendoJugadores')
+          const editOffer = {
+            ...data?.oferta?.offerData,
+            prop2: {
+              date: new Date(),
+              days:
+                optionIndex === 1
+                  ? 2
+                  : optionIndex === 2
+                    ? 5
+                    : optionIndex === 3
+                      ? 15
+                      : null
+            }
+          }
+
+          await dispatch(
+            setOffer({ offerData: editOffer, clubId: data.oferta.clubId })
+          ).then((data) => {
+            console.log(data, 'dataaaaaaaaaaaaaaaaa', editOffer)
+            dispatch(getAllOffers())
+            navigation.navigate('OfertaCreada', { promotion: optionIndex })
+          })
         }
       }
     }
