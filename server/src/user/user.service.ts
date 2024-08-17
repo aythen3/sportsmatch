@@ -133,6 +133,10 @@ export class UserService {
   }
 
   async enviarCorreoRecuperacion(usuario: UserEntity, token: string) {
+    console.log(
+      configService.get('SMTP_EMAIL'),
+      configService.get('SMTP_PASS')
+    );
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
