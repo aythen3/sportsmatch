@@ -15,12 +15,22 @@ const configService = new ConfigService();
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
+  private readonly transporter: nodemailer.Transporter;
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
 
     private readonly sendMailService: SendMailService
   ) {
+    this.transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'azschiaffino@gmail.com',
+        pass: 'ccuk lafv fpmh bijv'
+      }
+    });
     this.stripe = new Stripe(
       'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et'
     );
@@ -55,16 +65,6 @@ export class UserService {
 
   async enviarCorreoConfirmacion(usuario: UserEntity) {
     try {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: configService.get('SMTP_EMAIL'),
-          pass: configService.get('SMTP_PASS')
-        }
-      });
-
       const mailOptions = {
         from: 'sportsmatch.digital@gmail.com',
         to: usuario.email,
@@ -96,7 +96,7 @@ export class UserService {
       `
       };
 
-      await transporter.sendMail(mailOptions);
+      await this.transporter.sendMail(mailOptions);
     } catch (error) {
       console.log(error, 'rerrereiomfgasmf');
       return { message: 'este es el error', error };
@@ -323,8 +323,8 @@ export class UserService {
         });
       }
       // Devolver el nuevo perfil del usuario
-      await this.sendMailService.sendRegistrationNotification(newProfile.email);
-      // await this.enviarCorreoConfirmacion(newProfile);
+      // await this.sendMailService.sendRegistrationNotification(newProfile.email);
+      await this.enviarCorreoConfirmacion(newProfile);
       return newProfile;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
