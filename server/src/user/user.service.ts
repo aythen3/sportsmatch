@@ -324,7 +324,7 @@ export class UserService {
       }
       // Devolver el nuevo perfil del usuario
       await this.sendMailService.sendRegistrationNotification(newProfile.email);
-      await this.enviarCorreoConfirmacion(newProfile);
+      // await this.enviarCorreoConfirmacion(newProfile);
       return newProfile;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
