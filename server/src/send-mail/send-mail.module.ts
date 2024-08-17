@@ -20,7 +20,7 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
       transport: {
         host: 'smtp.gmail.com', // Servidor SMTP
         port: 587,
-        secure: false, // true para TLS; false para otros protocolos
+        secure: true, // true para TLS; false para otros protocolos
 
         auth: {
           user: 'azschiaffino@gmail.com', // Correo electrónico de origen
