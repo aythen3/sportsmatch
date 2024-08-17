@@ -28,6 +28,7 @@ export async function registerForPushNotificationsAsync() {
         projectId
       })
     ).data
+    console.log(token)
   } else {
     return null
   }

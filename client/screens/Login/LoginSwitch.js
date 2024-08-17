@@ -70,6 +70,7 @@ const LoginSwitch = () => {
   const isFocused = useIsFocused()
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
+  const [optionPlayer, setOptionPlayer] = useState(true)
 
   const getUserAuth = async () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
@@ -161,7 +162,7 @@ const LoginSwitch = () => {
     iosClientId:
       '981049209549-nvp257t5bs9kr6dmi2hmmi7giogt5r95.apps.googleusercontent.com',
     androidClientId:
-      '981049209549-b2d80rtev22jklna06n2j7ingp6tfjo1.apps.googleusercontent.com'
+      '290667898990-a3eficeqn7fhm541v2fg1tmllsge06fm.apps.googleusercontent.com'
   })
 
   const getLocalUser = async () => {
@@ -188,6 +189,7 @@ const LoginSwitch = () => {
   useEffect(() => {
     getLocalUser()
     const unsub = onAuthStateChanged(auth, async (user) => {
+      console.log(user, 'user')
       if (user) {
         await AsyncStorage.setItem('@user', JSON.stringify(user))
         setUserInfo(user)
@@ -240,7 +242,7 @@ const LoginSwitch = () => {
           dispatch(
             create({
               nickname: user.displayName,
-              email: '',
+              email: user.email,
               googleId: user.uid,
               type: isSportman === true ? 'sportman' : 'club'
             })
@@ -552,13 +554,106 @@ const LoginSwitch = () => {
         >
           <View style={styles.frameGroup}>
             <View style={{ width: '100%' }}>
-              <View style={{ width: '100%', paddingHorizontal: 15 }}>
-                <View style={[styles.groupChild, styles.borderPosition]}>
-                  <Text style={!isEnabled ? styles.jugador : styles.jugador2}>
-                    Jugador/Profesional deporte*
+              <View
+                style={{
+                  width: '100%',
+                  paddingHorizontal: 15,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setIsSpotMan(true))
+                    setOptionPlayer(true)
+                  }}
+                  style={[
+                    styles.groupChild,
+                    styles.borderPosition,
+                    {
+                      justifyContent: 'space-between',
+                      borderColor: optionPlayer
+                        ? '#1FD430'
+                        : Color.gREY2SPORTSMATCH,
+                      backgroundColor: optionPlayer
+                        ? 'rgba(0, 255, 24, 0.2)'
+                        : 'transparent'
+                    }
+                  ]}
+                >
+                  <Text style={{ color: 'gray' }}>Soy</Text>
+                  <View style={{ alignItems: 'center' }}>
+                    <Text
+                      style={optionPlayer ? styles.jugador : styles.jugador2}
+                    >
+                      Jugador
+                    </Text>
+                    <Text
+                      style={optionPlayer ? styles.jugador : styles.jugador2}
+                    >
+                      Profesional deporte
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.entrenadoraPreparadoraFs,
+                      styles.aceptarTypo
+                    ]}
+                  >
+                    (Entrenador/a, preparador/a físico/a, analista técnico/a,
+                    psicólogo/a, fisioterapeuta, nutricionista.)
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setIsSpotMan(false))
+
+                    setOptionPlayer(false)
+                  }}
+                  style={[
+                    styles.groupChild,
+                    styles.borderPosition,
+                    {
+                      justifyContent: 'center',
+                      borderColor: !optionPlayer
+                        ? '#1FD430'
+                        : Color.gREY2SPORTSMATCH,
+                      backgroundColor: !optionPlayer
+                        ? 'rgba(0, 255, 24, 0.2)'
+                        : 'transparent'
+                    }
+                  ]}
+                >
+                  <Text style={{ color: 'gray', position: 'absolute', top: 6 }}>
+                    Soy
                   </Text>
 
-                  <Switch
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf: 'center'
+                    }}
+                  >
+                    <Text
+                      style={!optionPlayer ? styles.jugador : styles.jugador2}
+                    >
+                      Club
+                    </Text>
+                    <Text
+                      style={!optionPlayer ? styles.jugador : styles.jugador2}
+                    >
+                      Representante
+                    </Text>
+                    <Text
+                      style={!optionPlayer ? styles.jugador : styles.jugador2}
+                    >
+                      Scouter
+                    </Text>
+                  </View>
+
+                  {/* <Switch
                     circleSize={16}
                     onValueChange={toggleSwitch}
                     value={isEnabled}
@@ -571,26 +666,19 @@ const LoginSwitch = () => {
                     barHeight={18}
                     switchLeftPx={5} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
                     switchRightPx={5}
-                  />
+                  /> */}
 
-                  <Text
+                  {/* <Text
                     style={
                       !isEnabled ? styles.clubScouting : styles.clubScouting2
                     }
                   >
                     Club/Representante/Scouter
-                  </Text>
-                </View>
+                  </Text> */}
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={{ marginBottom: 15 }}>
-              <Text
-                style={[styles.entrenadoraPreparadoraFs, styles.aceptarTypo]}
-              >
-                (*) Entrenador/a, preparador/a físico/a, analista técnico/a,
-                psicólogo/a, fisioterapeuta, nutricionista.
-              </Text>
-            </View>
+            <View style={{ marginBottom: 15 }}></View>
           </View>
           <View style={styles.frameWrapper}>
             <View style={{ width: '100%', alignItems: 'center' }}>
@@ -836,13 +924,13 @@ const styles = StyleSheet.create({
   groupChild: {
     borderColor: Color.gREY2SPORTSMATCH,
     borderWidth: 1,
-    borderRadius: Border.br_81xl,
-    height: 40,
-    width: '100%',
+    borderRadius: 12,
+    width: Dimensions.get('screen').width / 2.2,
+    height: 140,
     // left: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 6
   },
   container: {
     width: 329,
@@ -854,7 +942,6 @@ const styles = StyleSheet.create({
     // lineHeight: 14,
     // width: 271,
     marginTop: 10,
-    paddingHorizontal: 40,
     color: Color.gREY2SPORTSMATCH,
     textAlign: 'center'
   },
@@ -979,13 +1066,13 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
-    fontSize: 10,
+    fontSize: 16,
     color: '#1FD430',
     marginRight: 5
   },
   jugador2: {
-    fontSize: 10,
-    color: '#999999',
+    fontSize: 16,
+    color: 'white',
     marginRight: 5
   },
   clubScouting: {

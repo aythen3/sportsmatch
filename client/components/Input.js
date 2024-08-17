@@ -102,7 +102,7 @@ function Input({
           {emailcheked && (
             <View>
               {!isEmailValid ? (
-                <View style={{}}>
+                <View style={{ position: 'absolute', right: 14, bottom: -10 }}>
                   <AntDesign name="close" color={'#ff0000'} size={20} />
                 </View>
               ) : (

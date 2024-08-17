@@ -38,7 +38,9 @@
           {
             "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
           }
-        ]
+        ],
+        "NSCameraUsageDescription": "SportsMatch needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "SportsMatch needs access to your Microphone."
       }
     },
     "android": {
@@ -50,7 +52,8 @@
       "versionCode": 10,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.INTERNET"
+        "android.permission.INTERNET",
+        "android.permission.CAMERA"
       ],
       "package": "com.aythenapps.sportsmatch"
     },
