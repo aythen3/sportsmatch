@@ -21,8 +21,7 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
         host: 'smtp.gmail.com', // Servidor SMTP
         port: 587,
         secure: false, // true para TLS; false para otros protocolos
-        proxy:
-          'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/',
+
         auth: {
           user: 'azschiaffino@gmail.com', // Correo electrónico de origen
           pass: 'ccuk lafv fpmh bijv' // Contraseña del correo electrónico de origen
