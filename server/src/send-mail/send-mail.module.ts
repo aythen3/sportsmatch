@@ -34,7 +34,7 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
         dir: join(__dirname, '..', 'template'), // Directorio de plantillas de correo electrónico
 
         options: {
-          strict: true
+          strict: false
         }
       }
     }),
