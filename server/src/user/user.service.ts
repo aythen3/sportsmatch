@@ -142,10 +142,11 @@ export class UserService {
       port: 587,
       secure: false,
       auth: {
-        user: configService.get('SMTP_EMAIL'),
-        pass: configService.get('SMTP_PASS')
+        user: 'azschiaffino@gmail.com',
+        pass: 'ccuk lafv fpmh bijv'
       }
     });
+    console.log(transporter, 'transsss');
 
     const mailOptions = {
       from: 'sportsmatch.digital@gmail.com',
