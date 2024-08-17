@@ -19,7 +19,7 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com', // Servidor SMTP
-        port: 465,
+        port: 587,
         secure: true, // true para TLS; false para otros protocolos
 
         auth: {
