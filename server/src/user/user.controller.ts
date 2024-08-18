@@ -7,10 +7,7 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
-  UseGuards,
-  HttpException,
-  HttpStatus
+  Query
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -154,24 +151,42 @@ export class UserController {
       throw new Error('Token no válido');
     }
     return `
-    <html>
-      <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 40px;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Cambiar contraseña</h1>
-        <form action="/api/user/cambiar-contrasena/${token}" method="post">
-          <input type="password" name="contrasena" placeholder="Nueva contraseña">
-          <button type="submit">Cambiar contraseña</button>
-        </form>
-      </body>
-    </html>
+      <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin: 40px;
+        }
+        .header {
+          background-color: #000;
+          height: 100px;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-left: 20px;
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+        .header img {
+          display: flex;
+          margin: 10px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <img src="assets/image.jpg" class='iconImg'/>
+      </div>
+      <h1>Cambiar contraseña</h1>
+      <form action="/api/user/cambiar-contrasena/${token}" method="post">
+        <input type="password" name="contrasena" placeholder="Nueva contraseña">
+        <button type="submit">Cambiar contraseña</button>
+      </form>
+    </body>
+  </html>
   `;
   }
 

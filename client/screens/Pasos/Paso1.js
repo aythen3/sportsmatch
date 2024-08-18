@@ -233,6 +233,15 @@ const Paso1 = () => {
         }
         if (body) {
           dispatch(createSportman(body)).then((response) => {
+            console.log(response, 'response de creacion')
+            console.log(
+              {
+                id: response.payload.id,
+                ...body.sportmanData
+              },
+              'response de creacion'
+            )
+
             dispatch(
               setInitialSportman({
                 id: response.payload.id,

@@ -116,6 +116,14 @@ const PromocionarPost = () => {
                     ? 5
                     : optionIndex === 3
                       ? 15
+                      : null,
+              price:
+                optionIndex === 1
+                  ? 500
+                  : optionIndex === 2
+                    ? 1000
+                    : optionIndex === 3
+                      ? 2200
                       : null
             }
           }

@@ -23,8 +23,8 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
         secure: true, // true para TLS; false para otros protocolos
 
         auth: {
-          user: 'azschiaffino@gmail.com', // Correo electrónico de origen
-          pass: 'ccuk lafv fpmh bijv' // Contraseña del correo electrónico de origen
+          user: 'sportsmatchdigital.app@gmail.com',
+          pass: 'zayi vzpx jkkd xbqm' // Contraseña del correo electrónico de origen
         }
       },
       defaults: {

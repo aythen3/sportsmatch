@@ -31,6 +31,7 @@ import { getAllUsers, updateUserData } from '../redux/actions/users'
 import { updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
 import axios from 'axios'
+import { getAllMatchs } from '../redux/actions/matchs'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
@@ -71,7 +72,7 @@ const ChatAbierto1 = () => {
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
-
+    dispatch(getAllMatchs())
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
   }, [])
@@ -85,16 +86,18 @@ const ChatAbierto1 = () => {
             match.status === 'success'
         ).length > 0
       console.warn(route.params.sportman)
-      setCanSend(e)
+      return setCanSend(e)
     } else {
       const res = allMatchs.filter(
         (m) =>
-          m.prop1.sportmanId === user.user.sportman.id && m.status === 'success'
+          m.prop1.sportmanId === user?.user?.sportman?.id &&
+          m.status === 'success'
       )
       const res2 =
-        res.filter((r) => r.prop1.clubData.userId === route?.params?.receiverId)
-          .length > 0
-
+        res.filter(
+          (r) => r?.prop1?.clubData?.userId === route?.params?.receiverId
+        ).length > 0
+      console.log(res2, 'res2')
       setCanSend(res2)
     }
   }, [])

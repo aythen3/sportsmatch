@@ -535,13 +535,11 @@ const LoginSwitch = () => {
             width: '100%'
           }}
         >
-          <Pressable onPress={() => navigation.navigate('PantallaInicio')}>
-            <Image
-              style={styles.icon}
-              contentFit="contain"
-              source={require('../../assets/group-1.png')}
-            />
-          </Pressable>
+          <Image
+            style={styles.icon}
+            contentFit="contain"
+            source={require('../../assets/group-1.png')}
+          />
           <Text style={[styles.eresJugadorO, styles.aceptarTypo]}>
             ¿Eres jugador o un club?
           </Text>

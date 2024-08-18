@@ -14,7 +14,6 @@ const sportmanSlices = createSlice({
     loading: false
   },
   reducers: {
-    
     setInitialSportman: (state, action) => {
       state.sportman = action.payload
     },

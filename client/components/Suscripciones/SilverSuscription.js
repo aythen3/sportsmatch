@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   silverInner: {
     marginTop: 30,
     alignItems: 'center',
-    paddingHorizontal: 20
+    width: '100%'
   },
   frameContainer: {
     alignItems: 'center'
@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   frameView: {
-    marginTop: 30
+    marginTop: 30,
+    width: '100%'
   },
   vectorParent: {
     alignItems: 'center',
@@ -189,7 +190,8 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: Color.bLACK1SPORTSMATCH,
     fontSize: FontSize.t1TextSMALL_size,
-    textAlign: 'left'
+    textAlign: 'left',
+    width: '90%'
   },
   frameItem: {
     borderColor: Color.gREY2SPORTSMATCH,

@@ -144,6 +144,7 @@ const MessagesChat = ({
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
+            sportman: sportmanId,
             profilePic
           })
         }}

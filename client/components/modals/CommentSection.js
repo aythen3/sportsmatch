@@ -19,6 +19,7 @@ import { getCommentByPost } from '../../redux/actions/comments'
 import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { Context } from '../../context/Context'
+import { getAllMatchs } from '../../redux/actions/matchs'
 
 const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
   const dispatch = useDispatch()
@@ -52,6 +53,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
       id: postId,
       type: user.user.type
     }
+    dispatch(getAllMatchs())
     dispatch(getCommentByPost(body))
   }, [postId])
 

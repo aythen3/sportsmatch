@@ -42,9 +42,12 @@ const OfertasEmitidas = () => {
   // const { positions } = useSelector((state) => state.sports)
 
   const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible2, setModalVisible2] = useState(false)
+
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
 
   const [selectedOffer, setSelectedOffer] = useState()
+  const [selectedOfferData, setSelectedOfferData] = useState()
 
   useEffect(() => {
     dispatch(getAllOffers())
@@ -65,6 +68,14 @@ const OfertasEmitidas = () => {
       offers.filter((offer) => offer.club.id === club.id)
     )
   }, [])
+
+  const total = offers
+    .filter((offer) => offer.club.id === club.id)
+    .filter((offer, i) => offer?.prop2?.price && offer?.prop2?.price)
+  const finalNumber = total.map((c) => c?.prop2?.price)
+  const totalNumber = finalNumber.reduce((a, b) => a + b, 0)
+
+  console.log(totalNumber, 'tota2l')
 
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
@@ -108,163 +119,294 @@ const OfertasEmitidas = () => {
           ) : (
             offers
               .filter((offer) => offer.club.id === club.id)
-              .map((offer, i) => (
-                <View key={offer.id} style={styles.offers}>
-                  <View style={styles.offerView}>
-                    <Text
-                      style={{
-                        color: mainColor,
-                        lineHeight: 14,
-                        fontSize: FontSize.t4TEXTMICRO_size,
-                        fontFamily: FontFamily.t4TEXTMICRO
-                      }}
-                    >
-                      Oferta {i + 1}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={(event) => {
-                        handleImageClick(event)
-                        setSelectedOffer(offer.id)
-                      }}
-                      style={{
-                        width: 24,
-                        height: 25,
-                        top: 2,
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Image
-                        style={{ width: 5, height: 21 }}
-                        contentFit="cover"
-                        source={require('../../assets/frame-957.png')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    <View>
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>Sexo</Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                      </Text>
-                    </View>
-
-                    <View style={styles.innerLine} />
-
-                    <View>
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Categoría
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        {offer.category}
-                      </Text>
-                    </View>
-
-                    <View style={styles.innerLine} />
-
-                    <View>
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Posicion
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        {offer.posit}
-                      </Text>
-                    </View>
-                    <View style={styles.innerLine} />
-                    <View>
-                      <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                        Provincia
-                      </Text>
-                      <Text style={[styles.masculino, styles.timeTypo]}>
-                        {offer?.province?.length > 0 ? offer.province : '-'}
-                      </Text>
-                    </View>
-
-                    <View style={styles.innerLine} />
-
+              .map((offer, i) => {
+                return (
+                  <View key={offer.id} style={styles.offers}>
                     <View style={styles.offerView}>
-                      <View>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Urgencia
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          {offer.urgency}/10
-                        </Text>
-                      </View>
-                      <View>
-                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
-                          Retribucion
-                        </Text>
-                        <Text style={[styles.masculino, styles.timeTypo]}>
-                          {offer && offer.retribution ? 'Si' : 'No'}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                    onPress={async () => {
-                      await dispatch(
-                        updateOffer({
-                          id: offer.id,
-                          body: { paused: !offer.paused }
-                        })
-                      ).then((data) => dispatch(getAllOffers()))
-                    }}
-                    style={styles.botonPausar}
-                  >
-                    <View style={[styles.pausar, styles.pausarFlexBox]}>
-                      <Text style={[styles.pausar1, styles.pausar1Typo]}>
-                        {!offer.paused ? 'Pausar' : 'Reanudar'}
+                      <Text
+                        style={{
+                          color: mainColor,
+                          lineHeight: 14,
+                          fontSize: FontSize.t4TEXTMICRO_size,
+                          fontFamily: FontFamily.t4TEXTMICRO
+                        }}
+                      >
+                        Oferta {i + 1}
                       </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <Pressable
-                    style={styles.inscritos}
-                    onPress={() =>
-                      navigation.navigate('InscritosAMisOfertas', {
-                        inscriptions: offer.inscriptions || []
-                      })
-                    }
-                  >
-                    <Text style={[styles.inscritos1, styles.pausar1Typo]}>
-                      {offer.inscriptions &&
-                      offer.inscriptions.filter((item) => item !== 'undefined')
-                        .length > 0
-                        ? `${offer?.inscriptions?.filter((item) => item !== 'undefined')?.length} inscritos`
-                        : '0 inscritos'}
-                    </Text>
-                  </Pressable>
-                  <Modal visible={modalVisible} transparent={true}>
-                    <TouchableWithoutFeedback
-                      onPress={() => setModalVisible(false)}
-                    >
-                      <View style={{ flex: 1 }}>
-                        <View
+                      {offer?.prop2 && (
+                        <TouchableOpacity
+                          onPress={(event) => {
+                            setModalVisible2(true)
+                            // handleImageClick(event)
+                            setSelectedOfferData(offer)
+                          }}
                           style={{
-                            position: 'absolute',
-                            top: modalPosition.y,
-                            left: modalPosition.x,
-                            padding: 20,
-                            borderRadius: 8
+                            width: 24,
+                            height: 25,
+                            top: 2,
+                            alignItems: 'center'
                           }}
                         >
-                          <ModalOptionOffers
-                            offerId={selectedOffer}
-                            onClose={() => setModalVisible(false)}
-                            offerData={
-                              offers?.filter(
-                                (off) => selectedOffer === off?.id
-                              )[0]
-                            }
+                          <Image
+                            style={{ width: 40, height: 24 }}
+                            contentFit="contain"
+                            source={require('../../assets/CoinsPromo.png')}
                           />
+                        </TouchableOpacity>
+                      )}
+
+                      <TouchableOpacity
+                        onPress={(event) => {
+                          handleImageClick(event)
+                          setSelectedOffer(offer.id)
+                        }}
+                        style={{
+                          width: 24,
+                          height: 25,
+                          top: 2,
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Image
+                          style={{ width: 5, height: 21 }}
+                          contentFit="contain"
+                          source={require('../../assets/frame-957.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <View>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Sexo
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          {offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
+                        </Text>
+                      </View>
+
+                      <View style={styles.innerLine} />
+
+                      <View>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Categoría
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          {offer.category}
+                        </Text>
+                      </View>
+
+                      <View style={styles.innerLine} />
+
+                      <View>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Posicion
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          {offer.posit}
+                        </Text>
+                      </View>
+                      <View style={styles.innerLine} />
+                      <View>
+                        <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                          Provincia
+                        </Text>
+                        <Text style={[styles.masculino, styles.timeTypo]}>
+                          {offer?.province?.length > 0 ? offer.province : '-'}
+                        </Text>
+                      </View>
+
+                      <View style={styles.innerLine} />
+
+                      <View style={styles.offerView}>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Urgencia
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            {offer.urgency}/10
+                          </Text>
+                        </View>
+                        <View>
+                          <Text style={[styles.sexo1, styles.sexo1Typo]}>
+                            Retribucion
+                          </Text>
+                          <Text style={[styles.masculino, styles.timeTypo]}>
+                            {offer && offer.retribution ? 'Si' : 'No'}
+                          </Text>
                         </View>
                       </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>
-                </View>
-              ))
+                    </View>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        await dispatch(
+                          updateOffer({
+                            id: offer.id,
+                            body: { paused: !offer.paused }
+                          })
+                        ).then((data) => dispatch(getAllOffers()))
+                      }}
+                      style={styles.botonPausar}
+                    >
+                      <View style={[styles.pausar, styles.pausarFlexBox]}>
+                        <Text style={[styles.pausar1, styles.pausar1Typo]}>
+                          {!offer.paused ? 'Pausar' : 'Reanudar'}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <Pressable
+                      style={styles.inscritos}
+                      onPress={() =>
+                        navigation.navigate('InscritosAMisOfertas', {
+                          inscriptions: offer.inscriptions || []
+                        })
+                      }
+                    >
+                      <Text style={[styles.inscritos1, styles.pausar1Typo]}>
+                        {offer.inscriptions &&
+                        offer.inscriptions.filter(
+                          (item) => item !== 'undefined'
+                        ).length > 0
+                          ? `${offer?.inscriptions?.filter((item) => item !== 'undefined')?.length} inscritos`
+                          : '0 inscritos'}
+                      </Text>
+                    </Pressable>
+                    <Modal visible={modalVisible} transparent={true}>
+                      <TouchableWithoutFeedback
+                        onPress={() => setModalVisible(false)}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <View
+                            style={{
+                              position: 'absolute',
+                              top: modalPosition.y,
+                              left: modalPosition.x,
+                              padding: 20,
+                              borderRadius: 8
+                            }}
+                          >
+                            <ModalOptionOffers
+                              offerId={selectedOffer}
+                              onClose={() => setModalVisible(false)}
+                              offerData={
+                                offers?.filter(
+                                  (off) => selectedOffer === off?.id
+                                )[0]
+                              }
+                            />
+                          </View>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </Modal>
+                  </View>
+                )
+              })
           )}
         </View>
       </ScrollView>
+      <Modal
+        animationType="slide"
+        style={{ flex: 1 }}
+        onRequestClose={() => setModalVisible2(false)}
+        transparent
+        visible={modalVisible2}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end'
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              flex: 1
+            }}
+            onTouchStart={() => setModalVisible2(false)}
+          />
+
+          <View
+            style={{
+              bottom: 0,
+              width: '100%',
+              borderTopEndRadius: 20,
+              borderTopStartRadius: 20,
+              borderWidth: 1,
+              borderBottomWidth: 0,
+              borderColor: 'gray',
+              padding: 14,
+              position: 'absolute',
+              backgroundColor: Color.bLACK2SPORTMATCH
+            }}
+          >
+            <View
+              style={{
+                height: 6,
+                width: 50,
+                borderRadius: 20,
+                backgroundColor: Color.wHITESPORTSMATCH,
+                alignSelf: 'center',
+                marginBottom: 12
+              }}
+            />
+            <Text style={{ color: 'gray', textAlign: 'center' }}>
+              Oferta promocionada
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor: 'gray',
+                paddingVertical: 10
+              }}
+            >
+              <Text style={{ color: 'white' }}>
+                Promocionada desde {selectedOfferData?.prop2?.date.slice(8, 10)}
+                /{selectedOfferData?.prop2?.date.slice(5, 7)}/
+                {selectedOfferData?.prop2?.date.slice(0, 4)}
+              </Text>
+
+              <Text style={{ color: 'white' }}>
+                Duración: {selectedOfferData?.prop2?.days} Días
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Text
+                style={{
+                  color: 'white',
+                  textAlignVertical: 'bottom'
+                }}
+              >
+                Precio de promoción
+              </Text>
+              <Text style={{ color: 'white', fontSize: 20 }}>
+                €{selectedOfferData?.prop2?.price}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Text
+                style={{
+                  color: 'white',
+                  textAlignVertical: 'bottom'
+                }}
+              >
+                Total invertido en promoción
+              </Text>
+              <Text style={{ color: 'white', fontSize: 20 }}>
+                €{totalNumber}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   )
 }
@@ -392,7 +534,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.size_9xl,
     color: Color.wHITESPORTSMATCH,
-    bottom: 4
+    height: '100%',
+    textAlignVertical: 'center'
   },
   add: {
     width: 40,

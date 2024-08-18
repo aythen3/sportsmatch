@@ -47,7 +47,7 @@ const CardInfoOffers = ({ text, value, category }) => {
         <View
           style={{
             marginTop: 10,
-            width: '100%',
+            width: '80%',
             height: 25,
             backgroundColor: Color.colorDimgray_100,
             borderWidth: 1,

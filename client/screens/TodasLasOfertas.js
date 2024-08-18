@@ -357,7 +357,7 @@ const TodasLasOfertas = () => {
                     alignItems: 'center',
                     borderColor: '#505050',
                     borderWidth: 1,
-                    opacity: 0.7
+                    opacity: 0.9
                   }}
                 >
                   <View style={{ flexDirection: 'row', zIndex: 5 }}>
@@ -512,7 +512,7 @@ const TodasLasOfertas = () => {
                         }
                       }}
                       style={{
-                        width: '70%',
+                        width: '80%',
                         paddingHorizontal: Padding.p_mini,
                         paddingVertical: Padding.p_8xs,
                         justifyContent: 'center',
@@ -523,8 +523,8 @@ const TodasLasOfertas = () => {
                         backgroundColor: !offer?.inscriptions?.includes(
                           user?.user?.sportman?.id
                         )
-                          ? Color.wHITESPORTSMATCH
-                          : '#e1451e',
+                          ? '#ffff'
+                          : Color.wHITESPORTSMATCH,
                         height: 45
                       }}
                     >
@@ -761,6 +761,7 @@ const TodasLasOfertas = () => {
                       value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
                     />
                   </View>
+
                   <View
                     style={{
                       flex: 1,

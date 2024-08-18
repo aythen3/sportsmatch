@@ -148,7 +148,9 @@ const MiPerfil = () => {
               >
                 <View style={styles.jordiEspeltPvotBaloncestoWrapper}>
                   <Text style={styles.textTypo}>
-                    {user?.user?.sportman.info.nickname}
+                    {user?.user?.sportman?.info?.nickname ||
+                      sportman?.info?.nickname ||
+                      user?.user?.nickname}
                   </Text>
                   {sportman?.info?.sport?.length > 0 && (
                     <Text style={[styles.textTypo2, { color: mainColor }]}>
