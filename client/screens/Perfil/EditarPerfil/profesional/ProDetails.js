@@ -22,6 +22,7 @@ import { Camera, CameraView } from 'expo-camera'
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 import ScrollableModal from '../../../../components/modals/ScrollableModal'
 import { DeviceMotion } from 'expo-sensors'
+import { getUserData } from '../../../../redux/actions/users'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const PlayerDetails = () => {
   const [actualClubName, setActualClubName] = useState()
   const [userDescription, setUserDescription] = useState()
   const navigation = useNavigation()
+  const [name, setName] = useState(sportman?.info?.nickname || '')
 
   const {
     pickImage,
@@ -111,6 +113,7 @@ const PlayerDetails = () => {
       img_perfil: profileImage,
       img_front: coverImage,
       rol: profesionalType,
+      nickname: name,
       yearsOfExperience: yearsOfExperience
     }
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
@@ -119,7 +122,9 @@ const PlayerDetails = () => {
       }
       return acc
     }, {})
-    dispatch(updateSportman({ id: sportman.id, newData: filteredData }))
+    dispatch(updateSportman({ id: sportman.id, newData: filteredData })).then(
+      () => dispatch(getUserData(user.user.id))
+    )
     setProfileImage()
     setCoverImage()
     navigation.navigate('MiPerfil')
@@ -139,6 +144,7 @@ const PlayerDetails = () => {
   const changePictureMode = async () => {
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
+
   const [orientation, setOrientation] = useState('portrait')
 
   useEffect(() => {
@@ -154,6 +160,7 @@ const PlayerDetails = () => {
     })
     return () => subscription.remove()
   }, [])
+
   const takePicture = async () => {
     if (cameraReff?.current) {
       // Check if cameraRef is not null
@@ -384,6 +391,28 @@ const PlayerDetails = () => {
             {/* ========================== INPUTS ========================= */}
             {/* =========================================================== */}
             <View style={{ gap: 20, flex: 1 }}>
+              <View style={{ gap: 5 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
+                  {'Nombre'}
+                </Text>
+
+                <TextInput
+                  style={{
+                    flex: 1,
+                    borderWidth: 0.5,
+                    borderColor: '#fff',
+                    borderRadius: 50,
+                    paddingLeft: 15,
+                    height: 40,
+                    fontSize: 15,
+                    color: '#fff'
+                  }}
+                  value={name}
+                  onChangeText={(e) => setName(e)}
+                  placeholderTextColor={'white'}
+                  placeholder={'Nombre'}
+                ></TextInput>
+              </View>
               <View style={{ gap: 5 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 400 }}>
                   {'Tipo de profesional'}
