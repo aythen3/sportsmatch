@@ -160,7 +160,7 @@ const LoginSwitch = () => {
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     iosClientId:
-      '981049209549-nvp257t5bs9kr6dmi2hmmi7giogt5r95.apps.googleusercontent.com',
+      '290667898990-dgk8b4uuq5k0728pia6so4f4qvlkl4ae.apps.googleusercontent.com',
     androidClientId:
       '290667898990-a3eficeqn7fhm541v2fg1tmllsge06fm.apps.googleusercontent.com'
   })

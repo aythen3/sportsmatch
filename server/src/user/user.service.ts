@@ -27,6 +27,7 @@ export class UserService {
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
+
       auth: {
         user: 'sportsmatchdigital.app@gmail.com',
         pass: 'zayi vzpx jkkd xbqm'
@@ -241,7 +242,7 @@ export class UserService {
     `
     };
 
-    await transporter.sendMail(mailOptions);
+    await this.transporter.sendMail(mailOptions);
   }
 
   async findByTokenRecuperacion(token: string) {
