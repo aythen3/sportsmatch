@@ -24,7 +24,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   getAllMatchs,
   getClubMatchs,
-  getuserMatches
+  getUserMatchs
 } from '../../redux/actions/matchs'
 import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
@@ -52,12 +52,12 @@ const TusMatchs = () => {
   console.log('maincolor', mainColor)
   const imageSource = images[mainColor] || images['#E1451E']
   useEffect(() => {
-    // if (user?.user?.type !== 'club') {
-    //   dispatch(getuserMatches(user?.user?.sportman?.id))
-    // }
-    // if (user?.user?.type === 'club') {
-    //   dispatch(getClubMatchs(user?.user?.club.id))
-    // }
+    if (user?.user?.type !== 'club') {
+      dispatch(getUserMatchs(user?.user?.sportman?.id))
+    }
+    if (user?.user?.type === 'club') {
+      dispatch(getClubMatchs(user?.user?.club.id))
+    }
     dispatch(getAllMatchs())
     console.log(
       'clubmatches',
@@ -423,7 +423,7 @@ const TusMatchs = () => {
                           allUsers.filter(
                             (user) =>
                               user?.id === match?.prop1?.sportManData?.userId
-                          )[0].nickname
+                          )[0]?.nickname
                         }
                       </Text>
                     </View>

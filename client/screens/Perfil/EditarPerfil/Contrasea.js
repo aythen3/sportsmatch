@@ -42,7 +42,7 @@ const Contrasea = () => {
 
   return (
     <SafeAreaView style={styles.contrasea}>
-      <CustomHeaderBack header={'Contraseña'}></CustomHeaderBack>
+      <CustomHeaderBack header={'Cambiar contraseña'}></CustomHeaderBack>
 
       <View>
         <Input

@@ -16,18 +16,24 @@ const Chat = ({ text, isMy, read, hour }) => {
         maxWidth: '80%',
         minWidth: 100,
         flexDirection: 'column',
-        marginTop: 5,
+        marginTop: 5
       }}
     >
-      <Text style={{ fontFamily: FontFamily.t4TEXTMICRO,
-    fontSize: FontSize.t1TextSMALL_size,
-    color: Color.wHITESPORTSMATCH}}>{text}</Text>
+      <Text
+        style={{
+          fontFamily: FontFamily.t4TEXTMICRO,
+          fontSize: FontSize.t1TextSMALL_size,
+          color: Color.wHITESPORTSMATCH
+        }}
+      >
+        {text}
+      </Text>
 
       <View
         style={{
           flexDirection: 'row',
           gap: 3,
-          margin:1,
+          margin: 1,
           justifyContent: 'flex-end',
           alignItems: 'center'
         }}

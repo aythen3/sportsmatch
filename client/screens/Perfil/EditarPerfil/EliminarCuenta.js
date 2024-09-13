@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'expo-image'
-import { StyleSheet, Pressable, Text, View } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   FontSize,
@@ -11,15 +17,38 @@ import {
 } from '../../../GlobalStyles'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import axiosInstance from '../../../utils/apiBackend'
+import { useDispatch, useSelector } from 'react-redux'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../../firebaseConfig'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { cleanSportman } from '../../../redux/slices/sportman.slices'
+import { cleanUser } from '../../../redux/slices/users.slices'
+import { cleanPost } from '../../../redux/slices/post.slices'
+import { cleanClub } from '../../../redux/slices/club.slices'
+import { resetChatsSlices } from '../../../redux/slices/chats.slices'
+import { resetCommentsSlices } from '../../../redux/slices/comments.slices'
+import { resetMatchsSlices } from '../../../redux/slices/matchs.slices'
+import { resetMuroSlices } from '../../../redux/slices/muro.slices'
+import { resetNotificationsSlices } from '../../../redux/slices/notifications.slices'
+import { cleanOffers } from '../../../redux/slices/offers.slices'
+import { cleanPosition } from '../../../redux/slices/positions.slices'
+import { cleanSports } from '../../../redux/slices/sports.slices'
+import { Context } from '../../../context/Context'
 
 const EliminarCuenta = () => {
   const navigation = useNavigation()
+  const { user, allUsers, mainColor } = useSelector((state) => state.users)
+  const firebaseLogout = () => {
+    signOut(auth)
+  }
+  const dispatch = useDispatch()
+  const { setUsersWithMessages } = useContext(Context)
 
   return (
     <SafeAreaView style={styles.cerrarSesin}>
       <CustomHeaderBack header={'Eliminar Cuenta'}></CustomHeaderBack>
       <View style={styles.cabezera}>
-    
         <View
           style={{
             justifyContent: 'center',
@@ -34,13 +63,51 @@ const EliminarCuenta = () => {
                 SpotsMatch?
               </Text>
             </Text>
-            <View style={styles.boton}>
+            <TouchableOpacity
+              onPress={async () => {
+                axiosInstance
+                  .patch(`user/${user?.user?.id}`, {
+                    isDelete: true,
+                    email: '',
+                    googleId: '',
+                    appleId: ''
+                  })
+                  .then(async () => {
+                    console.log('setting userswithmessages to []...')
+                    setUsersWithMessages([])
+                    await AsyncStorage.removeItem('userAuth')
+                    await AsyncStorage.removeItem('googleAuth')
+                    await AsyncStorage.removeItem('facebookAuth')
+                    await AsyncStorage.removeItem('appleUserAuth')
+                    await AsyncStorage.removeItem('@user')
+                    await dispatch(cleanSportman())
+                    await dispatch(cleanUser())
+                    await dispatch(cleanPost())
+                    await dispatch(cleanClub())
+                    await dispatch(resetChatsSlices())
+                    await dispatch(resetCommentsSlices())
+                    await dispatch(resetMatchsSlices())
+                    await dispatch(resetMuroSlices())
+                    await dispatch(resetNotificationsSlices())
+                    await dispatch(cleanOffers())
+                    await dispatch(cleanPosition())
+                    await dispatch(cleanSports())
+                    await firebaseLogout()
+                    navigation.reset({
+                      index: 0,
+                      history: false,
+                      routes: [{ name: 'LoginSwitch' }]
+                    })
+                  })
+              }}
+              style={styles.boton}
+            >
               <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
                 <Text style={[styles.aceptar, styles.cerrarTypo]}>
                   Eliminar cuenta
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

@@ -82,8 +82,8 @@ const OfertasEmitidas = () => {
       <View style={styles.topContainer}>
         <Pressable style={styles.header} onPress={() => navigation.goBack()}>
           <BackArrowSVG />
-          <Text style={styles.titular}>Ofertas</Text>
         </Pressable>
+        <Text style={styles.titular}>Ofertas</Text>
         <TouchableOpacity
           style={{
             width: 40,

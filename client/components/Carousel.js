@@ -205,11 +205,9 @@ function Carousel({
             }}
             resizeMode="cover"
             source={
-              data?.author?.id === user?.user?.id
-                ? generateLowResUrl(user?.user?.sportman?.info?.img_perfil, 30)
-                : imgPerfil === '' || !imgPerfil
-                  ? require('../assets/whiteSport.png')
-                  : generateLowResUrl(imgPerfil, 30)
+              imgPerfil
+                ? generateLowResUrl(imgPerfil, 30)
+                : require('../assets/whiteSport.png')
             }
           />
           <Text style={styles.nameText}>{name}</Text>

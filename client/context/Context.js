@@ -7,6 +7,12 @@ import { getAllUsers } from '../redux/actions/users'
 import { updateMessages } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { registerForPushNotificationsAsync } from '../utils/pushService'
+import { Dimensions } from 'react-native'
+import {
+  getAllNotifications,
+  getNotificationsByUserId
+} from '../redux/actions/notifications'
+import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 
 const getFileType = (filePath) => {
   const extension = filePath.split('.').pop().toLowerCase()
@@ -333,14 +339,17 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     const newSocket = io(
       // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-      'http://192.168.0.77:3010',
+      'http://163.172.172.81:3010',
+      // 'http://192.168.0.77:3010',
 
       {
         transports: ['websocket']
       }
     )
 
-    newSocket.on('connect', () => {})
+    newSocket.on('connect', () => {
+      newSocket.emit('join', user?.user?.id)
+    })
 
     newSocket.on('disconnect', () => {
       setRoomId()
@@ -348,6 +357,19 @@ export const ContextProvider = ({ children }) => {
 
     newSocket.on('error', (error) => {
       console.log('ERROR FROM SOCKET', error)
+    })
+
+    newSocket.on('hola', (data) => {
+      console.log(data, 'anad')
+    })
+    newSocket.on('notifications', (data) => {
+      console.log(data, 'notifications')
+      dispatch(getNotificationsByUserId(user?.user?.id))
+    })
+
+    newSocket.on('readMessages', (room) => {
+      console.log(room, '11111111111111111111111111')
+      getUsersMessages()
     })
 
     newSocket.on('joinedRoom', (room) => {
@@ -361,7 +383,10 @@ export const ContextProvider = ({ children }) => {
 
     newSocket.on('message-server', (msg) => {
       // console.log('New message:', msg)
-      dispatch(updateMessages(msg))
+      dispatch(updateMessages(msg)).then(() => {
+        dispatch(setAllConversationMessagesToRead())
+      })
+
       // getUsersMessages()
     })
 
@@ -388,6 +413,9 @@ export const ContextProvider = ({ children }) => {
 
   const sendMessage = (message, sender, receiver) => {
     socket.emit('message', { message, sender, receiver })
+  }
+  const emitToUser = (usuarioId, evento, data) => {
+    socket.emit('emitToUser', { usuarioId, evento, data })
   }
 
   const getClubMatches = () => {
@@ -464,6 +492,12 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  const scalableFontSize = (fontSize) => {
+    const { width } = Dimensions.get('window')
+    const scalableFontSize = fontSize * (width / 375) // 375 es el ancho de la pantalla de un iPhone 8
+    return scalableFontSize
+  }
+
   const generateLowResUrl = (imageUrl, quality) => {
     const imgQuality = quality || 80
     const baseUrl = 'https://res.cloudinary.com'
@@ -484,6 +518,8 @@ export const ContextProvider = ({ children }) => {
   return (
     <Context.Provider
       value={{
+        emitToUser,
+        scalableFontSize,
         notReaded,
         generateLowResUrl,
         setNotReaded,

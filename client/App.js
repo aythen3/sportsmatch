@@ -70,6 +70,7 @@ import * as Notifications from 'expo-notifications'
 
 import RecuperarContra from './screens/Login/RecuperarContra'
 import OfertaCreada from './screens/Ofertas/OfertaCreada'
+import SuscriptionChange from './screens/SuscriptionChange'
 const Stack = createNativeStackNavigator()
 if (__DEV__) {
   require('./ReactotronConfig')
@@ -432,6 +433,11 @@ const App = () => {
                     <Stack.Screen
                       name="Contrasea"
                       component={Contrasea}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="SuscriptionChange"
+                      component={SuscriptionChange}
                       options={{ headerShown: false }}
                     />
                   </Stack.Navigator>

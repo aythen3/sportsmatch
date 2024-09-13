@@ -2,7 +2,7 @@
   "expo": {
     "runtimeVersion": "3.0.0",
     "name": "SportsMatch",
-    "slug": "sportsmatch",
+    "slug": "nuevappp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/smicon.png",
@@ -52,8 +52,7 @@
       "versionCode": 10,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.INTERNET",
-        "android.permission.CAMERA"
+        "android.permission.INTERNET"
       ],
       "package": "com.aythenapps.sportsmatch"
     },
@@ -62,14 +61,6 @@
     },
     "plugins": [
       "expo-font",
-      [
-        "react-native-vision-camera",
-        {
-          "cameraPermissionText": "SportsMatch needs access to your Camera.",
-          "enableMicrophonePermission": true,
-          "microphonePermissionText": "SportsMatch needs access to your Microphone."
-        }
-      ],
       [
         "expo-apple-authentication"
       ],
@@ -94,15 +85,14 @@
           "clientToken": "46f145a4cdcb17184273c6be90fc6ec3",
           "displayName": "Sportsmatch"
         }
-      ],
-      "react-native-vision-camera"
+      ]
     ],
     "extra": {
       "eas": {
-        "projectId": "bcc13ac4-e3a0-4969-ac54-3a36adecad47"
+        "projectId": "9120196b-3c17-4afd-a7f1-26a9758f23ae"
       }
     },
-    "owner": "azulschiaffino2",
+    "owner": "azschiaffino",
     "scheme": [
       "sportsmatch",
       "fb2654178301415308"

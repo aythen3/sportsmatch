@@ -32,7 +32,7 @@ const MiPerfil = () => {
 
   const navigation = useNavigation()
 
-  const { setActiveIcon } = useContext(Context)
+  const { setActiveIcon, emitToUser } = useContext(Context)
 
   const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor, allUsers } = useSelector((state) => state.users)
@@ -44,6 +44,7 @@ const MiPerfil = () => {
     if (isFocused) {
       setActiveIcon('profile')
     }
+    emitToUser(user.user.id, 'hola', user.user.id)
   }, [isFocused])
 
   const renderContent = () => {
@@ -167,7 +168,7 @@ const MiPerfil = () => {
                             : sportman?.info?.sport}
                     </Text>
                   )}
-                  <Text
+                  {/* <Text
                     style={{
                       textAlign: 'left',
                       color: 'white',
@@ -180,15 +181,52 @@ const MiPerfil = () => {
                     {sportman?.type === 'coach'
                       ? sportman?.info?.rol
                       : sportman?.info?.position}
-                  </Text>
+                  </Text> */}
+                  {sportman?.type !== 'coach' && sportman?.info?.position && (
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: 'white',
+                        fontFamily: FontFamily.t4TEXTMICRO,
+                        fontSize: 16,
+                        lineHeight: 20,
+                        fontWeight: '400'
+                      }}
+                    >
+                      {sportman?.info?.position}
+                    </Text>
+                  )}
+                  {sportman?.type === 'coach' && sportman?.info?.rol && (
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: 'white',
+                        fontFamily: FontFamily.t4TEXTMICRO,
+                        fontSize: 16,
+                        lineHeight: 20,
+                        fontWeight: '400'
+                      }}
+                    >
+                      {sportman?.info?.rol}
+                    </Text>
+                  )}
 
-                  {user?.user?.sportman?.info?.city ? (
+                  {/* {user?.user?.sportman?.info?.city ? (
                     <Text style={styles.textTypo3}>
                       {user?.user?.sportman?.info?.city}
                     </Text>
                   ) : (
                     <Text style={styles.textTypo3}>
                       {user?.user?.sportman?.info?.actualClub}
+                    </Text>
+                  )} */}
+                  {user?.user?.sportman?.info?.actualClub ? (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.sportman?.info?.actualClub}
+                    </Text>
+                  ) : (
+                    <Text style={styles.textTypo3}>
+                      {user?.user?.sportman?.info?.city}
                     </Text>
                   )}
                   {user?.user?.club?.city && (

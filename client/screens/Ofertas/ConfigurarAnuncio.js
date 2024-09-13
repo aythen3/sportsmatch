@@ -59,6 +59,8 @@ const ConfigurarAnuncio = () => {
   const [showGenderModal, setShowGenderModal] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const [showRolModal, setShowRolModal] = useState(false)
+  const [showError, setShowError] = useState('')
+
   const [showPositionModal, setShowPositionModal] = useState(false)
 
   const [province, setProvince] = useState('')
@@ -88,6 +90,28 @@ const ConfigurarAnuncio = () => {
     }
   }
 
+  // selectedGender &&
+  //                   selectedPriority &&
+  //                   retribucion &&
+  //                   selectedRemuneration &&
+  //                   selectedPosition &&
+  //                   selectedProvince &&
+  //                   selectedSport &&
+  //                   selectedRol
+
+  useEffect(() => {
+    setShowError('')
+  }, [
+    selectedGender,
+    selectedPriority,
+    selectedRemuneration,
+    selectedPosition,
+    selectedProvince,
+    selectedSport,
+    selectedRol,
+    selectedCategory
+  ])
+
   useEffect(() => {
     if (offerData?.retribution) {
       setSelectedRemuneration('Si')
@@ -105,6 +129,7 @@ const ConfigurarAnuncio = () => {
   })
 
   const categories = [
+    'Todas las categorias',
     'Escuela (4-6 años)',
     'Prebenjamín (6-8 años)',
     'Benjamín (8-10 años)',
@@ -124,15 +149,6 @@ const ConfigurarAnuncio = () => {
     'Nutricionista'
   ]
   const roles = ['Deportista', 'Profesional']
-
-  const opciones = {
-    futbol: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    baloncesto: ['Altura', 'Bote', 'Lanzamiento', 'Dribling'],
-    futbolSala: ['Pase', 'Resistencia', 'Disparo', 'Regate'],
-    hockey: ['Pase', 'Resistencia', 'Disparo', 'Dribling'],
-    voleibol: ['Altura', 'Servicio', 'Recepción', 'Salto'],
-    handball: ['Altura', 'Fuerza', 'Finta', 'Lanzamiento']
-  }
 
   const remunerationData = ['Si', 'No']
 
@@ -478,59 +494,62 @@ const ConfigurarAnuncio = () => {
               )}
             </TouchableOpacity>
           </View>
-          {/* {selectedRemuneration == 'Si' && (
-            <View style={{ width: '100%', gap: 8 }}>
-              <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
-                Importe anual
-              </Text>
 
-              <View style={{ width: '100%' }}>
-                <TextInput
-                  inputMode="numeric"
-                  value={retribucion || offerData?.prop1}
-                  placeholderTextColor={'#fff'}
-                  placeholder={offerData?.prop1 || retribucion || 'Ingrese retribución anual'}
-                  onChangeText={(e) => setRetribucion(e)}
-                  style={{ ...styles.containerBox, paddingHorizontal: 18 }}
-                ></TextInput>
-              </View>
-            </View>
-          )} */}
+          {showError && <Text style={{ color: 'red' }}>{showError}</Text>}
         </View>
 
         <View style={styles.botonsOferta}>
           <View style={{ width: '100%', paddingHorizontal: 14 }}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PostPromocion', {
-                  fromOffer: true,
-                  oferta: {
-                    offerData: {
-                      sexo:
-                        (selectedGender === 'Hombre' && 'Male') ||
-                        (selectedGender === 'Mujer' && 'Female') ||
-                        (selectedGender === '' && 'Otro'),
-                      category: selectedCategory,
-                      urgency: selectedPriority,
-                      prop1: retribucion,
-                      retribution:
-                        selectedRemuneration === 'Si'
-                          ? true
-                          : selectedRemuneration === 'No'
-                            ? false
-                            : null,
-                      posit: selectedPosition,
-                      paused: false,
-                      province: selectedProvince,
-                      sport: selectedSport,
-                      prop2: selectedRol
-                    },
+              onPress={() => {
+                if (
+                  (selectedRol === 'Deportista' &&
+                    selectedGender &&
+                    selectedPriority &&
+                    selectedRemuneration &&
+                    selectedPosition &&
+                    selectedProvince &&
+                    selectedSport &&
+                    selectedRol) ||
+                  (selectedRol === 'Profesional' &&
+                    selectedPriority &&
+                    selectedRemuneration &&
+                    selectedPosition &&
+                    selectedProvince &&
+                    selectedSport)
+                ) {
+                  navigation.navigate('PostPromocion', {
+                    fromOffer: true,
+                    oferta: {
+                      offerData: {
+                        sexo:
+                          (selectedGender === 'Hombre' && 'Male') ||
+                          (selectedGender === 'Mujer' && 'Female') ||
+                          (selectedGender === '' && 'Otro'),
+                        category: selectedCategory,
+                        urgency: selectedPriority,
+                        prop1: retribucion,
+                        retribution:
+                          selectedRemuneration === 'Si'
+                            ? true
+                            : selectedRemuneration === 'No'
+                              ? false
+                              : null,
+                        posit: selectedPosition,
+                        paused: false,
+                        province: selectedProvince,
+                        sport: selectedSport,
+                        prop4: selectedRol
+                      },
 
-                    clubId: club?.id
-                  },
-                  ...offerData
-                })
-              }
+                      clubId: club?.id
+                    },
+                    ...offerData
+                  })
+                } else {
+                  setShowError('Debes completar los campos')
+                }
+              }}
               style={[styles.botonPromocion, styles.boitonCrearFlexBox]}
             >
               <Text
@@ -574,23 +593,41 @@ const ConfigurarAnuncio = () => {
                     clubId: club?.id
                   }
                   console.log('SENDIND DATAAAA', data)
-                  await dispatch(setOffer(data)).then((data) =>
-                    dispatch(getAllOffers())
-                  )
-                  navigation.navigate('OfertaCreada')
+                  if (
+                    (selectedRol === 'Deportista' &&
+                      selectedGender &&
+                      selectedPriority &&
+                      selectedRemuneration &&
+                      selectedPosition &&
+                      selectedProvince &&
+                      selectedSport &&
+                      selectedRol) ||
+                    (selectedRol === 'Profesional' &&
+                      selectedPriority &&
+                      selectedRemuneration &&
+                      selectedPosition &&
+                      selectedProvince &&
+                      selectedSport)
+                  ) {
+                    await dispatch(setOffer(data)).then((data) =>
+                      dispatch(getAllOffers())
+                    )
+                    navigation.navigate('OfertaCreada')
+                  } else {
+                    setShowError('Debes completar los campos')
+                  }
                 } else {
                   const data = {
                     ...(selectedGender && {
                       sexo:
-                        (selectedGender == 'Hombre' && 'Male') ||
-                        (selectedGender == 'Mujer' && 'Female')
+                        (selectedGender === 'Hombre' && 'Male') ||
+                        (selectedGender === 'Mujer' && 'Female')
                     }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),
                     ...(retribucion && { prop1: 'asdasd' }),
                     ...(selectedPosition && { posit: selectedPosition }),
                     ...(selectedRol && { prop4: selectedRol }),
-
                     ...(selectedRemuneration && {
                       retribution: selectedRemuneration === 'Si' ? true : false
                     }),

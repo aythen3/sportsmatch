@@ -16,11 +16,7 @@ import {
   Dimensions
 } from 'react-native'
 import { Switch } from 'react-native-switch'
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation
-} from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import {
   FontFamily,
   FontSize,
@@ -38,38 +34,38 @@ import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import {
-  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
-  signInWithCredential
+  signInWithCredential,
+  signOut
 } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import * as Facebook from 'expo-auth-session/providers/facebook'
 import axiosInstance from '../../utils/apiBackend'
 import { create, getAllUsers, login } from '../../redux/actions/users'
-import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
-import Linea from '../../components/svg/Linea'
-import InstagramSVG from '../../components/svg/InstagramSVG'
 import HomeGif from '../../utils/HomeGif'
 import { detectSportColor } from './PantallaInicio'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 
 WebBrowser.maybeCompleteAuthSession()
 
+const firebaseLogout = () => {
+  signOut(auth)
+}
+
 const LoginSwitch = () => {
   const instagramRef = useRef()
   const [igToken, setIgToken] = useState(null)
-  const { height, width } = useWindowDimensions()
 
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isSportman, user, loged } = useSelector((state) => state.users)
-  const isFocused = useIsFocused()
   const [isEnabled, setIsEnabled] = useState(false)
   const [isPlayer, setIsPlayer] = useState(true)
+  const [mailSend, setMailSend] = useState(false)
+
   const [optionPlayer, setOptionPlayer] = useState(true)
 
   const getUserAuth = async () => {
@@ -147,6 +143,7 @@ const LoginSwitch = () => {
     dispatch(getAllUsers())
     dispatch(getAll())
     getUserAuth()
+    setMailSend(false)
   }, [])
 
   const toggleSwitch = () => {
@@ -191,15 +188,19 @@ const LoginSwitch = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       console.log(user, 'user')
       if (user) {
-        await AsyncStorage.setItem('@user', JSON.stringify(user))
-        setUserInfo(user)
         if (user.providerData[0].providerId === 'google.com') {
           console.log('=====LOGIN WITH GOOGLE=====')
+          await AsyncStorage.setItem('@user', JSON.stringify(user))
+          setUserInfo(user)
           const exist = await axiosInstance.get(`user/${user.uid}`)
           console.log('exist', exist)
           if (exist.existe) {
             try {
               const response = await dispatch(login({ googleId: user.uid }))
+              if (!response?.payload?.user?.emailCheck) {
+                setMailSend(true)
+                return
+              }
               detectSportColor(
                 response.payload.user.sportman?.info?.sport ||
                   response?.payload?.user?.club?.sport,
@@ -250,6 +251,13 @@ const LoginSwitch = () => {
             console.log('data from back:', data)
             try {
               const response = await dispatch(login({ googleId: user.uid }))
+              console.log(response, 'ressssponsede')
+              if (!response?.payload?.user?.emailCheck) {
+                setMailSend(true)
+                // setLoading(false)
+
+                return
+              }
               detectSportColor(
                 response.payload.user.sportman?.info?.sport ||
                   response?.payload?.user?.club?.sport,
@@ -823,6 +831,19 @@ const LoginSwitch = () => {
                       ¿Ya tienes una cuenta? Inicia sesión
                     </Text>
                   </Pressable>
+                  {mailSend === true && (
+                    <Pressable disabled style={styles.yaTenesUnaContainer}>
+                      <Text
+                        style={[
+                          styles.yaTenesUnaCuentaIniciaS,
+                          styles.aceptarTypo
+                        ]}
+                      >
+                        Se envio el mail de confirmación. Chequea tu bandeja de
+                        entrada.
+                      </Text>
+                    </Pressable>
+                  )}
                 </View>
               </View>
             </View>

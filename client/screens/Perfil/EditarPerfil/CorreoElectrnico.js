@@ -59,7 +59,7 @@ const CorreoElectrnico = () => {
   return (
     <View style={styles.correoElectrnico}>
       <View style={styles.cabezeraParent}>
-        <CustomHeaderBack header={'Correo electrónico'}></CustomHeaderBack>
+        <CustomHeaderBack header={'Cambiar e-mail'}></CustomHeaderBack>
       </View>
 
       <View style={{ marginTop: 0 }}>

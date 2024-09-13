@@ -32,6 +32,8 @@ const Notifications = ({ data }) => {
   const [details, setDetails] = useState(false)
   const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
+  const [open, setOpen] = useState(false)
+
   const dispatch = useDispatch()
   const moreOpacity = 0.65 // 80% opacity
   const lessOpacity = 0.4 // 40% opacity
@@ -59,9 +61,10 @@ const Notifications = ({ data }) => {
   }, [])
   //console.log('data', data)
   return (
-    <TouchableOpacity
+    <Pressable
       style={{ paddingHorizontal: 10 }}
       onPress={async () => {
+        setOpen(!open)
         if (!data.read) {
           await axiosInstance
             .patch(`notification/${data.id}`, { read: true })
@@ -92,7 +95,25 @@ const Notifications = ({ data }) => {
               height: 45,
               width: 45,
               alignSelf: 'flex-start',
-              borderRadius: 50,
+              borderRadius: 8,
+              backgroundColor:
+                data?.prop1?.clubData?.img_perfil === '' && mainColor
+            }}
+            contentFit="cover"
+            source={
+              data?.prop1?.clubData?.img_perfil !== ''
+                ? { uri: data.prop1.clubData.img_perfil }
+                : require('../assets/whiteSport.png')
+            }
+          />
+        )}
+        {data.title === 'Match' && (
+          <Image
+            style={{
+              height: 45,
+              width: 45,
+              alignSelf: 'flex-start',
+              borderRadius: 8,
               backgroundColor:
                 data?.prop1?.clubData?.img_perfil === '' && mainColor
             }}
@@ -128,12 +149,12 @@ const Notifications = ({ data }) => {
           }}
         >
           <Text
-            numberOfLines={1}
+            numberOfLines={open ? 3 : 1}
             ellipsizeMode="tail"
             style={{
               maxWidth: '80%',
               fontWeight: '600',
-              color: data.title === 'Like' ? '#999999' : Color.wHITESPORTSMATCH,
+              color: Color.wHITESPORTSMATCH,
               alignSelf: 'flex-start',
               fontSize: FontSize.t1TextSMALL_size,
               fontFamily: FontFamily.t4TEXTMICRO
@@ -239,7 +260,7 @@ const Notifications = ({ data }) => {
                       fontSize: 11,
                       textAlign: 'center',
                       marginLeft: '35%',
-                      color: colors.moreOpaque,
+                      color: Color.wHITESPORTSMATCH,
                       fontFamily: FontFamily.t4TEXTMICRO,
                       fontWeight: '700'
                     }}
@@ -423,7 +444,7 @@ const Notifications = ({ data }) => {
           />
         </Pressable>
       </Modal>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 

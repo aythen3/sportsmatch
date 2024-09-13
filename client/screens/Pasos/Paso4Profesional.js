@@ -55,19 +55,19 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   useEffect(() => {}, [selectedImage, selectedPicture])
   const [orientation, setOrientation] = useState('portrait')
 
-  useEffect(() => {
-    const subscription = DeviceMotion.addListener((deviceMotionData) => {
-      const { rotation } = deviceMotionData
-      if (rotation.beta > 45 && rotation.beta < 135) {
-        setOrientation('landscape')
-      } else if (rotation.beta < -45 && rotation.beta > -135) {
-        setOrientation('landscape')
-      } else {
-        setOrientation('portrait')
-      }
-    })
-    return () => subscription.remove()
-  }, [])
+  // useEffect(() => {
+  //   const subscription = DeviceMotion.addListener((deviceMotionData) => {
+  //     const { rotation } = deviceMotionData
+  //     if (rotation.beta > 45 && rotation.beta < 135) {
+  //       setOrientation('landscape')
+  //     } else if (rotation.beta < -45 && rotation.beta > -135) {
+  //       setOrientation('landscape')
+  //     } else {
+  //       setOrientation('portrait')
+  //     }
+  //   })
+  //   return () => subscription.remove()
+  // }, [])
   const takePicture = async () => {
     if (cameraReff) {
       const photo = await cameraReff.current.takePictureAsync({

@@ -102,41 +102,49 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
             </TouchableOpacity>
             <ScrollView>
               {postComments?.length > 0 ? (
-                sortedComments?.map((comment) => (
-                  <View key={comment.id} style={styles.commentContainer}>
-                    <View style={styles.authorContainer}>
-                      {
-                        <Image
-                          contentFit="cover"
-                          source={
-                            comment.author.sportman
-                              ? generateLowResUrl(
-                                  comment.author?.sportman?.info?.img_perfil,
-                                  40
-                                )
-                              : generateLowResUrl(
-                                  comment.author?.club?.img_perfil,
-                                  40
-                                ) || require('../../assets/whiteSport.png')
+                sortedComments?.map((comment) => {
+                  console.log(comment, 'cccccc')
+                  if (!comment.author.isDelete) {
+                    return (
+                      <View key={comment.id} style={styles.commentContainer}>
+                        <View style={styles.authorContainer}>
+                          {
+                            <Image
+                              contentFit="cover"
+                              source={
+                                comment.author.sportman?.info?.img_perfil
+                                  ? generateLowResUrl(
+                                      comment.author?.sportman?.info
+                                        ?.img_perfil,
+                                      40
+                                    )
+                                  : comment.author?.club?.img_perfil
+                                    ? generateLowResUrl(
+                                        comment.author?.club?.img_perfil,
+                                        40
+                                      )
+                                    : require('../../assets/whiteSport.png')
+                              }
+                              style={{
+                                height: 28,
+                                width: 28,
+                                borderRadius: 15,
+                                backgroundColor: mainColor
+                              }}
+                            />
                           }
-                          style={{
-                            height: 28,
-                            width: 28,
-                            borderRadius: 15,
-                            backgroundColor: mainColor
-                          }}
-                        />
-                      }
-                      <Text style={styles.authorText}>
-                        {comment.author.nickname}
-                      </Text>
-                      <Text style={styles.timeText}>
-                        {formatDateDifference(comment.createdAt)}
-                      </Text>
-                    </View>
-                    <Text style={styles.input}>{comment.content}</Text>
-                  </View>
-                ))
+                          <Text style={styles.authorText}>
+                            {comment.author.nickname}
+                          </Text>
+                          <Text style={styles.timeText}>
+                            {formatDateDifference(comment.createdAt)}
+                          </Text>
+                        </View>
+                        <Text style={styles.input}>{comment.content}</Text>
+                      </View>
+                    )
+                  }
+                })
               ) : (
                 <Text style={styles.input}>
                   Aún no hay ningún comentario, ¡sé el primero!

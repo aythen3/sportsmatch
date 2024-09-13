@@ -22,6 +22,8 @@ import { BlurView } from 'expo-blur'
 import { getColorsWithOpacity } from '../utils/colorUtils'
 import { Context } from '../context/Context'
 import { getAllUsers } from '../redux/actions/users'
+import axiosInstance from '../utils/apiBackend'
+import CustomHeaderBack from '../components/CustomHeaderBack'
 
 const InscritosAMisOfertas = () => {
   const dispatch = useDispatch()
@@ -31,6 +33,7 @@ const InscritosAMisOfertas = () => {
   const navigation = useNavigation()
   const [modalPremium, setModalPremium] = useState(false)
   const route = useRoute()
+  const [plansData, setPlansData] = useState([{ planName: 'example' }])
 
   const inscriptions = route.params.inscriptions
   const moreOpacity = 0.65 // 80% opacity
@@ -48,6 +51,73 @@ const InscritosAMisOfertas = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const getinfo = async (planId) => {
+      const res = await axiosInstance.get(`user/subscription/${planId}`)
+      return res.data
+    }
+
+    if (user?.user?.prop1?.plans) {
+      const plans = user.user.prop1.plans
+      const planPromises = plans.map((plan) => getinfo(plan))
+      Promise.all(planPromises).then((plansInfo) => {
+        const plansData = plansInfo.map((subscription, index) => {
+          const currentDate = new Date(subscription.current_period_end * 1000)
+          const interval = subscription.plan.interval
+          const intervalCount = subscription.plan.interval_count
+
+          if (interval === 'month') {
+            currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
+          } else if (interval === 'year') {
+            currentDate.setFullYear(
+              currentDate.getFullYear() + (intervalCount - 1)
+            )
+          }
+
+          const nextPaymentDate = currentDate.getTime() / 1000
+          const nextPaymentDate2 = new Date(nextPaymentDate * 1000)
+
+          const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }
+
+          const formattedDate = nextPaymentDate2
+            .toLocaleDateString('es-AR', options)
+            .replace(/-/g, '/')
+
+          const getPlanName = (planId) => {
+            switch (planId) {
+              case 'price_1Plj60GmE60O5ob7lsmKEbPK':
+                return 'PRO ANUAL'
+              case 'price_1PbXiXGmE60O5ob7jb0U2Wap':
+                return 'PRO MENSUAL'
+              case 'price_1PbXgIGmE60O5ob7mAwCw3YQ':
+                return 'GOLD'
+              case 'price_1PbXhFGmE60O5ob7cTUy19CD':
+                return 'STAR MENSUAL'
+              case 'price_1Plj8LGmE60O5ob768A57ICn':
+                return 'STAR ANUAL'
+              default:
+                return 'Unknown plan'
+            }
+          }
+
+          return {
+            planId: plans[index],
+            subs: subscription.plan.id,
+            expirationDate: formattedDate,
+            status: subscription.status,
+            planName: getPlanName(subscription.plan.id)
+          }
+        })
+        setPlansData(plansData)
+        console.log(plansData, 'plansss')
+      })
+    }
+  }, [user?.user?.planId])
+
   return (
     <ScrollView
       style={{
@@ -60,6 +130,7 @@ const InscritosAMisOfertas = () => {
         paddingBottom: 30
       }}
     >
+      <CustomHeaderBack header={'Inscritos'}></CustomHeaderBack>
       <View
         style={{
           width: '100%',
@@ -68,63 +139,22 @@ const InscritosAMisOfertas = () => {
         }}
       >
         <View style={{ width: '100%' }}>
-          <View
-            style={{
-              marginTop: 30,
-              marginLeft: 15,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 5
-            }}
-          >
-            <Pressable
-              style={{ width: 15, height: 15 }}
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <Image
-                style={{
-                  maxHeight: '100%',
-                  height: '100%',
-                  width: '100%',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  overflow: 'hidden'
-                }}
-                contentFit="cover"
-                source={require('../assets/coolicon4.png')}
-              />
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: FontSize.h3TitleMEDIUM_size,
-                  lineHeight: 22,
-                  fontWeight: '500',
-                  color: Color.wHITESPORTSMATCH,
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                Inscritos
-              </Text>
-            </Pressable>
-          </View>
-
-          <View style={{ marginTop: 30, marginBottom: 20 }}>
+          <View style={{ marginBottom: 20 }}>
             {inscriptions.filter((item) => item !== 'undefined').length > 0 ? (
               <View>
                 {inscriptions
                   .filter((item) => item !== 'undefined')
                   .slice(
                     0,
-                    user?.user?.plan === 'pro'
+                    user?.user?.plan === 'pro' ||
+                      plansData?.find((plan) => plan?.planName === 'GOLD')
                       ? 30
-                      : user?.user?.plan === 'star'
+                      : user?.user?.plan === 'star' ||
+                          plansData?.find(
+                            (plan) =>
+                              plan?.planName === 'STAR MENSUAL' ||
+                              plan?.planName === 'STAR ANUAL'
+                          )
                         ? 1000
                         : 3
                   )
@@ -275,6 +305,7 @@ const InscritosAMisOfertas = () => {
                               })
                             )
                               .then((data) => {
+                                console.log(data, 'datacion')
                                 dispatch(
                                   sendNotification({
                                     title: 'Match',
@@ -392,7 +423,13 @@ const InscritosAMisOfertas = () => {
             )}
 
             {user?.user?.plan !== 'pro' &&
+              !plansData?.find((plan) => plan?.planName === 'GOLD') &&
               user?.user?.plan !== 'star' &&
+              !plansData?.find(
+                (plan) =>
+                  plan?.planName === 'STAR MENSUAL' ||
+                  plan?.planName === 'STAR ANUAL'
+              ) &&
               inscriptions.filter((item) => item !== 'undefined').length >
                 2 && (
                 <View
@@ -441,9 +478,8 @@ const InscritosAMisOfertas = () => {
                       style={{ fontWeight: 500, fontSize: 14, color: '#fff' }}
                     >
                       {inscriptions.filter((item) => item !== 'undefined')
-                        .length > 3
-                        ? `+ ${inscriptions.filter((item) => item !== 'undefined').length - 2} inscripciones más`
-                        : '+ 1 inscripción más'}
+                        .length > 3 &&
+                        `+ ${inscriptions.filter((item) => item !== 'undefined').length - 3} inscripciones más`}
                     </Text>
                   </View>
                 </View>
@@ -451,43 +487,51 @@ const InscritosAMisOfertas = () => {
           </View>
         </View>
 
-        {user?.user?.plan !== 'pro' && user?.user?.plan !== 'star' && (
-          <View style={{ marginTop: 10 }}>
-            <View style={{ alignItems: 'center' }}>
-              <Image
-                style={styles.simboloIcon}
-                contentFit="cover"
-                source={require('../assets/simbolo.png')}
-              />
-              <Text
-                style={[styles.texto1, styles.textoSpaceBlock]}
-              >{`Con tu modelo de suscripción no puedes 
+        {user?.user?.plan !== 'pro' &&
+          !user?.user?.prop1?.plans &&
+          !plansData?.find((plan) => plan?.planName === 'GOLD') &&
+          user?.user?.plan !== 'star' &&
+          !plansData?.find(
+            (plan) =>
+              plan?.planName === 'STAR MENSUAL' ||
+              plan?.planName === 'STAR ANUAL'
+          ) && (
+            <View style={{ marginTop: 10 }}>
+              <View style={{ alignItems: 'center' }}>
+                <Image
+                  style={styles.simboloIcon}
+                  contentFit="cover"
+                  source={require('../assets/simbolo.png')}
+                />
+                <Text
+                  style={[styles.texto1, styles.textoSpaceBlock]}
+                >{`Con tu modelo de suscripción no puedes 
      alizar todas las inscripciones`}</Text>
-              <Text
-                style={[styles.texto2, styles.textoSpaceBlock]}
-              >{`¡Sube de nivel en tu cuenta para 
+                <Text
+                  style={[styles.texto2, styles.textoSpaceBlock]}
+                >{`¡Sube de nivel en tu cuenta para 
      alizar todas las inscripciones!`}</Text>
-              <Pressable
-                style={{
-                  backgroundColor: Color.wHITESPORTSMATCH,
-                  marginTop: 14,
-                  width: '95%',
-                  justifyContent: 'center',
-                  paddingHorizontal: Padding.p_81xl,
-                  paddingVertical: Padding.p_3xs,
-                  zIndex: 3,
-                  backgroundColor: Color.wHITESPORTSMATCH,
-                  borderRadius: Border.br_81xl,
-                  flexDirection: 'row',
-                  alignItems: 'center'
-                }}
-                onPress={() => setModalPremium(true)}
-              >
-                <Text style={styles.textoBoton}>Hazte premium</Text>
-              </Pressable>
+                <Pressable
+                  style={{
+                    backgroundColor: Color.wHITESPORTSMATCH,
+                    marginTop: 14,
+                    width: '95%',
+                    justifyContent: 'center',
+                    paddingHorizontal: Padding.p_81xl,
+                    paddingVertical: Padding.p_3xs,
+                    zIndex: 3,
+                    backgroundColor: Color.wHITESPORTSMATCH,
+                    borderRadius: Border.br_81xl,
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                  }}
+                  onPress={() => setModalPremium(true)}
+                >
+                  <Text style={styles.textoBoton}>Hazte premium</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
         <Modal visible={modalPremium} transparent={true} animationType="slide">
           <TouchableWithoutFeedback onPress={() => setModalPremium(false)}>

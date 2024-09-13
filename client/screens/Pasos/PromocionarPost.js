@@ -127,9 +127,12 @@ const PromocionarPost = () => {
                       : null
             }
           }
-
+          console.log('envio', {
+            offerData: editOffer,
+            clubId: club?.id
+          })
           await dispatch(
-            setOffer({ offerData: editOffer, clubId: data.oferta.clubId })
+            setOffer({ offerData: editOffer, clubId: club?.id })
           ).then((data) => {
             console.log(data, 'dataaaaaaaaaaaaaaaaa', editOffer)
             dispatch(getAllOffers())

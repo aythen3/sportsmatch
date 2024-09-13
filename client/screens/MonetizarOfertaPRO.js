@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
@@ -17,7 +18,7 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
   return (
     <View
       style={{
-        borderRadius: 30,
+        borderRadius: 15,
         overflow: 'hidden',
         justifyContent: 'center',
         backgroundColor: Color.colorWhitesmoke,
@@ -30,7 +31,8 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
           width: '100%',
           height: 80,
           backgroundColor: Color.colorSilver,
-          justifyContent: 'center'
+          justifyContent: 'center',
+          top: 0
         }}
       >
         <LinearGradient
@@ -85,25 +87,18 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
         </Text>
       </View>
 
-      <View style={styles.precio}>
-       
-        <View style={{...styles.parent,flexDirection:"column"}}>
-        <View style={{...styles.parent,justifyContent:"center"}}>
-          <Text style={{...styles.text}}>7,75€</Text>
-          <Text style={{...styles.aoTypo,textDecorationLine:"line-through"}}>/mes</Text>
-        </View>
-        </View>
-        <Text style={{...styles.aoTypo}}>74,64€/año</Text>
-
-      </View>
-
       <View style={{ paddingHorizontal: 15 }}>
         <Text style={[styles.subeDeNivel, styles.verOfertaTypo]}>
           ¡Sube de nivel en tu cuenta para visualizar todas las ofertas
           deportívas de forma ilimitada!
         </Text>
 
-        <TouchableOpacity onPress={() => handle()}>
+        <TouchableOpacity
+          onPress={() => {
+            onClose()
+            navigation.navigate('MiSuscripcin')
+          }}
+        >
           <View
             style={{
               width: '100%',
@@ -147,7 +142,7 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              Continuar
+              Ir a suscripciones
             </Text>
           </View>
         </TouchableOpacity>
@@ -155,8 +150,6 @@ const MonetizarOfertaPRO = ({ onClose, handle }) => {
           <Text style={[styles.aceptar4, styles.aceptarTypo]}>No, gracias</Text>
         </Pressable>
       </View>
-
-   
     </View>
   )
 }
@@ -577,16 +570,17 @@ const styles = StyleSheet.create({
   parent: {
     alignItems: 'baseline',
     justifyContent: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   precio: {
     // height: 85,
     alignItems: 'center',
-    justifyContent:"center",
-    width:"100%"
+    justifyContent: 'center',
+    width: '100%'
   },
   subeDeNivel: {
-    marginTop: 32
+    marginTop: 32,
+    marginBottom: 15
     // width: 360
   },
   precioTexto: {

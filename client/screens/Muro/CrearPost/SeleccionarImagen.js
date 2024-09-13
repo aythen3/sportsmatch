@@ -21,7 +21,10 @@ import PagerView from 'react-native-pager-view'
 import SimboloSVG from './SimboloSVG'
 import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
-import { DeviceMotion } from 'expo-sensors'
+// import { DeviceMotion } from 'expo-sensors'
+import * as ImagePicker from 'expo-image-picker'
+import { ImageEditor } from '@tahsinz21366/expo-crop-image'
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator'
 
 const SeleccionarImagen = () => {
   const { pickImage, libraryImage, pickImageFromCamera } = useContext(Context)
@@ -35,9 +38,9 @@ const SeleccionarImagen = () => {
 
   const [album, setAlbum] = useState([])
   const [albumData, setAlbumData] = useState([])
-
+  const [editorVisible, setEditorVisible] = useState(false)
   const [selectedAlbum, setSelectedAlbum] = useState({ title: 'Camera' })
-
+  const [rotationAngle, setRotationAngle] = useState(0)
   const [showAlbum, setShowAlbum] = useState(false)
   const [videoError, setVideoError] = useState(false)
 
@@ -85,14 +88,31 @@ const SeleccionarImagen = () => {
     setImagenes(imagesArray)
   }
 
+  const _rotate90andFlip = async () => {
+    const manipResult = await manipulateAsync(
+      selectedImage.localUri || selectedImage.uri,
+      [{ rotate: rotationAngle }],
+      { compress: 1 }
+    )
+    setSelectedImage(manipResult)
+    setRotationAngle((rotationAngle + 90) % 360) // Actualiza el ángulo de rotación
+  }
+
   useEffect(() => {
     if (selectedAlbum !== '') {
       obtenerImagenesDeGalerias()
     }
   }, [selectedAlbum])
 
-  const handleSeleccionarImagen = (imagen) => {
+  const handleSeleccionarImagen = async (imagen) => {
     setSelectedImage(imagen)
+    launchEditor(imagen.uri)
+  }
+
+  const launchEditor = (uri) => {
+    // Then set the image uri
+    // And set the image editor to be visible
+    setEditorVisible(true)
   }
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
@@ -115,19 +135,19 @@ const SeleccionarImagen = () => {
 
   const [orientation, setOrientation] = useState('portrait')
 
-  useEffect(() => {
-    const subscription = DeviceMotion.addListener((deviceMotionData) => {
-      const { rotation } = deviceMotionData
-      if (rotation.beta > 45 && rotation.beta < 135) {
-        setOrientation('landscape')
-      } else if (rotation.beta < -45 && rotation.beta > -135) {
-        setOrientation('landscape')
-      } else {
-        setOrientation('portrait')
-      }
-    })
-    return () => subscription.remove()
-  }, [])
+  // useEffect(() => {
+  //   const subscription = DeviceMotion.addListener((deviceMotionData) => {
+  //     const { rotation } = deviceMotionData
+  //     if (rotation.beta > 45 && rotation.beta < 135) {
+  //       setOrientation('landscape')
+  //     } else if (rotation.beta < -45 && rotation.beta > -135) {
+  //       setOrientation('landscape')
+  //     } else {
+  //       setOrientation('portrait')
+  //     }
+  //   })
+  //   return () => subscription.remove()
+  // }, [])
 
   const takePicture = async () => {
     if (cameraReff?.current) {
@@ -136,9 +156,12 @@ const SeleccionarImagen = () => {
       })
       pickImage('a', photo.uri)
       setSelectedImage(photo)
+      console.log(photo, 'photo')
       // pickImageFromCamera(selectedPicture, photo.uri);
 
       setShowCamera(false)
+      launchEditor(photo.uri)
+
       // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
@@ -348,14 +371,7 @@ const SeleccionarImagen = () => {
               >
                 {selectedImage && (
                   <>
-                    {selectedImage.mediaType === 'photo' && (
-                      <Image
-                        style={styles.codeBlockPersonaEnCanch}
-                        contentFit="cover"
-                        source={{ uri: selectedImage?.uri }}
-                      />
-                    )}
-                    {selectedImage.mediaType === 'video' && (
+                    {selectedImage.mediaType === 'video' ? (
                       <Video
                         style={styles.codeBlockPersonaEnCanch}
                         contentFit="cover"
@@ -366,7 +382,36 @@ const SeleccionarImagen = () => {
                         resizeMode="cover"
                         source={{ uri: selectedImage?.uri }}
                       />
+                    ) : (
+                      <Image
+                        style={styles.codeBlockPersonaEnCanch}
+                        contentFit="cover"
+                        source={{ uri: selectedImage?.uri }}
+                      />
                     )}
+                    <TouchableOpacity
+                      onPress={() => _rotate90andFlip()}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor: '#252525',
+
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 15,
+                        borderRadius: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Image
+                        style={{
+                          width: 15,
+                          height: 15
+                        }}
+                        source={require('../../../assets/rotate.png')}
+                      ></Image>
+                    </TouchableOpacity>
                   </>
                 )}
               </View>
@@ -491,6 +536,21 @@ const SeleccionarImagen = () => {
             {renderizarImagenes()}
           </View>
         )}
+        <ImageEditor
+          isVisible={editorVisible}
+          onEditingCancel={() => setEditorVisible(false)}
+          onCloseEditor={() => setEditorVisible(false)}
+          imageUri={selectedImage?.uri}
+          fixedCropAspectRatio={16 / 9}
+          minimumCropDimensions={{
+            width: 100,
+            height: 100
+          }}
+          onEditingComplete={(result) => {
+            setEditorVisible(false)
+            setSelectedImage(result)
+          }}
+        />
       </SafeAreaView>
     )
   } else {

@@ -44,7 +44,7 @@ const Paso4Jugador = ({
 
   const [selectedPicture, setSelectedPicture] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera)
+  // const [cameraType, setCameraType] = useState(Camera)
 
   const handlePickImage = async (type) => {
     await pickImage(type)
@@ -85,19 +85,19 @@ const Paso4Jugador = ({
   useEffect(() => {}, [selectedImage, selectedPicture])
   const [orientation, setOrientation] = useState('portrait')
 
-  useEffect(() => {
-    const subscription = DeviceMotion.addListener((deviceMotionData) => {
-      const { rotation } = deviceMotionData
-      if (rotation.beta > 45 && rotation.beta < 135) {
-        setOrientation('landscape')
-      } else if (rotation.beta < -45 && rotation.beta > -135) {
-        setOrientation('landscape')
-      } else {
-        setOrientation('portrait')
-      }
-    })
-    return () => subscription.remove()
-  }, [])
+  // useEffect(() => {
+  //   const subscription = DeviceMotion.addListener((deviceMotionData) => {
+  //     const { rotation } = deviceMotionData
+  //     if (rotation.beta > 45 && rotation.beta < 135) {
+  //       setOrientation('landscape')
+  //     } else if (rotation.beta < -45 && rotation.beta > -135) {
+  //       setOrientation('landscape')
+  //     } else {
+  //       setOrientation('portrait')
+  //     }
+  //   })
+  //   return () => subscription.remove()
+  // }, [])
   const takePicture = async () => {
     if (cameraReff?.current) {
       // Check if cameraRef is not null

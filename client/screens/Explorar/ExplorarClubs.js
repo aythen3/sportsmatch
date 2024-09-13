@@ -151,6 +151,7 @@ const ExplorarClubs = () => {
         </View>
         {item.rightItem && (
           <TouchableOpacity
+            style={{ zIndex: 999 }}
             onPress={() => {
               navigation.navigate('Post', item.rightItem)
             }}
@@ -219,138 +220,152 @@ const ExplorarClubs = () => {
                 <Text style={{ color: 'white' }}>Usuarios</Text>
 
                 {searchUsers.length > 0 &&
-                  searchUsers.map((user, i) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        const actualUser = allUsers.filter(
-                          (userr) => userr.id === user.user.id
-                        )[0]
-                        if (user.user.id === usuario.user.id) {
-                          if (usuario?.user?.type !== 'club') {
-                            navigation.navigate('MiPerfil')
-                            return
-                          } else {
-                            navigation.navigate('PerfilDatosPropioClub')
-                            return
-                          }
-                        }
+                  searchUsers.map((user, i) => {
+                    console.log(user, 'userrrr')
+                    if (!user?.user?.isDelete) {
+                      return (
+                        <TouchableOpacity
+                          onPress={() => {
+                            const actualUser = allUsers.filter(
+                              (userr) => userr.id === user.user.id
+                            )[0]
+                            if (user.user.id === usuario.user.id) {
+                              if (usuario?.user?.type !== 'club') {
+                                navigation.navigate('MiPerfil')
+                                return
+                              } else {
+                                navigation.navigate('PerfilDatosPropioClub')
+                                return
+                              }
+                            }
 
-                        navigation.navigate('PerfilFeedVisualitzaciJug', {
-                          author: actualUser
-                        })
-                      }}
-                      key={i}
-                    >
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 10
-                        }}
-                      >
-                        {user.info.img_perfil ? (
-                          <Thumbnail
-                            styles={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: 50,
-                              backgroundColor: user.info.img_font
-                                ? 'transparent'
-                                : mainColor
-                            }}
-                            url={user.info.img_perfil}
-                          ></Thumbnail>
-                        ) : (
-                          <Image
-                            style={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: 50,
-                              backgroundColor: user.info.img_font
-                                ? 'transparent'
-                                : mainColor
-                            }}
-                            source={require('../../assets/whiteSport.png')}
-                            contentFit="cover"
-                          />
-                        )}
-                        <Text
-                          style={{
-                            color: 'white',
-                            fontSize: 16,
-                            fontWeight: 600
+                            navigation.navigate('PerfilFeedVisualitzaciJug', {
+                              author: actualUser
+                            })
                           }}
+                          key={i}
                         >
-                          {user.info.nickname}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: 10
+                            }}
+                          >
+                            {user.info.img_perfil ? (
+                              <Thumbnail
+                                styles={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 50,
+                                  backgroundColor: user.info.img_font
+                                    ? 'transparent'
+                                    : mainColor
+                                }}
+                                url={user.info.img_perfil}
+                              ></Thumbnail>
+                            ) : (
+                              <Image
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 50,
+                                  backgroundColor: user.info.img_font
+                                    ? 'transparent'
+                                    : mainColor
+                                }}
+                                source={require('../../assets/whiteSport.png')}
+                                contentFit="cover"
+                              />
+                            )}
+                            <Text
+                              style={{
+                                color: 'white',
+                                fontSize: 16,
+                                fontWeight: 600
+                              }}
+                            >
+                              {user.info.nickname}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    }
+                  })}
               </View>
             )}
             {textValue && searchClubes.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
                 {searchClubes.length > 0 &&
-                  searchClubes.map((club, i) => (
-                    <TouchableOpacity
-                      key={i}
-                      onPress={() => {
-                        if (usuario.user.id === club.user.id) {
-                          navigation.navigate('PerfilDatosPropioClub')
-                          return
-                        } else {
-                          navigation.navigate('ClubProfile', {
-                            author: { type: 'club', nickname: club.name, club }
-                          })
-                        }
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 10
-                        }}
-                      >
-                        {club.img_perfil ? (
-                          <Thumbnail
-                            styles={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: 50,
-                              backgroundColor: club.img_perfil
-                                ? 'transparent'
-                                : mainColor
-                            }}
-                            url={club.img_perfil}
-                          />
-                        ) : (
-                          <Image
-                            style={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: 50,
-                              backgroundColor: club.img_perfil
-                                ? 'transparent'
-                                : mainColor
-                            }}
-                            contentFit="cover"
-                            source={require('../../assets/whiteSport.png')}
-                          />
-                        )}
-                        <Text
-                          style={{
-                            color: 'white',
-                            fontSize: 16,
-                            fontWeight: 600
+                  searchClubes.map((club, i) => {
+                    console.log(club, 'club')
+                    if (!club?.user?.isDelete) {
+                      return (
+                        <TouchableOpacity
+                          key={i}
+                          onPress={() => {
+                            if (usuario.user.id === club.user.id) {
+                              navigation.navigate('PerfilDatosPropioClub')
+                              return
+                            } else {
+                              navigation.navigate('ClubProfile', {
+                                author: {
+                                  type: 'club',
+                                  nickname: club.name,
+                                  club
+                                }
+                              })
+                            }
                           }}
                         >
-                          {club.name}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: 10
+                            }}
+                          >
+                            {club.img_perfil ? (
+                              <Thumbnail
+                                styles={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 50,
+                                  backgroundColor: club.img_perfil
+                                    ? 'transparent'
+                                    : mainColor
+                                }}
+                                url={club.img_perfil}
+                              />
+                            ) : (
+                              <Image
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 50,
+                                  backgroundColor: club.img_perfil
+                                    ? 'transparent'
+                                    : mainColor
+                                }}
+                                contentFit="cover"
+                                source={require('../../assets/whiteSport.png')}
+                              />
+                            )}
+                            <Text
+                              style={{
+                                color: 'white',
+                                fontSize: 16,
+                                fontWeight: 600
+                              }}
+                            >
+                              {club.name}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    }
+                  })}
               </View>
             )}
             {textValue && searchPosition.length > 0 && (
@@ -358,127 +373,136 @@ const ExplorarClubs = () => {
                 <Text style={{ color: 'white', paddingTop: 10 }}>
                   Posiciones
                 </Text>
-                {searchPosition.map((position, i) => (
-                  <TouchableOpacity
-                    key={i}
-                    onPress={() => {
-                      navigation.navigate('PerfilFeedVisualitzaciJug', {
-                        author: {
-                          nickname: position.info.nickname,
-                          sportman: position
-                        }
-                      })
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 10
-                      }}
-                    >
-                      {position.info.img_perfil ? (
-                        <Thumbnail
-                          styles={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: position.info.img_perfil
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          url={position.info.img_perfil}
-                        />
-                      ) : (
-                        <Image
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: position.info.img_perfil
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          contentFit="cover"
-                          source={require('../../assets/whiteSport.png')}
-                        ></Image>
-                      )}
-
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 16,
-                          fontWeight: 600
+                {searchPosition.map((position, i) => {
+                  console.log(position, 'pos')
+                  if (!position?.user?.isDelete) {
+                    return (
+                      <TouchableOpacity
+                        key={i}
+                        onPress={() => {
+                          navigation.navigate('PerfilFeedVisualitzaciJug', {
+                            author: {
+                              nickname: position.info.nickname,
+                              sportman: position
+                            }
+                          })
                         }}
                       >
-                        {position.info.nickname}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10
+                          }}
+                        >
+                          {position.info.img_perfil ? (
+                            <Thumbnail
+                              styles={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 50,
+                                backgroundColor: position.info.img_perfil
+                                  ? 'transparent'
+                                  : mainColor
+                              }}
+                              url={position.info.img_perfil}
+                            />
+                          ) : (
+                            <Image
+                              style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 50,
+                                backgroundColor: position.info.img_perfil
+                                  ? 'transparent'
+                                  : mainColor
+                              }}
+                              contentFit="cover"
+                              source={require('../../assets/whiteSport.png')}
+                            ></Image>
+                          )}
+
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 16,
+                              fontWeight: 600
+                            }}
+                          >
+                            {position.info.nickname}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  }
+                })}
               </View>
             )}
             {textValue && searchCity.length > 0 && (
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
-                {searchCity.map((city, i) => (
-                  <TouchableOpacity
-                    key={i}
-                    onPress={() => {
-                      navigation.navigate('PerfilFeedVisualitzaciJug', {
-                        author: {
-                          nickname: city.info.nickname,
-                          sportman: city
-                        }
-                      })
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 10
-                      }}
-                    >
-                      {city.info.img_perfil ? (
-                        <Thumbnail
-                          styles={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: city.info.img_perfil
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          url={city.info.img_perfil}
-                        />
-                      ) : (
-                        <Image
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            backgroundColor: city.info.img_perfil
-                              ? 'transparent'
-                              : mainColor
-                          }}
-                          contentFit="cover"
-                          source={require('../../assets/whiteSport.png')}
-                        ></Image>
-                      )}
-
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 16,
-                          fontWeight: 600
+                {searchCity.map((city, i) => {
+                  if (!city?.user?.isDelete) {
+                    return (
+                      <TouchableOpacity
+                        key={i}
+                        onPress={() => {
+                          navigation.navigate('PerfilFeedVisualitzaciJug', {
+                            author: {
+                              nickname: city.info.nickname,
+                              sportman: city
+                            }
+                          })
                         }}
                       >
-                        {city.info.nickname}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10
+                          }}
+                        >
+                          {city.info.img_perfil ? (
+                            <Thumbnail
+                              styles={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 50,
+                                backgroundColor: city.info.img_perfil
+                                  ? 'transparent'
+                                  : mainColor
+                              }}
+                              url={city.info.img_perfil}
+                            />
+                          ) : (
+                            <Image
+                              style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 50,
+                                backgroundColor: city.info.img_perfil
+                                  ? 'transparent'
+                                  : mainColor
+                              }}
+                              contentFit="cover"
+                              source={require('../../assets/whiteSport.png')}
+                            ></Image>
+                          )}
+
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 16,
+                              fontWeight: 600
+                            }}
+                          >
+                            {city.info.nickname}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  }
+                })}
               </View>
             )}
           </ScrollView>
@@ -516,6 +540,7 @@ const ExplorarClubs = () => {
                 filterSelected={filterSelected}
                 posts={groupedPosts}
                 setPosts={setGroupedPosts}
+                setNormalPost={posttt}
                 allPosts={allPosts}
                 onClose={() => setModalFilterSportman(false)}
               />
