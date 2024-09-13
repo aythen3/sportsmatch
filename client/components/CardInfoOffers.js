@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Color, FontFamily } from '../GlobalStyles'
-
+import { Dimensions } from 'react-native'
 const CardInfoOffers = ({ text, value, category }) => {
   const [first, setFirst] = useState('')
   const [second, setSecond] = useState('')
@@ -25,37 +25,52 @@ const CardInfoOffers = ({ text, value, category }) => {
     if (category) {
       getSeparatedCategory(value)
     }
-  }, [])
+  }, [category, text, value])
 
   useEffect(() => {
     text === 'Retribucion' && console.log('Retribucion, value', value)
   }, [])
+
+  const scalableFontSize = (fontSize) => {
+    const { width } = Dimensions.get('window')
+    const scalableFontSize = fontSize * (width / 400) // 375 es el ancho de la pantalla de un iPhone 8
+    return scalableFontSize
+  }
+
   return (
     <View style={styles.card}>
-      <Text style={[styles.text]}>{text}</Text>
-      {text !== 'Urgencia' && text !== 'Retribucion' ? (
-        <View>
-          <Text style={styles.taxto1Clr}>{value}</Text>
+      <Text style={[styles.text, { fontSize: scalableFontSize(12) }]}>
+        {text}
+      </Text>
+      {text !== 'Urgencia' && text !== 'Retribucion' && text !== 'Categoría' ? (
+        <View style={{}}>
+          <Text style={{ ...styles.taxto1Clr, fontSize: scalableFontSize(18) }}>
+            {value}
+          </Text>
         </View>
       ) : text === 'Retribucion' ? (
-        <View>
-          <Text style={styles.taxto1Clr}>
+        <View style={{}}>
+          <Text style={{ ...styles.taxto1Clr, fontSize: scalableFontSize(18) }}>
             {value && value > 0 ? value : 'No'}
+          </Text>
+        </View>
+      ) : text === 'Categoría' ? (
+        <View style={{}}>
+          <Text style={{ ...styles.taxto1Clr, fontSize: scalableFontSize(18) }}>
+            {first || '-'}
           </Text>
         </View>
       ) : (
         <View
           style={{
-            marginTop: 10,
-            width: '100%',
+            width: '80%',
             height: 25,
-            backgroundColor: Color.colorDimgray_100,
+            backgroundColor: '#252525',
             borderWidth: 1,
             borderColor: 'white',
-            paddingVertical: 3,
             justifyContent: 'center',
             borderRadius: 8,
-            overflow: 'hidden'
+            paddingHorizontal: 2
           }}
         >
           <View
@@ -66,10 +81,9 @@ const CardInfoOffers = ({ text, value, category }) => {
                   : text === 'Retribucion' && value === 'No'
                     ? 0
                     : '100%',
-              height: 20,
+              height: 18,
               backgroundColor: Color.colorWhitesmoke,
-              borderRadius: 6,
-              marginLeft: 2
+              borderRadius: 6
             }}
           ></View>
         </View>
@@ -80,8 +94,7 @@ const CardInfoOffers = ({ text, value, category }) => {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
-    height: 110,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     alignItems: 'flex-start',
     paddingLeft: 10,
-    top: -15
+    top: '-20%'
   },
   taxto1Clr: {
     color: Color.colorWhitesmoke,

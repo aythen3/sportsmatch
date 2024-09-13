@@ -47,16 +47,15 @@ const Thumbnail = ({ url, notUrl, styles }) => {
       }
     >
       {isVideo ? (
-        <TouchableOpacity onPress={() => setIsPlaying(!isPlaying)}>
-          <Video
-            source={{ uri: url }}
-            style={{ width: '100%', height: '100%' }}
-            controls={true}
-            shouldPlay={isPlaying}
-            isMuted={true}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
+        <Video
+          onTouchStart={() => setIsPlaying(!isPlaying)}
+          source={{ uri: url }}
+          style={{ width: '100%', height: '100%' }}
+          controls={true}
+          shouldPlay={isPlaying}
+          isMuted={true}
+          resizeMode="cover"
+        />
       ) : (
         <Image
           source={{ uri: imageUrl }}

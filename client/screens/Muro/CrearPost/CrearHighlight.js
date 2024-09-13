@@ -112,20 +112,7 @@ const CrearHighlight = () => {
           <View style={{ flex: 1, gap: 20, paddingVertical: 20 }}>
             {!Array.isArray(image) ? (
               <>
-                {image.mediaType === 'photo' && (
-                  <Image
-                    style={{
-                      marginTop: 40,
-                      marginBottom: 15,
-                      borderRadius: 8,
-                      height: 350,
-                      width: '100%'
-                    }}
-                    contentFit="cover"
-                    source={{ uri: image ? image.uri : provisoryProfileImage }}
-                  />
-                )}
-                {image.mediaType === 'video' && (
+                {image.mediaType === 'video' ? (
                   <Video
                     style={{
                       marginTop: 40,
@@ -141,6 +128,18 @@ const CrearHighlight = () => {
                     useNativeControls={false}
                     resizeMode="cover"
                     source={{ uri: image.uri }}
+                  />
+                ) : (
+                  <Image
+                    style={{
+                      marginTop: 40,
+                      marginBottom: 15,
+                      borderRadius: 8,
+                      height: 350,
+                      width: '100%'
+                    }}
+                    contentFit="cover"
+                    source={{ uri: image ? image.uri : provisoryProfileImage }}
                   />
                 )}
               </>

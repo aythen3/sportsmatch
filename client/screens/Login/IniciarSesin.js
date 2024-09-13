@@ -38,7 +38,7 @@ import OjoCerradoSVG from '../../components/svg/OjoCerradoSVG'
 import { detectSportColor } from './PantallaInicio'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
 
-const IniciarSesin = () => {
+const IniciarSesin = ({ route }) => {
   const {
     setProvisoryProfileImage,
     setProvisoryCoverImage,
@@ -52,8 +52,6 @@ const IniciarSesin = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const route = useRoute()
-
   const dispatch = useDispatch()
 
   const passwordInputRef = useRef(null)
@@ -66,11 +64,20 @@ const IniciarSesin = () => {
   })
 
   const seterValues = (field, value) => {
+    setError('')
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
     }))
   }
+
+  useEffect(() => {
+    if (route?.params?.sendMail) {
+      setError(
+        'Se envio el mail de confirmación. Chequea tu bandeja de entrada.'
+      )
+    }
+  }, [])
 
   const handleSubmit = () => {
     setLoading(true)
@@ -81,7 +88,18 @@ const IniciarSesin = () => {
     if (valuesUser.email && valuesUser.password) {
       dispatch(login(valuesUser))
         .then(async (response) => {
+          if (!response?.payload) {
+            setError('Email o contraseña incorrecto/s')
+            setLoading(false)
+            return
+          }
           console.log(response, 'responde el login')
+          if (!response?.payload?.user?.emailCheck) {
+            setError('Valída tu email para iniciar sesión')
+            setLoading(false)
+
+            return
+          }
 
           dispatch(
             setIsSpotMan(
@@ -130,10 +148,14 @@ const IniciarSesin = () => {
         })
         .catch((error) => {
           setLoading(false)
-          setError('Usuario o contraseña incorrecto/s')
+          setError('Email o contraseña incorrecto/s')
 
           console.error(error)
         })
+    } else {
+      setError('Rellena los campos')
+      setLoading(false)
+      return
     }
   }
   const { height, width } = useWindowDimensions()

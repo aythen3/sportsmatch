@@ -16,7 +16,8 @@ const FiltersSportman = ({
   setSelectedSports,
   selectedSports,
   byRelevance,
-  setByRelevance
+  setByRelevance,
+  setNormalPost
 }) => {
   const sportsNames = [
     'Fútbol',
@@ -47,6 +48,29 @@ const FiltersSportman = ({
 
     // Ordenar los posts por likes
     const sortedPosts = allPosts.sort((a, b) => b.likes - a.likes)
+
+    // Redistribuir los posts en la estructura original
+    const newPostGroups = postGroups.map((group) => {
+      const newColumnItems = sortedPosts.splice(0, group.columnItems.length)
+      const newRightItem = sortedPosts.splice(0, 1)[0]
+      return {
+        columnItems: newColumnItems,
+        rightItem: newRightItem
+      }
+    })
+
+    return newPostGroups
+  }
+
+  const reorganizeNormal = (postGroups) => {
+    // Aplanar todos los posts en un solo array
+    let allPosts = []
+    postGroups.forEach((group) => {
+      allPosts = allPosts.concat(group.columnItems, group.rightItem)
+    })
+
+    // Ordenar los posts por likes
+    const sortedPosts = allPosts
 
     // Redistribuir los posts en la estructura original
     const newPostGroups = postGroups.map((group) => {
@@ -115,10 +139,15 @@ const FiltersSportman = ({
 
         <TouchableOpacity
           onPress={() => {
+            if (filterSelected == 'Por proximidad') {
+              setFilterSelected('')
+              setNormalPost()
+            } else {
+              setFilterSelected('Por proximidad')
+              setPosts(reorganizeAndSortPostsLikes(posts))
+            }
             // Genera una nueva copia del array de posts ordenado por la cantidad de likes
             // Actualiza el estado de los posts con la nueva copia ordenada
-            setFilterSelected('Por proximidad')
-            setPosts(reorganizeAndSortPostsLikes(posts))
           }}
           style={{
             flexDirection: 'row',
@@ -158,9 +187,14 @@ const FiltersSportman = ({
         />
         <TouchableOpacity
           onPress={() => {
-            setFilterSelected('Por relevancia')
+            if (filterSelected == 'Por relevancia') {
+              setFilterSelected('')
+              setNormalPost()
+            } else {
+              setFilterSelected('Por relevancia')
 
-            setPosts(reorganizeAndSortPostsComment(posts))
+              setPosts(reorganizeAndSortPostsComment(posts))
+            }
           }}
           style={{
             flexDirection: 'row',

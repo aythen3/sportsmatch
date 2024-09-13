@@ -10,7 +10,7 @@ const HomeGif = ({ fromRegister }) => {
         <Image
           style={[styles.loginSwitchChild2]}
           contentFit="contain"
-          source={require('../assets/carrouselgif.gif')}
+          source={require('../assets/carrouselnuevo.gif')}
         />
       </View>
       <Image
@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
   },
   loginSwitchChild2: {
     // backgroundColor: 'red',
-    width: '100%',
-    height: '150%',
-    // bottom: '75%',
+    flex: 1,
+    height: '80%',
+    bottom: -120,
     transform: [{ rotate: '-45deg' }],
     zIndex: 0
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen

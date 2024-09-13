@@ -11,16 +11,29 @@ import Stripe from 'stripe';
 import * as nodemailer from 'nodemailer';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
+import { join } from 'path';
 const configService = new ConfigService();
+
 @Injectable()
 export class UserService {
   private readonly stripe: Stripe;
+  private readonly transporter: nodemailer.Transporter;
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
 
     private readonly sendMailService: SendMailService
   ) {
+    this.transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+
+      auth: {
+        user: 'sportsmatchdigital.app@gmail.com',
+        pass: 'zayi vzpx jkkd xbqm'
+      }
+    });
     this.stripe = new Stripe(
       'sk_test_51OocYQGmE60O5ob7URy3YpGfHVIju6x3fuDdxXUy5R0rAdaorSHfskHNcBHToSoEfwJhFHtFDCguj7aGPlywD2pp00f2X9h9et'
     );
@@ -54,49 +67,71 @@ export class UserService {
   }
 
   async enviarCorreoConfirmacion(usuario: UserEntity) {
+    const facebookIcon = join(__dirname, '..', '..', 'assets', 'image.png');
     try {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: configService.get('SMTP_EMAIL'),
-          pass: configService.get('SMTP_PASS')
-        }
-      });
-
       const mailOptions = {
         from: 'sportsmatch.digital@gmail.com',
         to: usuario.email,
         subject: 'Confirmación de cuenta',
+        attachments: [
+          /* {
+          filename: 'sportspot.png',
+          path: sportspotLogo,
+          cid: 'sportSpot'a
+        }, */
+          {
+            filename: 'image.png',
+            path: facebookIcon,
+            cid: 'facebookIcon'
+          }
+        ],
         html: `
-        <html>
-          <head>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-                margin: 40px;
-              }
-              a {
-                color: #337ab7;
-                text-decoration: none;
-              }
-              a:hover {
-                color: #23527c;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>Confirmación de cuenta</h1>
-            <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
-            <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
-          </body>
-        </html>
+    <html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 40px;
+      }
+      a {
+        color: #337ab7;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #23527c;
+      }
+      .header {
+        background-color: #000;
+        height: 100px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      .header img {
+        display: flex; /* Agrega esto */
+        margin: 10px; /* Agrega esto para separar las imágenes */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img src="cid:facebookIcon" class='iconImg'/>
+      
+    </div>
+    <h1>Confirmación de cuenta</h1>
+    <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+    <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+  </body>
+</html>
       `
       };
 
-      await transporter.sendMail(mailOptions);
+      await this.transporter.sendMail(mailOptions);
     } catch (error) {
       console.log(error, 'rerrereiomfgasmf');
       return { message: 'este es el error', error };
@@ -133,41 +168,82 @@ export class UserService {
   }
 
   async enviarCorreoRecuperacion(usuario: UserEntity, token: string) {
+    const facebookIcon = join(__dirname, '..', '..', 'assets', 'image.png');
+
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
+
       auth: {
-        user: configService.get('SMTP_EMAIL'),
-        pass: configService.get('SMTP_PASS')
+        user: 'azschiaffino@gmail.com',
+        pass: 'ccuk lafv fpmh bijv'
       }
     });
+    console.log(transporter, 'transsss');
 
     const mailOptions = {
       from: 'sportsmatch.digital@gmail.com',
       to: usuario.email,
+      attachments: [
+        /* {
+          filename: 'sportspot.png',
+          path: sportspotLogo,
+          cid: 'sportSpot'a
+        }, */
+        {
+          filename: 'image.png',
+          path: facebookIcon,
+          cid: 'facebookIcon'
+        }
+      ],
       subject: 'Recuperación de contraseña',
       html: `
       <html>
-        <head>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin: 40px;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>Recuperación de contraseña</h1>
-          <p>Haga clic en el siguiente enlace para cambiar su contraseña:</p>
-          <a href="http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3000/api/user/cambiar-contrasena/${token}">Click aquí</a>
-        </body>
-      </html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 40px;
+      }
+      a {
+        color: #337ab7;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #23527c;
+      }
+      .header {
+        background-color: #000;
+        height: 100px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      .header img {
+        display: flex;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img src="cid:facebookIcon" class='iconImg'/>
+    </div>
+    <h1>Recuperación de contraseña</h1>
+    <p>Haga clic en el siguiente enlace para cambiar su contraseña:</p>
+    <a href="http://163.172.172.81:3000/api/user/cambiar-contrasena/${token}">Click aquí</a>
+  </body>
+</html>
     `
     };
 
-    await transporter.sendMail(mailOptions);
+    await this.transporter.sendMail(mailOptions);
   }
 
   async findByTokenRecuperacion(token: string) {
@@ -318,7 +394,7 @@ export class UserService {
         });
       }
       // Devolver el nuevo perfil del usuario
-      await this.sendMailService.sendRegistrationNotification(newProfile.email);
+      // await this.sendMailService.sendRegistrationNotification(newProfile.email);
       await this.enviarCorreoConfirmacion(newProfile);
       return newProfile;
     } catch (error) {
@@ -328,6 +404,8 @@ export class UserService {
 
   // Método para crear usuario con Firebase
   public async createUserAuth(createUserDto: CreateUserDto) {
+    const tokenConfirmacion = crypto.randomBytes(20).toString('hex');
+    createUserDto.tokenConfirmacion = tokenConfirmacion;
     try {
       let existingUser: any;
 
@@ -369,7 +447,7 @@ export class UserService {
           message: 'Failed to create new user profile'
         });
       }
-
+      await this.enviarCorreoConfirmacion(newProfile);
       // Enviar notificación de registro por correo electrónico
       // if (newProfile.email) {
       //   await this.sendMailService.sendRegistrationNotification(newProfile.email);

@@ -114,7 +114,9 @@ const ModalOptionOffers = ({
           onClose()
           navigation.navigate('PostPromocion', {
             fromOffer: true,
-            ...offerData
+            oferta: {
+              offerData: { ...offerData }
+            }
           })
         }}
       >

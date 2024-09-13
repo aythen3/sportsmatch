@@ -45,7 +45,7 @@ const GoldSuscriptionClub = ({
     // console.log(user.user.stripeId, 'user')
   }
 
-   const handleGetGoldAnual = async () => {
+  const handleGetGoldAnual = async () => {
     console.log('entra')
     const res = await axiosInstance.post('/user/create-subscription', {
       priceId: 'price_1PbXgIGmE60O5ob7mAwCw3YQ',
@@ -85,18 +85,59 @@ const GoldSuscriptionClub = ({
           <Text style={[styles.freemium2, styles.ofertasTypo]}>GOLD</Text>
         </View>
 
+        <View
+          style={{
+            backgroundColor: 'red',
+            width: '100%',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={{ textAlign: 'center', color: 'white' }}>
+            Descuento 40%
+          </Text>
+        </View>
+
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
-            <View>
-              <View style={styles.gratuitoWrapper}>
-              <Text style={{...styles.gratuito,textDecorationLine:"line-through"}}>125€</Text>
-              <View style={{flexDirection:"column",gap:5}}>
-              <Text style={{...styles.gratuito,color:"red"}}>DTE. 40%</Text>
-              <Text style={{...styles.gratuito}}>75€</Text>
+            <View style={{ width: '100%' }}>
+              <View style={{ width: '100%' }}>
+                {/* <Text
+                  style={{
+                    ...styles.gratuito,
+                    textDecorationLine: 'line-through'
+                  }}
+                >
+                  125€
+                </Text>
+                <View style={{ flexDirection: 'column', gap: 5 }}>
+                  <Text style={{ ...styles.gratuito }}>75€</Text>
+                </View>
 
-              </View>
+                <Text style={styles.timeTypo}>Pago único</Text> */}
 
-              <Text style={styles.timeTypo}>Pago único</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    borderBottomWidth: 1,
+                    borderColor: '#e6b300'
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.timeTypo,
+                      color: 'red',
+                      textDecorationLine: 'line-through'
+                    }}
+                  >
+                    125€
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>75€</Text>
+                </View>
+                <Text style={{ ...styles.timeTypo, marginTop: 10 }}>
+                  Pago único
+                </Text>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -310,10 +351,12 @@ const styles = StyleSheet.create({
   silverInner: {
     marginTop: 30,
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    width: '100%'
   },
   frameContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   gratuito: {
     fontSize: FontSize.size_21xl,

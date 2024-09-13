@@ -36,6 +36,11 @@ export class ChatGateway
     this.server.emit('users online', this.connectedUsers);
     console.log('users online', this.connectedUsers);
     console.log('Cliente conectado:', client.handshake.headers.userid);
+    // Unir al usuario a la sala con su ID
+    client.on('join', (usuarioId) => {
+      client.join(usuarioId);
+      console.log(`Usuario ${usuarioId} unido a la sala`);
+    });
   }
 
   handleDisconnect(client: Socket) {
@@ -76,5 +81,12 @@ export class ChatGateway
     client.leave(room);
     client.emit('leaveRoom', room);
     console.log('leaveRoom', room);
+  }
+  @SubscribeMessage('emitToUser')
+  emitToUser(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { usuarioId: string; evento: string; data: any }
+  ) {
+    this.server.to(data.usuarioId).emit(data.evento, data.data);
   }
 }

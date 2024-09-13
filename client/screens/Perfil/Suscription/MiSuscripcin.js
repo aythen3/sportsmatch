@@ -35,6 +35,7 @@ const MiSuscripcin = () => {
   const [planSelected, setPlanSelected] = useState(null)
   const [planSelectedId, setPlanSelectedId] = useState('')
   const [nextPayment, setNextPayment] = useState('')
+  const [plansData, setPlansData] = useState([])
 
   const [deletePlan, setDeletePlan] = useState(false)
 
@@ -66,13 +67,31 @@ const MiSuscripcin = () => {
           const updUser = await axiosInstance
             .patch(`user/${user?.user?.id}`, {
               plan: planSelected,
-              planId: planSelectedId
+              planId: planSelectedId,
+              prop1: {
+                plans: user?.user?.prop1?.plans
+                  ? [...user?.user?.prop1?.plans, planSelectedId]
+                  : [planSelectedId]
+              }
             })
             .finally(
               async () =>
-                await dispatch(getUserData(user?.user?.id)).then((e) =>
+                await dispatch(getUserData(user?.user?.id)).then((e) => {
+                  const getinfo = async () => {
+                    const res = await axiosInstance.get(
+                      `user/subscription/${user?.user?.planId}`
+                    )
+                    return res.data
+                  }
+                  navigation.navigate('SuscriptionChange', {
+                    suscription: {
+                      plan: planSelected,
+                      user,
+                      nextPayment
+                    }
+                  })
                   console.log(e, 'eeeeeeeeeee', user)
-                )
+                })
             )
         }
       }
@@ -84,14 +103,14 @@ const MiSuscripcin = () => {
   }, [clientSecret, initPaymentSheet])
 
   useEffect(() => {
-    const getinfo = async () => {
-      const res = await axiosInstance.get(
-        `user/subscription/${user?.user?.planId}`
-      )
+    const getinfo = async (planId) => {
+      const res = await axiosInstance.get(`user/subscription/${planId}`)
       return res.data
     }
+
     if (user?.user?.planId) {
-      getinfo().then((subscription) => {
+      getinfo(user.user.planId).then((subscription) => {
+        console.log(subscription, 'susss')
         const currentDate = new Date(subscription.current_period_end * 1000)
         const interval = subscription.plan.interval
         const intervalCount = subscription.plan.interval_count
@@ -120,6 +139,66 @@ const MiSuscripcin = () => {
         console.log(formattedDate, 'payment')
       })
     }
+
+    if (user?.user?.prop1?.plans) {
+      const plans = user.user.prop1.plans
+      const planPromises = plans.map((plan) => getinfo(plan))
+      Promise.all(planPromises).then((plansInfo) => {
+        const plansData = plansInfo.map((subscription, index) => {
+          const currentDate = new Date(subscription.current_period_end * 1000)
+          const interval = subscription.plan.interval
+          const intervalCount = subscription.plan.interval_count
+
+          if (interval === 'month') {
+            currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
+          } else if (interval === 'year') {
+            currentDate.setFullYear(
+              currentDate.getFullYear() + (intervalCount - 1)
+            )
+          }
+
+          const nextPaymentDate = currentDate.getTime() / 1000
+          const nextPaymentDate2 = new Date(nextPaymentDate * 1000)
+
+          const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }
+
+          const formattedDate = nextPaymentDate2
+            .toLocaleDateString('es-AR', options)
+            .replace(/-/g, '/')
+
+          const getPlanName = (planId) => {
+            switch (planId) {
+              case 'price_1Plj60GmE60O5ob7lsmKEbPK':
+                return 'PRO ANUAL'
+              case 'price_1PbXiXGmE60O5ob7jb0U2Wap':
+                return 'PRO MENSUAL'
+              case 'price_1PbXgIGmE60O5ob7mAwCw3YQ':
+                return 'GOLD'
+              case 'price_1PbXhFGmE60O5ob7cTUy19CD':
+                return 'STAR MENSUAL'
+              case 'price_1Plj8LGmE60O5ob768A57ICn':
+                return 'STAR ANUAL'
+              default:
+                return 'Unknown plan'
+            }
+          }
+
+          return {
+            planId: plans[index],
+            subs: subscription.plan.id,
+            expirationDate: formattedDate,
+            status: subscription.status,
+            planName: getPlanName(subscription.plan.id)
+          }
+        })
+        setPlansData(plansData)
+        console.log(plansData, 'plansss')
+      })
+    }
   }, [user?.user?.planId])
 
   const handleCancelSuscription = async () => {
@@ -135,7 +214,16 @@ const MiSuscripcin = () => {
             plan: 'basic',
             planId: ''
           })
-          .then(() => dispatch(getUserData(user?.user?.id)))
+          .then(() => {
+            navigation.navigate('SuscriptionChange', {
+              suscription: {
+                plan: 'basic',
+                nextPayment,
+                user
+              }
+            })
+            dispatch(getUserData(user?.user?.id))
+          })
         return data
       }
     } catch (error) {
@@ -153,6 +241,21 @@ const MiSuscripcin = () => {
 
         <View style={{ paddingHorizontal: 10 }}>
           <View>
+            {plansData && (
+              <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+                Beneficios activos
+              </Text>
+            )}
+            {plansData &&
+              plansData.map((plan, i) => {
+                if (plan.planId !== user.user.planId) {
+                  return (
+                    <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+                      {plan.planName} expira el {plan.expirationDate}
+                    </Text>
+                  )
+                }
+              })}
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Este es tu plan actual
             </Text>

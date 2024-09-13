@@ -395,7 +395,8 @@ const styles = StyleSheet.create({
     color: 'red'
   },
   frameView: {
-    marginTop: 30
+    marginTop: 30,
+    width: '100%'
   },
   vectorParent: {
     alignItems: 'center',

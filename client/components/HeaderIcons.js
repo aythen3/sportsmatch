@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import LogoTopSportman from './svg/LogoTopSportman'
 import LogoTopClub from './svg/LogoTopClub'
 import LineaVertical from './svg/LineaVerticalSVG'
+import OfertasLogoSVG from './svg/OfertasLogoSVG'
 
 const HeaderIcons = () => {
   const navigation = useNavigation()
@@ -136,7 +137,7 @@ const HeaderIcons = () => {
           {!isSportman ? (
             <LogoTopSportman></LogoTopSportman>
           ) : (
-            <LogoTopClub></LogoTopClub>
+            <OfertasLogoSVG></OfertasLogoSVG>
           )}
         </Pressable>
         <LineaVertical />

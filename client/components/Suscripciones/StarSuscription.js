@@ -69,21 +69,84 @@ const GoldSuscription = ({
           ></LinearGradient>
           <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
         </View>
+        <View
+          style={{
+            backgroundColor: 'red',
+            width: '100%',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={{ textAlign: 'center', color: 'white' }}>
+            Descuento 60%
+          </Text>
+        </View>
 
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
-            <View>
-              <View style={styles.gratuitoWrapper}>
-                <Text style={{...styles.gratuito,textDecorationLine:"line-through"}}>316,25€/mes</Text>
-                <Text style={{...styles.timeTypo,textDecorationLine:"line-through"}}>3.150,25€/año</Text>
-                <View style={{flexDirection:"column",gap:5}}>
-              <Text style={{...styles.gratuito,color:"red"}}>DTE. 60%</Text>
-              <Text style={{...styles.gratuito}}>126,5€/mes</Text>
+            <View style={{ width: '100%' }}>
+              <View style={{ width: '100%' }}>
+                {/* <Text
+                  style={{
+                    ...styles.gratuito,
+                    textDecorationLine: 'line-through'
+                  }}
+                >
+                  316,25€/mes
+                </Text>
+                <Text
+                  style={{
+                    ...styles.timeTypo,
+                    textDecorationLine: 'line-through'
+                  }}
+                >
+                  3.150,25€/año
+                </Text>
+                <View style={{ flexDirection: 'column', gap: 5 }}>
+                  <Text style={{ ...styles.gratuito, color: 'red' }}>
+                    DTE. 60%
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>126,5€/mes</Text>
+                </View>
+                <Text style={{ ...styles.timeTypo }}>1.260,1€/año</Text> */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    borderBottomWidth: 1,
+                    borderColor: '#e6b300'
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.timeTypo,
 
-
-              </View>
-              <Text style={{...styles.timeTypo}}>1.260,1€/año</Text>
-
+                      textDecorationLine: 'line-through',
+                      color: 'red'
+                    }}
+                  >
+                    316,25€/mes
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>126,5€/mes</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.timeTypo,
+                      textDecorationLine: 'line-through',
+                      color: 'red'
+                    }}
+                  >
+                    3.150,25€/año
+                  </Text>
+                  <Text style={{ ...styles.gratuito }}>1.260,1€/año</Text>
+                </View>
               </View>
             </View>
             <View style={styles.frameView}>
@@ -204,7 +267,7 @@ const GoldSuscription = ({
             <Text style={styles.ofertasTypo}>{'Seleccionar plan mensual'}</Text>
           </TouchableOpacity>
         )}
-          {!deletePlan && !myPlan && (
+        {!deletePlan && !myPlan && (
           <TouchableOpacity
             onPress={handleGetStarAnual}
             style={{
@@ -310,10 +373,12 @@ const styles = StyleSheet.create({
   silverInner: {
     marginTop: 30,
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    width: '100%'
   },
   frameContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   gratuito: {
     fontSize: FontSize.size_21xl,

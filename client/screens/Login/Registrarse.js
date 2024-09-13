@@ -139,69 +139,68 @@ const Registrarse = () => {
             return setNombreError('Debes aceptar las condiciones de privacidad')
           }
           dispatch(create(valuesUser)).then((e) => {
-            dispatch(login(valuesUser)).then(async (response) => {
-              console.log(response, 'responde el login')
-
-              dispatch(
-                setIsSpotMan(
-                  response?.payload?.user?.type === 'club' ? false : true
-                )
-              )
-              await AsyncStorage.setItem(
-                '@user',
-                JSON.stringify(response?.payload?.user)
-              )
-              await AsyncStorage.setItem(
-                'userToken',
-                response?.payload?.accesToken
-              )
-              await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
-              await AsyncStorage.setItem(
-                'userType',
-                response?.payload?.user?.type
-              )
-
-              if (
-                response.payload?.user?.club ||
-                response.payload.user?.sportman
-              ) {
-                dispatch(
-                  setInitialSportman({
-                    id: response.payload.user?.sportman?.id,
-                    ...response.payload.user?.sportman
-                  })
-                )
-                dispatch(setClub(response))
-                detectSportColor(
-                  response.payload.user?.sportman?.info?.sport ||
-                    response.payload?.user?.club?.sport,
-                  dispatch
-                )
-                setActiveIcon('diary')
-                setLoading(false)
-                return navigation.reset({
-                  index: 0,
-                  history: false,
-                  routes: [{ name: 'SiguiendoJugadores' }]
-                })
-              } else {
-                if (response?.payload?.user?.type === 'club') {
-                  if (response?.payload?.accesToken) {
-                    navigation.navigate('stepsClub')
-                    setLoading(false)
-                  }
-                } else {
-                  if (response.payload.accesToken) {
-                    navigation.navigate('Paso1')
-                    setLoading(false)
-                  }
-                }
-              }
-              dispatch(setClub(response))
-              setLoading(false)
-            })
+            console.log('cuando creaste fue esto', e)
+            // dispatch(login(valuesUser)).then(async (response) => {
+            //   console.log(response, 'responde el login')
+            //   dispatch(
+            //     setIsSpotMan(
+            //       response?.payload?.user?.type === 'club' ? false : true
+            //     )
+            //   )
+            //   await AsyncStorage.setItem(
+            //     '@user',
+            //     JSON.stringify(response?.payload?.user)
+            //   )
+            //   await AsyncStorage.setItem(
+            //     'userToken',
+            //     response?.payload?.accesToken
+            //   )
+            //   await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
+            //   await AsyncStorage.setItem(
+            //     'userType',
+            //     response?.payload?.user?.type
+            //   )
+            //   if (
+            //     response.payload?.user?.club ||
+            //     response.payload.user?.sportman
+            //   ) {
+            //     dispatch(
+            //       setInitialSportman({
+            //         id: response.payload.user?.sportman?.id,
+            //         ...response.payload.user?.sportman
+            //       })
+            //     )
+            //     dispatch(setClub(response))
+            //     detectSportColor(
+            //       response.payload.user?.sportman?.info?.sport ||
+            //         response.payload?.user?.club?.sport,
+            //       dispatch
+            //     )
+            //     setActiveIcon('diary')
+            //     setLoading(false)
+            //     return navigation.reset({
+            //       index: 0,
+            //       history: false,
+            //       routes: [{ name: 'SiguiendoJugadores' }]
+            //     })
+            //   } else {
+            //     if (response?.payload?.user?.type === 'club') {
+            //       if (response?.payload?.accesToken) {
+            //         navigation.navigate('stepsClub')
+            //         setLoading(false)
+            //       }
+            //     } else {
+            //       if (response.payload.accesToken) {
+            //         navigation.navigate('Paso1')
+            //         setLoading(false)
+            //       }
+            //     }
+            //   }
+            //   dispatch(setClub(response))
+            //   setLoading(false)
+            // })
+            navigation.navigate('IniciarSesin', { sendMail: true })
           })
-          // navigation.navigate('IniciarSesin', { isPlayer })
         } else {
           setNombreError('Las contraseñas no coinciden')
           setLoading(false)

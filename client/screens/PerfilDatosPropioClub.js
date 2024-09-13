@@ -30,13 +30,15 @@ const PerfilDatosPropioClub = () => {
       style={{
         backgroundColor: Color.bLACK1SPORTSMATCH,
         width: '100%',
-        flex: 1,
-        paddingBottom: 30
+        flex: 1
       }}
     >
       <StatusBar translucent={true} backgroundColor={'transparent'} />
 
-      <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={{paddingBottom:30}}>
+      <ScrollView
+        keyboardShouldPersistTaps={'always'}
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
         <View>
           <HeaderPerfil
             name={isSportman ? '' : club?.name}

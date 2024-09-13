@@ -157,8 +157,8 @@ const TusNotificaciones1 = () => {
               console.log('marking...')
               dispatch(markAllUserNotificationsAsRead(user.user.id)).then(
                 (res) => {
-                  if (user.user.type == 'club') {
-                    dispatch(getNotificationsByUserId(user.user.club.id))
+                  if (user.user.type === 'club') {
+                    dispatch(getNotificationsByUserId(user.user.id))
                   } else {
                     dispatch(getNotificationsByUserId(user.user.id))
                   }

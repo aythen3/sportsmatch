@@ -38,6 +38,8 @@ import Paso2Jugador from './Paso2Jugador'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { clearUser, setMainColor } from '../../redux/slices/users.slices'
 import { setColor } from '../../utils/handles/HandlerSportColor'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../firebaseConfig'
 
 const Paso1 = () => {
   const navigation = useNavigation()
@@ -94,6 +96,10 @@ const Paso1 = () => {
   })
 
   const [data, setData] = useState({})
+
+  const firebaseLogout = () => {
+    signOut(auth)
+  }
 
   useEffect(() => {
     setProfesionalValues((prevValues) => ({
@@ -233,6 +239,15 @@ const Paso1 = () => {
         }
         if (body) {
           dispatch(createSportman(body)).then((response) => {
+            console.log(response, 'response de creacion')
+            console.log(
+              {
+                id: response.payload.id,
+                ...body.sportmanData
+              },
+              'response de creacion'
+            )
+
             dispatch(
               setInitialSportman({
                 id: response.payload.id,
@@ -346,11 +361,13 @@ const Paso1 = () => {
   const handleBackSteps = async () => {
     if (!loged) {
       if (!sportman && !profesional && !invitado) {
+        await AsyncStorage.removeItem('@user')
+        await AsyncStorage.removeItem('userAuth')
+        await AsyncStorage.removeItem('googleAuth')
+        await AsyncStorage.removeItem('facebookAuth')
+        await firebaseLogout()
         dispatch(clearUser())
         dispatch(cleanSportman())
-        await AsyncStorage.removeItem('userAuth')
-        await AsyncStorage.removeItem('@user')
-        await AsyncStorage.removeItem('facebookAuth')
         navigation.navigate('LoginSwitch')
         return true
       }
@@ -442,8 +459,7 @@ const Paso1 = () => {
                 marginLeft: 5,
                 textAlign: 'center',
                 fontSize: FontSize.t2TextSTANDARD_size,
-                fontFamily: FontFamily.t4TEXTMICRO,
-                textAlign: 'center'
+                fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
               Atrás
@@ -459,8 +475,7 @@ const Paso1 = () => {
                   (!selectedSport && '#E1451E') ||
                   sportColor,
                 textAlign: 'center',
-                fontFamily: FontFamily.t4TEXTMICRO,
-                textAlign: 'center'
+                fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
               {!sportman && !profesional && 'Paso 1'}
@@ -516,7 +531,8 @@ const Paso1 = () => {
       <ScrollView
         contentContainerStyle={{
           justifyContent: 'space-between',
-          paddingTop: '6%'
+          paddingTop: '6%',
+          flex: !sportman && !profesional ? 1 : null
         }}
         style={{
           flex: 1
@@ -528,7 +544,8 @@ const Paso1 = () => {
               ...styles.container,
               width: '100%',
               paddingHorizontal: 15,
-              alignSelf: 'center'
+              alignSelf: 'center',
+              flex: 1
             }}
           >
             <View style={styles.botonLayout1}>

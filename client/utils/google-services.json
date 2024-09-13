@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:290667898990:android:5645972072dd72d2c75e7f",
+        "mobilesdk_app_id": "1:290667898990:android:e0df0a48cf3a3f34c75e7f",
         "android_client_info": {
           "package_name": "com.aythenapps.sportsmatch"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "290667898990-a3eficeqn7fhm541v2fg1tmllsge06fm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aythenapps.sportsmatch",
+            "certificate_hash": "2552307e34ed79538fc60ada5083fb184f9cbfcf"
+          }
+        },
+        {
+          "client_id": "290667898990-u3o8jtql25dfhdbbjj75315tmurtooqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCg_C5XBDFa_iJ4c7qbFzxuIQU3hPRhz2w"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290667898990-u3o8jtql25dfhdbbjj75315tmurtooqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

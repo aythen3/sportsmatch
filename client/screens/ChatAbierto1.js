@@ -31,6 +31,7 @@ import { getAllUsers, updateUserData } from '../redux/actions/users'
 import { updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
 import axios from 'axios'
+import { getAllMatchs } from '../redux/actions/matchs'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
@@ -51,7 +52,7 @@ const ChatAbierto1 = () => {
   const { allMessages } = useSelector((state) => state.chats)
   const { allMatchs } = useSelector((state) => state.matchs)
 
-  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
+  const { clubMatches, userMatches, emitToUser } = useContext(Context)
   const [canSend, setCanSend] = useState(false)
   const { user, allUsers, mainColor, isSportman } = useSelector(
     (state) => state.users
@@ -65,39 +66,72 @@ const ChatAbierto1 = () => {
     console.log(message, user?.user?.id, route?.params?.receiverId)
     sendMessage(message, user?.user?.id, route?.params?.receiverId)
     setMessage()
+    setTimeout(() => {
+      setAllToRead()
+    }, 3000) // 3000 milisegundos = 3 segundos
   }
 
   useEffect(() => {
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
-
+    dispatch(getAllMatchs())
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
+    if (userrr.sportman && user.user.sportman) {
+      setCanSend(true)
+    }
   }, [])
 
   useEffect(() => {
-    if (clubMatches.length > 0) {
-      const e =
-        clubMatches.filter(
-          (match) =>
-            match.prop1.sportmanId === route?.params?.sportman &&
-            match.status === 'success'
-        ).length > 0
-      console.warn(route.params.sportman)
-      setCanSend(e)
-    } else {
-      const res = allMatchs.filter(
-        (m) =>
-          m.prop1.sportmanId === user.user.sportman.id && m.status === 'success'
-      )
-      const res2 =
-        res.filter((r) => r.prop1.clubData.userId === route?.params?.receiverId)
-          .length > 0
+    const userrr = allUsers.filter(
+      (user) => user?.id === route?.params?.receiverId
+    )[0]
+    console.log('pasa 1111111111111', userrr.sportman, user.user.sportman)
 
-      setCanSend(res2)
+    if (userrr.sportman && user.user.sportman) {
+      console.log('pasa 1111111111111')
+      setCanSend(true)
+    }
+    if (userrr.club && user.user.club) {
+      console.log('pasa 222222222222222222')
+
+      setCanSend(true)
+    }
+    console.log(userrr.club, user.user.sportman, '111111111111')
+    console.log(userrr.sportman, user.user.club, '22222222222222')
+
+    if (
+      (userrr.club && user.user.sportman) ||
+      (userrr.sportman && user.user.club)
+    ) {
+      console.log('entrando')
+      if (clubMatches.length > 0) {
+        console.log('entrando2')
+
+        const e =
+          clubMatches.filter(
+            (match) =>
+              match.prop1.sportmanId === route?.params?.sportman &&
+              match.status === 'success'
+          ).length > 0
+        return setCanSend(e)
+      } else {
+        const res = allMatchs.filter(
+          (m) =>
+            m.prop1.sportmanId === user?.user?.sportman?.id &&
+            m.status === 'success'
+        )
+        const res2 =
+          res.filter(
+            (r) => r?.prop1?.clubData?.userId === route?.params?.receiverId
+          ).length > 0
+        console.log(res2, 'res2')
+        setCanSend(res2)
+      }
     }
   }, [])
+
   useEffect(() => {
     joinRoom(user?.user?.id, route?.params?.receiverId)
     dispatch(
@@ -112,22 +146,6 @@ const ChatAbierto1 = () => {
     }
   }, [])
 
-  // const setAllToRead = async () => {
-  //   console.log('on setAllToRead')
-  //   const messagesToSetReaded = allMessages?.filter(
-  //     (message) =>
-  //       message.senderId !== user?.user?.id && message?.isReaded === false
-  //   )
-  //   console.log('messagesToSetReaded', messagesToSetReaded)
-  //   if (messagesToSetReaded.length > 0) {
-  //     await messagesToSetReaded.forEach((message) => {
-  //       axiosInstance.put(`chat/readed/${message?.id}`)
-  //       dispatch(setAllConversationMessagesToRead())
-  //     })
-  //     getUsersMessages()
-  //   }
-  // }
-
   const setAllToRead = async () => {
     console.log('on setAllToRead')
 
@@ -137,6 +155,7 @@ const ChatAbierto1 = () => {
     )
 
     console.log('messagesToSetReaded', messagesToSetReaded)
+    console.log('entra')
 
     if (messagesToSetReaded.length > 0) {
       try {
@@ -155,11 +174,13 @@ const ChatAbierto1 = () => {
   useEffect(() => {
     if (allMessages && allMessages.length > 0) {
       setAllToRead()
+
+      emitToUser(route?.params?.receiverId, 'readMessages', 'data')
     }
   }, [allMessages])
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 500)
+    setTimeout(() => setLoading(false), 100)
   }, [])
 
   const userFollowing = user?.user?.following || []
@@ -217,17 +238,25 @@ const ChatAbierto1 = () => {
     return
   }
 
-  const handleRemoveChat = () => {
+  const handleRemoveChat = async () => {
     setShowDeletePopUp(false)
     const body = {
       senderId: user?.user?.id.toString(),
       receiverId: route?.params?.receiverId?.toString(),
-      room: roomId
+      room: roomId.toString()
     }
-    axiosInstance.post('chat/marcarMensajesComoEliminados', body)
+    await axiosInstance.post('chat/deleteAllMessageChat', body).then((r) => {
+      dispatch(
+        getChatHistory({
+          sender: user?.user?.id,
+          receiver: route?.params?.receiverId
+        })
+      )
+      console.log(r, 'ressssssss')
+    })
   }
 
-  if (selectedUserDetails)
+  if (true) {
     return (
       <SafeAreaView style={styles.chatAbierto}>
         {isFocused && (
@@ -518,36 +547,50 @@ const ChatAbierto1 = () => {
                 paddingLeft: 10
               }}
             >
-              {allMessages?.map((chat) => (
-                <Chat
-                  hour={getTimeFromDate(chat?.createdAt)}
-                  key={chat?.id}
-                  text={chat?.message}
-                  isMy={chat?.senderId === user?.user?.id}
-                  read={chat?.isReaded}
-                />
-              ))}
+              {allMessages?.map((chat) => {
+                console.log(chat, 'cjhat')
+                if (
+                  (chat.senderId === user.user.id && chat.senderDelete) ||
+                  (chat.receiverId === user.user.id && chat.receiverDelete)
+                ) {
+                  return
+                } else {
+                  return (
+                    <Chat
+                      hour={getTimeFromDate(chat?.createdAt)}
+                      key={chat?.id}
+                      text={chat?.message}
+                      isMy={chat?.senderId === user?.user?.id}
+                      read={chat?.isReaded}
+                    />
+                  )
+                }
+              })}
             </View>
           </ScrollView>
         )}
         {canSend && (
           <View
             style={{
-              height: 50,
               margin: 10,
+              padding: 10,
               borderRadius: 50,
               borderWidth: 2,
-              borderColor: '#fff'
+              borderColor: '#fff',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              alignItems: 'center'
             }}
           >
             <TextInput
               value={message}
+              multiline
               onChangeText={setMessage}
               placeholder="Escribe tu mensaje..."
               placeholderTextColor="#fff"
               style={{
-                flex: 1,
                 paddingLeft: 15,
+                flex: 1,
                 maxWidth: '85%',
                 fontSize: 16,
                 color: '#fff'
@@ -557,11 +600,8 @@ const ChatAbierto1 = () => {
               disabled={message ? false : true}
               onPress={handleSendMessage}
               style={{
-                width: 25,
-                position: 'absolute',
-                right: 5,
-                top: 12,
-                right: 10
+                marginLeft: 10,
+                width: 25
               }}
             >
               <Image
@@ -594,6 +634,7 @@ const ChatAbierto1 = () => {
         )}
       </SafeAreaView>
     )
+  }
 }
 
 const styles = StyleSheet.create({

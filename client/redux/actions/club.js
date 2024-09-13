@@ -2,17 +2,20 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from '../../utils/apiBackend'
 import axios from 'axios'
 
-export const createClub = createAsyncThunk('create/club', async (body, { rejectWithValue }) => {
-  try {
-    const { data } = await axiosInstance.post('club', body);
-    return data;
-  } catch (error) {
-    if (error.response) {
-      return rejectWithValue(error.response.data);
+export const createClub = createAsyncThunk(
+  'create/club',
+  async (body, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosInstance.post('club', body)
+      return data
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue(error.response.data)
+      }
+      return rejectWithValue(error.message || 'Algo salió mal')
     }
-    return rejectWithValue(error.message || 'Algo salió mal');
   }
-});
+)
 export const getAllClubs = createAsyncThunk('getAll/club', async () => {
   try {
     const { data } = await axiosInstance.get('club')

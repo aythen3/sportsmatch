@@ -30,6 +30,7 @@ import { Context } from '../../context/Context'
 import { updateUserClubData } from '../../redux/actions/users'
 import { clearUser, setMainColor } from '../../redux/slices/users.slices'
 import { setColor } from '../../utils/handles/HandlerSportColor'
+import Visores from './visores'
 
 const StepsClub = () => {
   const navigation = useNavigation()
@@ -47,6 +48,7 @@ const StepsClub = () => {
 
   const { user } = useSelector((state) => state.users)
   const { sport } = useSelector((state) => state.sports)
+  const [selectedRole, setSelectedRole] = useState(null)
 
   const [stepsIndex, setstepsIndex] = useState(1)
   const [sportS, setSportS] = useState('')
@@ -84,12 +86,20 @@ const StepsClub = () => {
     setSportColor(color)
   }, [sportS])
 
+  const handleRoleSelection = (role) => {
+    setSelectedRole(role)
+  }
+
   const handleRegister = async () => {
     clubValues.img_perfil = profileImage || ''
     clubValues.img_front = coverImage || ''
     const data = {
       userId: user.user.id,
-      clubData: { ...clubValues, sport: sportS.name },
+      clubData: {
+        ...clubValues,
+        sport: sportS.name,
+        prop1: { rol: selectedRole }
+      },
       sportId: sportS.id
     }
     // console.log('data from handleRegister: ', data)
@@ -127,18 +137,103 @@ const StepsClub = () => {
     switch (index) {
       case 1:
         return (
+          <View
+            style={{
+              gap: 20,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              flex: 1,
+              paddingHorizontal: 15
+            }}
+          >
+            <View style={{ height: 70, width: '100%' }}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Club' && styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Club')}
+              >
+                <Image
+                  style={styles.simboloIconLayout}
+                  contentFit="contain"
+                  source={require('../../assets/simbolo6.png')}
+                />
+                <Text
+                  style={[
+                    styles.jugador,
+                    styles.jugadorTypo,
+                    selectedRole === 'Club' && styles.selectedText
+                  ]}
+                >
+                  Club
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.botonLayout1}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Representante' && styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Representante')}
+              >
+                <Text
+                  style={[
+                    styles.jugador,
+                    styles.jugadorTypo,
+                    selectedRole === 'Representante' && styles.selectedText
+                  ]}
+                >
+                  Representante
+                </Text>
+                <Image
+                  style={styles.simboloIconLayout}
+                  contentFit="contain"
+                  source={require('../../assets/simbolo7.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.botonLayout1}>
+              <TouchableOpacity
+                style={[
+                  styles.rectangulo,
+                  selectedRole === 'Scouter' && styles.selectedBackground
+                ]}
+                onPress={() => handleRoleSelection('Scouter')}
+              >
+                <View style={{ position: 'absolute', left: 18 }}>
+                  <Visores></Visores>
+                </View>
+
+                <Text
+                  style={[
+                    styles.jugador,
+                    styles.jugadorTypo,
+                    selectedRole === 'Scouter' && styles.selectedText
+                  ]}
+                >
+                  Scouter
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )
+      case 2:
+        return (
           <View style={{ paddingVertical: 20 }}>
             <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
           </View>
         )
-      case 2:
+      case 3:
         return (
           <EscogerDeporte2
             clubValues={clubValues}
             setClubValues={setClubValues}
           />
         )
-      case 3:
+      case 4:
         return (
           <EscogerDeporte1
             color={sportColor}
@@ -152,6 +247,7 @@ const StepsClub = () => {
             setProvisoryProfileImage={setProvisoryProfileImage}
           />
         )
+
       default:
         return null
     }
@@ -209,12 +305,13 @@ const StepsClub = () => {
           Paso {stepsIndex}
         </Text>
         <Text style={styles.detallesDelClub}>
-          {stepsIndex === 1 ? 'Escoge tu deporte' : 'Detalles del club'}
+          {stepsIndex === 1 && 'Escoge tu rol'}
+          {stepsIndex === 2 && 'Escoge tu deporte'}
+          {stepsIndex > 2 && 'Unos detalles sobre ti'}
         </Text>
       </View>
       <Lines
         color={sportColor}
-        club={true}
         index={stepsIndex}
         selectedSport={sportS.name}
       />
@@ -223,7 +320,10 @@ const StepsClub = () => {
         style={{
           flex: 1
         }}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          flex: stepsIndex === 1 ? 1 : null
+        }}
       >
         {ViewComponent(stepsIndex)}
       </ScrollView>
@@ -231,9 +331,9 @@ const StepsClub = () => {
         <TouchableOpacity
           style={styles.touchable}
           onPress={() => {
-            stepsIndex === 3
+            stepsIndex === 4
               ? handleRegister()
-              : setstepsIndex((prev) => prev + 1)
+              : selectedRole && setstepsIndex((prev) => prev + 1)
           }}
         >
           <Text style={styles.nextText}>Siguiente</Text>
@@ -250,6 +350,34 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     width: '100%',
     color: Color.wHITESPORTSMATCH,
+    textAlign: 'center',
+    fontFamily: FontFamily.t4TEXTMICRO
+  },
+  rectangulo: {
+    borderColor: Color.wHITESPORTSMATCH,
+    borderWidth: 1,
+    borderRadius: Border.br_81xl,
+    height: 70,
+    borderStyle: 'solid',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  selectedBackground: {
+    backgroundColor: Color.bALONCESTO
+  },
+  simboloIconLayout: {
+    height: 28,
+    width: 28,
+    position: 'absolute',
+    left: 20
+  },
+  jugador: {
+    color: Color.wHITESPORTSMATCH,
+    fontWeight: '500'
+  },
+  jugadorTypo: {
+    fontSize: FontSize.button_size,
     textAlign: 'center',
     fontFamily: FontFamily.t4TEXTMICRO
   },

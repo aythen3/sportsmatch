@@ -116,12 +116,23 @@ const PromocionarPost = () => {
                     ? 5
                     : optionIndex === 3
                       ? 15
+                      : null,
+              price:
+                optionIndex === 1
+                  ? 500
+                  : optionIndex === 2
+                    ? 1000
+                    : optionIndex === 3
+                      ? 2200
                       : null
             }
           }
-
+          console.log('envio', {
+            offerData: editOffer,
+            clubId: club?.id
+          })
           await dispatch(
-            setOffer({ offerData: editOffer, clubId: data.oferta.clubId })
+            setOffer({ offerData: editOffer, clubId: club?.id })
           ).then((data) => {
             console.log(data, 'dataaaaaaaaaaaaaaaaa', editOffer)
             dispatch(getAllOffers())

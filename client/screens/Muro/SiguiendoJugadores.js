@@ -108,8 +108,6 @@ const SiguiendoJugadores = () => {
     }
   }, [allMatchs])
 
-
-
   const [filteredPosts, setFilteredPosts] = useState([])
 
   useEffect(() => {
@@ -134,86 +132,94 @@ const SiguiendoJugadores = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-     {filteredPosts.length > 0 && (
-       <ScrollView
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
-        keyboardShouldPersistTaps={'always'}
-      >
-        <HeaderIcons mainColor={mainColor} />
+      {filteredPosts.length > 0 && (
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          stickyHeaderHiddenOnScroll={true}
+          keyboardShouldPersistTaps={'always'}
+        >
+          <HeaderIcons mainColor={mainColor} />
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              gap: 15,
+              paddingBottom: 20,
+              paddingHorizontal: 15
+            }}
+          >
+            {filteredPosts.length > 0 &&
+              filteredPosts.slice(0, 15)?.map((publication, i) => {
+                if (!publication?.author?.isDelete) {
+                  return (
+                    <Carousel
+                      showDeletePostModal={showDeletePostModal}
+                      setShowDeletePostModal={setShowDeletePostModal}
+                      key={publication?.id}
+                      name={publication?.author?.nickname}
+                      description={publication?.description}
+                      imgPerfil={
+                        publication?.author?.sportman
+                          ? publication?.author?.sportman?.info?.img_perfil
+                          : publication?.author?.club?.img_perfil
+                      }
+                      image={[...new Set(publication?.image)]}
+                      club={publication?.club === user?.user?.type}
+                      likes={publication?.likes}
+                      commentCount={publication?.commentCount}
+                      index={i}
+                      id={publication?.id}
+                      userId={user?.user?.id}
+                      authorId={publication?.author?.id}
+                      data={publication}
+                    />
+                  )
+                }
+              })}
+          </View>
+        </ScrollView>
+      )}
+      {filteredPosts.length === 0 && (
         <View
           style={{
-            width: '100%',
-            alignSelf: 'center',
-            gap: 15,
-            paddingBottom: 20,paddingHorizontal:15
+            height: '100%',
+            alignItems: 'center'
           }}
         >
-          {filteredPosts.length > 0 && (
-            filteredPosts
-              .slice(0, 15)
-              ?.map((publication, i) => (
-                <Carousel
-                  showDeletePostModal={showDeletePostModal}
-                  setShowDeletePostModal={setShowDeletePostModal}
-                  key={publication?.id}
-                  name={publication?.author?.nickname}
-                  description={publication?.description}
-                  imgPerfil={
-                    publication?.author?.sportman
-                      ? publication?.author?.sportman?.info?.img_perfil
-                      : publication?.author?.club?.img_perfil
-                  }
-                  image={[...new Set(publication?.image)]}
-                  club={publication?.club === user?.user?.type}
-                  likes={publication?.likes}
-                  commentCount={publication?.commentCount}
-                  index={i}
-                  id={publication?.id}
-                  userId={user?.user?.id}
-                  authorId={publication?.author?.id}
-                  data={publication}
-                />
-              ))
-          )}
-        </View>
-      </ScrollView>
-     )}
-        {filteredPosts.length === 0 && (
-           <View
+          <View style={{ alignSelf: 'flex-start' }}>
+            <HeaderIcons mainColor={mainColor} />
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 30
+            }}
+          >
+            <Image
+              resizeMode="contain"
               style={{
-                
-                height:"100%",
-                alignItems: 'center',
+                width: 140,
+                height: 140,
+                marginRight: 15
+              }}
+              source={require('../../assets/group-5352.png')}
+            />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '500',
+                fontFamily: FontFamily.t4TEXTMICRO,
+                color: Color.wHITESPORTSMATCH
               }}
             >
-      <View style={{alignSelf:"flex-start"}}>
-          <HeaderIcons mainColor={mainColor} />
-      </View>
-
-             <View style={{flex:1,alignItems:"center",justifyContent:"center",gap: 30,}}>
-               <Image resizeMode='contain'
-               
-                style={{
-                  width: 140,
-                  height: 140,
-                  marginRight: 15
-                }}
-                source={require('../../assets/group-5352.png')}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: '500',
-                  fontFamily: FontFamily.t4TEXTMICRO,
-                  color: Color.wHITESPORTSMATCH
-                }}
-              >
-                Busca y sigue a tus contactos
-              </Text>
-             </View>
-            </View>
-        )}
+              Busca y sigue a tus contactos
+            </Text>
+          </View>
+        </View>
+      )}
       <Modal visible={showDeletePostModal} transparent={true}>
         <TouchableWithoutFeedback onPress={() => setShowDeletePostModal(false)}>
           <View
