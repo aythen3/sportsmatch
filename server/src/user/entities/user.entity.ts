@@ -53,6 +53,9 @@ export class UserEntity extends BaseEntity {
   following: string[] | null;
 
   @Column({ type: 'simple-array', nullable: true })
+  banned: string[] | null;
+
+  @Column({ type: 'simple-array', nullable: true })
   followers: string[] | null;
 
   @Column({ type: 'simple-array', nullable: true })

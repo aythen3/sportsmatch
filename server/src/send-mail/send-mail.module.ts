@@ -20,11 +20,11 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
       transport: {
         host: 'smtp.gmail.com', // Servidor SMTP
         port: 587,
-        secure: true, // true para TLS; false para otros protocolos
+        secure: false, // true para TLS; false para otros protocolos
 
         auth: {
           user: 'sportsmatchdigital.app@gmail.com',
-          pass: 'zayi vzpx jkkd xbqm' // Contraseña del correo electrónico de origen
+          pass: 'bwsg varr alfu cjsl' // Contraseña del correo electrónico de origen
         }
       },
       defaults: {

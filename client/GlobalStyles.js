@@ -3,7 +3,8 @@ export const FontFamily = {
   // t4TEXTMICRO: "Haffer",
   openSansSemiBold: 'OpenSans-SemiBold',
   interBold: 'Inter-Bold',
-  bodyBodyXS: 'Inter-Regular'
+  bodyBodyXS: 'Inter-Regular',
+  poppins: 'Poppins_500Medium'
 }
 /* font sizes */
 export const FontSize = {

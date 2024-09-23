@@ -92,7 +92,9 @@ const GoldSuscriptionClub = ({
             justifyContent: 'center'
           }}
         >
-          <Text style={{ textAlign: 'center', color: 'white' }}>
+          <Text
+            style={{ textAlign: 'center', color: 'white', fontWeight: 700 }}
+          >
             Descuento 40%
           </Text>
         </View>
@@ -135,7 +137,13 @@ const GoldSuscriptionClub = ({
                   </Text>
                   <Text style={{ ...styles.gratuito }}>75€</Text>
                 </View>
-                <Text style={{ ...styles.timeTypo, marginTop: 10 }}>
+                <Text
+                  style={{
+                    ...styles.timeTypo,
+                    marginTop: 10,
+                    color: '#e6b300'
+                  }}
+                >
                   Pago único
                 </Text>
               </View>
@@ -334,7 +342,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 80,
+    height: 50,
     backgroundColor: Color.colorSilver,
     justifyContent: 'center'
   },

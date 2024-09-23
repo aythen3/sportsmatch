@@ -1,9 +1,15 @@
 import React from 'react'
-import { View, Text, StyleSheet, Pressable, ScrollView ,Dimensions  } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Dimensions
+} from 'react-native'
 import { Color } from '../../GlobalStyles'
 
 const CustomModal = ({ closeModal, onSelectItem, options }) => {
-  
   return (
     <View
       style={{

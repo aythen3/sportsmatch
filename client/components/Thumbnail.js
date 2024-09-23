@@ -53,7 +53,7 @@ const Thumbnail = ({ url, notUrl, styles }) => {
           style={{ width: '100%', height: '100%' }}
           controls={true}
           shouldPlay={isPlaying}
-          isMuted={true}
+          isMuted={false}
           resizeMode="cover"
         />
       ) : (

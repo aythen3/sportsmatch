@@ -57,7 +57,7 @@ const Notifications = ({ data }) => {
 
   useEffect(() => {
     // console.log('clubMatches', clubMatches[0].prop1.sportManData.userId)
-    console.log('notif data', data?.prop1)
+    console.log('notif data', data)
   }, [])
   //console.log('data', data)
   return (
@@ -77,6 +77,9 @@ const Notifications = ({ data }) => {
             })
         }
         if (data.title === 'Solicitud') {
+          setSelectedClubDetails(
+            allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
+          )
           setIsMatch(true)
           return
         }

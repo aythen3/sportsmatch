@@ -6,7 +6,8 @@ import {
   Text,
   ScrollView,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -25,9 +26,8 @@ import { Video } from 'expo-av'
 import * as ImagePicker from 'expo-image-picker'
 import { ImageEditor } from '@tahsinz21366/expo-crop-image'
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator'
-
 const SeleccionarImagen = () => {
-  const { pickImage, libraryImage, pickImageFromCamera } = useContext(Context)
+  const { pickImage } = useContext(Context)
   const { mainColor } = useSelector((state) => state.users)
 
   const navigation = useNavigation()
@@ -46,7 +46,6 @@ const SeleccionarImagen = () => {
 
   const [imagenes, setImagenes] = useState([])
   const [selectedImage, setSelectedImage] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [selectedPicture, setSelectedPicture] = useState()
 
   useEffect(() => {
@@ -106,7 +105,12 @@ const SeleccionarImagen = () => {
 
   const handleSeleccionarImagen = async (imagen) => {
     setSelectedImage(imagen)
-    launchEditor(imagen.uri)
+    if (imagen.mediaType !== 'video') {
+      launchEditor(imagen.uri)
+    } else {
+      console.log(imagen, 'imgggggggggggggg')
+      return setSelectedImage(imagen)
+    }
   }
 
   const launchEditor = (uri) => {
@@ -131,7 +135,9 @@ const SeleccionarImagen = () => {
     setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
   }
 
-  useEffect(() => {}, [selectedImage])
+  useEffect(() => {
+    console.log('esta es la img,', selectedImage)
+  }, [selectedImage])
 
   const [orientation, setOrientation] = useState('portrait')
 
@@ -161,7 +167,12 @@ const SeleccionarImagen = () => {
 
       setShowCamera(false)
       launchEditor(photo.uri)
-
+      // if (showSelection) {
+      //   const exist = multiSelect.find((png) => png.id === photo.id)
+      //   if (!exist) {
+      //     setMultiSelect([photo, ...multiSelect])
+      //   }
+      // }
       // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
@@ -232,16 +243,14 @@ const SeleccionarImagen = () => {
                     }}
                   />
                 ) : (
-                  <Video
+                  <Image
                     source={{ uri: imagen.uri }}
                     style={{
                       width: (Dimensions.get('window').width * 0.9 - 20) / 3,
                       height: (Dimensions.get('window').width * 0.9 + 25) / 3,
                       borderRadius: 4
                     }}
-                    shouldPlay
                     isMuted
-                    isLooping
                     useNativeControls={false}
                     resizeMode="cover"
                   />
@@ -340,6 +349,7 @@ const SeleccionarImagen = () => {
                     selectedImage.mediaType === 'video' &&
                     selectedImage.duration > 60.0
                   ) {
+                    console.log('entra')
                     return setVideoError(true)
                   } else {
                     console.log(selectedImage, '------------')
@@ -367,7 +377,11 @@ const SeleccionarImagen = () => {
             </View>
             {multiSelect.length === 0 ? (
               <View
-                style={{ height: selectedImage ? 'auto' : 350, width: '100%' }}
+                style={{
+                  height: selectedImage ? 'auto' : 400,
+                  width: '100%',
+                  marginTop: 10
+                }}
               >
                 {selectedImage && (
                   <>
@@ -375,9 +389,9 @@ const SeleccionarImagen = () => {
                       <Video
                         style={styles.codeBlockPersonaEnCanch}
                         contentFit="cover"
-                        shouldPlay
                         isMuted
                         isLooping
+                        shouldPlay
                         useNativeControls={false}
                         resizeMode="cover"
                         source={{ uri: selectedImage?.uri }}
@@ -389,38 +403,44 @@ const SeleccionarImagen = () => {
                         source={{ uri: selectedImage?.uri }}
                       />
                     )}
-                    <TouchableOpacity
-                      onPress={() => _rotate90andFlip()}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: '#252525',
-
-                        position: 'absolute',
-                        bottom: 30,
-                        left: 15,
-                        borderRadius: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Image
+                    {selectedImage.mediaType !== 'video' && (
+                      <TouchableOpacity
+                        onPress={() => _rotate90andFlip()}
                         style={{
-                          width: 15,
-                          height: 15
+                          width: 30,
+                          height: 30,
+                          backgroundColor: '#252525',
+
+                          position: 'absolute',
+                          bottom: 30,
+                          left: 15,
+                          borderRadius: 50,
+                          alignItems: 'center',
+                          justifyContent: 'center'
                         }}
-                        source={require('../../../assets/rotate.png')}
-                      ></Image>
-                    </TouchableOpacity>
+                      >
+                        <Image
+                          style={{
+                            width: 15,
+                            height: 15
+                          }}
+                          source={require('../../../assets/rotate.png')}
+                        ></Image>
+                      </TouchableOpacity>
+                    )}
                   </>
                 )}
               </View>
             ) : (
-              <View style={{ height: 344, width: '100%' }}>
-                <PagerView
-                  style={{ flex: 1, marginBottom: 10 }}
-                  initialPage={0}
-                >
+              <View
+                style={{
+                  height: 400,
+                  width: '100%',
+                  marginTop: 10,
+                  marginBottom: 14
+                }}
+              >
+                <PagerView style={{ flex: 1 }} initialPage={0}>
                   {multiSelect.map((e, i) => (
                     <View style={{ width: '100%' }} key={i}>
                       <>
@@ -537,20 +557,99 @@ const SeleccionarImagen = () => {
           </View>
         )}
         <ImageEditor
+          fixedAspectRatio={1 / 1}
+          editorOptions={{
+            controlBar: {
+              cancelButton: {
+                iconName: 'cancel',
+                color: 'white',
+                text: 'Cancelar'
+              },
+              cropButton: { iconName: 'crop', color: 'white', text: 'Cortar' },
+              backButton: {
+                iconName: 'arrow-back',
+                color: 'white',
+                text: 'Atrás'
+              },
+              saveButton: {
+                iconName: 'save-alt',
+                color: 'white',
+                text: 'Guardar'
+              }
+            }
+          }}
           isVisible={editorVisible}
           onEditingCancel={() => setEditorVisible(false)}
           onCloseEditor={() => setEditorVisible(false)}
           imageUri={selectedImage?.uri}
-          fixedCropAspectRatio={16 / 9}
+          fixedCropAspectRatio={1 / 1}
           minimumCropDimensions={{
             width: 100,
             height: 100
           }}
+          mode="full"
           onEditingComplete={(result) => {
             setEditorVisible(false)
             setSelectedImage(result)
+            if (showSelection) {
+              const newObj = { ...result, mediaType: 'photo' }
+              console.log([result, ...multiSelect], 'ressssss')
+              setMultiSelect([newObj, ...multiSelect])
+            }
           }}
         />
+
+        <Modal
+          animationType="slide"
+          style={{ flex: 1 }}
+          onRequestClose={() => setVideoError(false)}
+          transparent
+          visible={videoError}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end'
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: 'transparent',
+                flex: 1
+              }}
+              onTouchStart={() => setVideoError(false)}
+            />
+
+            <View
+              style={{
+                bottom: 0,
+                width: '100%',
+                borderTopEndRadius: 20,
+                borderTopStartRadius: 20,
+                borderWidth: 1,
+                borderBottomWidth: 0,
+                borderColor: 'gray',
+                padding: 14,
+                position: 'absolute',
+                backgroundColor: Color.bLACK2SPORTMATCH
+              }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  width: 50,
+                  borderRadius: 20,
+                  backgroundColor: Color.wHITESPORTSMATCH,
+                  alignSelf: 'center',
+                  marginBottom: 12
+                }}
+              />
+              <Text style={{ color: 'gray', textAlign: 'center' }}>
+                El video debe durar como máximo 60 segundos
+              </Text>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     )
   } else {
@@ -641,9 +740,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   codeBlockPersonaEnCanch: {
-    marginTop: 30,
     marginBottom: 15,
-    height: 300,
+    height: 400,
     borderRadius: 8
   }
 })

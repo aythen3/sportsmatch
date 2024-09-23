@@ -24,6 +24,9 @@ import Like2SVG from './svg/Like2SVG'
 import { Modal } from 'react-native'
 import ModalOptionOffers from './ModalOptionOffers'
 import Thumbnail from './Thumbnail'
+import ModalEdit from './modals/ModalEdit'
+import ModalExt from './modals/ModalExt'
+import axiosInstance from '../utils/apiBackend'
 
 function Carousel({
   name,
@@ -155,6 +158,7 @@ function Carousel({
 
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
   const [optionsModal, setOptionsModal] = useState(false)
+  const [bannedModal, setBannedModal] = useState(false)
 
   const handlePostClick = (event) => {
     const { pageX, pageY } = event.nativeEvent
@@ -166,6 +170,60 @@ function Carousel({
     setOptionsModal(true)
   }
   //console.log('image========', image)
+
+  const BanUser = async () => {
+    axiosInstance
+      .put(`user/${user.user.id}/ban`)
+      .then((e) => console.log(e, 'eeeee'))
+  }
+
+  const Bann = () => (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+        gap: 20
+      }}
+    >
+      <Text style={{ color: 'white' }}>
+        ¿Estas seguro/a que quieres bloquear al usuario
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          gap: 30
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'red',
+            width: '40%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 10,
+            borderRadius: 10
+          }}
+        >
+          <Text style={{ color: 'white' }}>Aceptar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setBannedModal(false)}
+          style={{
+            backgroundColor: 'gray',
+            width: '40%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 10,
+            borderRadius: 10
+          }}
+        >
+          <Text style={{ color: 'white' }}>Cancelar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
   // console.log(data,"esto es la data")
   return (
     <View style={{ ...styles.container }}>
@@ -269,6 +327,24 @@ function Carousel({
             >
               {`${dia}/${mes}/${año.slice(2, 4)}`}
             </Text>
+            <TouchableOpacity
+              onPress={(event) => {
+                handlePostClick(event)
+                setSelectedPost(id)
+              }}
+              style={{
+                width: 24,
+                height: 20,
+                top: 2,
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{ width: 5, height: '100%' }}
+                contentFit="scale-down"
+                source={require('../assets/frame-957.png')}
+              />
+            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -369,7 +445,6 @@ function Carousel({
             <Text
               style={{
                 fontSize: FontSize.t1TextSMALL_size,
-                fontSize: FontSize.t1TextSMALL_size,
                 color: Color.wHITESPORTSMATCH,
                 fontFamily: FontFamily.t4TEXTMICRO,
                 fontWeight: '700',
@@ -446,6 +521,12 @@ function Carousel({
           <Text style={styles.comments}>{comments[0].comment}</Text>
         )}  */}
       </View>
+      <ModalExt
+        visible={bannedModal}
+        closeModal={() => setBannedModal(false)}
+        title={'Bloquear usuario'}
+        content={Bann}
+      ></ModalExt>
       <Modal visible={optionsModal} transparent={true}>
         <TouchableWithoutFeedback onPress={() => setOptionsModal(false)}>
           <View style={{ flex: 1 }}>
@@ -462,6 +543,8 @@ function Carousel({
                 post={true}
                 postId={selectedPost}
                 data={data}
+                setBannedModal={setBannedModal}
+                post_ext={authorId !== user?.user?.id}
                 setShowDeletePostModal={setShowDeletePostModal}
                 onClose={() => setOptionsModal(false)}
               />
@@ -566,7 +649,7 @@ const styles = StyleSheet.create({
   },
   postContainer: {
     width: '100%',
-    height: 300,
+    height: 400,
     marginTop: 10
   },
   postImage: {

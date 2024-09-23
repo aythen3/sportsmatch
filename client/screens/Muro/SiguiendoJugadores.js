@@ -68,7 +68,7 @@ const SiguiendoJugadores = () => {
     dispatch(getAllPosts())
     dispatch(getAllLikes())
     dispatch(getAllNotifications())
-    if (user?.user?.type == 'club') {
+    if (user?.user?.type === 'club') {
       console.log(user?.user?.club?.id, 'club')
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {

@@ -51,6 +51,8 @@ const ChatAbierto1 = () => {
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
   const { allMatchs } = useSelector((state) => state.matchs)
+  const { sportman } = useSelector((state) => state.sportman)
+  const { club } = useSelector((state) => state.clubs)
 
   const { clubMatches, userMatches, emitToUser } = useContext(Context)
   const [canSend, setCanSend] = useState(false)
@@ -89,22 +91,17 @@ const ChatAbierto1 = () => {
     )[0]
     console.log('pasa 1111111111111', userrr.sportman, user.user.sportman)
 
-    if (userrr.sportman && user.user.sportman) {
+    if (userrr.sportman && sportman) {
       console.log('pasa 1111111111111')
       setCanSend(true)
     }
-    if (userrr.club && user.user.club) {
+    if (userrr.club && club) {
       console.log('pasa 222222222222222222')
 
       setCanSend(true)
     }
-    console.log(userrr.club, user.user.sportman, '111111111111')
-    console.log(userrr.sportman, user.user.club, '22222222222222')
 
-    if (
-      (userrr.club && user.user.sportman) ||
-      (userrr.sportman && user.user.club)
-    ) {
+    if ((userrr.club && sportman) || (userrr.sportman && club)) {
       console.log('entrando')
       if (clubMatches.length > 0) {
         console.log('entrando2')
@@ -118,9 +115,7 @@ const ChatAbierto1 = () => {
         return setCanSend(e)
       } else {
         const res = allMatchs.filter(
-          (m) =>
-            m.prop1.sportmanId === user?.user?.sportman?.id &&
-            m.status === 'success'
+          (m) => m.prop1.sportmanId === sportman?.id && m.status === 'success'
         )
         const res2 =
           res.filter(

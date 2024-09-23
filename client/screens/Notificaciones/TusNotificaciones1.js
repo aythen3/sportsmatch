@@ -24,6 +24,7 @@ import {
   markAllUserNotificationsAsRead
 } from '../../redux/actions/notifications'
 import { ActivityIndicator } from 'react-native-paper'
+import { getAllMatchs, getUserMatchs } from '../../redux/actions/matchs'
 
 const TusNotificaciones1 = () => {
   const [loading, setLoading] = useState(true)
@@ -78,6 +79,8 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
     getUsersMessages()
+    dispatch(getAllMatchs())
+    dispatch(getUserMatchs(user?.user?.id))
     if (user.user.type == 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {

@@ -593,7 +593,7 @@ const HeaderPerfil = ({
                           clubData: {
                             name: user?.user?.nickname,
                             userId: user.user.id,
-                            ...user?.user?.club
+                            ...club
                           }
                         },
                         prop2: { rol: 'user' }

@@ -7,7 +7,8 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  Put
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -281,5 +282,15 @@ export class UserController {
     } catch (error) {
       return { message: error };
     }
+  }
+
+  @Put(':id/ban')
+  async banUser(@Param('id') id: string, @Body('userId') userId: string) {
+    return this.userService.banUser(id, userId);
+  }
+
+  @Delete(':id/ban')
+  async unbanUser(@Param('id') id: string, @Body('userId') userId: string) {
+    return this.userService.unbanUser(id, userId);
   }
 }

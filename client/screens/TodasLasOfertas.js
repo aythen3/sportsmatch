@@ -41,6 +41,7 @@ import { sendNotification } from '../redux/actions/notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { updateOffers } from '../redux/slices/offers.slices'
 import PagerView from 'react-native-pager-view'
+import { PageIndicator } from 'react-native-page-indicator'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -48,6 +49,7 @@ const TodasLasOfertas = () => {
   const { userMatches, scalableFontSize, emitToUser } = useContext(Context)
   const { offers } = useSelector((state) => state.offers)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
+  const { sportman } = useSelector((state) => state.sportman)
   const navigation = useNavigation()
   const [selectOfferComponent, setSelectOfferComponent] = useState('todas')
   const [modalVisible, setModalVisible] = useState(false)
@@ -61,18 +63,32 @@ const TodasLasOfertas = () => {
   const [signinToOffer, setSigninToOffer] = useState(false)
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(0)
+  const [cantPage1, setCantPage1] = useState(0)
+  const [cantPage2, setCantPage2] = useState(0)
+
   const [plansData, setPlansData] = useState([])
 
   const fetchUserData = async () => {
     console.log('Fetching user data...')
     const userData = await AsyncStorage.getItem('userAuth')
-    console.log('userData', userData)
-    dispatch(login(JSON.parse(userData)))
+    const userData2 = await AsyncStorage.getItem('@user')
+
+    console.log('userData', userData, userData2)
+    if (userData) {
+      return dispatch(login(JSON.parse(userData))).then((a) =>
+        console.log('logeo', a)
+      )
+    }
+    if (userData2) {
+      return dispatch(login({ googleId: JSON.parse(userData2).uid })).then(
+        (a) => console.log('logeo2', a)
+      )
+    }
   }
 
   useEffect(() => {
-    // console.log('USER.USER', user.user)
-    // console.log('USER.USER.SPORTMAN', user.user.sportman)
+    console.log('USER.USER', user.user)
+    console.log('USER.USER.SPORTMAN', sportman.id)
     if (!user?.user?.sportman) {
       fetchUserData()
     }
@@ -226,6 +242,111 @@ const TodasLasOfertas = () => {
     }
   }, [clientSecret, initPaymentSheet])
   useEffect(() => {
+    const cant = offer
+      .filter((offer) => offer.paused === false)
+      .filter((offer) => {
+        const filteredUserMatches = userMatches.filter(
+          (match) => match.offerId && match.offerId !== offer.id
+        )
+        const alreadyJoined = offer?.inscriptions?.includes(
+          user?.user?.sportman?.id
+        )
+        if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if (alreadyJoined) {
+          return false
+        }
+        return true
+      })
+      .slice(
+        0,
+        user?.user?.plan === 'pro' || user?.user?.plan === 'star' ? 1000 : 20
+      )
+      .filter((offer) => offer.paused === false)
+      .filter((off) => {
+        if (search.length > 0) {
+          if (
+            off.province.toLowerCase().includes(search.toLowerCase()) ||
+            off.posit.toLowerCase().includes(search.toLowerCase())
+          ) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
+      })
+      .filter((offer) => {
+        const filteredUserMatches = userMatches.filter(
+          (match) => match.offerId && match.offerId !== offer.id
+        )
+        const alreadyJoined = offer?.inscriptions?.includes(
+          user?.user?.sportman?.id
+        )
+        if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if (alreadyJoined) {
+          return false
+        }
+        return true
+      })
+      .slice(
+        0,
+        user?.user?.plan === 'pro' || user?.user?.plan === 'star' ? 1000 : 20
+      )
+      .sort((a, b) => {
+        const first = a.inscriptions?.length || 0
+        const second = b.inscriptions?.length || 0
+        return byRelevance ? second - first : first - second
+      })
+    setCantPage1(cant.length)
+
+    const cant2 = offer
+      .filter((off) => {
+        if (search.length > 0) {
+          if (
+            off.province.toLowerCase().includes(search.toLowerCase()) ||
+            off.posit.toLowerCase().includes(search.toLowerCase())
+          ) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
+      })
+      .filter((offer) => {
+        const filteredUserMatches = userMatches.filter(
+          (match) => match.offerId && match.offerId !== offer.id
+        )
+        const alreadyJoined = offer?.inscriptions?.includes(
+          user?.user?.sportman?.id
+        )
+        if (filteredUserMatches.length > 0) {
+          return false
+        }
+        if (alreadyJoined) {
+          return true
+        }
+        return false
+      })
+      .map((_, index) => (
+        <View
+          key={index}
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            marginHorizontal: 2,
+            backgroundColor: index === currentPage ? mainColor : 'gray'
+          }}
+        />
+      ))
+    setCantPage2(cant2.length)
     // console.log('offers changed on alloffers', offers)
   }, [offers])
 
@@ -587,20 +708,19 @@ const TodasLasOfertas = () => {
                               }
                               console.log('PRESSED')
                               if (
-                                !offer?.inscriptions?.includes(
-                                  user?.user?.sportman?.id
-                                )
+                                !offer?.inscriptions?.includes(sportman?.id)
                               ) {
                                 setSigninToOffer(true)
-                                if (user?.user?.sportman) {
+                                if (sportman) {
                                   try {
                                     await dispatch(updateOffers(offer?.id))
                                     dispatch(
                                       signToOffer({
                                         offerId: offer?.id,
-                                        userId: user?.user?.sportman?.id
+                                        userId: sportman?.id
                                       })
                                     ).then((data) => {
+                                      console.log(data, 'response offer')
                                       const userr = allUsers.filter(
                                         (e) => e?.club?.id === offer?.clubId
                                       )[0]
@@ -711,97 +831,109 @@ const TodasLasOfertas = () => {
             )}
           </PagerView>
           {offers.length > 1 && (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: 15,
-                marginBottom: '6%',
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginTop: 15,
+                  marginBottom: '6%',
 
-                overflow: 'hidden',
-                marginHorizontal: 100
-              }}
-            >
-              {offer
-                .filter((offer) => offer.paused === false)
-                .filter((offer) => {
-                  const filteredUserMatches = userMatches.filter(
-                    (match) => match.offerId && match.offerId !== offer.id
-                  )
-                  const alreadyJoined = offer?.inscriptions?.includes(
-                    user?.user?.sportman?.id
-                  )
-                  if (filteredUserMatches.length > 0) {
-                    return false
-                  }
-                  if (alreadyJoined) {
-                    return false
-                  }
-                  return true
-                })
-                .slice(
-                  0,
-                  user?.user?.plan === 'pro' || user?.user?.plan === 'star'
-                    ? 1000
-                    : 20
-                )
-                .filter((offer) => offer.paused === false)
-                .filter((off) => {
-                  if (search.length > 0) {
-                    if (
-                      off.province
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase())
-                    ) {
+                  marginHorizontal: 100
+                }}
+              >
+                <ScrollView
+                  horizontal={true}
+                  style={{ width: '100%', flex: 1 }}
+                  contentContainerStyle={{
+                    width: cantPage1 > 20 ? '' : '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignContent: 'center'
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {offer
+                    .filter((offer) => offer.paused === false)
+                    .filter((offer) => {
+                      const filteredUserMatches = userMatches.filter(
+                        (match) => match.offerId && match.offerId !== offer.id
+                      )
+                      const alreadyJoined = offer?.inscriptions?.includes(
+                        user?.user?.sportman?.id
+                      )
+                      if (filteredUserMatches.length > 0) {
+                        return false
+                      }
+                      if (alreadyJoined) {
+                        return false
+                      }
                       return true
-                    } else {
-                      return false
-                    }
-                  } else {
-                    return true
-                  }
-                })
-                .filter((offer) => {
-                  const filteredUserMatches = userMatches.filter(
-                    (match) => match.offerId && match.offerId !== offer.id
-                  )
-                  const alreadyJoined = offer?.inscriptions?.includes(
-                    user?.user?.sportman?.id
-                  )
-                  if (filteredUserMatches.length > 0) {
-                    return false
-                  }
-                  if (alreadyJoined) {
-                    return false
-                  }
-                  return true
-                })
-                .slice(
-                  0,
-                  user?.user?.plan === 'pro' || user?.user?.plan === 'star'
-                    ? 1000
-                    : 20
-                )
-                .sort((a, b) => {
-                  const first = a.inscriptions?.length || 0
-                  const second = b.inscriptions?.length || 0
-                  return byRelevance ? second - first : first - second
-                })
-                .map((offer, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 4,
-                      marginHorizontal: 2,
-                      backgroundColor:
-                        index === currentPage ? mainColor : 'gray'
-                    }}
-                  />
-                ))
-                .slice(0, 15)}
+                    })
+                    .slice(
+                      0,
+                      user?.user?.plan === 'pro' || user?.user?.plan === 'star'
+                        ? 1000
+                        : 20
+                    )
+                    .filter((offer) => offer.paused === false)
+                    .filter((off) => {
+                      if (search.length > 0) {
+                        if (
+                          off.province
+                            .toLowerCase()
+                            .includes(search.toLowerCase()) ||
+                          off.posit.toLowerCase().includes(search.toLowerCase())
+                        ) {
+                          return true
+                        } else {
+                          return false
+                        }
+                      } else {
+                        return true
+                      }
+                    })
+                    .filter((offer) => {
+                      const filteredUserMatches = userMatches.filter(
+                        (match) => match.offerId && match.offerId !== offer.id
+                      )
+                      const alreadyJoined = offer?.inscriptions?.includes(
+                        user?.user?.sportman?.id
+                      )
+                      if (filteredUserMatches.length > 0) {
+                        return false
+                      }
+                      if (alreadyJoined) {
+                        return false
+                      }
+                      return true
+                    })
+                    .slice(
+                      0,
+                      user?.user?.plan === 'pro' || user?.user?.plan === 'star'
+                        ? 1000
+                        : 20
+                    )
+                    .sort((a, b) => {
+                      const first = a.inscriptions?.length || 0
+                      const second = b.inscriptions?.length || 0
+                      return byRelevance ? second - first : first - second
+                    })
+                    .map((_, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: 4,
+                          marginHorizontal: 2,
+                          backgroundColor:
+                            index === currentPage ? mainColor : 'gray'
+                        }}
+                      />
+                    ))}
+                </ScrollView>
+              </View>
             </View>
           )}
           {selectOfferComponent === 'todas' &&
@@ -1112,13 +1244,13 @@ const TodasLasOfertas = () => {
                       onPress={async () => {
                         if (true) {
                           setSigninToOffer(true)
-                          if (user?.user?.sportman) {
+                          if (sportman) {
                             try {
                               await dispatch(updateOffers(offer?.id))
                               dispatch(
                                 deleteSignToOffer({
                                   offerId: offer?.id,
-                                  userId: user?.user?.sportman?.id
+                                  userId: sportman?.id
                                 })
                               ).then((data) => {
                                 console.log(data, 'dataaa')
@@ -1189,58 +1321,71 @@ const TodasLasOfertas = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
+                alignItems: 'center',
                 marginTop: 15,
                 marginBottom: '2%',
-                overflow: 'hidden',
                 marginHorizontal: 100
               }}
             >
-              {offer
-                .filter((off) => {
-                  if (search.length > 0) {
-                    if (
-                      off.province
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase())
-                    ) {
-                      return true
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                style={{ flex: 1 }}
+                contentContainerStyle={{
+                  width: cantPage2 > 20 ? '' : '100%',
+
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  alignContent: 'center'
+                }}
+              >
+                {offer
+                  .filter((off) => {
+                    if (search.length > 0) {
+                      if (
+                        off.province
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        off.posit.toLowerCase().includes(search.toLowerCase())
+                      ) {
+                        return true
+                      } else {
+                        return false
+                      }
                     } else {
+                      return true
+                    }
+                  })
+                  .filter((offer) => {
+                    const filteredUserMatches = userMatches.filter(
+                      (match) => match.offerId && match.offerId !== offer.id
+                    )
+                    const alreadyJoined = offer?.inscriptions?.includes(
+                      user?.user?.sportman?.id
+                    )
+                    if (filteredUserMatches.length > 0) {
                       return false
                     }
-                  } else {
-                    return true
-                  }
-                })
-                .filter((offer) => {
-                  const filteredUserMatches = userMatches.filter(
-                    (match) => match.offerId && match.offerId !== offer.id
-                  )
-                  const alreadyJoined = offer?.inscriptions?.includes(
-                    user?.user?.sportman?.id
-                  )
-                  if (filteredUserMatches.length > 0) {
+                    if (alreadyJoined) {
+                      return true
+                    }
                     return false
-                  }
-                  if (alreadyJoined) {
-                    return true
-                  }
-                  return false
-                })
-                .map((_, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 4,
-                      marginHorizontal: 2,
-                      backgroundColor:
-                        index === currentPage ? mainColor : 'gray'
-                    }}
-                  />
-                ))
-                .slice(0, 15)}
+                  })
+                  .map((_, index) => (
+                    <View
+                      key={index}
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: 4,
+                        marginHorizontal: 2,
+                        backgroundColor:
+                          index === currentPage ? mainColor : 'gray'
+                      }}
+                    />
+                  ))
+                  .slice(0, 15)}
+              </ScrollView>
             </View>
           )}
         </View>

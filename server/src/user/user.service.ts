@@ -31,7 +31,7 @@ export class UserService {
 
       auth: {
         user: 'sportsmatchdigital.app@gmail.com',
-        pass: 'zayi vzpx jkkd xbqm'
+        pass: 'bwsg varr alfu cjsl'
       }
     });
     this.stripe = new Stripe(
@@ -744,5 +744,59 @@ export class UserService {
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
+  }
+
+  async banUser(userId: string, bannedUserId: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const bannedUser = await this.userRepository.findOne({
+      where: { id: bannedUserId }
+    });
+
+    if (!user || !bannedUser) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Agregar el ID del usuario banned a la lista de banned del usuario
+    if (!user.banned) {
+      user.banned = [];
+    }
+    user.banned.push(bannedUserId);
+
+    // Agregar el ID del usuario a la lista de banned del usuario banned
+    if (!bannedUser.banned) {
+      bannedUser.banned = [];
+    }
+    bannedUser.banned.push(userId);
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(bannedUser);
+
+    return { message: 'Usuario bloqueado correctamente' };
+  }
+
+  async unbanUser(userId: string, unbannedUserId: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const unbannedUser = await this.userRepository.findOne({
+      where: { id: unbannedUserId }
+    });
+
+    if (!user || !unbannedUser) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Eliminar el ID del usuario unbanned de la lista de banned del usuario
+    if (user.banned) {
+      user.banned = user.banned.filter((id) => id !== unbannedUserId);
+    }
+
+    // Eliminar el ID del usuario de la lista de banned del usuario unbanned
+    if (unbannedUser.banned) {
+      unbannedUser.banned = unbannedUser.banned.filter((id) => id !== userId);
+    }
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(unbannedUser);
+
+    return { message: 'Usuario desbloqueado correctamente' };
   }
 }

@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux'
 import axiosInstance from '../../../utils/apiBackend'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
 const Contrasea = () => {
   const { user } = useSelector((state) => state.users)
   const navigation = useNavigation()
@@ -30,7 +31,7 @@ const Contrasea = () => {
   const handleChangePassword = () => {
     if (newPassword === repeatNewPassword) {
       const body = {
-        email: user.user.email,
+        email: user?.user?.email,
         password: password,
         newPassword: newPassword
       }

@@ -19,11 +19,42 @@ const ModalOptionOffers = ({
   postId,
   data,
   offerData,
-  setShowDeletePostModal
+  setShowDeletePostModal,
+  setBannedModal,
+  post_ext
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  console.log(offerData, 'data de offer')
+
+  console.log(post_ext, 'post2')
+
+  if (post_ext) {
+    return (
+      <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
+        <TouchableOpacity
+          style={{ width: '100%' }}
+          onPress={() => {
+            onClose()
+          }}
+        >
+          <View>
+            <Text style={styles.editar}>Reportar</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
+        <TouchableOpacity
+          style={{ width: '100%' }}
+          onPress={() => {
+            setBannedModal(true)
+            onClose()
+          }}
+        >
+          <Text style={styles.editar}>Bloquear usuario</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
   if (post)
     return (
       <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
@@ -78,6 +109,7 @@ const ModalOptionOffers = ({
         </Pressable>
       </View>
     )
+
   return (
     <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
       <TouchableOpacity

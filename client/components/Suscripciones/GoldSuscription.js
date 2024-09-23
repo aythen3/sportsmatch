@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 // import { useSelector } from 'react-redux'
 import { Image } from 'expo-image'
 import {
@@ -14,6 +14,7 @@ import axios from 'axios'
 import axiosInstance from '../../utils/apiBackend'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
+import { Context } from '../../context/Context'
 
 const GoldSuscription = ({
   setClientSecret,
@@ -22,9 +23,11 @@ const GoldSuscription = ({
   myPlan,
   handleCancelSuscription,
   deletePlan,
-  setDeletePlan
+  setDeletePlan,
+  suscription
 }) => {
   const { user } = useSelector((state) => state.users)
+  const { scalableFontSize } = useContext(Context)
 
   const handleGetGold = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
@@ -66,7 +69,7 @@ const GoldSuscription = ({
         <View
           style={{
             width: '100%',
-            height: 80,
+            height: 50,
             backgroundColor: Color.colorSilver,
             justifyContent: 'center'
           }}
@@ -98,7 +101,7 @@ const GoldSuscription = ({
               zIndex: 1,
               textAlign: 'center',
               color: Color.wHITESPORTSMATCH,
-              fontSize: FontSize.h3TitleMEDIUM_size,
+              fontSize: scalableFontSize(20),
               fontWeight: '700',
               fontFamily: FontFamily.t4TEXTMICRO
             }}
@@ -114,7 +117,9 @@ const GoldSuscription = ({
             justifyContent: 'center'
           }}
         >
-          <Text style={{ textAlign: 'center', color: 'white' }}>
+          <Text
+            style={{ textAlign: 'center', color: 'white', fontWeight: 700 }}
+          >
             Descuento 40%
           </Text>
         </View>
@@ -135,12 +140,37 @@ const GoldSuscription = ({
                     style={{
                       ...styles.timeTypo,
 
-                      textDecorationLine: 'line-through'
+                      textDecorationLine: 'line-through',
+                      fontWeight: 700,
+                      fontSize: scalableFontSize(16)
                     }}
                   >
                     12,90€/mes
                   </Text>
-                  <Text style={{ ...styles.gratuito }}>7,75€/mes</Text>
+                  <View
+                    style={{ flexDirection: 'row', alignItems: 'baseline' }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.gratuito,
+
+                        fontSize: scalableFontSize(36)
+                      }}
+                    >
+                      7,75€
+                    </Text>
+                    <Text
+                      style={{
+                        ...styles.timeTypo,
+                        color: '#e6b300',
+                        fontWeight: 700,
+
+                        fontSize: scalableFontSize(20)
+                      }}
+                    >
+                      /mes
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={{
@@ -152,12 +182,37 @@ const GoldSuscription = ({
                   <Text
                     style={{
                       ...styles.timeTypo,
-                      textDecorationLine: 'line-through'
+                      textDecorationLine: 'line-through',
+                      fontWeight: 700,
+                      fontSize: scalableFontSize(16)
                     }}
                   >
                     124,40€/año
                   </Text>
-                  <Text style={{ ...styles.gratuito }}>74,64€/año</Text>
+                  <View
+                    style={{ flexDirection: 'row', alignItems: 'baseline' }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.gratuito,
+
+                        fontSize: scalableFontSize(36)
+                      }}
+                    >
+                      74,64€
+                    </Text>
+                    <Text
+                      style={{
+                        ...styles.timeTypo,
+                        color: '#e6b300',
+                        fontWeight: 700,
+
+                        fontSize: scalableFontSize(20)
+                      }}
+                    >
+                      /año
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -259,7 +314,7 @@ const GoldSuscription = ({
               justifyContent: 'center'
             }}
           >
-            <Text style={styles.ofertasTypo}>{'Seleccionar plan mensual'}</Text>
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Mensual'}</Text>
           </TouchableOpacity>
         )}
         {!deletePlan && !myPlan && (
@@ -277,7 +332,43 @@ const GoldSuscription = ({
               justifyContent: 'center'
             }}
           >
-            <Text style={styles.ofertasTypo}>{'Seleccionar plan anual'}</Text>
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Anual'}</Text>
+          </TouchableOpacity>
+        )}
+        {suscription === 'PRO (Mensual)' && (
+          <TouchableOpacity
+            onPress={handleGetGoldAnual}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>Pasarte a plan Anual</Text>
+          </TouchableOpacity>
+        )}
+        {suscription === 'PRO (Anual)' && (
+          <TouchableOpacity
+            onPress={handleGetGold}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>Pasarte a plan Mensual</Text>
           </TouchableOpacity>
         )}
         {myPlan && !deletePlan && (

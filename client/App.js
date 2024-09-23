@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { useFonts } from 'expo-font'
+// import { useFonts } from 'expo-font'
 import LoginSwitch from './screens/Login/LoginSwitch'
 import Paso2Jugador from './screens/Pasos/Paso2Jugador'
 import Paso4Jugador from './screens/Pasos/Paso4Jugador'
@@ -71,6 +71,28 @@ import * as Notifications from 'expo-notifications'
 import RecuperarContra from './screens/Login/RecuperarContra'
 import OfertaCreada from './screens/Ofertas/OfertaCreada'
 import SuscriptionChange from './screens/SuscriptionChange'
+import {
+  useFonts,
+  Poppins_100Thin,
+  Poppins_100Thin_Italic,
+  Poppins_200ExtraLight,
+  Poppins_200ExtraLight_Italic,
+  Poppins_300Light,
+  Poppins_300Light_Italic,
+  Poppins_400Regular,
+  Poppins_400Regular_Italic,
+  Poppins_500Medium,
+  Poppins_500Medium_Italic,
+  Poppins_600SemiBold,
+  Poppins_600SemiBold_Italic,
+  Poppins_700Bold,
+  Poppins_700Bold_Italic,
+  Poppins_800ExtraBold,
+  Poppins_800ExtraBold_Italic,
+  Poppins_900Black,
+  Poppins_900Black_Italic
+} from '@expo-google-fonts/poppins'
+
 const Stack = createNativeStackNavigator()
 if (__DEV__) {
   require('./ReactotronConfig')
@@ -85,17 +107,32 @@ const App = () => {
   })
   const [hideSplashScreen, setHideSplashScreen] = useState(true)
   const [isFooterShow, setIsFooterShow] = useState(null)
+ /* eslint-disable */
+  let [fontsLoaded,error] = useFonts({
+    Poppins_100Thin,
+    Poppins_100Thin_Italic,
+    Poppins_200ExtraLight,
+    Poppins_200ExtraLight_Italic,
+    Poppins_300Light,
+    Poppins_300Light_Italic,
+    Poppins_400Regular,
+    Poppins_400Regular_Italic,
+    Poppins_500Medium,
+    Poppins_500Medium_Italic,
+    Poppins_600SemiBold,
+    Poppins_600SemiBold_Italic,
+    Poppins_700Bold,
+    Poppins_700Bold_Italic,
+    Poppins_800ExtraBold,
+    Poppins_800ExtraBold_Italic,
+    Poppins_900Black,
+    Poppins_900Black_Italic,
+  });
 
-  const [fontsLoaded, error] = useFonts({
-    'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
-    'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
-    'Inter-Bold': require('./assets/fonts/Inter-Bold.ttf')
-  })
 
   if (!fontsLoaded && !error) {
     return null
   }
-
   // ======================= CHAT RELATED STUFF ============================
 
   return (
@@ -114,7 +151,7 @@ const App = () => {
           <StatusBar barStyle={'light-content'} backgroundColor="#000" />
           <Provider store={store}>
             <ContextProvider>
-              <NavigationContainer children={NavBarInferior}>
+              <NavigationContainer  children={NavBarInferior}>
                 {hideSplashScreen ? (
                   <Stack.Navigator
                     screenOptions={({ route }) => ({
