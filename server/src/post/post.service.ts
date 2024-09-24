@@ -27,16 +27,24 @@ export class PostService {
 
     const { following, banned } = user;
 
+    const followingIds = following?.filter((id) => id !== null);
+    const bannedIds = banned?.filter((id) => id !== null);
+
     const posts = await this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('author.sportman', 'sportman')
-      .where('post.author.id = :userId', { userId })
-      .orWhere('post.author.id IN (:...following)', { following })
-      .andWhere('post.author.id NOT IN (:...banned)', { banned })
-      .getMany();
+      .where('post.author.id = :userId', { userId });
 
-    return posts;
+    if (followingIds && followingIds.length > 0) {
+      posts.orWhere('post.author.id IN (:...followingIds)', { followingIds });
+    }
+
+    if (bannedIds && bannedIds.length > 0) {
+      posts.andWhere('post.author.id NOT IN (:...bannedIds)', { bannedIds });
+    }
+
+    return posts.getMany();
   }
 
   public async create(createPostDto: CreatePostDto) {

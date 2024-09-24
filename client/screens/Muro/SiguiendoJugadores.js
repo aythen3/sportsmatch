@@ -66,7 +66,7 @@ const SiguiendoJugadores = () => {
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
   }
   useEffect(() => {
-    dispatch(getAllPostsFeed(user?.user?.id))
+    dispatch(getAllPosts(user?.user?.id))
     dispatch(getAllLikes())
     // dispatch(getAllNotifications())
     if (user?.user?.type === 'club') {
@@ -133,7 +133,7 @@ const SiguiendoJugadores = () => {
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      {postFeed.length > 0 && (
+      {filteredPosts.length > 0 && (
         <ScrollView
           stickyHeaderIndices={[0]}
           stickyHeaderHiddenOnScroll={true}
@@ -149,9 +149,12 @@ const SiguiendoJugadores = () => {
               paddingHorizontal: 15
             }}
           >
-            {postFeed.length > 0 &&
-              postFeed.slice(0, 15)?.map((publication, i) => {
-                if (!publication?.author?.isDelete) {
+            {filteredPosts.length > 0 &&
+              filteredPosts.slice(0, 15)?.map((publication, i) => {
+                if (
+                  !publication?.author?.isDelete &&
+                  !user?.user?.banned?.includes(publication?.author?.id)
+                ) {
                   return (
                     <Carousel
                       showDeletePostModal={showDeletePostModal}
@@ -180,7 +183,7 @@ const SiguiendoJugadores = () => {
           </View>
         </ScrollView>
       )}
-      {postFeed.length === 0 && (
+      {filteredPosts.length === 0 && (
         <View
           style={{
             height: '100%',
