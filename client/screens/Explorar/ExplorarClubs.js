@@ -138,6 +138,7 @@ const ExplorarClubs = () => {
                 }}
               >
                 <Thumbnail
+                  play={false}
                   url={columnItem.image[0]}
                   styles={{
                     width: '100%',
@@ -157,6 +158,7 @@ const ExplorarClubs = () => {
             }}
           >
             <Thumbnail
+              play={false}
               url={item.rightItem.image[0]}
               styles={{
                 width: ((screenWidth - 45) / 3) * 2,
@@ -172,7 +174,10 @@ const ExplorarClubs = () => {
 
   const posttt = () => {
     const groupedPostsTotal = []
-    const postChecked = allPosts.filter((e) => e.author.emailCheck)
+    const postChecked = allPosts.filter(
+      (e) =>
+        e.author.emailCheck && !usuario?.user?.banned?.includes(e?.author?.id)
+    )
     for (let i = 0; i < postChecked.length; i += 3) {
       groupedPostsTotal.push({
         columnItems: postChecked.slice(i, i + 2),
@@ -184,7 +189,7 @@ const ExplorarClubs = () => {
 
   useEffect(() => {
     posttt()
-  }, [])
+  }, [allPosts])
 
   console.log('searchClubes', searchClubes)
 
@@ -221,8 +226,10 @@ const ExplorarClubs = () => {
 
                 {searchUsers.length > 0 &&
                   searchUsers.map((user, i) => {
-                    console.log(user, 'userrrr')
-                    if (!user?.user?.isDelete) {
+                    if (
+                      !user?.user?.isDelete &&
+                      !usuario?.user?.banned?.includes(user?.user?.id)
+                    ) {
                       return (
                         <TouchableOpacity
                           onPress={() => {
@@ -299,8 +306,10 @@ const ExplorarClubs = () => {
                 <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
                 {searchClubes.length > 0 &&
                   searchClubes.map((club, i) => {
-                    console.log(club, 'club')
-                    if (!club?.user?.isDelete) {
+                    if (
+                      !club?.user?.isDelete &&
+                      !usuario?.user?.banned?.includes(club?.user?.id)
+                    ) {
                       return (
                         <TouchableOpacity
                           key={i}
@@ -374,8 +383,10 @@ const ExplorarClubs = () => {
                   Posiciones
                 </Text>
                 {searchPosition.map((position, i) => {
-                  console.log(position, 'pos')
-                  if (!position?.user?.isDelete) {
+                  if (
+                    !position?.user?.isDelete &&
+                    !usuario?.user?.banned?.includes(position?.user?.id)
+                  ) {
                     return (
                       <TouchableOpacity
                         key={i}
@@ -442,7 +453,10 @@ const ExplorarClubs = () => {
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
                 {searchCity.map((city, i) => {
-                  if (!city?.user?.isDelete) {
+                  if (
+                    !city?.user?.isDelete &&
+                    !usuario?.user?.banned?.includes(city?.user?.id)
+                  ) {
                     return (
                       <TouchableOpacity
                         key={i}

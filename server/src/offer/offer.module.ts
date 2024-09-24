@@ -19,6 +19,8 @@ import { SportmanService } from 'src/sportman/sportman.service';
 import { NotificationService } from 'src/notification/notification.service';
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -32,9 +34,10 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       SportEntity,
       UserEntity,
       NotificationEntity,
+      PostEntity
     ])
   ],
-  exports: [OfferService,  TypeOrmModule.forFeature([OfferEntity])],
+  exports: [OfferService, TypeOrmModule.forFeature([OfferEntity])],
   controllers: [OfferController],
   providers: [
     OfferService,
@@ -44,7 +47,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
     SportService,
     SportmanService,
     NotificationService,
-    SendMailService
+    SendMailService,
+    PostService
   ]
 })
 export class OfferModule {}

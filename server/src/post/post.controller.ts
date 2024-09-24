@@ -15,6 +15,11 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @Get('feed/:userId')
+  async getFeed(@Param('userId') userId: string) {
+    return this.postService.getFeed(userId);
+  }
+
   @Post()
   public async create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
@@ -45,20 +50,20 @@ export class PostController {
 
   @Post(':postId/info-relation')
   async findInfoRelation(
-    @Param('postId') postId: number, 
+    @Param('postId') postId: number,
     @Body() requestBody: { relations: string }
   ): Promise<any[]> {
     // Verificar si se proporcionaron relaciones
     if (!requestBody.relations || typeof requestBody.relations !== 'string') {
-      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+      throw new Error(
+        'Debe proporcionar al menos una relación como una cadena de texto.'
+      );
     }
-  console.log(requestBody.relations)
+    console.log(requestBody.relations);
     // Convertir las relaciones en un array
     const relationsArray = requestBody.relations.split(',');
-  
+
     // Llamar al servicio para obtener la información relacionada
     return this.postService.findInfoRelation(postId, relationsArray);
   }
-
-  
 }

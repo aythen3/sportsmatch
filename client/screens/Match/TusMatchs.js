@@ -100,6 +100,8 @@ const TusMatchs = () => {
   //   }
   // }, [])
 
+  console.log(userMatches, clubMatches, 'MATCHES')
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 50 }}
@@ -178,7 +180,11 @@ const TusMatchs = () => {
           .filter((match) => match.status === 'success').length > 0 && (
           <View>
             {userMatches
-              .filter((match) => match.status === 'success')
+              .filter(
+                (match) =>
+                  match.status === 'success' &&
+                  !user?.user?.banned?.includes(match?.prop1?.clubData?.userId)
+              )
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((match, index) => (
                 <View key={index} style={{ marginTop: 14, width: '100%' }}>
@@ -337,7 +343,13 @@ const TusMatchs = () => {
                   return true
                 }
               })
-              .filter((match) => match.status === 'success')
+              .filter(
+                (match) =>
+                  match.status === 'success' &&
+                  !user?.user?.banned?.includes(
+                    match?.prop1?.sportManData?.userId
+                  )
+              )
               .reduce(
                 (accumulator, current) => {
                   const userId = current.prop1.sportManData.userId

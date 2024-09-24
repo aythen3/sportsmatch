@@ -175,14 +175,6 @@ const TodasLasOfertas = () => {
     }
   }, [offers])
 
-  useEffect(() => {
-    // console.log('offer', offers[0].clubId)
-    // console.log(
-    //   'allusers',
-    //   allUsers.filter((user) => user?.club?.id === offers[0].clubId)[0].id
-    // )
-  }, [])
-
   const onFilterSportman = () => {
     setModalFilterSportman(true)
   }
@@ -241,6 +233,7 @@ const TodasLasOfertas = () => {
       initializePaymentSheet()
     }
   }, [clientSecret, initPaymentSheet])
+
   useEffect(() => {
     const cant = offer
       .filter((offer) => offer.paused === false)
@@ -839,7 +832,7 @@ const TodasLasOfertas = () => {
                   marginTop: 15,
                   marginBottom: '6%',
 
-                  marginHorizontal: 100
+                  marginHorizontal: '10%'
                 }}
               >
                 <ScrollView

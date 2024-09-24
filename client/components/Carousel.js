@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
@@ -9,7 +10,7 @@ import {
 } from 'react-native'
 import { Image } from 'expo-image'
 import PagerView from 'react-native-pager-view'
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
+import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import IconsMuro from './IconsMuro'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -18,15 +19,17 @@ import { Context } from '../context/Context'
 import { useDispatch, useSelector } from 'react-redux'
 import DoubleTap from '@memrearal/react-native-doubletap'
 import { setFindedLikes } from '../redux/slices/post.slices'
-import { like } from '../redux/actions/post'
+import { getAllPosts, getAllPostsFeed, like } from '../redux/actions/post'
 import { sendNotification } from '../redux/actions/notifications'
 import Like2SVG from './svg/Like2SVG'
 import { Modal } from 'react-native'
 import ModalOptionOffers from './ModalOptionOffers'
 import Thumbnail from './Thumbnail'
-import ModalEdit from './modals/ModalEdit'
 import ModalExt from './modals/ModalExt'
 import axiosInstance from '../utils/apiBackend'
+import { getUserData } from '../redux/actions/users'
+import CheckBox from 'react-native-check-box'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function Carousel({
   name,
@@ -60,6 +63,11 @@ function Carousel({
   const [modalVisible, setModalVisible] = useState(false)
   const [doubleTap, setDoubleTap] = useState(false)
   const [doubleTapHeart, setDoubleTapHeart] = useState(false)
+  const [bannedLoading, setBannedLoading] = useState(false)
+  const [reportLoading, setReportLoading] = useState(false)
+  const [reports, setReports] = useState([])
+
+  const [reportOption, setReportOption] = useState(null)
 
   const [liked, setLiked] = useState(false) // Estado para controlar si se ha dado like
 
@@ -72,7 +80,7 @@ function Carousel({
   useEffect(() => {
     let timeoutId
     if (doubleTapHeart) {
-      if (sportman?.type == 'invitado') return
+      if (sportman?.type === 'invitado') return
       // Cambia el estado a true
       setDoubleTapHeart(true)
 
@@ -95,23 +103,11 @@ function Carousel({
     setLiked(false)
   }, [findedLike, id])
 
-  const handleDoubleTap = () => {
-    setDoubleTap(true) // Marcar que se ha hecho doble clic en la imagen
-    // Lógica adicional si es necesaria
-  }
-
-  const resetDoubleTap = () => {
-    setTimeout(() => {
-      setDoubleTap(false) // Reiniciar el estado de doubleTap después de un tiempo
-    }, 300) // Puedes ajustar el tiempo según tus necesidades
-  }
-
   const closeModal = () => {
     setModalVisible(false)
   }
-  const imagesNumber = ['0', '1']
   const handleLike = async () => {
-    if (sportman?.type == 'invitado') return
+    if (sportman?.type === 'invitado') return
     // Invertir el estado de liked
     setLiked(!liked)
 
@@ -159,6 +155,7 @@ function Carousel({
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
   const [optionsModal, setOptionsModal] = useState(false)
   const [bannedModal, setBannedModal] = useState(false)
+  const [reportModal, setReportModal] = useState(false)
 
   const handlePostClick = (event) => {
     const { pageX, pageY } = event.nativeEvent
@@ -169,12 +166,24 @@ function Carousel({
 
     setOptionsModal(true)
   }
-  //console.log('image========', image)
 
-  const BanUser = async () => {
+  const BanUser = async (userId) => {
+    setBannedLoading(true)
     axiosInstance
-      .put(`user/${user.user.id}/ban`)
-      .then((e) => console.log(e, 'eeeee'))
+      .put(`user/${user.user.id}/ban`, {
+        userId
+      })
+      .then(() => {
+        dispatch(getUserData(user.user.id)).then(() => {
+          dispatch(getAllPostsFeed(user.user.id))
+          dispatch(getAllPosts())
+
+          setBannedModal(false)
+          setBannedLoading(false)
+
+          navigation.navigate('SiguiendoJugadores')
+        })
+      })
   }
 
   const Bann = () => (
@@ -186,44 +195,143 @@ function Carousel({
         gap: 20
       }}
     >
-      <Text style={{ color: 'white' }}>
-        ¿Estas seguro/a que quieres bloquear al usuario
+      <Text style={{ color: 'white', textAlign: 'center' }}>
+        ¿Estas seguro/a que quieres bloquear al usuario {name}?
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          gap: 30
-        }}
-      >
-        <TouchableOpacity
+      {bannedLoading ? (
+        <ActivityIndicator color={'red'}></ActivityIndicator>
+      ) : (
+        <View
           style={{
-            backgroundColor: 'red',
-            width: '40%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 10
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            gap: 30
           }}
         >
-          <Text style={{ color: 'white' }}>Aceptar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setBannedModal(false)}
-          style={{
-            backgroundColor: 'gray',
-            width: '40%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 10
-          }}
-        >
-          <Text style={{ color: 'white' }}>Cancelar</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            onPress={() => BanUser(authorId)}
+            style={{
+              backgroundColor: 'red',
+              width: '40%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 10
+            }}
+          >
+            <Text style={{ color: 'white' }}>Aceptar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setBannedModal(false)}
+            style={{
+              backgroundColor: 'gray',
+              width: '40%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 10
+            }}
+          >
+            <Text style={{ color: 'white' }}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   )
+
+  const Report = () => {
+    return (
+      <View style={{ gap: 14, paddingVertical: 15 }}>
+        {!reports?.includes(id) && !reportLoading ? (
+          <>
+            <View>
+              <CheckBox
+                isChecked={reportOption === 1}
+                onClick={() => setReportOption(1)}
+                rightTextStyle={{ color: 'white' }}
+                checkBoxColor="white"
+                rightText="Contenido inapropiado o ofensivo"
+                style={{ color: 'white' }}
+              ></CheckBox>
+              <CheckBox
+                isChecked={reportOption === 2}
+                onClick={() => setReportOption(2)}
+                rightTextStyle={{ color: 'white' }}
+                checkBoxColor="white"
+                rightText="Información falsa o engañosa"
+                style={{ color: 'white' }}
+              ></CheckBox>
+              <CheckBox
+                isChecked={reportOption === 3}
+                onClick={() => setReportOption(3)}
+                rightTextStyle={{ color: 'white' }}
+                checkBoxColor="white"
+                rightText="Acoso o intimidación"
+                style={{ color: 'white' }}
+              ></CheckBox>
+            </View>
+            <TouchableOpacity
+              onPress={reportPost}
+              style={{
+                backgroundColor: 'red',
+                width: '60%',
+                paddingVertical: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                borderRadius: 10
+              }}
+            >
+              <Text style={{ color: 'white' }}>Enviar</Text>
+            </TouchableOpacity>
+          </>
+        ) : reportLoading ? (
+          <ActivityIndicator color={'red'}></ActivityIndicator>
+        ) : (
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white' }}>Ya se envió el reporte</Text>
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  const getReports = async () => {
+    const report = await AsyncStorage.getItem('reports')
+    console.log(report, 'JSON')
+    setReports(report)
+  }
+
+  useEffect(() => {
+    getReports()
+  }, [])
+
+  const reportPost = async () => {
+    if (reportOption) {
+      setReportLoading(true)
+      const mot =
+        (reportOption === 1 && 'Contenido inapropiado u ofensivo') ||
+        (reportOption === 2 && 'Información falsa o engañosa') ||
+        (reportOption === 3 && 'Acoso o intimidación')
+
+      await axiosInstance
+        .post(`user/report-publication/${id}`, { motivo: mot })
+        .then(async () => {
+          const reportedPosts = await AsyncStorage.getItem('reports')
+          const reportedPostsArray = reportedPosts
+            ? JSON.parse(reportedPosts)
+            : []
+          reportedPostsArray.push(id)
+          await AsyncStorage.setItem(
+            'reports',
+            JSON.stringify(reportedPostsArray)
+          )
+          getReports()
+          setReportLoading(false)
+          setReportModal(false)
+        })
+    }
+  }
   // console.log(data,"esto es la data")
   return (
     <View style={{ ...styles.container }}>
@@ -379,7 +487,7 @@ function Carousel({
                   </TouchableOpacity>
                 )}
 
-                <Thumbnail url={e} />
+                <Thumbnail play={true} url={e} />
               </View>
             </DoubleTap>
           </View>
@@ -527,6 +635,12 @@ function Carousel({
         title={'Bloquear usuario'}
         content={Bann}
       ></ModalExt>
+      <ModalExt
+        visible={reportModal}
+        closeModal={() => setReportModal(false)}
+        title={'Reportar'}
+        content={Report}
+      ></ModalExt>
       <Modal visible={optionsModal} transparent={true}>
         <TouchableWithoutFeedback onPress={() => setOptionsModal(false)}>
           <View style={{ flex: 1 }}>
@@ -543,7 +657,9 @@ function Carousel({
                 post={true}
                 postId={selectedPost}
                 data={data}
+                perfil={false}
                 setBannedModal={setBannedModal}
+                setReportModal={setReportModal}
                 post_ext={authorId !== user?.user?.id}
                 setShowDeletePostModal={setShowDeletePostModal}
                 onClose={() => setOptionsModal(false)}

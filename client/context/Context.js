@@ -465,7 +465,9 @@ export const ContextProvider = ({ children }) => {
         (conv) =>
           data[conv].filter(
             (message) =>
-              message.senderId !== userId && message.isReaded === false
+              message.senderId !== userId &&
+              message.isReaded === false &&
+              !user?.user?.banned?.includes(message?.senderId)
           ).length
       )
       .reduce((acc, curr) => acc + curr, 0)

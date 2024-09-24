@@ -12,6 +12,8 @@ import { SportmanService } from 'src/sportman/sportman.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -22,10 +24,17 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       PositionEntity,
       SkillEntity,
       SportEntity,
-      UserEntity
+      UserEntity,
+      PostEntity
     ])
   ],
   controllers: [SkillController],
-  providers: [SkillService, SportmanService, UserService, SendMailService]
+  providers: [
+    SkillService,
+    SportmanService,
+    UserService,
+    SendMailService,
+    PostService
+  ]
 })
 export class SkillModule {}

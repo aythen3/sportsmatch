@@ -6,7 +6,10 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  TouchableWithoutFeedback,
+  Modal,
+  ActivityIndicator
 } from 'react-native'
 import { Border, Color, FontFamily, FontSize } from '../../../../GlobalStyles'
 import { Image } from 'react-native'
@@ -18,11 +21,18 @@ import axiosInstance from '../../../../utils/apiBackend'
 import { Context } from '../../../../context/Context'
 import { getAllMatchs, sendMatch } from '../../../../redux/actions/matchs'
 import { updateUser } from '../../../../redux/slices/users.slices'
-import { getAllUsers, updateUserData } from '../../../../redux/actions/users'
+import {
+  getAllUsers,
+  getUserData,
+  updateUserData
+} from '../../../../redux/actions/users'
 import { sendNotification } from '../../../../redux/actions/notifications'
 import { getColorsWithOpacity } from '../../../../utils/colorUtils.js'
 import Thumbnail from '../../../../components/Thumbnail.js'
 import { debounce } from 'lodash'
+import ModalOptionOffers from '../../../../components/ModalOptionOffers'
+import ModalExt from '../../../../components/modals/ModalExt'
+import { getAllPosts, getAllPostsFeed } from '../../../../redux/actions/post'
 
 const HeaderPerfil = ({
   name,
@@ -54,10 +64,13 @@ const HeaderPerfil = ({
   const [matchSended, setMatchSended] = useState(false)
   const [liked, setLiked] = useState(false)
   const [isTruncated, setIsTruncated] = useState(true)
-
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
+  const [optionsModal, setOptionsModal] = useState(false)
   const { sportman } = useSelector((state) => state.sportman)
+  const [bannedModal, setBannedModal] = useState(false)
 
   // console.log('club==============', club)
+  const [bannedLoading, setBannedLoading] = useState(false)
 
   const getOffersById = async (id) => {
     const { data } = await axiosInstance.get('offer')
@@ -83,7 +96,34 @@ const HeaderPerfil = ({
   }, [])
 
   // useEffect(() => {}, [allMatchs])
+  const handlePostClick = (event) => {
+    const { pageX, pageY } = event.nativeEvent
 
+    const height = 60
+
+    setModalPosition({ x: pageX - 160, y: pageY - height })
+
+    setOptionsModal(true)
+  }
+
+  const BanUser = async (userId) => {
+    setBannedLoading(true)
+    axiosInstance
+      .put(`user/${user.user.id}/ban`, {
+        userId
+      })
+      .then(() => {
+        dispatch(getUserData(user.user.id)).then(() => {
+          dispatch(getAllPostsFeed(user.user.id))
+          dispatch(getAllPosts())
+
+          setBannedModal(false)
+          setBannedLoading(false)
+
+          navigation.navigate('SiguiendoJugadores')
+        })
+      })
+  }
   // useEffect(() => {}, [clubMatches])
 
   useEffect(() => {
@@ -147,6 +187,59 @@ const HeaderPerfil = ({
 
   const userFollowing = user?.user?.following || []
 
+  const Bann = () => (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+        gap: 20
+      }}
+    >
+      <Text style={{ color: 'white', textAlign: 'center' }}>
+        ¿Estas seguro/a que quieres bloquear al usuario {name}?
+      </Text>
+      {bannedLoading ? (
+        <ActivityIndicator color={'red'}></ActivityIndicator>
+      ) : (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            gap: 30
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => BanUser(data?.author?.id)}
+            style={{
+              backgroundColor: 'red',
+              width: '40%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 10
+            }}
+          >
+            <Text style={{ color: 'white' }}>Aceptar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setBannedModal(false)}
+            style={{
+              backgroundColor: 'gray',
+              width: '40%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 10
+            }}
+          >
+            <Text style={{ color: 'white' }}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  )
+
   return (
     <View>
       <View>
@@ -162,6 +255,24 @@ const HeaderPerfil = ({
             url={front}
           />
         )}
+        <TouchableOpacity
+          onPress={(event) => {
+            handlePostClick(event)
+          }}
+          style={{
+            position: 'absolute',
+            top: 25,
+            right: 10,
+            width: 24,
+            height: 20,
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            style={{ width: 5, height: '100%', objectFit: 'fill' }}
+            source={require('../../../../assets/frame-957.png')}
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -969,11 +1080,7 @@ const HeaderPerfil = ({
             {'Seguidores'}
           </Text>
           <Text style={styles.numeroText}>
-            {allUsers?.filter((user) => user.id === data.author.id)[0]
-              ?.followers
-              ? allUsers?.filter((user) => user.id === data.author.id)[0]
-                  ?.followers?.length
-              : '0'}
+            {data.author.followers ? data.author.followers.length : '0'}
             {/* Solucionar tema de seguidores */}
           </Text>
         </Pressable>
@@ -1225,6 +1332,37 @@ const HeaderPerfil = ({
           </View>
         </View>
       )}
+      <ModalExt
+        visible={bannedModal}
+        closeModal={() => setBannedModal(false)}
+        title={'Bloquear usuario'}
+        content={Bann}
+      ></ModalExt>
+      <Modal visible={optionsModal} transparent={true}>
+        <TouchableWithoutFeedback onPress={() => setOptionsModal(false)}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                position: 'absolute',
+                top: modalPosition.y,
+                left: modalPosition.x,
+                padding: 20,
+                borderRadius: 8
+              }}
+            >
+              <ModalOptionOffers
+                post={true}
+                postId={null}
+                data={data}
+                perfil={true}
+                setBannedModal={setBannedModal}
+                post_ext={true}
+                onClose={() => setOptionsModal(false)}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   )
 }

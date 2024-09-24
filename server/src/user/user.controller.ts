@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { AuthGuard } from 'src/auth-jwt/guards/auth.guard';
 import { PublicAccess } from 'src/auth-jwt/decorators/public.decorator';
+import { PostService } from 'src/post/post.service';
 
 // Definición del controlador de usuario
 
@@ -22,7 +23,10 @@ import { PublicAccess } from 'src/auth-jwt/decorators/public.decorator';
 // @UseGuards(AuthGuard)
 export class UserController {
   // Constructor del controlador que recibe el servicio de usuario
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly postService: PostService
+  ) {}
   // Método para crear un usuario
   @PublicAccess()
   @Post()
@@ -292,5 +296,50 @@ export class UserController {
   @Delete(':id/ban')
   async unbanUser(@Param('id') id: string, @Body('userId') userId: string) {
     return this.userService.unbanUser(id, userId);
+  }
+
+  @Post('report-publication/:publicationId')
+  async reportPublication(
+    @Param('publicationId') publicationId: string,
+    @Body('motivo') motivo: string
+  ) {
+    try {
+      // Verificar si la publicación y el usuario existen
+      const publication = await this.postService.findOne(publicationId);
+      if (!publication) {
+        return { message: 'Error al reportar la publicación' };
+      }
+
+      // Enviar reporte
+      await this.userService.enviarReportePublicacion(motivo, publicationId);
+
+      return { message: 'Reporte enviado con éxito' };
+    } catch (error) {
+      return { message: 'Error al reportar la publicación' };
+    }
+  }
+
+  @Get('eliminar-publicacion/:id')
+  async eliminarPublicacion(@Param('id') id: string) {
+    try {
+      await this.postService.remove(id);
+      return `
+      <html>
+        <body>
+          <h1>Publicación eliminada correctamente</h1>
+          <p>La publicación con ID ${id} ha sido eliminada exitosamente.</p>
+        </body>
+      </html>
+    `;
+    } catch (error) {
+      return `
+      <html>
+        <body>
+          <h1>Error al eliminar publicación</h1>
+          <p>Ocurrió un error al intentar eliminar la publicación con ID ${id}.</p>
+        </body>
+      </html>
+    `;
+    }
   }
 }

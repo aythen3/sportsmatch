@@ -4,7 +4,7 @@ import { Context } from '../context/Context'
 import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
 
-const Thumbnail = ({ url, notUrl, styles }) => {
+const Thumbnail = ({ url, notUrl, styles, play }) => {
   const { mainColor } = useSelector((state) => state.users)
   const { generateLowResUrl } = useContext(Context)
   const [originalImageLoaded, setOriginalImageLoaded] = useState(false)
@@ -52,8 +52,8 @@ const Thumbnail = ({ url, notUrl, styles }) => {
           source={{ uri: url }}
           style={{ width: '100%', height: '100%' }}
           controls={true}
-          shouldPlay={isPlaying}
-          isMuted={false}
+          shouldPlay={play && isPlaying}
+          isMuted={play ? false : true}
           resizeMode="cover"
         />
       ) : (

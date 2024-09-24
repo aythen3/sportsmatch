@@ -9,7 +9,7 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import axiosInstance from '../utils/apiBackend'
-import { deletePost, getAllPosts } from '../redux/actions/post'
+import { getAllPosts } from '../redux/actions/post'
 import { useDispatch } from 'react-redux'
 
 const ModalOptionOffers = ({
@@ -21,7 +21,9 @@ const ModalOptionOffers = ({
   offerData,
   setShowDeletePostModal,
   setBannedModal,
-  post_ext
+  setReportModal,
+  post_ext,
+  perfil
 }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -31,18 +33,25 @@ const ModalOptionOffers = ({
   if (post_ext) {
     return (
       <View style={[styles.despliegueOpciones, styles.pausarFlexBox]}>
-        <TouchableOpacity
-          style={{ width: '100%' }}
-          onPress={() => {
-            onClose()
-          }}
-        >
-          <View>
-            <Text style={styles.editar}>Reportar</Text>
-          </View>
-        </TouchableOpacity>
+        {!perfil && (
+          <>
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => {
+                setReportModal(true)
+                onClose()
+              }}
+            >
+              <View>
+                <Text style={styles.editar}>Reportar</Text>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={[styles.despliegueOpcionesChild, styles.childLayout]}
+            />
+          </>
+        )}
 
-        <View style={[styles.despliegueOpcionesChild, styles.childLayout]} />
         <TouchableOpacity
           style={{ width: '100%' }}
           onPress={() => {
