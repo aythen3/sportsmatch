@@ -20,11 +20,12 @@ import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { Context } from '../../context/Context'
 import { getAllMatchs } from '../../redux/actions/matchs'
+import { resetCommentsSlices } from '../../redux/slices/comments.slices'
 
 const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
   const dispatch = useDispatch()
 
-  const { generateLowResUrl } = useContext(Context)
+  const { generateLowResUrl, scalableFontSize } = useContext(Context)
   const { user, mainColor, isSportman } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
   const { sportman } = useSelector((state) => state.sportman)
@@ -198,7 +199,8 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                       </View>
                       <TouchableOpacity
                         style={{
-                          zIndex: 9999999
+                          zIndex: 9999999,
+                          width: '20%'
                         }}
                         onPress={() => {
                           Keyboard.dismiss()
@@ -210,6 +212,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                             setComment,
                             allfilter
                           })
+                          dispatch(resetCommentsSlices())
                           closeModal()
                         }}
                       >
@@ -217,7 +220,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                           style={{
                             color: Color.wHITESPORTSMATCH,
                             fontFamily: FontFamily.t4TEXTMICRO,
-                            fontSize: 16,
+                            fontSize: scalableFontSize(12),
                             fontWeight: '700',
                             marginLeft: 15,
                             zIndex: 5000

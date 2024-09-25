@@ -8,7 +8,9 @@ import {
   Param,
   Delete,
   Query,
-  Put
+  Put,
+  NotFoundException,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -45,6 +47,20 @@ export class UserController {
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  @Get('email/:email')
+  async getUserByEmail(@Param('email') email: string) {
+    try {
+      const usuario = await this.userService.findByEmail(email);
+      if (!usuario) {
+        return false; // Devuelve false si no se encuentra el usuario
+      }
+      return usuario; // Devuelve el usuario encontrado
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Error al obtener el usuario');
     }
   }
   @Get('google/:googleId')
@@ -156,42 +172,72 @@ export class UserController {
       throw new Error('Token no válido');
     }
     return `
-      <html>
-    <head>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          text-align: center;
-          margin: 40px;
-        }
-        .header {
-          background-color: #000;
-          height: 100px;
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-left: 20px;
-          padding-top: 20px;
-          padding-bottom: 20px;
-        }
-        .header img {
-          display: flex;
-          margin: 10px;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <img src="assets/image.jpg" class='iconImg'/>
-      </div>
-      <h1>Cambiar contraseña</h1>
-      <form action="/api/user/cambiar-contrasena/${token}" method="post">
-        <input type="password" name="contrasena" placeholder="Nueva contraseña">
-        <button type="submit">Cambiar contraseña</button>
-      </form>
-    </body>
-  </html>
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 40px;
+          }
+          .header {
+            background-color: #000;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          }
+          .header img {
+            display: flex;
+            margin: 10px;
+          }
+          .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="assets/image.jpg" class='iconImg'/>
+        </div>
+        <h1>Cambiar contraseña</h1>
+        <form id="form-cambiar-contrasena" action="/api/user/cambiar-contrasena/${token}" method="post">
+          <input type="password" id="contrasena" name="contrasena" placeholder="Nueva contraseña" required>
+          <div id="error-msg" class="error-msg"></div>
+          <button type="submit" id="submit-button" disabled>Cambiar contraseña</button>
+        </form>
+
+        <script>
+          const form = document.getElementById('form-cambiar-contrasena');
+          const contrasenaInput = document.getElementById('contrasena');
+          const errorMsg = document.getElementById('error-msg');
+          const submitButton = document.getElementById('submit-button');
+
+          // Expresión regular para validar que la contraseña tenga al menos:
+          // 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial
+          const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,}$/;
+
+          contrasenaInput.addEventListener('input', function() {
+            const contrasena = contrasenaInput.value;
+
+            // Habilitar o deshabilitar el botón dependiendo de la validación del regex
+            if (regex.test(contrasena)) {
+              errorMsg.textContent = ''; // Limpia el mensaje de error
+              submitButton.disabled = false; // Habilita el botón
+            } else {
+              errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial.'; // Mensaje de error
+              submitButton.disabled = true; // Deshabilita el botón
+            }
+          });
+        </script>
+      </body>
+    </html>
   `;
   }
 
@@ -204,8 +250,47 @@ export class UserController {
     if (!usuario) {
       throw new Error('Token no válido');
     }
+
+    // Cambiar la contraseña del usuario
     await this.userService.cambiarContrasena(usuario, contrasena);
-    return { message: 'Contraseña cambiada con éxito' };
+
+    // Devolver el HTML de éxito
+    return `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 40px;
+          }
+          .header {
+            background-color: #000;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          }
+          .header img {
+            display: flex;
+            margin: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="assets/image.jpg" class='iconImg'/>
+        </div>
+        <h1>Contraseña cambiada con éxito</h1>
+        <p>Tu contraseña ha sido actualizada correctamente. Ahora puedes iniciar sesión con tu nueva contraseña.</p>
+     
+      </body>
+    </html>
+  `;
   }
 
   @Post('cancel-subscription')

@@ -30,6 +30,7 @@ import axiosInstance from '../utils/apiBackend'
 import { getUserData } from '../redux/actions/users'
 import CheckBox from 'react-native-check-box'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { resetCommentsSlices } from '../redux/slices/comments.slices'
 
 function Carousel({
   name,
@@ -104,6 +105,8 @@ function Carousel({
   }, [findedLike, id])
 
   const closeModal = () => {
+    dispatch(resetCommentsSlices())
+
     setModalVisible(false)
   }
   const handleLike = async () => {

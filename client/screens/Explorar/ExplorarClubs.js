@@ -11,7 +11,8 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  Pressable
+  Pressable,
+  ActivityIndicator
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useNavigation } from '@react-navigation/native'
@@ -57,6 +58,19 @@ const ExplorarClubs = () => {
   const [searchCity, setSearchCity] = useState([])
   const [searchClubes, setSearchClubes] = useState([])
   const [groupedPosts, setGroupedPosts] = useState([])
+  const [visiblePosts, setVisiblePosts] = useState(6)
+  const [loading, setLoading] = useState(false)
+
+  const loadMorePosts = () => {
+    if (visiblePosts < allPosts.length) {
+      setLoading(true)
+      // Simular un retraso de carga
+      setTimeout(() => {
+        setVisiblePosts((prevVisiblePosts) => prevVisiblePosts + 6)
+        setLoading(false)
+      }, 1000)
+    }
+  }
 
   const [filter, setFilter] = useState({
     gender: '',
@@ -70,10 +84,6 @@ const ExplorarClubs = () => {
   useEffect(() => {
     dispatch(getAllPosts())
   }, [])
-
-  useEffect(() => {
-    setPosts(allPosts)
-  }, [allPosts])
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -119,7 +129,11 @@ const ExplorarClubs = () => {
   }
 
   const screenWidth = Dimensions.get('window').width
-  const renderGroupedItem = ({ item }) => {
+
+  const RenderGroupedItem = React.memo(function RenderGroupedItem({
+    item,
+    navigation
+  }) {
     return (
       <View style={{ flexDirection: 'row' }}>
         <View
@@ -130,9 +144,9 @@ const ExplorarClubs = () => {
           }}
         >
           {item.columnItems &&
-            item.columnItems.map((columnItem, index) => (
+            item.columnItems.map((columnItem) => (
               <TouchableOpacity
-                key={index}
+                key={columnItem.id} // Cambia 'index' por un ID único
                 onPress={() => {
                   navigation.navigate('Post', columnItem)
                 }}
@@ -170,7 +184,7 @@ const ExplorarClubs = () => {
         )}
       </View>
     )
-  }
+  })
 
   const posttt = () => {
     const groupedPostsTotal = []
@@ -524,12 +538,22 @@ const ExplorarClubs = () => {
 
         {!textValue && allPosts?.length > 0 && (
           <FlatList
-            data={groupedPosts}
+            data={groupedPosts.slice(
+              0,
+              Math.min(visiblePosts, groupedPosts.length)
+            )} // Solo muestra los posts visibles
             keyExtractor={(item, index) => index.toString()}
-            renderItem={renderGroupedItem}
+            renderItem={({ item }) => (
+              <RenderGroupedItem item={item} navigation={navigation} />
+            )}
             numColumns={1}
             contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
-          ></FlatList>
+            onEndReached={loadMorePosts} // Llama a la función cuando se alcanza el final
+            onEndReachedThreshold={0.1} // Umbral para activar la carga
+            ListFooterComponent={
+              loading ? <ActivityIndicator size="large" /> : null
+            } // Muestra un indicador de carga
+          />
         )}
       </View>
       <Modal visible={modalFilters} transparent={true} animationType="slide">
