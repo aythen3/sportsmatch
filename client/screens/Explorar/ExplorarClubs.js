@@ -129,7 +129,7 @@ const ExplorarClubs = () => {
   }
 
   const screenWidth = Dimensions.get('window').width
-
+  const widthMio = (screenWidth - 8) / 3
   const RenderGroupedItem = React.memo(function RenderGroupedItem({
     item,
     navigation
@@ -139,7 +139,7 @@ const ExplorarClubs = () => {
         <View
           style={{
             flexDirection: 'column',
-            width: (screenWidth - 8) / 3,
+            width: widthMio,
             marginRight: 8
           }}
         >
@@ -152,6 +152,7 @@ const ExplorarClubs = () => {
                 }}
               >
                 <Thumbnail
+                  isMini={true}
                   play={false}
                   url={columnItem.image[0]}
                   styles={{
@@ -172,6 +173,7 @@ const ExplorarClubs = () => {
             }}
           >
             <Thumbnail
+              isMini={true}
               play={false}
               url={item.rightItem.image[0]}
               styles={{
@@ -185,7 +187,7 @@ const ExplorarClubs = () => {
       </View>
     )
   })
-
+  const ITEM_HEIGHT = (screenWidth - 8) / 3 // Altura de un post
   const posttt = () => {
     const groupedPostsTotal = []
     const postChecked = allPosts.filter(
@@ -538,18 +540,22 @@ const ExplorarClubs = () => {
 
         {!textValue && allPosts?.length > 0 && (
           <FlatList
-            data={groupedPosts.slice(
-              0,
-              Math.min(visiblePosts, groupedPosts.length)
-            )} // Solo muestra los posts visibles
+            initialNumToRender={6} // Renderiza solo 6 items al inicio
+            // maxToRenderPerBatch={6} // Lotes de 10 items por renderizado
+            data={groupedPosts} // Solo muestra los posts visibles
+            numColumns={1}
+            contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
+            // onEndReached={loadMorePosts} // Llama a la función cuando se alcanza el final
+            // onEndReachedThreshold={0.1} // Umbral para activar la carga
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <RenderGroupedItem item={item} navigation={navigation} />
             )}
-            numColumns={1}
-            contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
-            onEndReached={loadMorePosts} // Llama a la función cuando se alcanza el final
-            onEndReachedThreshold={0.1} // Umbral para activar la carga
+            getItemLayout={(data, index) => ({
+              length: ITEM_HEIGHT,
+              offset: ITEM_HEIGHT * index,
+              index
+            })}
             ListFooterComponent={
               loading ? <ActivityIndicator size="large" /> : null
             } // Muestra un indicador de carga

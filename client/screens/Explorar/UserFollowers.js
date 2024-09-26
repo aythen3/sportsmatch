@@ -118,7 +118,10 @@ const UserFollowers = () => {
         {followers.map((follower) => (
           <Pressable
             onPress={() => {
+              console.log(follower, 'FOLOWER')
               if (follower.id === user.user.id) {
+                console.log(follower, 'FOLOWEReeee')
+
                 if (follower.type !== 'club') {
                   navigation.navigate('MiPerfil')
                   return
@@ -127,12 +130,15 @@ const UserFollowers = () => {
                   return
                 }
               }
-              if (follower.type === 'club') {
-                navigation.navigate('ClubProfile', { author: follower })
-              } else {
-                navigation.navigate('PerfilFeedVisualitzaciJug', {
+              if (follower.type === 'sportman') {
+                console.log(follower, 'sportman')
+
+                return navigation.push('PerfilFeedVisualitzaciJug', {
                   author: follower
                 })
+              }
+              if (follower.type === 'club') {
+                return navigation.push('ClubProfile', { author: follower })
               }
             }}
             style={{
@@ -170,7 +176,7 @@ const UserFollowers = () => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {follower.nickname}
+              {follower?.club?.name || follower?.sportman?.info?.nickname}
             </Text>
           </Pressable>
         ))}

@@ -21,7 +21,8 @@ import { ChatModule } from './chat/chat.module';
 import { StripeModule } from './stripe/stripe.module';
 import { Auth0Module } from './auth0/auth0.module';
 import { InfoEntityModule } from './info-entity/info-entity.module';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
@@ -44,7 +45,12 @@ import { InfoEntityModule } from './info-entity/info-entity.module';
     ChatModule,
     StripeModule,
     Auth0Module,
-    InfoEntityModule
+    InfoEntityModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'assets'),
+      serveRoot: '/assets', // Sirve la carpeta assets en /assets
+      renderPath: '' // Desactiva la búsqueda de un archivo HTML por defecto // Carpeta que contiene los archivos estáticos
+    })
   ],
   controllers: [],
   providers: []

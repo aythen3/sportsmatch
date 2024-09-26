@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^10.3.3",
     "@nestjs/platform-socket.io": "^10.3.3",
     "@nestjs/platform-ws": "^10.3.4",
+    "@nestjs/serve-static": "^4.0.2",
     "@nestjs/typeorm": "^10.0.1",
     "@nestjs/websockets": "^10.3.3",
     "@stripe/stripe-react-native": "^0.37.2",

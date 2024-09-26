@@ -180,6 +180,7 @@ const CommentSection = ({ visible, closeModal, postId, sportman1 = '' }) => {
                           borderRadius: 13,
                           borderWidth: 0.5,
                           borderColor: Color.wHITESPORTSMATCH,
+                          backgroundColor: Color.bLACK1SPORTSMATCH,
                           width: '80%',
                           minHeight: 80,
                           justifyContent: 'flex-start',

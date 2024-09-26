@@ -171,6 +171,7 @@ export class UserController {
     if (!usuario) {
       throw new Error('Token no válido');
     }
+
     return `
     <html>
       <head>
@@ -204,7 +205,7 @@ export class UserController {
       </head>
       <body>
         <div class="header">
-          <img src="assets/image.jpg" class='iconImg'/>
+          <img src="/assets/image.png" class='iconImg' alt="Logo"/>
         </div>
         <h1>Cambiar contraseña</h1>
         <form id="form-cambiar-contrasena" action="/api/user/cambiar-contrasena/${token}" method="post">

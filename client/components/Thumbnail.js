@@ -1,14 +1,16 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image, View, Platform, TouchableOpacity } from 'react-native'
 import { Context } from '../context/Context'
 import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
+import * as VideoThumbnails from 'expo-video-thumbnails'
 
-const Thumbnail = ({ url, notUrl, styles, play }) => {
+const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
   const { mainColor } = useSelector((state) => state.users)
   const { generateLowResUrl } = useContext(Context)
   const [originalImageLoaded, setOriginalImageLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [thumbnailUri, setThumbnailUri] = useState(null)
   const handleLoad = () => {
     setOriginalImageLoaded(true)
   }
@@ -27,8 +29,26 @@ const Thumbnail = ({ url, notUrl, styles, play }) => {
   const imageUrl = notUrl
     ? url
     : originalImageLoaded
-      ? generateLowResUrl(url, 90)
+      ? generateLowResUrl(url, 80)
       : generateLowResUrl(url, 40)
+
+  // Function to generate video thumbnail
+  useEffect(() => {
+    if (isVideo) {
+      generateThumbnail(url)
+    }
+  }, [url, isVideo])
+
+  const generateThumbnail = async (videoUrl) => {
+    try {
+      const { uri } = await VideoThumbnails.getThumbnailAsync(videoUrl, {
+        time: 1000 // Captura un frame a los 1 segundo del video
+      })
+      setThumbnailUri(uri)
+    } catch (e) {
+      console.warn(e)
+    }
+  }
 
   return (
     <View
@@ -46,7 +66,7 @@ const Thumbnail = ({ url, notUrl, styles, play }) => {
             }
       }
     >
-      {isVideo ? (
+      {isVideo && !isMini ? (
         <Video
           onTouchStart={() => setIsPlaying(!isPlaying)}
           source={{ uri: url }}
@@ -58,7 +78,7 @@ const Thumbnail = ({ url, notUrl, styles, play }) => {
         />
       ) : (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: isVideo ? thumbnailUri : imageUrl }}
           style={{ width: '100%', height: '100%' }}
           resizeMode="cover"
           onLoad={handleLoad}
