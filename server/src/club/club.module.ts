@@ -12,6 +12,8 @@ import { ImgManagerService } from 'src/img-manager/img-manager.service';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportService } from 'src/sport/sport.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -21,7 +23,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       OfferEntity,
       PositionEntity,
       SportmanEntity,
-      SportEntity
+      SportEntity,
+      PostEntity
     ])
   ],
   exports: [ClubService],
@@ -31,7 +34,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
     UserService,
     ImgManagerService,
     SportService,
-    SendMailService
+    SendMailService,
+    PostService
   ]
 })
 export class ClubModule {}

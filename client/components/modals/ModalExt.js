@@ -8,7 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions
 } from 'react-native'
 import { Image } from 'expo-image'
 import { Color, FontFamily } from '../../GlobalStyles'
@@ -16,11 +19,17 @@ import { getCommentByPost } from '../../redux/actions/comments'
 import { handleSubmit, formatDateDifference } from './utils/commentHandler'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { Context } from '../../context/Context'
+import { getAllMatchs } from '../../redux/actions/matchs'
 
-const ModalEdit = ({ visible, closeModal, postId }) => {
+const ModalExt = ({ visible, closeModal, title, content }) => {
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.users)
+
+  const { user, mainColor, isSportman } = useSelector((state) => state.users)
   const { postComments } = useSelector((state) => state.comments)
+  const { sportman } = useSelector((state) => state.sportman)
+  const { allPosts } = useSelector((state) => state.post)
+
+  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
 
   return (
     <GestureRecognizer
@@ -33,23 +42,33 @@ const ModalEdit = ({ visible, closeModal, postId }) => {
         visible={visible}
         onRequestClose={closeModal}
       >
-        <View style={styles.modalContainer}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.modalContainer}
+        >
           <View
             style={{
               backgroundColor: Color.bLACK1SPORTSMATCH,
-              borderRadius: 10,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+
               elevation: 5,
               paddingTop: 10,
-              height: '85%',
               alignSelf: 'flex-end',
               width: '100%',
               paddingHorizontal: 10,
               borderWidth: 0.5,
-              borderColor: Color.wHITESPORTSMATCH,
-              paddingBottom: 85
+              borderColor: Color.wHITESPORTSMATCH
             }}
-          ></View>
-        </View>
+          >
+            <TouchableOpacity onPress={closeModal} style={styles.topContainer}>
+              <View style={styles.modalTop} />
+              <Text style={styles.text}>{title}</Text>
+              <View style={styles.line} />
+            </TouchableOpacity>
+            {content && content()}
+          </View>
+        </KeyboardAvoidingView>
       </Modal>
     </GestureRecognizer>
   )
@@ -123,4 +142,4 @@ const styles = StyleSheet.create({
     color: Color.gREY2SPORTSMATCH
   }
 })
-export default ModalEdit
+export default ModalExt

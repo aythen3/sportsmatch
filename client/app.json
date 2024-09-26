@@ -60,7 +60,14 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Poppins-Medium.ttf"
+          ]
+        }
+      ],
       [
         "expo-apple-authentication"
       ],

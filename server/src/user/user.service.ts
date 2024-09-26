@@ -12,6 +12,8 @@ import * as nodemailer from 'nodemailer';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 const configService = new ConfigService();
 
 @Injectable()
@@ -21,8 +23,11 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(PostEntity)
+    private readonly postRepository: Repository<PostEntity>,
 
-    private readonly sendMailService: SendMailService
+    private readonly sendMailService: SendMailService,
+    private readonly postService: PostService
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -31,7 +36,7 @@ export class UserService {
 
       auth: {
         user: 'sportsmatchdigital.app@gmail.com',
-        pass: 'zayi vzpx jkkd xbqm'
+        pass: 'bwsg varr alfu cjsl'
       }
     });
     this.stripe = new Stripe(
@@ -135,6 +140,77 @@ export class UserService {
     } catch (error) {
       console.log(error, 'rerrereiomfgasmf');
       return { message: 'este es el error', error };
+    }
+  }
+
+  async enviarReportePublicacion(motivo: string, publicationId: string) {
+    const sportspotLogo = join(__dirname, '..', '..', 'assets', 'image.png');
+    try {
+      const publication = await this.postService.findOne(publicationId);
+      const mailOptions = {
+        from: 'sportsmatchdigital.app@gmail.com',
+        to: 'sportsmatchdigital.app@gmail.com',
+        subject: `Reporte de publicación: ${publication.id}`,
+        attachments: [
+          {
+            filename: 'image.png',
+            path: sportspotLogo,
+            cid: 'sportSpot'
+          }
+        ],
+        html: `
+        <html>
+          <head>
+            <style>
+             .header {
+               background-color: #000;
+               padding: 20px;
+               text-align: center;
+             }
+             .iconImg {
+               max-width: 100px;
+               max-height: 100px;
+               margin: auto;
+               display: block;
+             }
+           </style>
+          </head>
+          <body>
+            <div class="header">
+              <img src="cid:sportSpot" class='iconImg'/>
+            </div>
+            <h1>Reporte de publicación</h1>
+            <p>Publicación reportada: ${publication.id}</p>
+            <p>Motivo del reporte: ${motivo}</p>
+            <p>Para revisar la publicación, haga clic en el siguiente enlace:</p>
+            <a href="${publication.image}">Ver publicación</a>
+            <p>Para eliminar la publicación, haga clic en el siguiente enlace:</p>
+            <a href="http://163.172.172.81:3000/api/user/eliminar-publicacion/${publication.id}">Eliminar publicación</a>
+          </body>
+        </html>
+      `
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.log(error, 'error al enviar reporte');
+      return { message: 'Error al enviar reporte', error };
+    }
+  }
+
+  public async eliminarPublicacion(id: string) {
+    try {
+      const post = await this.postRepository.findOne({ where: { id } });
+      if (!post) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `Publicación id: ${id} no encontrada`
+        });
+      }
+      await this.postRepository.delete(id);
+      return { message: `Publicación id: ${id} eliminada correctamente` };
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -744,5 +820,59 @@ export class UserService {
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
+  }
+
+  async banUser(userId: string, bannedUserId: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const bannedUser = await this.userRepository.findOne({
+      where: { id: bannedUserId }
+    });
+
+    if (!user || !bannedUser) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Agregar el ID del usuario banned a la lista de banned del usuario
+    if (!user.banned) {
+      user.banned = [];
+    }
+    user.banned.push(bannedUserId);
+
+    // Agregar el ID del usuario a la lista de banned del usuario banned
+    if (!bannedUser.banned) {
+      bannedUser.banned = [];
+    }
+    bannedUser.banned.push(userId);
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(bannedUser);
+
+    return { message: 'Usuario bloqueado correctamente' };
+  }
+
+  async unbanUser(userId: string, unbannedUserId: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const unbannedUser = await this.userRepository.findOne({
+      where: { id: unbannedUserId }
+    });
+
+    if (!user || !unbannedUser) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Eliminar el ID del usuario unbanned de la lista de banned del usuario
+    if (user.banned) {
+      user.banned = user.banned.filter((id) => id !== unbannedUserId);
+    }
+
+    // Eliminar el ID del usuario de la lista de banned del usuario unbanned
+    if (unbannedUser.banned) {
+      unbannedUser.banned = unbannedUser.banned.filter((id) => id !== userId);
+    }
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(unbannedUser);
+
+    return { message: 'Usuario desbloqueado correctamente' };
   }
 }

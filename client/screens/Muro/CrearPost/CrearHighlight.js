@@ -109,16 +109,15 @@ const CrearHighlight = () => {
               <Text style={styles.siguiente}>Publicar</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1, gap: 20, paddingVertical: 20 }}>
+          <View style={{ flex: 1, paddingVertical: 20 }}>
             {!Array.isArray(image) ? (
-              <>
+              <View style={{ flex: 1.2 }}>
                 {image.mediaType === 'video' ? (
                   <Video
                     style={{
-                      marginTop: 40,
                       marginBottom: 15,
                       borderRadius: 8,
-                      height: 350,
+                      height: '100%',
                       width: '100%'
                     }}
                     contentFit="cover"
@@ -132,46 +131,44 @@ const CrearHighlight = () => {
                 ) : (
                   <Image
                     style={{
-                      marginTop: 40,
                       marginBottom: 15,
                       borderRadius: 8,
-                      height: 350,
+                      height: '100%',
+
                       width: '100%'
                     }}
                     contentFit="cover"
                     source={{ uri: image ? image.uri : provisoryProfileImage }}
                   />
                 )}
-              </>
+              </View>
             ) : (
-              <View style={{ height: '50%', width: '100%' }}>
+              <View style={{ flex: 1, width: '100%' }}>
                 <PagerView
                   style={{ flex: 1, marginBottom: 10 }}
                   initialPage={0}
                 >
                   {image.map((e, i) => (
-                    <View style={{ width: '100%' }} key={i}>
+                    <View style={{ width: '100%', flex: 1 }} key={i}>
                       <>
                         {e.mediaType === 'photo' && (
                           <Image
                             style={{
-                              marginTop: 40,
                               marginBottom: 15,
                               borderRadius: 8,
-                              height: 350,
+                              height: 400,
                               width: '100%'
                             }}
-                            contentFit="cover"
+                            contentFit="contain"
                             source={{ uri: e?.uri }}
                           />
                         )}
                         {e.mediaType === 'video' && (
                           <Video
                             style={{
-                              marginTop: 40,
                               marginBottom: 15,
                               borderRadius: 8,
-                              height: 350,
+                              height: 400,
                               width: '100%'
                             }}
                             contentFit="cover"
@@ -194,7 +191,8 @@ const CrearHighlight = () => {
                 flex: 1,
                 borderWidth: 1,
                 borderRadius: 15,
-                borderColor: Color.wHITESPORTSMATCH
+                borderColor: Color.wHITESPORTSMATCH,
+                marginTop: 20
               }}
             >
               <TextInput

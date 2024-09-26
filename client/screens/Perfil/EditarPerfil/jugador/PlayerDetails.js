@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Modal
+  Modal,
+  Dimensions
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -26,6 +27,7 @@ import AñoNacimientoModal from '../../../../components/modals/AñoNacimientoMod
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 import { DeviceMotion } from 'expo-sensors'
 import { getUserData } from '../../../../redux/actions/users'
+import { ImageEditor } from '@tahsinz21366/expo-crop-image'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -46,6 +48,7 @@ const PlayerDetails = () => {
     sportman?.info?.description || ''
   )
   const navigation = useNavigation()
+  const [editorVisible, setEditorVisible] = useState(false)
 
   const [orientation, setOrientation] = useState('portrait')
 
@@ -84,7 +87,7 @@ const PlayerDetails = () => {
       title: 'Club actual',
       type: 'text',
       placeHolder: 'Escribe solo si estas en algun club...',
-      state: actualClubName ? actualClubName : sportman?.info?.actualClub,
+      state: actualClubName,
       setState: setActualClubName,
       zIndex: 7000
     },
@@ -192,7 +195,8 @@ const PlayerDetails = () => {
       }) // Use cameraRef.current
       console.log(photo, 'photo')
       setSelectedImage(photo)
-      pickImageFromCamera(selectedPicture, photo.uri)
+      // pickImageFromCamera(selectedPicture, photo.uri)
+      setEditorVisible(true)
       setShowCamera(false)
       // You can handle the taken photo here, such as displaying it or saving it.
     }
@@ -221,7 +225,7 @@ const PlayerDetails = () => {
                 }}
               >
                 <View style={styles.profileImageContainer}>
-                  {sportman?.info?.img_perfil || provisoryProfileImage ? (
+                  {provisoryProfileImage || sportman?.info?.img_perfil ? (
                     <Image
                       style={{
                         width: '100%',
@@ -523,11 +527,53 @@ const PlayerDetails = () => {
             </View>
           </ScrollView>
         </View>
+        <ImageEditor
+          fixedAspectRatio={1 / 1}
+          editorOptions={{
+            controlBar: {
+              cancelButton: {
+                iconName: 'cancel',
+                color: 'white',
+                text: 'Cancelar'
+              },
+              cropButton: { iconName: 'crop', color: 'white', text: 'Cortar' },
+              backButton: {
+                iconName: 'arrow-back',
+                color: 'white',
+                text: 'Atrás'
+              },
+              saveButton: {
+                iconName: 'save-alt',
+                color: 'white',
+                text: 'Guardar'
+              }
+            }
+          }}
+          isVisible={editorVisible}
+          onEditingCancel={() => setEditorVisible(false)}
+          onCloseEditor={() => setEditorVisible(false)}
+          imageUri={selectedImage?.uri}
+          fixedCropAspectRatio={1 / 1}
+          minimumCropDimensions={{
+            width: 100,
+            height: 100
+          }}
+          mode="full"
+          onEditingComplete={(result) => {
+            setEditorVisible(false)
+            pickImageFromCamera(selectedPicture, result.uri)
+
+            setSelectedImage(result)
+          }}
+        />
       </SafeAreaView>
     )
   } else {
     return (
-      <View style={{ zIndex: 9999, height: '100%' }}>
+      <Modal
+        visible
+        style={{ zIndex: 9999, height: Dimensions.get('screen').height }}
+      >
         <CameraView
           ref={cameraReff}
           facing={facing}
@@ -596,7 +642,7 @@ const PlayerDetails = () => {
             </TouchableOpacity>
           </View>
         </CameraView>
-      </View>
+      </Modal>
     )
   }
 }

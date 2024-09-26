@@ -171,15 +171,16 @@ const Paso1 = () => {
         return
       }
 
-      dispatch(createSportman(body)).then((response) => {
-        dispatch(
-          setInitialSportman({
-            id: response.payload.id,
-            ...body.sportmanData
-          })
-        )
-        navigation.navigate('SiguiendoJugadores')
-      })
+      // dispatch(createSportman(body)).then((response) => {
+      dispatch(
+        setInitialSportman({
+          id: 'invitado',
+          ...body.sportmanData
+        })
+      )
+      navigation.navigate('SiguiendoJugadores')
+      return
+      // })
     }
 
     if (selectedRole === 'Profesional del deporte') {

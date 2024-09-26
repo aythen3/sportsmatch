@@ -12,6 +12,8 @@ import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostService } from 'src/post/post.service';
+import { PostEntity } from 'src/post/entities/post.entity';
 
 @Module({
   imports: [
@@ -22,11 +24,18 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       MatchEntity,
       PositionEntity,
       SkillEntity,
-      SportEntity
+      SportEntity,
+      PostEntity
     ])
   ],
   exports: [SportmanService, TypeOrmModule.forFeature([SportmanEntity])],
   controllers: [SportmanController],
-  providers: [SportmanService, UserService, ImgManagerService, SendMailService]
+  providers: [
+    SportmanService,
+    UserService,
+    ImgManagerService,
+    SendMailService,
+    PostService
+  ]
 })
 export class SportmanModule {}

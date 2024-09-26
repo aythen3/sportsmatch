@@ -37,6 +37,11 @@ export class CreateUserDto {
   planId: any;
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  banned?: string[];
+
+  @IsOptional()
   club: any;
 
   @IsOptional()

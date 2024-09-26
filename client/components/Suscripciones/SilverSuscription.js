@@ -22,7 +22,18 @@ const SilverSuscription = () => {
             end={{ x: 1, y: 0 }} // Punto final (esquina inferior izquierda)
             colors={['#747474', '#c9c9c9', '#b1adad', '#838383']}
           ></LinearGradient>
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>FREEMIUM</Text>
+          <Text
+            style={[
+              styles.freemium2,
+              styles.ofertasTypo,
+              {
+                textAlignVertical: 'center',
+                height: '100%'
+              }
+            ]}
+          >
+            FREEMIUM
+          </Text>
         </View>
         <View style={styles.silverInner}>
           <View style={styles.frameContainer}>
@@ -120,7 +131,7 @@ const SilverSuscription = () => {
 const styles = StyleSheet.create({
   gradient: {
     width: '100%',
-    height: 500,
+    height: 350,
     transform: [{ scaleY: 0.16 }],
     position: 'absolute',
     left: 0,
@@ -143,7 +154,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 80,
+    height: 50,
     backgroundColor: Color.colorSilver,
     justifyContent: 'center'
   },

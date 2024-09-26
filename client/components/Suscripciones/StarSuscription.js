@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'expo-image'
 import {
   Border,
@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 import axiosInstance from '../../utils/apiBackend'
 import { useSelector } from 'react-redux'
+import { Context } from '../../context/Context'
 
 const GoldSuscription = ({
   setClientSecret,
@@ -19,9 +20,11 @@ const GoldSuscription = ({
   myPlan,
   handleCancelSuscription,
   deletePlan,
-  setDeletePlan
+  setDeletePlan,
+  suscription
 }) => {
   const { user } = useSelector((state) => state.users)
+  const { scalableFontSize } = useContext(Context)
 
   const handleGetStar = async () => {
     const res = await axiosInstance.post('/user/create-subscription', {
@@ -67,7 +70,15 @@ const GoldSuscription = ({
             start={[0.0, 1.0]}
             end={[1.0, 0.0]}
           ></LinearGradient>
-          <Text style={[styles.freemium2, styles.ofertasTypo]}>STAR</Text>
+          <Text
+            style={[
+              styles.freemium2,
+              styles.ofertasTypo,
+              { fontSize: scalableFontSize(20) }
+            ]}
+          >
+            STAR
+          </Text>
         </View>
         <View
           style={{
@@ -76,7 +87,9 @@ const GoldSuscription = ({
             justifyContent: 'center'
           }}
         >
-          <Text style={{ textAlign: 'center', color: 'white' }}>
+          <Text
+            style={{ textAlign: 'center', color: 'white', fontWeight: 700 }}
+          >
             Descuento 60%
           </Text>
         </View>
@@ -85,29 +98,6 @@ const GoldSuscription = ({
           <View style={styles.frameContainer}>
             <View style={{ width: '100%' }}>
               <View style={{ width: '100%' }}>
-                {/* <Text
-                  style={{
-                    ...styles.gratuito,
-                    textDecorationLine: 'line-through'
-                  }}
-                >
-                  316,25€/mes
-                </Text>
-                <Text
-                  style={{
-                    ...styles.timeTypo,
-                    textDecorationLine: 'line-through'
-                  }}
-                >
-                  3.150,25€/año
-                </Text>
-                <View style={{ flexDirection: 'column', gap: 5 }}>
-                  <Text style={{ ...styles.gratuito, color: 'red' }}>
-                    DTE. 60%
-                  </Text>
-                  <Text style={{ ...styles.gratuito }}>126,5€/mes</Text>
-                </View>
-                <Text style={{ ...styles.timeTypo }}>1.260,1€/año</Text> */}
                 <View
                   style={{
                     flexDirection: 'row',
@@ -119,15 +109,42 @@ const GoldSuscription = ({
                 >
                   <Text
                     style={{
+                      fontFamily: FontFamily.poppins,
                       ...styles.timeTypo,
 
                       textDecorationLine: 'line-through',
-                      color: 'red'
+                      color: 'red',
+                      fontWeight: 700,
+
+                      fontSize: scalableFontSize(16)
                     }}
                   >
                     316,25€/mes
                   </Text>
-                  <Text style={{ ...styles.gratuito }}>126,5€/mes</Text>
+                  <View
+                    style={{ flexDirection: 'row', alignItems: 'baseline' }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.gratuito,
+                        fontSize: scalableFontSize(36),
+                        fontFamily: FontFamily.poppins
+                      }}
+                    >
+                      126,5€
+                    </Text>
+                    <Text
+                      style={{
+                        ...styles.timeTypo,
+                        color: '#ff00e6',
+                        fontWeight: 700,
+
+                        fontSize: scalableFontSize(20)
+                      }}
+                    >
+                      /mes
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={{
@@ -140,12 +157,37 @@ const GoldSuscription = ({
                     style={{
                       ...styles.timeTypo,
                       textDecorationLine: 'line-through',
-                      color: 'red'
+                      color: 'red',
+                      fontWeight: 700,
+
+                      fontSize: scalableFontSize(16)
                     }}
                   >
                     3.150,25€/año
                   </Text>
-                  <Text style={{ ...styles.gratuito }}>1.260,1€/año</Text>
+                  <View
+                    style={{ flexDirection: 'row', alignItems: 'baseline' }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.gratuito,
+                        fontSize: scalableFontSize(36)
+                      }}
+                    >
+                      1.260,1€
+                    </Text>
+                    <Text
+                      style={{
+                        ...styles.timeTypo,
+                        color: '#ff00e6',
+                        fontWeight: 700,
+
+                        fontSize: scalableFontSize(20)
+                      }}
+                    >
+                      /año
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -264,7 +306,43 @@ const GoldSuscription = ({
               justifyContent: 'center'
             }}
           >
-            <Text style={styles.ofertasTypo}>{'Seleccionar plan mensual'}</Text>
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Mensual'}</Text>
+          </TouchableOpacity>
+        )}
+        {suscription === 'STAR (Mensual)' && (
+          <TouchableOpacity
+            onPress={handleGetStarAnual}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Anual'}</Text>
+          </TouchableOpacity>
+        )}
+        {suscription === 'STAR (Anual)' && (
+          <TouchableOpacity
+            onPress={handleGetStar}
+            style={{
+              width: '95%',
+              borderWidth: 1,
+              alignSelf: 'center',
+              marginTop: 25,
+              borderColor: '#000',
+              borderRadius: 100,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Mensual'}</Text>
           </TouchableOpacity>
         )}
         {!deletePlan && !myPlan && (
@@ -282,7 +360,7 @@ const GoldSuscription = ({
               justifyContent: 'center'
             }}
           >
-            <Text style={styles.ofertasTypo}>{'Seleccionar plan anual'}</Text>
+            <Text style={styles.ofertasTypo}>{'Seleccionar plan Anual'}</Text>
           </TouchableOpacity>
         )}
         {myPlan && !deletePlan && (
@@ -429,12 +507,10 @@ const styles = StyleSheet.create({
   accesoA: {
     fontFamily: FontFamily.t4TEXTMICRO
   },
-  accesoA: {
-    fontFamily: FontFamily.t4TEXTMICRO
-  },
+
   container: {
     width: '100%',
-    height: 80,
+    height: 50,
     backgroundColor: Color.colorSilver,
     justifyContent: 'center'
   },

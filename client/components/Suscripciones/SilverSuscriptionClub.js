@@ -140,7 +140,7 @@ const SilverSuscriptionClub = () => {
 const styles = StyleSheet.create({
   gradient: {
     width: '100%',
-    height: 500,
+    height: 350,
     transform: [{ scaleY: 0.16 }],
     position: 'absolute',
     left: 0,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 80,
+    height: 50,
     backgroundColor: Color.colorSilver,
     justifyContent: 'center'
   },

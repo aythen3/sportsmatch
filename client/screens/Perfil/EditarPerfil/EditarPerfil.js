@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet, Pressable, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -6,11 +6,24 @@ import { useNavigation } from '@react-navigation/native'
 import { FontSize, FontFamily, Color } from '../../../GlobalStyles'
 import { useSelector } from 'react-redux'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const EditarPerfil = () => {
   const navigation = useNavigation()
   const { user, mainColor } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
+  const [gmailUser, setGmailUser] = useState(false)
+
+  const getUser = async () => {
+    const cred = await AsyncStorage.getItem('@user')
+    console.log(cred, 'creddddd')
+    const cred2 = JSON.parse(cred)
+    setGmailUser(cred2?.uid)
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   return (
     <SafeAreaView style={styles.editarPerfil}>
@@ -51,13 +64,17 @@ const EditarPerfil = () => {
           >
             E-mail
           </Text>
-          <View style={styles.frameChild} />
-          <Text
-            style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
-            onPress={() => navigation.navigate('Contrasea')}
-          >
-            Contraseña
-          </Text>
+          {!gmailUser && (
+            <>
+              <View style={styles.frameChild} />
+              <Text
+                style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}
+                onPress={() => navigation.navigate('Contrasea')}
+              >
+                Contraseña
+              </Text>
+            </>
+          )}
           <View style={styles.frameChild} />
           <Text
             style={[styles.detallesDelUsuario, styles.eliminarCuentaTypo]}

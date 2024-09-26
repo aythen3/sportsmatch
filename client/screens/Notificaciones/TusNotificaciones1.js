@@ -24,6 +24,7 @@ import {
   markAllUserNotificationsAsRead
 } from '../../redux/actions/notifications'
 import { ActivityIndicator } from 'react-native-paper'
+import { getAllMatchs, getUserMatchs } from '../../redux/actions/matchs'
 
 const TusNotificaciones1 = () => {
   const [loading, setLoading] = useState(true)
@@ -66,19 +67,15 @@ const TusNotificaciones1 = () => {
     )
     .sort(sortUsers)
 
-  // useEffect(() => {}, [value, filteredUsers])
-
-  useEffect(() => {
-    console.log('USERSWITHMESSAGES', usersWithMessages.length)
-  }, [usersWithMessages])
-
   useEffect(() => {
     getUsersMessages()
   }, [allMessages])
 
   useEffect(() => {
     getUsersMessages()
-    if (user.user.type == 'club') {
+    dispatch(getAllMatchs())
+    dispatch(getUserMatchs(user?.user?.id))
+    if (user.user.type === 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
       dispatch(getNotificationsByUserId(user?.user?.id))
@@ -291,40 +288,54 @@ const TusNotificaciones1 = () => {
                   </View>
                 ) : (
                   value === '' &&
-                  usersWithMessages?.map((user, index) => (
-                    <MessagesChat
-                      value={value}
-                      setValue={setValue}
-                      key={index + 999}
-                      name={user.nickname}
-                      sportmanId={user.sportman?.id}
-                      profilePic={
-                        user?.type === 'club'
-                          ? user?.club?.img_perfil
-                          : user?.sportman?.info?.img_perfil
-                      }
-                      selectedUserId={user.id}
-                      // applicant={applicants?.includes(user.sportman?.id)}
-                    />
-                  ))
+                  usersWithMessages?.map((userr, index) => {
+                    if (
+                      !userr.isDelete &&
+                      !user?.user?.banned?.includes(userr?.id)
+                    ) {
+                      return (
+                        <MessagesChat
+                          value={value}
+                          setValue={setValue}
+                          key={index + 999}
+                          name={userr.nickname}
+                          sportmanId={userr.sportman?.id}
+                          profilePic={
+                            userr?.type === 'club'
+                              ? userr?.club?.img_perfil
+                              : userr?.sportman?.info?.img_perfil
+                          }
+                          selectedUserId={userr.id}
+                          // applicant={applicants?.includes(user.sportman?.id)}
+                        />
+                      )
+                    }
+                  })
                 )}
                 {value !== '' && filteredUsers.length > 0
-                  ? filteredUsers.map((user, index) => (
-                      <MessagesChat
-                        value={value}
-                        setValue={setValue}
-                        key={index + 99999}
-                        name={user.nickname}
-                        sportmanId={user.sportman?.id}
-                        profilePic={
-                          user?.type === 'club'
-                            ? user?.club?.img_perfil
-                            : user?.sportman?.info?.img_perfil
-                        }
-                        selectedUserId={user.id}
-                        // applicant={applicants?.includes(user.sportman?.id)}
-                      />
-                    ))
+                  ? filteredUsers.map((userr, index) => {
+                      console.log(user, 'user ')
+                      if (
+                        !userr.isDelete &&
+                        !user?.user?.banned?.includes(userr?.id)
+                      )
+                        return (
+                          <MessagesChat
+                            value={value}
+                            setValue={setValue}
+                            key={index + 99999}
+                            name={userr.nickname}
+                            sportmanId={userr.sportman?.id}
+                            profilePic={
+                              userr?.type === 'club'
+                                ? userr?.club?.img_perfil
+                                : userr?.sportman?.info?.img_perfil
+                            }
+                            selectedUserId={userr.id}
+                            // applicant={applicants?.includes(user.sportman?.id)}
+                          />
+                        )
+                    })
                   : value !== '' && (
                       <View
                         style={{

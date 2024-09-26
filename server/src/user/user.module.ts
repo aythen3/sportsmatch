@@ -11,6 +11,7 @@ import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -26,7 +27,14 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
   exports: [
     UserService,
     TypeOrmModule.forFeature([UserEntity]) // Exporta TypeOrmModule.forFeature con UserEntity
-  ],  controllers: [UserController],
-  providers: [UserService, JwtService, AuthJwtService, SendMailService]
+  ],
+  controllers: [UserController],
+  providers: [
+    UserService,
+    JwtService,
+    AuthJwtService,
+    SendMailService,
+    PostService
+  ]
 })
 export class UserModule {}

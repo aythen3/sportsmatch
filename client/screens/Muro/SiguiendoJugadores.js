@@ -20,6 +20,7 @@ import {
   deletePost,
   getAllLikes,
   getAllPosts,
+  getAllPostsFeed,
   listLikes
 } from '../../redux/actions/post'
 import {
@@ -50,7 +51,7 @@ const SiguiendoJugadores = () => {
     selectedPost,
     getUsersMessages
   } = useContext(Context)
-  const { allPosts, post } = useSelector((state) => state.post)
+  const { allPosts, post, postFeed } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)
   const { offers } = useSelector((state) => state.offers)
   const { sportman } = useSelector((state) => state.sportman)
@@ -65,10 +66,10 @@ const SiguiendoJugadores = () => {
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
   }
   useEffect(() => {
-    dispatch(getAllPosts())
+    dispatch(getAllPosts(user?.user?.id))
     dispatch(getAllLikes())
-    dispatch(getAllNotifications())
-    if (user?.user?.type == 'club') {
+    // dispatch(getAllNotifications())
+    if (user?.user?.type === 'club') {
       console.log(user?.user?.club?.id, 'club')
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
@@ -150,7 +151,10 @@ const SiguiendoJugadores = () => {
           >
             {filteredPosts.length > 0 &&
               filteredPosts.slice(0, 15)?.map((publication, i) => {
-                if (!publication?.author?.isDelete) {
+                if (
+                  !publication?.author?.isDelete &&
+                  !user?.user?.banned?.includes(publication?.author?.id)
+                ) {
                   return (
                     <Carousel
                       showDeletePostModal={showDeletePostModal}

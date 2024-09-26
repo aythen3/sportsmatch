@@ -74,7 +74,7 @@ const IniciarSesin = ({ route }) => {
   useEffect(() => {
     if (route?.params?.sendMail) {
       setError(
-        'Se envio el mail de confirmación. Chequea tu bandeja de entrada.'
+        'Se envió el mail de confirmación. Comprueba tu bandeja de entrada.'
       )
     }
   }, [])

@@ -35,9 +35,26 @@ const MiSuscripcin = () => {
   const [planSelected, setPlanSelected] = useState(null)
   const [planSelectedId, setPlanSelectedId] = useState('')
   const [nextPayment, setNextPayment] = useState('')
+  const [planInterval, setPlanInterval] = useState('')
+
   const [plansData, setPlansData] = useState([])
 
   const [deletePlan, setDeletePlan] = useState(false)
+
+  const mesesDelAño = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ]
 
   const { user } = useSelector((state) => state.users)
 
@@ -102,6 +119,23 @@ const MiSuscripcin = () => {
     }
   }, [clientSecret, initPaymentSheet])
 
+  const getPlanName = (planId) => {
+    switch (planId) {
+      case 'price_1Plj60GmE60O5ob7lsmKEbPK':
+        return 'PRO (Anual)'
+      case 'price_1PbXiXGmE60O5ob7jb0U2Wap':
+        return 'PRO (Mensual)'
+      case 'price_1PbXgIGmE60O5ob7mAwCw3YQ':
+        return 'GOLD'
+      case 'price_1PbXhFGmE60O5ob7cTUy19CD':
+        return 'STAR (Mensual)'
+      case 'price_1Plj8LGmE60O5ob768A57ICn':
+        return 'STAR (Anual)'
+      default:
+        return 'Unknown plan'
+    }
+  }
+
   useEffect(() => {
     const getinfo = async (planId) => {
       const res = await axiosInstance.get(`user/subscription/${planId}`)
@@ -117,7 +151,10 @@ const MiSuscripcin = () => {
 
         if (interval === 'month') {
           currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
+          setPlanInterval(getPlanName(subscription.plan.id))
         } else if (interval === 'year') {
+          setPlanInterval(getPlanName(subscription.plan.id))
+
           currentDate.setFullYear(
             currentDate.getFullYear() + (intervalCount - 1)
           )
@@ -169,23 +206,6 @@ const MiSuscripcin = () => {
           const formattedDate = nextPaymentDate2
             .toLocaleDateString('es-AR', options)
             .replace(/-/g, '/')
-
-          const getPlanName = (planId) => {
-            switch (planId) {
-              case 'price_1Plj60GmE60O5ob7lsmKEbPK':
-                return 'PRO ANUAL'
-              case 'price_1PbXiXGmE60O5ob7jb0U2Wap':
-                return 'PRO MENSUAL'
-              case 'price_1PbXgIGmE60O5ob7mAwCw3YQ':
-                return 'GOLD'
-              case 'price_1PbXhFGmE60O5ob7cTUy19CD':
-                return 'STAR MENSUAL'
-              case 'price_1Plj8LGmE60O5ob768A57ICn':
-                return 'STAR ANUAL'
-              default:
-                return 'Unknown plan'
-            }
-          }
 
           return {
             planId: plans[index],
@@ -250,20 +270,58 @@ const MiSuscripcin = () => {
               plansData.map((plan, i) => {
                 if (plan.planId !== user.user.planId) {
                   return (
-                    <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
-                      {plan.planName} expira el {plan.expirationDate}
-                    </Text>
+                    <View>
+                      <Text
+                        style={[
+                          styles.esteEsTu,
+                          styles.esteEsTuFlexBox,
+                          { color: 'gray', marginTop: 5 }
+                        ]}
+                      >
+                        {plan.planName}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.esteEsTu,
+                          styles.esteEsTuFlexBox,
+                          { color: 'gray', marginTop: 5 }
+                        ]}
+                      >
+                        expira el {plan.expirationDate.slice(0, 2)} de{' '}
+                        {mesesDelAño[plan.expirationDate.slice(3, 5) - 1]} de{' '}
+                        {plan.expirationDate.slice(6, 10)}
+                      </Text>
+                    </View>
                   )
                 }
               })}
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Este es tu plan actual
             </Text>
+            {planInterval && (
+              <Text
+                style={[
+                  styles.esteEsTu,
+                  styles.esteEsTuFlexBox,
+                  { fontWeight: 500 }
+                ]}
+              >
+                Plan {planInterval}
+              </Text>
+            )}
             {user.user.planId && (
-              <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
+              <Text
+                style={[
+                  styles.esteEsTu,
+                  styles.esteEsTuFlexBox,
+                  { color: 'gray', marginTop: 5 }
+                ]}
+              >
                 {user.user.club && user.user.plan === 'pro'
                   ? ''
-                  : `Se renueva el ${nextPayment}`}
+                  : nextPayment
+                    ? `Se renueva el ${nextPayment.slice(0, 2)} de ${mesesDelAño[nextPayment.slice(3, 5) - 1]} de ${nextPayment.slice(6, 10)}`
+                    : ''}
               </Text>
             )}
           </View>
@@ -278,6 +336,10 @@ const MiSuscripcin = () => {
 
             {user?.user?.plan === 'pro' && !user.user.club && (
               <GoldSuscription
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+                suscription={planInterval}
                 handleCancelSuscription={handleCancelSuscription}
                 myPlan={true}
                 deletePlan={deletePlan}
@@ -310,6 +372,10 @@ const MiSuscripcin = () => {
 
             {user?.user?.plan === 'star' && (
               <StarSuscription
+                setPlanSelected={setPlanSelected}
+                setClientSecret={setClientSecret}
+                setPlanSelectedId={setPlanSelectedId}
+                suscription={planInterval}
                 handleCancelSuscription={handleCancelSuscription}
                 myPlan={true}
                 deletePlan={deletePlan}

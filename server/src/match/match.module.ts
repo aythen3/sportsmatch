@@ -16,6 +16,8 @@ import { UserService } from 'src/user/user.service';
 import { NotificationService } from 'src/notification/notification.service';
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 
 @Module({
   imports: [
@@ -28,7 +30,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       SportEntity,
       UserEntity,
       OfferEntity,
-      NotificationEntity
+      NotificationEntity,
+      PostEntity
     ])
   ],
   controllers: [MatchController],
@@ -37,7 +40,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
     SportmanService,
     UserService,
     NotificationService,
-    SendMailService
+    SendMailService,
+    PostService
   ]
 })
 export class MatchModule {}

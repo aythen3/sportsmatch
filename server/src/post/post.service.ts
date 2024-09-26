@@ -5,13 +5,48 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { Repository } from 'typeorm';
 import { ErrorManager } from 'src/utils/error.manager';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(PostEntity)
-    private readonly postRepository: Repository<PostEntity>
+    private readonly postRepository: Repository<PostEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
   ) {}
+
+  public async getFeed(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId }
+    });
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const { following, banned } = user;
+
+    const followingIds = following?.filter((id) => id !== null);
+    const bannedIds = banned?.filter((id) => id !== null);
+
+    const posts = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('author.sportman', 'sportman')
+      .where('post.author.id = :userId', { userId });
+
+    if (followingIds && followingIds.length > 0) {
+      posts.orWhere('post.author.id IN (:...followingIds)', { followingIds });
+    }
+
+    if (bannedIds && bannedIds.length > 0) {
+      posts.andWhere('post.author.id NOT IN (:...bannedIds)', { bannedIds });
+    }
+
+    return posts.getMany();
+  }
+
   public async create(createPostDto: CreatePostDto) {
     try {
       const post = await this.postRepository.save(createPostDto);
@@ -138,47 +173,46 @@ export class PostService {
     }
   }
 
-
-
-
   async findInfoRelation(postId: number, relations: string[]): Promise<any> {
     try {
-     const validRelations = this.validateRelations(relations);
- 
-     // Verificar si hay al menos una relación válida
-     if (validRelations.length === 0) {
-       throw new Error('No se han proporcionado relaciones válidas.');
-     }
- 
-     // Construir objeto de opciones para la consulta
-     const options: any = { where: { id: postId }, relations: validRelations };
- console.log("options es", options)
-     // Realizar la consulta del post con las relaciones especificadas
-     const post = await this.postRepository.findOne(options);
- 
-     if (!post) {
-       throw new NotFoundException(`No se encontró ningún post con el ID ${postId}.`);
-     }
- 
-     return post;
+      const validRelations = this.validateRelations(relations);
+
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = { where: { id: postId }, relations: validRelations };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const post = await this.postRepository.findOne(options);
+
+      if (!post) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${postId}.`
+        );
+      }
+
+      return post;
     } catch (error) {
-     console.log('este es el error ',error)
+      console.log('este es el error ', error);
     }
-   }
- 
-   private validateRelations(relations: string[]): string[] {
-     const validRelations: string[] = [];
- 
-     // Definir relaciones válidas permitidas en la entidad Match
-     const allowedRelations = ["comments" , "authorType" , "author"]; // Agregar más según sea necesario
- 
-     // Filtrar relaciones válidasimage:
-     relations.forEach(relation => {
-       if (allowedRelations.includes(relation)) {
-         validRelations.push(relation);
-       }
-     });
- 
-     return validRelations;
-   }
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['comments', 'authorType', 'author']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidasimage:
+    relations.forEach((relation) => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
 }

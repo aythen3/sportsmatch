@@ -10,6 +10,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { ResetCodeService } from './reset-code.service';
 import { UserService } from 'src/user/user.service';
 import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
+import { PostEntity } from 'src/post/entities/post.entity';
+import { PostService } from 'src/post/post.service';
 // import { ConfigService } from '@nestjs/config';
 
 // const configService = new ConfigService();
@@ -24,7 +26,7 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
 
         auth: {
           user: 'sportsmatchdigital.app@gmail.com',
-          pass: 'zayi vzpx jkkd xbqm' // Contraseña del correo electrónico de origen
+          pass: 'bwsg varr alfu cjsl' // Contraseña del correo electrónico de origen
         }
       },
       defaults: {
@@ -38,10 +40,16 @@ import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
         }
       }
     }),
-    TypeOrmModule.forFeature([ResetCodeEntity, UserEntity])
+    TypeOrmModule.forFeature([ResetCodeEntity, UserEntity, PostEntity])
   ],
   exports: [SendMailService],
   controllers: [SendMailController, ResetCodeController],
-  providers: [SendMailService, ResetCodeService, UserService, AuthJwtService]
+  providers: [
+    SendMailService,
+    ResetCodeService,
+    UserService,
+    AuthJwtService,
+    PostService
+  ]
 })
 export class SendMailModule {}

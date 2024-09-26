@@ -3,6 +3,7 @@ import {
   createPost,
   getAllLikes,
   getAllPosts,
+  getAllPostsFeed,
   like,
   listLikes,
   updateLike,
@@ -14,6 +15,7 @@ const postSlices = createSlice({
   initialState: {
     allPosts: [],
     post: {},
+    postFeed: [],
     likes: [],
     findedLike: [],
     loading: false
@@ -83,6 +85,19 @@ const postSlices = createSlice({
         state.error = false
       })
       .addCase(getAllPosts.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      .addCase(getAllPostsFeed.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getAllPostsFeed.fulfilled, (state, action) => {
+        state.loading = false
+        state.postFeed = action.payload
+        state.error = false
+      })
+      .addCase(getAllPostsFeed.rejected, (state) => {
         state.loading = false
         state.error = true
       })

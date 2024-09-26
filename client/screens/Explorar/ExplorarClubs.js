@@ -11,7 +11,8 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  Pressable
+  Pressable,
+  ActivityIndicator
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useNavigation } from '@react-navigation/native'
@@ -57,6 +58,19 @@ const ExplorarClubs = () => {
   const [searchCity, setSearchCity] = useState([])
   const [searchClubes, setSearchClubes] = useState([])
   const [groupedPosts, setGroupedPosts] = useState([])
+  const [visiblePosts, setVisiblePosts] = useState(6)
+  const [loading, setLoading] = useState(false)
+
+  const loadMorePosts = () => {
+    if (visiblePosts < allPosts.length) {
+      setLoading(true)
+      // Simular un retraso de carga
+      setTimeout(() => {
+        setVisiblePosts((prevVisiblePosts) => prevVisiblePosts + 6)
+        setLoading(false)
+      }, 1000)
+    }
+  }
 
   const [filter, setFilter] = useState({
     gender: '',
@@ -70,10 +84,6 @@ const ExplorarClubs = () => {
   useEffect(() => {
     dispatch(getAllPosts())
   }, [])
-
-  useEffect(() => {
-    setPosts(allPosts)
-  }, [allPosts])
 
   const onFilterSportman = () => {
     setModalFilterSportman(true)
@@ -119,25 +129,31 @@ const ExplorarClubs = () => {
   }
 
   const screenWidth = Dimensions.get('window').width
-  const renderGroupedItem = ({ item }) => {
+  const widthMio = (screenWidth - 8) / 3
+  const RenderGroupedItem = React.memo(function RenderGroupedItem({
+    item,
+    navigation
+  }) {
     return (
       <View style={{ flexDirection: 'row' }}>
         <View
           style={{
             flexDirection: 'column',
-            width: (screenWidth - 8) / 3,
+            width: widthMio,
             marginRight: 8
           }}
         >
           {item.columnItems &&
-            item.columnItems.map((columnItem, index) => (
+            item.columnItems.map((columnItem) => (
               <TouchableOpacity
-                key={index}
+                key={columnItem.id} // Cambia 'index' por un ID único
                 onPress={() => {
                   navigation.navigate('Post', columnItem)
                 }}
               >
                 <Thumbnail
+                  isMini={true}
+                  play={false}
                   url={columnItem.image[0]}
                   styles={{
                     width: '100%',
@@ -157,6 +173,8 @@ const ExplorarClubs = () => {
             }}
           >
             <Thumbnail
+              isMini={true}
+              play={false}
               url={item.rightItem.image[0]}
               styles={{
                 width: ((screenWidth - 45) / 3) * 2,
@@ -168,11 +186,14 @@ const ExplorarClubs = () => {
         )}
       </View>
     )
-  }
-
+  })
+  const ITEM_HEIGHT = (screenWidth - 8) / 3 // Altura de un post
   const posttt = () => {
     const groupedPostsTotal = []
-    const postChecked = allPosts.filter((e) => e.author.emailCheck)
+    const postChecked = allPosts.filter(
+      (e) =>
+        e.author.emailCheck && !usuario?.user?.banned?.includes(e?.author?.id)
+    )
     for (let i = 0; i < postChecked.length; i += 3) {
       groupedPostsTotal.push({
         columnItems: postChecked.slice(i, i + 2),
@@ -184,7 +205,7 @@ const ExplorarClubs = () => {
 
   useEffect(() => {
     posttt()
-  }, [])
+  }, [allPosts])
 
   console.log('searchClubes', searchClubes)
 
@@ -221,8 +242,10 @@ const ExplorarClubs = () => {
 
                 {searchUsers.length > 0 &&
                   searchUsers.map((user, i) => {
-                    console.log(user, 'userrrr')
-                    if (!user?.user?.isDelete) {
+                    if (
+                      !user?.user?.isDelete &&
+                      !usuario?.user?.banned?.includes(user?.user?.id)
+                    ) {
                       return (
                         <TouchableOpacity
                           onPress={() => {
@@ -299,8 +322,10 @@ const ExplorarClubs = () => {
                 <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
                 {searchClubes.length > 0 &&
                   searchClubes.map((club, i) => {
-                    console.log(club, 'club')
-                    if (!club?.user?.isDelete) {
+                    if (
+                      !club?.user?.isDelete &&
+                      !usuario?.user?.banned?.includes(club?.user?.id)
+                    ) {
                       return (
                         <TouchableOpacity
                           key={i}
@@ -374,8 +399,10 @@ const ExplorarClubs = () => {
                   Posiciones
                 </Text>
                 {searchPosition.map((position, i) => {
-                  console.log(position, 'pos')
-                  if (!position?.user?.isDelete) {
+                  if (
+                    !position?.user?.isDelete &&
+                    !usuario?.user?.banned?.includes(position?.user?.id)
+                  ) {
                     return (
                       <TouchableOpacity
                         key={i}
@@ -442,7 +469,10 @@ const ExplorarClubs = () => {
               <View style={{ flexDirection: 'column', gap: 10 }}>
                 <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
                 {searchCity.map((city, i) => {
-                  if (!city?.user?.isDelete) {
+                  if (
+                    !city?.user?.isDelete &&
+                    !usuario?.user?.banned?.includes(city?.user?.id)
+                  ) {
                     return (
                       <TouchableOpacity
                         key={i}
@@ -510,12 +540,26 @@ const ExplorarClubs = () => {
 
         {!textValue && allPosts?.length > 0 && (
           <FlatList
-            data={groupedPosts}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderGroupedItem}
+            initialNumToRender={6} // Renderiza solo 6 items al inicio
+            // maxToRenderPerBatch={6} // Lotes de 10 items por renderizado
+            data={groupedPosts} // Solo muestra los posts visibles
             numColumns={1}
             contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
-          ></FlatList>
+            // onEndReached={loadMorePosts} // Llama a la función cuando se alcanza el final
+            // onEndReachedThreshold={0.1} // Umbral para activar la carga
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <RenderGroupedItem item={item} navigation={navigation} />
+            )}
+            getItemLayout={(data, index) => ({
+              length: ITEM_HEIGHT,
+              offset: ITEM_HEIGHT * index,
+              index
+            })}
+            ListFooterComponent={
+              loading ? <ActivityIndicator size="large" /> : null
+            } // Muestra un indicador de carga
+          />
         )}
       </View>
       <Modal visible={modalFilters} transparent={true} animationType="slide">

@@ -14,7 +14,8 @@ import {
   StatusBar,
   Platform,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {
@@ -38,7 +39,8 @@ import { setClub } from '../../redux/slices/club.slices'
 import { setIsSpotMan } from '../../redux/slices/users.slices'
 import * as EmailValidator from 'email-validator'
 import { Context } from '../../context/Context'
-
+import { debounce } from 'lodash' // Importar lodash para debouncing
+import axiosInstance from '../../utils/apiBackend'
 const Registrarse = () => {
   const [nombreError, setNombreError] = useState('')
   const navigation = useNavigation()
@@ -70,23 +72,23 @@ const Registrarse = () => {
     dispatch(getAllUsers())
   }, [])
 
-  const isValidEmail = (email) => {
-    const alreadyTaken = allUsers?.map((user) => user.email).includes(email)
-    if (!alreadyTaken) {
-      return EmailValidator.validate(email)
-    } else {
-      return false
-    }
-  }
+  // const isValidEmail = (email) => {
+  //   const alreadyTaken = allUsers?.map((user) => user.email).includes(email)
+  //   if (!alreadyTaken) {
+  //     return EmailValidator.validate(email)
+  //   } else {
+  //     return false
+  //   }
+  // }
   const seterValues = (field, value) => {
     setNombreError('')
     setValuesUser((prev) => ({
       ...prev,
       [field]: value
     }))
-    if (field === 'email') {
-      setEmailValid(isValidEmail(value))
-    }
+    // if (field === 'email') {
+    //   setEmailValid(isValidEmail(value))
+    // }
   }
 
   const handleCheckboxToggle = () => {
@@ -98,10 +100,13 @@ const Registrarse = () => {
   const submit = () => {
     setLoading(true)
 
-    const passwordPattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.])[A-Za-z\d@$!%*?.]{4,}$/
+    // const passwordPattern =
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.])[A-Za-z\d@$!%*?.]{4,}$/
 
-    if (!isValidEmail(valuesUser.email)) {
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{4,}$/
+
+    if (!isEmailValid) {
       setLoading(false)
 
       return setNombreError('Ingresa un email válido')
@@ -119,16 +124,16 @@ const Registrarse = () => {
       valuesUser.password &&
       confirmPassword
     ) {
-      if (isValidEmail(valuesUser.email)) {
-        const existingUser = allUsers?.find(
-          (user) => user.email === valuesUser.email
-        )
-        if (existingUser) {
-          setLoading(false)
+      if (isEmailValid) {
+        // const existingUser = allUsers?.find(
+        //   (user) => user.email === valuesUser.email
+        // )
+        // if (existingUser) {
+        //   setLoading(false)
 
-          Alert.alert('Este correo electrónico ya está registrado')
-          return
-        }
+        //   Alert.alert('Este correo electrónico ya está registrado')
+        //   return
+        // }
         if (
           valuesUser.password === confirmPassword
           // passwordPattern.test(valuesUser.password.trim())
@@ -140,65 +145,7 @@ const Registrarse = () => {
           }
           dispatch(create(valuesUser)).then((e) => {
             console.log('cuando creaste fue esto', e)
-            // dispatch(login(valuesUser)).then(async (response) => {
-            //   console.log(response, 'responde el login')
-            //   dispatch(
-            //     setIsSpotMan(
-            //       response?.payload?.user?.type === 'club' ? false : true
-            //     )
-            //   )
-            //   await AsyncStorage.setItem(
-            //     '@user',
-            //     JSON.stringify(response?.payload?.user)
-            //   )
-            //   await AsyncStorage.setItem(
-            //     'userToken',
-            //     response?.payload?.accesToken
-            //   )
-            //   await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
-            //   await AsyncStorage.setItem(
-            //     'userType',
-            //     response?.payload?.user?.type
-            //   )
-            //   if (
-            //     response.payload?.user?.club ||
-            //     response.payload.user?.sportman
-            //   ) {
-            //     dispatch(
-            //       setInitialSportman({
-            //         id: response.payload.user?.sportman?.id,
-            //         ...response.payload.user?.sportman
-            //       })
-            //     )
-            //     dispatch(setClub(response))
-            //     detectSportColor(
-            //       response.payload.user?.sportman?.info?.sport ||
-            //         response.payload?.user?.club?.sport,
-            //       dispatch
-            //     )
-            //     setActiveIcon('diary')
-            //     setLoading(false)
-            //     return navigation.reset({
-            //       index: 0,
-            //       history: false,
-            //       routes: [{ name: 'SiguiendoJugadores' }]
-            //     })
-            //   } else {
-            //     if (response?.payload?.user?.type === 'club') {
-            //       if (response?.payload?.accesToken) {
-            //         navigation.navigate('stepsClub')
-            //         setLoading(false)
-            //       }
-            //     } else {
-            //       if (response.payload.accesToken) {
-            //         navigation.navigate('Paso1')
-            //         setLoading(false)
-            //       }
-            //     }
-            //   }
-            //   dispatch(setClub(response))
-            //   setLoading(false)
-            // })
+
             navigation.navigate('IniciarSesin', { sendMail: true })
           })
         } else {
@@ -213,75 +160,52 @@ const Registrarse = () => {
       setNombreError('Debes llenar todos los campos')
       setLoading(false)
     }
-    // setLoading(false)
   }
 
-  // const handleSubmit = () => {
-  //   setLoading(true)
-  //   setProvisoryProfileImage()
-  //   setProvisoryCoverImage()
-  //   setProfileImage()
-  //   setCoverImage()
-  //   if (valuesUser.email && valuesUser.password) {
-  //     dispatch(login(valuesUser))
-  //       .then(async (response) => {
-  //         console.log(response, 'responde el login')
-
-  //         dispatch(
-  //           setIsSpotMan(
-  //             response?.payload?.user?.type === 'club' ? false : true
-  //           )
-  //         )
-  //         await AsyncStorage.setItem(
-  //           '@user',
-  //           JSON.stringify(response.payload.user)
-  //         )
-  //         await AsyncStorage.setItem('userToken', response?.payload?.accesToken)
-  //         await AsyncStorage.setItem('userAuth', JSON.stringify(valuesUser))
-  //         await AsyncStorage.setItem('userType', response?.payload?.user?.type)
-  //         setLoading(false)
-  //         if (response.payload?.user?.club || response.payload.user?.sportman) {
-  //           dispatch(
-  //             setInitialSportman({
-  //               id: response.payload.user?.sportman?.id,
-  //               ...response.payload.user?.sportman
-  //             })
-  //           )
-  //           dispatch(setClub(response))
-  //           detectSportColor(
-  //             response.payload.user?.sportman?.info?.sport ||
-  //               response.payload?.user?.club?.sport,
-  //             dispatch
-  //           )
-  //           setActiveIcon('diary')
-  //           return navigation.reset({
-  //             index: 0,
-  //             history: false,
-  //             routes: [{ name: 'SiguiendoJugadores' }]
-  //           })
-  //         } else {
-  //           if (response?.payload?.user?.type === 'club') {
-  //             if (user?.accesToken) {
-  //               navigation.navigate('stepsClub')
-  //             }
-  //           } else {
-  //             if (response.payload.accesToken) {
-  //               navigation.navigate('Paso1')
-  //             }
-  //           }
-  //         }
-  //         dispatch(setClub(response))
-  //       })
-  //       .catch((error) => {
-  //         setLoading(false)
-  //         setError('Usuario o contraseña incorrecto/s')
-
-  //         console.error(error)
-  //       })
-  //   }
-  // }
-
   const { height } = useWindowDimensions()
+
+  const checkEmailInUse = async (email) => {
+    try {
+      const response = await axiosInstance.get(`user/email/${email}`, {
+        headers: {
+          user_token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU2YzUzMzg4LTEwOTAtNDQ4NC04OGIzLWFlYzY5NjIyYzRmMCIsImlhdCI6MTcyNzI3NDIxOCwiZXhwIjoxNzI3ODc5MDE4fQ.20tuvZCrbhQFLF2-m6CrgU5JBnDf-jJ3QWzAtdXkiQI' // Agrega el token dummy aquí
+        }
+      }) // Cambia esto a tu URL real
+      if (response.data) {
+        console.log('entraaaa', response)
+        setEmailValid(!response.data) // Si el usuario existe, no es válido
+      } else {
+        setEmailValid(true) // Si hubo un error en la respuesta, consideramos el email válido
+      }
+    } catch (error) {
+      console.error('Error al verificar el email:', error)
+    } finally {
+    }
+  }
+
+  // Debounce para verificar el email
+  const debouncedCheckEmailInUse = useRef(
+    debounce((email) => {
+      if (EmailValidator.validate(email)) {
+        checkEmailInUse(email)
+      } else {
+        setEmailValid(true) // Resetear el estado si el email no es válido
+      }
+    }, 100) // 1000 ms = 1 segundo
+  ).current
+
+  useEffect(() => {
+    debouncedCheckEmailInUse(valuesUser.email)
+  }, [valuesUser.email]) // Se ejecuta cada vez que cambia el email
+
+  const handleLinkPress = () => {
+    const url =
+      'https://www.privacypolicies.com/live/a51249a4-6a56-472b-9142-68c4b6b5c57c' // Cambia esto a tu enlace deseado
+    Linking.openURL(url).catch((err) =>
+      console.error('Error al abrir el enlace', err)
+    )
+  }
 
   return (
     <KeyboardAvoidingView
@@ -643,17 +567,19 @@ const Registrarse = () => {
                 publicitaria a través del correo electrónico
               </Text>
             </View>
-            <Text
-              style={{
-                fontSize: FontSize.t4TEXTMICRO_size,
-                color: Color.gREY2SPORTSMATCH,
-                textAlign: 'center',
-                fontFamily: FontFamily.t4TEXTMICRO
-              }}
-            >
-              Al continuar, aceptas automáticamente nuestras Condiciones,
-              Polítíca de privacidad y Polítíca de cookies
-            </Text>
+            <TouchableOpacity onPress={handleLinkPress}>
+              <Text
+                style={{
+                  fontSize: FontSize.t4TEXTMICRO_size,
+                  color: Color.gREY2SPORTSMATCH,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.t4TEXTMICRO
+                }}
+              >
+                Al continuar, aceptas automáticamente nuestras Condiciones,
+                Polítíca de privacidad y Polítíca de cookies
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

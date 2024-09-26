@@ -20,6 +20,7 @@ import { Context } from '../../context/Context'
 import { Entypo } from '@expo/vector-icons'
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera'
 import { DeviceMotion } from 'expo-sensors'
+import { ImageEditor } from '@tahsinz21366/expo-crop-image'
 
 const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   const {
@@ -38,6 +39,7 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
   const handlePickImage = async (type) => {
     await pickImage(type)
   }
+  const [editorVisible, setEditorVisible] = useState(false)
 
   const [hasPermission, setHasPermission] = useState(null)
 
@@ -54,6 +56,12 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
 
   useEffect(() => {}, [selectedImage, selectedPicture])
   const [orientation, setOrientation] = useState('portrait')
+
+  const launchEditor = (uri) => {
+    // Then set the image uri
+    // And set the image editor to be visible
+    setEditorVisible(true)
+  }
 
   // useEffect(() => {
   //   const subscription = DeviceMotion.addListener((deviceMotionData) => {
@@ -74,8 +82,8 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
         orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
       })
       setSelectedImage(photo)
-      pickImageFromCamera(selectedPicture, photo.uri)
       setShowCamera(false)
+      launchEditor(photo.uri)
       // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
@@ -254,12 +262,55 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
             </View>
           </View>
         </View>
+        <ImageEditor
+          fixedAspectRatio={1 / 1}
+          editorOptions={{
+            controlBar: {
+              cancelButton: {
+                iconName: 'cancel',
+                color: 'white',
+                text: 'Cancelar'
+              },
+              cropButton: { iconName: 'crop', color: 'white', text: 'Cortar' },
+              backButton: {
+                iconName: 'arrow-back',
+                color: 'white',
+                text: 'Atrás'
+              },
+              saveButton: {
+                iconName: 'save-alt',
+                color: 'white',
+                text: 'Guardar'
+              }
+            }
+          }}
+          isVisible={editorVisible}
+          onEditingCancel={() => setEditorVisible(false)}
+          onCloseEditor={() => setEditorVisible(false)}
+          imageUri={selectedImage?.uri}
+          fixedCropAspectRatio={1 / 1}
+          minimumCropDimensions={{
+            width: 100,
+            height: 100
+          }}
+          mode="full"
+          onEditingComplete={(result) => {
+            setEditorVisible(false)
+            pickImageFromCamera(selectedPicture, result.uri)
+
+            setSelectedImage(result)
+          }}
+        />
       </ScrollView>
     )
   } else {
     return (
-      <View
-        style={{ zIndex: 9999, height: Dimensions.get('screen').height * 0.6 }}
+      <Modal
+        visible
+        style={{
+          zIndex: 9999,
+          height: Dimensions.get('screen').height
+        }}
       >
         <CameraView
           ref={cameraReff}
@@ -329,7 +380,7 @@ const Paso4Profesional = ({ profesionalValues, setProfesionalValues }) => {
             </TouchableOpacity>
           </View>
         </CameraView>
-      </View>
+      </Modal>
     )
   }
 }

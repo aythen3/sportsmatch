@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Modal
+  Modal,
+  Dimensions
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -23,6 +24,7 @@ import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 import ScrollableModal from '../../../../components/modals/ScrollableModal'
 import { DeviceMotion } from 'expo-sensors'
 import { getUserData } from '../../../../redux/actions/users'
+import { ImageEditor } from '@tahsinz21366/expo-crop-image'
 
 const PlayerDetails = () => {
   const dispatch = useDispatch()
@@ -37,6 +39,7 @@ const PlayerDetails = () => {
   const [userDescription, setUserDescription] = useState()
   const navigation = useNavigation()
   const [name, setName] = useState(sportman?.info?.nickname || '')
+  const [editorVisible, setEditorVisible] = useState(false)
 
   const {
     pickImage,
@@ -168,7 +171,8 @@ const PlayerDetails = () => {
         orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
       }) // Use cameraRef.current
       setSelectedImage(photo)
-      pickImageFromCamera(selectedPicture, photo.uri)
+      // pickImageFromCamera(selectedPicture, photo.uri)
+      setEditorVisible(true)
       setShowCamera(false)
       // You can handle the taken photo here, such as displaying it or saving it.
     }
@@ -283,14 +287,20 @@ const PlayerDetails = () => {
                     }}
                   />
                 )} */}
-                {sportman?.info?.img_perfil && (
+                {provisoryProfileImage || sportman?.info?.img_perfil ? (
                   <Image
-                    style={{ width: '100%', height: '100%', borderRadius: 100 }}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: 100
+                    }}
                     contentFit="cover"
                     source={{
                       uri: provisoryProfileImage || sportman?.info?.img_perfil
                     }}
                   />
+                ) : (
+                  ''
                 )}
                 <TouchableOpacity
                   onPress={() => {
@@ -538,15 +548,61 @@ const PlayerDetails = () => {
             {/* =========================================================== */}
           </View>
         </ScrollView>
+        <ImageEditor
+          fixedAspectRatio={1 / 1}
+          editorOptions={{
+            controlBar: {
+              cancelButton: {
+                iconName: 'cancel',
+                color: 'white',
+                text: 'Cancelar'
+              },
+              cropButton: { iconName: 'crop', color: 'white', text: 'Cortar' },
+              backButton: {
+                iconName: 'arrow-back',
+                color: 'white',
+                text: 'Atrás'
+              },
+              saveButton: {
+                iconName: 'save-alt',
+                color: 'white',
+                text: 'Guardar'
+              }
+            }
+          }}
+          isVisible={editorVisible}
+          onEditingCancel={() => setEditorVisible(false)}
+          onCloseEditor={() => setEditorVisible(false)}
+          imageUri={selectedImage?.uri}
+          fixedCropAspectRatio={1 / 1}
+          minimumCropDimensions={{
+            width: 100,
+            height: 100
+          }}
+          mode="full"
+          onEditingComplete={(result) => {
+            setEditorVisible(false)
+            pickImageFromCamera(selectedPicture, result.uri)
+
+            setSelectedImage(result)
+          }}
+        />
       </SafeAreaView>
     )
   } else {
     return (
-      <View style={{ zIndex: 9999, height: '100%' }}>
+      <Modal
+        visible
+        style={{
+          zIndex: 9999,
+          height: Dimensions.get('screen').height,
+          position: 'absolute'
+        }}
+      >
         <CameraView
           ref={cameraReff}
           facing={facing}
-          style={{ flex: 1 }}
+          style={{ height: '100%' }}
           mode="picture"
           FocusMode="on"
           onCameraReady={(e) => console.log(e, 'esto es e')}
@@ -611,7 +667,7 @@ const PlayerDetails = () => {
             </TouchableOpacity>
           </View>
         </CameraView>
-      </View>
+      </Modal>
     )
   }
 }
