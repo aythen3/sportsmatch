@@ -20,24 +20,89 @@ import { useSelector } from 'react-redux'
 import axiosInstance from '../../../utils/apiBackend'
 import CustomHeaderBack from '../../../components/CustomHeaderBack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Contrasea = () => {
-  const { user } = useSelector((state) => state.users)
+  const { user: usuario } = useSelector((state) => state.users)
   const navigation = useNavigation()
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [repeatNewPassword, setRepeatNewPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('') // Estado para el error de la contraseña
 
-  const handleChangePassword = () => {
-    if (newPassword === repeatNewPassword) {
-      const body = {
-        email: user?.user?.email,
-        password: password,
-        newPassword: newPassword
+  const passwordPattern =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{4,}$/
+
+  const handleChangePassword = async () => {
+    try {
+      // Obtener el userAuth desde AsyncStorage
+      const storedUser = await AsyncStorage.getItem('userAuth')
+
+      if (!storedUser) {
+        return setPasswordError('Error al obtener la información del usuario')
       }
-      axiosInstance
-        .post(`user/change-password/${user.user.id}`, body)
-        .then(() => navigation.navigate('SiguiendoJugadores'))
+
+      // Parsear el JSON almacenado
+      const user = JSON.parse(storedUser)
+
+      // Comprobar que la contraseña ingresada es igual a la contraseña actual almacenada
+      if (password !== user.password) {
+        return setPasswordError('La contraseña actual no coincide.')
+      }
+
+      // Verificar que la nueva contraseña cumple con el regex
+      // const passwordPattern =
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{4,}$/
+
+      if (!passwordPattern.test(newPassword)) {
+        return setPasswordError(
+          'La nueva contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.'
+        )
+      }
+
+      // Verificar que las nuevas contraseñas coinciden
+      if (newPassword !== repeatNewPassword) {
+        return setPasswordError('Las nuevas contraseñas no coinciden.')
+      }
+
+      // Si todo es válido, limpiar el error
+      setPasswordError('')
+
+      // Crear el body para el request
+      const body = {
+        email: user.email,
+        password: password, // La contraseña actual
+        newPassword: newPassword // La nueva contraseña
+      }
+
+      // Hacer la petición para cambiar la contraseña
+      await axiosInstance
+        .post(`user/change-password/${usuario.user.id}`, body)
+        .then(async (e) => {
+          console.log(e, 'PASSSSS')
+          // Si el cambio es exitoso, actualizar AsyncStorage con la nueva contraseña
+          const updatedUser = {
+            ...user,
+            password: newPassword // Actualizamos la contraseña en el objeto
+          }
+
+          // Guardar el objeto actualizado en AsyncStorage
+          await AsyncStorage.setItem('userAuth', JSON.stringify(updatedUser))
+
+          // Navegar a la siguiente pantalla
+          if (e?.data?.message === 'Clave modificada con éxito') {
+            navigation.navigate('SiguiendoJugadores')
+          } else {
+            setPasswordError(
+              'Hubo un error cambiando la contraseña. Intenta de nuevo.'
+            )
+          }
+        })
+    } catch (error) {
+      console.error('Error cambiando la contraseña', error)
+      setPasswordError(
+        'Hubo un error cambiando la contraseña. Intenta de nuevo.'
+      )
     }
   }
 
@@ -70,6 +135,20 @@ const Contrasea = () => {
           title="Repetir nueva contraseña"
           placeholderText="*****"
         />
+        {/* Mostrar el error si existe */}
+        {passwordError ? (
+          <Text
+            style={{
+              color: 'red',
+              marginTop: 10,
+              width: '100%',
+              paddingHorizontal: 20,
+              textAlign: 'center'
+            }}
+          >
+            {passwordError}
+          </Text>
+        ) : null}
       </View>
 
       <TouchableOpacity
