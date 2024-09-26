@@ -284,7 +284,7 @@ export class UserController {
       </head>
       <body>
         <div class="header">
-          <img src="assets/image.jpg" class='iconImg'/>
+          <img src="/assets/image.png" class='iconImg' alt="Logo"/>
         </div>
         <h1>Contraseña cambiada con éxito</h1>
         <p>Tu contraseña ha sido actualizada correctamente. Ahora puedes iniciar sesión con tu nueva contraseña.</p>
