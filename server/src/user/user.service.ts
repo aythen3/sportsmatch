@@ -139,7 +139,7 @@ export class UserService {
     <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}</a>
     <p>Si no solicitaste este registro, por favor ignora este correo.
        Saludos,
-       l equipo de SportsMatch</p>
+       el equipo de SportsMatch.</p>
   </body>
 </html>
       `

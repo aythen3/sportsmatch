@@ -29,7 +29,6 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@stripe/stripe-react-native": "^0.37.2",
     "@tahsinz21366/expo-crop-image": "^0.2.3",
-    "@testing-library/jest-native": "^5.4.3",
     "axios": "^1.6.7",
     "email-validator": "^2.0.4",
     "expo": "^51.0.8",
@@ -87,7 +86,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
-    "@testing-library/react-native": "^12.7.2",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.0.0",
@@ -99,8 +97,7 @@
     "prettier": "^3.3.3",
     "react-native-debugger-open": "^0.4.3",
     "reactotron-react-native": "^5.1.7",
-    "reactotron-redux": "^3.1.9",
-    "redux-mock-store": "^1.5.4"
+    "reactotron-redux": "^3.1.9"
   },
   "private": true,
   "packageManager": "yarn@4.4.0+sha512.91d93b445d9284e7ed52931369bc89a663414e5582d00eea45c67ddc459a2582919eece27c412d6ffd1bd0793ff35399381cb229326b961798ce4f4cc60ddfdb"
