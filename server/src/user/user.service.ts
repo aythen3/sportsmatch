@@ -77,7 +77,7 @@ export class UserService {
       const mailOptions = {
         from: 'sportsmatch.digital@gmail.com',
         to: usuario.email,
-        subject: 'Confirmación de cuenta',
+        subject: 'Confirma tu correo electrónico para completar tu registro',
         attachments: [
           /* {
           filename: 'sportspot.png',
@@ -129,8 +129,17 @@ export class UserService {
       
     </div>
     <h1>Confirmación de cuenta</h1>
-    <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+    <p>Hola ${usuario.nickname},
+      ¡Estamos emocionados de que te unas a SportsMatch!
+      Para completar tu registro y activar tu cuenta, por favor verifica tu dirección
+      de correo electrónico haciendo clic en el siguiente enlace:</p>
     <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+     <p>Si no puedes hacer clic en el enlace, copia y pega la siguiente URL en tu
+        navegador:</p>
+    <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}</a>
+    <p>Si no solicitaste este registro, por favor ignora este correo.
+       Saludos,
+       l equipo de SportsMatch</p>
   </body>
 </html>
       `

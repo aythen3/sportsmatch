@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import {
+  Dimensions,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Color, FontSize, FontFamily, Border } from '../../GlobalStyles'
 import { useDispatch } from 'react-redux'
@@ -18,6 +25,7 @@ import { setInitialSportman } from '../../redux/slices/sportman.slices'
 import { login } from '../../redux/actions/users'
 import { getAll } from '../../redux/actions/sports'
 import { getAllPosts } from '../../redux/actions/post'
+import { Context } from '../../context/Context'
 
 export const detectSportColor = (sport, dispatch) => {
   console.log(sport, 'me llega sport')
@@ -52,6 +60,8 @@ const PantallaInicio = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [isLoged, setIsLoged] = useState(false)
+
+  const { scalableFontSize } = useContext(Context)
 
   const navigateToOtraPantalla = async (user) => {
     const valuesUser = (await JSON.parse(user)) || {}
@@ -169,8 +179,24 @@ const PantallaInicio = () => {
       <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
-        source={require('../../assets/inicio.png')}
+        source={require('../../assets/inicio2.png')}
       />
+      <TouchableOpacity
+        style={{ justifyContent: 'center', alignItems: 'center' }}
+        onPress={() => navigation.navigate('LoginSwitch')}
+      >
+        <Image
+          resizeMode="contain"
+          style={{
+            width: scalableFontSize(40),
+            height: 30,
+            objectFit: 'contain',
+            position: 'absolute',
+            bottom: Dimensions.get('screen').height / 3.8
+          }}
+          source={require('../../assets/arrowinicio.png')}
+        ></Image>
+      </TouchableOpacity>
     </SafeAreaView>
   )
 }
