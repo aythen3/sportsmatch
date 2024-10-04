@@ -4,20 +4,16 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OfferEntity } from './entities/offer.entity';
 import { Repository } from 'typeorm';
-import { PositionService } from 'src/position/position.service';
 import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { ErrorManager } from 'src/utils/error.manager';
-import { PositionEntity } from 'src/position/entities/position.entity';
 
 @Injectable()
 export class OfferService {
   constructor(
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
-    private readonly clubService: ClubService,
-    @InjectRepository(PositionEntity)
-    private readonly positionRepository: Repository<PositionEntity>
+    private readonly clubService: ClubService
   ) {}
 
   /**
@@ -27,10 +23,9 @@ export class OfferService {
    */
   public async create(createOfferDto: CreateOfferDto) {
     try {
-      const { offerData, position: positionId, clubId } = createOfferDto;
+      const { offerData, clubId } = createOfferDto;
 
       // const position = await this.positionService.findOne(positionId);
-     
 
       const club = await this.clubService.findOne(clubId);
       if (!club) {
@@ -39,7 +34,6 @@ export class OfferService {
 
       const newOffer = await this.offerRepository.create({
         ...offerData,
-
 
         club: club
       });

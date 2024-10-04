@@ -1,7 +1,6 @@
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
-import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportEntity } from 'src/sport/entities/sport.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
