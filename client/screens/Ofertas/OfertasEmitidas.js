@@ -80,7 +80,15 @@ const OfertasEmitidas = () => {
   return (
     <SafeAreaView style={styles.ofertasEmitidas}>
       <View style={styles.topContainer}>
-        <Pressable style={styles.header} onPress={() => navigation.goBack()}>
+        <Pressable
+          style={styles.header}
+          onPress={() => {
+            return navigation.reset({
+              index: 0,
+              routes: [{ name: 'ScreenPrincipal' }]
+            })
+          }}
+        >
           <BackArrowSVG />
         </Pressable>
         <Text style={styles.titular}>Ofertas</Text>

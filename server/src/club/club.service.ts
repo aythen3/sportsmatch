@@ -18,10 +18,7 @@ export class ClubService {
     private readonly clubRepository: Repository<ClubEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly userService: UserService,
-    @InjectRepository(SportEntity)
-    private readonly sportRepository: Repository<SportEntity>,
-    private readonly sportService: SportService
+    private readonly userService: UserService
   ) {}
 
   /**
@@ -170,13 +167,7 @@ export class ClubService {
     const validRelations: string[] = [];
 
     // Definir relaciones válidas permitidas en la entidad Match
-    const allowedRelations = [
-      'sports',
-      'positions',
-      'offers',
-      'sportman',
-      'user'
-    ]; // Agregar más según sea necesario
+    const allowedRelations = ['positions', 'offers', 'sportman', 'user']; // Agregar más según sea necesario
 
     // Filtrar relaciones válidas
     relations.forEach((relation) => {

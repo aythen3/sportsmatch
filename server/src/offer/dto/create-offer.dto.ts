@@ -36,11 +36,9 @@ export class CreateOfferDto {
   @ValidateNested()
   offerData: OfferData;
 
-
-
   @IsOptional()
   @IsBoolean()
-  paused:boolean; 
+  paused: boolean;
 
   @IsString()
   @IsOptional()
@@ -48,12 +46,7 @@ export class CreateOfferDto {
 
   @IsString()
   @IsOptional()
-  sport: string;
-
-  @IsString()
-  @IsOptional()
   position: any;
-  
 
   @IsString()
   @IsOptional()
@@ -71,7 +64,7 @@ export class CreateOfferDto {
   @IsString()
   @IsOptional()
   clubId: string;
-  
+
   @IsString()
   @IsOptional()
   inscriptions: string[];

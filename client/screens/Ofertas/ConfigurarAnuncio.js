@@ -509,14 +509,12 @@ const ConfigurarAnuncio = () => {
                     selectedRemuneration &&
                     selectedPosition &&
                     selectedProvince &&
-                    selectedSport &&
                     selectedRol) ||
                   (selectedRol === 'Profesional' &&
                     selectedPriority &&
                     selectedRemuneration &&
                     selectedPosition &&
-                    selectedProvince &&
-                    selectedSport)
+                    selectedProvince)
                 ) {
                   navigation.navigate('PostPromocion', {
                     fromOffer: true,
@@ -538,7 +536,6 @@ const ConfigurarAnuncio = () => {
                         posit: selectedPosition,
                         paused: false,
                         province: selectedProvince,
-                        sport: selectedSport,
                         prop4: selectedRol
                       },
 
@@ -586,7 +583,6 @@ const ConfigurarAnuncio = () => {
                       posit: selectedPosition,
                       paused: false,
                       province: selectedProvince,
-                      sport: selectedSport,
                       prop4: selectedRol
                     },
 
@@ -600,19 +596,18 @@ const ConfigurarAnuncio = () => {
                       selectedRemuneration &&
                       selectedPosition &&
                       selectedProvince &&
-                      selectedSport &&
                       selectedRol) ||
                     (selectedRol === 'Profesional' &&
                       selectedPriority &&
                       selectedRemuneration &&
                       selectedPosition &&
-                      selectedProvince &&
-                      selectedSport)
+                      selectedProvince)
                   ) {
-                    await dispatch(setOffer(data)).then((data) =>
+                    await dispatch(setOffer(data)).then((data) => {
+                      console.log(data, 'DATA')
                       dispatch(getAllOffers())
-                    )
-                    navigation.navigate('OfertaCreada')
+                    })
+                    navigation.push('OfertaCreada')
                   } else {
                     setShowError('Debes completar los campos')
                   }

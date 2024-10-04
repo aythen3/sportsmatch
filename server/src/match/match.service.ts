@@ -19,8 +19,7 @@ export class MatchService {
     private readonly matchRepository: Repository<MatchEntity>,
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
-    @InjectRepository(SportmanEntity)
-    private readonly sportmanRepository: Repository<SportmanEntity>,
+
     private readonly notificationServices: NotificationService
   ) {}
 

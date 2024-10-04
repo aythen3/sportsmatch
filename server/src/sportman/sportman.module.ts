@@ -21,7 +21,6 @@ import { PostEntity } from 'src/post/entities/post.entity';
       ClubEntity,
       MatchEntity,
 
-      SportEntity,
       PostEntity
     ])
   ],

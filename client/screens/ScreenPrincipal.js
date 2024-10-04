@@ -63,6 +63,7 @@ import Notificaciones from './Perfil/EditarPerfil/Notificaciones'
 import SuscriptionChange from './SuscriptionChange'
 import UserFollowers from './Explorar/UserFollowers'
 import Post from './Perfil/EditarPerfil/Post'
+import OfertaCreada from './Ofertas/OfertaCreada'
 const Stack = createNativeStackNavigator()
 
 const ScreenPrincipal = () => {
@@ -360,6 +361,11 @@ const ScreenPrincipal = () => {
         <Stack.Screen
           name="SuscriptionChange"
           component={SuscriptionChange}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OfertaCreada"
+          component={OfertaCreada}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

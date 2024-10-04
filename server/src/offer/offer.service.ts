@@ -4,7 +4,6 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OfferEntity } from './entities/offer.entity';
 import { Repository } from 'typeorm';
-import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { ErrorManager } from 'src/utils/error.manager';
 
@@ -85,7 +84,6 @@ export class OfferService {
     try {
       const offer = await this.offerRepository
         .createQueryBuilder('offer')
-        .leftJoinAndSelect('offer.position', 'position')
         .leftJoinAndSelect('offer.club', 'club')
         .where({ id })
         .getOne();

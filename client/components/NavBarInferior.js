@@ -18,6 +18,8 @@ import TusNotificaciones1 from '../screens/Notificaciones/TusNotificaciones1'
 import MiPerfil from '../screens/Perfil/MiPerfil'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import PantallaInicio from '../screens/Login/PantallaInicio'
+import PerfilDatosPropioClub from '../screens/PerfilDatosPropioClub'
+import ConfigurarAnuncio from '../screens/Ofertas/ConfigurarAnuncio'
 const Tab = createBottomTabNavigator()
 const NavBarInferior2 = () => {
   const {
@@ -64,8 +66,9 @@ const NavBarInferior2 = () => {
         tabBarStyle: {
           backgroundColor: Color.bLACK2SPORTMATCH,
           borderTopWidth: 0,
-          height: 60
+          height: 50
         },
+        animationEnabled: false,
         tabBarIcon: ({ focused }) => {
           if (route.name === 'SiguiendoJugadores') {
             return (
@@ -231,7 +234,9 @@ const NavBarInferior2 = () => {
       <Tab.Screen
         name="SeleccionarImagen"
         options={{ headerShown: false }}
-        component={SeleccionarImagen}
+        component={
+          user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
+        }
       />
       <Tab.Screen
         name="TusNotificaciones1"
@@ -241,7 +246,9 @@ const NavBarInferior2 = () => {
       <Tab.Screen
         options={{ headerShown: false }}
         name="MiPerfil"
-        component={MiPerfil}
+        component={
+          user?.user?.type !== 'club' ? MiPerfil : PerfilDatosPropioClub
+        }
         listeners={{
           tabPress: () => handleNavigation()
         }}
@@ -495,7 +502,7 @@ export const styles = StyleSheet.create({
   selected: {
     backgroundColor: Color.colorDimgray_100,
     width: '100%',
-    height: 60,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopColor: Color.bALONCESTO,
