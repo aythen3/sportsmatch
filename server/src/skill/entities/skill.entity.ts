@@ -21,8 +21,8 @@ export class SkillEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @OneToOne(() => SportmanEntity, (sportman) => sportman.skill)
-  sportman: SportmanEntity;
+  // @OneToOne(() => SportmanEntity, (sportman) => sportman.skill)
+  // sportman: SportmanEntity;
 
   @OneToOne(() => SportEntity, (sport) => sport.skill)
   sport: SportEntity;

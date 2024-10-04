@@ -8,12 +8,11 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'sport' })
 export class SportEntity extends BaseEntity {
-
-  @Column({type:"varchar",unique: true })
+  @Column({ type: 'varchar', unique: true })
   @IsString()
   name: string;
 
-  @Column({type:"varchar",nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   @IsString()
   img?: string;
 
@@ -30,10 +29,10 @@ export class SportEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @OneToMany(() => SportmanEntity, (sportman) => sportman.sport, {
-    nullable: true
-  })
-  sportman: SportmanEntity[] | null;
+  // @OneToMany(() => SportmanEntity, (sportman) => sportman.sport, {
+  //   nullable: true
+  // })
+  // sportman: SportmanEntity[] | null;
 
   @OneToOne(() => SkillEntity, (skillEntity) => skillEntity.sport, {
     nullable: true
@@ -45,9 +44,8 @@ export class SportEntity extends BaseEntity {
   })
   positions: PositionEntity[] | null;
 
-  @ManyToOne(() => ClubEntity, (club) => club.sports, {
-    nullable: true
-  })
-  club: ClubEntity | null;
+  // @ManyToOne(() => ClubEntity, (club) => club.sports, {
+  //   nullable: true
+  // })
+  // club: ClubEntity | null;
 }
-

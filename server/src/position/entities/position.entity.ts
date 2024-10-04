@@ -21,8 +21,8 @@ export class PositionEntity extends BaseEntity {
 
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
-  @ManyToOne(() => ClubEntity, (club) => club.positions, { nullable: true })
-  club?: ClubEntity;
+  // @ManyToOne(() => ClubEntity, (club) => club.positions, { nullable: true })
+  // club?: ClubEntity;
 
   // @OneToMany(() => OfferEntity, (offer) => offer.position, { nullable: true })
   // offer: OfferEntity[];
