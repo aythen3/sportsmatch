@@ -25,11 +25,11 @@ const FiltersHome = ({
           source={require('../assets/group-428.png')}
         />
         <TextInput
-          onBlur={action ? action : ''}
-          style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo]}
+          // onBlur={action ? action : ''}
+          style={[styles.posicnDeJuego, styles.posicnDeJuegoTypo, { flex: 1 }]}
           placeholderTextColor={Color.gREY2SPORTSMATCH}
           value={textValue}
-          onChangeText={(e) => setTextValue(e)}
+          onChangeText={(text) => setTextValue(text)}
           placeholder={
             textValue?.length > 0
               ? textValue
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   groupIcon2: {
     height: 40,
     width: 40,
-    objectFit:"scale-down"
+    objectFit: 'scale-down'
   }
 })
 

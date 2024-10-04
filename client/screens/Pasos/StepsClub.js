@@ -119,7 +119,7 @@ const StepsClub = () => {
               return navigation.reset({
                 index: 0,
                 history: false,
-                routes: [{ name: 'SiguiendoJugadores' }]
+                routes: [{ name: 'ScreenPrincipal' }]
               })
             }
           })

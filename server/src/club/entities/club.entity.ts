@@ -51,27 +51,27 @@ export class ClubEntity extends BaseEntity {
   @JoinColumn()
   user: UserEntity;
 
-  @OneToMany(() => SportmanEntity, (sportman) => sportman.club, {
-    nullable: true
-  })
-  sportman?: SportmanEntity[];
+  // @OneToMany(() => SportmanEntity, (sportman) => sportman.club, {
+  //   nullable: true
+  // })
+  // sportman?: SportmanEntity[];
 
   @OneToMany(() => OfferEntity, (offer) => offer.club, { nullable: true })
   offers?: OfferEntity[];
 
-  @OneToMany(() => PositionEntity, (position) => position.club, {
-    nullable: true
-  })
-  positions?: PositionEntity[];
+  // @OneToMany(() => PositionEntity, (position) => position.club, {
+  //   nullable: true
+  // })
+  // positions?: PositionEntity[];
 
   @ManyToMany(() => MatchEntity)
   @JoinTable()
   matches: MatchEntity[];
 
-  @OneToMany(() => SportEntity, (sport) => sport.club, {
-    nullable: true
-  })
-  sports?: SportEntity[];
+  // @OneToMany(() => SportEntity, (sport) => sport.club, {
+  //   nullable: true
+  // })
+  // sports?: SportEntity[];
 
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })

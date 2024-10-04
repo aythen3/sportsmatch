@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
+import React, { useContext, useEffect, useState } from 'react'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 // import { useFonts } from 'expo-font'
 import LoginSwitch from './screens/Login/LoginSwitch'
 import Paso2Jugador from './screens/Pasos/Paso2Jugador'
@@ -46,19 +46,18 @@ import Premium from './screens/Premium'
 import Paso1 from './screens/Pasos/Paso1'
 import CorreoElectrnico from './screens/Perfil/EditarPerfil/CorreoElectrnico'
 import Contrasea from './screens/Perfil/EditarPerfil/Contrasea'
-import NavBarInferior from './components/NavBarInferior'
 import StepsClub from './screens/Pasos/StepsClub'
 import StepsJugador from './screens/Pasos/StepsJugador'
 import EditarSkills from './screens/Perfil/EditarPerfil/jugador/EditarSkills'
 import DetallesUsuario from './screens/Perfil/EditarPerfil/jugador/DetallesUsuario'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Provider, useSelector } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './redux/store'
-import { ContextProvider } from './context/Context'
+import { Context, ContextProvider } from './context/Context'
 import ClubDetails from './screens/Perfil/EditarPerfil/club/ClubDetails'
 import PlayerDetails from './screens/Perfil/EditarPerfil/jugador/PlayerDetails'
-import { AppRegistry, SafeAreaView, StatusBar, View } from 'react-native'
+import { AppRegistry, SafeAreaView, StatusBar, Text, View } from 'react-native'
 import ClubProfile from './screens/Pasos/ClubProfile'
 import ProDetails from './screens/Perfil/EditarPerfil/profesional/ProDetails'
 import Post from './screens/Perfil/EditarPerfil/Post'
@@ -92,8 +91,18 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic
 } from '@expo-google-fonts/poppins'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { getSportman } from './redux/actions/sportman'
+import DiarySVG from './components/svg/footerSVG/DiarySVG'
+import LensSVG from './components/svg/footerSVG/LensSVG'
+import MessageSVG from './components/svg/footerSVG/MessageSVG'
+import NavBarInferior2 from './components/NavBarInferior'
+import ScreenInicio from './screens/ScreenInicio'
+import ScreenPrincipal from './screens/ScreenPrincipal'
 
 const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
+
 if (__DEV__) {
   require('./ReactotronConfig')
 }
@@ -151,11 +160,15 @@ const App = () => {
           <StatusBar barStyle={'light-content'} backgroundColor="#000" />
           <Provider store={store}>
             <ContextProvider>
-              <NavigationContainer  children={NavBarInferior}>
+              <NavigationContainer >
                 {hideSplashScreen ? (
+                 <>
                   <Stack.Navigator
+                  initialRouteName="MainTabs"
                     screenOptions={({ route }) => ({
                       headerShown: false,
+                      
+                      
                       footerShown: setIsFooterShow(
                         route.name !== 'PantallaInicio' &&
                           route.name !== 'LoginSwitch' &&
@@ -168,318 +181,35 @@ const App = () => {
                           route.name !== 'Paso4Profesional' &&
                           route.name !== 'stepsJugador' &&
                           route.name !== 'PostPromocion' &&
-                          route.name !== 'RecuperarContra'
+                          route.name !== 'RecuperarContra' && 
+                           route.name !== 'ChatAbierto1'
+                          
                       )
                     })}
                   >
-                    <Stack.Screen
+  
+
+                    {/* <Stack.Screen
                       name="PantallaInicio"
                       component={PantallaInicio}
                       options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="OfertaCreada"
-                      component={OfertaCreada}
+                    /> */}
+                  
+  <Stack.Screen
+                      name="ScreenInicio"
+                      component={ScreenInicio}
                       options={{ headerShown: false }}
                     />
-
-                    <Stack.Screen
-                      name="LoginSwitch"
-                      component={LoginSwitch}
+                      <Stack.Screen
+                      name="ScreenPrincipal"
+                      component={ScreenPrincipal}
                       options={{ headerShown: false }}
                     />
-
-                    <Stack.Screen
-                      name="Paso2Jugador"
-                      component={Paso2Jugador}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="RecuperarContra"
-                      component={RecuperarContra}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EditarSkills"
-                      component={EditarSkills}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="PlayerDetails"
-                      component={PlayerDetails}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ProDetails"
-                      component={ProDetails}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ClubDetails"
-                      component={ClubDetails}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ClubProfile"
-                      component={ClubProfile}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="UserFollowers"
-                      component={UserFollowers}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="DetallesUsuario"
-                      component={DetallesUsuario}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Post"
-                      component={Post}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="PostPromocion"
-                      component={PromocionarPost}
-                      options={{ headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                      name="ExplorarPersonaClubsFiltr"
-                      component={ExplorarPersonaClubsFiltr}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="MonetizarOfertaPRO"
-                      component={MonetizarOfertaPRO}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Notificaciones"
-                      component={Notificaciones}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="BuscarOfertasDeportvas"
-                      component={BuscarOfertasDeportvas}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TodasLasOfertas"
-                      component={TodasLasOfertas}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="MisOfertas"
-                      component={MisOfertas}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusMatchs"
-                      component={TusMatchs}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusMatchsDetalle"
-                      component={TusMatchsDetalle}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusMensajes"
-                      component={TusMensajes}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusNotificaciones"
-                      component={TusNotificaciones}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="NotificacinMatch"
-                      component={NotificacinMatch}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EditarPerfil"
-                      component={EditarPerfil}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="CerrarSesin"
-                      component={CerrarSesin}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EliminarCuenta"
-                      component={EliminarCuenta}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="MiSuscripcin"
-                      component={MiSuscripcin}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="PerfilDatosPropioClub"
-                      component={PerfilDatosPropioClub}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="stepsClub"
-                      component={StepsClub}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="stepsJugador"
-                      component={StepsJugador}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Paso4Jugador"
-                      component={Paso4Jugador}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Paso3Profesional"
-                      component={Paso3Profesional}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Paso4Profesional"
-                      component={Paso4Profesional}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EscogerDeporte1"
-                      component={EscogerDeporte1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EscogerDeporte2"
-                      component={EscogerDeporte2}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="MiPerfil"
-                      component={MiPerfil}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="PerfilFeedVisualitzaciJug"
-                      component={PerfilFeedVisualitzaciJug}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ChatAbierto"
-                      component={ChatAbierto}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="SiguiendoJugadores"
-                      component={SiguiendoJugadores}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="OfertasEmitidas"
-                      component={OfertasEmitidas}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="InscritosAMisOfertas"
-                      component={InscritosAMisOfertas}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ExplorarClubs"
-                      component={ExplorarClubs}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ExplorarClubsConFiltroPrem"
-                      component={ExplorarClubsConFiltroPrem}
-                      options={{ headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                      name="IniciarSesin"
-                      component={IniciarSesin}
-                      options={{ headerShown: false }}
-                    />
-
-                    <Stack.Screen
-                      name="Registrarse"
-                      component={Registrarse}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusMatchsDetalle1"
-                      component={TusMatchsDetalle1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusMensajes1"
-                      component={TusMensajes1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="TusNotificaciones1"
-                      component={TusNotificaciones1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="EliminarOferta"
-                      component={EliminarOferta}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ChatAbierto1"
-                      component={ChatAbierto1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="CrearHighlight"
-                      component={CrearHighlight}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="SeleccionarImagen"
-                      component={SeleccionarImagen}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="ConfigurarAnuncio"
-                      component={ConfigurarAnuncio}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Premium"
-                      component={Premium}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Paso1"
-                      component={Paso1}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="CorreoElectrnico"
-                      component={CorreoElectrnico}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Contrasea"
-                      component={Contrasea}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="SuscriptionChange"
-                      component={SuscriptionChange}
-                      options={{ headerShown: false }}
-                    />
+        
                   </Stack.Navigator>
+                 </>
                 ) : null}
-                {isFooterShow && <NavBarInferior />}
+                {/* {isFooterShow && <NavBarInferior2 />} */}
               </NavigationContainer>
             </ContextProvider>
           </Provider>

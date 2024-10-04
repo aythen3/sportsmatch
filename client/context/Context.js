@@ -564,7 +564,8 @@ export const ContextProvider = ({ children }) => {
         setUserMatches,
         pickImageFromCamera,
         clubMatches,
-        userMatches
+        userMatches,
+        user
       }}
     >
       {children}

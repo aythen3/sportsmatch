@@ -92,7 +92,7 @@ const PantallaInicio = () => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           } else {
             if (response?.payload?.user?.type == 'club') {
@@ -120,7 +120,7 @@ const PantallaInicio = () => {
           return navigation.reset({
             index: 0,
             history: false,
-            routes: [{ name: 'SiguiendoJugadores' }]
+            routes: [{ name: 'ScreenPrincipal' }]
           })
         }
         if (res?.payload?.user?.type === 'sportman') {

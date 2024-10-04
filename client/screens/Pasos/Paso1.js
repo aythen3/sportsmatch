@@ -269,7 +269,7 @@ const Paso1 = () => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           })
         } else {
@@ -289,7 +289,7 @@ const Paso1 = () => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           })
         }
@@ -332,7 +332,7 @@ const Paso1 = () => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           })
         } else {
@@ -351,7 +351,7 @@ const Paso1 = () => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           })
         }
