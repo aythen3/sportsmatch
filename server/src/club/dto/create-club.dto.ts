@@ -51,11 +51,6 @@ export class CreateClubDto {
   @IsNotEmpty()
   userId: string;
 
-
-
-  @IsString()
-  @IsNotEmpty()
-  sportId: string;
   @IsOptional()
   @ValidateNested()
   @Type(() => Object)

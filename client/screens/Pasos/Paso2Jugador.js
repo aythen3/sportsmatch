@@ -4,12 +4,17 @@ import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
 const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
-  const { sports } = useSelector((state) => state.sports)
-
   const handleSportSelection = (sport) => {
     setSelectedSport(sport)
   }
-  console.log(sports)
+  const sports = [
+    { name: 'Hockey' },
+    { name: 'Fútbol Sala' },
+    { name: 'Baloncesto' },
+    { name: 'Fútbol' },
+    { name: 'Voley' },
+    { name: 'Handball' }
+  ]
 
   return (
     <View

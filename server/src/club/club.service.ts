@@ -30,7 +30,7 @@ export class ClubService {
    */
   public async create(createClubDto: CreateClubDto) {
     try {
-      const { clubData, userId, sportId } = createClubDto;
+      const { clubData, userId } = createClubDto;
       const user = await this.userService.findOne(userId);
       if (!user) {
         throw new ErrorManager({

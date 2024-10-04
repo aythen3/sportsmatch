@@ -70,7 +70,12 @@ const ScreenPrincipal = () => {
     <>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerShown: false,
+          cardStyle: { backgroundColor: 'black' },
+          transitionSpec: {
+            open: { animation: 'timing', config: { duration: 500 } }, // Ajusta duración de la animación de entrada
+            close: { animation: 'timing', config: { duration: 500 } } // Ajusta duración de la animación de salida
+          }
         }}
       >
         <Stack.Screen

@@ -2100,6 +2100,7 @@ const styles = StyleSheet.create({
     width: 390
   },
   todasLasOfertas: {
+    paddingTop: 20,
     width: '100%',
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH

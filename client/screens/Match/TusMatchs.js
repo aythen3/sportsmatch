@@ -624,6 +624,7 @@ const styles = StyleSheet.create({
   tusMatchs: {
     flex: 1,
     paddingHorizontal: 15,
+    paddingTop: 20,
     width: '100%',
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
