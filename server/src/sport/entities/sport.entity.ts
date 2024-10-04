@@ -34,15 +34,15 @@ export class SportEntity extends BaseEntity {
   // })
   // sportman: SportmanEntity[] | null;
 
-  @OneToOne(() => SkillEntity, (skillEntity) => skillEntity.sport, {
-    nullable: true
-  })
-  skill: SkillEntity | null;
+  // @OneToOne(() => SkillEntity, (skillEntity) => skillEntity.sport, {
+  //   nullable: true
+  // })
+  // skill: SkillEntity | null;
 
-  @OneToMany(() => PositionEntity, (position) => position.sport, {
-    nullable: true
-  })
-  positions: PositionEntity[] | null;
+  // @OneToMany(() => PositionEntity, (position) => position.sport, {
+  //   nullable: true
+  // })
+  // positions: PositionEntity[] | null;
 
   // @ManyToOne(() => ClubEntity, (club) => club.sports, {
   //   nullable: true
