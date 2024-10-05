@@ -77,11 +77,13 @@
     "react-native-svg-transformer": "^0.20.0",
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-switch": "^1.5.1",
+    "react-native-system-navigation-bar": "^2.6.4",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
     "react-native-webview": "^11.26.1",
     "react-redux": "^9.1.0",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "expo-navigation-bar": "~3.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

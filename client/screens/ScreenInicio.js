@@ -19,7 +19,8 @@ const ScreenInicio = () => {
     <>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerShown: false,
+          animation: 'none'
         }}
       >
         <Stack.Screen name="PantallaInicio" component={PantallaInicio} />

@@ -28,7 +28,8 @@ const usersSlices = createSlice({
     error: false,
     loading: false,
     isSportman: true,
-    profiles: []
+    profiles: [],
+    showNavBar: true
   },
   reducers: {
     setIsSpotMan: (state, action) => {
@@ -36,6 +37,9 @@ const usersSlices = createSlice({
     },
     setMainColor: (state, action) => {
       state.mainColor = action.payload
+    },
+    setShowNavbar: (state, action) => {
+      state.showNavBar = action.payload
     },
     setGender: (state, action) => {
       state.sportmanGender = action.payload
@@ -203,7 +207,8 @@ export const {
   logedIn,
   logedOut,
   clearUser,
-  cleanUser
+  cleanUser,
+  setShowNavbar
 } = usersSlices.actions
 
 export default usersSlices.reducer

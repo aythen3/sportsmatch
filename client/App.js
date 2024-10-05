@@ -95,37 +95,52 @@ const App = () => {
           <StatusBar barStyle={'light-content'} backgroundColor="#000" />
           <Provider store={store}>
             <ContextProvider>
-              <NavigationContainer >
+              <NavigationContainer theme={{colors:{background:"black"}}} >
                 {hideSplashScreen ? (
                  <>
                   <Stack.Navigator
                   initialRouteName="MainTabs"
+                  
+                  
                     screenOptions={({ route }) => ({
+                      cardOverlayEnabled:false,
+                      cardStyle:{backgroundColor:"red"},
+                      statusBarAnimation:"fade",
+                      animation:"none",
                       headerShown: false,
                       
+                        animationEnabled: false,
+    gestureEnabled: false,  // Desactivar gestos de navegación
+    transitionSpec: {
+      open: { animation: 'timing', config: { duration: 0 } },
+      close: { animation: 'timing', config: { duration: 0 } },
+    },
                       
-                      footerShown: setIsFooterShow(
-                        route.name !== 'PantallaInicio' &&
-                          route.name !== 'LoginSwitch' &&
-                          route.name !== 'IniciarSesin' &&
-                          route.name !== 'stepsClub' &&
-                          route.name !== 'Registrarse' &&
-                          route.name !== 'Paso1' &&
-                          route.name !== 'Paso3Profesional' &&
-                          route.name !== 'Paso4Jugador' &&
-                          route.name !== 'Paso4Profesional' &&
-                          route.name !== 'stepsJugador' &&
-                          route.name !== 'PostPromocion' &&
-                          route.name !== 'RecuperarContra' && 
-                           route.name !== 'ChatAbierto1'
+                      
+                      // footerShown: setIsFooterShow(
+                      //   route.name !== 'PantallaInicio' &&
+                      //     route.name !== 'LoginSwitch' &&
+                      //     route.name !== 'IniciarSesin' &&
+                      //     route.name !== 'stepsClub' &&
+                      //     route.name !== 'Registrarse' &&
+                      //     route.name !== 'Paso1' &&
+                      //     route.name !== 'Paso3Profesional' &&
+                      //     route.name !== 'Paso4Jugador' &&
+                      //     route.name !== 'Paso4Profesional' &&
+                      //     route.name !== 'stepsJugador' &&
+                      //     route.name !== 'PostPromocion' &&
+                      //     route.name !== 'RecuperarContra' && 
+                      //      route.name !== 'ChatAbierto1'
                           
-                      )
+                      // )
                     })}
                   >       
                     <Stack.Screen
+                    
                       name="ScreenInicio"
                       component={ScreenInicio}
                       options={{ headerShown: false }}
+                      
                     />
                       <Stack.Screen
                       name="ScreenPrincipal"

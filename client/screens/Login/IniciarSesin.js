@@ -280,7 +280,19 @@ const IniciarSesin = ({ route }) => {
                   </Text>
                 </TouchableOpacity>
                 {error && (
-                  <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
+                  <Text
+                    style={[
+                      styles.hasOlvidadoTu,
+                      styles.contraseaClr,
+                      {
+                        color:
+                          error ===
+                          'Se envió el mail de confirmación. Comprueba tu bandeja de entrada.'
+                            ? 'yellow'
+                            : 'gray'
+                      }
+                    ]}
+                  >
                     {error}
                   </Text>
                 )}

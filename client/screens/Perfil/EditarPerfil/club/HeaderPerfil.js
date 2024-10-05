@@ -47,7 +47,8 @@ const HeaderPerfil = ({
   front,
   avatar,
   data,
-  external
+  external,
+  getUser
 }) => {
   const moreOpacity = 0.8 // 80% opacity
   const lessOpacity = 0.4 // 40% opacity
@@ -62,7 +63,11 @@ const HeaderPerfil = ({
   const { club } = useSelector((state) => state.clubs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
   const [matchSended, setMatchSended] = useState(false)
-  const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(() =>
+    user.user.followingUsers.find((u) => u.id === data?.author?.id)
+      ? true
+      : false
+  )
   const [isTruncated, setIsTruncated] = useState(true)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
   const [optionsModal, setOptionsModal] = useState(false)
@@ -85,7 +90,7 @@ const HeaderPerfil = ({
   useEffect(() => {
     if (external) {
       if (data?.author?.type === 'club') {
-        getOffersById(data.author.club.id)
+        getOffersById(data?.author?.club.id)
       }
     }
     if (!external) {
@@ -132,40 +137,44 @@ const HeaderPerfil = ({
       setLiked(true)
     }
   }, [user])
+
   const handleFollow = debounce(() => {
     if (sportman?.type == 'invitado') return
 
     setLiked(!liked)
-    let actualUser = _.cloneDeep(user)
-    const actualFollowers =
-      allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
-    const newFollowers = actualFollowers.includes(user?.user?.id)
-      ? actualFollowers.filter((follower) => follower !== user?.user?.id)
-      : [...actualFollowers, user?.user?.id]
+    // let actualUser = _.cloneDeep(user)
+    // const actualFollowers =
+    //   allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
+    // const newFollowers = actualFollowers.includes(user?.user?.id)
+    //   ? actualFollowers.filter((follower) => follower !== user?.user?.id)
+    //   : [...actualFollowers, user?.user?.id]
 
-    const newFollowingArray = userFollowing?.includes(data?.author?.id)
-      ? userFollowing.filter((followed) => followed !== data?.author?.id)
-      : [...userFollowing, data?.author?.id]
-    actualUser.user.following = newFollowingArray
+    // const newFollowingArray = userFollowing?.includes(data?.author?.id)
+    //   ? userFollowing.filter((followed) => followed !== data?.author?.id)
+    //   : [...userFollowing, data?.author?.id]
+    // actualUser.user.following = newFollowingArray
 
-    dispatch(
-      updateUserData({ id: data.author.id, body: { followers: newFollowers } })
-    )
-      .then((data) => {
-        console.log(data, 'es cuando ojeo')
-        dispatch(
-          updateUserData({
-            id: user.user.id,
-            body: { following: newFollowingArray }
-          })
-        )
-      })
-      .then((response) => {
-        if (newFollowers.includes(user?.user?.id)) {
+    // dispatch(
+    //   updateUserData({ id: data.author.id, body: { followers: newFollowers } })
+    // )
+    //   .then((data) => {
+    //     console.log(data, 'es cuando ojeo')
+    //     dispatch(
+    //       updateUserData({
+    //         id: user.user.id,
+    //         body: { following: newFollowingArray }
+    //       })
+    //     )
+    //   })
+    if (!liked) {
+      axiosInstance
+        .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
+        .then((response) => {
+          getUser()
           dispatch(
             sendNotification({
               title: 'Follow',
-              message: `${user.user.nickname} ha comenzado a seguirte`,
+              message: `${user?.user?.nickname} ha comenzado a seguirte`,
               recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
               date: new Date(),
               read: false,
@@ -178,14 +187,26 @@ const HeaderPerfil = ({
               }
             })
           ).then((res) => console.log('respuesta', res))
-        }
-        dispatch(updateUser(actualUser))
-        dispatch(getAllUsers())
-      })
+
+          dispatch(getUserData(user?.user?.id))
+
+          dispatch(getAllUsers())
+        })
+    } else {
+      axiosInstance
+        .delete(`user/${user?.user?.id}/unfollow/${data?.author?.id}`)
+        .then(() => {
+          getUser()
+
+          dispatch(getUserData(user?.user?.id))
+
+          dispatch(getAllUsers())
+        })
+    }
   }, 300)
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
-  const userFollowing = user?.user?.following || []
+  const userFollowing = user?.user?.followingUsers || []
 
   const Bann = () => (
     <View
@@ -447,46 +468,16 @@ const HeaderPerfil = ({
                 if (sportman?.type == 'invitado') return
 
                 setLiked(!liked)
-                let actualUser = _.cloneDeep(user)
-                const actualFollowers =
-                  allUsers?.filter((user) => user.id === data.author.id)[0]
-                    ?.followers || []
-                const newFollowers = actualFollowers.includes(user?.user?.id)
-                  ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
-                  : [...actualFollowers, user?.user?.id]
 
-                const newFollowingArray = userFollowing?.includes(
-                  data?.author?.id
-                )
-                  ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
-                  : [...userFollowing, data?.author?.id]
-                actualUser.user.following = newFollowingArray
-
-                dispatch(
-                  updateUserData({
-                    id: data.author.id,
-                    body: { followers: newFollowers }
-                  })
-                )
-                  .then((data) => {
-                    console.log(data, 'es cuando ojeo')
-                    dispatch(
-                      updateUserData({
-                        id: user.user.id,
-                        body: { following: newFollowingArray }
-                      })
-                    )
-                  })
-                  .then((response) => {
-                    if (newFollowers.includes(user?.user?.id)) {
+                if (!liked) {
+                  axiosInstance
+                    .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
+                    .then((response) => {
+                      getUser()
                       dispatch(
                         sendNotification({
                           title: 'Follow',
-                          message: `${user.user.nickname} ha comenzado a seguirte`,
+                          message: `${user?.user?.club?.name} ha comenzado a seguirte`,
                           recipientId:
                             data?.author?.sportman?.user?.id ??
                             data?.author?.id,
@@ -494,19 +485,31 @@ const HeaderPerfil = ({
                           read: false,
                           prop1: {
                             userId: user?.user?.id,
-                            userData: {
-                              ...user
-                            }
+                            userData: { ...user }
                           },
                           prop2: {
                             rol: 'user'
                           }
                         })
                       ).then((res) => console.log('respuesta', res))
-                    }
-                    dispatch(updateUser(actualUser))
-                    dispatch(getAllUsers())
-                  })
+
+                      dispatch(getUserData(user?.user?.id))
+
+                      dispatch(getAllUsers())
+                    })
+                } else {
+                  axiosInstance
+                    .delete(
+                      `user/${user?.user?.id}/unfollow/${data?.author?.id}`
+                    )
+                    .then(() => {
+                      getUser()
+
+                      dispatch(getUserData(user?.user?.id))
+
+                      dispatch(getAllUsers())
+                    })
+                }
               }}
               style={styles.leftButton}
             >

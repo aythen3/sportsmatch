@@ -36,6 +36,7 @@ export class OfferService {
 
         club: club
       });
+      console.log(newOffer, 'asdasd', offerData);
       const saveOffer = await this.offerRepository.save(newOffer);
       if (!saveOffer) {
         throw new HttpException('the new sportman is not created', 501);

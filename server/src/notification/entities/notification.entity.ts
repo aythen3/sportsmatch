@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/config/base.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'notification' })
 export class NotificationEntity extends BaseEntity {
@@ -29,4 +30,7 @@ export class NotificationEntity extends BaseEntity {
 
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
+
+  @ManyToOne(() => UserEntity, (user) => user.notifications)
+  user: UserEntity;
 }

@@ -72,11 +72,9 @@ const ScreenPrincipal = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          cardStyle: { backgroundColor: 'black' },
-          transitionSpec: {
-            open: { animation: 'timing', config: { duration: 500 } }, // Ajusta duración de la animación de entrada
-            close: { animation: 'timing', config: { duration: 500 } } // Ajusta duración de la animación de salida
-          }
+          animation: 'simple_push',
+          cardOverlayEnabled: false,
+          cardStyle: { backgroundColor: 'red' }
         }}
       >
         <Stack.Screen
@@ -105,11 +103,7 @@ const ScreenPrincipal = () => {
           component={ClubDetails}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="ClubProfile"
-          component={ClubProfile}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="UserFollowers"
           component={UserFollowers}
@@ -156,7 +150,7 @@ const ScreenPrincipal = () => {
           component={TodasLasOfertas}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="MisOfertas"
           component={MisOfertas}
           options={{ headerShown: false }}
@@ -165,7 +159,7 @@ const ScreenPrincipal = () => {
           name="TusMatchs"
           component={TusMatchs}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="TusMatchsDetalle"
           component={TusMatchsDetalle}
@@ -251,21 +245,17 @@ const ScreenPrincipal = () => {
                       component={MiPerfil}
                       options={{ headerShown: false }}
                     /> */}
-        <Stack.Screen
-          name="PerfilFeedVisualitzaciJug"
-          component={PerfilFeedVisualitzaciJug}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="ChatAbierto"
           component={ChatAbierto}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SiguiendoJugadores"
           component={SiguiendoJugadores}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="OfertasEmitidas"
           component={OfertasEmitidas}
@@ -328,16 +318,7 @@ const ScreenPrincipal = () => {
           component={CrearHighlight}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="SeleccionarImagen"
-          component={SeleccionarImagen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ConfigurarAnuncio"
-          component={ConfigurarAnuncio}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="Premium"
           component={Premium}
@@ -366,6 +347,16 @@ const ScreenPrincipal = () => {
         <Stack.Screen
           name="OfertaCreada"
           component={OfertaCreada}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SeleccionarImagen"
+          component={SeleccionarImagen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ConfigurarAnuncio"
+          component={ConfigurarAnuncio}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

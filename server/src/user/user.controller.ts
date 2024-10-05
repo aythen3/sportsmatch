@@ -428,4 +428,22 @@ export class UserController {
     `;
     }
   }
+
+  // Ruta para seguir a un usuario
+  @Post(':id/follow/:userToFollowId')
+  async followUser(
+    @Param('id') userId: string,
+    @Param('userToFollowId') userToFollowId: string
+  ): Promise<string> {
+    return this.userService.followUser(userId, userToFollowId);
+  }
+
+  // Ruta para dejar de seguir a un usuario
+  @Delete(':id/unfollow/:userToUnfollowId')
+  async unfollowUser(
+    @Param('id') userId: string,
+    @Param('userToUnfollowId') userToUnfollowId: string
+  ): Promise<string> {
+    return this.userService.unfollowUser(userId, userToUnfollowId);
+  }
 }

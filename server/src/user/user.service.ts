@@ -439,6 +439,66 @@ export class UserService {
     }
   }
 
+  async followUser(userId: string, userToFollowId: string): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToFollow = await this.userRepository.findOne({
+      where: { id: userToFollowId },
+      relations: ['followers'] // Cargar la relación 'followers' para poder hacer el push
+    });
+
+    if (!userToFollow) {
+      throw new NotFoundException('User to follow not found');
+    }
+
+    // Verificar si ya sigue al usuario
+    if (user.followingUsers.some((u) => u.id === userToFollowId)) {
+      return 'You are already following this user';
+    }
+
+    // Agregar el usuario a la lista de seguidores de userToFollow
+    userToFollow.followers.push(user);
+
+    // Agregar userToFollow a la lista de followingUsers de user
+    user.followingUsers.push(userToFollow);
+
+    // Guardar ambos usuarios
+    await this.userRepository.save(user);
+    await this.userRepository.save(userToFollow);
+
+    return 'Successfully followed the user';
+  }
+
+  async unfollowUser(
+    userId: string,
+    userToUnfollowId: string
+  ): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToUnfollow = await this.userRepository.findOne({
+      where: { id: userToUnfollowId }
+    });
+
+    if (!userToUnfollow) {
+      throw new NotFoundException('User to unfollow not found');
+    }
+
+    // Verificar si ya no sigue al usuario
+    user.followingUsers = user.followingUsers.filter(
+      (u) => u.id !== userToUnfollowId
+    );
+
+    await this.userRepository.save(user);
+
+    return 'Successfully unfollowed the user';
+  }
+
   public async create(createUserDto: CreateUserDto) {
     try {
       // Encriptar la contraseña del usuario
@@ -607,15 +667,21 @@ export class UserService {
    */
   public async findOne(id: string) {
     try {
-      const user = await this.userRepository
-        .createQueryBuilder('user')
-        .leftJoinAndSelect('user.club', 'club')
-        .leftJoinAndSelect('user.sportman', 'sportman')
-        .leftJoinAndSelect('user.posts', 'posts')
-        .leftJoinAndSelect('user.comments', 'comments')
-        .leftJoinAndSelect('user.likes', 'likes')
-        .where({ id })
-        .getOne();
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: [
+          'club',
+          'sportman',
+          'posts',
+          'comments',
+          'likes',
+          'followers',
+          'followers.club',
+          'followers.sportman',
+
+          'followingUsers'
+        ]
+      });
 
       if (!user) {
         throw new ErrorManager({
@@ -623,6 +689,7 @@ export class UserService {
           message: `User id: ${id} not found`
         });
       }
+
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -685,7 +752,14 @@ export class UserService {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        relations: ['club', 'sportman']
+        relations: [
+          'club',
+          'sportman',
+          'followingUsers',
+          'followers',
+          'followers.sportman',
+          'followers.club'
+        ]
       });
 
       if (!user) {

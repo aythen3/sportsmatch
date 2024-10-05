@@ -19,7 +19,8 @@ const UserFollowers = () => {
   const { user, mainColor } = useSelector((state) => state.users)
   const route = useRoute()
   const navigation = useNavigation()
-  const [followers, setFollowers] = useState(route.params.followers || [])
+  const [followers, setFollowers] = useState(user.user.followers || [])
+
   useEffect(() => {
     if (search.length > 0) {
       const actualFollowers = [...route.params.followers]
@@ -79,9 +80,9 @@ const UserFollowers = () => {
           paddingHorizontal: 15
         }}
       >
-        {route.params.followers.length > 1
-          ? `${route.params.followers.length} seguidores`
-          : `${route.params.followers.length} seguidor`}
+        {user.user.followers.length > 1
+          ? `${user.user.followers.length} seguidores`
+          : `${user.user.followers.length} seguidor`}
       </Text>
 
       <TextInput
@@ -115,7 +116,7 @@ const UserFollowers = () => {
           flexDirection: 'column'
         }}
       >
-        {followers.map((follower) => (
+        {user.user.followers.map((follower) => (
           <Pressable
             onPress={() => {
               console.log(follower, 'FOLOWER')
@@ -133,12 +134,12 @@ const UserFollowers = () => {
               if (follower.type === 'sportman') {
                 console.log(follower, 'sportman')
 
-                return navigation.push('PerfilFeedVisualitzaciJug', {
+                return navigation.navigate('PerfilFeedVisualitzaciJug', {
                   author: follower
                 })
               }
               if (follower.type === 'club') {
-                return navigation.push('ClubProfile', { author: follower })
+                return navigation.navigate('ClubProfile', { author: follower })
               }
             }}
             style={{

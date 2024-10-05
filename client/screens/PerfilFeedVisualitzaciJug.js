@@ -76,6 +76,7 @@ const PerfilFeedVisualitzaciJug = () => {
           <StatusBar translucent={true} backgroundColor={'transparent'} />
           <ScrollView keyboardShouldPersistTaps={'always'}>
             <HeaderPerfil
+              getUser={getUser}
               name={data?.author?.nickname}
               sport={
                 data?.author?.type === 'club'

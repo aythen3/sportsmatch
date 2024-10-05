@@ -77,7 +77,6 @@ const Paso1 = () => {
   const [selectedProfesional, setSelectedProfesional] = useState('')
 
   const [sportmanValues, setSportmanValues] = useState({
-    sport: sport?.name || '',
     gender: sportmanGender || '',
     birthdate: birthdate || 0,
     city: city || '',
@@ -88,7 +87,6 @@ const Paso1 = () => {
 
   const [profesionalValues, setProfesionalValues] = useState({
     rol: '',
-    sport: sport?.name || '',
     yearsOfExperience: '',
     city: '',
     actualClub: '',
@@ -212,6 +210,8 @@ const Paso1 = () => {
       if (stepsSportman === 2) {
         const fullData = {
           ...sportmanValues,
+          sport: selectedSport?.name || '',
+
           img_perfil: profileImage,
           img_front: coverImage,
           attack: data?.attack,
@@ -299,6 +299,8 @@ const Paso1 = () => {
       if (profesional && stepsProfesional === 1) {
         const fullData = {
           ...profesionalValues,
+          sport: selectedSport?.name || '',
+
           img_perfil: profileImage,
           img_front: coverImage,
           nickname: user?.user?.nickname || ''

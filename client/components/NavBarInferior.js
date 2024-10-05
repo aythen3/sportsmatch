@@ -20,8 +20,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import PantallaInicio from '../screens/Login/PantallaInicio'
 import PerfilDatosPropioClub from '../screens/PerfilDatosPropioClub'
 import ConfigurarAnuncio from '../screens/Ofertas/ConfigurarAnuncio'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import EditarPerfil from '../screens/Perfil/EditarPerfil/EditarPerfil'
+import TodasLasOfertas from '../screens/TodasLasOfertas'
+import OfertasEmitidas from '../screens/Ofertas/OfertasEmitidas'
+import TusMatchs from '../screens/Match/TusMatchs'
+import PerfilFeedVisualitzaciJug from '../screens/PerfilFeedVisualitzaciJug'
+import ClubProfile from '../screens/Pasos/ClubProfile'
+import Post from '../screens/Perfil/EditarPerfil/Post'
+import * as NavigationBar from 'expo-navigation-bar'
+import ChatAbierto1 from '../screens/ChatAbierto1'
+import UserFollowers from '../screens/Explorar/UserFollowers'
 const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
+
 const NavBarInferior2 = () => {
+  useEffect(() => {
+    // Establece el color marrón de la barra de navegación nativa
+    NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
+  }, [])
   const {
     activeIcon,
     generateLowResUrl,
@@ -35,7 +52,7 @@ const NavBarInferior2 = () => {
   const [sportColor, setSportColor] = useState('#E1451E')
   const { isSportman, mainColor } = useSelector((state) => state.users)
   const { userNotifications } = useSelector((state) => state.notifications)
-  const { user } = useSelector((state) => state.users)
+  const { user, showNavBar } = useSelector((state) => state.users)
   const { sportman } = useSelector((state) => state.sportman)
   const userId = user?.user?.id
   useEffect(() => {
@@ -44,10 +61,12 @@ const NavBarInferior2 = () => {
     }
     console.log(user, 'esto enfo en user')
   }, [])
+
   const imgPerfil =
     user?.user?.type !== 'club'
       ? sportman?.info?.img_perfil
       : user?.user?.club?.img_perfil
+
   const handleNavigation = () => {
     if (sportman?.type == 'invitado') {
       return navigation.navigate('Paso1')
@@ -61,198 +80,310 @@ const NavBarInferior2 = () => {
   }
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarShowLabel: false, // Ocultar los nombres de las pestañas
-        tabBarStyle: {
-          backgroundColor: Color.bLACK2SPORTMATCH,
-          borderTopWidth: 0,
-          height: 50
-        },
-        animationEnabled: false,
-        tabBarIcon: ({ focused }) => {
-          if (route.name === 'SiguiendoJugadores') {
-            return (
-              <View
-                style={
-                  focused
-                    ? [styles.selected, { borderTopColor: mainColor }]
-                    : styles.deselected
-                }
-              >
-                <DiarySVG isActive={focused === 'diary'} />
-              </View>
-            )
-          } else if (route.name === 'ExplorarClubs') {
-            return (
-              <View
-                style={
-                  focused
-                    ? [styles.selected, { borderTopColor: mainColor }]
-                    : styles.deselected
-                }
-              >
-                <LensSVG isActive={focused === 'lens'} />
-              </View>
-            )
-          } else if (route.name === 'SeleccionarImagen') {
-            return (
-              <View
-                style={{
-                  width: '18.4%',
-                  height: 70,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
+      screenOptions={({ route }) => {
+        console.log(route, 'tour')
+        return {
+          tabBarShowLabel: false, // Ocultar los nombres de las pestañas
+          tabBarStyle: {
+            backgroundColor: Color.bLACK2SPORTMATCH,
+            borderTopWidth: 0,
+            height: 50,
+            display:
+              route.name === 'SeleccionarImagen' || !showNavBar
+                ? 'none'
+                : 'flex' // Ocultar las tabs en "SeleccionarImagen"
+          },
+          tabBarIcon: ({ focused }) => {
+            if (route.name === 'SiguiendoJugadores') {
+              return (
+                <View
+                  style={
+                    focused
+                      ? [styles.selected, { borderTopColor: mainColor }]
+                      : styles.deselected
+                  }
+                >
+                  <DiarySVG isActive={focused === 'diary'} />
+                </View>
+              )
+            } else if (route.name === 'ExplorarClubs') {
+              return (
+                <View
+                  style={
+                    focused
+                      ? [styles.selected, { borderTopColor: mainColor }]
+                      : styles.deselected
+                  }
+                >
+                  <LensSVG isActive={focused === 'lens'} />
+                </View>
+              )
+            } else if (route.name === 'SeleccionarImagen') {
+              return (
                 <View
                   style={{
-                    width: 37,
-                    height: 37,
-                    backgroundColor: mainColor,
-                    borderRadius: 5,
+                    width: '18.4%',
+                    height: 70,
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}
                 >
-                  <Text style={{ color: '#fff', fontSize: 28, bottom: 2 }}>
-                    +
-                  </Text>
+                  <View
+                    style={{
+                      width: 37,
+                      height: 37,
+                      backgroundColor: mainColor,
+                      borderRadius: 5,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 28, bottom: 2 }}>
+                      +
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )
-          } else if (route.name === 'TusNotificaciones1') {
-            return (
-              <View
-                style={
-                  focused
-                    ? [styles.selected, { borderTopColor: mainColor }]
-                    : styles.deselected
-                }
-              >
-                <View style={styles.iconContainer}>
-                  <MessageSVG
-                    isActive={focused}
-                    style={[styles.icon, focused && styles.iconActive]}
-                  />
-                  {userNotifications.length > 0 &&
-                    userNotifications
-                      ?.filter((notification) => {
-                        if (user?.user?.type === 'club') {
-                          notification.recipientId === user.user.club?.id
-                          return true
-                        } else if (notification.recipientId === userId) {
-                          return true
-                        } else {
-                          return false
-                        }
-                      })
-                      .filter((notif) => !notif.read).length > 0 && (
+              )
+            } else if (route.name === 'TusNotificaciones1') {
+              return (
+                <View
+                  style={
+                    focused
+                      ? [styles.selected, { borderTopColor: mainColor }]
+                      : styles.deselected
+                  }
+                >
+                  <View style={styles.iconContainer}>
+                    <MessageSVG
+                      isActive={focused}
+                      style={[styles.icon, focused && styles.iconActive]}
+                    />
+                    {userNotifications.length > 0 &&
+                      userNotifications
+                        ?.filter((notification) => {
+                          if (user?.user?.type === 'club') {
+                            notification.recipientId === user.user.club?.id
+                            return true
+                          } else if (notification.recipientId === userId) {
+                            return true
+                          } else {
+                            return false
+                          }
+                        })
+                        .filter((notif) => !notif.read).length > 0 && (
+                        <View
+                          style={{
+                            width: 6,
+                            height: 6,
+                            backgroundColor: mainColor,
+                            borderRadius: 100,
+                            position: 'absolute',
+                            top: 50,
+                            right: 4
+                          }}
+                        ></View>
+                      )}
+                    {notReaded > 0 && (
                       <View
                         style={{
-                          width: 6,
-                          height: 6,
+                          width: 20,
+                          height: 20,
                           backgroundColor: mainColor,
                           borderRadius: 100,
                           position: 'absolute',
-                          top: 50,
-                          right: 4
+                          top: 10,
+                          right: -20,
+                          zIndex: 800
                         }}
-                      ></View>
+                      >
+                        <Text style={{ color: 'white', textAlign: 'center' }}>
+                          {notReaded}
+                        </Text>
+                      </View>
                     )}
-                  {notReaded > 0 && (
-                    <View
+                  </View>
+                </View>
+              )
+            } else if (route.name === 'MiPerfil') {
+              return (
+                <View
+                  // onPress={() => handleNavigation()}
+                  style={
+                    focused
+                      ? [styles.selected, { borderTopColor: mainColor }]
+                      : styles.deselected
+                  }
+                >
+                  {imgPerfil && imgPerfil !== '' && (
+                    <Image
+                      style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
+                      contentFit="cover"
+                      source={{ uri: generateLowResUrl(imgPerfil, 90) }}
+                    />
+                  )}
+                  {!sportman?.info?.img_front && !imgPerfil && (
+                    <Image
                       style={{
-                        width: 20,
-                        height: 20,
-                        backgroundColor: mainColor,
+                        width: 35,
+                        height: 35,
                         borderRadius: 100,
-                        position: 'absolute',
-                        top: 10,
-                        right: -20,
-                        zIndex: 800
+                        backgroundColor: mainColor
                       }}
-                    >
-                      <Text style={{ color: 'white', textAlign: 'center' }}>
-                        {notReaded}
-                      </Text>
-                    </View>
+                      contentFit="cover"
+                      source={require('../assets/whiteSport.png')}
+                    />
                   )}
                 </View>
-              </View>
-            )
-          } else if (route.name === 'MiPerfil') {
-            return (
-              <View
-                // onPress={() => handleNavigation()}
-                style={
-                  focused
-                    ? [styles.selected, { borderTopColor: mainColor }]
-                    : styles.deselected
-                }
-              >
-                {imgPerfil && imgPerfil !== '' && (
-                  <Image
-                    style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
-                    contentFit="cover"
-                    source={{ uri: generateLowResUrl(imgPerfil, 90) }}
-                  />
-                )}
-                {!sportman?.info?.img_front && !imgPerfil && (
-                  <Image
-                    style={{
-                      width: 35,
-                      height: 35,
-                      borderRadius: 100,
-                      backgroundColor: mainColor
-                    }}
-                    contentFit="cover"
-                    source={require('../assets/whiteSport.png')}
-                  />
-                )}
-              </View>
-            )
+              )
+            }
           }
         }
-      })}
+      }}
     >
-      <Tab.Screen
-        name="SiguiendoJugadores"
-        component={SiguiendoJugadores}
-        options={{ headerShown: false }}
-        listeners={{
-          tabPress: () => setActiveIcon('diary')
-        }}
-      />
-      <Tab.Screen
-        name="ExplorarClubs"
-        options={{ headerShown: false }}
-        component={ExplorarClubs}
-        listeners={{
-          tabPress: () => setActiveIcon('lens')
-        }}
-      />
+      <Tab.Screen name="SiguiendoJugadores" options={{ headerShown: false }}>
+        {() => (
+          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+            <Stack.Screen
+              name="SiguiendoJugadores"
+              options={{ headerShown: false }}
+              component={SiguiendoJugadores}
+            />
+            <Stack.Screen
+              name="TodasLasOfertas"
+              options={{ headerShown: false }}
+              component={TodasLasOfertas}
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="OfertasEmitidas"
+              component={OfertasEmitidas}
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="TusMatchs"
+              component={TusMatchs}
+            />
+            <Stack.Screen
+              name="PerfilFeedVisualitzaciJug"
+              component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="ExplorarClubs" options={{ headerShown: false }}>
+        {() => (
+          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+            <Stack.Screen
+              name="ExplorarClubs1"
+              options={{ headerShown: false }}
+              component={ExplorarClubs}
+            />
+            <Stack.Screen
+              name="PerfilFeedVisualitzaciJug"
+              component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ClubProfile"
+              component={ClubProfile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Post"
+              component={Post}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        )}
+      </Tab.Screen>
       <Tab.Screen
         name="SeleccionarImagen"
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false
+        }}
         component={
           user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
         }
       />
       <Tab.Screen
         name="TusNotificaciones1"
-        options={{ headerShown: false }}
-        component={TusNotificaciones1}
-      />
-      <Tab.Screen
-        options={{ headerShown: false }}
-        name="MiPerfil"
-        component={
-          user?.user?.type !== 'club' ? MiPerfil : PerfilDatosPropioClub
-        }
-        listeners={{
-          tabPress: () => handleNavigation()
+        options={{
+          headerShown: false,
+          tabBarBadge: notReaded.length > 0 ? notReaded : undefined
         }}
-      />
+      >
+        {() => (
+          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+            <Stack.Screen
+              name="TusNotificaciones11"
+              options={{ headerShown: false }}
+              component={TusNotificaciones1}
+            />
+            <Stack.Screen
+              name="PerfilFeedVisualitzaciJug"
+              component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ClubProfile"
+              component={ClubProfile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ChatAbierto1"
+              component={ChatAbierto1}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        )}
+      </Tab.Screen>
+      <Tab.Screen options={{ headerShown: false }} name="MiPerfil">
+        {() => (
+          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+            <Stack.Screen
+              name="MiPerfil"
+              component={
+                user?.user?.type !== 'club' ? MiPerfil : PerfilDatosPropioClub
+              }
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="UserFollowers"
+              options={{ headerShown: false }}
+              component={UserFollowers}
+            />
+            <Stack.Screen
+              name="PerfilFeedVisualitzaciJug"
+              component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ClubProfile"
+              component={ClubProfile}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        )}
+      </Tab.Screen>
+      {/* <Tab.Screen name="MiPerfil" options={{ headerShown: false }}>
+        {() => (
+          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+            <Stack.Screen
+              name="MiPerfil"
+              options={{ headerShown: false }}
+              component={
+                user?.user?.type !== 'club' ? MiPerfil : PerfilDatosPropioClub
+              }
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="EditarPerfil"
+              component={EditarPerfil}
+            />
+          </Stack.Navigator>
+        )}
+      </Tab.Screen> */}
     </Tab.Navigator>
   )
 }

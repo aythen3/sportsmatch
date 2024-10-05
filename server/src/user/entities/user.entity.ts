@@ -4,7 +4,16 @@ import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne
+} from 'typeorm';
+import { NotificationEntity } from 'src/notification/entities/notification.entity';
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
   @Column()
@@ -55,8 +64,8 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   banned: string[] | null;
 
-  @Column({ type: 'simple-array', nullable: true })
-  followers: string[] | null;
+  // @Column({ type: 'simple-array', nullable: true })
+  // followers: string[] | null;
 
   @Column({ type: 'simple-array', nullable: true })
   prop3: string[] | null;
@@ -89,4 +98,19 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => LikeEntity, (like) => like.author)
   likes: LikeEntity[];
+
+  // Relación de seguimiento de usuarios
+  @ManyToMany(() => UserEntity, (user) => user.followers)
+  @JoinTable({
+    name: 'user_follows', // Nombre de la tabla intermedia
+    joinColumn: { name: 'followerId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'followingId', referencedColumnName: 'id' }
+  })
+  followingUsers: UserEntity[];
+
+  @ManyToMany(() => UserEntity, (user) => user.followingUsers)
+  followers: UserEntity[];
+
+  @OneToMany(() => NotificationEntity, (notification) => notification.user)
+  notifications: NotificationEntity[];
 }

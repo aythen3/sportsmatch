@@ -28,10 +28,11 @@ import axiosInstance from '../utils/apiBackend'
 import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
-import { updateUser } from '../redux/slices/users.slices'
+import { setShowNavbar, updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
 import axios from 'axios'
 import { getAllMatchs } from '../redux/actions/matchs'
+import * as NavigationBar from 'expo-navigation-bar'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
@@ -74,6 +75,9 @@ const ChatAbierto1 = () => {
   }
 
   useEffect(() => {
+    // Establece el color marrón de la barra de navegación nativa
+    NavigationBar.setBackgroundColorAsync('black')
+
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
@@ -82,6 +86,10 @@ const ChatAbierto1 = () => {
     console.log(userrr, 'Dettt')
     if (userrr.sportman && user.user.sportman) {
       setCanSend(true)
+    }
+    return () => {
+      dispatch(setShowNavbar(true))
+      NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
     }
   }, [])
 
