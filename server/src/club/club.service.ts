@@ -7,8 +7,6 @@ import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 
-import { SportEntity } from 'src/sport/entities/sport.entity';
-import { SportService } from 'src/sport/sport.service';
 import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
@@ -92,7 +90,7 @@ export class ClubService {
     try {
       const club = await this.clubRepository
         .createQueryBuilder('club')
-        .leftJoinAndSelect('club.sports', 'sports')
+        .leftJoinAndSelect('club', 'club')
         .where({ id })
         .getOne();
       // Si no se encuentra el club, lanzar una excepción

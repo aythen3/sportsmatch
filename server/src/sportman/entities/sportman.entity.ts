@@ -1,8 +1,6 @@
-import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
 
-import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,

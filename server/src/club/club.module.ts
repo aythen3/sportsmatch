@@ -8,8 +8,7 @@ import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ClubEntity } from './entities/club.entity';
 import { UserService } from 'src/user/user.service';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';
-import { SportEntity } from 'src/sport/entities/sport.entity';
-import { SportService } from 'src/sport/sport.service';
+
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
@@ -21,7 +20,6 @@ import { PostService } from 'src/post/post.service';
       ClubEntity,
       OfferEntity,
       SportmanEntity,
-      SportEntity,
       PostEntity
     ])
   ],
@@ -31,7 +29,6 @@ import { PostService } from 'src/post/post.service';
     ClubService,
     UserService,
     ImgManagerService,
-    SportService,
     SendMailService,
     PostService
   ]

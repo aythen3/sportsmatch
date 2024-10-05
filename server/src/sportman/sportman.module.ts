@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SportmanEntity } from './entities/sportman.entity';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
-import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';

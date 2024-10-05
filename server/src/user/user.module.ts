@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
 import { ClubEntity } from 'src/club/entities/club.entity';
-import { SportEntity } from 'src/sport/entities/sport.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
@@ -18,7 +17,6 @@ import { PostService } from 'src/post/post.service';
     TypeOrmModule.forFeature([
       UserEntity,
       ClubEntity,
-      SportEntity,
       PostEntity,
       CommentEntity,
       LikeEntity

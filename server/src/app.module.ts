@@ -8,7 +8,6 @@ import { SendMailModule } from './send-mail/send-mail.module';
 import { NotificationModule } from './notification/notification.module';
 import { ClubModule } from './club/club.module';
 import { SportmanModule } from './sportman/sportman.module';
-import { SportModule } from './sport/sport.module';
 import { OfferModule } from './offer/offer.module';
 
 import { MatchModule } from './match/match.module';
@@ -32,7 +31,6 @@ import { join } from 'path';
     NotificationModule,
     ClubModule,
     SportmanModule,
-    SportModule,
     OfferModule,
     MatchModule,
     ImgManagerModule,

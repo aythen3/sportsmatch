@@ -5,7 +5,6 @@ import { UserEntity } from './../user/entities/user.entity';
 import { NotificationEntity } from './../notification/entities/notification.entity';
 import { ClubEntity } from './../club/entities/club.entity';
 import { SportmanEntity } from './../sportman/entities/sportman.entity';
-import { SportEntity } from './../sport/entities/sport.entity';
 import { OfferEntity } from './../offer/entities/offer.entity';
 import { MatchEntity } from './../match/entities/match.entity';
 import { ImgManager } from './../img-manager/entities/img-manager.entity';
@@ -26,8 +25,6 @@ export class InfoEntityService {
     private readonly clubRepository: Repository<ClubEntity>,
     @InjectRepository(SportmanEntity)
     private readonly sportmanRepository: Repository<SportmanEntity>,
-    @InjectRepository(SportEntity)
-    private readonly sportRepository: Repository<SportEntity>,
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
     @InjectRepository(MatchEntity)
@@ -199,8 +196,7 @@ export class InfoEntityService {
         return this.clubRepository;
       case 'sportman':
         return this.sportmanRepository;
-      case 'sport':
-        return this.sportRepository;
+
       case 'offer':
         return this.offerRepository;
 
