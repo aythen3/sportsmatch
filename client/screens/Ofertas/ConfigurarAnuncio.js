@@ -27,6 +27,8 @@ import { getAllOffers, setOffer, updateOffer } from '../../redux/actions/offers'
 import ScrollableModal from '../../components/modals/ScrollableModal'
 import { useStripe } from '@stripe/stripe-react-native'
 import { Entypo } from '@expo/vector-icons'
+import CustomHeaderBack from '../../components/CustomHeaderBack'
+import { getUserData } from '../../redux/actions/users'
 
 const ConfigurarAnuncio = () => {
   const navigation = useNavigation()
@@ -89,15 +91,6 @@ const ConfigurarAnuncio = () => {
       }
     }
   }
-
-  // selectedGender &&
-  //                   selectedPriority &&
-  //                   retribucion &&
-  //                   selectedRemuneration &&
-  //                   selectedPosition &&
-  //                   selectedProvince &&
-  //                   selectedSport &&
-  //                   selectedRol
 
   useEffect(() => {
     setShowError('')
@@ -234,18 +227,7 @@ const ConfigurarAnuncio = () => {
         style={{ flex: 1, flexGrow: 1 }}
         contentContainerStyle={styles.contenido}
       >
-        <View style={styles.topContainer}>
-          <Text style={styles.configuraTuOferta}>Configura tu oferta</Text>
-          <Text
-            onPress={() => {
-              statesCleanUp()
-              navigation.goBack()
-            }}
-            style={styles.configuraTuOferta}
-          >
-            X
-          </Text>
-        </View>
+        <CustomHeaderBack header={'Configura tu oferta'}></CustomHeaderBack>
         <View style={styles.innerContainer}>
           {true && (
             <View style={{ width: '100%', gap: 8 }}>
@@ -539,7 +521,7 @@ const ConfigurarAnuncio = () => {
                         prop4: selectedRol
                       },
 
-                      clubId: club?.id
+                      clubId: user?.user?.club?.id
                     },
                     ...offerData
                   })
@@ -586,7 +568,7 @@ const ConfigurarAnuncio = () => {
                       prop4: selectedRol
                     },
 
-                    clubId: club?.id
+                    clubId: user?.user?.club?.id
                   }
                   console.log('SENDIND DATAAAA', data)
                   if (
@@ -605,7 +587,7 @@ const ConfigurarAnuncio = () => {
                   ) {
                     await dispatch(setOffer(data)).then((data) => {
                       console.log(data, 'DATA')
-                      dispatch(getAllOffers())
+                      dispatch(getUserData(user?.user?.id))
                     })
                     navigation.push('OfertaCreada')
                   } else {
@@ -629,7 +611,7 @@ const ConfigurarAnuncio = () => {
                     province: selectedProvince
                   }
                   await dispatch(updateOffer({ id: offerId, body: data })).then(
-                    (data) => dispatch(getAllOffers())
+                    (data) => dispatch(getUserData(user?.user?.id))
                   )
 
                   navigation.goBack()
@@ -669,7 +651,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
-    fontFamily: FontFamily.t4TEXTMICRO
+    fontFamily: FontFamily.t4TEXTMICRO,
+    textAlignVertical: 'center'
   },
   title: {
     fontSize: FontSize.t2TextSTANDARD_size,
@@ -702,7 +685,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   contenido: {
-    top: '5%',
     gap: 25,
     paddingBottom: 70
   },

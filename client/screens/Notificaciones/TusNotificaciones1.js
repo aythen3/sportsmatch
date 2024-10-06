@@ -73,8 +73,6 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
     getUsersMessages()
-    dispatch(getAllMatchs())
-    dispatch(getUserMatchs(user?.user?.id))
     if (user.user.type === 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
@@ -117,9 +115,8 @@ const TusNotificaciones1 = () => {
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
   return (
     <SafeAreaView style={styles.tusNotificaciones}>
-      {isFocused && (
-        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
-      )}
+      <StatusBar animated translucent={true} backgroundColor={'transparent'} />
+
       <CustomHeaderBack header={'Tu Buzón'}></CustomHeaderBack>
       <View style={styles.tuBuznParent}>
         <View

@@ -60,9 +60,8 @@ export class ClubEntity extends BaseEntity {
   //   nullable: true
   // })
   // positions?: PositionEntity[];
-
-  @ManyToMany(() => MatchEntity)
-  @JoinTable()
+  // Relación con MatchEntity
+  @OneToMany(() => MatchEntity, (match) => match.club)
   matches: MatchEntity[];
 
   // @OneToMany(() => SportEntity, (sport) => sport.club, {

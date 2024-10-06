@@ -10,12 +10,13 @@ import {
   removeNotification
 } from '../redux/actions/notifications'
 import { Context } from '../context/Context'
+import { getUserData } from '../redux/actions/users'
 
 const NotificacinMatch = ({ onClose, data }) => {
   const { getUserMatches } = useContext(Context)
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { allUsers, mainColor } = useSelector((state) => state.users)
+  const { allUsers, mainColor, user } = useSelector((state) => state.users)
   const { allNotifications } = useSelector((state) => state.notifications)
 
   useEffect(() => {}, [allNotifications])
@@ -60,7 +61,9 @@ const NotificacinMatch = ({ onClose, data }) => {
                         id: data?.prop1?.matchId,
                         body: { status: 'success' }
                       })
-                    )
+                    ).then(() => {
+                      dispatch(getUserData(user?.user?.id))
+                    })
                     await dispatch(removeNotification(data.id))
                     await dispatch(getAllNotifications())
                     getUserMatches()

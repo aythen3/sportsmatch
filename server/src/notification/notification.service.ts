@@ -38,7 +38,7 @@ export class NotificationService {
     );
   }
 
-  public async createService(createNotificationDto: CreateNotificationDto) {
+  async createService(createNotificationDto: CreateNotificationDto) {
     console.log(createNotificationDto, 'dto');
     try {
       let recipient;

@@ -2,12 +2,14 @@ import { IsArray, IsBoolean, IsInt, IsString, Max, Min } from 'class-validator';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
+  OneToMany
 } from 'typeorm';
 
 @Entity({ name: 'offer' })
@@ -66,4 +68,9 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   @IsArray()
   inscriptions: string[];
+
+  // Relación con los usuarios inscritos
+  @ManyToMany(() => UserEntity, (user) => user.offers, { nullable: true })
+  @JoinTable() // Necesario para la relación bidireccional
+  usersInscriptions: UserEntity[];
 }

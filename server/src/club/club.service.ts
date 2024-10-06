@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubEntity } from './entities/club.entity';
@@ -88,21 +88,16 @@ export class ClubService {
    */
   public async findOne(id: string) {
     try {
-      const club = await this.clubRepository
-        .createQueryBuilder('club')
-        .leftJoinAndSelect('club', 'club')
-        .where({ id })
-        .getOne();
-      // Si no se encuentra el club, lanzar una excepción
+      // Busca el club por su ID
+      const club = await this.clubRepository.findOne({ where: { id } });
+
       if (!club) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Club id: ${id} not found`
-        });
+        throw new HttpException(`Club with ID ${id} not found`, 404);
       }
-      // Devolver el club encontrado
+
       return club;
     } catch (error) {
+      console.error('Error finding club:', error);
       throw ErrorManager.createSignatureError(error.message);
     }
   }

@@ -114,7 +114,7 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
             <Text style={styles.infoText}>
               {data?.sportman?.type === 'coach'
                 ? data.sportman.info.city || '-'
-                : getUserAge(data?.sportman.info.birthdate)}
+                : getUserAge(data?.sportman.info.birthdate) || ''}
             </Text>
           </View>
           <View
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   matchContainer: {
     width: '96%',
     height: '80%',
-    borderRadius: 25,
+    borderRadius: 20,
     overflow: 'hidden',
     alignItems: 'center'
   },

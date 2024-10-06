@@ -678,8 +678,17 @@ export class UserService {
           'followers',
           'followers.club',
           'followers.sportman',
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
 
-          'followingUsers'
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'followingUsers',
+          'offers'
         ]
       });
 
@@ -755,10 +764,22 @@ export class UserService {
         relations: [
           'club',
           'sportman',
-          'followingUsers',
+          'posts',
+          'comments',
+          'likes',
           'followers',
+          'followers.club',
           'followers.sportman',
-          'followers.club'
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'followingUsers',
+          'offers'
         ]
       });
 

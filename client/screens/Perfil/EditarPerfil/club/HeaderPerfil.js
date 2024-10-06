@@ -62,7 +62,13 @@ const HeaderPerfil = ({
   const { allMatchs } = useSelector((state) => state.matchs)
   const { club } = useSelector((state) => state.clubs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
-  const [matchSended, setMatchSended] = useState(false)
+  const [matchSended, setMatchSended] = useState(() =>
+    user?.user?.club?.matches?.find(
+      (m) => m?.user?.id === data?.author?.id && m.status === 'pending'
+    )
+      ? true
+      : false
+  )
   const [liked, setLiked] = useState(() =>
     user.user.followingUsers.find((u) => u.id === data?.author?.id)
       ? true
@@ -74,7 +80,7 @@ const HeaderPerfil = ({
   const { sportman } = useSelector((state) => state.sportman)
   const [bannedModal, setBannedModal] = useState(false)
 
-  // console.log('club==============', club)
+  console.log('club==============', data?.author?.id)
   const [bannedLoading, setBannedLoading] = useState(false)
 
   const getOffersById = async (id) => {
@@ -616,7 +622,7 @@ const HeaderPerfil = ({
               </Text>
             </TouchableOpacity>
           )}
-          {matchSended === true ? (
+          {matchSended ? (
             <Pressable
               style={{
                 flexDirection: 'row',
@@ -661,61 +667,60 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            clubMatches?.filter(
-              (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
-            )?.length === 0 ? (
+            !user.user.club.matches.find(
+              (match) => match?.user?.id === data?.author?.id
+            ) ? (
             <Pressable
+              disabled={matchSended}
               onPress={() => {
-                const userIdd =
-                  data?.author?.sportman?.user?.id ?? data?.author?.id
                 setMatchSended(true)
-                console.log(data, 'datrita')
+                console.log(data.author.id, 'datrita')
                 dispatch(
                   sendMatch({
-                    sportmanId: data?.author?.sportman?.id,
+                    userId: data?.author?.id,
                     clubId: user?.user?.club?.id,
-                    status: 'pending',
-                    prop1: {
-                      clubId: user?.user?.club?.id,
-                      sportmanId: data?.author?.sportman?.id,
-                      sportManData: {
-                        userId: userIdd,
-                        profilePic:
-                          data?.author?.sportman?.info?.img_perfil || '',
-                        name: data?.author?.nickname
+                    status: 'pending'
+                  })
+                ).then((res) => {
+                  dispatch(getUserData(user?.user?.id))
+                  console.log(
+                    {
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.author?.id,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...club
+                        }
                       },
-                      clubData: {
-                        userId: user?.user?.id,
-                        name: user?.user?.nickname,
-                        profilePic: user?.user?.club?.img_front
-                      }
-                    }
-                  })
-                )
-                  .then((data) => {
-                    console.log('data from match: ', userIdd)
-
-                    dispatch(
-                      sendNotification({
-                        title: 'Solicitud',
-                        message: 'Recibiste una solicitud de match!',
-                        recipientId: userIdd,
-                        date: new Date(),
-                        read: false,
-                        prop1: {
-                          matchId: data?.payload?.id,
-                          clubData: {
-                            name: user?.user?.nickname,
-                            userId: user.user.id,
-                            ...club
-                          }
-                        },
-                        prop2: { rol: 'user' }
-                      })
-                    ).then((r) => console.log(r, 'rrrrrrrrrrrrrrrrr'))
-                  })
-                  .then((data) => dispatch(getAllMatchs()))
-                  .then((data) => getClubMatches())
+                      prop2: { rol: 'user' }
+                    },
+                    'rrrrrrrrrrrrrrrrr'
+                  )
+                  dispatch(
+                    sendNotification({
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.author?.id,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: res?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...club
+                        }
+                      },
+                      prop2: { rol: 'user' }
+                    })
+                  ).then((r) => console.log(r, 'rrrrrrrrrrrrrrrrr'))
+                })
               }}
               style={{
                 flexDirection: 'row',
@@ -761,11 +766,15 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            clubMatches.filter(
-              (match) =>
-                match.prop1.sportmanId === data.author.sportman.id &&
+            user.user.club.matches.find((match) => {
+              console.log(match?.user?.id, data?.author?.id, 'IDDDDDDDDDDD')
+              if (
+                match?.user?.id === data?.author?.id &&
                 match.status === 'success'
-            ).length > 0 ? (
+              ) {
+                return true
+              }
+            }) ? (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ChatAbierto1', {

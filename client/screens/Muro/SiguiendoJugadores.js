@@ -130,9 +130,8 @@ const SiguiendoJugadores = () => {
 
   return (
     <SafeAreaView style={styles.siguiendoJugadores}>
-      {isFocused && (
-        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
-      )}
+      <StatusBar animated translucent={true} backgroundColor={'transparent'} />
+
       {filteredPosts.length > 0 && (
         <ScrollView
           stickyHeaderIndices={[0]}

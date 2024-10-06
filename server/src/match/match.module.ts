@@ -22,7 +22,6 @@ import { PostService } from 'src/post/post.service';
       SportmanEntity,
       ClubEntity,
       MatchEntity,
-
       UserEntity,
       OfferEntity,
       NotificationEntity,

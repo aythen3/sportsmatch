@@ -39,7 +39,7 @@ const SeleccionarImagen = () => {
   const [album, setAlbum] = useState([])
   const [albumData, setAlbumData] = useState([])
   const [editorVisible, setEditorVisible] = useState(false)
-  const [selectedAlbum, setSelectedAlbum] = useState({ title: 'Camera' })
+  const [selectedAlbum, setSelectedAlbum] = useState({ title: 'Galería' })
   const [rotationAngle, setRotationAngle] = useState(0)
   const [showAlbum, setShowAlbum] = useState(false)
   const [videoError, setVideoError] = useState(false)
@@ -62,6 +62,7 @@ const SeleccionarImagen = () => {
     const assets = await MediaLibrary.getAlbumsAsync({
       includeSmartAlbums: true
     })
+    console.log(assets, 'assetss')
     const arr = []
     const arr2 = []
     assets.map((e) => arr.push(e.title))
@@ -75,10 +76,11 @@ const SeleccionarImagen = () => {
       console.error('Permiso denegado para acceder a la galería de imágenes.')
       return
     }
-    const filtro = albumData.filter((e) => e.title == selectedAlbum)
+    const selAlbum = selectedAlbum === 'Cámara' ? 'Camera' : selectedAlbum
+    const filtro = albumData.filter((e) => e.title === selAlbum)
 
     const assets = await MediaLibrary.getAssetsAsync({
-      album: filtro[0],
+      album: filtro[0]?.title === 'Camera' ? filtro[0] : null,
       mediaType: ['photo', 'video']
     })
     const arr = []
@@ -332,12 +334,18 @@ const SeleccionarImagen = () => {
           <View style={{ width: '90%', alignSelf: 'center', flex: 1 }}>
             <View style={styles.container}>
               <TouchableOpacity
+                style={{
+                  padding: 10
+                }}
                 onPress={() => {
                   navigation.goBack()
                 }}
               >
                 <Image
-                  style={{ height: 15, width: 15 }}
+                  style={{
+                    height: 15,
+                    width: 15
+                  }}
                   contentFit="cover"
                   source={require('../../../assets/group-565.png')}
                 />
@@ -496,7 +504,7 @@ const SeleccionarImagen = () => {
                 <ScrollableModal
                   closeModal={() => setShowAlbum(false)}
                   onSelectItem={setSelectedAlbum}
-                  options={album}
+                  options={['Cámara', 'Galería']}
                   visible={showAlbum}
                 ></ScrollableModal>
               )}

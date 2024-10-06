@@ -81,8 +81,9 @@ const NavBarInferior2 = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
-        console.log(route, 'tour')
+        // console.log(route, 'tour')
         return {
+          lazy: true,
           tabBarShowLabel: false, // Ocultar los nombres de las pestañas
           tabBarStyle: {
             backgroundColor: Color.bLACK2SPORTMATCH,
@@ -242,9 +243,9 @@ const NavBarInferior2 = () => {
     >
       <Tab.Screen name="SiguiendoJugadores" options={{ headerShown: false }}>
         {() => (
-          <Stack.Navigator screenOptions={{ animationEnabled: false }}>
+          <Stack.Navigator screenOptions={{ animationEnabled: true }}>
             <Stack.Screen
-              name="SiguiendoJugadores"
+              name="SiguiendoJugadores1"
               options={{ headerShown: false }}
               component={SiguiendoJugadores}
             />
@@ -263,9 +264,15 @@ const NavBarInferior2 = () => {
               name="TusMatchs"
               component={TusMatchs}
             />
+
             <Stack.Screen
               name="PerfilFeedVisualitzaciJug"
               component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Post"
+              component={Post}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
@@ -300,7 +307,7 @@ const NavBarInferior2 = () => {
       <Tab.Screen
         name="SeleccionarImagen"
         options={{
-          headerShown: false
+          headerShown: user?.user?.type !== 'club' ? false : true
         }}
         component={
           user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
@@ -349,6 +356,11 @@ const NavBarInferior2 = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="EditarPerfil"
+              component={EditarPerfil}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="UserFollowers"
               options={{ headerShown: false }}
               component={UserFollowers}
@@ -361,6 +373,11 @@ const NavBarInferior2 = () => {
             <Stack.Screen
               name="ClubProfile"
               component={ClubProfile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Post"
+              component={Post}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

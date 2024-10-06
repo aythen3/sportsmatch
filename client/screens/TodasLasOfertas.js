@@ -417,7 +417,7 @@ const TodasLasOfertas = () => {
                 styles.ofertasTypo
               ]}
             >
-              Inscripciones
+              Mis inscripciones
             </Text>
           </View>
         </Pressable>
@@ -442,15 +442,10 @@ const TodasLasOfertas = () => {
         })
         .filter((offer) => offer.paused === false)
         .filter((offer) => {
-          const filteredUserMatches = userMatches.filter(
-            (match) => match.offerId && match.offerId !== offer.id
+          const alreadyJoined = user.user.offers.find(
+            (of) => of.id === offer.id
           )
-          const alreadyJoined = offer?.inscriptions?.includes(
-            user?.user?.sportman?.id
-          )
-          if (filteredUserMatches.length > 0) {
-            return false
-          }
+
           if (alreadyJoined) {
             return false
           }
@@ -467,15 +462,15 @@ const TodasLasOfertas = () => {
             {offer
               .filter((offer) => offer.paused === false)
               .filter((offer) => {
-                const filteredUserMatches = userMatches.filter(
-                  (match) => match.offerId && match.offerId !== offer.id
+                // const filteredUserMatches = userMatches.filter(
+                //   (match) => match.offerId && match.offerId !== offer.id
+                // )
+                const alreadyJoined = user.user.offers.find(
+                  (of) => of.id === offer.id
                 )
-                const alreadyJoined = offer?.inscriptions?.includes(
-                  user?.user?.sportman?.id
-                )
-                if (filteredUserMatches.length > 0) {
-                  return false
-                }
+                // if (filteredUserMatches.length > 0) {
+                //   return false
+                // }
                 if (alreadyJoined) {
                   return false
                 }
@@ -508,15 +503,15 @@ const TodasLasOfertas = () => {
                   }
                 })
                 .filter((offer) => {
-                  const filteredUserMatches = userMatches.filter(
-                    (match) => match.offerId && match.offerId !== offer.id
+                  // const filteredUserMatches = userMatches.filter(
+                  //   (match) => match.offerId && match.offerId !== offer.id
+                  // )
+                  const alreadyJoined = user.user.offers.find(
+                    (of) => of.id === offer.id
                   )
-                  const alreadyJoined = offer?.inscriptions?.includes(
-                    user?.user?.sportman?.id
-                  )
-                  if (filteredUserMatches.length > 0) {
-                    return false
-                  }
+                  // if (filteredUserMatches.length > 0) {
+                  //   return false
+                  // }
                   if (alreadyJoined) {
                     return false
                   }
@@ -710,9 +705,10 @@ const TodasLasOfertas = () => {
                                     dispatch(
                                       signToOffer({
                                         offerId: offer?.id,
-                                        userId: sportman?.id
+                                        userId: user.user?.id
                                       })
                                     ).then((data) => {
+                                      dispatch(getUserData(user?.user?.id))
                                       console.log(data, 'response offer')
                                       const userr = allUsers.filter(
                                         (e) => e?.club?.id === offer?.clubId
@@ -849,15 +845,15 @@ const TodasLasOfertas = () => {
                   {offer
                     .filter((offer) => offer.paused === false)
                     .filter((offer) => {
-                      const filteredUserMatches = userMatches.filter(
-                        (match) => match.offerId && match.offerId !== offer.id
+                      // const filteredUserMatches = userMatches.filter(
+                      //   (match) => match.offerId && match.offerId !== offer.id
+                      // )
+                      const alreadyJoined = user.user.offers.find(
+                        (of) => of.id === offer.id
                       )
-                      const alreadyJoined = offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                      if (filteredUserMatches.length > 0) {
-                        return false
-                      }
+                      // if (filteredUserMatches.length > 0) {
+                      //   return false
+                      // }
                       if (alreadyJoined) {
                         return false
                       }
@@ -887,15 +883,15 @@ const TodasLasOfertas = () => {
                       }
                     })
                     .filter((offer) => {
-                      const filteredUserMatches = userMatches.filter(
-                        (match) => match.offerId && match.offerId !== offer.id
+                      // const filteredUserMatches = userMatches.filter(
+                      //   (match) => match.offerId && match.offerId !== offer.id
+                      // )
+                      const alreadyJoined = user.user.offers.find(
+                        (of) => of.id === offer.id
                       )
-                      const alreadyJoined = offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                      if (filteredUserMatches.length > 0) {
-                        return false
-                      }
+                      // if (filteredUserMatches.length > 0) {
+                      //   return false
+                      // }
                       if (alreadyJoined) {
                         return false
                       }
@@ -1025,8 +1021,8 @@ const TodasLasOfertas = () => {
 
       {/* ============================ FAVORITE OFFERS ============================ */}
       {selectOfferComponent !== 'todas' &&
-      offers &&
-      offer
+      user.user.offers &&
+      user.user.offers
         .filter((off) => {
           if (search.length > 0) {
             if (
@@ -1042,19 +1038,7 @@ const TodasLasOfertas = () => {
           }
         })
         .filter((offer) => {
-          const filteredUserMatches = userMatches.filter(
-            (match) => match.offerId && match.offerId !== offer.id
-          )
-          const alreadyJoined = offer?.inscriptions?.includes(
-            user?.user?.sportman?.id
-          )
-          if (filteredUserMatches.length > 0) {
-            return false
-          }
-          if (alreadyJoined) {
-            return true
-          }
-          return false
+          return true
         }).length > 0 ? (
         <View
           keyboardShouldPersistTaps={'always'}
@@ -1067,7 +1051,7 @@ const TodasLasOfertas = () => {
             initialPage={0}
             style={{ flex: 1, width: '100%', height: 500, gap: 15 }}
           >
-            {offer
+            {user.user.offers
               .filter((off) => {
                 if (search.length > 0) {
                   if (
@@ -1083,19 +1067,7 @@ const TodasLasOfertas = () => {
                 }
               })
               .filter((offer) => {
-                const filteredUserMatches = userMatches.filter(
-                  (match) => match.offerId && match.offerId !== offer.id
-                )
-                const alreadyJoined = offer?.inscriptions?.includes(
-                  user?.user?.sportman?.id
-                )
-                if (filteredUserMatches.length > 0) {
-                  return false
-                }
-                if (alreadyJoined) {
-                  return true
-                }
-                return false
+                return true
               })
               .map((offer, index) => (
                 <View
@@ -1243,11 +1215,13 @@ const TodasLasOfertas = () => {
                               dispatch(
                                 deleteSignToOffer({
                                   offerId: offer?.id,
-                                  userId: sportman?.id
+                                  userId: user.user?.id
                                 })
                               ).then((data) => {
                                 console.log(data, 'dataaa')
                                 dispatch(getAllOffers())
+                                dispatch(getUserData(user?.user?.id))
+
                                 ToastAndroid.show(
                                   'Inscripción cancelada',
                                   ToastAndroid.SHORT
@@ -1278,20 +1252,14 @@ const TodasLasOfertas = () => {
                     >
                       <Text
                         style={{
-                          color: offer?.inscriptions?.includes(
-                            user?.user?.sportman?.id
-                          )
-                            ? '#fff'
-                            : Color.bLACK1SPORTSMATCH,
+                          color: '#fff',
                           textAlign: 'center',
                           fontWeight: '700',
                           fontFamily: FontFamily.t4TEXTMICRO,
                           fontSize: scalableFontSize(17)
                         }}
                       >
-                        {offer?.inscriptions?.includes(user?.user?.sportman?.id)
-                          ? 'Cancelar inscripción'
-                          : 'Inscríbete en la oferta'}
+                        Cancelar inscripción
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -2100,8 +2068,8 @@ const styles = StyleSheet.create({
     width: 390
   },
   todasLasOfertas: {
-    paddingTop: 20,
     width: '100%',
+    paddingVertical: 20,
     flex: 1,
     backgroundColor: Color.bLACK1SPORTSMATCH
   }

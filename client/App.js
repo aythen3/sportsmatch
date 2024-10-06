@@ -35,6 +35,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ScreenInicio from './screens/ScreenInicio'
 import ScreenPrincipal from './screens/ScreenPrincipal'
+import Post from './screens/Perfil/EditarPerfil/Post'
 
 const Stack = createNativeStackNavigator()
 
@@ -92,7 +93,8 @@ const App = () => {
           urlScheme="com.android.app" // required for 3D Secure and bank redirects
           merchantIdentifier="merchant.com.app" // required for Apple Pay
         >
-          <StatusBar barStyle={'light-content'} backgroundColor="#000" />
+        <StatusBar translucent={true} backgroundColor={'transparent'} />
+
           <Provider store={store}>
             <ContextProvider>
               <NavigationContainer theme={{colors:{background:"black"}}} >
@@ -105,16 +107,12 @@ const App = () => {
                     screenOptions={({ route }) => ({
                       cardOverlayEnabled:false,
                       cardStyle:{backgroundColor:"red"},
-                      statusBarAnimation:"fade",
-                      animation:"none",
+                      statusBarTranslucent:true,
                       headerShown: false,
                       
                         animationEnabled: false,
     gestureEnabled: false,  // Desactivar gestos de navegación
-    transitionSpec: {
-      open: { animation: 'timing', config: { duration: 0 } },
-      close: { animation: 'timing', config: { duration: 0 } },
-    },
+
                       
                       
                       // footerShown: setIsFooterShow(
@@ -135,7 +133,7 @@ const App = () => {
                       // )
                     })}
                   >       
-                    <Stack.Screen
+                      <Stack.Screen
                     
                       name="ScreenInicio"
                       component={ScreenInicio}
@@ -147,6 +145,7 @@ const App = () => {
                       component={ScreenPrincipal}
                       options={{ headerShown: false }}
                     />
+                  
         
                   </Stack.Navigator>
                  </>

@@ -113,10 +113,11 @@ const ExplorarClubs = () => {
     //   city: textValue
     // })
     // setSearchCity(city.data.filter((e) => e.user.emailCheck))
-    // const clubes = await axiosInstance.post('info-entity/club/name/filter', {
-    //   value: textValue
-    // })
-    // setSearchClubes(clubes.data.data.filter((e) => e.user.emailCheck))
+    const clubes = await axiosInstance.post('info-entity/club/name/filter', {
+      value: textValue
+    })
+    const fil2 = clubes.data.data
+    setSearchUsers((prev) => [...prev, ...fil2])
   }
   const funcion = () => {
     if (timeoutRef.current) {
@@ -269,7 +270,7 @@ const ExplorarClubs = () => {
                 />
               )}
               <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
-                {user?.info?.nickname}
+                {user?.info?.nickname || user.name}
               </Text>
             </View>
           </TouchableOpacity>

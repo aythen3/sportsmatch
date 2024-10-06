@@ -14,6 +14,8 @@ import {
   OneToOne
 } from 'typeorm';
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
+import { OfferEntity } from 'src/offer/entities/offer.entity';
+import { MatchEntity } from 'src/match/entities/match.entity';
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
   @Column()
@@ -113,4 +115,13 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => NotificationEntity, (notification) => notification.user)
   notifications: NotificationEntity[];
+
+  @ManyToMany(() => OfferEntity, (offer) => offer.usersInscriptions, {
+    nullable: true
+  })
+  offers: OfferEntity[];
+
+  // Relación con MatchEntity
+  @OneToMany(() => MatchEntity, (match) => match.user)
+  matches: MatchEntity[];
 }
