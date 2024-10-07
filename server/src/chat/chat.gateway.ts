@@ -88,10 +88,10 @@ export class ChatGateway
     console.log('enviando a ', chat.id, newMessage, chat);
     // Emitir el mensaje solo al receptor
     client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
-    // client.to(data.receiver).emit('chat', {
-    //   messages: [...chat.messages, newMessage],
-    //   chat: chat.id
-    // }); // Emitir solo una vez a la sala
+    client.to(data.receiver).emit('chat', {
+      messages: [...chat.messages, newMessage],
+      chat: chat.id
+    }); // Emitir solo una vez a la sala
 
     return newMessage;
   }

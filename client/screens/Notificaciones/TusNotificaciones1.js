@@ -25,6 +25,7 @@ import {
 } from '../../redux/actions/notifications'
 import { ActivityIndicator } from 'react-native-paper'
 import { getAllMatchs, getUserMatchs } from '../../redux/actions/matchs'
+import { getUserChats } from '../../redux/actions/chats'
 
 const TusNotificaciones1 = () => {
   const [loading, setLoading] = useState(true)
@@ -66,7 +67,9 @@ const TusNotificaciones1 = () => {
     )
     .sort(sortUsers)
 
-  useEffect(() => {}, [allMessages])
+  useEffect(() => {
+    dispatch(getUserChats(user?.user?.id))
+  }, [])
 
   useEffect(() => {
     if (user.user.type === 'club') {
@@ -137,12 +140,12 @@ const TusNotificaciones1 = () => {
             style={{ width: '50%', height: 40 }}
             onPress={() => {
               console.log('marking...')
-              dispatch(markAllUserNotificationsAsRead(user.user.id)).then(
+              dispatch(markAllUserNotificationsAsRead(user?.user?.id)).then(
                 (res) => {
                   if (user.user.type === 'club') {
-                    dispatch(getNotificationsByUserId(user.user.id))
+                    dispatch(getNotificationsByUserId(user?.user?.id))
                   } else {
-                    dispatch(getNotificationsByUserId(user.user.id))
+                    dispatch(getNotificationsByUserId(user?.user?.id))
                   }
                 }
               )
@@ -167,7 +170,7 @@ const TusNotificaciones1 = () => {
               userNotifications
                 ?.filter((notification) => {
                   if (user?.user?.type === 'club') {
-                    notification.receiverId === user.user.club.id
+                    notification?.receiverId === user?.user?.club?.id
                     return true
                   } else if (notification.receiverId === userId) {
                     return true
@@ -197,7 +200,7 @@ const TusNotificaciones1 = () => {
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((notification) => (
-                  <Notifications key={notification.id} data={notification} />
+                  <Notifications key={notification?.id} data={notification} />
                 ))
             ) : (
               <View
@@ -275,7 +278,9 @@ const TusNotificaciones1 = () => {
                   value === '' &&
                   userChats?.map((chat, index) => {
                     const userr =
-                      chat.userA.id === user.user.id ? chat.userB : chat.userA
+                      chat?.userA?.id === user?.user?.id
+                        ? chat?.userB
+                        : chat?.userA
                     if (
                       !userr.isDelete &&
                       !user?.user?.banned?.includes(userr?.id)
@@ -286,13 +291,14 @@ const TusNotificaciones1 = () => {
                           setValue={setValue}
                           key={index + 999}
                           name={userr.nickname}
-                          sportmanId={userr.sportman?.id}
+                          sportmanId={userr?.sportman?.id}
                           profilePic={
                             userr?.type === 'club'
                               ? userr?.club?.img_perfil
                               : userr?.sportman?.info?.img_perfil
                           }
-                          selectedUserId={userr.id}
+                          selectedUserId={userr?.id}
+                          chat={chat}
                           // applicant={applicants?.includes(user.sportman?.id)}
                         />
                       )
@@ -318,7 +324,7 @@ const TusNotificaciones1 = () => {
                                 ? userr?.club?.img_perfil
                                 : userr?.sportman?.info?.img_perfil
                             }
-                            selectedUserId={userr.id}
+                            selectedUserId={userr?.id}
                             // applicant={applicants?.includes(user.sportman?.id)}
                           />
                         )

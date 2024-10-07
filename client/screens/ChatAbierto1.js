@@ -133,7 +133,7 @@ const ChatAbierto1 = () => {
         const res2 =
           user?.user?.matches?.filter(
             (match) =>
-              match.club?.user?.id === route?.params?.sportman &&
+              match.club?.user?.id === route?.params?.receiverId &&
               match.status === 'success'
           ).length > 0
 

@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker'
 import io from 'socket.io-client'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
-import { updateMessages } from '../redux/actions/chats'
+import { getUserChats, updateMessages } from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { registerForPushNotificationsAsync } from '../utils/pushService'
 import { Dimensions } from 'react-native'
@@ -404,6 +404,10 @@ export const ContextProvider = ({ children }) => {
     setRoomId(room)
   })
 
+  newSocket.on('chat', (room) => {
+    dispatch(getUserChats(user?.user?.id))
+  })
+
   newSocket.on('leaveRoom', (room) => {
     // console.log('Leaving room: ', room)
     setRoomId()
@@ -412,6 +416,7 @@ export const ContextProvider = ({ children }) => {
   newSocket.on('message-server', (msg) => {
     console.log('New message:', msg)
     dispatch(updateMessages(msg)).then(() => {
+      dispatch(getUserChats(user.user.id))
       dispatch(setAllConversationMessagesToRead())
     })
 

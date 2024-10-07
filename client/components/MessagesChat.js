@@ -27,7 +27,8 @@ const MessagesChat = ({
   applicant,
   sportmanId,
   setValue,
-  value
+  value,
+  chat
 }) => {
   const dispatch = useDispatch()
   const { mainColor } = useSelector((state) => state.users)
@@ -44,7 +45,7 @@ const MessagesChat = ({
     usersWithMessages
   } = useContext(Context)
   const navigation = useNavigation()
-  const [convMessages, setConvMessages] = useState([])
+  const [convMessages, setConvMessages] = useState([...chat.messages] || [])
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
   const { user, allUsers } = useSelector((state) => state.users)
@@ -53,37 +54,36 @@ const MessagesChat = ({
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
   const getChatMessages = async () => {
-    if (user?.user?.id && selectedUserId) {
-      // console.log('getting messages from', user.user.id, 'and', selectedUserId)
-      const { data } = await axiosInstance.get(
-        `chat/room?senderId=${user.user.id}&receiverId=${selectedUserId}`
-      )
-      // console.log('====SETTING CONV MESSAGES TO', data)
-      setConvMessages(data)
-    }
+    console.log('====SETTING CONV MESSAGES TO', chat.messages)
+    setConvMessages(chat.messages)
   }
   // console.log('NOT READED MESSAGES LENGTH=====', notReaded)
   // console.log('NOTREADEDMESSAGES========', notReadedMessages)
-  useEffect(() => {
-    getChatMessages()
-  }, [usersWithMessages, value])
+  // useEffect(() => {
+  //   getChatMessages()
+  // }, [usersWithMessages, value])
 
   useEffect(() => {
     setLoading(true)
     // console.log('CLEAN USEEFFECT GETCHAT')
-    getChatMessages()
+    // getChatMessages()
   }, [])
 
   const getLastMessage = (messages) => {
-    const received = messages[0].senderId === user.user.id
-    setLastMessage({ message: messages[0], received })
-    setLoading(false)
+    try {
+      console.log('aca intento', messages)
+      const received = messages[0].senderId === user.user.id
+      setLastMessage({ message: messages[0], received })
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
     if (convMessages?.length > 0) {
       getLastMessage(
-        convMessages.sort(
+        convMessages?.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )
       )
