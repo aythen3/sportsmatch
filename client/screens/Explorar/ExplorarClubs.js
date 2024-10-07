@@ -225,6 +225,7 @@ const ExplorarClubs = () => {
     // Si hay texto en la búsqueda, renderizar los usuarios
     if (textValue) {
       const user = item // Asumimos que el item es un usuario
+      console.log('itemmmm', item)
       if (!user?.user?.isDelete) {
         return (
           <TouchableOpacity
@@ -240,9 +241,16 @@ const ExplorarClubs = () => {
                   return
                 }
               }
-              navigation.navigate('PerfilFeedVisualitzaciJug', {
-                author: user.user
-              })
+              if (user?.user?.type !== 'club') {
+                return navigation.navigate('PerfilFeedVisualitzaciJug', {
+                  author: user.user
+                })
+              } else {
+                navigation.navigate('ClubProfile', {
+                  author: user.user
+                })
+                return
+              }
             }}
           >
             <View

@@ -80,7 +80,8 @@ const HeaderPerfil = ({
   const { sportman } = useSelector((state) => state.sportman)
   const [bannedModal, setBannedModal] = useState(false)
 
-  console.log('club==============', data?.author?.id)
+  console.log('club==============', data)
+
   const [bannedLoading, setBannedLoading] = useState(false)
 
   const getOffersById = async (id) => {
@@ -145,67 +146,22 @@ const HeaderPerfil = ({
   }, [user])
 
   const handleFollow = debounce(() => {
-    if (sportman?.type == 'invitado') return
+    if (sportman?.type === 'invitado') return
 
     setLiked(!liked)
-    // let actualUser = _.cloneDeep(user)
-    // const actualFollowers =
-    //   allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
-    // const newFollowers = actualFollowers.includes(user?.user?.id)
-    //   ? actualFollowers.filter((follower) => follower !== user?.user?.id)
-    //   : [...actualFollowers, user?.user?.id]
-
-    // const newFollowingArray = userFollowing?.includes(data?.author?.id)
-    //   ? userFollowing.filter((followed) => followed !== data?.author?.id)
-    //   : [...userFollowing, data?.author?.id]
-    // actualUser.user.following = newFollowingArray
-
-    // dispatch(
-    //   updateUserData({ id: data.author.id, body: { followers: newFollowers } })
-    // )
-    //   .then((data) => {
-    //     console.log(data, 'es cuando ojeo')
-    //     dispatch(
-    //       updateUserData({
-    //         id: user.user.id,
-    //         body: { following: newFollowingArray }
-    //       })
-    //     )
-    //   })
     if (!liked) {
       axiosInstance
         .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
         .then((response) => {
           getUser()
-          dispatch(
-            sendNotification({
-              title: 'Follow',
-              message: `${user?.user?.nickname} ha comenzado a seguirte`,
-              recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
-              date: new Date(),
-              read: false,
-              prop1: {
-                userId: user?.user?.id,
-                userData: { ...user }
-              },
-              prop2: {
-                rol: 'user'
-              }
-            })
-          ).then((res) => console.log('respuesta', res))
-
           dispatch(getUserData(user?.user?.id))
-
-          dispatch(getAllUsers())
         })
     } else {
       axiosInstance
         .delete(`user/${user?.user?.id}/unfollow/${data?.author?.id}`)
         .then(() => {
           getUser()
-
           dispatch(getUserData(user?.user?.id))
-
           dispatch(getAllUsers())
         })
     }
@@ -480,24 +436,6 @@ const HeaderPerfil = ({
                     .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
                     .then((response) => {
                       getUser()
-                      dispatch(
-                        sendNotification({
-                          title: 'Follow',
-                          message: `${user?.user?.club?.name} ha comenzado a seguirte`,
-                          recipientId:
-                            data?.author?.sportman?.user?.id ??
-                            data?.author?.id,
-                          date: new Date(),
-                          read: false,
-                          prop1: {
-                            userId: user?.user?.id,
-                            userData: { ...user }
-                          },
-                          prop2: {
-                            rol: 'user'
-                          }
-                        })
-                      ).then((res) => console.log('respuesta', res))
 
                       dispatch(getUserData(user?.user?.id))
 
@@ -906,7 +844,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {data.author.club.year}
+              {data?.author?.club?.year}
             </Text>
             <Text
               style={{
@@ -936,7 +874,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {data.author.club.capacity}
+              {data?.author?.club?.capacity}?
             </Text>
             <Text
               style={{

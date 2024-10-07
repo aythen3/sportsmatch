@@ -5,8 +5,8 @@ import { NotificationEntity } from './entities/notification.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClubEntity } from 'src/club/entities/club.entity';
 import Expo from 'expo-server-sdk';
+import { ChatGateway } from 'src/chat/chat.gateway';
 
 @Injectable()
 export class NotificationService {
@@ -15,14 +15,13 @@ export class NotificationService {
     private readonly notificationsRepository: Repository<NotificationEntity>,
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
-    @InjectRepository(ClubEntity)
-    private readonly clubsRepository: Repository<ClubEntity>
+    private chatGateway: ChatGateway
   ) {}
 
   public async markAllAsRead(userId: string): Promise<void> {
     // Busca todas las notificaciones del usuario que no están leídas
     const notifications = await this.notificationsRepository.find({
-      where: { recipientId: userId, read: false, isDelete: false }
+      where: { receiverId: userId, read: false, isDelete: false }
     });
 
     if (!notifications.length) {
@@ -33,47 +32,43 @@ export class NotificationService {
 
     // Actualiza todas las notificaciones encontradas a read: true
     await this.notificationsRepository.update(
-      { recipientId: userId, read: false, isDelete: false },
+      { receiverId: userId, read: false, isDelete: false },
       { read: true }
     );
   }
 
   async createService(createNotificationDto: CreateNotificationDto) {
     console.log(createNotificationDto, 'dto');
+    console.log(new Date(), 'dto');
+
     try {
-      let recipient;
-      const { rol } = createNotificationDto.prop2;
-
-      if (rol === 'user') {
-        recipient = await this.usersRepository
-          .createQueryBuilder('user')
-          .where({ id: createNotificationDto.recipientId })
-          .getOne();
-      } else if (rol === 'club') {
-        recipient = await this.clubsRepository
-          .createQueryBuilder('club')
-          .where({ id: createNotificationDto.recipientId })
-          .getOne();
-      } else {
-        console.log('aca rompe1');
-
-        return `Rol no válido. Debe ser 'user' o 'club'`;
-      }
-
-      if (!recipient) {
-        console.log('aca rompe2');
-
-        return `Usuario o Club con ID ${createNotificationDto.recipientId} no encontrado`;
-      }
-
       const notification = this.notificationsRepository.create(
         createNotificationDto
       );
+      const user = await this.usersRepository.findOne({
+        where: { id: createNotificationDto.senderId },
+        relations: ['sportman', 'club']
+      });
+      notification.user = user;
+      if (createNotificationDto.post) {
+        notification.post = createNotificationDto.post;
+      }
+
       // enviamos el push
       const user_push = await this.usersRepository.findOneBy({
-        id: createNotificationDto.recipientId
+        id: createNotificationDto.receiverId
       });
       console.log(user_push, 'user_push');
+      notification.receiverId = createNotificationDto.receiverId;
+
+      await this.notificationsRepository.save(notification);
+      this.chatGateway.sendNotificationToUser(
+        createNotificationDto.receiverId,
+        'notification',
+        {
+          message: 'Hello!'
+        }
+      );
       const expo = new Expo({
         useFcmV1: true // this can be set to true in order to use the FCM v1 API
       });
@@ -82,22 +77,23 @@ export class NotificationService {
           {
             to: user_push.push_token,
             sound: 'default',
-            title: createNotificationDto.title,
+            title: `${user?.sportman?.info?.nickname || user?.club?.name}`,
             body: createNotificationDto.message,
             priority: 'high'
           }
         ])
         .then((e) => console.log(e, 'ee'));
-      notification.recipientId = recipient.id;
-      return await this.notificationsRepository.save(notification);
+      return notification;
     } catch (error) {
       console.log('error', error);
+      return { error };
     }
   }
 
   public async findAllByUserId(userId: string) {
     const notifications = await this.notificationsRepository.find({
-      where: { recipientId: userId, isDelete: false }
+      where: { receiverId: userId, isDelete: false },
+      relations: ['user', 'user.sportman', 'user.club']
     });
 
     if (!notifications.length) {
@@ -152,8 +148,8 @@ export class NotificationService {
     return await this.getOneService(id);
   }
 
-  public async destroyService({ recipientId }) {
-    return await this.notificationsRepository.delete({ recipientId });
+  public async destroyService({ receiverId }) {
+    return await this.notificationsRepository.delete({ receiverId });
   }
 
   async findInfoRelation(

@@ -9,7 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
-  Dimensions
+  Dimensions,
+  KeyboardAvoidingView
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
@@ -42,6 +43,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { updateOffers } from '../redux/slices/offers.slices'
 import PagerView from 'react-native-pager-view'
 import { PageIndicator } from 'react-native-page-indicator'
+import { Platform } from 'react-native'
 
 const TodasLasOfertas = () => {
   const _ = require('lodash')
@@ -351,162 +353,133 @@ const TodasLasOfertas = () => {
   // )
 
   return (
-    <View style={styles.todasLasOfertas}>
-      <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }} // Asegúrate de que el KeyboardAvoidingView ocupe todo el espacio
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 5000} // Ajusta este valor si es necesario
+    >
+      <View style={styles.todasLasOfertas}>
+        <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
 
-      <FiltersHome
-        modalSportmanActive={onFilterSportman}
-        setTextValue={(e) => setSearch(e)}
-      />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginTop: 20
-        }}
-      >
-        <Pressable
-          style={{ flex: 1 }}
-          onPress={() => {
-            setSelectOfferComponent('todas')
+        <FiltersHome
+          modalSportmanActive={onFilterSportman}
+          setTextValue={(e) => setSearch(e)}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20
           }}
         >
-          <View
-            style={{
-              borderBottomWidth: 3,
-              borderColor:
-                selectOfferComponent === 'todas' ? mainColor : 'transparent',
-              width: '100%'
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => {
+              setSelectOfferComponent('todas')
             }}
           >
-            <Text
-              style={[
-                selectOfferComponent === 'todas'
-                  ? { ...styles.todasLaOfertas, color: mainColor }
-                  : styles.todasLaOfertas2,
-                styles.ofertasTypo
-              ]}
+            <View
+              style={{
+                borderBottomWidth: 3,
+                borderColor:
+                  selectOfferComponent === 'todas' ? mainColor : 'transparent',
+                width: '100%'
+              }}
             >
-              Todas la ofertas
-            </Text>
-          </View>
-        </Pressable>
+              <Text
+                style={[
+                  selectOfferComponent === 'todas'
+                    ? { ...styles.todasLaOfertas, color: mainColor }
+                    : styles.todasLaOfertas2,
+                  styles.ofertasTypo
+                ]}
+              >
+                Todas la ofertas
+              </Text>
+            </View>
+          </Pressable>
 
-        <Pressable
-          style={{ flex: 1 }}
-          onPress={() => {
-            setSelectOfferComponent('favoritas')
-          }}
-        >
-          <View
-            style={{
-              borderBottomWidth: 3,
-              borderColor:
-                selectOfferComponent === 'favoritas'
-                  ? mainColor
-                  : 'transparent',
-              width: '100%'
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => {
+              setSelectOfferComponent('favoritas')
             }}
           >
-            <Text
-              style={[
-                selectOfferComponent === 'favoritas'
-                  ? { ...styles.todasLaOfertas, color: mainColor }
-                  : styles.todasLaOfertas2,
-                ,
-                styles.ofertasTypo
-              ]}
+            <View
+              style={{
+                borderBottomWidth: 3,
+                borderColor:
+                  selectOfferComponent === 'favoritas'
+                    ? mainColor
+                    : 'transparent',
+                width: '100%'
+              }}
             >
-              Mis inscripciones
-            </Text>
-          </View>
-        </Pressable>
-      </View>
+              <Text
+                style={[
+                  selectOfferComponent === 'favoritas'
+                    ? { ...styles.todasLaOfertas, color: mainColor }
+                    : styles.todasLaOfertas2,
+                  ,
+                  styles.ofertasTypo
+                ]}
+              >
+                Mis inscripciones
+              </Text>
+            </View>
+          </Pressable>
+        </View>
 
-      {selectOfferComponent === 'todas' &&
-      offers &&
-      offers
-        .filter((off) => {
-          if (search.length > 0) {
-            if (
-              off.province.toLowerCase().includes(search.toLowerCase()) ||
-              off.posit.toLowerCase().includes(search.toLowerCase())
-            ) {
-              return true
+        {selectOfferComponent === 'todas' &&
+        offers &&
+        offers
+          .filter((off) => {
+            if (search.length > 0) {
+              if (
+                off.province.toLowerCase().includes(search.toLowerCase()) ||
+                off.posit.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return true
+              } else {
+                return false
+              }
             } else {
+              return true
+            }
+          })
+          .filter((offer) => offer.paused === false)
+          .filter((offer) => {
+            const alreadyJoined = user?.user?.offers?.find(
+              (of) => of.id === offer.id
+            )
+
+            if (alreadyJoined) {
               return false
             }
-          } else {
             return true
-          }
-        })
-        .filter((offer) => offer.paused === false)
-        .filter((offer) => {
-          const alreadyJoined = user.user.offers.find(
-            (of) => of.id === offer.id
-          )
-
-          if (alreadyJoined) {
-            return false
-          }
-          return true
-        }).length > 0 ? (
-        <View style={{ flex: 1 }}>
-          <PagerView
-            onPageSelected={(event) =>
-              setCurrentPage(event.nativeEvent.position)
-            }
-            initialPage={0}
-            style={{ flex: 1, width: '100%', height: 500, gap: 15 }}
+          }).length > 0 ? (
+          <View
+            style={{
+              flex: 1
+            }}
           >
-            {offer
-              .filter((offer) => offer.paused === false)
-              .filter((offer) => {
-                // const filteredUserMatches = userMatches.filter(
-                //   (match) => match.offerId && match.offerId !== offer.id
-                // )
-                const alreadyJoined = user.user.offers.find(
-                  (of) => of.id === offer.id
-                )
-                // if (filteredUserMatches.length > 0) {
-                //   return false
-                // }
-                if (alreadyJoined) {
-                  return false
-                }
-                return true
-              })
-              .slice(
-                0,
-                user?.user?.plan === 'pro' ||
-                  user?.user?.plan === 'star' ||
-                  user?.user?.prop1?.plans
-                  ? 1000
-                  : 20
-              ).length > 0 ? (
-              offer
+            <PagerView
+              onPageSelected={(event) =>
+                setCurrentPage(event.nativeEvent.position)
+              }
+              initialPage={0}
+              style={{
+                flex: 1,
+                width: '100%',
+                gap: 15
+              }}
+            >
+              {offer
                 .filter((offer) => offer.paused === false)
-                .filter((off) => {
-                  if (search.length > 0) {
-                    if (
-                      off.province
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase())
-                    ) {
-                      return true
-                    } else {
-                      return false
-                    }
-                  } else {
-                    return true
-                  }
-                })
                 .filter((offer) => {
                   // const filteredUserMatches = userMatches.filter(
                   //   (match) => match.offerId && match.offerId !== offer.id
                   // )
-                  const alreadyJoined = user.user.offers.find(
+                  const alreadyJoined = user?.user?.offers?.find(
                     (of) => of.id === offer.id
                   )
                   // if (filteredUserMatches.length > 0) {
@@ -524,783 +497,9 @@ const TodasLasOfertas = () => {
                     user?.user?.prop1?.plans
                     ? 1000
                     : 20
-                )
-                .sort((a, b) => {
-                  const first = a.inscriptions?.length || 0
-                  const second = b.inscriptions?.length || 0
-                  // console.log('first', first, 'second', second)
-
-                  return byRelevance ? second - first : first - second
-                })
-                .map((offer, index) => {
-                  const can = allUsers.find(
-                    (e) => e?.club?.id === offer?.club?.id
-                  )
-                  if (!can?.isDelete) {
-                    return (
-                      <View
-                        key={index}
-                        style={{
-                          marginTop: 10,
-                          padding: 22,
-                          flex: 1,
-                          marginHorizontal: 20,
-                          backgroundColor: '#252525',
-                          borderRadius: 10,
-                          alignItems: 'center',
-                          borderColor: '#505050',
-                          borderWidth: 1,
-                          opacity: 1
-                        }}
-                      >
-                        <View
-                          style={{
-                            borderBottomWidth: 1,
-                            borderColor: '#505050',
-                            flexDirection: 'row',
-                            zIndex: 5,
-                            flex: 1
-                          }}
-                        >
-                          <View
-                            style={{
-                              flex: 1,
-                              borderEndWidth: 1,
-                              borderColor: '#505050'
-                            }}
-                          >
-                            <CardInfoOffers
-                              text="Sexo"
-                              value={
-                                offer.sexo === 'Male' ? 'Masculino' : 'Femenino'
-                              }
-                            />
-                            <View
-                              style={{
-                                position: 'absolute',
-                                right: -15,
-                                bottom: -15,
-                                height: 30,
-                                width: 30,
-                                backgroundColor: '#252525',
-                                borderRadius: 50
-                              }}
-                            ></View>
-                          </View>
-                          <View
-                            style={{
-                              flex: 1,
-                              zIndex: 3
-                            }}
-                          >
-                            <CardInfoOffers
-                              category={true}
-                              text="Categoría"
-                              value={offer.category}
-                            />
-                          </View>
-                        </View>
-
-                        <View
-                          style={{
-                            borderBottomWidth: 1,
-                            borderColor: '#505050',
-                            flexDirection: 'row',
-                            zIndex: 2,
-                            flex: 1
-                          }}
-                        >
-                          <View
-                            style={{
-                              flex: 1,
-                              borderEndWidth: 1,
-                              borderColor: '#505050'
-                            }}
-                          >
-                            <CardInfoOffers
-                              text="Posición"
-                              value={offer?.posit}
-                            />
-                            <View
-                              style={{
-                                position: 'absolute',
-                                right: -15,
-                                bottom: -15,
-                                height: 30,
-                                width: 30,
-                                backgroundColor: '#252525',
-                                borderRadius: 50
-                              }}
-                            ></View>
-                          </View>
-                          <View
-                            style={{
-                              flex: 1
-                            }}
-                          >
-                            <CardInfoOffers
-                              text="Comarca"
-                              value={offer?.province || 'Random'}
-                            />
-                          </View>
-                        </View>
-
-                        <View
-                          style={{ flexDirection: 'row', zIndex: -1, flex: 1 }}
-                        >
-                          <View
-                            style={{
-                              flex: 1,
-                              borderEndWidth: 1,
-                              borderColor: '#505050'
-                            }}
-                          >
-                            <CardInfoOffers
-                              text="Urgencia"
-                              value={offer?.urgency}
-                            />
-                          </View>
-
-                          <View
-                            style={{
-                              flex: 1,
-                              borderColor: '#505050'
-                            }}
-                          >
-                            <CardInfoOffers
-                              text="Retribucion"
-                              value={
-                                offer.retribution === false ? 'No' : offer.prop1
-                              }
-                            />
-                          </View>
-                        </View>
-
-                        <View
-                          style={{
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginTop: 30,
-                            zIndex: 10
-                          }}
-                        >
-                          <TouchableOpacity
-                            disabled={signinToOffer}
-                            onPress={async () => {
-                              if (!user.user.emailCheck) {
-                                return ToastAndroid.show(
-                                  'Valida tu email para poder inscribirte',
-                                  ToastAndroid.SHORT
-                                )
-                              }
-                              console.log('PRESSED')
-                              if (
-                                !offer?.inscriptions?.includes(sportman?.id)
-                              ) {
-                                setSigninToOffer(true)
-                                if (sportman) {
-                                  try {
-                                    await dispatch(updateOffers(offer?.id))
-                                    dispatch(
-                                      signToOffer({
-                                        offerId: offer?.id,
-                                        userId: user.user?.id
-                                      })
-                                    ).then((data) => {
-                                      dispatch(getUserData(user?.user?.id))
-                                      console.log(data, 'response offer')
-                                      const userr = allUsers.filter(
-                                        (e) => e?.club?.id === offer?.clubId
-                                      )[0]
-                                      console.log(userr, 'userrr')
-                                      dispatch(
-                                        sendNotification({
-                                          title: 'Inscripción',
-                                          message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
-                                          recipientId: userr?.id,
-                                          date: new Date(),
-                                          read: false,
-                                          prop2: {
-                                            rol: 'user'
-                                          },
-                                          prop1: {
-                                            userId: user?.user?.id,
-                                            userData: {
-                                              ...user
-                                            }
-                                          }
-                                        })
-                                      ).then(() =>
-                                        emitToUser(
-                                          userr?.id,
-                                          'notifications',
-                                          'hola'
-                                        )
-                                      )
-                                      dispatch(getAllOffers())
-                                      ToastAndroid.show(
-                                        'Te has inscrito en la oferta!',
-                                        ToastAndroid.SHORT
-                                      )
-                                    })
-                                  } catch (error) {
-                                    console.log('Error on inscription..', error)
-                                    setSigninToOffer(false)
-                                  } finally {
-                                    setSigninToOffer(false)
-                                  }
-                                } else {
-                                  console.log('SPORTMAN NOT FOUND!.')
-                                }
-                              }
-                            }}
-                            style={{
-                              width: '80%',
-                              paddingHorizontal: Padding.p_mini,
-                              paddingVertical: Padding.p_8xs,
-                              justifyContent: 'center',
-                              borderRadius: Border.br_81xl,
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              zIndex: 5,
-                              backgroundColor: !offer?.inscriptions?.includes(
-                                user?.user?.sportman?.id
-                              )
-                                ? '#ffff'
-                                : Color.wHITESPORTSMATCH
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: offer?.inscriptions?.includes(
-                                  user?.user?.sportman?.id
-                                )
-                                  ? '#fff'
-                                  : Color.bLACK1SPORTSMATCH,
-                                textAlign: 'center',
-                                fontWeight: '700',
-                                fontFamily: FontFamily.t4TEXTMICRO,
-                                fontSize: scalableFontSize(16)
-                              }}
-                            >
-                              {offer?.inscriptions?.includes(
-                                user?.user?.sportman?.id
-                              )
-                                ? 'Inscrito!'
-                                : 'Inscríbete en la oferta'}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    )
-                  }
-                })
-            ) : (
-              <View
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text
-                  style={{
-                    marginTop: 30,
-                    fontFamily: FontFamily.t4TEXTMICRO,
-                    fontWeight: 400,
-                    fontSize: 14,
-                    color: Color.wHITESPORTSMATCH,
-                    bottom: 4
-                  }}
-                >
-                  No hay ofertas disponibles basadas en su búsqueda!
-                </Text>
-              </View>
-            )}
-          </PagerView>
-          {offers.length > 1 && (
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginTop: 15,
-                  marginBottom: '6%',
-
-                  marginHorizontal: '10%'
-                }}
-              >
-                <ScrollView
-                  horizontal={true}
-                  style={{ width: '100%', flex: 1 }}
-                  contentContainerStyle={{
-                    width: cantPage1 > 20 ? '' : '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignContent: 'center'
-                  }}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  {offer
-                    .filter((offer) => offer.paused === false)
-                    .filter((offer) => {
-                      // const filteredUserMatches = userMatches.filter(
-                      //   (match) => match.offerId && match.offerId !== offer.id
-                      // )
-                      const alreadyJoined = user.user.offers.find(
-                        (of) => of.id === offer.id
-                      )
-                      // if (filteredUserMatches.length > 0) {
-                      //   return false
-                      // }
-                      if (alreadyJoined) {
-                        return false
-                      }
-                      return true
-                    })
-                    .slice(
-                      0,
-                      user?.user?.plan === 'pro' || user?.user?.plan === 'star'
-                        ? 1000
-                        : 20
-                    )
-                    .filter((offer) => offer.paused === false)
-                    .filter((off) => {
-                      if (search.length > 0) {
-                        if (
-                          off.province
-                            .toLowerCase()
-                            .includes(search.toLowerCase()) ||
-                          off.posit.toLowerCase().includes(search.toLowerCase())
-                        ) {
-                          return true
-                        } else {
-                          return false
-                        }
-                      } else {
-                        return true
-                      }
-                    })
-                    .filter((offer) => {
-                      // const filteredUserMatches = userMatches.filter(
-                      //   (match) => match.offerId && match.offerId !== offer.id
-                      // )
-                      const alreadyJoined = user.user.offers.find(
-                        (of) => of.id === offer.id
-                      )
-                      // if (filteredUserMatches.length > 0) {
-                      //   return false
-                      // }
-                      if (alreadyJoined) {
-                        return false
-                      }
-                      return true
-                    })
-                    .slice(
-                      0,
-                      user?.user?.plan === 'pro' || user?.user?.plan === 'star'
-                        ? 1000
-                        : 20
-                    )
-                    .sort((a, b) => {
-                      const first = a.inscriptions?.length || 0
-                      const second = b.inscriptions?.length || 0
-                      return byRelevance ? second - first : first - second
-                    })
-                    .map((_, index) => (
-                      <View
-                        key={index}
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: 4,
-                          marginHorizontal: 2,
-                          backgroundColor:
-                            index === currentPage ? mainColor : 'gray'
-                        }}
-                      />
-                    ))}
-                </ScrollView>
-              </View>
-            </View>
-          )}
-          {selectOfferComponent === 'todas' &&
-            offer
-              .filter((off) => {
-                if (search.length > 0) {
-                  if (
-                    off.province.toLowerCase().includes(search.toLowerCase()) ||
-                    off.posit.toLowerCase().includes(search.toLowerCase())
-                  ) {
-                    return true
-                  } else {
-                    return false
-                  }
-                } else {
-                  return true
-                }
-              })
-              .filter((offer) => {
-                const filteredUserMatches = userMatches.filter(
-                  (match) => match.offerId && match.offerId !== offer.id
-                )
-                const alreadyJoined = offer?.inscriptions?.includes(
-                  user?.user?.sportman?.id
-                )
-                if (filteredUserMatches.length > 0) {
-                  return false
-                }
-                if (alreadyJoined) {
-                  return false
-                }
-                return true
-              }).length > 2 &&
-            user?.user?.plan === 'basic' &&
-            !user?.user?.prop1?.plans && (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: Color.wHITESPORTSMATCH,
-                  width: '65%',
-                  justifyContent: 'center',
-                  paddingVertical: 6,
-                  alignSelf: 'center',
-                  zIndex: 3,
-                  marginBottom: 20,
-                  borderRadius: Border.br_81xl,
-                  flexDirection: 'row',
-                  alignItems: 'center'
-                }}
-                onPress={() =>
-                  user?.user?.plan === 'pro' ||
-                  user?.user?.plan === 'star' ||
-                  user?.user?.prop1?.plans
-                    ? null
-                    : setShowPremiumModal(true)
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    width: '100%',
-                    fontFamily: FontFamily.t4TEXTMICRO,
-                    fontWeight: 600,
-                    fontSize: scalableFontSize(12),
-                    textAlign: 'center'
-                  }}
-                >
-                  Ver más ofertas
-                </Text>
-              </TouchableOpacity>
-            )}
-        </View>
-      ) : (
-        selectOfferComponent === 'todas' && (
-          <View
-            style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
-          >
-            <Text
-              style={{
-                marginTop: 60,
-                marginBottom: 20,
-                fontFamily: FontFamily.t4TEXTMICRO,
-                fontWeight: 400,
-                fontSize: 14,
-                color: Color.wHITESPORTSMATCH,
-                bottom: 4,
-                textAlign: 'center'
-              }}
-            >
-              {search?.length > 0
-                ? 'No encontramos resultados para su búsqueda.'
-                : `Con tu modelo de suscripción no puedes visualizar más ofertas deportívas de los clubs.`}
-            </Text>
-          </View>
-        )
-      )}
-
-      {/* ============================ FAVORITE OFFERS ============================ */}
-      {selectOfferComponent !== 'todas' &&
-      user.user.offers &&
-      user.user.offers
-        .filter((off) => {
-          if (search.length > 0) {
-            if (
-              off.province.toLowerCase().includes(search.toLowerCase()) ||
-              off.posit.toLowerCase().includes(search.toLowerCase())
-            ) {
-              return true
-            } else {
-              return false
-            }
-          } else {
-            return true
-          }
-        })
-        .filter((offer) => {
-          return true
-        }).length > 0 ? (
-        <View
-          keyboardShouldPersistTaps={'always'}
-          style={{ flex: 1, paddingBottom: 20 }}
-        >
-          <PagerView
-            onPageSelected={(event) =>
-              setCurrentPage(event.nativeEvent.position)
-            }
-            initialPage={0}
-            style={{ flex: 1, width: '100%', height: 500, gap: 15 }}
-          >
-            {user.user.offers
-              .filter((off) => {
-                if (search.length > 0) {
-                  if (
-                    off.province.toLowerCase().includes(search.toLowerCase()) ||
-                    off.posit.toLowerCase().includes(search.toLowerCase())
-                  ) {
-                    return true
-                  } else {
-                    return false
-                  }
-                } else {
-                  return true
-                }
-              })
-              .filter((offer) => {
-                return true
-              })
-              .map((offer, index) => (
-                <View
-                  key={index}
-                  style={{
-                    marginTop: 10,
-                    padding: 22,
-                    marginHorizontal: 20,
-                    backgroundColor: '#252525',
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    borderColor: '#505050',
-                    borderWidth: 1,
-                    // height: Dimensions.get('screen').height / 2
-                    flex: 1
-                  }}
-                >
-                  <View
-                    style={{
-                      borderBottomWidth: 1,
-                      borderColor: '#505050',
-                      flexDirection: 'row',
-                      zIndex: 5,
-                      flex: 1
-                    }}
-                  >
-                    <View
-                      style={{
-                        flex: 1,
-                        borderEndWidth: 1,
-                        borderColor: '#505050'
-                      }}
-                    >
-                      <CardInfoOffers
-                        text="Sexo"
-                        value={offer.sexo === 'Male' ? 'Masculino' : 'Femenino'}
-                      />
-                      <View
-                        style={{
-                          position: 'absolute',
-                          right: -15,
-                          bottom: -15,
-                          height: 30,
-                          width: 30,
-                          backgroundColor: '#252525',
-                          borderRadius: 50
-                        }}
-                      ></View>
-                    </View>
-
-                    <View
-                      style={{
-                        flex: 1
-                      }}
-                    >
-                      <CardInfoOffers
-                        category={true}
-                        text="Categoría"
-                        value={offer.category}
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      borderBottomWidth: 1,
-                      borderColor: '#505050',
-                      flexDirection: 'row',
-                      zIndex: 2,
-                      flex: 1
-                    }}
-                  >
-                    <View
-                      style={{
-                        flex: 1,
-                        borderEndWidth: 1,
-                        borderColor: '#505050'
-                      }}
-                    >
-                      <CardInfoOffers text="Posición" value={offer?.posit} />
-                      <View
-                        style={{
-                          position: 'absolute',
-                          right: -15,
-                          bottom: -15,
-                          height: 30,
-                          width: 30,
-                          backgroundColor: '#252525',
-                          borderRadius: 50
-                        }}
-                      ></View>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1
-                      }}
-                    >
-                      <CardInfoOffers
-                        text="Ubicacion"
-                        value={offer?.province || 'Random'}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={{ flexDirection: 'row', zIndex: -1, flex: 1 }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        borderEndWidth: 1,
-                        borderColor: '#505050'
-                      }}
-                    >
-                      <CardInfoOffers text="Urgencia" value={offer?.urgency} />
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        borderColor: '#505050'
-                      }}
-                    >
-                      <CardInfoOffers
-                        text="Retribucion"
-                        value={offer.retribution === false ? 'No' : offer.prop1}
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      width: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginTop: 30,
-                      zIndex: 10
-                    }}
-                  >
-                    <TouchableOpacity
-                      disabled={signinToOffer}
-                      onPress={async () => {
-                        if (true) {
-                          setSigninToOffer(true)
-                          if (sportman) {
-                            try {
-                              await dispatch(updateOffers(offer?.id))
-                              dispatch(
-                                deleteSignToOffer({
-                                  offerId: offer?.id,
-                                  userId: user.user?.id
-                                })
-                              ).then((data) => {
-                                console.log(data, 'dataaa')
-                                dispatch(getAllOffers())
-                                dispatch(getUserData(user?.user?.id))
-
-                                ToastAndroid.show(
-                                  'Inscripción cancelada',
-                                  ToastAndroid.SHORT
-                                )
-                              })
-                            } catch (error) {
-                              console.log('Error on inscription..', error)
-                              setSigninToOffer(false)
-                            } finally {
-                              setSigninToOffer(false)
-                            }
-                          } else {
-                            console.log('SPORTMAN NOT FOUND!.')
-                          }
-                        }
-                      }}
-                      style={{
-                        width: '70%',
-                        paddingHorizontal: Padding.p_mini,
-                        justifyContent: 'center',
-                        borderRadius: Border.br_81xl,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        zIndex: 5,
-                        backgroundColor: mainColor,
-                        height: 35
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#fff',
-                          textAlign: 'center',
-                          fontWeight: '700',
-                          fontFamily: FontFamily.t4TEXTMICRO,
-                          fontSize: scalableFontSize(17)
-                        }}
-                      >
-                        Cancelar inscripción
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  {/* <Image
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: 1,
-                      borderRadius: 8,
-                      overflow: 'hidden'
-                    }}
-                    source={require('../assets/group-4891.png')}
-                  /> */}
-                </View>
-              ))}
-          </PagerView>
-          {offers.length > 1 && (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 15,
-                marginBottom: '2%',
-                marginHorizontal: 100
-              }}
-            >
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={{ flex: 1 }}
-                contentContainerStyle={{
-                  width: cantPage2 > 20 ? '' : '100%',
-
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  alignContent: 'center'
-                }}
-              >
-                {offer
+                ).length > 0 ? (
+                offer
+                  .filter((offer) => offer.paused === false)
                   .filter((off) => {
                     if (search.length > 0) {
                       if (
@@ -1318,126 +517,985 @@ const TodasLasOfertas = () => {
                     }
                   })
                   .filter((offer) => {
-                    const filteredUserMatches = userMatches.filter(
-                      (match) => match.offerId && match.offerId !== offer.id
+                    // const filteredUserMatches = userMatches.filter(
+                    //   (match) => match.offerId && match.offerId !== offer.id
+                    // )
+                    const alreadyJoined = user?.user?.offers?.find(
+                      (of) => of.id === offer.id
                     )
-                    const alreadyJoined = offer?.inscriptions?.includes(
-                      user?.user?.sportman?.id
-                    )
-                    if (filteredUserMatches.length > 0) {
+                    // if (filteredUserMatches.length > 0) {
+                    //   return false
+                    // }
+                    if (alreadyJoined) {
                       return false
                     }
-                    if (alreadyJoined) {
-                      return true
-                    }
-                    return false
+                    return true
                   })
-                  .map((_, index) => (
-                    <View
-                      key={index}
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: 4,
-                        marginHorizontal: 2,
-                        backgroundColor:
-                          index === currentPage ? mainColor : 'gray'
-                      }}
-                    />
-                  ))
-                  .slice(0, 15)}
-              </ScrollView>
-            </View>
-          )}
-        </View>
-      ) : (
-        selectOfferComponent !== 'todas' && (
-          <View
-            style={{ width: '100%', alignSelf: 'center', alignItems: 'center' }}
-          >
-            <Text
+                  .slice(
+                    0,
+                    user?.user?.plan === 'pro' ||
+                      user?.user?.plan === 'star' ||
+                      user?.user?.prop1?.plans
+                      ? 1000
+                      : 20
+                  )
+                  .sort((a, b) => {
+                    const first = a.inscriptions?.length || 0
+                    const second = b.inscriptions?.length || 0
+                    // console.log('first', first, 'second', second)
+
+                    return byRelevance ? second - first : first - second
+                  })
+                  .map((offer, index) => {
+                    const can = allUsers.find(
+                      (e) => e?.club?.id === offer?.club?.id
+                    )
+                    if (!can?.isDelete) {
+                      return (
+                        <View
+                          key={index}
+                          style={{
+                            marginTop: 10,
+                            padding: 22,
+                            flex: 1,
+                            marginHorizontal: 20,
+                            backgroundColor: '#252525',
+                            borderRadius: 10,
+                            alignItems: 'center',
+                            borderColor: '#505050',
+                            borderWidth: 1,
+                            opacity: 1
+                          }}
+                        >
+                          <View
+                            style={{
+                              borderBottomWidth: 1,
+                              borderColor: '#505050',
+                              flexDirection: 'row',
+                              zIndex: 5,
+                              flex: 1
+                            }}
+                          >
+                            <View
+                              style={{
+                                flex: 1,
+                                borderEndWidth: 1,
+                                borderColor: '#505050'
+                              }}
+                            >
+                              <CardInfoOffers
+                                text="Sexo"
+                                value={
+                                  offer.sexo === 'Male'
+                                    ? 'Masculino'
+                                    : 'Femenino'
+                                }
+                              />
+                              <View
+                                style={{
+                                  position: 'absolute',
+                                  right: -15,
+                                  bottom: -15,
+                                  height: 30,
+                                  width: 30,
+                                  backgroundColor: '#252525',
+                                  borderRadius: 50
+                                }}
+                              ></View>
+                            </View>
+                            <View
+                              style={{
+                                flex: 1,
+                                zIndex: 3
+                              }}
+                            >
+                              <CardInfoOffers
+                                category={true}
+                                text="Categoría"
+                                value={offer.category}
+                              />
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              borderBottomWidth: 1,
+                              borderColor: '#505050',
+                              flexDirection: 'row',
+                              zIndex: 2,
+                              flex: 1
+                            }}
+                          >
+                            <View
+                              style={{
+                                flex: 1,
+                                borderEndWidth: 1,
+                                borderColor: '#505050'
+                              }}
+                            >
+                              <CardInfoOffers
+                                text="Posición"
+                                value={offer?.posit}
+                              />
+                              <View
+                                style={{
+                                  position: 'absolute',
+                                  right: -15,
+                                  bottom: -15,
+                                  height: 30,
+                                  width: 30,
+                                  backgroundColor: '#252525',
+                                  borderRadius: 50
+                                }}
+                              ></View>
+                            </View>
+                            <View
+                              style={{
+                                flex: 1
+                              }}
+                            >
+                              <CardInfoOffers
+                                text="Comarca"
+                                value={offer?.province || 'Random'}
+                              />
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              zIndex: -1,
+                              flex: 1
+                            }}
+                          >
+                            <View
+                              style={{
+                                flex: 1,
+                                borderEndWidth: 1,
+                                borderColor: '#505050'
+                              }}
+                            >
+                              <CardInfoOffers
+                                text="Urgencia"
+                                value={offer?.urgency}
+                              />
+                            </View>
+
+                            <View
+                              style={{
+                                flex: 1,
+                                borderColor: '#505050'
+                              }}
+                            >
+                              <CardInfoOffers
+                                text="Retribucion"
+                                value={
+                                  offer.retribution === false
+                                    ? 'No'
+                                    : offer.prop1
+                                }
+                              />
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              width: '100%',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginTop: 30,
+                              zIndex: 10
+                            }}
+                          >
+                            <TouchableOpacity
+                              disabled={signinToOffer}
+                              onPress={async () => {
+                                if (!user.user.emailCheck) {
+                                  return ToastAndroid.show(
+                                    'Valida tu email para poder inscribirte',
+                                    ToastAndroid.SHORT
+                                  )
+                                }
+                                console.log('PRESSED')
+                                if (
+                                  !offer?.inscriptions?.includes(sportman?.id)
+                                ) {
+                                  setSigninToOffer(true)
+                                  if (sportman) {
+                                    try {
+                                      await dispatch(updateOffers(offer?.id))
+                                      dispatch(
+                                        signToOffer({
+                                          offerId: offer?.id,
+                                          userId: user.user?.id
+                                        })
+                                      ).then((data) => {
+                                        dispatch(getUserData(user?.user?.id))
+                                        console.log(data, 'response offer')
+                                        const userr = allUsers.filter(
+                                          (e) => e?.club?.id === offer?.clubId
+                                        )[0]
+                                        console.log(userr, 'userrr')
+                                        dispatch(
+                                          sendNotification({
+                                            title: 'Inscripción',
+                                            message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
+                                            recipientId: userr?.id,
+                                            date: new Date(),
+                                            read: false,
+                                            prop2: {
+                                              rol: 'user'
+                                            },
+                                            prop1: {
+                                              userId: user?.user?.id,
+                                              userData: {
+                                                ...user
+                                              }
+                                            }
+                                          })
+                                        ).then(() =>
+                                          emitToUser(
+                                            userr?.id,
+                                            'notifications',
+                                            'hola'
+                                          )
+                                        )
+                                        dispatch(getAllOffers())
+                                        ToastAndroid.show(
+                                          'Te has inscrito en la oferta!',
+                                          ToastAndroid.SHORT
+                                        )
+                                      })
+                                    } catch (error) {
+                                      console.log(
+                                        'Error on inscription..',
+                                        error
+                                      )
+                                      setSigninToOffer(false)
+                                    } finally {
+                                      setSigninToOffer(false)
+                                    }
+                                  } else {
+                                    console.log('SPORTMAN NOT FOUND!.')
+                                  }
+                                }
+                              }}
+                              style={{
+                                width: '80%',
+                                paddingHorizontal: Padding.p_mini,
+                                paddingVertical: Padding.p_8xs,
+                                justifyContent: 'center',
+                                borderRadius: Border.br_81xl,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                zIndex: 5,
+                                backgroundColor: !offer?.inscriptions?.includes(
+                                  user?.user?.sportman?.id
+                                )
+                                  ? '#ffff'
+                                  : Color.wHITESPORTSMATCH
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: offer?.inscriptions?.includes(
+                                    user?.user?.sportman?.id
+                                  )
+                                    ? '#fff'
+                                    : Color.bLACK1SPORTSMATCH,
+                                  textAlign: 'center',
+                                  fontWeight: '700',
+                                  fontFamily: FontFamily.t4TEXTMICRO,
+                                  fontSize: scalableFontSize(16)
+                                }}
+                              >
+                                {offer?.inscriptions?.includes(
+                                  user?.user?.sportman?.id
+                                )
+                                  ? 'Inscrito!'
+                                  : 'Inscríbete en la oferta'}
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      )
+                    }
+                  })
+              ) : (
+                <View
+                  style={{
+                    width: '100%',
+                    alignSelf: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Text
+                    style={{
+                      marginTop: 30,
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontWeight: 400,
+                      fontSize: 14,
+                      color: Color.wHITESPORTSMATCH,
+                      bottom: 4
+                    }}
+                  >
+                    No hay ofertas disponibles basadas en su búsqueda!
+                  </Text>
+                </View>
+              )}
+            </PagerView>
+            {offers.length > 1 && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: 15,
+                    marginBottom: '6%',
+
+                    marginHorizontal: '10%'
+                  }}
+                >
+                  <ScrollView
+                    horizontal={true}
+                    style={{ width: '100%', flex: 1 }}
+                    contentContainerStyle={{
+                      width: cantPage1 > 20 ? '' : '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignContent: 'center'
+                    }}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {offer
+                      .filter((offer) => offer.paused === false)
+                      .filter((offer) => {
+                        // const filteredUserMatches = userMatches.filter(
+                        //   (match) => match.offerId && match.offerId !== offer.id
+                        // )
+                        const alreadyJoined = user?.user?.offers?.find(
+                          (of) => of.id === offer.id
+                        )
+                        // if (filteredUserMatches.length > 0) {
+                        //   return false
+                        // }
+                        if (alreadyJoined) {
+                          return false
+                        }
+                        return true
+                      })
+                      .slice(
+                        0,
+                        user?.user?.plan === 'pro' ||
+                          user?.user?.plan === 'star'
+                          ? 1000
+                          : 20
+                      )
+                      .filter((offer) => offer.paused === false)
+                      .filter((off) => {
+                        if (search.length > 0) {
+                          if (
+                            off.province
+                              .toLowerCase()
+                              .includes(search.toLowerCase()) ||
+                            off.posit
+                              .toLowerCase()
+                              .includes(search.toLowerCase())
+                          ) {
+                            return true
+                          } else {
+                            return false
+                          }
+                        } else {
+                          return true
+                        }
+                      })
+                      .filter((offer) => {
+                        // const filteredUserMatches = userMatches.filter(
+                        //   (match) => match.offerId && match.offerId !== offer.id
+                        // )
+                        const alreadyJoined = user?.user?.offers?.find(
+                          (of) => of.id === offer.id
+                        )
+                        // if (filteredUserMatches.length > 0) {
+                        //   return false
+                        // }
+                        if (alreadyJoined) {
+                          return false
+                        }
+                        return true
+                      })
+                      .slice(
+                        0,
+                        user?.user?.plan === 'pro' ||
+                          user?.user?.plan === 'star'
+                          ? 1000
+                          : 20
+                      )
+                      .sort((a, b) => {
+                        const first = a.inscriptions?.length || 0
+                        const second = b.inscriptions?.length || 0
+                        return byRelevance ? second - first : first - second
+                      })
+                      .map((_, index) => (
+                        <View
+                          key={index}
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: 4,
+                            marginHorizontal: 2,
+                            backgroundColor:
+                              index === currentPage ? mainColor : 'gray'
+                          }}
+                        />
+                      ))}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
+            {selectOfferComponent === 'todas' &&
+              offer
+                .filter((off) => {
+                  if (search.length > 0) {
+                    if (
+                      off.province
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      off.posit.toLowerCase().includes(search.toLowerCase())
+                    ) {
+                      return true
+                    } else {
+                      return false
+                    }
+                  } else {
+                    return true
+                  }
+                })
+                .filter((offer) => {
+                  const filteredUserMatches = userMatches.filter(
+                    (match) => match.offerId && match.offerId !== offer.id
+                  )
+                  const alreadyJoined = offer?.inscriptions?.includes(
+                    user?.user?.sportman?.id
+                  )
+                  if (filteredUserMatches.length > 0) {
+                    return false
+                  }
+                  if (alreadyJoined) {
+                    return false
+                  }
+                  return true
+                }).length > 0 &&
+              user?.user?.plan === 'basic' &&
+              !user?.user?.prop1?.plans && (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: Color.wHITESPORTSMATCH,
+                    width: '65%',
+                    justifyContent: 'center',
+                    paddingVertical: 6,
+                    alignSelf: 'center',
+                    zIndex: 3,
+                    marginBottom: 20,
+                    borderRadius: Border.br_81xl,
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                  }}
+                  onPress={() =>
+                    user?.user?.plan === 'pro' ||
+                    user?.user?.plan === 'star' ||
+                    user?.user?.prop1?.plans
+                      ? null
+                      : setShowPremiumModal(true)
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      width: '100%',
+                      fontFamily: FontFamily.t4TEXTMICRO,
+                      fontWeight: 600,
+                      fontSize: scalableFontSize(12),
+                      textAlign: 'center'
+                    }}
+                  >
+                    Ver más ofertas
+                  </Text>
+                </TouchableOpacity>
+              )}
+          </View>
+        ) : (
+          selectOfferComponent === 'todas' && (
+            <View
               style={{
-                marginTop: 60,
-                fontFamily: FontFamily.t4TEXTMICRO,
-                fontWeight: 400,
-                fontSize: 14,
-                color: Color.wHITESPORTSMATCH,
-                bottom: 4
+                width: '100%',
+                alignSelf: 'center',
+                alignItems: 'center'
               }}
             >
-              {search?.length > 0
-                ? 'No encontramos resultados para su búsqueda.'
-                : '¡Aún no hay ofertas activas!'}
-            </Text>
-          </View>
-        )
-      )}
+              <Text
+                style={{
+                  marginTop: 60,
+                  marginBottom: 20,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: 400,
+                  fontSize: 14,
+                  color: Color.wHITESPORTSMATCH,
+                  bottom: 4,
+                  textAlign: 'center'
+                }}
+              >
+                {search?.length > 0
+                  ? 'No encontramos resultados para su búsqueda.'
+                  : `Con tu modelo de suscripción no puedes visualizar más ofertas deportívas de los clubs.`}
+              </Text>
+            </View>
+          )
+        )}
 
-      <Modal visible={modalVisible} transparent={true} animationType="slide">
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        {/* ============================ FAVORITE OFFERS ============================ */}
+        {selectOfferComponent !== 'todas' &&
+        user?.user?.offers &&
+        user?.user?.offers
+          .filter((off) => {
+            if (search.length > 0) {
+              if (
+                off.province.toLowerCase().includes(search.toLowerCase()) ||
+                off.posit.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return true
+              } else {
+                return false
+              }
+            } else {
+              return true
+            }
+          })
+          .filter((offer) => {
+            return true
+          }).length > 0 ? (
           <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: 15
-            }}
+            keyboardShouldPersistTaps={'always'}
+            style={{ flex: 1, paddingBottom: 20 }}
           >
-            <MonetizarOfertaPRO onClose={() => setModalVisible(false)} />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-      <Modal
-        visible={showPremiumModal}
-        transparent={true}
-        animationType="slide"
-      >
-        <TouchableWithoutFeedback onPress={() => setShowPremiumModal(false)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: 15
-            }}
-          >
-            <MonetizarOfertaPRO
-              handle={handleGetGold}
-              onClose={() => setShowPremiumModal(false)}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+            <PagerView
+              onPageSelected={(event) =>
+                setCurrentPage(event.nativeEvent.position)
+              }
+              initialPage={0}
+              style={{ flex: 1, width: '100%', height: 500, gap: 15 }}
+            >
+              {user?.user?.offers
+                .filter((off) => {
+                  if (search.length > 0) {
+                    if (
+                      off.province
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      off.posit.toLowerCase().includes(search.toLowerCase())
+                    ) {
+                      return true
+                    } else {
+                      return false
+                    }
+                  } else {
+                    return true
+                  }
+                })
+                .filter((offer) => {
+                  return true
+                })
+                .map((offer, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      marginTop: 10,
+                      padding: 22,
+                      marginHorizontal: 20,
+                      backgroundColor: '#252525',
+                      borderRadius: 10,
+                      alignItems: 'center',
+                      borderColor: '#505050',
+                      borderWidth: 1,
+                      // height: Dimensions.get('screen').height / 2
+                      flex: 1
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderBottomWidth: 1,
+                        borderColor: '#505050',
+                        flexDirection: 'row',
+                        zIndex: 5,
+                        flex: 1
+                      }}
+                    >
+                      <View
+                        style={{
+                          flex: 1,
+                          borderEndWidth: 1,
+                          borderColor: '#505050'
+                        }}
+                      >
+                        <CardInfoOffers
+                          text="Sexo"
+                          value={
+                            offer.sexo === 'Male' ? 'Masculino' : 'Femenino'
+                          }
+                        />
+                        <View
+                          style={{
+                            position: 'absolute',
+                            right: -15,
+                            bottom: -15,
+                            height: 30,
+                            width: 30,
+                            backgroundColor: '#252525',
+                            borderRadius: 50
+                          }}
+                        ></View>
+                      </View>
 
-      <Modal
-        visible={modalFilterSportman}
-        transparent={true}
-        animationType="fade"
-      >
-        <TouchableWithoutFeedback onPress={() => setModalFilterSportman(false)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-start',
-              alignItems: 'flex-end',
-              paddingTop: 122,
-              paddingHorizontal: 20
-            }}
-          >
-            <FiltersSportman
-              byRelevance={byRelevance}
-              setByRelevance={setByRelevance}
-              setSelectedSports={setSelectedSports}
-              selectedSports={selectedSports}
-              setOffer={setOffer}
-              offer={offers}
-              sports={user?.user?.sportman?.info?.sport}
-              onClose={() => setModalFilterSportman(false)}
-            />
+                      <View
+                        style={{
+                          flex: 1
+                        }}
+                      >
+                        <CardInfoOffers
+                          category={true}
+                          text="Categoría"
+                          value={offer.category}
+                        />
+                      </View>
+                    </View>
+
+                    <View
+                      style={{
+                        borderBottomWidth: 1,
+                        borderColor: '#505050',
+                        flexDirection: 'row',
+                        zIndex: 2,
+                        flex: 1
+                      }}
+                    >
+                      <View
+                        style={{
+                          flex: 1,
+                          borderEndWidth: 1,
+                          borderColor: '#505050'
+                        }}
+                      >
+                        <CardInfoOffers text="Posición" value={offer?.posit} />
+                        <View
+                          style={{
+                            position: 'absolute',
+                            right: -15,
+                            bottom: -15,
+                            height: 30,
+                            width: 30,
+                            backgroundColor: '#252525',
+                            borderRadius: 50
+                          }}
+                        ></View>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1
+                        }}
+                      >
+                        <CardInfoOffers
+                          text="Ubicacion"
+                          value={offer?.province || 'Random'}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', zIndex: -1, flex: 1 }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          borderEndWidth: 1,
+                          borderColor: '#505050'
+                        }}
+                      >
+                        <CardInfoOffers
+                          text="Urgencia"
+                          value={offer?.urgency}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          borderColor: '#505050'
+                        }}
+                      >
+                        <CardInfoOffers
+                          text="Retribucion"
+                          value={
+                            offer.retribution === false ? 'No' : offer.prop1
+                          }
+                        />
+                      </View>
+                    </View>
+
+                    <View
+                      style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 30,
+                        zIndex: 10
+                      }}
+                    >
+                      <TouchableOpacity
+                        disabled={signinToOffer}
+                        onPress={async () => {
+                          if (true) {
+                            setSigninToOffer(true)
+                            if (sportman) {
+                              try {
+                                await dispatch(updateOffers(offer?.id))
+                                dispatch(
+                                  deleteSignToOffer({
+                                    offerId: offer?.id,
+                                    userId: user.user?.id
+                                  })
+                                ).then((data) => {
+                                  console.log(data, 'dataaa')
+                                  dispatch(getAllOffers())
+                                  dispatch(getUserData(user?.user?.id))
+
+                                  ToastAndroid.show(
+                                    'Inscripción cancelada',
+                                    ToastAndroid.SHORT
+                                  )
+                                })
+                              } catch (error) {
+                                console.log('Error on inscription..', error)
+                                setSigninToOffer(false)
+                              } finally {
+                                setSigninToOffer(false)
+                              }
+                            } else {
+                              console.log('SPORTMAN NOT FOUND!.')
+                            }
+                          }
+                        }}
+                        style={{
+                          width: '70%',
+                          paddingHorizontal: Padding.p_mini,
+                          justifyContent: 'center',
+                          borderRadius: Border.br_81xl,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          zIndex: 5,
+                          backgroundColor: mainColor,
+                          height: 35
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: '#fff',
+                            textAlign: 'center',
+                            fontWeight: '700',
+                            fontFamily: FontFamily.t4TEXTMICRO,
+                            fontSize: scalableFontSize(17)
+                          }}
+                        >
+                          Cancelar inscripción
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    {/* <Image
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 1,
+                      borderRadius: 8,
+                      overflow: 'hidden'
+                    }}
+                    source={require('../assets/group-4891.png')}
+                  /> */}
+                  </View>
+                ))}
+            </PagerView>
+            {offers.length > 1 && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 15,
+                  marginBottom: '2%',
+                  marginHorizontal: 100
+                }}
+              >
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  style={{ flex: 1 }}
+                  contentContainerStyle={{
+                    width: cantPage2 > 20 ? '' : '100%',
+
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignContent: 'center'
+                  }}
+                >
+                  {offer
+                    .filter((off) => {
+                      if (search.length > 0) {
+                        if (
+                          off.province
+                            .toLowerCase()
+                            .includes(search.toLowerCase()) ||
+                          off.posit.toLowerCase().includes(search.toLowerCase())
+                        ) {
+                          return true
+                        } else {
+                          return false
+                        }
+                      } else {
+                        return true
+                      }
+                    })
+                    .filter((offer) => {
+                      const filteredUserMatches = userMatches.filter(
+                        (match) => match.offerId && match.offerId !== offer.id
+                      )
+                      const alreadyJoined = offer?.inscriptions?.includes(
+                        user?.user?.sportman?.id
+                      )
+                      if (filteredUserMatches.length > 0) {
+                        return false
+                      }
+                      if (alreadyJoined) {
+                        return true
+                      }
+                      return false
+                    })
+                    .map((_, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: 4,
+                          marginHorizontal: 2,
+                          backgroundColor:
+                            index === currentPage ? mainColor : 'gray'
+                        }}
+                      />
+                    ))
+                    .slice(0, 15)}
+                </ScrollView>
+              </View>
+            )}
           </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-    </View>
+        ) : (
+          selectOfferComponent !== 'todas' && (
+            <View
+              style={{
+                width: '100%',
+                alignSelf: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  marginTop: 60,
+                  fontFamily: FontFamily.t4TEXTMICRO,
+                  fontWeight: 400,
+                  fontSize: 14,
+                  color: Color.wHITESPORTSMATCH,
+                  bottom: 4
+                }}
+              >
+                {search?.length > 0
+                  ? 'No encontramos resultados para su búsqueda.'
+                  : '¡Aún no hay ofertas activas!'}
+              </Text>
+            </View>
+          )
+        )}
+
+        <Modal visible={modalVisible} transparent={true} animationType="slide">
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 15
+              }}
+            >
+              <MonetizarOfertaPRO onClose={() => setModalVisible(false)} />
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+        <Modal
+          visible={showPremiumModal}
+          transparent={true}
+          animationType="slide"
+        >
+          <TouchableWithoutFeedback onPress={() => setShowPremiumModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 15
+              }}
+            >
+              <MonetizarOfertaPRO
+                handle={handleGetGold}
+                onClose={() => setShowPremiumModal(false)}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+
+        <Modal
+          visible={modalFilterSportman}
+          transparent={true}
+          animationType="fade"
+        >
+          <TouchableWithoutFeedback
+            onPress={() => setModalFilterSportman(false)}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-end',
+                paddingTop: 122,
+                paddingHorizontal: 20
+              }}
+            >
+              <FiltersSportman
+                byRelevance={byRelevance}
+                setByRelevance={setByRelevance}
+                setSelectedSports={setSelectedSports}
+                selectedSports={selectedSports}
+                setOffer={setOffer}
+                offer={offers}
+                sports={[
+                  { name: 'Hockey' },
+                  { name: 'Fútbol Sala' },
+                  { name: 'Baloncesto' },
+                  { name: 'Fútbol' },
+                  { name: 'Voley' },
+                  { name: 'Handball' }
+                ]}
+                onClose={() => setModalFilterSportman(false)}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -2070,7 +2128,7 @@ const styles = StyleSheet.create({
   todasLasOfertas: {
     width: '100%',
     paddingVertical: 20,
-    flex: 1,
+    height: Dimensions.get('screen').height - 70,
     backgroundColor: Color.bLACK1SPORTSMATCH
   }
 })

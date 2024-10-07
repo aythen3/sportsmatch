@@ -6,7 +6,16 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './redux/store'
 import { Context, ContextProvider } from './context/Context'
 
-import { AppRegistry, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  AppRegistry,
+  Linking,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  Text,
+  View
+} from 'react-native'
 
 import { ToastProvider } from './components/Toast'
 import * as Notifications from 'expo-notifications'
@@ -36,13 +45,46 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ScreenInicio from './screens/ScreenInicio'
 import ScreenPrincipal from './screens/ScreenPrincipal'
 import Post from './screens/Perfil/EditarPerfil/Post'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Stack = createNativeStackNavigator()
+const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1'
 
 if (__DEV__) {
   require('./ReactotronConfig')
 }
 const App = () => {
+  // const [isReady, setIsReady] = React.useState(__DEV__ ? true : false) // Don't persist state on web since it's based on URL
+  // const [initialState, setInitialState] = React.useState(null)
+  // const restoreState = async () => {
+  //   try {
+  //     const initialUrl = await Linking.getInitialURL()
+
+  //     if (initialUrl == null) {
+  //       // Only restore state if there's no deep link
+  //       const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
+  //       const state = savedStateString
+  //         ? JSON.parse(savedStateString)
+  //         : undefined
+
+  //       if (state !== undefined) {
+  //         setInitialState(state)
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to restore navigation state', error)
+  //   } finally {
+  //     setIsReady(true)
+  //   }
+  // }
+
+  // React.useEffect(() => {
+  //   restoreState()
+  // }, [])
+
+  // if (!isReady) {
+  //   return <ActivityIndicator />
+  // }
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -50,8 +92,6 @@ const App = () => {
       shouldSetBadge: false
     })
   })
-  const [hideSplashScreen, setHideSplashScreen] = useState(true)
-  const [isFooterShow, setIsFooterShow] = useState(null)
  /* eslint-disable */
   let [fontsLoaded,error] = useFonts({
     Poppins_100Thin,
@@ -80,6 +120,7 @@ const App = () => {
   }
   // ======================= CHAT RELATED STUFF ============================
 
+  
   return (
     <SafeAreaView
       style={{
@@ -97,8 +138,13 @@ const App = () => {
 
           <Provider store={store}>
             <ContextProvider>
-              <NavigationContainer theme={{colors:{background:"black"}}} >
-                {hideSplashScreen ? (
+              <NavigationContainer
+      //          initialState={initialState}
+      // onStateChange={(state) =>
+      //   AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+      // }
+              theme={{colors:{background:"black"}}} >
+                {true ? (
                  <>
                   <Stack.Navigator
                   initialRouteName="MainTabs"

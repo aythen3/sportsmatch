@@ -12,6 +12,7 @@ import { ImgManagerService } from 'src/img-manager/img-manager.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { PostService } from 'src/post/post.service';
       OfferEntity,
       SportmanEntity,
       PostEntity
-    ])
+    ]),
+    NotificationModule
   ],
   exports: [ClubService],
   controllers: [ClubController],

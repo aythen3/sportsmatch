@@ -40,10 +40,8 @@ const NavBarInferior2 = () => {
     NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
   }, [])
   const {
-    activeIcon,
     generateLowResUrl,
     setActiveIcon,
-    getUsersMessages,
     notReaded
     // user
   } = useContext(Context)
@@ -159,13 +157,13 @@ const NavBarInferior2 = () => {
                       isActive={focused}
                       style={[styles.icon, focused && styles.iconActive]}
                     />
-                    {userNotifications.length > 0 &&
+                    {/* {userNotifications.length > 0 &&
                       userNotifications
                         ?.filter((notification) => {
                           if (user?.user?.type === 'club') {
-                            notification.recipientId === user.user.club?.id
-                            return true
-                          } else if (notification.recipientId === userId) {
+                            if (notification.receiverId === user.user.club?.id)
+                              return true
+                          } else if (notification.receiverId === userId) {
                             return true
                           } else {
                             return false
@@ -183,8 +181,8 @@ const NavBarInferior2 = () => {
                             right: 4
                           }}
                         ></View>
-                      )}
-                    {notReaded > 0 && (
+                      )} */}
+                    {/* {notReaded > 0 && (
                       <View
                         style={{
                           width: 20,
@@ -201,7 +199,7 @@ const NavBarInferior2 = () => {
                           {notReaded}
                         </Text>
                       </View>
-                    )}
+                    )} */}
                   </View>
                 </View>
               )
@@ -307,7 +305,7 @@ const NavBarInferior2 = () => {
       <Tab.Screen
         name="SeleccionarImagen"
         options={{
-          headerShown: user?.user?.type !== 'club' ? false : true
+          headerShown: false
         }}
         component={
           user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
@@ -317,7 +315,15 @@ const NavBarInferior2 = () => {
         name="TusNotificaciones1"
         options={{
           headerShown: false,
-          tabBarBadge: notReaded.length > 0 ? notReaded : undefined
+          tabBarBadge:
+            userNotifications.filter((n) => !n.read).length > 0 &&
+            userNotifications.filter((n) => !n.read).length,
+          tabBarBadgeStyle: {
+            backgroundColor:
+              userNotifications.filter((n) => !n.read).length > 0
+                ? mainColor
+                : 'transparent'
+          }
         }}
       >
         {() => (

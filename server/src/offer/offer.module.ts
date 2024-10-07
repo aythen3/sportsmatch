@@ -16,6 +16,7 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
+import { ChatModule } from 'src/chat/chat.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
       UserEntity,
       NotificationEntity,
       PostEntity
-    ])
+    ]),
+    ChatModule
   ],
   exports: [OfferService, TypeOrmModule.forFeature([OfferEntity])],
   controllers: [OfferController],

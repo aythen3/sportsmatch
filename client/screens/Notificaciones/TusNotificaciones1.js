@@ -83,12 +83,6 @@ const TusNotificaciones1 = () => {
   // ================ NOTIFICATIONS/OFFERS =====================
 
   useEffect(() => {
-    if (allUsers.length === 0) {
-      dispatch(getAllUsers())
-    }
-  }, [])
-
-  useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
       const clubOffers = offers?.filter(
         (offer) => offer.clubId === user.user.club?.id
@@ -98,8 +92,6 @@ const TusNotificaciones1 = () => {
       allApplications.length > 0 && setApplicants(allApplications)
     }
   }, [offers])
-
-  useEffect(() => {}, [allNotifications])
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 900)
@@ -179,9 +171,9 @@ const TusNotificaciones1 = () => {
               userNotifications
                 ?.filter((notification) => {
                   if (user?.user?.type === 'club') {
-                    notification.recipientId === user.user.club.id
+                    notification.receiverId === user.user.club.id
                     return true
-                  } else if (notification.recipientId === userId) {
+                  } else if (notification.receiverId === userId) {
                     return true
                   } else {
                     return false

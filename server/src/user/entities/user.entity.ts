@@ -16,6 +16,7 @@ import {
 import { NotificationEntity } from 'src/notification/entities/notification.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
+import { ChatEntity } from 'src/chat/entities/chat.entity';
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
   @Column()
@@ -124,4 +125,12 @@ export class UserEntity extends BaseEntity {
   // Relación con MatchEntity
   @OneToMany(() => MatchEntity, (match) => match.user)
   matches: MatchEntity[];
+
+  // Relación con los chats donde el usuario es 'userA'
+  @OneToMany(() => ChatEntity, (chat) => chat.userA)
+  chatsAsUserA: ChatEntity[];
+
+  // Relación con los chats donde el usuario es 'userB'
+  @OneToMany(() => ChatEntity, (chat) => chat.userB)
+  chatsAsUserB: ChatEntity[];
 }

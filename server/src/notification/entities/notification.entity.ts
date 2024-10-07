@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from 'src/config/base.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { PostEntity } from 'src/post/entities/post.entity';
 
 @Entity({ name: 'notification' })
 export class NotificationEntity extends BaseEntity {
@@ -10,11 +11,14 @@ export class NotificationEntity extends BaseEntity {
   @Column()
   message: string;
 
-  @Column({ type: 'timestamp' })
-  date: Date;
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @Column()
-  recipientId: string;
+  senderId: string;
+
+  @Column()
+  receiverId: string;
 
   @Column({ default: false, nullable: true })
   read: boolean;
@@ -33,4 +37,8 @@ export class NotificationEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.notifications)
   user: UserEntity;
+
+  @ManyToOne(() => PostEntity, (post) => post.notifications)
+  @JoinColumn({ name: 'postId' })
+  post: PostEntity;
 }

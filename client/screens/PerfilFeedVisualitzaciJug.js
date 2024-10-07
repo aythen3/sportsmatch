@@ -29,7 +29,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const router = useRoute()
 
   const dataa = router.params
-  console.log(data, 'data')
+  console.log(dataa, 'paaaaraaaaaaaaaaaa')
   const { mainColor, user } = useSelector((state) => state.users)
   const [selectComponents, setSelectComponents] = useState('perfil')
   const [selectedOptions, setSelectedOptions] = useState([])
@@ -46,7 +46,7 @@ const PerfilFeedVisualitzaciJug = () => {
   }
   const dispatch = useDispatch()
   const getUser = async () => {
-    axiosInstance.get(`user/${dataa.author.id}`).then((r) => {
+    axiosInstance.get(`user/${dataa?.author?.id}`).then((r) => {
       setData({ author: r.data })
       selectores()
       setIsBanned(r?.data?.banned?.includes(user?.user?.id))
@@ -154,7 +154,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         <View style={{ position: 'absolute', top: 0, left: 0 }}>
                           <CircularStat
                             color={mainColor}
-                            value={data?.author?.sportman?.info.attack || 0}
+                            value={data?.author?.sportman?.info?.attack || 0}
                           />
                         </View>
                         <View
@@ -178,7 +178,7 @@ const PerfilFeedVisualitzaciJug = () => {
                               fontFamily: FontFamily.t4TEXTMICRO
                             }}
                           >
-                            {data?.author?.sportman?.info.attack}
+                            {data?.author?.sportman?.info.attack || 0}
                           </Text>
                           <Text style={[styles.ataque, styles.ataqueClr]}>
                             Ataque
@@ -214,7 +214,7 @@ const PerfilFeedVisualitzaciJug = () => {
                               { color: mainColor }
                             ]}
                           >
-                            {data?.author?.sportman?.info.defense}
+                            {data?.author?.sportman?.info.defense || 0}
                           </Text>
                           <Text style={[styles.ataque, styles.ataqueClr]}>
                             Defensa
@@ -250,7 +250,7 @@ const PerfilFeedVisualitzaciJug = () => {
                               { color: mainColor }
                             ]}
                           >
-                            {data?.author?.sportman?.info.speed}
+                            {data?.author?.sportman?.info.speed || 0}
                           </Text>
                           <Text style={[styles.ataque, styles.ataqueClr]}>
                             Velocidad

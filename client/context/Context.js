@@ -309,6 +309,34 @@ export const ContextProvider = ({ children }) => {
     dispatch(getAllUsers())
   }, [])
 
+  const formatDateDifference = (date) => {
+    const ahora = new Date()
+    const fecha = new Date(date)
+    const milisegundosDiferencia = ahora - fecha
+    const segundosDiferencia = Math.floor(milisegundosDiferencia / 1000)
+    const minutosDiferencia = Math.floor(segundosDiferencia / 60)
+    const horasDiferencia = Math.floor(minutosDiferencia / 60)
+
+    if (horasDiferencia < 24) {
+      if (horasDiferencia < 0) {
+        return 'Hace 1 segundo'
+      }
+      if (horasDiferencia === 0) {
+        if (minutosDiferencia === 0) {
+          return `Hace ${segundosDiferencia} segundos`
+        }
+        return `Hace ${minutosDiferencia} minuto${minutosDiferencia === 1 ? '' : 's'}`
+      } else {
+        return `Hace ${horasDiferencia} hora${horasDiferencia === 1 ? '' : 's'}`
+      }
+    } else {
+      const diasDiferencia = Math.floor(horasDiferencia / 24)
+      return `Hace ${diasDiferencia} día${diasDiferencia === 1 ? '' : 's'}`
+    }
+  }
+
+  // Prueba con tu fecha
+
   function getTimeFromDate(dateString) {
     // Create a new Date object from the UTC string
     const utcDate = new Date(dateString)
@@ -336,66 +364,66 @@ export const ContextProvider = ({ children }) => {
 
   const [socket, setSocket] = useState(null)
 
-  useEffect(() => {
-    const newSocket = io(
-      // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-      'http://163.172.172.81:3010',
-      // 'http://192.168.0.77:3010',
+  const newSocket = io(
+    // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+    // 'http://163.172.172.81:3010',
+    'http://192.168.0.77:3010',
 
-      {
-        transports: ['websocket']
+    {
+      transports: ['websocket'],
+      query: {
+        userId: user?.user?.id // Enviar userId al conectar
       }
-    )
-
-    newSocket.on('connect', () => {
-      newSocket.emit('join', user?.user?.id)
-    })
-
-    newSocket.on('disconnect', () => {
-      setRoomId()
-    })
-
-    newSocket.on('error', (error) => {
-      console.log('ERROR FROM SOCKET', error)
-    })
-
-    newSocket.on('hola', (data) => {
-      console.log(data, 'anad')
-    })
-    newSocket.on('notifications', (data) => {
-      console.log(data, 'notifications')
-      dispatch(getNotificationsByUserId(user?.user?.id))
-    })
-
-    newSocket.on('readMessages', (room) => {
-      console.log(room, '11111111111111111111111111')
-      getUsersMessages()
-    })
-
-    newSocket.on('joinedRoom', (room) => {
-      setRoomId(room)
-    })
-
-    newSocket.on('leaveRoom', (room) => {
-      // console.log('Leaving room: ', room)
-      setRoomId()
-    })
-
-    newSocket.on('message-server', (msg) => {
-      // console.log('New message:', msg)
-      dispatch(updateMessages(msg)).then(() => {
-        dispatch(setAllConversationMessagesToRead())
-      })
-
-      // getUsersMessages()
-    })
-
-    setSocket(newSocket)
-
-    return () => {
-      newSocket.disconnect()
     }
-  }, [])
+  )
+
+  newSocket.on('disconnect', () => {
+    setRoomId()
+  })
+
+  newSocket.on('error', (error) => {
+    console.log('ERROR FROM SOCKET', error)
+  })
+
+  newSocket.on('hola', (data) => {
+    console.log(data, 'anad')
+  })
+  newSocket.on('notification', (data) => {
+    console.log(data, '22222222222222')
+    dispatch(getNotificationsByUserId(user?.user?.id))
+  })
+
+  newSocket.on('readMessages', (room) => {
+    console.log(room, '11111111111111111111111111')
+    getUsersMessages()
+  })
+
+  newSocket.on('joinedRoom', (room) => {
+    setRoomId(room)
+  })
+
+  newSocket.on('leaveRoom', (room) => {
+    // console.log('Leaving room: ', room)
+    setRoomId()
+  })
+
+  newSocket.on('message-server', (msg) => {
+    // console.log('New message:', msg)
+    dispatch(updateMessages(msg)).then(() => {
+      dispatch(setAllConversationMessagesToRead())
+    })
+
+    // getUsersMessages()
+  })
+
+  useEffect(() => {
+    setSocket(newSocket)
+    newSocket.on('connect', () => {
+      console.log('Connected to server')
+
+      newSocket.emit('joinGroup', { room: user?.user?.id })
+    })
+  }, [user?.user?.id])
 
   const disconnectFromSocket = () => {
     if (socket) {
@@ -565,7 +593,8 @@ export const ContextProvider = ({ children }) => {
         pickImageFromCamera,
         clubMatches,
         userMatches,
-        user
+        user,
+        formatDateDifference
       }}
     >
       {children}

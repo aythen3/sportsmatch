@@ -11,6 +11,7 @@ import { ImgManagerService } from 'src/img-manager/img-manager.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostService } from 'src/post/post.service';
 import { PostEntity } from 'src/post/entities/post.entity';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { PostEntity } from 'src/post/entities/post.entity';
       MatchEntity,
 
       PostEntity
-    ])
+    ]),
+    NotificationModule
   ],
   exports: [SportmanService, TypeOrmModule.forFeature([SportmanEntity])],
   controllers: [SportmanController],

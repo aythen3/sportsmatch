@@ -14,6 +14,8 @@ import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { ChatGateway } from 'src/chat/chat.gateway';
+import { NotificationService } from 'src/notification/notification.service';
 const configService = new ConfigService();
 
 @Injectable()
@@ -26,8 +28,8 @@ export class UserService {
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
 
-    private readonly sendMailService: SendMailService,
-    private readonly postService: PostService
+    private readonly postService: PostService,
+    private readonly notificationService: NotificationService
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -466,8 +468,17 @@ export class UserService {
     user.followingUsers.push(userToFollow);
 
     // Guardar ambos usuarios
+
     await this.userRepository.save(user);
     await this.userRepository.save(userToFollow);
+    await this.notificationService.createService({
+      title: 'Follow',
+      message: `ha comenzado a seguirte`,
+      senderId: userId,
+      receiverId: userToFollowId,
+      type: 'follow',
+      readed: false
+    });
 
     return 'Successfully followed the user';
   }

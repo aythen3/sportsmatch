@@ -15,6 +15,7 @@ import { NotificationEntity } from 'src/notification/entities/notification.entit
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { ChatModule } from 'src/chat/chat.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { PostService } from 'src/post/post.service';
       OfferEntity,
       NotificationEntity,
       PostEntity
-    ])
+    ]),
+    ChatModule
   ],
   controllers: [MatchController],
   providers: [

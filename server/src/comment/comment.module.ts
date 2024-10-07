@@ -9,6 +9,7 @@ import { LikeEntity } from 'src/like/entities/like.entity';
 import { PostService } from 'src/post/post.service';
 import { UserService } from 'src/user/user.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { SendMailService } from 'src/send-mail/send-mail.service';
       PostEntity,
       CommentEntity,
       LikeEntity
-    ])
+    ]),
+    NotificationModule
   ],
   controllers: [CommentController],
   providers: [CommentService, PostService, UserService, SendMailService]
