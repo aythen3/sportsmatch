@@ -416,7 +416,7 @@ const NavBarInferior = () => {
     activeIcon,
     generateLowResUrl,
     setActiveIcon,
-    getUsersMessages,
+    // getUsersMessages,
     notReaded
   } = useContext(Context)
   const navigation = useNavigation()
@@ -429,7 +429,7 @@ const NavBarInferior = () => {
   const userId = user?.user?.id
 
   useEffect(() => {
-    getUsersMessages()
+    // getUsersMessages()
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
@@ -494,7 +494,6 @@ const NavBarInferior = () => {
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          getUsersMessages()
           if (user.user.type == 'club') {
             dispatch(getNotificationsByUserId(user.user.club.id))
           } else {

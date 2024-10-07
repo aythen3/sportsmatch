@@ -39,8 +39,7 @@ const TusNotificaciones1 = () => {
 
   const { allMessages, userChats } = useSelector((state) => state.chats)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
-  const { getUsersMessages, usersWithMessages, setActiveIcon } =
-    useContext(Context)
+  const { usersWithMessages, setActiveIcon } = useContext(Context)
 
   const userId = user?.user?.id
 
@@ -67,12 +66,9 @@ const TusNotificaciones1 = () => {
     )
     .sort(sortUsers)
 
-  useEffect(() => {
-    getUsersMessages()
-  }, [allMessages])
+  useEffect(() => {}, [allMessages])
 
   useEffect(() => {
-    getUsersMessages()
     if (user.user.type === 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {

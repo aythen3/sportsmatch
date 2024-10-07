@@ -52,7 +52,7 @@ const ChatAbierto1 = () => {
   const isFocused = useIsFocused()
   const {
     joinRoom,
-    getUsersMessages,
+    // getUsersMessages,
     roomId,
     leaveRoom,
     sendMessage,
@@ -79,9 +79,7 @@ const ChatAbierto1 = () => {
     console.log(message, user?.user?.id, route?.params?.receiverId)
     sendMessage(message, user?.user?.id, route?.params?.receiverId)
     setMessage()
-    setTimeout(() => {
-      setAllToRead()
-    }, 3000) // 3000 milisegundos = 3 segundos
+    // 3000 milisegundos = 3 segundos
   }
 
   useEffect(() => {
@@ -219,38 +217,37 @@ const ChatAbierto1 = () => {
   //   }
   // }, [])
 
-  const setAllToRead = async () => {
-    console.log('on setAllToRead')
+  // const setAllToRead = async () => {
+  //   console.log('on setAllToRead')
 
-    const messagesToSetReaded = allMessages?.filter(
-      (message) =>
-        message.senderId !== user?.user?.id && message?.isReaded === false
-    )
+  //   const messagesToSetReaded = allMessages?.filter(
+  //     (message) =>
+  //       message.senderId !== user?.user?.id && message?.isReaded === false
+  //   )
 
-    console.log('messagesToSetReaded', messagesToSetReaded)
-    console.log('entra')
+  //   console.log('messagesToSetReaded', messagesToSetReaded)
+  //   console.log('entra')
 
-    if (messagesToSetReaded.length > 0) {
-      try {
-        const promises = messagesToSetReaded.map((message) =>
-          axiosInstance.put(`chat/readed/${message?.id}`)
-        )
-        await Promise.all(promises)
-        dispatch(setAllConversationMessagesToRead())
-        getUsersMessages()
-      } catch (error) {
-        console.error('Error setting messages to read', error)
-      }
-    }
-  }
+  //   if (messagesToSetReaded.length > 0) {
+  //     try {
+  //       const promises = messagesToSetReaded.map((message) =>
+  //         axiosInstance.put(`chat/readed/${message?.id}`)
+  //       )
+  //       await Promise.all(promises)
+  //       dispatch(setAllConversationMessagesToRead())
+  //     } catch (error) {
+  //       console.error('Error setting messages to read', error)
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    if (allMessages && allMessages.length > 0) {
-      setAllToRead()
+  // useEffect(() => {
+  //   if (allMessages && allMessages.length > 0) {
+  //     // setAllToRead()
 
-      emitToUser(route?.params?.receiverId, 'readMessages', 'data')
-    }
-  }, [allMessages])
+  //     emitToUser(route?.params?.receiverId, 'readMessages', 'data')
+  //   }
+  // }, [allMessages])
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 100)
@@ -517,7 +514,6 @@ const ChatAbierto1 = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
               onPress={() => {
-                getUsersMessages()
                 navigation.goBack()
               }}
             >

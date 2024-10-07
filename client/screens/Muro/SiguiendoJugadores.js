@@ -49,8 +49,8 @@ const SiguiendoJugadores = () => {
     getUserMatches,
     usersWithMessages,
     setActiveIcon,
-    selectedPost,
-    getUsersMessages
+    selectedPost
+    // getUsersMessages
   } = useContext(Context)
   const { allPosts, post, postFeed } = useSelector((state) => state.post)
   const { allMatchs } = useSelector((state) => state.matchs)

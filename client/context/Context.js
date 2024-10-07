@@ -376,6 +376,11 @@ export const ContextProvider = ({ children }) => {
       }
     }
   )
+  newSocket.on('connect', () => {
+    console.log('Connected to server')
+
+    newSocket.emit('joinGroup', { room: user?.user?.id })
+  })
 
   newSocket.on('disconnect', () => {
     setRoomId()
@@ -385,9 +390,6 @@ export const ContextProvider = ({ children }) => {
     console.log('ERROR FROM SOCKET', error)
   })
 
-  newSocket.on('hola', (data) => {
-    console.log(data, 'anad')
-  })
   newSocket.on('notification', (data) => {
     console.log(data, '22222222222222')
     dispatch(getNotificationsByUserId(user?.user?.id))
@@ -395,7 +397,7 @@ export const ContextProvider = ({ children }) => {
 
   newSocket.on('readMessages', (room) => {
     console.log(room, '11111111111111111111111111')
-    getUsersMessages()
+    // getUsersMessages()
   })
 
   newSocket.on('joinedRoom', (room) => {
@@ -416,14 +418,10 @@ export const ContextProvider = ({ children }) => {
     // getUsersMessages()
   })
 
-  useEffect(() => {
-    setSocket(newSocket)
-    newSocket.on('connect', () => {
-      console.log('Connected to server')
+  // useEffect(() => {
+  //   setSocket(newSocket)
 
-      newSocket.emit('joinGroup', { room: user?.user?.id })
-    })
-  }, [user?.user?.id])
+  // }, [user?.user?.id])
 
   const disconnectFromSocket = () => {
     if (socket) {
@@ -432,18 +430,25 @@ export const ContextProvider = ({ children }) => {
   }
 
   const joinRoom = (room) => {
-    socket.emit('joinGroup', { room })
+    newSocket.emit('joinGroup', { room })
   }
 
   const leaveRoom = (rom) => {
-    socket.emit('leaveRoom', { rom })
+    newSocket.emit('leaveRoom', { rom })
   }
 
   const sendMessage = (message, sender, receiver) => {
-    socket.emit('message', { message, sender, receiver })
+    console.log('=============SENDING MESSAGE=============')
+    console.log('sending message', {
+      message,
+      sender,
+      receiver
+    })
+    newSocket.emit('message', { message, sender, receiver })
   }
+
   const emitToUser = (usuarioId, evento, data) => {
-    socket.emit('emitToUser', { usuarioId, evento, data })
+    newSocket.emit('emitToUser', { usuarioId, evento, data })
   }
 
   const getClubMatches = () => {
@@ -474,53 +479,53 @@ export const ContextProvider = ({ children }) => {
   const [notReaded, setNotReaded] = useState(0)
   const [notReadedMessages, setNotReadedMessages] = useState()
 
-  const getUsersMessages = async () => {
-    const { data } = await axiosInstance.post('chat/chats', {
-      userId
-    })
-    // console.log('DATA', data)
-    const convs = Object.keys(data)
-    const notReadedConvMessages = convs
-      .map((conv) =>
-        data[conv].filter(
-          (message) => message.senderId !== userId && message.isReaded === false
-        )
-      )
-      .flat()
-    setNotReadedMessages(notReadedConvMessages)
-    const notReaded = convs
-      .map(
-        (conv) =>
-          data[conv].filter(
-            (message) =>
-              message.senderId !== userId &&
-              message.isReaded === false &&
-              !user?.user?.banned?.includes(message?.senderId)
-          ).length
-      )
-      .reduce((acc, curr) => acc + curr, 0)
-    setNotReaded(notReaded)
-    if (Object.keys(data).length > 0) {
-      const finalInfo = Object.keys(data).map((key) => {
-        const otherUserId = key
-          .split('_')
-          .filter((singleId) => singleId !== userId)[0]
-        const userData = allUsers.filter((user) => user.id === otherUserId)[0]
-        const lastMessage = data[key].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        )[0]
-        return { room: key, ...userData, lastMessage }
-      })
-      // console.log('Setting users with messages to: ', finalInfo)
-      setUsersWithMessages(
-        finalInfo.sort(
-          (a, b) =>
-            new Date(b.lastMessage.createdAt) -
-            new Date(a.lastMessage.createdAt)
-        )
-      )
-    }
-  }
+  // const getUsersMessages = async () => {
+  //   const { data } = await axiosInstance.post('chat/chats', {
+  //     userId
+  //   })
+  //   // console.log('DATA', data)
+  //   const convs = Object.keys(data)
+  //   const notReadedConvMessages = convs
+  //     .map((conv) =>
+  //       data[conv].filter(
+  //         (message) => message.senderId !== userId && message.isReaded === false
+  //       )
+  //     )
+  //     .flat()
+  //   setNotReadedMessages(notReadedConvMessages)
+  //   const notReaded = convs
+  //     .map(
+  //       (conv) =>
+  //         data[conv].filter(
+  //           (message) =>
+  //             message.senderId !== userId &&
+  //             message.isReaded === false &&
+  //             !user?.user?.banned?.includes(message?.senderId)
+  //         ).length
+  //     )
+  //     .reduce((acc, curr) => acc + curr, 0)
+  //   setNotReaded(notReaded)
+  //   if (Object.keys(data).length > 0) {
+  //     const finalInfo = Object.keys(data).map((key) => {
+  //       const otherUserId = key
+  //         .split('_')
+  //         .filter((singleId) => singleId !== userId)[0]
+  //       const userData = allUsers.filter((user) => user.id === otherUserId)[0]
+  //       const lastMessage = data[key].sort(
+  //         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //       )[0]
+  //       return { room: key, ...userData, lastMessage }
+  //     })
+  //     // console.log('Setting users with messages to: ', finalInfo)
+  //     setUsersWithMessages(
+  //       finalInfo.sort(
+  //         (a, b) =>
+  //           new Date(b.lastMessage.createdAt) -
+  //           new Date(a.lastMessage.createdAt)
+  //       )
+  //     )
+  //   }
+  // }
 
   const scalableFontSize = (fontSize) => {
     const { width } = Dimensions.get('window')
@@ -553,7 +558,7 @@ export const ContextProvider = ({ children }) => {
         notReaded,
         generateLowResUrl,
         setNotReaded,
-        getUsersMessages,
+        // getUsersMessages,
         setUsersWithMessages,
         usersWithMessages,
         pickImage,

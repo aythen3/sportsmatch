@@ -38,14 +38,8 @@ const ChatAbierto1 = () => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showDeletePopUp, setShowDeletePopUp] = useState(false)
   const isFocused = useIsFocused()
-  const {
-    joinRoom,
-    getUsersMessages,
-    roomId,
-    leaveRoom,
-    sendMessage,
-    getTimeFromDate
-  } = useContext(Context)
+  const { joinRoom, roomId, leaveRoom, sendMessage, getTimeFromDate } =
+    useContext(Context)
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
   const { user, allUsers } = useSelector((state) => state.users)
@@ -63,7 +57,6 @@ const ChatAbierto1 = () => {
     setSelectedUserDetails(
       allUsers.filter((user) => user.id === route.params.receiverId)[0]
     )
-  
   }, [])
   useEffect(() => {
     joinRoom(user.user.id, route.params.receiverId)
@@ -155,10 +148,9 @@ const ChatAbierto1 = () => {
       receiverId: route.params.receiverId.toString(),
       room: roomId
     }
-   
+
     axiosInstance.post('chat/marcarMensajesComoEliminados', body)
   }
-
 
   if (selectedUserDetails)
     return (
@@ -360,8 +352,6 @@ const ChatAbierto1 = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
               onPress={() => {
-            
-                getUsersMessages()
                 navigation.goBack()
               }}
             >
