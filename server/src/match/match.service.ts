@@ -26,14 +26,15 @@ export class MatchService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
 
-    private readonly notificationServices: NotificationService
+    private readonly notificationServices: NotificationService,
+    
   ) {}
 
   async createMatch(createMatchDto: CreateMatchDto) {
     const { clubId, userId, status } = createMatchDto;
 
     // Obtener el club
-    const club = await this.clubRepository.findOne({ where: { id: clubId } });
+    const club = await this.clubRepository.findOne({ where: { id: clubId },relations:['user'] });
     if (!club) {
       throw new NotFoundException(`Club with ID ${clubId} not found`);
     }
@@ -51,7 +52,18 @@ export class MatchService {
       status
     });
 
-    return this.matchRepository.save(newMatch);
+   await this.matchRepository.save(newMatch);
+   await this.notificationServices.createService({
+    prop1:{matchId:newMatch.id},
+    title: 'Solicitud',
+    message: `te ha solicitado un match`,
+    senderId: club.user.id,
+    receiverId: user.id,
+    type: 'match',
+    readed: false
+  });
+
+    return newMatch
   }
 
   public async findAll() {

@@ -36,7 +36,6 @@ export class ChatGateway
     const userId = client.handshake.query.userId;
     if (userId) {
       this.connectedUsers.set(userId.toLocaleString(), client.id);
-      console.log(`Usuario ${userId} conectado`);
     }
   }
 

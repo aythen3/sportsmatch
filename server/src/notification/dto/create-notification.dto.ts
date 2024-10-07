@@ -33,6 +33,8 @@ export class CreateNotificationDto {
   @IsString()
   receiverId?: string;
 
+  
+
   @IsOptional()
   @IsBoolean()
   readed?: boolean;

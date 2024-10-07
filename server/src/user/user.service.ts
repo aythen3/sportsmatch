@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
@@ -29,7 +29,8 @@ export class UserService {
     private readonly postRepository: Repository<PostEntity>,
 
     private readonly postService: PostService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private dataSource: DataSource
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -594,6 +595,8 @@ export class UserService {
       // Crear el nuevo perfil del usuario en tu base de datos
       createUserDto.club = null;
       createUserDto.sportman = null;
+      createUserDto.emailCheck = true;
+
       const newProfile: UserEntity =
         await this.userRepository.save(createUserDto);
       // Si no se pudo crear el nuevo perfil, lanzar una excepción
@@ -750,23 +753,86 @@ export class UserService {
    * Método para eliminar un usuario por su ID
    * @param {string} id - El ID del usuario a eliminar
    */
-  public async remove(id: string) {
+  public async remove(id: string): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+  
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+  
     try {
-      // Marcar al usuario como eliminado en la base de datos
-      await this.userRepository.update(id, { isDelete: true });
-      // Devolver el usuario eliminado
-      const user: UserEntity = await this.findOne(id);
+      // Buscar el usuario
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: [
+          'posts', 'comments', 'likes', 'notifications', 
+          'matches', 'offers', 'chatsAsUserA', 'chatsAsUserB', 'club',
+          'followers', 'followingUsers', 'sportman', // Relación con sportman
+          'chatsAsUserA.messages',
+          'chatsAsUserB.messages'
+        ]
+      });
+  
       if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
-          message: `User id: ${id} not found`
+          message: `User id: ${id} not found`,
         });
       }
-      return user;
+  
+      // Eliminar los mensajes relacionados a los chats del usuario
+      for (const chatA of user.chatsAsUserA) {
+        await queryRunner.manager.remove(chatA.messages);
+      }
+      for (const chatB of user.chatsAsUserB) {
+        await queryRunner.manager.remove(chatB.messages);
+      }
+  
+      // Eliminar relaciones con otras entidades
+      await queryRunner.manager.remove(user.posts);
+      await queryRunner.manager.remove(user.comments);
+      await queryRunner.manager.remove(user.likes);
+      await queryRunner.manager.remove(user.notifications);
+      await queryRunner.manager.remove(user.matches);
+      await queryRunner.manager.remove(user.offers);
+      await queryRunner.manager.remove(user.chatsAsUserA);
+      await queryRunner.manager.remove(user.chatsAsUserB);
+  
+      // Eliminar la relación con el sportman si existe
+      if (user.sportman) {
+        await queryRunner.manager.remove(user.sportman);
+      }
+      if (user.club) {
+        await queryRunner.manager.remove(user.club);
+      }
+  
+      // Eliminar relaciones de seguimiento entre usuarios
+      await queryRunner.manager
+        .createQueryBuilder()
+        .relation(UserEntity, 'followers')
+        .of(user)
+        .remove(user.followers);
+  
+      await queryRunner.manager
+        .createQueryBuilder()
+        .relation(UserEntity, 'followingUsers')
+        .of(user)
+        .remove(user.followingUsers);
+  
+      // Finalmente, eliminar el usuario
+      await queryRunner.manager.remove(user);
+  
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
     } catch (error) {
+      // En caso de error, revertir la transacción
+      await queryRunner.rollbackTransaction();
       throw ErrorManager.createSignatureError(error.message);
+    } finally {
+      // Liberar el queryRunner
+      await queryRunner.release();
     }
   }
+  
 
   public async getByEmail(email: string): Promise<UserEntity> {
     try {
@@ -789,6 +855,8 @@ export class UserService {
           'club.offers.usersInscriptions.sportman',
           'matches',
           'matches.club',
+          'matches.club.user',
+
           'followingUsers',
           'offers'
         ]
@@ -852,7 +920,28 @@ export class UserService {
   async getByGoogleId(googleId: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: { googleId: googleId },
-      relations: ['club', 'sportman']
+      relations: [
+        'club',
+        'sportman',
+        'posts',
+        'comments',
+        'likes',
+        'followers',
+        'followers.club',
+        'followers.sportman',
+        'club.offers',
+        'club.matches',
+        'club.matches.user',
+        'club.matches.user.sportman',
+        'club.offers.usersInscriptions',
+        'club.offers.usersInscriptions.sportman',
+        'matches',
+        'matches.club',
+        'matches.club.user',
+
+        'followingUsers',
+        'offers'
+      ]
     });
     return user;
   }

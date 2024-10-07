@@ -17,6 +17,8 @@ export class NotificationEntity extends BaseEntity {
   @Column()
   senderId: string;
 
+  
+
   @Column()
   receiverId: string;
 

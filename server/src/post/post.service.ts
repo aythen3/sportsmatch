@@ -49,7 +49,10 @@ export class PostService {
 
   public async create(createPostDto: CreatePostDto) {
     try {
-      const post = await this.postRepository.save(createPostDto);
+      const user = await this.userRepository.findOne({
+        where: { id: createPostDto.userId },
+      });
+      const post = await this.postRepository.save({...createPostDto,author:user});
       // Si no se pudo crear el nuevo position, lanzar una excepción
       if (!post) {
         throw new ErrorManager({
