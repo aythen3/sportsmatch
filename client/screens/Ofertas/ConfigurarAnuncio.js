@@ -223,11 +223,11 @@ const ConfigurarAnuncio = () => {
     return <View style={{ flex: 1, backgroundColor: '#000' }} />
   return (
     <SafeAreaView style={styles.configurarAnuncio}>
+      <CustomHeaderBack header={'Configura tu oferta'}></CustomHeaderBack>
       <ScrollView
         style={{ flex: 1, flexGrow: 1 }}
         contentContainerStyle={styles.contenido}
       >
-        <CustomHeaderBack header={'Configura tu oferta'}></CustomHeaderBack>
         <View style={styles.innerContainer}>
           {true && (
             <View style={{ width: '100%', gap: 8 }}>
@@ -498,7 +498,7 @@ const ConfigurarAnuncio = () => {
                     selectedPosition &&
                     selectedProvince)
                 ) {
-                  navigation.navigate('PostPromocion', {
+                  navigation.push('PostPromocion', {
                     fromOffer: true,
                     oferta: {
                       offerData: {
@@ -685,8 +685,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   contenido: {
-    gap: 25,
-    paddingBottom: 70
+    gap: 25
   },
   configurarAnuncio: {
     flex: 1,

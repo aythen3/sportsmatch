@@ -84,9 +84,9 @@ const TusMatchsDetalle = ({ onClose, data }) => {
             onClose()
             console.log(data, 'rrrr')
             navigation.navigate('ChatAbierto1', {
-              sportman: user.user.sportman.id,
-              receiverId: data?.id,
-              receiverName: data?.nickname,
+              sportman: data.user.id,
+              receiverId: data.user?.id,
+              receiverName: data.name,
               profilePic: data?.img_perfil
             })
           }}

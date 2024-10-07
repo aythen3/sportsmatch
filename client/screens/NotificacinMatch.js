@@ -41,11 +41,7 @@ const NotificacinMatch = ({ onClose, data }) => {
           >{`¡Te han solicitado un Match!`}</Text>
           <Text
             style={[styles.pareceQueUni, styles.seguirTypo1]}
-          >{`¡Parece que ${
-            allUsers.filter(
-              (user) => user.id === data?.prop1?.clubData?.userId
-            )[0]?.nickname
-          } se interesa por ti! `}</Text>
+          >{`¡Parece que ${data?.user?.club?.name} se interesa por ti! `}</Text>
         </View>
 
         <View style={[styles.botones, styles.botonesLayout]}>
@@ -85,13 +81,9 @@ const NotificacinMatch = ({ onClose, data }) => {
                 style={[styles.verPerfil, styles.aceptarFlexBox]}
                 onPress={() => {
                   onClose()
-                  let user = allUsers.filter(
-                    (user) => user.id === data.prop1.clubData.userId
-                  )[0]
-                  const modificacion = { ...user, club: { ...user.club, user } }
-                  console.log(modificacion, 'data')
+
                   navigation.navigate('ClubProfile', {
-                    author: modificacion
+                    author: data.user
                   })
                 }}
               >

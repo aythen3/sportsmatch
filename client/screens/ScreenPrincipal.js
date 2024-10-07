@@ -351,7 +351,7 @@ const ScreenPrincipal = () => {
           <Stack.Screen
             name="ConfigurarAnuncio"
             component={ConfigurarAnuncio}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>

@@ -42,7 +42,9 @@ const Notifications = ({ data }) => {
   } = useContext(Context)
   const [details, setDetails] = useState(false)
   const { allUsers, user, mainColor } = useSelector((state) => state.users)
-  const [selectedClubDetails, setSelectedClubDetails] = useState()
+  const [selectedClubDetails, setSelectedClubDetails] = useState(
+    data?.user.club
+  )
   const [open, setOpen] = useState(false)
 
   const dispatch = useDispatch()
@@ -85,20 +87,20 @@ const Notifications = ({ data }) => {
             })
         }
         if (data.title === 'Solicitud') {
-          setSelectedClubDetails(
-            allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
-          )
+          setSelectedClubDetails(data.user.club)
           setIsMatch(true)
           return
         }
         if (data.title === 'Match') {
-          setDetails(true)
-          setSelectedClubDetails(
-            allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
-          )
+          console.log('entra22')
+          return setDetails(true)
         }
-        if (data.title === 'Follow') {
+        if (data.title === 'Follow' && data.user.type === 'sportman') {
           navigation.navigate('PerfilFeedVisualitzaciJug', {
+            author: data.user
+          })
+        } else {
+          navigation.navigate('ClubProfile', {
             author: data.user
           })
         }
@@ -112,23 +114,22 @@ const Notifications = ({ data }) => {
               width: 45,
               alignSelf: 'flex-start',
               borderRadius: 8,
-              backgroundColor:
-                data?.prop1?.clubData?.img_perfil === '' && mainColor
+              backgroundColor: data?.user?.club?.img_perfil === '' && mainColor
             }}
             contentFit="cover"
             source={
-              data?.prop1?.clubData?.img_perfil !== ''
-                ? { uri: data.prop1.clubData.img_perfil }
+              data?.user?.club?.img_perfil !== ''
+                ? { uri: data?.user?.club?.img_perfil }
                 : require('../assets/whiteSport.png')
             }
           />
         )}
-        {data.title === 'Follow' && (
+        {/* {data.title === 'Follow' && (
           <Image
             style={{
-              height: 45,
-              width: 45,
-              alignSelf: 'flex-start',
+              height: 35,
+              width: 35,
+              alignSelf: 'center',
               borderRadius: 50,
               backgroundColor: !data?.user?.sportman?.info?.img_perfil
                 ? mainColor
@@ -145,7 +146,7 @@ const Notifications = ({ data }) => {
                   : require('../assets/whiteSport.png')
             }
           />
-        )}
+        )} */}
         {data.title === 'Match' && (
           <Image
             style={{
@@ -153,13 +154,12 @@ const Notifications = ({ data }) => {
               width: 45,
               alignSelf: 'flex-start',
               borderRadius: 8,
-              backgroundColor:
-                data?.prop1?.clubData?.img_perfil === '' && mainColor
+              backgroundColor: !data?.user?.club?.img_perfil && mainColor
             }}
             contentFit="cover"
             source={
-              data?.prop1?.clubData?.img_perfil !== ''
-                ? { uri: data.prop1.clubData.img_perfil }
+              data?.user?.club?.img_perfil
+                ? { uri: data?.user?.club?.img_perfil }
                 : require('../assets/whiteSport.png')
             }
           />
@@ -216,7 +216,7 @@ const Notifications = ({ data }) => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {formatDate(data.date)}
+              {getTimeFromDate(data.createdAt)}
             </Text>
             {data.title === 'Inscripción' &&
               clubMatches.filter((match) => {
@@ -343,7 +343,7 @@ const Notifications = ({ data }) => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {formatDateDifference(data?.createdAt)}
+              {getTimeFromDate(data?.createdAt)}
             </Text>
             {data?.user?.sportman &&
               !user?.user?.followingUsers.find(
@@ -352,7 +352,7 @@ const Notifications = ({ data }) => {
                 <TouchableOpacity
                   onPress={() => {
                     axiosInstance
-                      .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
+                      .post(`user/${user?.user?.id}/follow/${data?.user?.id}`)
                       .then((response) => {
                         dispatch(getUserData(user?.user?.id))
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import InstagramLogin from 'react-native-instagram-login'
 
@@ -28,7 +28,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   logedIn,
   logedOut,
-  setIsSpotMan
+  setIsSpotMan,
+  updateUser
 } from '../../redux/slices/users.slices'
 import { getAll } from '../../redux/actions/sports'
 import * as WebBrowser from 'expo-web-browser'
@@ -42,12 +43,18 @@ import {
 import { auth } from '../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axiosInstance from '../../utils/apiBackend'
-import { create, getAllUsers, login } from '../../redux/actions/users'
+import {
+  create,
+  getAllUsers,
+  login,
+  updateUserData
+} from '../../redux/actions/users'
 import { setClub } from '../../redux/slices/club.slices'
 import axios from 'axios'
 import HomeGif from '../../utils/HomeGif'
 import { detectSportColor } from './PantallaInicio'
 import { setInitialSportman } from '../../redux/slices/sportman.slices'
+import { Context } from '../../context/Context'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -55,6 +62,11 @@ const firebaseLogout = () => {
   signOut(auth)
 }
 
+const scalableFontSize = (fontSize) => {
+  const { width } = Dimensions.get('window')
+  const scalableFontSize = fontSize * (width / 375) // 375 es el ancho de la pantalla de un iPhone 8
+  return scalableFontSize
+}
 const LoginSwitch = () => {
   const instagramRef = useRef()
   const [igToken, setIgToken] = useState(null)
@@ -72,7 +84,6 @@ const LoginSwitch = () => {
     const normalUserAuth = await AsyncStorage.getItem('userAuth')
     const facebookUserAuth = await AsyncStorage.getItem('facebookAuth')
     const appleUserAuth = await AsyncStorage.getItem('appleUserAuth')
-
     const googleUserAuth = await AsyncStorage.getItem('googleAuth')
     if (facebookUserAuth) {
       const facebookId = await JSON.parse(facebookUserAuth)
@@ -198,7 +209,11 @@ const LoginSwitch = () => {
             try {
               const response = await dispatch(login({ googleId: user.uid }))
               if (!response?.payload?.user?.emailCheck) {
-                setMailSend(true)
+                dispatch(
+                  updateUserData(response?.payload?.user?.id, {
+                    emailCheck: true
+                  })
+                )
                 return
               }
               detectSportColor(
@@ -253,9 +268,13 @@ const LoginSwitch = () => {
               const response = await dispatch(login({ googleId: user.uid }))
               console.log(response, 'ressssponsede')
               if (!response?.payload?.user?.emailCheck) {
-                setMailSend(true)
+                // setMailSend(true)
                 // setLoading(false)
-
+                dispatch(
+                  updateUserData(response?.payload?.user?.id, {
+                    emailCheck: true
+                  })
+                )
                 return
               }
               detectSportColor(
@@ -957,7 +976,7 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   entrenadoraPreparadoraFs: {
-    fontSize: FontSize.bodyBodyXS_size,
+    fontSize: scalableFontSize(8),
     // lineHeight: 14,
     // width: 271,
     marginTop: 10,
@@ -1085,12 +1104,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   jugador: {
-    fontSize: 16,
+    fontSize: scalableFontSize(14),
     color: '#1FD430',
     marginRight: 5
   },
   jugador2: {
-    fontSize: 16,
+    fontSize: scalableFontSize(14),
     color: 'white',
     marginRight: 5
   },

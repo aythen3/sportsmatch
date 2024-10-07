@@ -81,6 +81,7 @@ const ChatAbierto1 = () => {
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
+    console.log('usuario', route?.params)
     dispatch(getAllMatchs())
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
@@ -121,13 +122,13 @@ const ChatAbierto1 = () => {
           ).length > 0
         return setCanSend(e)
       } else {
-        const res = allMatchs.filter(
-          (m) => m.prop1.sportmanId === sportman?.id && m.status === 'success'
-        )
         const res2 =
-          res.filter(
-            (r) => r?.prop1?.clubData?.userId === route?.params?.receiverId
+          user?.user?.matches?.filter(
+            (match) =>
+              match.club?.user?.id === route?.params?.sportman &&
+              match.status === 'success'
           ).length > 0
+
         console.log(res2, 'res2')
         setCanSend(res2)
       }

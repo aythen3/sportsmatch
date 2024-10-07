@@ -30,7 +30,12 @@ const CrearHighlight = () => {
   const route = useRoute()
 
   const { image } = route.params || {}
-  const { provisoryProfileImage, pickImage, libraryImage } = useContext(Context)
+  const {
+    provisoryProfileImage,
+    pickImage,
+    libraryImage,
+    setProvisoryProfileImage
+  } = useContext(Context)
   const { user } = useSelector((state) => state.users)
   const { height, width } = useWindowDimensions()
   const [description, setDescription] = useState('')
@@ -62,9 +67,10 @@ const CrearHighlight = () => {
       image: imageFinal,
       description: description || '  ',
       authorType: user.user.type,
-      author: user.user.id
+      userId: user.user.id
     }
     dispatch(createPost(data)).then((data) => {
+      setProvisoryProfileImage()
       dispatch(getAllPosts())
     })
   }

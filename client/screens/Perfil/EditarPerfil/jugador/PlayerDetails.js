@@ -225,7 +225,7 @@ const PlayerDetails = () => {
                 }}
               >
                 <View style={styles.profileImageContainer}>
-                  {provisoryProfileImage || sportman?.info?.img_perfil ? (
+                  {sportman?.info?.img_perfil || provisoryProfileImage ? (
                     <Image
                       style={{
                         width: '100%',

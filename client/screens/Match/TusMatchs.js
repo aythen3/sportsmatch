@@ -58,7 +58,6 @@ const TusMatchs = () => {
     if (user?.user?.type === 'club') {
       dispatch(getClubMatchs(user?.user?.club.id))
     }
-    dispatch(getAllMatchs())
     console.log(
       'clubmatches',
       clubMatches
@@ -163,7 +162,8 @@ const TusMatchs = () => {
             .filter(
               (match) =>
                 match.status === 'success' &&
-                !user?.user?.banned?.includes(match?.prop1?.clubData?.userId)
+                !user?.user?.banned?.includes(match?.prop1?.clubData?.userId) &&
+                match?.club?.name?.toLowerCase().includes(search.toLowerCase()) // Filtrar por nombre del club
             )
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((match, index) => (
@@ -218,16 +218,13 @@ const TusMatchs = () => {
         </View>
       )}
 
-      {/* {user?.user?.type === 'sportman' &&
-        userMatches
+      {user?.user?.type === 'sportman' &&
+        user.user.matches
           .filter((match) => {
             if (search.length > 0) {
               if (
-                allUsers
-                  .filter(
-                    (user) => user?.id === match?.prop1?.clubData?.userId
-                  )[0]
-                  ?.nickname?.toLowerCase()
+                match.user?.club?.name
+                  ?.toLowerCase()
                   .includes(search?.toLowerCase())
               ) {
                 return true
@@ -256,7 +253,7 @@ const TusMatchs = () => {
                 : '¡Aún no tienes matchs!'}
             </Text>
           </View>
-        )} */}
+        )}
 
       {user?.user?.type === 'club' && (
         <View>
@@ -264,14 +261,17 @@ const TusMatchs = () => {
             .filter(
               (match) =>
                 match.status === 'success' &&
-                !user?.user?.banned?.includes(match?.user?.id)
+                !user?.user?.banned?.includes(match?.user?.id) &&
+                match?.user?.sportman?.info?.nickname
+                  ?.toLowerCase()
+                  .includes(search.toLowerCase()) // Filtrar por nombre del jugador
             )
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((match, index) => (
               <View key={index} style={{ marginTop: 14, width: '100%' }}>
                 <Pressable
                   onPress={() => {
-                    console.log(match, 'matchhhhhhhhhhhh')
+                    console.log(match?.user?.club?.user, 'matchhhhhhhhhhhh')
                     setUserDetails(true)
 
                     setSelectedUserDetails(match?.user)
@@ -320,16 +320,13 @@ const TusMatchs = () => {
         </View>
       )}
 
-      {/* {user?.user?.type === 'club' &&
-        clubMatches
+      {user?.user?.type === 'club' &&
+        user?.user?.club?.matches
           .filter((match) => {
             if (search.length > 0) {
               if (
-                allUsers
-                  .filter(
-                    (user) => user?.id === match?.prop1?.sportManData?.userId
-                  )[0]
-                  ?.nickname?.toLowerCase()
+                match?.user?.sportman?.info?.nickname?.nickname
+                  ?.toLowerCase()
                   .includes(search?.toLowerCase())
               ) {
                 return true
@@ -358,7 +355,7 @@ const TusMatchs = () => {
                 : '¡Aún no tienes matchs!'}
             </Text>
           </View>
-        )} */}
+        )}
 
       <Modal visible={details} transparent={true} animationType="slide">
         <TouchableWithoutFeedback onPress={() => setDetails(false)}>

@@ -66,12 +66,7 @@ const EliminarCuenta = () => {
             <TouchableOpacity
               onPress={async () => {
                 axiosInstance
-                  .patch(`user/${user?.user?.id}`, {
-                    isDelete: true,
-                    email: '',
-                    googleId: '',
-                    appleId: ''
-                  })
+                  .delete(`user/${user?.user?.id}`)
                   .then(async () => {
                     console.log('setting userswithmessages to []...')
                     setUsersWithMessages([])

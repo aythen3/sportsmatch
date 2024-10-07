@@ -261,11 +261,11 @@ const MiSuscripcin = () => {
 
         <View style={{ paddingHorizontal: 10 }}>
           <View>
-            {plansData && (
+            {/* {plansData && (
               <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
                 Beneficios activos
               </Text>
-            )}
+            )} */}
             {plansData &&
               plansData.map((plan, i) => {
                 if (plan.planId !== user.user.planId) {

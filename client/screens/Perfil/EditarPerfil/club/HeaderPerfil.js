@@ -70,7 +70,7 @@ const HeaderPerfil = ({
       : false
   )
   const [liked, setLiked] = useState(() =>
-    user.user.followingUsers.find((u) => u.id === data?.author?.id)
+    user?.user?.followingUsers?.find((u) => u?.id === data?.author?.id)
       ? true
       : false
   )
@@ -86,7 +86,7 @@ const HeaderPerfil = ({
 
   const getOffersById = async (id) => {
     const { data } = await axiosInstance.get('offer')
-    const filteredOffers = data.filter((offer) => offer.club.id === id)
+    const filteredOffers = data.filter((offer) => offer?.club?.id === id)
     setClubOffers(filteredOffers)
   }
 
@@ -97,7 +97,7 @@ const HeaderPerfil = ({
   useEffect(() => {
     if (external) {
       if (data?.author?.type === 'club') {
-        getOffersById(data?.author?.club.id)
+        getOffersById(data?.author?.club?.id)
       }
     }
     if (!external) {
@@ -121,12 +121,12 @@ const HeaderPerfil = ({
   const BanUser = async (userId) => {
     setBannedLoading(true)
     axiosInstance
-      .put(`user/${user.user.id}/ban`, {
+      .put(`user/${user?.user?.id}/ban`, {
         userId
       })
       .then(() => {
-        dispatch(getUserData(user.user.id)).then(() => {
-          dispatch(getAllPostsFeed(user.user.id))
+        dispatch(getUserData(user?.user?.id)).then(() => {
+          dispatch(getAllPostsFeed(user?.user?.id))
           dispatch(getAllPosts())
 
           setBannedModal(false)
@@ -458,8 +458,11 @@ const HeaderPerfil = ({
               style={styles.leftButton}
             >
               <Image
-                style={{ ...styles.frameChild, marginRight: 10 }}
-                contentFit="cover"
+                style={{
+                  ...styles.frameChild,
+                  marginRight: 10,
+                  objectFit: 'contain'
+                }}
                 source={require('../../../../assets/group-5361.png')}
               />
               <Text style={[styles.ojear, styles.timeTypo]}>
@@ -548,7 +551,7 @@ const HeaderPerfil = ({
                 if (sportman?.type == 'invitado') return
 
                 navigation.navigate('ChatAbierto1', {
-                  receiverId: data.author.id,
+                  receiverId: data?.author?.id,
                   receiverName: data.author.nickname,
                   profilePic: avatar
                 })
@@ -612,7 +615,7 @@ const HeaderPerfil = ({
               disabled={matchSended}
               onPress={() => {
                 setMatchSended(true)
-                console.log(data.author.id, 'datrita')
+                console.log(data?.author?.id, 'datrita')
                 dispatch(
                   sendMatch({
                     userId: data?.author?.id,
@@ -632,7 +635,7 @@ const HeaderPerfil = ({
                         matchId: data?.payload?.id,
                         clubData: {
                           name: user?.user?.nickname,
-                          userId: user.user.id,
+                          userId: user?.user.id,
                           ...club
                         }
                       },
@@ -651,7 +654,7 @@ const HeaderPerfil = ({
                         matchId: res?.payload?.id,
                         clubData: {
                           name: user?.user?.nickname,
-                          userId: user.user.id,
+                          userId: user?.user?.id,
                           ...club
                         }
                       },
@@ -716,10 +719,10 @@ const HeaderPerfil = ({
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ChatAbierto1', {
-                  receiverId: data.author.id,
-                  receiverName: data.author.nickname,
+                  receiverId: data?.author?.id,
+                  receiverName: data?.author?.nickname,
                   profilePic: avatar,
-                  sportman: data.author.sportman.id
+                  sportman: data?.author?.sportman?.id
                 })
               }
               style={styles.leftButton}
@@ -732,7 +735,7 @@ const HeaderPerfil = ({
             !isSportman &&
             clubMatches.filter(
               (match) =>
-                match.prop1.sportmanId === data.author.sportman.id &&
+                match.prop1.sportmanId === data?.author?.sportman?.id &&
                 match.status === 'success'
             ).length === 0 && (
               <Pressable
@@ -874,7 +877,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {data?.author?.club?.capacity}?
+              {data?.author?.club?.capacity}
             </Text>
             <Text
               style={{
@@ -904,7 +907,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {clubOffers?.length}
+              {data?.author?.club?.offers.length}
             </Text>
             <Text
               style={{
@@ -996,19 +999,19 @@ const HeaderPerfil = ({
       )}
       {external && data.author.type !== 'club' && (
         <Pressable
-          onPress={() => {
-            const followers =
-              allUsers?.filter((user) => user.id === data.author.id)[0]
-                ?.followers || []
-            if (followers?.length > 0) {
-              navigation.navigate('UserFollowers', {
-                author: allUsers.filter((user) => user.id === data.author.id),
-                followers: allUsers.filter((user) =>
-                  followers.includes(user.id)
-                )
-              })
-            }
-          }}
+          // onPress={() => {
+          //   const followers =
+          //     allUsers?.filter((user) => user.id === data.author.id)[0]
+          //       ?.followers || []
+          //   if (followers?.length > 0) {
+          //     navigation.navigate('UserFollowers', {
+          //       author: allUsers.filter((user) => user.id === data.author.id),
+          //       followers: allUsers.filter((user) =>
+          //         followers.includes(user.id)
+          //       )
+          //     })
+          //   }
+          // }}
           style={{
             width: '95%',
             height: 50,

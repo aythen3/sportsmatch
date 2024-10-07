@@ -44,7 +44,7 @@ const MiPerfil = () => {
     if (isFocused) {
       setActiveIcon('profile')
     }
-    emitToUser(user.user.id, 'hola', user.user.id)
+    // emitToUser(user.user.id, 'hola', user.user.id)
   }, [isFocused])
 
   const renderContent = () => {
@@ -291,7 +291,7 @@ const MiPerfil = () => {
                   navigation.navigate('UserFollowers', {
                     author: allUsers.filter((user) => user.id === user.id),
                     followers: allUsers.filter((user) =>
-                      followers.includes(user.id)
+                      followers.includes(user?.id)
                     )
                   })
                 }
