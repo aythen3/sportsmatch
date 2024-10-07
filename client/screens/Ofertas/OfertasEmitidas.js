@@ -384,7 +384,14 @@ const OfertasEmitidas = () => {
                 Precio de promoción
               </Text>
               <Text style={{ color: 'white', fontSize: 20 }}>
-                €{selectedOfferData?.prop2?.price}
+                {(selectedOfferData?.prop2?.price / 100).toLocaleString(
+                  'es-AR',
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }
+                )}
+                €
               </Text>
             </View>
             <View
@@ -402,7 +409,11 @@ const OfertasEmitidas = () => {
                 Total invertido en promoción
               </Text>
               <Text style={{ color: 'white', fontSize: 20 }}>
-                €{totalNumber}
+                {(totalNumber / 100).toLocaleString('es-AR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+                €
               </Text>
             </View>
           </View>

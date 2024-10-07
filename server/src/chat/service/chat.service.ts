@@ -48,43 +48,51 @@ export class ChatService {
     }
   }
 
-  async getUserChats(userId: string): Promise<Record<string, MessageEntity[]>> {
-    const messages = await this.messageRepository
-      .createQueryBuilder('message')
-      .select([
-        'message.id',
-        'message.createdAt',
-        'message.updatedAt',
-        'message.senderId',
-        'message.receiverId',
-        'message.room',
-        'message.message',
-        'message.isReaded',
-        'message.senderDelete',
-        'message.receiverDelete',
-        'message.prop1',
-        'message.prop2',
-        'message.prop3',
-        'message.prop4'
-      ])
-      .where('message.senderId = :userId OR message.receiverId = :userId', {
-        userId
-      })
-      .getMany();
+  // async getUserChats(userId: string): Promise<Record<string, MessageEntity[]>> {
+  //   const messages = await this.messageRepository
+  //     .createQueryBuilder('message')
+  //     .select([
+  //       'message.id',
+  //       'message.createdAt',
+  //       'message.updatedAt',
+  //       'message.senderId',
+  //       'message.receiverId',
+  //       'message.room',
+  //       'message.message',
+  //       'message.isReaded',
+  //       'message.senderDelete',
+  //       'message.receiverDelete',
+  //       'message.prop1',
+  //       'message.prop2',
+  //       'message.prop3',
+  //       'message.prop4'
+  //     ])
+  //     .where('message.senderId = :userId OR message.receiverId = :userId', {
+  //       userId
+  //     })
+  //     .getMany();
 
-    // Agrupar los mensajes por el campo "room"
-    const chats = messages.reduce(
-      (acc, message) => {
-        if (!acc[message.room]) {
-          acc[message.room] = [];
-        }
-        acc[message.room].push(message);
-        return acc;
-      },
-      {} as Record<string, MessageEntity[]>
-    );
+  //   // Agrupar los mensajes por el campo "room"
+  //   const chats = messages.reduce(
+  //     (acc, message) => {
+  //       if (!acc[message.room]) {
+  //         acc[message.room] = [];
+  //       }
+  //       acc[message.room].push(message);
+  //       return acc;
+  //     },
+  //     {} as Record<string, MessageEntity[]>
+  //   );
 
-    return chats;
+  //   return chats;
+  // }
+
+  // Obtener todos los chats de un usuario
+  async getChatsForUserr(userId: string): Promise<ChatEntity[]> {
+    return this.chatRepository.find({
+      where: [{ userA: { id: userId } }, { userB: { id: userId } }],
+      relations: ['userA', 'userB', 'messages'] // Si deseas incluir la relación con los usuarios
+    });
   }
 
   public roomIdGenerator(senderId: string, receiverId: string): string {
@@ -93,6 +101,7 @@ export class ChatService {
     return sortedIds.join('_'); // Concatena los IDs con un guion bajo
   }
 
+  // Encuentra si existe un chat entre los dos usuarios
   async findChatBetweenUsers(
     userAId: string,
     userBId: string

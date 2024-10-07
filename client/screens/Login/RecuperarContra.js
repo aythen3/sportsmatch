@@ -53,7 +53,9 @@ const RecuperarContra = () => {
     try {
       setLoading(true)
       const find = allUsers.find((e) => e.email === valuesUser.email)
-      if (find) {
+      const { data } = await axiosInstance.get(`user/email/${valuesUser.email}`)
+      console.log(data, 'esto llegaa')
+      if (data.email && !data.googleId) {
         console.log(
           'email valido',
           allUsers.find((e) => e.email === valuesUser.email)
@@ -68,6 +70,10 @@ const RecuperarContra = () => {
             setLoading(false)
           })
           .catch((e) => e)
+      }
+      if (data.googleId) {
+        setLoading(false)
+        setError('Ingresa con google para recuperar este email')
       } else {
         setError('El email no esta registrado en SportsMatch')
         setLoading(false)

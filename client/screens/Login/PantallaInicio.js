@@ -179,7 +179,7 @@ const PantallaInicio = () => {
       <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
-        source={require('../../assets/inicio2.png')}
+        source={require('../../assets/pinicio.png')}
       />
       <TouchableOpacity
         style={{ justifyContent: 'center', alignItems: 'center' }}

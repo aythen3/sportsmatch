@@ -11,7 +11,6 @@ const FeedStats = () => {
   const navigation = useNavigation()
   const [selectedOptions, setSelectedOptions] = useState([])
 
-  const { sportman } = useSelector((state) => state.sportman)
   const { user, mainColor } = useSelector((state) => state.users)
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const FeedStats = () => {
 
   const age = calculateAge(sportman?.info?.birthdate) || 2000
 
-  console.log(sportman, 'sssss')
+  const sportman = user?.user?.sportman
 
   if (user && sportman)
     return (

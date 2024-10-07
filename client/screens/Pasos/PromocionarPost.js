@@ -135,7 +135,7 @@ const PromocionarPost = () => {
             setOffer({ offerData: editOffer, clubId: club?.id })
           ).then((data) => {
             console.log(data, 'dataaaaaaaaaaaaaaaaa', editOffer)
-            dispatch(getAllOffers())
+            dispatch(getUserData(user?.user?.id))
             navigation.navigate('OfertaCreada', { promotion: optionIndex })
           })
         }
@@ -511,8 +511,9 @@ const PromocionarPost = () => {
                   textAlign: 'center'
                 }}
               >
-                El objetivo de esta promoción es que obtengas más visitas en tu
-                perfil.
+                Tu publicación se destacará en la página buscar y aparecerá como
+                promoción en el feed de seguimiento de los usuarios de tu
+                deporte.
               </Text>
             </View>
             <View
@@ -913,16 +914,22 @@ const PromocionarPost = () => {
               justifyContent: 'space-between'
             }}
           >
-            <Image
-              style={styles.coolicon}
-              contentFit="cover"
-              source={require('../../assets/coolicon.png')}
-            />
             <Pressable
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
               onPress={() =>
                 stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
               }
             >
+              <Image
+                style={styles.coolicon}
+                contentFit="cover"
+                source={require('../../assets/coolicon.png')}
+              />
               <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
             </Pressable>
           </View>
@@ -934,6 +941,12 @@ const PromocionarPost = () => {
             }}
           >
             <Pressable
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
               onPress={() => navigation.navigate('SiguiendoJugadores')}
             >
               <Text style={[styles.atrs, styles.atrsTypo]}>Cancelar</Text>
@@ -1060,7 +1073,8 @@ const styles = StyleSheet.create({
   touchable: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: '90%',
+    alignSelf: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
     borderRadius: Border.br_81xl,
     paddingVertical: Padding.p_3xs

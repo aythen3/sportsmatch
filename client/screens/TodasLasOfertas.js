@@ -973,20 +973,15 @@ const TodasLasOfertas = () => {
                   }
                 })
                 .filter((offer) => {
-                  const filteredUserMatches = userMatches.filter(
-                    (match) => match.offerId && match.offerId !== offer.id
+                  const alreadyJoined = user?.user?.offers?.find(
+                    (of) => of.id === offer.id
                   )
-                  const alreadyJoined = offer?.inscriptions?.includes(
-                    user?.user?.sportman?.id
-                  )
-                  if (filteredUserMatches.length > 0) {
-                    return false
-                  }
+
                   if (alreadyJoined) {
                     return false
                   }
                   return true
-                }).length > 0 &&
+                }).length > 30 &&
               user?.user?.plan === 'basic' &&
               !user?.user?.prop1?.plans && (
                 <TouchableOpacity
