@@ -126,7 +126,7 @@ const LoginSwitch = () => {
         if (response.payload.user.sportman || response.payload.user.club) {
           return navigation.reset({
             index: 0,
-            routes: [{ name: 'SiguiendoJugadores' }]
+            routes: [{ name: 'ScreenPrincipal' }]
           })
         } else if (response.payload.user.type === 'sportman') {
           return navigation.navigate('Paso1')
@@ -229,7 +229,7 @@ const LoginSwitch = () => {
               ) {
                 return navigation.reset({
                   index: 0,
-                  routes: [{ name: 'SiguiendoJugadores' }]
+                  routes: [{ name: 'ScreenPrincipal' }]
                 })
               } else if (response.payload.user.type === 'sportman') {
                 return navigation.navigate('Paso1')
@@ -286,7 +286,7 @@ const LoginSwitch = () => {
               ) {
                 return navigation.reset({
                   index: 0,
-                  routes: [{ name: 'SiguiendoJugadores' }]
+                  routes: [{ name: 'ScreenPrincipal' }]
                 })
               } else if (response.payload.user.type === 'sportman') {
                 return navigation.navigate('Paso1')
@@ -326,7 +326,7 @@ const LoginSwitch = () => {
               dispatch(setClub(response))
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'SiguiendoJugadores' }]
+                routes: [{ name: 'ScreenPrincipal' }]
               })
             } catch (error) {
               console.log('Error:', error)
@@ -385,7 +385,7 @@ const LoginSwitch = () => {
             dispatch(setClub(response))
             navigation.reset({
               index: 0,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           } catch (error) {
             console.log('Error:', error)
@@ -448,7 +448,7 @@ const LoginSwitch = () => {
           if (response.payload.user.sportman || response.payload.user.club) {
             return navigation.reset({
               index: 0,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           } else if (response.payload.user.type === 'sportman') {
             return navigation.navigate('Paso1')
@@ -487,7 +487,7 @@ const LoginSwitch = () => {
         if (response.payload.user.sportman || response.payload.user.club) {
           return navigation.reset({
             index: 0,
-            routes: [{ name: 'SiguiendoJugadores' }]
+            routes: [{ name: 'ScreenPrincipal' }]
           })
         } else if (response.payload.user.type === 'sportman') {
           return navigation.navigate('Paso1')

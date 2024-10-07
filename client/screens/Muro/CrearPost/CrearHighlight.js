@@ -40,8 +40,11 @@ const CrearHighlight = () => {
   useEffect(() => {}, [image, provisoryProfileImage])
   const handleSubmit = async () => {
     if (image) {
-      navigation.navigate('SiguiendoJugadores')
       showToast('Creando el nuevo post...')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'ScreenPrincipal' }]
+      })
     }
     let imageFinal
     if (!Array.isArray(image)) {

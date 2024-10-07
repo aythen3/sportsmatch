@@ -106,7 +106,7 @@ const StepsClub = () => {
     await dispatch(createClub(data))
       .then((response) => {
         console.log(response, 'handle')
-        dispatch(setMainColor(setColor(response.payload.sports[0].name)))
+        dispatch(setMainColor(setColor(sportS.name)))
         dispatch(getClub(response.payload.id))
         dispatch(
           updateUserClubData({
@@ -119,7 +119,7 @@ const StepsClub = () => {
               return navigation.reset({
                 index: 0,
                 history: false,
-                routes: [{ name: 'SiguiendoJugadores' }]
+                routes: [{ name: 'ScreenPrincipal' }]
               })
             }
           })

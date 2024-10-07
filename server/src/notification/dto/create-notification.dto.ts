@@ -1,5 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsString, IsDate, IsOptional, ValidateNested, IsArray } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  ValidateNested,
+  IsArray
+} from 'class-validator';
+import { PostEntity } from 'src/post/entities/post.entity';
 
 export class CreateNotificationDto {
   @IsNotEmpty()
@@ -10,17 +18,27 @@ export class CreateNotificationDto {
   @IsString()
   message: string;
 
-  @IsNotEmpty()
-  @IsDate()
-  date: Date;
+  @IsOptional()
+  post?: PostEntity;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  recipientId: string;
+  senderId?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  type?: string;
+
+  @IsOptional()
+  @IsString()
+  receiverId?: string;
+
+  
+
+  @IsOptional()
   @IsBoolean()
-  read?: boolean = false;
+  readed?: boolean;
+
   @IsOptional()
   @ValidateNested()
   @Type(() => Object)

@@ -1,9 +1,6 @@
-import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
-import { PositionEntity } from 'src/position/entities/position.entity';
-import { SkillEntity } from 'src/skill/entities/skill.entity';
-import { SportEntity } from 'src/sport/entities/sport.entity';
+
 import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -22,7 +19,7 @@ export class SportmanEntity extends BaseEntity {
     enum: ['player', 'coach', 'invitado'],
     default: 'player'
   })
-  type: 'player' | 'coach'| 'invitado';
+  type: 'player' | 'coach' | 'invitado';
 
   @Column('simple-json')
   info: { [key: string]: any };
@@ -44,20 +41,20 @@ export class SportmanEntity extends BaseEntity {
   @JoinColumn()
   user: UserEntity;
 
-  @ManyToOne(() => ClubEntity, (club) => club.sportman, { nullable: true })
-  club?: ClubEntity;
+  // @ManyToOne(() => ClubEntity, (club) => club.sportman, { nullable: true })
+  // club?: ClubEntity;
 
-  @ManyToOne(() => SportEntity, (sport) => sport.sportman, {
-    nullable: true
-  })
-  sport: SportEntity;
+  // @ManyToOne(() => SportEntity, (sport) => sport.sportman, {
+  //   nullable: true
+  // })
+  // sport: SportEntity;
 
-  @OneToOne(() => SkillEntity, (skill) => skill.sportman)
-  @JoinColumn()
-  skill: SkillEntity;
+  // @OneToOne(() => SkillEntity, (skill) => skill.sportman)
+  // @JoinColumn()
+  // skill: SkillEntity;
 
-  @ManyToOne(() => PositionEntity, (position) => position.sportmen)
-  position: PositionEntity;
+  // @ManyToOne(() => PositionEntity, (position) => position.sportmen)
+  // position: PositionEntity;
 
   @ManyToMany(() => MatchEntity)
   @JoinTable()

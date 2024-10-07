@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubEntity } from './entities/club.entity';
@@ -7,8 +7,6 @@ import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 
-import { SportEntity } from 'src/sport/entities/sport.entity';
-import { SportService } from 'src/sport/sport.service';
 import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
@@ -18,10 +16,7 @@ export class ClubService {
     private readonly clubRepository: Repository<ClubEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly userService: UserService,
-    @InjectRepository(SportEntity)
-    private readonly sportRepository: Repository<SportEntity>,
-    private readonly sportService: SportService
+    private readonly userService: UserService
   ) {}
 
   /**
@@ -30,7 +25,7 @@ export class ClubService {
    */
   public async create(createClubDto: CreateClubDto) {
     try {
-      const { clubData, userId, sportId } = createClubDto;
+      const { clubData, userId } = createClubDto;
       const user = await this.userService.findOne(userId);
       if (!user) {
         throw new ErrorManager({
@@ -38,17 +33,17 @@ export class ClubService {
           message: 'User not found'
         });
       }
-      const sport = await this.sportService.findById(sportId);
-      if (!sport) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: 'Sport not found'
-        });
-      }
+      // const sport = await this.sportService.findById(sportId);
+      // if (!sport) {
+      //   throw new ErrorManager({
+      //     type: 'NOT_FOUND',
+      //     message: 'Sport not found'
+      //   });
+      // }
       const newClub = await this.clubRepository.create(clubData);
-      newClub.sports = [sport];
-      newClub.sport = clubData.sport // Relate the club with the sport
-      newClub.user = user
+      // newClub.sports = [sport];
+      newClub.sport = clubData.sport; // Relate the club with the sport
+      newClub.user = user;
       const saveClub = await this.clubRepository.save(newClub);
       if (!saveClub) {
         throw new ErrorManager({
@@ -93,21 +88,16 @@ export class ClubService {
    */
   public async findOne(id: string) {
     try {
-      const club = await this.clubRepository
-        .createQueryBuilder('club')
-        .leftJoinAndSelect('club.sports', 'sports')
-        .where({ id })
-        .getOne();
-      // Si no se encuentra el club, lanzar una excepción
+      // Busca el club por su ID
+      const club = await this.clubRepository.findOne({ where: { id } });
+
       if (!club) {
-        throw new ErrorManager({
-          type: 'NOT_FOUND',
-          message: `Club id: ${id} not found`
-        });
+        throw new HttpException(`Club with ID ${id} not found`, 404);
       }
-      // Devolver el club encontrado
+
       return club;
     } catch (error) {
+      console.error('Error finding club:', error);
       throw ErrorManager.createSignatureError(error.message);
     }
   }
@@ -139,46 +129,46 @@ export class ClubService {
     return await this.findOne(id);
   }
 
-
-
   async findInfoRelation(clubId: number, relations: string[]): Promise<any> {
     try {
-     const validRelations = this.validateRelations(relations);
- 
-     // Verificar si hay al menos una relación válida
-     if (validRelations.length === 0) {
-       throw new Error('No se han proporcionado relaciones válidas.');
-     }
- 
-     // Construir objeto de opciones para la consulta
-     const options: any = { where: { id: clubId }, relations: validRelations };
- console.log("options es", options)
-     // Realizar la consulta del post con las relaciones especificadas
-     const club = await this.clubRepository.findOne(options);
- 
-     if (!club) {
-       throw new NotFoundException(`No se encontró ningún post con el ID ${clubId}.`);
-     }
- 
-     return club;
+      const validRelations = this.validateRelations(relations);
+
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = { where: { id: clubId }, relations: validRelations };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const club = await this.clubRepository.findOne(options);
+
+      if (!club) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${clubId}.`
+        );
+      }
+
+      return club;
     } catch (error) {
-     console.log('este es el error ',error)
+      console.log('este es el error ', error);
     }
-   }
- 
-   private validateRelations(relations: string[]): string[] {
-     const validRelations: string[] = [];
- 
-     // Definir relaciones válidas permitidas en la entidad Match
-     const allowedRelations = ["sports", "positions" , "offers" , "sportman" , "user" ]; // Agregar más según sea necesario
- 
-     // Filtrar relaciones válidas
-     relations.forEach(relation => {
-       if (allowedRelations.includes(relation)) {
-         validRelations.push(relation);
-       }
-     });
- 
-     return validRelations;
-   }
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['positions', 'offers', 'sportman', 'user']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidas
+    relations.forEach((relation) => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
 }

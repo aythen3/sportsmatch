@@ -121,7 +121,7 @@ export class SportmanService {
           sportman[key] = sportmanData[key];
         }
       }
-      console.log(sportmanData,sportman)
+      console.log(sportmanData, sportman);
       return await this.sportmanRepository.save(sportman);
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -144,100 +144,123 @@ export class SportmanService {
     }
   }
 
-
-
-  async findInfoRelation(sportmanId: number, relations: string[]): Promise<any> {
+  async findInfoRelation(
+    sportmanId: number,
+    relations: string[]
+  ): Promise<any> {
     try {
-     const validRelations = this.validateRelations(relations);
- 
-     // Verificar si hay al menos una relación válida
-     if (validRelations.length === 0) {
-       throw new Error('No se han proporcionado relaciones válidas.');
-     }
- 
-     // Construir objeto de opciones para la consulta
-     const options: any = { where: { id: sportmanId }, relations: validRelations };
- console.log("options es", options)
-     // Realizar la consulta del post con las relaciones especificadas
-     const user = await this.sportmanRepository.findOne(options);
- 
-     if (!user) {
-       throw new NotFoundException(`No se encontró ningún post con el ID ${sportmanId}.`);
-     }
- 
-     return user;
-    } catch (error) {
-     console.log('este es el error ',error)
-    }
-   }
- 
-   private validateRelations(relations: string[]): string[] {
-     const validRelations: string[] = [];
- 
-     // Definir relaciones válidas permitidas en la entidad Match
-     const allowedRelations = ['user', 'club','sport', 'skill','position', 'matches']; // Agregar más según sea necesario
- 
-     // Filtrar relaciones válidas
-     relations.forEach(relation => {
-       if (allowedRelations.includes(relation)) {
-         validRelations.push(relation);
-       }
-     });
- 
-     return validRelations;
-   }
+      const validRelations = this.validateRelations(relations);
 
-   async filterSportmen(filters: any): Promise<SportmanEntity[]> {
+      // Verificar si hay al menos una relación válida
+      if (validRelations.length === 0) {
+        throw new Error('No se han proporcionado relaciones válidas.');
+      }
+
+      // Construir objeto de opciones para la consulta
+      const options: any = {
+        where: { id: sportmanId },
+        relations: validRelations
+      };
+      console.log('options es', options);
+      // Realizar la consulta del post con las relaciones especificadas
+      const user = await this.sportmanRepository.findOne(options);
+
+      if (!user) {
+        throw new NotFoundException(
+          `No se encontró ningún post con el ID ${sportmanId}.`
+        );
+      }
+
+      return user;
+    } catch (error) {
+      console.log('este es el error ', error);
+    }
+  }
+
+  private validateRelations(relations: string[]): string[] {
+    const validRelations: string[] = [];
+
+    // Definir relaciones válidas permitidas en la entidad Match
+    const allowedRelations = ['user', 'club', 'matches']; // Agregar más según sea necesario
+
+    // Filtrar relaciones válidas
+    relations.forEach((relation) => {
+      if (allowedRelations.includes(relation)) {
+        validRelations.push(relation);
+      }
+    });
+
+    return validRelations;
+  }
+
+  async filterSportmen(filters: any): Promise<SportmanEntity[]> {
     // Obtener todas las entradas de la tabla Sportman
-    const allSportmen = await this.sportmanRepository.find({relations:['user']});
+    const allSportmen = await this.sportmanRepository.find({
+      relations: ['user', 'user.club']
+    });
 
     // Filtrar las entradas basadas en los filtros proporcionados
-    const filteredSportmen = allSportmen.filter(sportman => {
-        // Inicializar un contador para el número de coincidencias
-        let matches = 0;
+    const filteredSportmen = allSportmen.filter((sportman) => {
+      // Inicializar un contador para el número de coincidencias
+      let matches = 0;
 
-        // Recorrer todas las propiedades en el objeto de filtros
-        for (const key of Object.keys(filters)) {
-            // Verificar si la propiedad actual existe en la entrada del Sportman
-            if (sportman.info[key]) {
-                if (key === 'nickname' || key === 'prop1' || key === 'prop2' || key === 'prop3' || key === 'position' || key === 'city') {
-                    // Comparar la propiedad de forma parcialmente similar, ignorando mayúsculas y minúsculas
-                    if (sportman.info[key].toLowerCase().startsWith(filters[key].toLowerCase())) {
-                        // Incrementar el contador de coincidencias si los valores coinciden parcialmente
-                        matches++;
-                    }
-                } else if (key === 'attack' || key === 'defense' || key === 'speed' || key === 'height') {
-                    // Verificar si el valor de la propiedad es igual o mayor al valor pasado en los filtros
-                    const filterValue = typeof filters[key] === 'number' ? filters[key] : 55;
-                    if (sportman.info[key] >= filterValue) {
-                        // Incrementar el contador de coincidencias si los valores coinciden
-                        matches++;
-                    }
-                } else {
-                    // Comparación normal para otras propiedades
-                    if (sportman.info[key] === filters[key]) {
-                        // Incrementar el contador de coincidencias si los valores coinciden
-                        matches++;
-                    }
-                }
+      // Recorrer todas las propiedades en el objeto de filtros
+      for (const key of Object.keys(filters)) {
+        // Verificar si la propiedad actual existe en la entrada del Sportman
+        if (sportman.info[key]) {
+          if (
+            key === 'nickname' ||
+            key === 'prop1' ||
+            key === 'prop2' ||
+            key === 'prop3' ||
+            key === 'position' ||
+            key === 'city'
+          ) {
+            // Comparar la propiedad de forma parcialmente similar, ignorando mayúsculas y minúsculas
+            if (
+              sportman.info[key]
+                .toLowerCase()
+                .startsWith(filters[key].toLowerCase())
+            ) {
+              // Incrementar el contador de coincidencias si los valores coinciden parcialmente
+              matches++;
             }
+          } else if (
+            key === 'attack' ||
+            key === 'defense' ||
+            key === 'speed' ||
+            key === 'height'
+          ) {
+            // Verificar si el valor de la propiedad es igual o mayor al valor pasado en los filtros
+            const filterValue =
+              typeof filters[key] === 'number' ? filters[key] : 55;
+            if (sportman.info[key] >= filterValue) {
+              // Incrementar el contador de coincidencias si los valores coinciden
+              matches++;
+            }
+          } else {
+            // Comparación normal para otras propiedades
+            if (sportman.info[key] === filters[key]) {
+              // Incrementar el contador de coincidencias si los valores coinciden
+              matches++;
+            }
+          }
         }
+      }
 
-        // La entrada del Sportman se incluirá en los resultados si todas las propiedades coinciden
-        return matches === Object.keys(filters).length;
+      // La entrada del Sportman se incluirá en los resultados si todas las propiedades coinciden
+      return matches === Object.keys(filters).length;
     });
 
     return filteredSportmen;
-}
-
-
+  }
 
   async filterSportmenNoParcial(filters: any): Promise<SportmanEntity[]> {
     // Obtener todas las entradas de la tabla Sportman
     const allSportmen = await this.sportmanRepository.find();
 
     // Filtrar las entradas basadas en los filtros proporcionados
-    const filteredSportmen = allSportmen.filter(sportman => {
+    const filteredSportmen = allSportmen.filter((sportman) => {
       // Inicializar un contador para el número de coincidencias
       let matches = 0;
 
@@ -256,5 +279,4 @@ export class SportmanService {
 
     return filteredSportmen;
   }
-  
 }

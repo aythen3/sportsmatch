@@ -17,7 +17,7 @@ export class MatchController {
 
   @Post()
   create(@Body() createMatchDto: CreateMatchDto) {
-    return this.matchService.create(createMatchDto);
+    return this.matchService.createMatch(createMatchDto);
   }
 
   @Get()
@@ -42,17 +42,19 @@ export class MatchController {
 
   @Post(':matchId/info-relation')
   async findInfoRelation(
-    @Param('matchId') matchId: number, 
+    @Param('matchId') matchId: number,
     @Body() requestBody: { relations: string }
   ): Promise<any[]> {
     // Verificar si se proporcionaron relaciones
     if (!requestBody.relations || typeof requestBody.relations !== 'string') {
-      throw new Error('Debe proporcionar al menos una relación como una cadena de texto.');
+      throw new Error(
+        'Debe proporcionar al menos una relación como una cadena de texto.'
+      );
     }
-  console.log(requestBody.relations)
+    console.log(requestBody.relations);
     // Convertir las relaciones en un array
     const relationsArray = requestBody.relations.split(',');
-  
+
     // Llamar al servicio para obtener la información relacionada
     return this.matchService.findInfoRelation(matchId, relationsArray);
   }
@@ -61,6 +63,4 @@ export class MatchController {
   findAllByUserId(@Param('userId') userId: string) {
     return this.matchService.findAllByUserId(userId);
   }
-
-  
 }

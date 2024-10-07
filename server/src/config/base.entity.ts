@@ -11,18 +11,17 @@ export abstract class BaseEntity {
   id: string;
 
   @CreateDateColumn({
-    type: 'timestamp',
+    type: 'timestamptz',
     name: 'createdAt'
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'timestamp',
+    type: 'timestamptz',
     name: 'updatedAt'
   })
   updatedAt: Date;
 
   @Column({ type: 'boolean', default: false })
   isDelete: boolean;
-
 }

@@ -52,8 +52,8 @@ const ExplorarClubs = () => {
   const [textValue, setTextValue] = useState('')
   const [posts, setPosts] = useState([])
   const [modalFilterSportman, setModalFilterSportman] = useState(false)
-  const [searchUsers, setSearchUsers] = useState([])
   const [filterSelected, setFilterSelected] = useState('')
+  const [searchUsers, setSearchUsers] = useState([])
   const [searchPosition, setSearchPosition] = useState([])
   const [searchCity, setSearchCity] = useState([])
   const [searchClubes, setSearchClubes] = useState([])
@@ -96,36 +96,46 @@ const ExplorarClubs = () => {
   const timeoutRef = useRef(null)
 
   const handleSearch = async (textValue) => {
-    const users = await axiosInstance.post('sportman/filter', {
-      nickname: textValue
-    })
-    console.log(users, 'usuarios')
-    setSearchUsers(users.data.filter((e) => e.user.emailCheck))
-    const position = await axiosInstance.post('sportman/filter', {
-      position: textValue
-    })
-    setSearchPosition(position.data.filter((e) => e.user.emailCheck))
-    const city = await axiosInstance.post('sportman/filter', {
-      city: textValue
-    })
-    setSearchCity(city.data.filter((e) => e.user.emailCheck))
+    await axiosInstance
+      .post('sportman/filter', {
+        nickname: textValue
+      })
+      .then((e) => {
+        console.log(e, 'eeee')
+        const filter = e.data.filter((e) => e.user.emailCheck)
+        setSearchUsers((prev) => [...filter])
+      })
+    // const position = await axiosInstance.post('sportman/filter', {
+    //   position: textValue
+    // })
+    // setSearchPosition(position.data.filter((e) => e.user.emailCheck))
+    // const city = await axiosInstance.post('sportman/filter', {
+    //   city: textValue
+    // })
+    // setSearchCity(city.data.filter((e) => e.user.emailCheck))
     const clubes = await axiosInstance.post('info-entity/club/name/filter', {
       value: textValue
     })
-    setSearchClubes(clubes.data.data.filter((e) => e.user.emailCheck))
+    const fil2 = clubes.data.data
+    setSearchUsers((prev) => [...prev, ...fil2])
   }
-
-  const handleChange = (value) => {
-    console.log(value, 'valor que no anda')
-    setTextValue(value)
-
+  const funcion = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
 
-    timeoutRef.current = setTimeout(() => {
-      handleSearch(value)
-    }, 1000) // 1000ms = 1 segundo
+    timeoutRef.current = setTimeout(async () => {
+      handleSearch(textValue)
+    }, 300) // 1000ms = 1 segundo
+  }
+  useEffect(() => {
+    funcion()
+  }, [textValue])
+
+  const handleChange = (event) => {
+    const textValue = event
+    console.log(event, 'valor que no anda')
+    setTextValue(textValue)
   }
 
   const screenWidth = Dimensions.get('window').width
@@ -209,6 +219,78 @@ const ExplorarClubs = () => {
 
   console.log('searchClubes', searchClubes)
 
+  const combinedSearchResults = searchUsers
+
+  const renderItem = ({ item }) => {
+    // Si hay texto en la búsqueda, renderizar los usuarios
+    if (textValue) {
+      const user = item // Asumimos que el item es un usuario
+      console.log('itemmmm', item)
+      if (!user?.user?.isDelete) {
+        return (
+          <TouchableOpacity
+            style={{ marginVertical: 5 }}
+            onPress={() => {
+              /* Manejo de la navegación */
+              if (user.user.id === usuario.user.id) {
+                if (usuario?.user?.type !== 'club') {
+                  navigation.navigate('MiPerfil')
+                  return
+                } else {
+                  navigation.navigate('PerfilDatosPropioClub')
+                  return
+                }
+              }
+              if (user?.user?.type !== 'club') {
+                return navigation.navigate('PerfilFeedVisualitzaciJug', {
+                  author: user.user
+                })
+              } else {
+                navigation.navigate('ClubProfile', {
+                  author: user.user
+                })
+                return
+              }
+            }}
+          >
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            >
+              {user?.info?.img_perfil ? (
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 50,
+                    backgroundColor: 'gray' // Color de fondo por defecto
+                  }}
+                  source={{ uri: user.info.img_perfil }}
+                />
+              ) : (
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 50,
+                    backgroundColor: mainColor // Color de fondo por defecto
+                  }}
+                  source={require('../../assets/whiteSport.png')}
+                />
+              )}
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+                {user?.info?.nickname || user.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )
+      }
+    } else {
+      // Si no hay texto en la búsqueda, renderizar los posts
+      return <RenderGroupedItem item={item} navigation={navigation} />
+    }
+    return null
+  }
+
   return (
     <SafeAreaView style={styles.explorarClubs}>
       <HeaderIcons />
@@ -231,336 +313,17 @@ const ExplorarClubs = () => {
           flexDirection: 'column'
         }}
       >
-        {textValue && (
-          <ScrollView
-            contentContainerStyle={{ paddingBottom: 120 }}
-            style={{ flexDirection: 'column', gap: 10 }}
-          >
-            {textValue && searchUsers.length > 0 && (
-              <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white' }}>Usuarios</Text>
-
-                {searchUsers.length > 0 &&
-                  searchUsers.map((user, i) => {
-                    if (
-                      !user?.user?.isDelete &&
-                      !usuario?.user?.banned?.includes(user?.user?.id)
-                    ) {
-                      return (
-                        <TouchableOpacity
-                          onPress={() => {
-                            const actualUser = allUsers.filter(
-                              (userr) => userr.id === user.user.id
-                            )[0]
-                            if (user.user.id === usuario.user.id) {
-                              if (usuario?.user?.type !== 'club') {
-                                navigation.navigate('MiPerfil')
-                                return
-                              } else {
-                                navigation.navigate('PerfilDatosPropioClub')
-                                return
-                              }
-                            }
-
-                            navigation.navigate('PerfilFeedVisualitzaciJug', {
-                              author: actualUser
-                            })
-                          }}
-                          key={i}
-                        >
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: 10
-                            }}
-                          >
-                            {user.info.img_perfil ? (
-                              <Thumbnail
-                                styles={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 50,
-                                  backgroundColor: user.info.img_font
-                                    ? 'transparent'
-                                    : mainColor
-                                }}
-                                url={user.info.img_perfil}
-                              ></Thumbnail>
-                            ) : (
-                              <Image
-                                style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 50,
-                                  backgroundColor: user.info.img_font
-                                    ? 'transparent'
-                                    : mainColor
-                                }}
-                                source={require('../../assets/whiteSport.png')}
-                                contentFit="cover"
-                              />
-                            )}
-                            <Text
-                              style={{
-                                color: 'white',
-                                fontSize: 16,
-                                fontWeight: 600
-                              }}
-                            >
-                              {user.info.nickname}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    }
-                  })}
-              </View>
-            )}
-            {textValue && searchClubes.length > 0 && (
-              <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white', paddingTop: 10 }}>Clubes</Text>
-                {searchClubes.length > 0 &&
-                  searchClubes.map((club, i) => {
-                    if (
-                      !club?.user?.isDelete &&
-                      !usuario?.user?.banned?.includes(club?.user?.id)
-                    ) {
-                      return (
-                        <TouchableOpacity
-                          key={i}
-                          onPress={() => {
-                            if (usuario.user.id === club.user.id) {
-                              navigation.navigate('PerfilDatosPropioClub')
-                              return
-                            } else {
-                              navigation.navigate('ClubProfile', {
-                                author: {
-                                  type: 'club',
-                                  nickname: club.name,
-                                  club
-                                }
-                              })
-                            }
-                          }}
-                        >
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: 10
-                            }}
-                          >
-                            {club.img_perfil ? (
-                              <Thumbnail
-                                styles={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 50,
-                                  backgroundColor: club.img_perfil
-                                    ? 'transparent'
-                                    : mainColor
-                                }}
-                                url={club.img_perfil}
-                              />
-                            ) : (
-                              <Image
-                                style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 50,
-                                  backgroundColor: club.img_perfil
-                                    ? 'transparent'
-                                    : mainColor
-                                }}
-                                contentFit="cover"
-                                source={require('../../assets/whiteSport.png')}
-                              />
-                            )}
-                            <Text
-                              style={{
-                                color: 'white',
-                                fontSize: 16,
-                                fontWeight: 600
-                              }}
-                            >
-                              {club.name}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    }
-                  })}
-              </View>
-            )}
-            {textValue && searchPosition.length > 0 && (
-              <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white', paddingTop: 10 }}>
-                  Posiciones
-                </Text>
-                {searchPosition.map((position, i) => {
-                  if (
-                    !position?.user?.isDelete &&
-                    !usuario?.user?.banned?.includes(position?.user?.id)
-                  ) {
-                    return (
-                      <TouchableOpacity
-                        key={i}
-                        onPress={() => {
-                          navigation.navigate('PerfilFeedVisualitzaciJug', {
-                            author: {
-                              nickname: position.info.nickname,
-                              sportman: position
-                            }
-                          })
-                        }}
-                      >
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10
-                          }}
-                        >
-                          {position.info.img_perfil ? (
-                            <Thumbnail
-                              styles={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                backgroundColor: position.info.img_perfil
-                                  ? 'transparent'
-                                  : mainColor
-                              }}
-                              url={position.info.img_perfil}
-                            />
-                          ) : (
-                            <Image
-                              style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                backgroundColor: position.info.img_perfil
-                                  ? 'transparent'
-                                  : mainColor
-                              }}
-                              contentFit="cover"
-                              source={require('../../assets/whiteSport.png')}
-                            ></Image>
-                          )}
-
-                          <Text
-                            style={{
-                              color: 'white',
-                              fontSize: 16,
-                              fontWeight: 600
-                            }}
-                          >
-                            {position.info.nickname}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  }
-                })}
-              </View>
-            )}
-            {textValue && searchCity.length > 0 && (
-              <View style={{ flexDirection: 'column', gap: 10 }}>
-                <Text style={{ color: 'white', paddingTop: 10 }}>Ciudades</Text>
-                {searchCity.map((city, i) => {
-                  if (
-                    !city?.user?.isDelete &&
-                    !usuario?.user?.banned?.includes(city?.user?.id)
-                  ) {
-                    return (
-                      <TouchableOpacity
-                        key={i}
-                        onPress={() => {
-                          navigation.navigate('PerfilFeedVisualitzaciJug', {
-                            author: {
-                              nickname: city.info.nickname,
-                              sportman: city
-                            }
-                          })
-                        }}
-                      >
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10
-                          }}
-                        >
-                          {city.info.img_perfil ? (
-                            <Thumbnail
-                              styles={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                backgroundColor: city.info.img_perfil
-                                  ? 'transparent'
-                                  : mainColor
-                              }}
-                              url={city.info.img_perfil}
-                            />
-                          ) : (
-                            <Image
-                              style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                backgroundColor: city.info.img_perfil
-                                  ? 'transparent'
-                                  : mainColor
-                              }}
-                              contentFit="cover"
-                              source={require('../../assets/whiteSport.png')}
-                            ></Image>
-                          )}
-
-                          <Text
-                            style={{
-                              color: 'white',
-                              fontSize: 16,
-                              fontWeight: 600
-                            }}
-                          >
-                            {city.info.nickname}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  }
-                })}
-              </View>
-            )}
-          </ScrollView>
-        )}
-
-        {!textValue && allPosts?.length > 0 && (
-          <FlatList
-            initialNumToRender={6} // Renderiza solo 6 items al inicio
-            // maxToRenderPerBatch={6} // Lotes de 10 items por renderizado
-            data={groupedPosts} // Solo muestra los posts visibles
-            numColumns={1}
-            contentContainerStyle={{ paddingHorizontal: 5, paddingBottom: 140 }}
-            // onEndReached={loadMorePosts} // Llama a la función cuando se alcanza el final
-            // onEndReachedThreshold={0.1} // Umbral para activar la carga
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <RenderGroupedItem item={item} navigation={navigation} />
-            )}
-            getItemLayout={(data, index) => ({
-              length: ITEM_HEIGHT,
-              offset: ITEM_HEIGHT * index,
-              index
-            })}
-            ListFooterComponent={
-              loading ? <ActivityIndicator size="large" /> : null
-            } // Muestra un indicador de carga
-          />
-        )}
+        <FlatList
+          data={textValue ? searchUsers : groupedPosts}
+          keyExtractor={(item, index) =>
+            item?.id ? item?.id?.toString() : index?.toString()
+          }
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 140 }}
+          ListFooterComponent={
+            loading ? <ActivityIndicator size="large" /> : null
+          }
+        />
       </View>
       <Modal visible={modalFilters} transparent={true} animationType="slide">
         <TouchableWithoutFeedback onPress={() => setModalFilters(false)}>

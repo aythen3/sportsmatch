@@ -23,13 +23,7 @@ import { DeviceMotion } from 'expo-sensors'
 
 const ClubDetails = () => {
   const dispatch = useDispatch()
-  const [clubName, setClubName] = useState()
-  const [city, setCity] = useState()
-  const [country, setCountry] = useState()
-  const [stadiumName, setStadiumName] = useState()
-  const [foundationDate, setFoundationDate] = useState()
-  const [capacity, setCapacity] = useState()
-  const [description, setDescription] = useState()
+
   const navigation = useNavigation()
   const {
     pickImage,
@@ -62,18 +56,34 @@ const ClubDetails = () => {
 
   const { club } = useSelector((state) => state.clubs)
 
+  const club_name = user?.user?.club?.name
+  const club_city = user?.user?.club?.city
+  const club_country = user?.user?.club?.country
+  const club_field = user?.user?.club?.field
+  const club_year = user?.user?.club?.year
+  const club_capacity = user?.user?.club?.capacity
+  const club_description = user?.user?.club?.description
+
+  const [country, setCountry] = useState(club_country)
+  const [stadiumName, setStadiumName] = useState(club_field)
+  const [foundationDate, setFoundationDate] = useState(club_year)
+  const [capacity, setCapacity] = useState(club_capacity)
+  const [description, setDescription] = useState(club_description)
+  const [clubName, setClubName] = useState(club_name)
+  const [city, setCity] = useState(club_city)
+
   const inputs = [
     {
       title: 'Nombre del club',
       type: 'text',
-      placeHolder: club.name || 'Nombre del club...',
+      placeHolder: clubName || 'Nombre del club...',
       state: clubName,
       setState: setClubName
     },
     {
       title: 'Población',
       type: 'text',
-      placeHolder: club.city || 'Población...',
+      placeHolder: club_city || 'Población...',
       state: city,
       setState: setCity
     },

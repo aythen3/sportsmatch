@@ -119,7 +119,7 @@ quieres `}</Text>
                   navigation.reset({
                     index: 0,
                     history: false,
-                    routes: [{ name: 'LoginSwitch' }]
+                    routes: [{ name: 'ScreenInicio' }]
                   })
                 }}
               >

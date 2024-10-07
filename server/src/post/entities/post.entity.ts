@@ -1,5 +1,6 @@
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { BaseEntity } from 'src/config/base.entity';
+import { NotificationEntity } from 'src/notification/entities/notification.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
@@ -38,5 +39,7 @@ export class PostEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
-}
 
+  @OneToMany(() => NotificationEntity, (notification) => notification.post)
+  notifications: NotificationEntity[];
+}

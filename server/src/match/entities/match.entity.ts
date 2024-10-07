@@ -2,6 +2,7 @@ import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'match' })
@@ -16,6 +17,14 @@ export class MatchEntity extends BaseEntity {
 
   @ManyToOne(() => OfferEntity, (offer) => offer.match, { nullable: true })
   offerId: OfferEntity;
+
+  // Relación con ClubEntity
+  @ManyToOne(() => ClubEntity, (club) => club.matches, { nullable: false })
+  club: ClubEntity;
+
+  // Relación con UserEntity
+  @ManyToOne(() => UserEntity, (user) => user.matches, { nullable: false })
+  user: UserEntity;
 
   @Column({ nullable: true })
   status: string;

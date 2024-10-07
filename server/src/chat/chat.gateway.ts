@@ -25,46 +25,87 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  private connectedUsers: number = 0;
+  private connectedUsers: Map<string, string> = new Map();
+
   // eslint-disable-next-line
   afterInit(server: any) {
     console.log('inicio');
   }
   // eslint-disable-next-line
   handleConnection(client: Socket) {
-    this.connectedUsers++;
-    this.server.emit('users online', this.connectedUsers);
-    console.log('users online', this.connectedUsers);
-    console.log('Cliente conectado:', client.handshake.headers.userid);
-    // Unir al usuario a la sala con su ID
-    client.on('join', (usuarioId) => {
-      client.join(usuarioId);
-      console.log(`Usuario ${usuarioId} unido a la sala`);
-    });
+    const userId = client.handshake.query.userId;
+    if (userId) {
+      this.connectedUsers.set(userId.toLocaleString(), client.id);
+    }
   }
 
   handleDisconnect(client: Socket) {
-    this.connectedUsers--;
-    this.server.emit('users online', this.connectedUsers);
-    console.log('users online', this.connectedUsers);
-    console.log(`Cliente desconectado: ${client.id}`);
+    const userId = Array.from(this.connectedUsers.keys()).find(
+      (key) => this.connectedUsers.get(key) === client.id
+    );
+    if (userId) {
+      this.connectedUsers.delete(userId);
+      console.log(`Usuario ${userId} desconectado`);
+    }
   }
 
   @SubscribeMessage('message')
   async handleMessage(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { sender: string; receiver: string; message: string }
+    @MessageBody()
+    data: {
+      sender: string;
+      receiver: string;
+      message: string;
+      isGroup?: boolean;
+    }
   ): Promise<any> {
-    const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
+    // Si es un mensaje entre usuarios (chat directo)
+    let chat = await this.chatService.findChatBetweenUsers(
+      data.sender,
+      data.receiver
+    );
+
+    if (!chat) {
+      chat = await this.chatService.createChat(data.sender, data.receiver);
+    }
+
+    // Guardar el mensaje relacionado al chat
     const newMessage = await this.messageService.saveMessage(
       data.sender,
       data.receiver,
-      room,
-      data.message
+      chat.id, // Usa el ID del chat como "room"
+      data.message,
+      chat
     );
-    this.server.to(room).emit('message-server', newMessage);
-    console.log('message', room);
+
+    // Asegurarse de que el cliente esté en la sala adecuada (chat.id)
+    if (!client.rooms.has(chat.id)) {
+      client.join(chat.id);
+    }
+    if (!client.rooms.has(data.receiver)) {
+      client.join(data.receiver);
+    }
+
+    // Emitir el mensaje solo al receptor
+    client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
+    client.to(data.receiver).emit('chat', {
+      messages: [...chat.messages, newMessage],
+      chat: chat.id
+    }); // Emitir solo una vez a la sala
+
     return newMessage;
+  }
+
+  @SubscribeMessage('joinGroup')
+  async handleGroupJoin(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { room: string }
+  ) {
+    const { room } = data;
+    client.join(room);
+    client.emit('joinedGroup', room);
+    console.log('Client joined group:', room);
   }
 
   @SubscribeMessage('joinRoom')
@@ -88,5 +129,12 @@ export class ChatGateway
     @MessageBody() data: { usuarioId: string; evento: string; data: any }
   ) {
     this.server.to(data.usuarioId).emit(data.evento, data.data);
+  }
+
+  sendNotificationToUser(userId: string, event: string, data: any) {
+    const socketId = this.connectedUsers.get(userId);
+    if (socketId) {
+      this.server.to(socketId).emit(event, data);
+    }
   }
 }

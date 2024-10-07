@@ -361,7 +361,9 @@ function Carousel({
               navigation.navigate('ClubProfile', data)
             } else {
               console.log(data, 'data de viaje')
-              navigation.navigate('PerfilFeedVisualitzaciJug', data)
+              navigation.navigate('PerfilFeedVisualitzaciJug', {
+                author: data?.author
+              })
             }
           }}
         >

@@ -13,6 +13,10 @@ export class CreatePostDto {
   @IsString()
   authorType: string;
 
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
   @IsOptional()
   @ValidateNested()
   @Type(() => Object)

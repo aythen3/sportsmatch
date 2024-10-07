@@ -4,20 +4,21 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OfferEntity } from './entities/offer.entity';
 import { Repository } from 'typeorm';
-import { PositionService } from 'src/position/position.service';
-import { MatchService } from 'src/match/match.service';
 import { ClubService } from 'src/club/club.service';
 import { ErrorManager } from 'src/utils/error.manager';
-import { PositionEntity } from 'src/position/entities/position.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { ClubEntity } from 'src/club/entities/club.entity';
 
 @Injectable()
 export class OfferService {
   constructor(
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
-    private readonly clubService: ClubService,
-    @InjectRepository(PositionEntity)
-    private readonly positionRepository: Repository<PositionEntity>
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(ClubEntity)
+    private readonly clubRepository: Repository<ClubEntity>,
+    private readonly clubService: ClubService
   ) {}
 
   /**
@@ -27,30 +28,40 @@ export class OfferService {
    */
   public async create(createOfferDto: CreateOfferDto) {
     try {
-      const { offerData, position: positionId, clubId } = createOfferDto;
+      const { offerData, clubId } = createOfferDto;
 
-      // const position = await this.positionService.findOne(positionId);
-     
-
-      const club = await this.clubService.findOne(clubId);
+      // Buscar el club
+      const club = await this.clubRepository.findOne({
+        where: { id: clubId },
+        relations: ['offers'] // Incluimos las ofertas existentes para poder actualizarlas
+      });
       if (!club) {
-        return `club ${club} not found`;
+        throw new HttpException(`Club with ID ${clubId} not found`, 404);
       }
 
-      const newOffer = await this.offerRepository.create({
+      // Crear una nueva oferta con los datos proporcionados y el club asociado
+      const newOffer = this.offerRepository.create({
         ...offerData,
-
-
         club: club
       });
-      const saveOffer = await this.offerRepository.save(newOffer);
-      if (!saveOffer) {
-        throw new HttpException('the new sportman is not created', 501);
-      }
 
-      return saveOffer;
+      // Guardar la nueva oferta en la base de datos
+      const savedOffer = await this.offerRepository.save(newOffer);
+      if (!club.offers) {
+        club.offers = [];
+      }
+      // Asociar la nueva oferta al club y guardar el club actualizado
+
+      // Agregar la nueva oferta a la lista de ofertas del club
+      club.offers.push(savedOffer);
+      await this.clubRepository.save(club); // Guardar el club con la nueva oferta
+
+      // Guardar los cambios en el club
+
+      return savedOffer;
     } catch (error) {
-      throw ErrorManager.createSignatureError(error.message);
+      console.error('Error creating offer:', error);
+      throw new HttpException('Error creating offer', 500);
     }
   }
 
@@ -65,7 +76,7 @@ export class OfferService {
 
       const offers: OfferEntity[] = await this.offerRepository.find({
         where,
-        relations: ['club'] // Incluir la relación con el club
+        relations: ['club', 'usersInscriptions'] // Incluir la relación con el club
       });
 
       if (offers.length === 0) {
@@ -91,7 +102,6 @@ export class OfferService {
     try {
       const offer = await this.offerRepository
         .createQueryBuilder('offer')
-        .leftJoinAndSelect('offer.position', 'position')
         .leftJoinAndSelect('offer.club', 'club')
         .where({ id })
         .getOne();
@@ -197,36 +207,87 @@ export class OfferService {
 
   async addInscription(offerId: string, userId: string) {
     try {
-      console.log('buscando la oferta');
+      console.log('Buscando la oferta');
+
+      // Buscar la oferta con la relación de usuarios inscritos
       const offer = await this.offerRepository.findOne({
-        where: { id: offerId }
+        where: { id: offerId },
+        relations: ['usersInscriptions'] // Asegurarse de incluir la relación
       });
+
       if (!offer) {
         throw new NotFoundException('Offer not found.');
       }
 
-      if (!Array.isArray(offer.inscriptions)) {
-        offer.inscriptions = [];
+      console.log('Buscando el usuario');
+
+      // Buscar el usuario por su ID
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+
+      if (!user) {
+        throw new NotFoundException('User not found.', userId);
       }
 
-      offer.inscriptions.push(userId);
-      console.log('aca se rompe');
+      // Verificar si el usuario ya está inscrito
+      const isUserAlreadyInscribed = offer.usersInscriptions.some(
+        (inscribedUser) => inscribedUser.id === userId
+      );
+
+      if (isUserAlreadyInscribed) {
+        throw new Error('User is already inscribed in this offer.');
+      }
+
+      // Agregar el usuario a la oferta
+      offer.usersInscriptions.push(user);
+
+      // Guardar la oferta con el usuario agregado
       await this.offerRepository.save(offer);
+
+      console.log('Inscripción exitosa');
     } catch (error) {
-      console.log(error);
+      console.log('Error en la inscripción:', error.message);
+      throw new Error(error.message);
     }
   }
 
   async removeInscription(offerId: string, userId: string) {
-    const offer = await this.offerRepository.findOne({
-      where: { id: offerId }
-    });
-    if (!offer) {
-      throw new NotFoundException('Offer not found.');
-    }
+    try {
+      console.log('Buscando la oferta para eliminar la inscripción');
 
-    offer.inscriptions = offer.inscriptions.filter((id) => id !== userId);
-    await this.offerRepository.save(offer);
+      // Buscar la oferta con la relación de usuarios inscritos
+      const offer = await this.offerRepository.findOne({
+        where: { id: offerId },
+        relations: ['usersInscriptions'] // Asegurarse de incluir la relación
+      });
+
+      if (!offer) {
+        throw new NotFoundException('Offer not found.');
+      }
+
+      console.log('Buscando el usuario en la oferta');
+
+      // Verificar si el usuario está inscrito
+      const isUserInscribed = offer.usersInscriptions.some(
+        (inscribedUser) => inscribedUser.id === userId
+      );
+
+      if (!isUserInscribed) {
+        throw new Error('User is not inscribed in this offer.');
+      }
+
+      // Eliminar la inscripción del usuario
+      offer.usersInscriptions = offer.usersInscriptions.filter(
+        (inscribedUser) => inscribedUser.id !== userId
+      );
+
+      // Guardar la oferta con la inscripción eliminada
+      await this.offerRepository.save(offer);
+
+      console.log('Inscripción eliminada correctamente');
+    } catch (error) {
+      console.log('Error al eliminar la inscripción:', error.message);
+      throw new Error(error.message);
+    }
   }
 
   async findInfoRelation(offerId: number, relations: string[]): Promise<any> {

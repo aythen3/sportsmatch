@@ -13,7 +13,11 @@ import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import NotificacinMatch from '../screens/NotificacinMatch'
 import { useDispatch, useSelector } from 'react-redux'
 import TusMatchsDetalle from './../screens/TusMatchsDetalle'
-import { getAllUsers, updateUserData } from '../redux/actions/users'
+import {
+  getAllUsers,
+  getUserData,
+  updateUserData
+} from '../redux/actions/users'
 import {
   getAllNotifications,
   getNotificationsByUserId,
@@ -24,11 +28,18 @@ import axiosInstance from '../utils/apiBackend'
 import { Context } from '../context/Context'
 import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { getColorsWithOpacity } from '../utils/colorUtils'
+import { useNavigation } from '@react-navigation/core'
 
 const Notifications = ({ data }) => {
   const _ = require('lodash')
   const [isMatch, setIsMatch] = useState(false)
-  const { clubMatches, userMatches, getClubMatches } = useContext(Context)
+  const {
+    clubMatches,
+    userMatches,
+    getClubMatches,
+    formatDateDifference,
+    getTimeFromDate
+  } = useContext(Context)
   const [details, setDetails] = useState(false)
   const { allUsers, user, mainColor } = useSelector((state) => state.users)
   const [selectedClubDetails, setSelectedClubDetails] = useState()
@@ -38,6 +49,7 @@ const Notifications = ({ data }) => {
   const moreOpacity = 0.65 // 80% opacity
   const lessOpacity = 0.4 // 40% opacity
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
+  const navigation = useNavigation()
   function formatDate(timestamp) {
     const date = new Date(timestamp)
     // Extract the day, month, and year components
@@ -69,11 +81,7 @@ const Notifications = ({ data }) => {
           await axiosInstance
             .patch(`notification/${data.id}`, { read: true })
             .then(async (res) => {
-              if (user.user.type == 'club') {
-                dispatch(getNotificationsByUserId(user.user.club.id))
-              } else {
-                dispatch(getNotificationsByUserId(user.user.id))
-              }
+              dispatch(getNotificationsByUserId(user.user.id))
             })
         }
         if (data.title === 'Solicitud') {
@@ -88,6 +96,11 @@ const Notifications = ({ data }) => {
           setSelectedClubDetails(
             allUsers.filter((user) => user.id === data.prop1.clubData.userId)[0]
           )
+        }
+        if (data.title === 'Follow') {
+          navigation.navigate('PerfilFeedVisualitzaciJug', {
+            author: data.user
+          })
         }
       }}
     >
@@ -107,6 +120,29 @@ const Notifications = ({ data }) => {
               data?.prop1?.clubData?.img_perfil !== ''
                 ? { uri: data.prop1.clubData.img_perfil }
                 : require('../assets/whiteSport.png')
+            }
+          />
+        )}
+        {data.title === 'Follow' && (
+          <Image
+            style={{
+              height: 45,
+              width: 45,
+              alignSelf: 'flex-start',
+              borderRadius: 50,
+              backgroundColor: !data?.user?.sportman?.info?.img_perfil
+                ? mainColor
+                : !data?.user?.club?.img_perfil
+                  ? mainColor
+                  : 'transparent'
+            }}
+            contentFit="cover"
+            source={
+              data?.user?.sportman?.info?.img_perfil
+                ? { uri: data?.user?.sportman?.info?.img_perfil }
+                : data?.user?.club?.img_perfil
+                  ? { uri: data?.user?.club?.img_perfil }
+                  : require('../assets/whiteSport.png')
             }
           />
         )}
@@ -155,14 +191,15 @@ const Notifications = ({ data }) => {
             numberOfLines={open ? 3 : 1}
             ellipsizeMode="tail"
             style={{
-              maxWidth: '80%',
               fontWeight: '600',
               color: Color.wHITESPORTSMATCH,
               alignSelf: 'flex-start',
+              marginRight: '4%',
               fontSize: FontSize.t1TextSMALL_size,
               fontFamily: FontFamily.t4TEXTMICRO
             }}
           >
+            {data?.user?.sportman?.info?.nickname || data?.user?.club?.name}{' '}
             {data.message}
           </Text>
         </View>
@@ -306,74 +343,20 @@ const Notifications = ({ data }) => {
                 fontFamily: FontFamily.t4TEXTMICRO
               }}
             >
-              {formatDate(data.date)}
+              {formatDateDifference(data?.createdAt)}
             </Text>
-            {data?.prop1?.userData?.user?.type !== 'club' &&
-              !user?.user?.following?.includes(data?.prop1?.userId) && (
+            {data?.user?.sportman &&
+              !user?.user?.followingUsers.find(
+                (u) => u?.id === data?.user?.id
+              ) && (
                 <TouchableOpacity
                   onPress={() => {
-                    let actualUser = _.cloneDeep(user)
-                    const actualFollowers =
-                      allUsers.filter(
-                        (user) => user.id === data.prop1.userId
-                      )[0].followers || []
-                    const newFollowers = actualFollowers?.includes(
-                      user?.user?.id
-                    )
-                      ? actualFollowers.filter(
-                          (follower) => follower !== user?.user?.id
-                        )
-                      : [...actualFollowers, user?.user?.id]
-
-                    const newFollowingArray = userFollowing?.includes(
-                      data.prop1.userId
-                    )
-                      ? userFollowing.filter(
-                          (followed) => followed !== data.prop1.userId
-                        )
-                      : [...userFollowing, data.prop1.userId]
-                    actualUser.user.following = newFollowingArray
-
-                    dispatch(
-                      updateUserData({
-                        id: data.prop1.userId,
-                        body: { followers: newFollowers }
-                      })
-                    )
-                      .then((data) => {
-                        dispatch(
-                          updateUserData({
-                            id: user.user.id,
-                            body: { following: newFollowingArray }
-                          })
-                        )
-                      })
+                    axiosInstance
+                      .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
                       .then((response) => {
-                        if (newFollowers.includes(user?.user?.id)) {
-                          console.log('esdto vas a cmaiawr', data)
-                          dispatch(
-                            sendNotification({
-                              title: 'Follow',
-                              message: `${user.user.nickname} ha comenzado a seguirte`,
-                              recipientId: data?.prop1?.userId,
-                              date: new Date(),
-                              read: false,
-                              prop1: {
-                                userId: user?.user?.id,
-                                userData: {
-                                  ...user
-                                }
-                              },
-                              prop2: {
-                                rol: data.prop1.userData.user.club
-                                  ? 'club'
-                                  : 'user'
-                              }
-                            })
-                          )
-                        }
+                        dispatch(getUserData(user?.user?.id))
+
                         dispatch(getAllUsers())
-                        dispatch(updateUser(actualUser))
                       })
                   }}
                   style={{

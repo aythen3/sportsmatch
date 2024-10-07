@@ -34,6 +34,9 @@ export class CreateUserDto {
   stripeId: any;
 
   @IsOptional()
+  emailCheck: any;
+
+  @IsOptional()
   planId: any;
 
   @IsOptional()

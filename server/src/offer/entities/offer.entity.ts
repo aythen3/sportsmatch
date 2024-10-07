@@ -2,13 +2,14 @@ import { IsArray, IsBoolean, IsInt, IsString, Max, Min } from 'class-validator';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { BaseEntity } from 'src/config/base.entity';
 import { MatchEntity } from 'src/match/entities/match.entity';
-import { PositionEntity } from 'src/position/entities/position.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
+  OneToMany
 } from 'typeorm';
 
 @Entity({ name: 'offer' })
@@ -17,12 +18,8 @@ export class OfferEntity extends BaseEntity {
     type: 'enum',
     enum: ['Male', 'Female', 'Otro']
   })
-
   @Column({ nullable: true })
   posit: string | null;
-
-  @Column({ nullable: true })
-  sport: string | null;
 
   @Column({ nullable: true })
   paused: boolean | null;
@@ -38,9 +35,6 @@ export class OfferEntity extends BaseEntity {
   @Column({ nullable: true })
   @IsString()
   province: string | null;
-
-
-
 
   @Column({ type: 'int', nullable: true })
   @IsInt() // Validador para asegurar que sea un número entero
@@ -65,8 +59,6 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-
-
   @OneToMany(() => MatchEntity, (match) => match.offerId, { nullable: true })
   match: MatchEntity[];
 
@@ -76,4 +68,9 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   @IsArray()
   inscriptions: string[];
+
+  // Relación con los usuarios inscritos
+  @ManyToMany(() => UserEntity, (user) => user.offers, { nullable: true })
+  @JoinTable() // Necesario para la relación bidireccional
+  usersInscriptions: UserEntity[];
 }

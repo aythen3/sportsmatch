@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 import { ErrorManager } from 'src/utils/error.manager';
 import { SendMailService } from '../send-mail/send-mail.service';
@@ -14,6 +14,8 @@ import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { ChatGateway } from 'src/chat/chat.gateway';
+import { NotificationService } from 'src/notification/notification.service';
 const configService = new ConfigService();
 
 @Injectable()
@@ -26,8 +28,9 @@ export class UserService {
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
 
-    private readonly sendMailService: SendMailService,
-    private readonly postService: PostService
+    private readonly postService: PostService,
+    private readonly notificationService: NotificationService,
+    private dataSource: DataSource
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -77,7 +80,7 @@ export class UserService {
       const mailOptions = {
         from: 'sportsmatch.digital@gmail.com',
         to: usuario.email,
-        subject: 'Confirmación de cuenta',
+        subject: 'Confirma tu correo electrónico para completar tu registro',
         attachments: [
           /* {
           filename: 'sportspot.png',
@@ -129,8 +132,17 @@ export class UserService {
       
     </div>
     <h1>Confirmación de cuenta</h1>
-    <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+    <p>Hola ${usuario.nickname},
+      ¡Estamos emocionados de que te unas a SportsMatch!
+      Para completar tu registro y activar tu cuenta, por favor verifica tu dirección
+      de correo electrónico haciendo clic en el siguiente enlace:</p>
     <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+     <p>Si no puedes hacer clic en el enlace, copia y pega la siguiente URL en tu
+        navegador:</p>
+    <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}</a>
+    <p>Si no solicitaste este registro, por favor ignora este correo.
+       Saludos,
+       el equipo de SportsMatch.</p>
   </body>
 </html>
       `
@@ -430,6 +442,75 @@ export class UserService {
     }
   }
 
+  async followUser(userId: string, userToFollowId: string): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToFollow = await this.userRepository.findOne({
+      where: { id: userToFollowId },
+      relations: ['followers'] // Cargar la relación 'followers' para poder hacer el push
+    });
+
+    if (!userToFollow) {
+      throw new NotFoundException('User to follow not found');
+    }
+
+    // Verificar si ya sigue al usuario
+    if (user.followingUsers.some((u) => u.id === userToFollowId)) {
+      return 'You are already following this user';
+    }
+
+    // Agregar el usuario a la lista de seguidores de userToFollow
+    userToFollow.followers.push(user);
+
+    // Agregar userToFollow a la lista de followingUsers de user
+    user.followingUsers.push(userToFollow);
+
+    // Guardar ambos usuarios
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(userToFollow);
+    await this.notificationService.createService({
+      title: 'Follow',
+      message: `ha comenzado a seguirte`,
+      senderId: userId,
+      receiverId: userToFollowId,
+      type: 'follow',
+      readed: false
+    });
+
+    return 'Successfully followed the user';
+  }
+
+  async unfollowUser(
+    userId: string,
+    userToUnfollowId: string
+  ): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToUnfollow = await this.userRepository.findOne({
+      where: { id: userToUnfollowId }
+    });
+
+    if (!userToUnfollow) {
+      throw new NotFoundException('User to unfollow not found');
+    }
+
+    // Verificar si ya no sigue al usuario
+    user.followingUsers = user.followingUsers.filter(
+      (u) => u.id !== userToUnfollowId
+    );
+
+    await this.userRepository.save(user);
+
+    return 'Successfully unfollowed the user';
+  }
+
   public async create(createUserDto: CreateUserDto) {
     try {
       // Encriptar la contraseña del usuario
@@ -514,6 +595,8 @@ export class UserService {
       // Crear el nuevo perfil del usuario en tu base de datos
       createUserDto.club = null;
       createUserDto.sportman = null;
+      createUserDto.emailCheck = true;
+
       const newProfile: UserEntity =
         await this.userRepository.save(createUserDto);
       // Si no se pudo crear el nuevo perfil, lanzar una excepción
@@ -598,15 +681,30 @@ export class UserService {
    */
   public async findOne(id: string) {
     try {
-      const user = await this.userRepository
-        .createQueryBuilder('user')
-        .leftJoinAndSelect('user.club', 'club')
-        .leftJoinAndSelect('user.sportman', 'sportman')
-        .leftJoinAndSelect('user.posts', 'posts')
-        .leftJoinAndSelect('user.comments', 'comments')
-        .leftJoinAndSelect('user.likes', 'likes')
-        .where({ id })
-        .getOne();
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: [
+          'club',
+          'sportman',
+          'posts',
+          'comments',
+          'likes',
+          'followers',
+          'followers.club',
+          'followers.sportman',
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
+
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'followingUsers',
+          'offers'
+        ]
+      });
 
       if (!user) {
         throw new ErrorManager({
@@ -614,6 +712,7 @@ export class UserService {
           message: `User id: ${id} not found`
         });
       }
+
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -654,29 +753,113 @@ export class UserService {
    * Método para eliminar un usuario por su ID
    * @param {string} id - El ID del usuario a eliminar
    */
-  public async remove(id: string) {
+  public async remove(id: string): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+  
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+  
     try {
-      // Marcar al usuario como eliminado en la base de datos
-      await this.userRepository.update(id, { isDelete: true });
-      // Devolver el usuario eliminado
-      const user: UserEntity = await this.findOne(id);
+      // Buscar el usuario
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: [
+          'posts', 'comments', 'likes', 'notifications', 
+          'matches', 'offers', 'chatsAsUserA', 'chatsAsUserB', 'club',
+          'followers', 'followingUsers', 'sportman', // Relación con sportman
+          'chatsAsUserA.messages',
+          'chatsAsUserB.messages'
+        ]
+      });
+  
       if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
-          message: `User id: ${id} not found`
+          message: `User id: ${id} not found`,
         });
       }
-      return user;
+  
+      // Eliminar los mensajes relacionados a los chats del usuario
+      for (const chatA of user.chatsAsUserA) {
+        await queryRunner.manager.remove(chatA.messages);
+      }
+      for (const chatB of user.chatsAsUserB) {
+        await queryRunner.manager.remove(chatB.messages);
+      }
+  
+      // Eliminar relaciones con otras entidades
+      await queryRunner.manager.remove(user.posts);
+      await queryRunner.manager.remove(user.comments);
+      await queryRunner.manager.remove(user.likes);
+      await queryRunner.manager.remove(user.notifications);
+      await queryRunner.manager.remove(user.matches);
+      await queryRunner.manager.remove(user.offers);
+      await queryRunner.manager.remove(user.chatsAsUserA);
+      await queryRunner.manager.remove(user.chatsAsUserB);
+  
+      // Eliminar la relación con el sportman si existe
+      if (user.sportman) {
+        await queryRunner.manager.remove(user.sportman);
+      }
+      if (user.club) {
+        await queryRunner.manager.remove(user.club);
+      }
+  
+      // Eliminar relaciones de seguimiento entre usuarios
+      await queryRunner.manager
+        .createQueryBuilder()
+        .relation(UserEntity, 'followers')
+        .of(user)
+        .remove(user.followers);
+  
+      await queryRunner.manager
+        .createQueryBuilder()
+        .relation(UserEntity, 'followingUsers')
+        .of(user)
+        .remove(user.followingUsers);
+  
+      // Finalmente, eliminar el usuario
+      await queryRunner.manager.remove(user);
+  
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
     } catch (error) {
+      // En caso de error, revertir la transacción
+      await queryRunner.rollbackTransaction();
       throw ErrorManager.createSignatureError(error.message);
+    } finally {
+      // Liberar el queryRunner
+      await queryRunner.release();
     }
   }
+  
 
   public async getByEmail(email: string): Promise<UserEntity> {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        relations: ['club', 'sportman']
+        relations: [
+          'club',
+          'sportman',
+          'posts',
+          'comments',
+          'likes',
+          'followers',
+          'followers.club',
+          'followers.sportman',
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'matches.club.user',
+
+          'followingUsers',
+          'offers'
+        ]
       });
 
       if (!user) {
@@ -737,7 +920,28 @@ export class UserService {
   async getByGoogleId(googleId: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: { googleId: googleId },
-      relations: ['club', 'sportman']
+      relations: [
+        'club',
+        'sportman',
+        'posts',
+        'comments',
+        'likes',
+        'followers',
+        'followers.club',
+        'followers.sportman',
+        'club.offers',
+        'club.matches',
+        'club.matches.user',
+        'club.matches.user.sportman',
+        'club.offers.usersInscriptions',
+        'club.offers.usersInscriptions.sportman',
+        'matches',
+        'matches.club',
+        'matches.club.user',
+
+        'followingUsers',
+        'offers'
+      ]
     });
     return user;
   }

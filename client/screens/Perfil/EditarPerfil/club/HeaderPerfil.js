@@ -47,7 +47,8 @@ const HeaderPerfil = ({
   front,
   avatar,
   data,
-  external
+  external,
+  getUser
 }) => {
   const moreOpacity = 0.8 // 80% opacity
   const lessOpacity = 0.4 // 40% opacity
@@ -61,15 +62,26 @@ const HeaderPerfil = ({
   const { allMatchs } = useSelector((state) => state.matchs)
   const { club } = useSelector((state) => state.clubs)
   const { clubMatches, userMatches, getClubMatches } = useContext(Context)
-  const [matchSended, setMatchSended] = useState(false)
-  const [liked, setLiked] = useState(false)
+  const [matchSended, setMatchSended] = useState(() =>
+    user?.user?.club?.matches?.find(
+      (m) => m?.user?.id === data?.author?.id && m.status === 'pending'
+    )
+      ? true
+      : false
+  )
+  const [liked, setLiked] = useState(() =>
+    user.user.followingUsers.find((u) => u.id === data?.author?.id)
+      ? true
+      : false
+  )
   const [isTruncated, setIsTruncated] = useState(true)
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
   const [optionsModal, setOptionsModal] = useState(false)
   const { sportman } = useSelector((state) => state.sportman)
   const [bannedModal, setBannedModal] = useState(false)
 
-  // console.log('club==============', club)
+  console.log('club==============', data)
+
   const [bannedLoading, setBannedLoading] = useState(false)
 
   const getOffersById = async (id) => {
@@ -85,7 +97,7 @@ const HeaderPerfil = ({
   useEffect(() => {
     if (external) {
       if (data?.author?.type === 'club') {
-        getOffersById(data.author.club.id)
+        getOffersById(data?.author?.club.id)
       }
     }
     if (!external) {
@@ -132,60 +144,31 @@ const HeaderPerfil = ({
       setLiked(true)
     }
   }, [user])
+
   const handleFollow = debounce(() => {
-    if (sportman?.type == 'invitado') return
+    if (sportman?.type === 'invitado') return
 
     setLiked(!liked)
-    let actualUser = _.cloneDeep(user)
-    const actualFollowers =
-      allUsers?.filter((user) => user.id === data.author.id)[0]?.followers || []
-    const newFollowers = actualFollowers.includes(user?.user?.id)
-      ? actualFollowers.filter((follower) => follower !== user?.user?.id)
-      : [...actualFollowers, user?.user?.id]
-
-    const newFollowingArray = userFollowing?.includes(data?.author?.id)
-      ? userFollowing.filter((followed) => followed !== data?.author?.id)
-      : [...userFollowing, data?.author?.id]
-    actualUser.user.following = newFollowingArray
-
-    dispatch(
-      updateUserData({ id: data.author.id, body: { followers: newFollowers } })
-    )
-      .then((data) => {
-        console.log(data, 'es cuando ojeo')
-        dispatch(
-          updateUserData({
-            id: user.user.id,
-            body: { following: newFollowingArray }
-          })
-        )
-      })
-      .then((response) => {
-        if (newFollowers.includes(user?.user?.id)) {
-          dispatch(
-            sendNotification({
-              title: 'Follow',
-              message: `${user.user.nickname} ha comenzado a seguirte`,
-              recipientId: data?.author?.sportman?.user?.id ?? data?.author?.id,
-              date: new Date(),
-              read: false,
-              prop1: {
-                userId: user?.user?.id,
-                userData: { ...user }
-              },
-              prop2: {
-                rol: 'user'
-              }
-            })
-          ).then((res) => console.log('respuesta', res))
-        }
-        dispatch(updateUser(actualUser))
-        dispatch(getAllUsers())
-      })
+    if (!liked) {
+      axiosInstance
+        .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
+        .then((response) => {
+          getUser()
+          dispatch(getUserData(user?.user?.id))
+        })
+    } else {
+      axiosInstance
+        .delete(`user/${user?.user?.id}/unfollow/${data?.author?.id}`)
+        .then(() => {
+          getUser()
+          dispatch(getUserData(user?.user?.id))
+          dispatch(getAllUsers())
+        })
+    }
   }, 300)
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
-  const userFollowing = user?.user?.following || []
+  const userFollowing = user?.user?.followingUsers || []
 
   const Bann = () => (
     <View
@@ -447,66 +430,30 @@ const HeaderPerfil = ({
                 if (sportman?.type == 'invitado') return
 
                 setLiked(!liked)
-                let actualUser = _.cloneDeep(user)
-                const actualFollowers =
-                  allUsers?.filter((user) => user.id === data.author.id)[0]
-                    ?.followers || []
-                const newFollowers = actualFollowers.includes(user?.user?.id)
-                  ? actualFollowers.filter(
-                      (follower) => follower !== user?.user?.id
-                    )
-                  : [...actualFollowers, user?.user?.id]
 
-                const newFollowingArray = userFollowing?.includes(
-                  data?.author?.id
-                )
-                  ? userFollowing.filter(
-                      (followed) => followed !== data?.author?.id
-                    )
-                  : [...userFollowing, data?.author?.id]
-                actualUser.user.following = newFollowingArray
+                if (!liked) {
+                  axiosInstance
+                    .post(`user/${user?.user?.id}/follow/${data?.author?.id}`)
+                    .then((response) => {
+                      getUser()
 
-                dispatch(
-                  updateUserData({
-                    id: data.author.id,
-                    body: { followers: newFollowers }
-                  })
-                )
-                  .then((data) => {
-                    console.log(data, 'es cuando ojeo')
-                    dispatch(
-                      updateUserData({
-                        id: user.user.id,
-                        body: { following: newFollowingArray }
-                      })
+                      dispatch(getUserData(user?.user?.id))
+
+                      dispatch(getAllUsers())
+                    })
+                } else {
+                  axiosInstance
+                    .delete(
+                      `user/${user?.user?.id}/unfollow/${data?.author?.id}`
                     )
-                  })
-                  .then((response) => {
-                    if (newFollowers.includes(user?.user?.id)) {
-                      dispatch(
-                        sendNotification({
-                          title: 'Follow',
-                          message: `${user.user.nickname} ha comenzado a seguirte`,
-                          recipientId:
-                            data?.author?.sportman?.user?.id ??
-                            data?.author?.id,
-                          date: new Date(),
-                          read: false,
-                          prop1: {
-                            userId: user?.user?.id,
-                            userData: {
-                              ...user
-                            }
-                          },
-                          prop2: {
-                            rol: 'user'
-                          }
-                        })
-                      ).then((res) => console.log('respuesta', res))
-                    }
-                    dispatch(updateUser(actualUser))
-                    dispatch(getAllUsers())
-                  })
+                    .then(() => {
+                      getUser()
+
+                      dispatch(getUserData(user?.user?.id))
+
+                      dispatch(getAllUsers())
+                    })
+                }
               }}
               style={styles.leftButton}
             >
@@ -613,7 +560,7 @@ const HeaderPerfil = ({
               </Text>
             </TouchableOpacity>
           )}
-          {matchSended === true ? (
+          {matchSended ? (
             <Pressable
               style={{
                 flexDirection: 'row',
@@ -658,61 +605,60 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            clubMatches?.filter(
-              (match) => match?.prop1?.sportmanId === data?.author?.sportman?.id
-            )?.length === 0 ? (
+            !user.user.club.matches.find(
+              (match) => match?.user?.id === data?.author?.id
+            ) ? (
             <Pressable
+              disabled={matchSended}
               onPress={() => {
-                const userIdd =
-                  data?.author?.sportman?.user?.id ?? data?.author?.id
                 setMatchSended(true)
-                console.log(data, 'datrita')
+                console.log(data.author.id, 'datrita')
                 dispatch(
                   sendMatch({
-                    sportmanId: data?.author?.sportman?.id,
+                    userId: data?.author?.id,
                     clubId: user?.user?.club?.id,
-                    status: 'pending',
-                    prop1: {
-                      clubId: user?.user?.club?.id,
-                      sportmanId: data?.author?.sportman?.id,
-                      sportManData: {
-                        userId: userIdd,
-                        profilePic:
-                          data?.author?.sportman?.info?.img_perfil || '',
-                        name: data?.author?.nickname
+                    status: 'pending'
+                  })
+                ).then((res) => {
+                  dispatch(getUserData(user?.user?.id))
+                  console.log(
+                    {
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.author?.id,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: data?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...club
+                        }
                       },
-                      clubData: {
-                        userId: user?.user?.id,
-                        name: user?.user?.nickname,
-                        profilePic: user?.user?.club?.img_front
-                      }
-                    }
-                  })
-                )
-                  .then((data) => {
-                    console.log('data from match: ', userIdd)
-
-                    dispatch(
-                      sendNotification({
-                        title: 'Solicitud',
-                        message: 'Recibiste una solicitud de match!',
-                        recipientId: userIdd,
-                        date: new Date(),
-                        read: false,
-                        prop1: {
-                          matchId: data?.payload?.id,
-                          clubData: {
-                            name: user?.user?.nickname,
-                            userId: user.user.id,
-                            ...club
-                          }
-                        },
-                        prop2: { rol: 'user' }
-                      })
-                    ).then((r) => console.log(r, 'rrrrrrrrrrrrrrrrr'))
-                  })
-                  .then((data) => dispatch(getAllMatchs()))
-                  .then((data) => getClubMatches())
+                      prop2: { rol: 'user' }
+                    },
+                    'rrrrrrrrrrrrrrrrr'
+                  )
+                  dispatch(
+                    sendNotification({
+                      title: 'Solicitud',
+                      message: 'Recibiste una solicitud de match!',
+                      recipientId: data?.author?.id,
+                      date: new Date(),
+                      read: false,
+                      prop1: {
+                        matchId: res?.payload?.id,
+                        clubData: {
+                          name: user?.user?.nickname,
+                          userId: user.user.id,
+                          ...club
+                        }
+                      },
+                      prop2: { rol: 'user' }
+                    })
+                  ).then((r) => console.log(r, 'rrrrrrrrrrrrrrrrr'))
+                })
               }}
               style={{
                 flexDirection: 'row',
@@ -758,11 +704,15 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            clubMatches.filter(
-              (match) =>
-                match.prop1.sportmanId === data.author.sportman.id &&
+            user.user.club.matches.find((match) => {
+              console.log(match?.user?.id, data?.author?.id, 'IDDDDDDDDDDD')
+              if (
+                match?.user?.id === data?.author?.id &&
                 match.status === 'success'
-            ).length > 0 ? (
+              ) {
+                return true
+              }
+            }) ? (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ChatAbierto1', {
@@ -894,7 +844,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {data.author.club.year}
+              {data?.author?.club?.year}
             </Text>
             <Text
               style={{
@@ -924,7 +874,7 @@ const HeaderPerfil = ({
             }}
           >
             <Text style={{ color: mainColor, fontSize: 27, fontWeight: 500 }}>
-              {data.author.club.capacity}
+              {data?.author?.club?.capacity}?
             </Text>
             <Text
               style={{
