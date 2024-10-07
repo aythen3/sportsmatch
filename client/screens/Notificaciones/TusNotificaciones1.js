@@ -37,7 +37,7 @@ const TusNotificaciones1 = () => {
     (state) => state.notifications
   )
 
-  const { allMessages } = useSelector((state) => state.chats)
+  const { allMessages, userChats } = useSelector((state) => state.chats)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const { getUsersMessages, usersWithMessages, setActiveIcon } =
     useContext(Context)
@@ -267,7 +267,7 @@ const TusNotificaciones1 = () => {
                   paddingHorizontal: 14
                 }}
               >
-                {value === '' && usersWithMessages.length === 0 ? (
+                {value === '' && userChats.length === 0 ? (
                   <View style={{ width: '100%', alignItems: 'center' }}>
                     <Text
                       style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}
@@ -277,7 +277,9 @@ const TusNotificaciones1 = () => {
                   </View>
                 ) : (
                   value === '' &&
-                  usersWithMessages?.map((userr, index) => {
+                  userChats?.map((chat, index) => {
+                    const userr =
+                      chat.userA.id === user.user.id ? chat.userB : chat.userA
                     if (
                       !userr.isDelete &&
                       !user?.user?.banned?.includes(userr?.id)

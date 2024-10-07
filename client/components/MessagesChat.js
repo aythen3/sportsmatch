@@ -252,7 +252,7 @@ const MessagesChat = ({
               gap: 5
             }}
           >
-            {notReadedMessages.some(
+            {notReadedMessages?.some(
               (message) => message.senderId === selectedUserId
             ) && (
               <View

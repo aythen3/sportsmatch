@@ -366,8 +366,8 @@ export const ContextProvider = ({ children }) => {
 
   const newSocket = io(
     // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-    // 'http://163.172.172.81:3010',
-    'http://192.168.0.82:3010',
+    'http://163.172.172.81:3010',
+    // 'http://192.168.0.77:3010',
 
     {
       transports: ['websocket'],
@@ -408,7 +408,7 @@ export const ContextProvider = ({ children }) => {
   })
 
   newSocket.on('message-server', (msg) => {
-    // console.log('New message:', msg)
+    console.log('New message:', msg)
     dispatch(updateMessages(msg)).then(() => {
       dispatch(setAllConversationMessagesToRead())
     })
@@ -431,12 +431,12 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  const joinRoom = (sender, receiver) => {
-    socket.emit('joinRoom', { sender, receiver })
+  const joinRoom = (room) => {
+    socket.emit('joinGroup', { room })
   }
 
-  const leaveRoom = (sender, receiver) => {
-    socket.emit('leaveRoom', { sender, receiver })
+  const leaveRoom = (rom) => {
+    socket.emit('leaveRoom', { rom })
   }
 
   const sendMessage = (message, sender, receiver) => {

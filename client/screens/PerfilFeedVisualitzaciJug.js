@@ -37,7 +37,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const [isBanned, setIsBanned] = useState(false)
 
   const selectores = () => {
-    const sport = data?.author?.sportman.info.sport
+    const sport = data?.author?.sportman?.info?.sport
     const selectedSkills = skills_deporte[sport]
 
     if (selectedSkills) {

@@ -39,6 +39,7 @@ import {
   getNotificationsByUserId
 } from '../../redux/actions/notifications'
 import { getAllMatchs } from '../../redux/actions/matchs'
+import { getUserChats } from '../../redux/actions/chats'
 
 const SiguiendoJugadores = () => {
   const isFocused = useIsFocused()
@@ -68,6 +69,7 @@ const SiguiendoJugadores = () => {
   useEffect(() => {
     dispatch(getAllPosts(user?.user?.id))
     dispatch(getAllLikes())
+    dispatch(getUserChats(user?.user?.id))
     // dispatch(getAllNotifications())
     if (user?.user?.type === 'club') {
       console.log(user?.user?.club?.id, 'club')

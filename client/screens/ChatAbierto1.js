@@ -21,11 +21,18 @@ import Chat from '../components/Chat'
 import { useDispatch, useSelector } from 'react-redux'
 import ThreePointsSVG from '../components/svg/ThreePointsSVG'
 import { useRoute } from '@react-navigation/native'
-import { emptyAllMessages, getChatHistory } from '../redux/actions/chats'
+import {
+  emptyAllMessages,
+  getChatHistory,
+  getUserChat
+} from '../redux/actions/chats'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../context/Context'
 import axiosInstance from '../utils/apiBackend'
-import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
+import {
+  setAllConversationMessagesToRead,
+  setAllMessages
+} from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
 import { setShowNavbar, updateUser } from '../redux/slices/users.slices'
@@ -35,6 +42,8 @@ import { getAllMatchs } from '../redux/actions/matchs'
 import * as NavigationBar from 'expo-navigation-bar'
 
 const ChatAbierto1 = () => {
+  const [usuario, setUsuario] = useState({})
+
   const _ = require('lodash')
   const [selectedUserDetails, setSelectedUserDetails] = useState()
   const [showOptionsModal, setShowOptionsModal] = useState(false)
@@ -54,6 +63,7 @@ const ChatAbierto1 = () => {
   const { allMatchs } = useSelector((state) => state.matchs)
   const { sportman } = useSelector((state) => state.sportman)
   const { club } = useSelector((state) => state.clubs)
+  const [chat, setChat] = useState({})
 
   const { clubMatches, userMatches, emitToUser } = useContext(Context)
   const [canSend, setCanSend] = useState(false)
@@ -136,18 +146,78 @@ const ChatAbierto1 = () => {
   }, [])
 
   useEffect(() => {
-    joinRoom(user?.user?.id, route?.params?.receiverId)
+    const usuario = user
     dispatch(
-      getChatHistory({
-        sender: user?.user?.id,
-        receiver: route?.params?.receiverId
+      getUserChat({
+        userA: usuario?.user?.id,
+        userB: route?.params?.receiverId
       })
-    )
+    ).then(async (e) => {
+      if (!e.payload) {
+        try {
+          console.log('eeeeeeeeeeee22', usuario, route?.params?.receiverId)
+          const chatCreate = await axiosInstance.post(`/chat/create`, {
+            userAId: usuario?.user?.id,
+            userBId: route?.params?.receiverId
+          })
+          setChat(chatCreate.data.data)
+
+          const chat = chatCreate.data?.data
+          const user =
+            chatCreate.data.data.userA.id === user?.user?.id
+              ? chatCreate.data.data.userB
+              : chatCreate.data.data.userA
+          setUsuario(user)
+          console.log(chatCreate.data.data, 'eeeeeeeeeeee2')
+
+          joinRoom(chat?.id)
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        try {
+          setChat(e?.payload?.data)
+          console.log(e, 'eeeeeeeeeeee2')
+          const chat = e?.payload?.data
+          console.log(chat?.id, 'eeeeeeeeeeee3')
+          const user =
+            e?.payload.data.userA.id === user?.user?.id
+              ? e?.payload.data.userB
+              : e?.payload.data.userA
+          setUsuario(user)
+          console.log(e?.payload.data, 'eeeeeeeeeeee2')
+          const copy = [...chat?.messages]
+          const sortedMessages = copy?.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+
+          joinRoom(chat?.id)
+          dispatch(setAllMessages(sortedMessages))
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
+
     return () => {
       dispatch(emptyAllMessages())
-      leaveRoom(user?.user?.id, route.params.receiverId)
+      leaveRoom(chat?.id)
     }
   }, [])
+
+  // useEffect(() => {
+  //   joinRoom(user?.user?.id, route?.params?.receiverId)
+  //   dispatch(
+  //     getChatHistory({
+  //       sender: user?.user?.id,
+  //       receiver: route?.params?.receiverId
+  //     })
+  //   )
+  //   return () => {
+  //     dispatch(emptyAllMessages())
+  //     leaveRoom(user?.user?.id, route.params.receiverId)
+  //   }
+  // }, [])
 
   const setAllToRead = async () => {
     console.log('on setAllToRead')

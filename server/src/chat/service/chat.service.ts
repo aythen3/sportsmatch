@@ -12,7 +12,9 @@ export class ChatService {
     @InjectRepository(MessageEntity)
     private messageRepository: Repository<MessageEntity>,
     @InjectRepository(ChatEntity)
-    private chatRepository: Repository<ChatEntity>
+    private chatRepository: Repository<ChatEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>
   ) {}
   create() {
     return 'This action adds a new socket';
@@ -46,6 +48,26 @@ export class ChatService {
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
+  }
+
+  async createChatFun(userAId: string, userBId: string): Promise<ChatEntity> {
+    // Buscar los usuarios por su ID
+    const userA = await this.userRepository.findOne({ where: { id: userAId } });
+    const userB = await this.userRepository.findOne({ where: { id: userBId } });
+
+    if (!userA || !userB) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Crear una nueva instancia de ChatEntity
+    const newChat = this.chatRepository.create({
+      userA,
+      userB,
+      createdAt: new Date()
+    });
+
+    // Guardar el nuevo chat en la base de datos
+    return this.chatRepository.save(newChat);
   }
 
   // async getUserChats(userId: string): Promise<Record<string, MessageEntity[]>> {

@@ -57,7 +57,6 @@ export class ChatGateway
       sender: string;
       receiver: string;
       message: string;
-      isGroup?: boolean;
     }
   ): Promise<any> {
     // Si es un mensaje entre usuarios (chat directo)
@@ -86,13 +85,13 @@ export class ChatGateway
     if (!client.rooms.has(data.receiver)) {
       client.join(data.receiver);
     }
-
+    console.log('enviando a ', chat.id, newMessage, chat);
     // Emitir el mensaje solo al receptor
     client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
-    client.to(data.receiver).emit('chat', {
-      messages: [...chat.messages, newMessage],
-      chat: chat.id
-    }); // Emitir solo una vez a la sala
+    // client.to(data.receiver).emit('chat', {
+    //   messages: [...chat.messages, newMessage],
+    //   chat: chat.id
+    // }); // Emitir solo una vez a la sala
 
     return newMessage;
   }
@@ -117,11 +116,10 @@ export class ChatGateway
   }
 
   @SubscribeMessage('leaveRoom')
-  handleRoomLeave(client: Socket, data: { sender: string; receiver: string }) {
-    const room = this.chatService.roomIdGenerator(data.sender, data.receiver);
-    client.leave(room);
-    client.emit('leaveRoom', room);
-    console.log('leaveRoom', room);
+  handleRoomLeave(client: Socket, data: { room: string }) {
+    client.leave(data.room);
+    client.emit('leaveRoom', data.room);
+    console.log('leaveRoom', data.room);
   }
   @SubscribeMessage('emitToUser')
   emitToUser(
