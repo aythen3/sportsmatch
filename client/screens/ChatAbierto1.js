@@ -28,10 +28,11 @@ import axiosInstance from '../utils/apiBackend'
 import { setAllConversationMessagesToRead } from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
 import { getAllUsers, updateUserData } from '../redux/actions/users'
-import { updateUser } from '../redux/slices/users.slices'
+import { setShowNavbar, updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
 import axios from 'axios'
 import { getAllMatchs } from '../redux/actions/matchs'
+import * as NavigationBar from 'expo-navigation-bar'
 
 const ChatAbierto1 = () => {
   const _ = require('lodash')
@@ -74,14 +75,21 @@ const ChatAbierto1 = () => {
   }
 
   useEffect(() => {
+    // Establece el color marrón de la barra de navegación nativa
+    NavigationBar.setBackgroundColorAsync('black')
+
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
     dispatch(getAllMatchs())
     setSelectedUserDetails(userrr)
     console.log(userrr, 'Dettt')
-    if (userrr.sportman && user.user.sportman) {
+    if (userrr?.sportman && user?.user?.sportman) {
       setCanSend(true)
+    }
+    return () => {
+      dispatch(setShowNavbar(true))
+      NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
     }
   }, [])
 
@@ -89,27 +97,26 @@ const ChatAbierto1 = () => {
     const userrr = allUsers.filter(
       (user) => user?.id === route?.params?.receiverId
     )[0]
-    console.log('pasa 1111111111111', userrr.sportman, user.user.sportman)
 
-    if (userrr.sportman && sportman) {
+    if (userrr?.sportman && sportman) {
       console.log('pasa 1111111111111')
       setCanSend(true)
     }
-    if (userrr.club && club) {
+    if (userrr?.club && club) {
       console.log('pasa 222222222222222222')
 
       setCanSend(true)
     }
 
-    if ((userrr.club && sportman) || (userrr.sportman && club)) {
+    if ((userrr?.club && sportman) || (userrr?.sportman && club)) {
       console.log('entrando')
-      if (clubMatches.length > 0) {
+      if (user?.user?.club?.matches?.length > 0) {
         console.log('entrando2')
 
         const e =
-          clubMatches.filter(
+          user?.user?.club?.matches?.filter(
             (match) =>
-              match.prop1.sportmanId === route?.params?.sportman &&
+              match.user?.sportman.id === route?.params?.sportman &&
               match.status === 'success'
           ).length > 0
         return setCanSend(e)

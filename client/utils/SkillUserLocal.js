@@ -12,14 +12,7 @@ export const opciones_posicion = {
   baloncesto: ['Base', 'Escolta', 'Alero', 'Ala-pivot', 'Pivot'],
   futbolSala: ['Portero', 'Cierre', 'Ala', 'Pivot'],
   hockey: ['Portero', 'Jugador'],
-  voleibol: [
-    'Colocador',
-    'Rematador externo',
-    'Rematador opuesto',
-    'Central',
-    'Libero',
-    'Receptor/zaguero'
-  ],
+  voleibol: ['Altura', 'Recepción', 'Servicio', 'Salto'],
   handball: [
     'Portero',
     'Central',

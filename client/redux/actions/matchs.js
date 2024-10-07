@@ -3,7 +3,7 @@ import axiosInstance from '../../utils/apiBackend'
 
 export const sendMatch = createAsyncThunk(
   'sendMatch/matchs',
-  async ({ offerId, sportmanId, clubId, status, prop1 }) => {
+  async ({ offerId, sportmanId, clubId, status, prop1, userId }) => {
     try {
       // console.log('data from sendMatch:', {
       //   offerId,
@@ -14,14 +14,8 @@ export const sendMatch = createAsyncThunk(
       // })
 
       const body = !offerId
-        ? { sportmanId, clubId, status, prop1 }
-        : {
-            offerId,
-            sportmanId,
-            clubId,
-            status,
-            prop1
-          }
+        ? { sportmanId, clubId, status, prop1, userId }
+        : { userId, offerId, sportmanId, clubId, status, prop1 }
       const { data } = await axiosInstance.post('match', body)
       return data
     } catch (error) {

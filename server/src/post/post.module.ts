@@ -17,6 +17,7 @@ import { LikeEntity } from 'src/like/entities/like.entity';
     ])
   ],
   controllers: [PostController],
-  providers: [PostService]
+  providers: [PostService],
+  exports: [PostService]
 })
 export class PostModule {}

@@ -6,23 +6,28 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
 import { ClubEntity } from 'src/club/entities/club.entity';
-import { SportEntity } from 'src/sport/entities/sport.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from 'src/like/entities/like.entity';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostService } from 'src/post/post.service';
+import { ChatModule } from 'src/chat/chat.module';
+import { NotificationModule } from 'src/notification/notification.module';
+import { NotificationService } from 'src/notification/notification.service';
+import { NotificationEntity } from 'src/notification/entities/notification.entity';
+import { ChatGateway } from 'src/chat/chat.gateway';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       UserEntity,
       ClubEntity,
-      SportEntity,
       PostEntity,
       CommentEntity,
-      LikeEntity
-    ])
+      LikeEntity,
+      NotificationEntity
+    ]),
+    ChatModule
   ],
   exports: [
     UserService,
@@ -34,7 +39,8 @@ import { PostService } from 'src/post/post.service';
     JwtService,
     AuthJwtService,
     SendMailService,
-    PostService
+    PostService,
+    NotificationService
   ]
 })
 export class UserModule {}

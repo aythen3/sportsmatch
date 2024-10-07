@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Image, View, Platform, TouchableOpacity } from 'react-native'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { Image, View, Platform, TouchableOpacity, Button } from 'react-native'
 import { Context } from '../context/Context'
 import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
 import * as VideoThumbnails from 'expo-video-thumbnails'
 
 const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
+  const video = useRef(null)
+  const [status, setStatus] = useState({})
   const { mainColor } = useSelector((state) => state.users)
   const { generateLowResUrl } = useContext(Context)
   const [originalImageLoaded, setOriginalImageLoaded] = useState(false)
@@ -67,15 +69,29 @@ const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
       }
     >
       {isVideo && !isMini ? (
-        <Video
-          onTouchStart={() => setIsPlaying(!isPlaying)}
-          source={{ uri: url }}
-          style={{ width: '100%', height: '100%' }}
-          controls={true}
-          shouldPlay={play && isPlaying}
-          isMuted={play ? false : true}
-          resizeMode="cover"
-        />
+        <View>
+          <Video
+            useNativeControls
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+            source={{ uri: url }}
+            style={{ width: '100%', height: '100%' }}
+            controls={true}
+            isLooping
+            shouldPlay={play && isPlaying}
+            isMuted={play ? false : true}
+            resizeMode="cover"
+          />
+          {/* <View style={{ backgroundColor: 'red' }}>
+            <Button
+              title={status.isPlaying ? 'Pause' : 'Play'}
+              onPress={() =>
+                status.isPlaying
+                  ? video.current.pauseAsync()
+                  : video.current.playAsync()
+              }
+            />
+          </View> */}
+        </View>
       ) : (
         <Image
           source={{ uri: isVideo ? thumbnailUri : imageUrl }}

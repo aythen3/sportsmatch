@@ -1,27 +1,30 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateOfferDto } from './create-offer.dto';
-import { IsArray, IsBoolean, IsInt, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+  ValidateNested
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ClubEntity } from 'src/club/entities/club.entity';
 
 export class UpdateOfferDto extends PartialType(CreateOfferDto) {
-
-  
- 
-
   @IsOptional()
   @IsBoolean()
-  paused:boolean; 
+  paused: boolean;
 
   @IsString()
   @IsOptional()
-  position:any;
+  position: any;
 
   @IsString()
   @IsOptional()
   posit: string;
-
-
 
   @IsString()
   @IsOptional()

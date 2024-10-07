@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostService } from 'src/post/post.service';
 import { PostEntity } from 'src/post/entities/post.entity';
+import { NotificationModule } from 'src/notification/notification.module';
 
 const configService = new ConfigService();
 
@@ -22,7 +23,8 @@ const configService = new ConfigService();
       signOptions: { expiresIn: '1h' } // Opciones de firma, puedes ajustar el tiempo de expiración
     }),
     // Importar el módulo TypeOrm para la entidad UserEntity
-    TypeOrmModule.forFeature([UserEntity, PostEntity])
+    TypeOrmModule.forFeature([UserEntity, PostEntity]),
+    NotificationModule
   ],
   // Definir los controladores utilizados
   controllers: [AuthJwtController],

@@ -12,6 +12,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthJwtService } from 'src/auth-jwt/auth-jwt.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { NotificationModule } from 'src/notification/notification.module';
 // import { ConfigService } from '@nestjs/config';
 
 // const configService = new ConfigService();
@@ -40,7 +41,8 @@ import { PostService } from 'src/post/post.service';
         }
       }
     }),
-    TypeOrmModule.forFeature([ResetCodeEntity, UserEntity, PostEntity])
+    TypeOrmModule.forFeature([ResetCodeEntity, UserEntity, PostEntity]),
+    NotificationModule
   ],
   exports: [SendMailService],
   controllers: [SendMailController, ResetCodeController],

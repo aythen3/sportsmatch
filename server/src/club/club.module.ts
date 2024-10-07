@@ -4,16 +4,15 @@ import { ClubController } from './club.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { OfferEntity } from 'src/offer/entities/offer.entity';
-import { PositionEntity } from 'src/position/entities/position.entity';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ClubEntity } from './entities/club.entity';
 import { UserService } from 'src/user/user.service';
 import { ImgManagerService } from 'src/img-manager/img-manager.service';
-import { SportEntity } from 'src/sport/entities/sport.entity';
-import { SportService } from 'src/sport/sport.service';
+
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -21,11 +20,10 @@ import { PostService } from 'src/post/post.service';
       UserEntity,
       ClubEntity,
       OfferEntity,
-      PositionEntity,
       SportmanEntity,
-      SportEntity,
       PostEntity
-    ])
+    ]),
+    NotificationModule
   ],
   exports: [ClubService],
   controllers: [ClubController],
@@ -33,7 +31,6 @@ import { PostService } from 'src/post/post.service';
     ClubService,
     UserService,
     ImgManagerService,
-    SportService,
     SendMailService,
     PostService
   ]

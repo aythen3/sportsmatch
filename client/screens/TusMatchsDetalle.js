@@ -59,24 +59,24 @@ const TusMatchsDetalle = ({ onClose, data }) => {
             style={{ width: 45, height: 45, borderRadius: 50 }}
             contentFit="cover"
             source={
-              data?.club?.img_perfil
-                ? { uri: data?.club?.img_perfil }
+              data?.img_perfil
+                ? { uri: data?.img_perfil }
                 : require('../assets/whiteSport.png')
             }
           />
           <Text style={[styles.uniEsportvaMatar, styles.pasTypo]}>
-            {data?.nickname}
+            {data?.nickname || data?.name}
           </Text>
         </View>
 
-        <MatchDetailsInfo title="Año de fundación" value={data?.club?.year} />
-        <MatchDetailsInfo title="Aforo" value={data?.club?.capacity} />
+        <MatchDetailsInfo title="Año de fundación" value={data?.year} />
+        <MatchDetailsInfo title="Aforo" value={data?.capacity} />
         <MatchDetailsInfo
           title="Nombre del estadio o pabellón"
-          value={data?.club?.field}
+          value={data?.field}
         />
-        <MatchDetailsInfo title=" Población" value={data?.club?.city} />
-        <MatchDetailsInfo title=" País" value={data?.club?.country} />
+        <MatchDetailsInfo title=" Población" value={data?.city} />
+        <MatchDetailsInfo title=" País" value={data?.country} />
 
         <Pressable
           style={[styles.aceptar, styles.aceptarFlexBox]}
@@ -87,7 +87,7 @@ const TusMatchsDetalle = ({ onClose, data }) => {
               sportman: user.user.sportman.id,
               receiverId: data?.id,
               receiverName: data?.nickname,
-              profilePic: data?.club?.img_perfil
+              profilePic: data?.img_perfil
             })
           }}
         >

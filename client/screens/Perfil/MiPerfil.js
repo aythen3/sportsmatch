@@ -67,7 +67,7 @@ const MiPerfil = () => {
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
-      <StatusBar translucent={true} backgroundColor={'transparent'} />
+      <StatusBar animated translucent={true} backgroundColor={'transparent'} />
       <View
         style={{
           backgroundColor: Color.bLACK1SPORTSMATCH,

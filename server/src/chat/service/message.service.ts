@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MessageEntity } from '../entities/message.entity';
 import { ErrorManager } from 'src/utils/error.manager';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MessageService {
@@ -15,14 +16,16 @@ export class MessageService {
     senderId: string,
     receiverId: string,
     room: string,
-    message: string
+    message: string,
+    chat: any
   ): Promise<MessageEntity> {
     const newMessage = this.messageRepository.create({
       senderId,
       receiverId,
       room,
       message,
-      isReaded: false
+      isReaded: false,
+      chat
     });
     return await this.messageRepository.save(newMessage);
   }

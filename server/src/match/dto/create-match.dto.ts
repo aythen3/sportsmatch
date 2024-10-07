@@ -12,7 +12,11 @@ export class CreateMatchDto {
 
   @IsString()
   @IsOptional()
-  clubId:any;
+  userId: string;
+
+  @IsString()
+  @IsOptional()
+  clubId: any;
   @IsString()
   @IsOptional()
   status: string;

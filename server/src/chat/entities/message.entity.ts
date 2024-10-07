@@ -1,12 +1,12 @@
 import { BaseEntity } from 'src/config/base.entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
+import { ChatEntity } from './chat.entity';
 
 export enum DeleteStatus {
   TRUE = 'true',
   FALSE = 'false',
-  NULL = 'null',
+  NULL = 'null'
 }
-
 
 @Entity({ name: 'message' })
 export class MessageEntity extends BaseEntity {
@@ -42,4 +42,7 @@ export class MessageEntity extends BaseEntity {
 
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
+
+  @ManyToOne(() => ChatEntity, (chat) => chat.messages)
+  chat: ChatEntity; // Relación con el chat
 }

@@ -5,9 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SportmanEntity } from 'src/sportman/entities/sportman.entity';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { MatchEntity } from './entities/match.entity';
-import { PositionEntity } from 'src/position/entities/position.entity';
-import { SkillEntity } from 'src/skill/entities/skill.entity';
-import { SportEntity } from 'src/sport/entities/sport.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 
 import { OfferEntity } from 'src/offer/entities/offer.entity';
@@ -18,6 +15,7 @@ import { NotificationEntity } from 'src/notification/entities/notification.entit
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { ChatModule } from 'src/chat/chat.module';
 
 @Module({
   imports: [
@@ -25,14 +23,12 @@ import { PostService } from 'src/post/post.service';
       SportmanEntity,
       ClubEntity,
       MatchEntity,
-      PositionEntity,
-      SkillEntity,
-      SportEntity,
       UserEntity,
       OfferEntity,
       NotificationEntity,
       PostEntity
-    ])
+    ]),
+    ChatModule
   ],
   controllers: [MatchController],
   providers: [

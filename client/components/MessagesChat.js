@@ -18,6 +18,7 @@ import { getAllMatchs, sendMatch } from '../redux/actions/matchs'
 import { updateOffer } from '../redux/actions/offers'
 import { sendNotification } from '../redux/actions/notifications'
 import { getColorsWithOpacity } from '../utils/colorUtils'
+import { setShowNavbar } from '../redux/slices/users.slices'
 
 const MessagesChat = ({
   name,
@@ -141,6 +142,7 @@ const MessagesChat = ({
         }}
         onPress={() => {
           setValue('')
+          dispatch(setShowNavbar(false))
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,

@@ -131,7 +131,7 @@ const IniciarSesin = ({ route }) => {
             return navigation.reset({
               index: 0,
               history: false,
-              routes: [{ name: 'SiguiendoJugadores' }]
+              routes: [{ name: 'ScreenPrincipal' }]
             })
           } else {
             if (response?.payload?.user?.type === 'club') {
@@ -280,7 +280,19 @@ const IniciarSesin = ({ route }) => {
                   </Text>
                 </TouchableOpacity>
                 {error && (
-                  <Text style={[styles.hasOlvidadoTu, styles.contraseaClr]}>
+                  <Text
+                    style={[
+                      styles.hasOlvidadoTu,
+                      styles.contraseaClr,
+                      {
+                        color:
+                          error ===
+                          'Se envió el mail de confirmación. Comprueba tu bandeja de entrada.'
+                            ? 'yellow'
+                            : 'gray'
+                      }
+                    ]}
+                  >
                     {error}
                   </Text>
                 )}

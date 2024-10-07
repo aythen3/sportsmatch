@@ -73,8 +73,6 @@ const TusNotificaciones1 = () => {
 
   useEffect(() => {
     getUsersMessages()
-    dispatch(getAllMatchs())
-    dispatch(getUserMatchs(user?.user?.id))
     if (user.user.type === 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
@@ -83,12 +81,6 @@ const TusNotificaciones1 = () => {
   }, [])
   // console.log('userNotifications', userNotifications)
   // ================ NOTIFICATIONS/OFFERS =====================
-
-  useEffect(() => {
-    if (allUsers.length === 0) {
-      dispatch(getAllUsers())
-    }
-  }, [])
 
   useEffect(() => {
     if (user && user?.user?.type === 'club' && offers) {
@@ -100,8 +92,6 @@ const TusNotificaciones1 = () => {
       allApplications.length > 0 && setApplicants(allApplications)
     }
   }, [offers])
-
-  useEffect(() => {}, [allNotifications])
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 900)
@@ -117,9 +107,8 @@ const TusNotificaciones1 = () => {
     return <View style={{ flex: 1, backgroundColor: '#000' }}></View>
   return (
     <SafeAreaView style={styles.tusNotificaciones}>
-      {isFocused && (
-        <StatusBar barStyle={'light-content'} backgroundColor="#000" />
-      )}
+      <StatusBar animated translucent={true} backgroundColor={'transparent'} />
+
       <CustomHeaderBack header={'Tu Buzón'}></CustomHeaderBack>
       <View style={styles.tuBuznParent}>
         <View
@@ -182,9 +171,9 @@ const TusNotificaciones1 = () => {
               userNotifications
                 ?.filter((notification) => {
                   if (user?.user?.type === 'club') {
-                    notification.recipientId === user.user.club.id
+                    notification.receiverId === user.user.club.id
                     return true
-                  } else if (notification.recipientId === userId) {
+                  } else if (notification.receiverId === userId) {
                     return true
                   } else {
                     return false

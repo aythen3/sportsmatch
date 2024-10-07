@@ -14,6 +14,8 @@ import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { PostService } from 'src/post/post.service';
+import { ChatGateway } from 'src/chat/chat.gateway';
+import { NotificationService } from 'src/notification/notification.service';
 const configService = new ConfigService();
 
 @Injectable()
@@ -26,8 +28,8 @@ export class UserService {
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
 
-    private readonly sendMailService: SendMailService,
-    private readonly postService: PostService
+    private readonly postService: PostService,
+    private readonly notificationService: NotificationService
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -77,7 +79,7 @@ export class UserService {
       const mailOptions = {
         from: 'sportsmatch.digital@gmail.com',
         to: usuario.email,
-        subject: 'Confirmación de cuenta',
+        subject: 'Confirma tu correo electrónico para completar tu registro',
         attachments: [
           /* {
           filename: 'sportspot.png',
@@ -129,8 +131,17 @@ export class UserService {
       
     </div>
     <h1>Confirmación de cuenta</h1>
-    <p>Para confirmar su email, haga clic en el siguiente enlace:</p>
+    <p>Hola ${usuario.nickname},
+      ¡Estamos emocionados de que te unas a SportsMatch!
+      Para completar tu registro y activar tu cuenta, por favor verifica tu dirección
+      de correo electrónico haciendo clic en el siguiente enlace:</p>
     <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">Click aquí</a>
+     <p>Si no puedes hacer clic en el enlace, copia y pega la siguiente URL en tu
+        navegador:</p>
+    <a href="http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}">http://163.172.172.81:3000/api/user/confirmar-cuenta/${usuario.tokenConfirmacion}</a>
+    <p>Si no solicitaste este registro, por favor ignora este correo.
+       Saludos,
+       el equipo de SportsMatch.</p>
   </body>
 </html>
       `
@@ -430,6 +441,75 @@ export class UserService {
     }
   }
 
+  async followUser(userId: string, userToFollowId: string): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToFollow = await this.userRepository.findOne({
+      where: { id: userToFollowId },
+      relations: ['followers'] // Cargar la relación 'followers' para poder hacer el push
+    });
+
+    if (!userToFollow) {
+      throw new NotFoundException('User to follow not found');
+    }
+
+    // Verificar si ya sigue al usuario
+    if (user.followingUsers.some((u) => u.id === userToFollowId)) {
+      return 'You are already following this user';
+    }
+
+    // Agregar el usuario a la lista de seguidores de userToFollow
+    userToFollow.followers.push(user);
+
+    // Agregar userToFollow a la lista de followingUsers de user
+    user.followingUsers.push(userToFollow);
+
+    // Guardar ambos usuarios
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(userToFollow);
+    await this.notificationService.createService({
+      title: 'Follow',
+      message: `ha comenzado a seguirte`,
+      senderId: userId,
+      receiverId: userToFollowId,
+      type: 'follow',
+      readed: false
+    });
+
+    return 'Successfully followed the user';
+  }
+
+  async unfollowUser(
+    userId: string,
+    userToUnfollowId: string
+  ): Promise<string> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['followingUsers']
+    });
+
+    const userToUnfollow = await this.userRepository.findOne({
+      where: { id: userToUnfollowId }
+    });
+
+    if (!userToUnfollow) {
+      throw new NotFoundException('User to unfollow not found');
+    }
+
+    // Verificar si ya no sigue al usuario
+    user.followingUsers = user.followingUsers.filter(
+      (u) => u.id !== userToUnfollowId
+    );
+
+    await this.userRepository.save(user);
+
+    return 'Successfully unfollowed the user';
+  }
+
   public async create(createUserDto: CreateUserDto) {
     try {
       // Encriptar la contraseña del usuario
@@ -598,15 +678,30 @@ export class UserService {
    */
   public async findOne(id: string) {
     try {
-      const user = await this.userRepository
-        .createQueryBuilder('user')
-        .leftJoinAndSelect('user.club', 'club')
-        .leftJoinAndSelect('user.sportman', 'sportman')
-        .leftJoinAndSelect('user.posts', 'posts')
-        .leftJoinAndSelect('user.comments', 'comments')
-        .leftJoinAndSelect('user.likes', 'likes')
-        .where({ id })
-        .getOne();
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: [
+          'club',
+          'sportman',
+          'posts',
+          'comments',
+          'likes',
+          'followers',
+          'followers.club',
+          'followers.sportman',
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
+
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'followingUsers',
+          'offers'
+        ]
+      });
 
       if (!user) {
         throw new ErrorManager({
@@ -614,6 +709,7 @@ export class UserService {
           message: `User id: ${id} not found`
         });
       }
+
       return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
@@ -676,7 +772,26 @@ export class UserService {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        relations: ['club', 'sportman']
+        relations: [
+          'club',
+          'sportman',
+          'posts',
+          'comments',
+          'likes',
+          'followers',
+          'followers.club',
+          'followers.sportman',
+          'club.offers',
+          'club.matches',
+          'club.matches.user',
+          'club.matches.user.sportman',
+          'club.offers.usersInscriptions',
+          'club.offers.usersInscriptions.sportman',
+          'matches',
+          'matches.club',
+          'followingUsers',
+          'offers'
+        ]
       });
 
       if (!user) {

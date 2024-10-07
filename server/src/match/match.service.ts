@@ -11,6 +11,8 @@ import { ErrorManager } from 'src/utils/error.manager';
 
 import { NotificationService } from 'src/notification/notification.service';
 import { CreateNotificationDto } from 'src/notification/dto/create-notification.dto';
+import { ClubEntity } from 'src/club/entities/club.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MatchService {
@@ -19,17 +21,37 @@ export class MatchService {
     private readonly matchRepository: Repository<MatchEntity>,
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
-    @InjectRepository(SportmanEntity)
-    private readonly sportmanRepository: Repository<SportmanEntity>,
+    @InjectRepository(ClubEntity)
+    private readonly clubRepository: Repository<ClubEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+
     private readonly notificationServices: NotificationService
   ) {}
 
-  async create(createMatchDto: CreateMatchDto): Promise<MatchEntity> {
-    const newMatch = new MatchEntity();
+  async createMatch(createMatchDto: CreateMatchDto) {
+    const { clubId, userId, status } = createMatchDto;
 
-    Object.assign(newMatch, createMatchDto);
+    // Obtener el club
+    const club = await this.clubRepository.findOne({ where: { id: clubId } });
+    if (!club) {
+      throw new NotFoundException(`Club with ID ${clubId} not found`);
+    }
 
-    return await this.matchRepository.save(newMatch);
+    // Obtener el usuario
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    console.log(userId, clubId, 'IDS');
+    // Crear el nuevo match
+    const newMatch = this.matchRepository.create({
+      club,
+      user,
+      status
+    });
+
+    return this.matchRepository.save(newMatch);
   }
 
   public async findAll() {
