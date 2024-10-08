@@ -195,7 +195,8 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
                 sportman: data?.sportman?.id,
                 receiverId: data?.id,
                 receiverName: data?.nickname,
-                profilePic: data?.sportman?.info?.img_perfil
+                profilePic: data?.sportman?.info?.img_perfil,
+                user: data
               })
             }}
           >

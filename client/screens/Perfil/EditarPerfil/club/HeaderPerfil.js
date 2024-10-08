@@ -548,12 +548,14 @@ const HeaderPerfil = ({
           {isSportman && external && (
             <TouchableOpacity
               onPress={() => {
+                console.log(data?.author, 'user')
                 if (sportman?.type == 'invitado') return
 
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data?.author?.id,
                   receiverName: data.author.nickname,
-                  profilePic: avatar
+                  profilePic: avatar,
+                  user: data?.author?.sportman || data?.author?.club
                 })
               }}
               style={styles.leftButton}
@@ -722,7 +724,8 @@ const HeaderPerfil = ({
                   receiverId: data?.author?.id,
                   receiverName: data?.author?.nickname,
                   profilePic: avatar,
-                  sportman: data?.author?.sportman?.id
+                  sportman: data?.author?.sportman?.id,
+                  user: data?.author?.sportman || data?.author?.club
                 })
               }
               style={styles.leftButton}
@@ -795,10 +798,12 @@ const HeaderPerfil = ({
                 profilePic: avatar
               })
 
-              navigation.navigate('ChatAbierto1', {
-                receiverId: data?.author?.club?.user?.id,
+              navigation.push('ChatAbierto1', {
+                receiverId: data?.author?.id,
                 receiverName: data.author.nickname,
-                profilePic: avatar
+                profilePic: avatar,
+                user: data.author.club || data.author.sportman,
+                usr: data.author
               })
             }}
             style={{

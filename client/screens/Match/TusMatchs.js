@@ -32,8 +32,10 @@ import TusMatchsDetalle1 from '../TusMatchsDetalle1'
 
 const TusMatchs = () => {
   const [matchsData, setMatchsData] = useState([])
-  const [selectedClubDetails, setSelectedClubDetails] = useState()
-  const [selectedUserDetails, setSelectedUserDetails] = useState()
+  const [selectedClubDetails, setSelectedClubDetails] = useState({})
+  const [selectedUserDetails, setSelectedUserDetails] = useState({})
+  const [selectedMatch, setSelectedMatch] = useState({})
+
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const { clubMatches, userMatches, setUserMatches } = useContext(Context)
@@ -158,11 +160,11 @@ const TusMatchs = () => {
 
       {user?.user?.type === 'sportman' && (
         <View>
-          {user.user.matches
-            .filter(
+          {user?.user?.matches
+            ?.filter(
               (match) =>
                 match.status === 'success' &&
-                !user?.user?.banned?.includes(match?.prop1?.clubData?.userId) &&
+                !user?.user?.banned?.includes(match?.club?.user?.id) &&
                 match?.club?.name?.toLowerCase().includes(search.toLowerCase()) // Filtrar por nombre del club
             )
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -172,6 +174,7 @@ const TusMatchs = () => {
                   onPress={() => {
                     setDetails(true)
                     setSelectedClubDetails(match?.club)
+                    setSelectedMatch(match)
                   }}
                   style={styles.fondoPastilla}
                 >
@@ -186,6 +189,7 @@ const TusMatchs = () => {
                     setDetails(true)
 
                     setSelectedClubDetails(match?.club)
+                    setSelectedMatch(match)
                   }}
                   style={styles.texto}
                 >
@@ -366,6 +370,7 @@ const TusMatchs = () => {
           >
             <TusMatchsDetalle
               data={selectedClubDetails}
+              match={selectedMatch}
               onClose={() => setDetails(false)}
             />
           </View>

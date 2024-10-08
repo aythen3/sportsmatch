@@ -281,6 +281,8 @@ const TusNotificaciones1 = () => {
                       chat?.userA?.id === user?.user?.id
                         ? chat?.userB
                         : chat?.userA
+                    const usuario = userr?.club ? userr?.club : userr?.sportman
+                    console.log('voy al chat y mando este user', userr, usuario)
                     if (
                       !userr.isDelete &&
                       !user?.user?.banned?.includes(userr?.id)
@@ -290,7 +292,13 @@ const TusNotificaciones1 = () => {
                           value={value}
                           setValue={setValue}
                           key={index + 999}
-                          name={userr.nickname}
+                          name={
+                            userr?.sportman?.info?.nickname ||
+                            userr?.club?.name ||
+                            userr?.nickname
+                          }
+                          usuario={usuario}
+                          usr={userr}
                           sportmanId={userr?.sportman?.id}
                           profilePic={
                             userr?.type === 'club'
@@ -308,6 +316,9 @@ const TusNotificaciones1 = () => {
                 {value !== '' && filteredUsers.length > 0
                   ? filteredUsers.map((userr, index) => {
                       console.log(user, 'user ')
+                      const usuario = userr?.club
+                        ? userr?.club
+                        : userr?.sportman
                       if (
                         !userr.isDelete &&
                         !user?.user?.banned?.includes(userr?.id)
@@ -319,6 +330,9 @@ const TusNotificaciones1 = () => {
                             key={index + 99999}
                             name={userr.nickname}
                             sportmanId={userr.sportman?.id}
+                            usuario={usuario}
+                            usr={userr}
+                            user={userr?.club ? userr?.club : userr?.user}
                             profilePic={
                               userr?.type === 'club'
                                 ? userr?.club?.img_perfil

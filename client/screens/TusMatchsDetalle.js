@@ -13,7 +13,7 @@ import MatchDetailsInfo from '../components/MatchDetailsInfo'
 import { AntDesign } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 
-const TusMatchsDetalle = ({ onClose, data }) => {
+const TusMatchsDetalle = ({ onClose, data, match }) => {
   const navigation = useNavigation()
   const { mainColor, user } = useSelector((state) => state.users)
 
@@ -82,12 +82,15 @@ const TusMatchsDetalle = ({ onClose, data }) => {
           style={[styles.aceptar, styles.aceptarFlexBox]}
           onPress={() => {
             onClose()
-            console.log(data, 'rrrr')
+            console.log(match, '111111')
             navigation.navigate('ChatAbierto1', {
-              sportman: data.user.id,
-              receiverId: data.user?.id,
+              sportman: data?.user?.id,
+              receiverId: match?.club?.user?.id,
               receiverName: data.name,
-              profilePic: data?.img_perfil
+              profilePic: data?.img_perfil,
+              match,
+              user: data,
+              usr: data.user
             })
           }}
         >

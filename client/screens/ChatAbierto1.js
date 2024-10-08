@@ -24,7 +24,8 @@ import { useRoute } from '@react-navigation/native'
 import {
   emptyAllMessages,
   getChatHistory,
-  getUserChat
+  getUserChat,
+  getUserChats
 } from '../redux/actions/chats'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Context } from '../context/Context'
@@ -34,7 +35,11 @@ import {
   setAllMessages
 } from '../redux/slices/chats.slices'
 import { useIsFocused } from '@react-navigation/native'
-import { getAllUsers, updateUserData } from '../redux/actions/users'
+import {
+  getAllUsers,
+  getUserData,
+  updateUserData
+} from '../redux/actions/users'
 import { setShowNavbar, updateUser } from '../redux/slices/users.slices'
 import { sendNotification } from '../redux/actions/notifications'
 import axios from 'axios'
@@ -44,6 +49,9 @@ import * as NavigationBar from 'expo-navigation-bar'
 const ChatAbierto1 = () => {
   const [usuario, setUsuario] = useState({})
 
+  const { user, allUsers, mainColor, isSportman } = useSelector(
+    (state) => state.users
+  )
   const _ = require('lodash')
   const [selectedUserDetails, setSelectedUserDetails] = useState()
   const [showOptionsModal, setShowOptionsModal] = useState(false)
@@ -63,13 +71,12 @@ const ChatAbierto1 = () => {
   const { allMatchs } = useSelector((state) => state.matchs)
   const { sportman } = useSelector((state) => state.sportman)
   const { club } = useSelector((state) => state.clubs)
+
   const [chat, setChat] = useState({})
+  const [showInput, setShowInput] = useState(false)
 
   const { clubMatches, userMatches, emitToUser } = useContext(Context)
   const [canSend, setCanSend] = useState(false)
-  const { user, allUsers, mainColor, isSportman } = useSelector(
-    (state) => state.users
-  )
   const route = useRoute()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -86,15 +93,20 @@ const ChatAbierto1 = () => {
     // Establece el color marrón de la barra de navegación nativa
     NavigationBar.setBackgroundColorAsync('black')
 
-    const userrr = allUsers.filter(
-      (user) => user?.id === route?.params?.receiverId
-    )[0]
-    console.log('usuario', route?.params)
-    dispatch(getAllMatchs())
-    setSelectedUserDetails(userrr)
-    console.log(userrr, 'Dettt')
-    if (userrr?.sportman && user?.user?.sportman) {
-      setCanSend(true)
+    // const userrr = allUsers.filter(
+    //   (user) => user?.id === route?.params?.receiverId
+    // )[0]
+    // console.log('usuario', route?.params)
+    // dispatch(getAllMatchs())
+    // setSelectedUserDetails(userrr)
+    // console.log(userrr, 'Dettt')
+    // if (userrr?.sportman && user?.user?.sportman) {
+    //   setCanSend(true)
+    // }
+    const userrr = route?.params?.user
+    const isSportman = userrr?.type === 'player' || userrr?.type === 'coach'
+    if (isSportman) {
+      // setSelectedUserDetails(userrr)
     }
     return () => {
       dispatch(setShowNavbar(true))
@@ -103,45 +115,46 @@ const ChatAbierto1 = () => {
   }, [])
 
   useEffect(() => {
-    const userrr = allUsers.filter(
-      (user) => user?.id === route?.params?.receiverId
-    )[0]
+    const userrr = route?.params?.user
+    const isSportman = userrr?.type === 'player' || userrr?.type === 'coach'
+    const isClub = !isSportman // Asume que si no es 'player' o 'coach', es club.
 
-    if (userrr?.sportman && sportman) {
-      console.log('pasa 1111111111111')
+    console.log(userrr, isClub, 'que son')
+
+    // Definir la función para verificar los matches
+    const hasSuccessfulMatch = (matches, userId, status = 'success') =>
+      matches?.filter(
+        (match) =>
+          match?.user?.sportman?.id === userId && match.status === status
+      ).length > 0
+
+    const hasSuccessfulMatchClub = (matches, clubId, status = 'success') =>
+      matches?.filter(
+        (match) => match?.club?.id === clubId && match.status === status
+      ).length > 0
+
+    // Verificar condiciones
+    if (isSportman && user.user.sportman) {
+      // Si el usuario que revisamos es un deportista y el usuario logueado también
       setCanSend(true)
-    }
-    if (userrr?.club && club) {
-      console.log('pasa 222222222222222222')
-
+    } else if (isSportman && user.user.club) {
+      // Si el usuario que revisamos es un deportista y el logueado es club
+      const res2 = hasSuccessfulMatch(user?.user?.club?.matches, userrr?.id)
+      setCanSend(res2)
+    } else if (isClub && user.user.club) {
+      // Si ambos usuarios son clubs
       setCanSend(true)
+    } else if (isClub && user.user.sportman) {
+      // Si el usuario que revisamos es club y el usuario logueado es deportista
+      const e = hasSuccessfulMatchClub(user?.user?.matches, userrr?.id)
+      setCanSend(e)
     }
 
-    if ((userrr?.club && sportman) || (userrr?.sportman && club)) {
-      console.log('entrando')
-      if (user?.user?.club?.matches?.length > 0) {
-        console.log('entrando2')
-
-        const e =
-          user?.user?.club?.matches?.filter(
-            (match) =>
-              match.user?.sportman.id === route?.params?.sportman &&
-              match.status === 'success'
-          ).length > 0
-        return setCanSend(e)
-      } else {
-        const res2 =
-          user?.user?.matches?.filter(
-            (match) =>
-              match.club?.user?.id === route?.params?.receiverId &&
-              match.status === 'success'
-          ).length > 0
-
-        console.log(res2, 'res2')
-        setCanSend(res2)
-      }
+    // Asegúrate de tener un catch-all o else para manejar cualquier otro caso
+    else {
+      setCanSend(false) // Si no cumple ninguna condición, por defecto no puede enviar mensajes.
     }
-  }, [])
+  }, [route?.params?.user, user.user])
 
   useEffect(() => {
     const usuario = user
@@ -154,26 +167,29 @@ const ChatAbierto1 = () => {
       if (!e.payload) {
         try {
           console.log('eeeeeeeeeeee22', usuario, route?.params?.receiverId)
-          const chatCreate = await axiosInstance.post(`/chat/create`, {
-            userAId: usuario?.user?.id,
-            userBId: route?.params?.receiverId
-          })
-          setChat(chatCreate.data.data)
+          const chatCreate = await axiosInstance
+            .post(`/chat/create`, {
+              userAId: usuario?.user?.id,
+              userBId: route?.params?.receiverId
+            })
+            .then((r) => {
+              setShowInput(true)
+              joinRoom(r?.data?.data?.id)
+              dispatch(getUserData(usuario?.user?.id))
+              setChat(r.data.data)
+            })
 
-          const chat = chatCreate.data?.data
           const user =
             chatCreate.data.data.userA.id === user?.user?.id
               ? chatCreate.data.data.userB
               : chatCreate.data.data.userA
           setUsuario(user)
-          console.log(chatCreate.data.data, 'eeeeeeeeeeee2')
-
-          joinRoom(chat?.id)
         } catch (error) {
           console.log(error)
         }
       } else {
         try {
+          setShowInput(true)
           setChat(e?.payload?.data)
           console.log(e, 'eeeeeeeeeeee2')
           const chat = e?.payload?.data
@@ -199,6 +215,7 @@ const ChatAbierto1 = () => {
 
     return () => {
       dispatch(emptyAllMessages())
+      dispatch(getUserChats(user?.user?.id))
       leaveRoom(chat?.id)
     }
   }, [])
@@ -257,54 +274,54 @@ const ChatAbierto1 = () => {
 
   const handleFollow = () => {
     setShowOptionsModal(false)
-    let actualUser = _.cloneDeep(user)
-    const actualFollowers =
-      allUsers.filter((user) => user?.id === selectedUserDetails?.id)[0]
-        .followers || []
-    const newFollowers = actualFollowers.includes(user?.user?.id)
-      ? actualFollowers.filter((follower) => follower !== user?.user?.id)
-      : [...actualFollowers, user?.user?.id]
+    // let actualUser = _.cloneDeep(user)
+    // const actualFollowers =
+    //   allUsers.filter((user) => user?.id === selectedUserDetails?.id)[0]
+    //     .followers || []
+    // const newFollowers = actualFollowers.includes(user?.user?.id)
+    //   ? actualFollowers.filter((follower) => follower !== user?.user?.id)
+    //   : [...actualFollowers, user?.user?.id]
 
-    const newFollowingArray = userFollowing?.includes(selectedUserDetails?.id)
-      ? userFollowing.filter((followed) => followed !== selectedUserDetails?.id)
-      : [...userFollowing, selectedUserDetails?.id]
-    actualUser.user.following = newFollowingArray
+    // const newFollowingArray = userFollowing?.includes(selectedUserDetails?.id)
+    //   ? userFollowing.filter((followed) => followed !== selectedUserDetails?.id)
+    //   : [...userFollowing, selectedUserDetails?.id]
+    // actualUser.user.following = newFollowingArray
 
-    dispatch(
-      updateUserData({
-        id: selectedUserDetails?.id,
-        body: { followers: newFollowers }
-      })
-    )
-      .then((data) => {
-        dispatch(
-          updateUserData({
-            id: user?.user?.id,
-            body: { following: newFollowingArray }
-          })
-        )
-      })
-      .then((response) => {
-        if (newFollowers.includes(user?.user?.id)) {
-          dispatch(
-            sendNotification({
-              title: 'Follow',
-              message: `${user.user.nickname} ha comenzado a seguirte`,
-              recipientId: selectedUserDetails?.id,
-              date: new Date(),
-              read: false,
-              prop1: {
-                userId: user?.user?.id,
-                userData: {
-                  ...user
-                }
-              }
-            })
-          )
-        }
-        dispatch(getAllUsers())
-        dispatch(updateUser(actualUser))
-      })
+    // dispatch(
+    //   updateUserData({
+    //     id: selectedUserDetails?.id,
+    //     body: { followers: newFollowers }
+    //   })
+    // )
+    //   .then((data) => {
+    //     dispatch(
+    //       updateUserData({
+    //         id: user?.user?.id,
+    //         body: { following: newFollowingArray }
+    //       })
+    //     )
+    //   })
+    //   .then((response) => {
+    //     if (newFollowers.includes(user?.user?.id)) {
+    //       dispatch(
+    //         sendNotification({
+    //           title: 'Follow',
+    //           message: `${user.user.nickname} ha comenzado a seguirte`,
+    //           recipientId: selectedUserDetails?.id,
+    //           date: new Date(),
+    //           read: false,
+    //           prop1: {
+    //             userId: user?.user?.id,
+    //             userData: {
+    //               ...user
+    //             }
+    //           }
+    //         })
+    //       )
+    //     }
+    //     dispatch(getAllUsers())
+    //     dispatch(updateUser(actualUser))
+    //   })
     return
   }
 
@@ -352,7 +369,7 @@ const ChatAbierto1 = () => {
                     width: 170
                   }}
                 >
-                  {selectedUserDetails.type !== 'club' && (
+                  {route?.params?.usr?.type !== 'club' && (
                     <Pressable
                       onPress={handleFollow}
                       style={{
@@ -365,7 +382,9 @@ const ChatAbierto1 = () => {
                       }}
                     >
                       <Text style={{ color: '#fff', fontSize: 14 }}>
-                        {userFollowing?.includes(selectedUserDetails?.id)
+                        {user.user.followingUsers?.find(
+                          (u) => u.id === route?.params?.usr?.id
+                        )
                           ? 'Dejar de seguir'
                           : 'Seguir'}
                       </Text>
@@ -374,13 +393,13 @@ const ChatAbierto1 = () => {
                   <TouchableOpacity
                     onPress={() => {
                       setShowOptionsModal(false)
-                      if (selectedUserDetails?.type === 'club') {
+                      if (route?.params?.usr?.type === 'club') {
                         navigation.navigate('ClubProfile', {
-                          author: selectedUserDetails
+                          author: route.params.usr
                         })
                       } else {
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
-                          author: selectedUserDetails
+                          author: route.params.usr
                         })
                       }
                     }}
@@ -531,13 +550,13 @@ const ChatAbierto1 = () => {
 
             <TouchableOpacity
               onPress={() => {
-                if (selectedUserDetails?.type === 'club') {
+                if (route?.params?.usr?.type === 'club') {
                   navigation.navigate('ClubProfile', {
-                    author: selectedUserDetails
+                    author: route?.params?.usr
                   })
                 } else {
                   navigation.navigate('PerfilFeedVisualitzaciJug', {
-                    author: selectedUserDetails
+                    author: route?.params?.usr
                   })
                 }
               }}
@@ -617,7 +636,6 @@ const ChatAbierto1 = () => {
               }}
             >
               {allMessages?.map((chat) => {
-                console.log(chat, 'cjhat')
                 if (
                   (chat.senderId === user.user.id && chat.senderDelete) ||
                   (chat.receiverId === user.user.id && chat.receiverDelete)
@@ -638,53 +656,73 @@ const ChatAbierto1 = () => {
             </View>
           </ScrollView>
         )}
-        {canSend && (
-          <View
-            style={{
-              margin: 10,
-              padding: 10,
-              borderRadius: 50,
-              borderWidth: 2,
-              borderColor: '#fff',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-          >
-            <TextInput
-              value={message}
-              multiline
-              onChangeText={setMessage}
-              placeholder="Escribe tu mensaje..."
-              placeholderTextColor="#fff"
-              style={{
-                paddingLeft: 15,
-                flex: 1,
-                maxWidth: '85%',
-                fontSize: 16,
-                color: '#fff'
-              }}
-            />
-            <TouchableOpacity
-              disabled={message ? false : true}
-              onPress={handleSendMessage}
-              style={{
-                marginLeft: 10,
-                width: 25
-              }}
-            >
-              <Image
-                source={contact}
+        {showInput && (
+          <View>
+            {canSend ? (
+              <View
                 style={{
-                  tintColor: message ? '#fff' : '#cecece',
-                  width: 22,
-                  height: 22
+                  margin: 10,
+                  padding: 10,
+                  borderRadius: 50,
+                  borderWidth: 2,
+                  borderColor: '#fff',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  alignItems: 'center'
                 }}
-              />
-            </TouchableOpacity>
+              >
+                <TextInput
+                  value={message}
+                  multiline
+                  onChangeText={setMessage}
+                  placeholder="Escribe tu mensaje..."
+                  placeholderTextColor="#fff"
+                  style={{
+                    paddingLeft: 15,
+                    flex: 1,
+                    maxWidth: '85%',
+                    fontSize: 16,
+                    color: '#fff'
+                  }}
+                />
+                <TouchableOpacity
+                  disabled={message ? false : true}
+                  onPress={handleSendMessage}
+                  style={{
+                    marginLeft: 10,
+                    width: 25
+                  }}
+                >
+                  <Image
+                    source={contact}
+                    style={{
+                      tintColor: message ? '#fff' : '#cecece',
+                      width: 22,
+                      height: 22
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View
+                style={{
+                  margin: 10,
+                  padding: 15,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  borderColor: 'rgba(255, 255, 255, 0.3)'
+                }}
+              >
+                <Text style={{ color: '#fff' }}>
+                  No puedes enviar mensajes si no has hecho match.
+                </Text>
+              </View>
+            )}
           </View>
         )}
-        {!canSend && (
+        {/* {!canSend && (
           <View
             style={{
               margin: 10,
@@ -700,7 +738,7 @@ const ChatAbierto1 = () => {
               No puedes enviar mensajes si no has hecho match.
             </Text>
           </View>
-        )}
+        )} */}
       </SafeAreaView>
     )
   }

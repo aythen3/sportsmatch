@@ -404,9 +404,9 @@ export const ContextProvider = ({ children }) => {
     setRoomId(room)
   })
 
-  newSocket.on('chat', (room) => {
-    dispatch(getUserChats(user?.user?.id))
-  })
+  // newSocket.on('chat', (room) => {
+  //   dispatch(getUserChats(user?.user?.id))
+  // })
 
   newSocket.on('leaveRoom', (room) => {
     // console.log('Leaving room: ', room)
@@ -416,7 +416,7 @@ export const ContextProvider = ({ children }) => {
   newSocket.on('message-server', (msg) => {
     console.log('New message:', msg)
     dispatch(updateMessages(msg)).then(() => {
-      dispatch(getUserChats(user.user.id))
+      // dispatch(getUserChats(user.user.id))
       dispatch(setAllConversationMessagesToRead())
     })
 

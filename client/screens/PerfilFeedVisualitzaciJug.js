@@ -103,12 +103,12 @@ const PerfilFeedVisualitzaciJug = () => {
               front={
                 data?.author?.type === 'club'
                   ? data?.author?.club.img_perfil
-                  : data?.author?.sportman.info.img_front
+                  : data?.author?.sportman?.info.img_front
               }
               avatar={
                 data?.author?.type === 'club'
                   ? data?.author?.club.img_front
-                  : data?.author?.sportman.info.img_perfil
+                  : data?.author?.sportman?.info.img_perfil
               }
               data={data ? data : null}
               external={true}
@@ -626,7 +626,7 @@ const PerfilFeedVisualitzaciJug = () => {
                             fontFamily: FontFamily.t4TEXTMICRO
                           }}
                         >
-                          {data?.author?.sportman.info.city || '-'}
+                          {data?.author?.sportman?.info?.city || '-'}
                         </Text>
                       </View>
                       <View style={[styles.modulo2, styles.moduloSpaceBlock]}>
@@ -645,7 +645,7 @@ const PerfilFeedVisualitzaciJug = () => {
                             fontFamily: FontFamily.t4TEXTMICRO
                           }}
                         >
-                          {data?.author?.sportman.info.yearsOfExperience}
+                          {data?.author?.sportman?.info?.yearsOfExperience}
                         </Text>
                       </View>
                     </View>

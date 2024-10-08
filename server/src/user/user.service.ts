@@ -699,8 +699,10 @@ export class UserService {
 
           'club.offers.usersInscriptions',
           'club.offers.usersInscriptions.sportman',
-          'matches',
           'matches.club',
+          'matches.club.user',
+
+          'matches',
           'followingUsers',
           'offers'
         ]
@@ -755,30 +757,39 @@ export class UserService {
    */
   public async remove(id: string): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
-  
+
     await queryRunner.connect();
     await queryRunner.startTransaction();
-  
+
     try {
       // Buscar el usuario
       const user = await this.userRepository.findOne({
         where: { id },
         relations: [
-          'posts', 'comments', 'likes', 'notifications', 
-          'matches', 'offers', 'chatsAsUserA', 'chatsAsUserB', 'club',
-          'followers', 'followingUsers', 'sportman', // Relación con sportman
+          'posts',
+          'comments',
+          'likes',
+          'notifications',
+          'matches',
+          'offers',
+          'chatsAsUserA',
+          'chatsAsUserB',
+          'club',
+          'followers',
+          'followingUsers',
+          'sportman', // Relación con sportman
           'chatsAsUserA.messages',
           'chatsAsUserB.messages'
         ]
       });
-  
+
       if (!user) {
         throw new ErrorManager({
           type: 'NOT_FOUND',
-          message: `User id: ${id} not found`,
+          message: `User id: ${id} not found`
         });
       }
-  
+
       // Eliminar los mensajes relacionados a los chats del usuario
       for (const chatA of user.chatsAsUserA) {
         await queryRunner.manager.remove(chatA.messages);
@@ -786,7 +797,7 @@ export class UserService {
       for (const chatB of user.chatsAsUserB) {
         await queryRunner.manager.remove(chatB.messages);
       }
-  
+
       // Eliminar relaciones con otras entidades
       await queryRunner.manager.remove(user.posts);
       await queryRunner.manager.remove(user.comments);
@@ -796,7 +807,7 @@ export class UserService {
       await queryRunner.manager.remove(user.offers);
       await queryRunner.manager.remove(user.chatsAsUserA);
       await queryRunner.manager.remove(user.chatsAsUserB);
-  
+
       // Eliminar la relación con el sportman si existe
       if (user.sportman) {
         await queryRunner.manager.remove(user.sportman);
@@ -804,23 +815,23 @@ export class UserService {
       if (user.club) {
         await queryRunner.manager.remove(user.club);
       }
-  
+
       // Eliminar relaciones de seguimiento entre usuarios
       await queryRunner.manager
         .createQueryBuilder()
         .relation(UserEntity, 'followers')
         .of(user)
         .remove(user.followers);
-  
+
       await queryRunner.manager
         .createQueryBuilder()
         .relation(UserEntity, 'followingUsers')
         .of(user)
         .remove(user.followingUsers);
-  
+
       // Finalmente, eliminar el usuario
       await queryRunner.manager.remove(user);
-  
+
       // Confirmar la transacción
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -832,7 +843,6 @@ export class UserService {
       await queryRunner.release();
     }
   }
-  
 
   public async getByEmail(email: string): Promise<UserEntity> {
     try {

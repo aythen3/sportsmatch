@@ -46,6 +46,7 @@ import ScreenInicio from './screens/ScreenInicio'
 import ScreenPrincipal from './screens/ScreenPrincipal'
 import Post from './screens/Perfil/EditarPerfil/Post'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import reactotron from './ReactotronConfig'
 
 const Stack = createNativeStackNavigator()
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1'
@@ -79,7 +80,7 @@ const App = () => {
   // }
 
   // React.useEffect(() => {
-  //   restoreState()
+  //   reactotron.clear()
   // }, [])
 
   // if (!isReady) {

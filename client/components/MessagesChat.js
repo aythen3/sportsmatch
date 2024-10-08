@@ -28,7 +28,9 @@ const MessagesChat = ({
   sportmanId,
   setValue,
   value,
-  chat
+  chat,
+  usuario,
+  usr
 }) => {
   const dispatch = useDispatch()
   const { mainColor } = useSelector((state) => state.users)
@@ -45,7 +47,9 @@ const MessagesChat = ({
     usersWithMessages
   } = useContext(Context)
   const navigation = useNavigation()
-  const [convMessages, setConvMessages] = useState([...chat.messages] || [])
+  const [convMessages, setConvMessages] = useState(
+    chat?.messages ? [...chat?.messages] : []
+  )
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
   const { user, allUsers } = useSelector((state) => state.users)
@@ -73,7 +77,11 @@ const MessagesChat = ({
     try {
       console.log('aca intento', messages)
       const received = messages[0].senderId === user.user.id
-      setLastMessage({ message: messages[0], received })
+      const length = chat.messages.length - 1
+      const last = chat.messages[length]
+      console.log(last, 'LASTTTTTTTT', chat.messages.length)
+
+      setLastMessage({ message: last, received })
       setLoading(false)
     } catch (error) {
       console.log(error)
@@ -143,11 +151,14 @@ const MessagesChat = ({
         onPress={() => {
           setValue('')
           dispatch(setShowNavbar(false))
+          console.log('voy al chat y mando este user', usuario)
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
             sportman: sportmanId,
-            profilePic
+            profilePic,
+            usr,
+            user: usuario
           })
         }}
       >
@@ -187,7 +198,7 @@ const MessagesChat = ({
             </Text>
             <Text
               style={{
-                fontWeight: '700',
+                fontWeight: lastMessage?.message?.isReaded ? '500' : '40',
                 color: Color.wHITESPORTSMATCH,
                 fontSize: FontSize.t1TextSMALL_size,
                 fontFamily: FontFamily.t4TEXTMICRO

@@ -319,6 +319,7 @@ const NavBarInferior2 = () => {
             userNotifications.filter((n) => !n.read).length > 0 &&
             userNotifications.filter((n) => !n.read).length,
           tabBarBadgeStyle: {
+            color: 'white',
             backgroundColor:
               userNotifications.filter((n) => !n.read).length > 0
                 ? mainColor

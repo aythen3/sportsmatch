@@ -113,7 +113,15 @@ export class ChatService {
   async getChatsForUserr(userId: string): Promise<ChatEntity[]> {
     return this.chatRepository.find({
       where: [{ userA: { id: userId } }, { userB: { id: userId } }],
-      relations: ['userA', 'userB', 'messages'] // Si deseas incluir la relación con los usuarios
+      relations: [
+        'messages',
+        'userA',
+        'userB',
+        'userA.sportman',
+        'userA.club',
+        'userB.sportman',
+        'userB.club'
+      ] // Si deseas incluir la relación con los usuarios
     });
   }
 
@@ -133,7 +141,15 @@ export class ChatService {
         { userA: { id: userAId }, userB: { id: userBId } },
         { userA: { id: userBId }, userB: { id: userAId } }
       ],
-      relations: ['messages', 'userA', 'userB']
+      relations: [
+        'messages',
+        'userA',
+        'userB',
+        'userA.sportman',
+        'userA.club',
+        'userB.sportman',
+        'userB.club'
+      ]
     });
   }
 
