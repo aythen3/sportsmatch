@@ -104,7 +104,8 @@ const GoldSuscription = ({
                     alignItems: 'baseline',
                     justifyContent: 'space-between',
                     borderBottomWidth: 1,
-                    borderColor: '#e6b300'
+                    borderColor: '#e6b300',
+                    flexWrap: 'wrap'
                   }}
                 >
                   <Text
@@ -150,7 +151,8 @@ const GoldSuscription = ({
                   style={{
                     flexDirection: 'row',
                     alignItems: 'baseline',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap'
                   }}
                 >
                   <Text

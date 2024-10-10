@@ -3,6 +3,7 @@ import {
   getChatHistory,
   getUserChat,
   getUserChats,
+  updateChatMessages,
   updateMessages
 } from '../actions/chats'
 
@@ -130,7 +131,7 @@ const clubSlices = createSlice({
         const sortedMessages = newMessages?.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )
-
+        console.log('sorteddddddd', sortedMessages)
         // Actualizamos el estado
         state.loading = false
         state.allMessages = sortedMessages
@@ -138,6 +139,61 @@ const clubSlices = createSlice({
       })
 
       .addCase(updateMessages.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
+      .addCase(updateChatMessages.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateChatMessages.fulfilled, (state, action) => {
+        const allChats = [...state.userChats]
+
+        // Verifica si el nuevo mensaje ya existe en el array de mensajes
+        const chatExist = allChats.some(
+          (cht) => cht.id === action.payload.chat.id
+        )
+
+        // Si el mensaje no existe, lo agregamos
+        let newChat
+
+        if (!chatExist) {
+          if (action?.payload?.chat) {
+            // Agregar todos los mensajes del chat y el mensaje nuevo
+            newChat = {
+              ...action.payload.chat, // Propaga las propiedades del objeto chat
+              messages: [action.payload.newMessage] // Propaga los mensajes dentro del chat, si es necesario
+            }
+            state.userChats = [...state.userChats, newChat] // Agrega el nuevo chat al array de chats
+          }
+        } else {
+          const chatFilter = [...state.userChats].map((c) => {
+            if (c.id !== action.payload.chat.id) {
+              return c
+            } else {
+              return {
+                ...action.payload.chat,
+                messages: [
+                  ...action.payload.chat.messages,
+                  action.payload.newMessage
+                ]
+              }
+            }
+          })
+          // Si el mensaje ya existe, mantenemos los mensajes actuales sin cambios
+          state.userChats = chatFilter
+          console.log(
+            chatFilter,
+            'payload---------------------------------------------'
+          )
+        }
+
+        // Actualizamos el estado
+        state.loading = false
+        state.error = false
+      })
+
+      .addCase(updateChatMessages.rejected, (state) => {
         state.loading = false
         state.error = true
       })

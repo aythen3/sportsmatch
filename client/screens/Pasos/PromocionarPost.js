@@ -136,7 +136,10 @@ const PromocionarPost = () => {
           ).then((data) => {
             console.log(data, 'dataaaaaaaaaaaaaaaaa', editOffer)
             dispatch(getUserData(user?.user?.id))
-            navigation.navigate('OfertaCreada', { promotion: optionIndex })
+            navigation.navigate('OfertaCreada', {
+              promotion: optionIndex,
+              post: true
+            })
           })
         }
       }
@@ -159,9 +162,10 @@ const PromocionarPost = () => {
             style={{
               width: '100%',
               justifyContent: 'center',
-              height: '89%',
               paddingHorizontal: 10,
-              alignItems: 'center'
+              alignItems: 'center',
+              flex: 1,
+              marginBottom: '5%'
             }}
           >
             {/* <View
@@ -188,7 +192,7 @@ const PromocionarPost = () => {
                 Vista previa en formato cuadrado
               </Text>
             </View> */}
-            <View style={{ paddingHorizontal: 50, marginTop: -40 }}>
+            <View style={{ paddingHorizontal: '6%' }}>
               <Text
                 style={{
                   color: 'white',
@@ -204,7 +208,8 @@ const PromocionarPost = () => {
                   color: 'white',
                   fontWeight: 600,
                   fontSize: 14,
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  marginBottom: '8%'
                 }}
               >
                 El objetivo de esta promoción es que tu oferta obtenga una mayor
@@ -236,8 +241,9 @@ const PromocionarPost = () => {
               width: '100%',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              height: '89%',
-              paddingHorizontal: 10
+              paddingHorizontal: 10,
+              flex: 1,
+              marginBottom: '5%'
             }}
           >
             <View
@@ -368,7 +374,10 @@ const PromocionarPost = () => {
         )
       case 3:
         return (
-          <View style={{ paddingHorizontal: 10 }}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ paddingHorizontal: 10, marginBottom: '5%' }}
+          >
             <View
               style={{
                 borderBottomColor: 'gray',
@@ -448,7 +457,7 @@ const PromocionarPost = () => {
               <Image source={require('../../assets/visa.png')}></Image>
               <Text style={{ color: 'gray' }}>Visa · 3691</Text>
             </View> */}
-          </View>
+          </ScrollView>
         )
       default:
         return null
@@ -459,18 +468,20 @@ const PromocionarPost = () => {
     switch (index) {
       case 1:
         return (
-          <View
+          <ScrollView
             style={{
               width: '100%',
-              justifyContent: 'center',
-              height: '89%',
+              // justifyContent: 'center',
               paddingHorizontal: 10,
-              alignItems: 'center'
+              marginBottom: '5%',
+              // alignItems: 'center',
+              flex: 1
             }}
+            contentContainerStyle={{ flexGrow: 1 }}
           >
             <View
               style={{
-                width: '100%',
+                flex: 1,
                 justifyContent: 'center',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -484,42 +495,39 @@ const PromocionarPost = () => {
               <Text
                 style={{
                   color: 'gray',
-                  width: 120,
                   textAlign: 'center',
                   fontSize: 12
                 }}
               >
                 Vista previa en formato cuadrado
               </Text>
-            </View>
-            <View style={{ paddingHorizontal: 50 }}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 30,
-                  fontWeight: 700,
-                  textAlign: 'center'
-                }}
-              >
-                Visitas a tu perfil
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: 600,
-                  fontSize: 14,
-                  textAlign: 'center'
-                }}
-              >
-                Tu publicación se destacará en la página buscar y aparecerá como
-                promoción en el feed de seguimiento de los usuarios de tu
-                deporte.
-              </Text>
+              <View style={{ paddingHorizontal: '8%', paddingVertical: '4%' }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    fontWeight: 700,
+                    textAlign: 'center'
+                  }}
+                >
+                  Visitas a tu perfil
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    textAlign: 'center'
+                  }}
+                >
+                  Tu publicación se destacará en la página buscar y aparecerá
+                  como promoción en el feed de seguimiento de los usuarios de tu
+                  deporte.
+                </Text>
+              </View>
             </View>
             <View
               style={{
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 borderTopWidth: 1,
                 borderBottomWidth: 1,
@@ -533,7 +541,7 @@ const PromocionarPost = () => {
                 deporte.
               </Text>
             </View>
-          </View>
+          </ScrollView>
         )
       case 2:
         return (
@@ -542,8 +550,9 @@ const PromocionarPost = () => {
               width: '100%',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              height: '89%',
-              paddingHorizontal: 10
+              paddingHorizontal: 10,
+              marginBottom: '4%',
+              flex: 1
             }}
           >
             <View
@@ -674,7 +683,7 @@ const PromocionarPost = () => {
         )
       case 3:
         return (
-          <View style={{ paddingHorizontal: 10 }}>
+          <ScrollView style={{ paddingHorizontal: 10, marginBottom: '4%' }}>
             <View
               style={{
                 borderBottomColor: 'gray',
@@ -755,7 +764,7 @@ const PromocionarPost = () => {
               <Image source={require('../../assets/visa.png')}></Image>
               <Text style={{ color: 'gray' }}>Visa · 3691</Text>
             </View> */}
-          </View>
+          </ScrollView>
         )
       default:
         return null

@@ -160,7 +160,8 @@ const styles = StyleSheet.create({
   estsSeguroQueContainer: {
     textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.h3TitleMEDIUM_size
+    fontSize: FontSize.h3TitleMEDIUM_size,
+    paddingHorizontal: '5%'
   },
   aceptar: {
     fontSize: FontSize.button_size,
@@ -169,20 +170,20 @@ const styles = StyleSheet.create({
   },
   loremIpsum: {
     borderRadius: Border.br_81xl,
-    paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%'
   },
   boton: {
     flexDirection: 'row',
-    marginTop: 60
+    marginTop: 60,
+    padding: '4%'
   },
   texto: {
     // height: 398,
-
     alignItems: 'center'
   },
   cabezera: {

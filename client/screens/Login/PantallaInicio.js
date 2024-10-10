@@ -172,20 +172,22 @@ const PantallaInicio = () => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.pantallaInicio}>
+    <SafeAreaView   style={{color:"red"}}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      <Image
+      <Image  
         style={styles.liniasAbajoIcon}
         contentFit="cover"
         source={require('../../assets/pinicio.png')}
       />
       <TouchableOpacity
+
         style={{ justifyContent: 'center', alignItems: 'center' }}
         onPress={() => navigation.navigate('LoginSwitch')}
       >
         <Image
+        
           resizeMode="contain"
           style={{
             width: scalableFontSize(40),

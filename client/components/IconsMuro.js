@@ -13,7 +13,15 @@ import { sendNotification } from '../redux/actions/notifications'
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 
-const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
+const IconsMuro = ({
+  id,
+  userId,
+  postUserId,
+  image,
+  doubleTap,
+  name,
+  author
+}) => {
   const dispatch = useDispatch()
 
   const { user } = useSelector((state) => state.users)
@@ -175,6 +183,7 @@ const IconsMuro = ({ id, userId, postUserId, image, doubleTap, name }) => {
       </TouchableOpacity>
       {modalVisible && sportman?.type !== 'invitado' && (
         <CommentSection
+          sportman1={author}
           visible={modalVisible}
           closeModal={closeModal}
           postId={id}

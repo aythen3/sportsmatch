@@ -579,6 +579,7 @@ function Carousel({
         >
           <Text style={styles.likes}>{likes} likes</Text>
           <IconsMuro
+            author={data.author.id}
             id={id}
             userId={userId}
             postUserId={authorId}
@@ -618,7 +619,7 @@ function Carousel({
 
         {modalVisible && (
           <CommentSection
-            sportman1={data.author.sportman.id}
+            sportman1={data.author.id}
             visible={modalVisible}
             closeModal={closeModal}
             postId={id}

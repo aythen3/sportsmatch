@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -23,6 +23,7 @@ import Feed from '../components/Feed'
 import { opciones_skills, skills_deporte } from '../utils/SkillUserLocal'
 import axiosInstance from '../utils/apiBackend'
 import { getUserData } from '../redux/actions/users'
+import { Context } from '../context/Context'
 
 const PerfilFeedVisualitzaciJug = () => {
   const navigation = useNavigation()
@@ -35,6 +36,7 @@ const PerfilFeedVisualitzaciJug = () => {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [data, setData] = useState({})
   const [isBanned, setIsBanned] = useState(false)
+  const { scalableFontSize } = useContext(Context)
 
   const selectores = () => {
     const sport = data?.author?.sportman?.info?.sport
@@ -162,16 +164,12 @@ const PerfilFeedVisualitzaciJug = () => {
                             justifyContent: 'center',
                             alignItems: 'center',
 
-                            height: (Dimensions.get('screen').width * 0.45) / 3,
                             zIndex: 1
                           }}
                         >
                           <Text
                             style={{
-                              lineHeight: 40,
                               fontSize: FontSize.h2TITLEBIG_size,
-                              alignSelf: 'stretch',
-                              flex: 1,
                               color: mainColor,
                               fontWeight: '500',
                               textAlign: 'center',
@@ -180,7 +178,13 @@ const PerfilFeedVisualitzaciJug = () => {
                           >
                             {data?.author?.sportman?.info.attack || 0}
                           </Text>
-                          <Text style={[styles.ataque, styles.ataqueClr]}>
+                          <Text
+                            style={[
+                              styles.ataque,
+                              styles.ataqueClr,
+                              { fontSize: scalableFontSize(10) }
+                            ]}
+                          >
                             Ataque
                           </Text>
                         </View>
@@ -203,7 +207,6 @@ const PerfilFeedVisualitzaciJug = () => {
                           style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: (Dimensions.get('screen').width * 0.45) / 3,
                             zIndex: 1
                           }}
                         >
@@ -216,7 +219,13 @@ const PerfilFeedVisualitzaciJug = () => {
                           >
                             {data?.author?.sportman?.info.defense || 0}
                           </Text>
-                          <Text style={[styles.ataque, styles.ataqueClr]}>
+                          <Text
+                            style={[
+                              styles.ataque,
+                              styles.ataqueClr,
+                              { fontSize: scalableFontSize(10) }
+                            ]}
+                          >
                             Defensa
                           </Text>
                         </View>
@@ -239,7 +248,6 @@ const PerfilFeedVisualitzaciJug = () => {
                           style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: (Dimensions.get('screen').width * 0.45) / 3,
                             zIndex: 1
                           }}
                         >
@@ -252,7 +260,13 @@ const PerfilFeedVisualitzaciJug = () => {
                           >
                             {data?.author?.sportman?.info.speed || 0}
                           </Text>
-                          <Text style={[styles.ataque, styles.ataqueClr]}>
+                          <Text
+                            style={[
+                              styles.ataque,
+                              styles.ataqueClr,
+                              { fontSize: scalableFontSize(10) }
+                            ]}
+                          >
                             Velocidad
                           </Text>
                         </View>
@@ -506,6 +520,7 @@ const PerfilFeedVisualitzaciJug = () => {
                             Categoría
                           </Text>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.masculino,
                               styles.text1Typo,
@@ -522,6 +537,7 @@ const PerfilFeedVisualitzaciJug = () => {
                             Posición principal
                           </Text>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.masculino,
                               styles.text1Typo,
@@ -552,6 +568,7 @@ const PerfilFeedVisualitzaciJug = () => {
                             style={[styles.concepto, styles.ataqueClr]}
                           >{`Lugar de residencia`}</Text>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.masculino,
                               styles.text1Typo,
@@ -566,8 +583,6 @@ const PerfilFeedVisualitzaciJug = () => {
                     <View style={{ width: '95%', paddingVertical: 30 }}>
                       <Text
                         style={{
-                          lineHeight: 30,
-                          height: 25,
                           fontSize: FontSize.h2TITLEBIG_size,
                           alignSelf: 'stretch',
                           fontWeight: '500',
@@ -581,7 +596,6 @@ const PerfilFeedVisualitzaciJug = () => {
                       <Text
                         style={{
                           fontSize: FontSize.t1TextSMALL_size,
-                          lineHeight: 17,
                           marginTop: 15,
                           alignSelf: 'stretch',
                           flex: 1,
@@ -776,15 +790,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   text1: {
-    lineHeight: 40,
-    fontSize: FontSize.h2TITLEBIG_size,
-    alignSelf: 'stretch',
-    flex: 1
+    fontSize: FontSize.h2TITLEBIG_size
   },
   ataque: {
-    marginTop: 9,
     width: 109,
-    lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     textAlign: 'center'
   },
@@ -843,19 +852,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   msDetallesSobre: {
-    lineHeight: 30,
-    height: 25,
     fontSize: FontSize.h2TITLEBIG_size,
-    alignSelf: 'stretch',
     fontWeight: '500',
     textAlign: 'left'
   },
   apasionadoLderCompettvo: {
     fontSize: FontSize.t1TextSMALL_size,
-    lineHeight: 17,
     marginTop: 15,
-    alignSelf: 'stretch',
-    flex: 1,
     textAlign: 'left'
   },
   masDetalles: {

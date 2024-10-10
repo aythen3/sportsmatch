@@ -201,11 +201,9 @@ const SkillSeleccion = ({
     >
       <View
         style={{
-          height: 40,
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingHorizontal: 14,
-          marginBottom: 7
+          paddingHorizontal: 14
         }}
       >
         <View style={styles.atributoContainer}>
@@ -260,7 +258,9 @@ const SkillSeleccion = ({
           </Text>
         </View>
         <View style={styles.atributoContainer}>
-          <Text style={styles.defensa}>Velocidad</Text>
+          <Text numberOfLines={1} style={styles.defensa}>
+            Velocidad
+          </Text>
           <View style={styles.rectangulo}>
             <TextInput
               placeholder={sportman?.info?.speed?.toString() || '0 - 100'}
@@ -493,7 +493,6 @@ const styles = StyleSheet.create({
     width: '90%'
   },
   formulariosInferiores: {
-    marginTop: '5%',
     justifyContent: 'center',
     alignItems: 'center'
   },

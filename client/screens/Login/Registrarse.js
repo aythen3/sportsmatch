@@ -213,6 +213,7 @@ const Registrarse = () => {
       style={{ flex: 1 }}
     >
       <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
         style={{
           flex: 1,
           backgroundColor: Color.bLACK1SPORTSMATCH
@@ -222,7 +223,6 @@ const Registrarse = () => {
         <View
           style={{
             flex: 1,
-            height: height - StatusBar.currentHeight,
             justifyContent: 'center'
           }}
         >
@@ -264,8 +264,8 @@ const Registrarse = () => {
                           borderWidth: 1,
                           borderRadius: Border.br_81xl,
                           flexDirection: 'row',
-                          height: 40,
-                          width: '100%'
+                          width: '100%',
+                          paddingVertical: 8
                         }}
                       >
                         <Image
@@ -323,7 +323,7 @@ const Registrarse = () => {
                           borderWidth: 1,
                           borderRadius: Border.br_81xl,
                           flexDirection: 'row',
-                          height: 40
+                          paddingVertical: 8
                         }}
                       >
                         <Image
@@ -512,7 +512,6 @@ const Registrarse = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            position: 'absolute',
             width: '100%',
             alignSelf: 'center',
             justifyContent: 'center',
@@ -625,8 +624,6 @@ const styles = StyleSheet.create({
     // Ajusta este valor según sea necesario para reducir el tamaño de la imagen
   },
   framePosition: {
-    paddingBottom: Padding.p_3xs,
-    paddingTop: Padding.p_3xs,
     paddingLeft: Padding.p_mini,
     borderWidth: 1,
     borderColor: Color.gREY2SPORTSMATCH,
@@ -635,17 +632,15 @@ const styles = StyleSheet.create({
     top: 0,
     flexDirection: 'row',
     left: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    paddingVertical: 4
   },
   eMailTypo: {
     color: Color.gREY2SPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t2TextSTANDARD_size
   },
-  loremPosition: {
-    height: '100%',
-    width: '100%'
-  },
+  loremPosition: {},
   textoTypo: {
     fontSize: FontSize.t4TEXTMICRO_size,
     color: Color.gREY2SPORTSMATCH,
@@ -669,8 +664,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_xl,
     alignItems: 'center',
     flexDirection: 'row',
-    position: 'absolute',
-    top: '15%'
+    marginBottom: '5%'
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,
@@ -726,7 +720,6 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   campo3Frame: {
-    height: 39,
     width: '100%',
     marginTop: 15
   },
@@ -756,6 +749,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Color.wHITESPORTSMATCH,
     width: '100%',
+    paddingVertical: 6,
 
     borderRadius: Border.br_81xl,
     alignItems: 'center',
@@ -765,7 +759,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   botonRegistrate: {
-    height: 40,
     marginTop: 10,
     width: '100%'
   },

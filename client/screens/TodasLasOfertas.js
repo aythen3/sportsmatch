@@ -655,7 +655,7 @@ const TodasLasOfertas = () => {
                               }}
                             >
                               <CardInfoOffers
-                                text="Comarca"
+                                text="Ubicación"
                                 value={offer?.province || 'Random'}
                               />
                             </View>

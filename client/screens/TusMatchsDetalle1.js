@@ -13,7 +13,7 @@ import { Context } from '../context/Context'
 import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 
-const TusMatchsDetalle1 = ({ onClose, data }) => {
+const TusMatchsDetalle1 = ({ onClose, data, match }) => {
   const navigation = useNavigation()
   const { mainColor } = useSelector((state) => state.users)
   const { getUserAge, generateLowResUrl } = useContext(Context)
@@ -187,16 +187,20 @@ const TusMatchsDetalle1 = ({ onClose, data }) => {
                   sportman: data?.sportman?.id,
                   receiverId: data?.id,
                   receiverName: data?.nickname,
-                  profilePic: data?.sportman?.info?.img_perfil
+                  profilePic: data?.sportman?.info?.img_perfil,
+                  usr: match?.user,
+                  user: match?.user?.sportman
                 },
                 'rrrr'
               )
               navigation.navigate('ChatAbierto1', {
-                sportman: data?.sportman?.id,
-                receiverId: data?.id,
+                sportman: data?.user?.id,
+                receiverId: match?.user?.id,
                 receiverName: data?.nickname,
                 profilePic: data?.sportman?.info?.img_perfil,
-                user: data
+                match,
+                usr: match?.user,
+                user: match?.user?.sportman
               })
             }}
           >
@@ -225,8 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bLACK1SPORTSMATCH
   },
   matchContainer: {
-    width: '96%',
-    height: '80%',
+    width: '94%',
     borderRadius: 20,
     overflow: 'hidden',
     alignItems: 'center'
@@ -253,7 +256,6 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontWeight: '500',
-    lineHeight: 22,
     fontSize: FontSize.h3TitleMEDIUM_size
   },
   infoContainer: {
@@ -266,21 +268,16 @@ const styles = StyleSheet.create({
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
     fontWeight: '500',
-    lineHeight: 22,
-    fontSize: FontSize.h3TitleMEDIUM_size,
-    marginBottom: 5
+    fontSize: FontSize.h3TitleMEDIUM_size
   },
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginTop: 20,
-    position: 'absolute',
-    bottom: 20
+    paddingVertical: '4%'
   },
   actionButton: {
-    paddingVertical: Padding.p_8xs,
-    paddingHorizontal: Padding.p_mini,
+    paddingVertical: '2%',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

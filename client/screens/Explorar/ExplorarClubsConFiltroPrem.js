@@ -19,30 +19,29 @@ import {
 } from '../../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons'
 import axiosInstance from '../../utils/apiBackend'
-import { opciones_categoria , opciones_posicion } from '../../utils/SkillUserLocal'
-
+import {
+  opciones_categoria,
+  opciones_posicion
+} from '../../utils/SkillUserLocal'
 
 let total_categorias = []
 let total_posiciones = []
 
-  for (const key in opciones_categoria) {
-    for (const val of opciones_categoria[key]) {
-      if (!total_categorias.includes(val)) {
-        total_categorias.push(val)
-      }
+for (const key in opciones_categoria) {
+  for (const val of opciones_categoria[key]) {
+    if (!total_categorias.includes(val)) {
+      total_categorias.push(val)
     }
-
   }
+}
 
-  for (const key in opciones_posicion) {
-    for (const val of opciones_posicion[key]) {
-      if (!total_posiciones.includes(val)) {
-        total_posiciones.push(val)
-      }
+for (const key in opciones_posicion) {
+  for (const val of opciones_posicion[key]) {
+    if (!total_posiciones.includes(val)) {
+      total_posiciones.push(val)
     }
-
   }
-
+}
 
 const ExplorarClubsConFiltroPrem = ({
   onClose,
@@ -51,8 +50,6 @@ const ExplorarClubsConFiltroPrem = ({
   setSearchUsers,
   setTextValue
 }) => {
-
-
   const submit = async () => {
     const filteredFilter = {}
 
@@ -70,11 +67,9 @@ const ExplorarClubsConFiltroPrem = ({
     setTextValue(' ')
   }
 
-
-
   return (
     <View style={styles.explorarClubsConFiltroPrem}>
-      <View style={{ flexDirection: 'column' ,width:"100%"}}>
+      <View style={{ flexDirection: 'column', width: '100%' }}>
         <View style={styles.cerrarFiltros}>
           <Image
             style={styles.cerrarFiltrosChild}
@@ -124,13 +119,10 @@ const ExplorarClubsConFiltroPrem = ({
                   setFilter({ ...filter, ['category']: itemValue })
                 }
               >
-           
-                {total_categorias && total_categorias.map((e)=>(
-                     <Picker.Item
-                     label={e}
-                     value={e}
-                   />
-                ))}
+                {total_categorias &&
+                  total_categorias.map((e) => (
+                    <Picker.Item label={e} value={e} />
+                  ))}
               </Picker>
             </View>
           </View>
@@ -151,10 +143,10 @@ const ExplorarClubsConFiltroPrem = ({
                   setFilter({ ...filter, ['position']: itemValue })
                 }
               >
-           
-                {total_posiciones && total_posiciones.map((e)=>(
-                  <Picker.Item label={e} value={e} />
-                ))}
+                {total_posiciones &&
+                  total_posiciones.map((e) => (
+                    <Picker.Item label={e} value={e} />
+                  ))}
               </Picker>
             </View>
           </View>
@@ -212,11 +204,11 @@ const ExplorarClubsConFiltroPrem = ({
           </View>
         </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=> setTextValue('')}>
-       <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
-          Quitar filtros
-        </Text>
-       </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTextValue('')}>
+          <Text style={[styles.quitarFiltros, styles.clubs1Typo]}>
+            Quitar filtros
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -370,13 +362,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   sexo: {
-    left: 1,
-    height: 23,
     textAlign: 'left',
-    color: Color.wHITESPORTSMATCH,
-    top: 0,
-    width: 360,
-    position: 'absolute'
+    color: Color.wHITESPORTSMATCH
   },
   masculino: {
     color: Color.gREY2SPORTSMATCH,
@@ -389,7 +376,6 @@ const styles = StyleSheet.create({
     height: 7
   },
   campoFrame: {
-    top: 23,
     borderColor: Color.gREY2SPORTSMATCH,
     borderWidth: Platform.OS === 'ios' ? 0 : 1,
     borderStyle: 'solid',
@@ -397,8 +383,8 @@ const styles = StyleSheet.create({
     height: 50
   },
   campo1: {
-    height: 61,
-    width: "100%"
+    width: '100%',
+    marginBottom: '2%'
   },
   snior: {
     color: Color.gREY2SPORTSMATCH,
@@ -408,10 +394,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   campo2: {
-    height: 61,
-    marginTop: 21,
-    width: "100%"
-
+    width: '100%',
+    marginBottom: '2%'
   },
   camposIniciales: {
     paddingTop: 30,
@@ -437,7 +421,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   campoAtaque: {
-    marginTop: 30,
+    marginTop: 30
   },
   aceptar: {
     color: Color.bLACK1SPORTSMATCH,

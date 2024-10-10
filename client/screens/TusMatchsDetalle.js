@@ -33,7 +33,7 @@ const TusMatchsDetalle = ({ onClose, data, match }) => {
       <View
         style={{
           alignItems: 'center',
-          width: '100%',
+          width: '96%',
           justifyContent: 'center',
           backgroundColor: mainColor,
           paddingVertical: 20,
@@ -143,8 +143,7 @@ const styles = StyleSheet.create({
   },
   aceptarFlexBox: {
     width: '90%',
-    height: 50,
-    paddingVertical: Padding.p_8xs,
+    paddingVertical: '3%',
     alignItems: 'center',
     borderRadius: Border.br_81xl,
     backgroundColor: Color.wHITESPORTSMATCH,
@@ -271,10 +270,8 @@ const styles = StyleSheet.create({
     height: 45
   },
   uniEsportvaMatar: {
-    width: 184,
     marginLeft: 8,
     fontWeight: '500',
-    lineHeight: 22,
     fontSize: FontSize.h3TitleMEDIUM_size
   },
   nombreClub: {

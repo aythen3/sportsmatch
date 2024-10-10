@@ -25,7 +25,8 @@ function Acordeon({
             color: Color.wHITESPORTSMATCH,
             marginBottom: 5,
             fontFamily: FontFamily.t4TEXTMICRO,
-            fontSize: FontSize.t2TextSTANDARD_size
+            fontSize: FontSize.t2TextSTANDARD_size,
+            textAlignVertical: 'center'
           }}
         >
           {title}
@@ -45,7 +46,7 @@ function Acordeon({
           <Text
             style={{
               flex: 1,
-              height: !isMultiLine && 45,
+              height: !isMultiLine && '',
               color: Color.gREY2SPORTSMATCH,
               paddingHorizontal: 15,
               paddingVertical: 11,

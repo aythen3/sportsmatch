@@ -27,8 +27,17 @@ const OfertaCreada = ({ route }) => {
   return (
     <SafeAreaView style={styles.cerrarSesin}>
       <CustomHeaderBack
-        onBack={() => navigation.navigate('OfertasEmitidas')}
-        header={'Ofertas'}
+        onBack={
+          !route?.params?.post
+            ? () => navigation.navigate('OfertasEmitidas')
+            : () =>
+                navigation.reset({
+                  index: 0,
+                  history: false,
+                  routes: [{ name: 'ScreenPrincipal' }]
+                })
+        }
+        header={!route?.params?.post ? 'Ofertas' : 'Promocionar'}
       ></CustomHeaderBack>
       <View
         style={{
@@ -39,7 +48,9 @@ const OfertaCreada = ({ route }) => {
       >
         <View style={styles.texto}>
           <Text style={styles.estsSeguroQueContainer}>
-            ¡La oferta se ha creado correctamente!
+            {!route?.params?.post
+              ? '¡La oferta se ha creado correctamente!'
+              : '¡La publicación se ha creado correctamente!'}
           </Text>
           <Text style={styles.estsSeguroQueContainer}>
             {promotion && promotion === 1 && 'Se promocionará durante 2 días'}
@@ -48,18 +59,20 @@ const OfertaCreada = ({ route }) => {
           </Text>
         </View>
       </View>
-      <View style={styles.boton}>
-        <TouchableOpacity
-          style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
-          onPress={() => {
-            navigation.navigate('ConfigurarAnuncio')
-          }}
-        >
-          <Text style={[styles.aceptar, styles.cerrarTypo]}>
-            Crear nueva oferta
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {!route?.params?.post && (
+        <View style={styles.boton}>
+          <TouchableOpacity
+            style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
+            onPress={() => {
+              navigation.navigate('ConfigurarAnuncio')
+            }}
+          >
+            <Text style={[styles.aceptar, styles.cerrarTypo]}>
+              Crear nueva oferta
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   )
 }
@@ -123,7 +136,6 @@ const styles = StyleSheet.create({
   },
   loremIpsum: {
     borderRadius: Border.br_81xl,
-    paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     alignItems: 'center',
@@ -135,7 +147,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     paddingBottom: 20,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    width: '100%'
   },
   texto: {
     // height: 398,

@@ -4,7 +4,11 @@ import * as ImagePicker from 'expo-image-picker'
 import io from 'socket.io-client'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
-import { getUserChats, updateMessages } from '../redux/actions/chats'
+import {
+  getUserChats,
+  updateChatMessages,
+  updateMessages
+} from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { registerForPushNotificationsAsync } from '../utils/pushService'
 import { Dimensions } from 'react-native'
@@ -364,82 +368,83 @@ export const ContextProvider = ({ children }) => {
 
   const [socket, setSocket] = useState(null)
 
-  const newSocket = io(
-    // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-    'http://163.172.172.81:3010',
-    // 'http://192.168.0.77:3010',
-
-    {
-      transports: ['websocket'],
-      query: {
-        userId: user?.user?.id // Enviar userId al conectar
-      }
-    }
-  )
-  newSocket.on('connect', () => {
-    console.log('Connected to server')
-
-    newSocket.emit('joinGroup', { room: user?.user?.id })
-  })
-
-  newSocket.on('disconnect', () => {
-    setRoomId()
-  })
-
-  newSocket.on('error', (error) => {
-    console.log('ERROR FROM SOCKET', error)
-  })
-
-  newSocket.on('notification', (data) => {
-    console.log(data, '22222222222222')
-    dispatch(getNotificationsByUserId(user?.user?.id))
-  })
-
-  newSocket.on('readMessages', (room) => {
-    console.log(room, '11111111111111111111111111')
-    // getUsersMessages()
-  })
-
-  newSocket.on('joinedRoom', (room) => {
-    setRoomId(room)
-  })
-
-  // newSocket.on('chat', (room) => {
-  //   dispatch(getUserChats(user?.user?.id))
-  // })
-
-  newSocket.on('leaveRoom', (room) => {
-    // console.log('Leaving room: ', room)
-    setRoomId()
-  })
-
-  newSocket.on('message-server', (msg) => {
-    console.log('New message:', msg)
-    dispatch(updateMessages(msg)).then(() => {
-      // dispatch(getUserChats(user.user.id))
-      dispatch(setAllConversationMessagesToRead())
-    })
-
-    // getUsersMessages()
-  })
-
   // useEffect(() => {
-  //   setSocket(newSocket)
+  //   const newSocket = io(
+  //     // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+  //     // 'http://163.172.172.81:3010',
+  //     'http://192.168.0.77:3010',
 
+  //     {
+  //       transports: ['websocket'],
+  //       query: {
+  //         userId: user?.user?.id // Enviar userId al conectar
+  //       }
+  //     }
+  //   )
+  //   newSocket.on('connect', () => {
+  //     console.log('Connected to server')
+
+  //     // newSocket.emit('joinGroup', { room: user?.user?.id })
+  //   })
+  //   // newSocket.on('message-chat', (msg) => {
+  //   //   console.log('New message CHATTTTTTTTTTTTTTTTTTTTTTTT:', msg)
+  //   //   dispatch(updateChatMessages(msg)).then(() => {
+  //   //     // dispatch(getUserChats(user.user.id))
+  //   //     // dispatch(setAllConversationMessagesToRead())
+  //   //   })
+
+  //   //   // getUsersMessages()
+  //   // })
+  //   // newSocket.on('message-server', (msg) => {
+  //   //   console.log('New message:', msg)
+  //   //   dispatch(updateMessages(msg)).then(() => {
+  //   //     // dispatch(getUserChats(user.user.id))
+  //   //     // dispatch(setAllConversationMessagesToRead())
+  //   //   })
+  //   // })
+  //   newSocket.on('disconnect', () => {
+  //     setRoomId()
+  //   })
+
+  //   newSocket.on('error', (error) => {
+  //     console.log('ERROR FROM SOCKET', error)
+  //   })
+
+  //   newSocket.on('notification', (data) => {
+  //     console.log(data, '22222222222222')
+  //     dispatch(getNotificationsByUserId(user?.user?.id))
+  //   })
+
+  //   newSocket.on('readMessages', (room) => {
+  //     console.log(room, '11111111111111111111111111')
+  //     // getUsersMessages()
+  //   })
+
+  //   newSocket.on('joinedRoom', (room) => {
+  //     setRoomId(room)
+  //   })
+
+  //   newSocket.on('leaveRoom', (room) => {
+  //     console.log('Leaving room: ', room)
+  //     setRoomId()
+  //   })
+  //   const leaveRoom = (room) => {
+  //     console.log('leaveroom', room)
+  //     newSocket.emit('leaveRoom', { room: room })
+  //   }
+  //   // const joinRoom = (room) => {
+  //   //   newSocket.emit('joinGroup', { room: room })
+  //   // }
+
+  //   return () => {
+  //     leaveRoom(user?.user?.id)
+  //   }
   // }, [user?.user?.id])
 
   const disconnectFromSocket = () => {
     if (socket) {
       socket.disconnect()
     }
-  }
-
-  const joinRoom = (room) => {
-    newSocket.emit('joinGroup', { room })
-  }
-
-  const leaveRoom = (rom) => {
-    newSocket.emit('leaveRoom', { rom })
   }
 
   const sendMessage = (message, sender, receiver) => {
@@ -449,11 +454,11 @@ export const ContextProvider = ({ children }) => {
       sender,
       receiver
     })
-    newSocket.emit('message', { message, sender, receiver })
+    // newSocket.emit('message', { message, sender, receiver })
   }
 
   const emitToUser = (usuarioId, evento, data) => {
-    newSocket.emit('emitToUser', { usuarioId, evento, data })
+    // newSocket.emit('emitToUser', { usuarioId, evento, data })
   }
 
   const getClubMatches = () => {
@@ -580,7 +585,6 @@ export const ContextProvider = ({ children }) => {
         provisoryCoverImage,
         setProvisoryCoverImage,
         getUserAge,
-        joinRoom,
         disconnectFromSocket,
         sendMessage,
         roomId,
@@ -592,7 +596,7 @@ export const ContextProvider = ({ children }) => {
         transformHttpToHttps,
         selectedPost,
         setSelectedPost,
-        leaveRoom,
+        // leaveRoom,
         getTimeFromDate,
         activeIcon,
         setActiveIcon,

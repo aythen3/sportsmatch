@@ -21,11 +21,9 @@ const MatchDetailsInfo = ({ title, value }) => {
 
 const styles = StyleSheet.create({
   aoDeFundacin: {
-    width: 126,
     textAlign: 'left',
     color: Color.wHITESPORTSMATCH,
     fontFamily: FontFamily.t4TEXTMICRO,
-    height: 17,
     fontSize: FontSize.size_smi_9
   },
   value: {

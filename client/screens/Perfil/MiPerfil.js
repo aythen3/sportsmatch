@@ -89,7 +89,7 @@ const MiPerfil = () => {
           )}
           <View
             style={{
-              width: '95%',
+              width: '100%',
               alignSelf: 'center'
             }}
           >
@@ -297,13 +297,12 @@ const MiPerfil = () => {
                 }
               }}
               style={{
-                width: '97%',
-                height: 50,
+                width: '95%',
                 alignSelf: 'center',
                 justifyContent: 'space-around',
                 borderRadius: 5,
                 backgroundColor: Color.bLACK3SPORTSMATCH,
-                marginTop: 20,
+                marginTop: 17,
                 paddingHorizontal: 15
               }}
             >
@@ -319,7 +318,6 @@ const MiPerfil = () => {
               <Text
                 style={{
                   fontSize: FontSize.h3TitleMEDIUM_size,
-                  lineHeight: 22,
                   color: Color.wHITESPORTSMATCH
                 }}
               >
@@ -443,14 +441,15 @@ const styles = StyleSheet.create({
   imagenInformacion1: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginTop: -14
+    marginTop: -14,
+    paddingHorizontal: '4%'
   },
   botonEditarPerfilChild: {
     backgroundColor: Color.colorDimgray_100,
-    width: '48%',
-    height: 35,
     borderRadius: Border.br_81xl,
-    justifyContent: 'center'
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: '2%'
   },
   editarPerfil: {
     color: Color.wHITESPORTSMATCH,
@@ -461,11 +460,10 @@ const styles = StyleSheet.create({
   },
   boton: {
     backgroundColor: Color.wHITESPORTSMATCH,
-    width: '48%',
-    height: 35,
     borderRadius: Border.br_81xl,
-    marginLeft: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flex: 1,
+    paddingVertical: '2%'
   },
   miSuscripcin: {
     color: Color.bLACK1SPORTSMATCH,
@@ -478,7 +476,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '5%',
-    marginLeft: '1%'
+    paddingHorizontal: '4%',
+    gap: 10
   },
   text: {
     fontSize: FontSize.h3TitleMEDIUM_size,

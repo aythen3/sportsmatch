@@ -38,9 +38,14 @@ const TusNotificaciones1 = () => {
     (state) => state.notifications
   )
 
-  const { allMessages, userChats } = useSelector((state) => state.chats)
+  const { allMessages, userChats: uChats } = useSelector((state) => state.chats)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const { usersWithMessages, setActiveIcon } = useContext(Context)
+  const [userChats, setUserChats] = useState(true)
+
+  useEffect(() => {
+    setUserChats(uChats)
+  }, [uChats])
 
   const userId = user?.user?.id
 
@@ -195,7 +200,7 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+          <ScrollView   contentContainerStyle={{ paddingBottom: 100 }}>
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -282,7 +287,6 @@ const TusNotificaciones1 = () => {
                         ? chat?.userB
                         : chat?.userA
                     const usuario = userr?.club ? userr?.club : userr?.sportman
-                    console.log('voy al chat y mando este user', userr, usuario)
                     if (
                       !userr.isDelete &&
                       !user?.user?.banned?.includes(userr?.id)

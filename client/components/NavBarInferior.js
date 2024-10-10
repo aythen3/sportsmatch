@@ -39,12 +39,9 @@ const NavBarInferior2 = () => {
     // Establece el color marrón de la barra de navegación nativa
     NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
   }, [])
-  const {
-    generateLowResUrl,
-    setActiveIcon,
-    notReaded
-    // user
-  } = useContext(Context)
+  const { generateLowResUrl, setActiveIcon, notReaded, scalableFontSize } =
+    useContext(Context)
+
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [sportColor, setSportColor] = useState('#E1451E')
@@ -137,7 +134,12 @@ const NavBarInferior2 = () => {
                       justifyContent: 'center'
                     }}
                   >
-                    <Text style={{ color: '#fff', fontSize: 28, bottom: 2 }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlignVertical: 'center'
+                      }}
+                    >
                       +
                     </Text>
                   </View>
@@ -266,6 +268,11 @@ const NavBarInferior2 = () => {
             <Stack.Screen
               name="PerfilFeedVisualitzaciJug"
               component={PerfilFeedVisualitzaciJug}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ClubProfile"
+              component={ClubProfile}
               options={{ headerShown: false }}
             />
             <Stack.Screen

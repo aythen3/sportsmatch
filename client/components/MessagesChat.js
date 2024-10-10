@@ -53,6 +53,8 @@ const MessagesChat = ({
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
   const { user, allUsers } = useSelector((state) => state.users)
+  const { userChats } = useSelector((state) => state.chats)
+
   const moreOpacity = 0.65 // 80% opacity
   const lessOpacity = 0.4 // 40% opacity
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
@@ -99,7 +101,7 @@ const MessagesChat = ({
       setLastMessage('')
       setLoading(false)
     }
-  }, [convMessages])
+  }, [convMessages, userChats])
 
   // useEffect(() => {
   //   console.log(
@@ -151,14 +153,14 @@ const MessagesChat = ({
         onPress={() => {
           setValue('')
           dispatch(setShowNavbar(false))
-          console.log('voy al chat y mando este user', usuario)
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
             sportman: sportmanId,
             profilePic,
             usr,
-            user: usuario
+            user: usuario,
+            chat
           })
         }}
       >

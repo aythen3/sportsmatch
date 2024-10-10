@@ -31,11 +31,13 @@ export class ChatGateway
   afterInit(server: any) {
     console.log('inicio');
   }
-  // eslint-disable-next-line
   handleConnection(client: Socket) {
     const userId = client.handshake.query.userId;
     if (userId) {
       this.connectedUsers.set(userId.toLocaleString(), client.id);
+      // client.join(userId); // Unir al usuario a su sala personal para notificaciones generales
+      console.log(`Usuario conectado: ${userId}`);
+      console.log('userssss', this.connectedUsers);
     }
   }
 
@@ -78,21 +80,18 @@ export class ChatGateway
       chat
     );
 
-    // Asegurarse de que el cliente esté en la sala adecuada (chat.id)
-    if (!client.rooms.has(chat.id)) {
-      client.join(chat.id);
-    }
-    if (!client.rooms.has(data.receiver)) {
-      client.join(data.receiver);
-    }
-    console.log('enviando a ', chat.id, newMessage, chat);
-    // Emitir el mensaje solo al receptor
-    client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
-    client.to(data.receiver).emit('chat', {
-      messages: [...chat.messages, newMessage],
-      chat: chat.id
-    }); // Emitir solo una vez a la sala
+    // // // Asegurarse de que el cliente esté en la sala adecuada (chat.id)
+    // if (!client.rooms.has(chat.id)) {
+    //   client.join(chat.id);
+    // }
+    // if (!client.rooms.has(data.receiver)) {
+    //   client.join(data.receiver);
+    // }
 
+    console.log('emitiendo mensaje a ', chat.id);
+    client.emit('message-server', newMessage); // Emitir al remitente
+    client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
+    // client.emit('message-server', newMessage);
     return newMessage;
   }
 
@@ -117,9 +116,9 @@ export class ChatGateway
 
   @SubscribeMessage('leaveRoom')
   handleRoomLeave(client: Socket, data: { room: string }) {
+    console.log('leaveRoom', data, client);
     client.leave(data.room);
     client.emit('leaveRoom', data.room);
-    console.log('leaveRoom', data.room);
   }
   @SubscribeMessage('emitToUser')
   emitToUser(

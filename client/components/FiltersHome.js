@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
   groupContainer: {
     borderRadius: Border.br_81xl,
     borderColor: Color.wHITESPORTSMATCH,
-    height: 42,
     borderWidth: 1,
     paddingHorizontal: Padding.p_2xs,
+    alignItems: 'center',
     borderStyle: 'solid',
     flexDirection: 'row',
     width: '84%'
@@ -78,9 +78,8 @@ const styles = StyleSheet.create({
     paddingVertical: Padding.p_4xs
   },
   frameChild1: {
-    top: 3,
-    width: 13,
-    height: 15
+    width: 20,
+    height: 20
   },
   posicnDeJuego: {
     marginLeft: 6,

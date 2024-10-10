@@ -72,6 +72,16 @@ export const updateMessages = createAsyncThunk(
     }
   }
 )
+export const updateChatMessages = createAsyncThunk(
+  'updateChatMessages/chats',
+  async (msg) => {
+    try {
+      return msg
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
 
 export const emptyAllMessages = () => async (dispatch) => {
   try {

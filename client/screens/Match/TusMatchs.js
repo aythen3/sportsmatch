@@ -278,6 +278,7 @@ const TusMatchs = () => {
                     console.log(match?.user?.club?.user, 'matchhhhhhhhhhhh')
                     setUserDetails(true)
 
+                    setSelectedMatch(match)
                     setSelectedUserDetails(match?.user)
                   }}
                   style={styles.fondoPastilla}
@@ -291,6 +292,8 @@ const TusMatchs = () => {
                 <Pressable
                   onPress={() => {
                     setUserDetails(true)
+                    setSelectedMatch(match)
+
                     setSelectedUserDetails(match?.user)
                   }}
                   style={styles.texto}
@@ -361,7 +364,12 @@ const TusMatchs = () => {
           </View>
         )}
 
-      <Modal visible={details} transparent={true} animationType="slide">
+      <Modal
+        visible={details}
+        transparent={true}
+        onRequestClose={() => setDetails(false)}
+        animationType="slide"
+      >
         <TouchableWithoutFeedback onPress={() => setDetails(false)}>
           <View
             style={{
@@ -376,7 +384,12 @@ const TusMatchs = () => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <Modal visible={userDetails} transparent={true} animationType="slide">
+      <Modal
+        visible={userDetails}
+        onRequestClose={() => setUserDetails(false)}
+        transparent={true}
+        animationType="slide"
+      >
         <TouchableWithoutFeedback onPress={() => setUserDetails(false)}>
           <View
             style={{
@@ -384,6 +397,7 @@ const TusMatchs = () => {
             }}
           >
             <TusMatchsDetalle1
+              match={selectedMatch}
               data={selectedUserDetails}
               onClose={() => setUserDetails(false)}
             />
@@ -402,7 +416,6 @@ const styles = StyleSheet.create({
   groupContainer: {
     borderRadius: Border.br_81xl,
     borderColor: Color.wHITESPORTSMATCH,
-    height: 42,
     borderWidth: 1,
     paddingHorizontal: Padding.p_2xs,
     borderStyle: 'solid',
