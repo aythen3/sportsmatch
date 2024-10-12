@@ -96,6 +96,15 @@ const ChatAbierto2 = () => {
     }
   }, [])
 
+  // Función que se llama al abrir la conversación
+  const openConversation = (chatId, userId) => {
+    // Aquí podrías emitir un evento para marcar como leído
+    socket.emit('markMessagesAsRead', { chatId, userId })
+
+    // Cargar los mensajes de la conversación
+    loadMessages(chatId)
+  }
+
   useEffect(() => {
     setMessages(route?.params?.chat?.messages)
   }, [route?.params?.chat?.messages])

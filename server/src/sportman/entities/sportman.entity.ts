@@ -37,7 +37,7 @@ export class SportmanEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @OneToOne(() => UserEntity)
+  @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: UserEntity;
 
@@ -56,7 +56,7 @@ export class SportmanEntity extends BaseEntity {
   // @ManyToOne(() => PositionEntity, (position) => position.sportmen)
   // position: PositionEntity;
 
-  @ManyToMany(() => MatchEntity)
+  @ManyToMany(() => MatchEntity, { onDelete: 'CASCADE' })
   @JoinTable()
   matches: MatchEntity[];
 }

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import {
+  ActivityIndicator,
   Dimensions,
   StatusBar,
   StyleSheet,
@@ -134,7 +135,10 @@ const PantallaInicio = () => {
         // navigation.navigate('SiguiendoJugadores')
       })
     } else {
-      navigation.navigate('LoginSwitch')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'LoginSwitch' }]
+      })
     }
   }
 
@@ -172,32 +176,25 @@ const PantallaInicio = () => {
   }, [])
 
   return (
-    <SafeAreaView   style={{color:"red"}}>
+    <SafeAreaView style={{ color: 'red' }}>
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
-      <Image  
+      <Image
         style={styles.liniasAbajoIcon}
         contentFit="cover"
         source={require('../../assets/pinicio.png')}
       />
       <TouchableOpacity
-
         style={{ justifyContent: 'center', alignItems: 'center' }}
-        onPress={() => navigation.navigate('LoginSwitch')}
+        onPress={() => {}}
       >
-        <Image
-        
-          resizeMode="contain"
+        <ActivityIndicator
           style={{
-            width: scalableFontSize(40),
-            height: 30,
-            objectFit: 'contain',
             position: 'absolute',
             bottom: Dimensions.get('screen').height / 3.8
           }}
-          source={require('../../assets/arrowinicio.png')}
-        ></Image>
+        ></ActivityIndicator>
       </TouchableOpacity>
     </SafeAreaView>
   )

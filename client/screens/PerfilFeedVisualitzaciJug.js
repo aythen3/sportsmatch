@@ -39,9 +39,9 @@ const PerfilFeedVisualitzaciJug = () => {
   const { scalableFontSize } = useContext(Context)
 
   const selectores = () => {
-    const sport = data?.author?.sportman?.info?.sport
+    const sport = dataa?.author?.sportman?.info?.sport
     const selectedSkills = skills_deporte[sport]
-
+    console.log(sport, selectedSkills, 'AAAAAAAAAAA')
     if (selectedSkills) {
       setSelectedOptions(selectedSkills)
     }
@@ -279,7 +279,7 @@ const PerfilFeedVisualitzaciJug = () => {
                         gap: 10
                       }}
                     >
-                      {selectedOptions &&
+                      {selectedOptions.length > 0 &&
                         selectedOptions.map((opt, i) => (
                           <View
                             key={i}

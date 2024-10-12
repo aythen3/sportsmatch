@@ -355,7 +355,6 @@ const TodasLasOfertas = () => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }} // Asegúrate de que el KeyboardAvoidingView ocupe todo el espacio
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 5000} // Ajusta este valor si es necesario
     >
       <View style={styles.todasLasOfertas}>
         <CustomHeaderBack header={'Ofertas'}></CustomHeaderBack>
@@ -436,7 +435,8 @@ const TodasLasOfertas = () => {
             if (search.length > 0) {
               if (
                 off.province.toLowerCase().includes(search.toLowerCase()) ||
-                off.posit.toLowerCase().includes(search.toLowerCase())
+                off.posit.toLowerCase().includes(search.toLowerCase()) ||
+                off.category.toLowerCase().includes(search.toLowerCase())
               ) {
                 return true
               } else {
@@ -710,13 +710,6 @@ const TodasLasOfertas = () => {
                             <TouchableOpacity
                               disabled={signinToOffer}
                               onPress={async () => {
-                                if (!user.user.emailCheck) {
-                                  return ToastAndroid.show(
-                                    'Valida tu email para poder inscribirte',
-                                    ToastAndroid.SHORT
-                                  )
-                                }
-                                console.log('PRESSED')
                                 if (
                                   !offer?.inscriptions?.includes(sportman?.id)
                                 ) {
@@ -730,6 +723,10 @@ const TodasLasOfertas = () => {
                                           userId: user.user?.id
                                         })
                                       ).then((data) => {
+                                        ToastAndroid.show(
+                                          'Te has inscrito en la oferta!',
+                                          ToastAndroid.SHORT
+                                        )
                                         dispatch(getUserData(user?.user?.id))
                                         console.log(data, 'response offer')
                                         const userr = allUsers.filter(
@@ -739,7 +736,7 @@ const TodasLasOfertas = () => {
                                         dispatch(
                                           sendNotification({
                                             title: 'Inscripción',
-                                            message: `${user?.user?.nickname} se ha inscrito a tu oferta`,
+                                            message: `${user?.user?.sportman?.info?.nickname} se ha inscrito a tu oferta`,
                                             recipientId: userr?.id,
                                             date: new Date(),
                                             read: false,
@@ -760,11 +757,7 @@ const TodasLasOfertas = () => {
                                             'hola'
                                           )
                                         )
-                                        dispatch(getAllOffers())
-                                        ToastAndroid.show(
-                                          'Te has inscrito en la oferta!',
-                                          ToastAndroid.SHORT
-                                        )
+                                        // dispatch(getAllOffers())
                                       })
                                     } catch (error) {
                                       console.log(
@@ -1057,7 +1050,8 @@ const TodasLasOfertas = () => {
             if (search.length > 0) {
               if (
                 off.province.toLowerCase().includes(search.toLowerCase()) ||
-                off.posit.toLowerCase().includes(search.toLowerCase())
+                off.posit.toLowerCase().includes(search.toLowerCase()) ||
+                off.category.toLowerCase().includes(search.toLowerCase())
               ) {
                 return true
               } else {
@@ -1088,6 +1082,7 @@ const TodasLasOfertas = () => {
                       off.province
                         .toLowerCase()
                         .includes(search.toLowerCase()) ||
+                      off.posit.toLowerCase().includes(search.toLowerCase()) ||
                       off.posit.toLowerCase().includes(search.toLowerCase())
                     ) {
                       return true
@@ -1286,7 +1281,7 @@ const TodasLasOfertas = () => {
                           alignItems: 'center',
                           zIndex: 5,
                           backgroundColor: mainColor,
-                          height: 35
+                          minHeight: 35
                         }}
                       >
                         <Text
@@ -1316,7 +1311,7 @@ const TodasLasOfertas = () => {
                   </View>
                 ))}
             </PagerView>
-            {offers.length > 1 && (
+            {user?.user?.offers.length > 0 && (
               <View
                 style={{
                   flexDirection: 'row',
@@ -1339,7 +1334,7 @@ const TodasLasOfertas = () => {
                     alignContent: 'center'
                   }}
                 >
-                  {offer
+                  {user?.user?.offers
                     .filter((off) => {
                       if (search.length > 0) {
                         if (
@@ -1355,21 +1350,6 @@ const TodasLasOfertas = () => {
                       } else {
                         return true
                       }
-                    })
-                    .filter((offer) => {
-                      const filteredUserMatches = userMatches.filter(
-                        (match) => match.offerId && match.offerId !== offer.id
-                      )
-                      const alreadyJoined = offer?.inscriptions?.includes(
-                        user?.user?.sportman?.id
-                      )
-                      if (filteredUserMatches.length > 0) {
-                        return false
-                      }
-                      if (alreadyJoined) {
-                        return true
-                      }
-                      return false
                     })
                     .map((_, index) => (
                       <View
@@ -2122,9 +2102,8 @@ const styles = StyleSheet.create({
   },
   todasLasOfertas: {
     width: '100%',
-    paddingVertical: 20,
-    height: Dimensions.get('screen').height - 70,
-    backgroundColor: Color.bLACK1SPORTSMATCH
+    height: Dimensions.get('screen').height / 1.1,
+    paddingVertical: 20
   }
 })
 

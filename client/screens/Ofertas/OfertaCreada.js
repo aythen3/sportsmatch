@@ -59,7 +59,7 @@ const OfertaCreada = ({ route }) => {
           </Text>
         </View>
       </View>
-      {!route?.params?.post && (
+      {!route?.params?.post ? (
         <View style={styles.boton}>
           <TouchableOpacity
             style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
@@ -70,6 +70,17 @@ const OfertaCreada = ({ route }) => {
             <Text style={[styles.aceptar, styles.cerrarTypo]}>
               Crear nueva oferta
             </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.boton}>
+          <TouchableOpacity
+            style={[styles.loremIpsum, styles.loremIpsumFlexBox]}
+            onPress={() => {
+              navigation.navigate('SiguiendoJugadores')
+            }}
+          >
+            <Text style={[styles.aceptar, styles.cerrarTypo]}>Volver</Text>
           </TouchableOpacity>
         </View>
       )}

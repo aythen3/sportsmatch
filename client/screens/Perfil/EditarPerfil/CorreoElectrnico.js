@@ -27,6 +27,8 @@ const CorreoElectrnico = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const [emailCheck, setEmailCheck] = useState('')
+  const [emailSend, setEmailSend] = useState('')
+
   const [isEmailValid, setEmailValid] = useState(false)
 
   const { user, mainColor, allUsers } = useSelector((state) => state.users)
@@ -46,11 +48,14 @@ const CorreoElectrnico = () => {
 
   const submit = async () => {
     if (email === emailCheck && isEmailValid) {
-      const res = await axiosInstance.patch(`user/${user.user.id}`, { email })
-      console.log(res.data, 'resdata')
-      await AsyncStorage.removeItem('userAuth')
-      dispatch(updateUser(res.data))
-      navigation.goBack()
+      await axiosInstance
+        .post(`user/solicitar-cambio-email`, {
+          usuarioId: user.user.id,
+          nuevoEmail: email
+        })
+        .then((e) => {
+          setEmailSend('Se envió un mail de confirmación')
+        })
     } else {
       console.log('no anda')
     }
@@ -90,11 +95,23 @@ const CorreoElectrnico = () => {
         />
       </View>
 
-      <TouchableOpacity onPress={submit} style={styles.boton}>
-        <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
-          <Text style={styles.aceptar}>Aceptar</Text>
-        </View>
-      </TouchableOpacity>
+      {!emailSend ? (
+        <TouchableOpacity onPress={submit} style={styles.boton}>
+          <View style={[styles.loremIpsum, styles.loremIpsumFlexBox]}>
+            <Text style={styles.aceptar}>Aceptar</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <Text
+          style={{
+            color: 'yellow',
+            textAlign: 'center',
+            paddingVertical: '3%'
+          }}
+        >
+          {emailSend}
+        </Text>
+      )}
     </View>
   )
 }

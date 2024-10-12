@@ -17,8 +17,6 @@ export class NotificationEntity extends BaseEntity {
   @Column()
   senderId: string;
 
-  
-
   @Column()
   receiverId: string;
 
@@ -37,10 +35,14 @@ export class NotificationEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @ManyToOne(() => UserEntity, (user) => user.notifications)
+  @ManyToOne(() => UserEntity, (user) => user.notifications, {
+    onDelete: 'CASCADE'
+  })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.notifications)
+  @ManyToOne(() => PostEntity, (post) => post.notifications, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'postId' })
   post: PostEntity;
 }

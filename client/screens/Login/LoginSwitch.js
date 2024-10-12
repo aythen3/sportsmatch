@@ -519,12 +519,12 @@ const LoginSwitch = () => {
     }
   }
 
-  if (loading)
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    )
+  // if (loading)
+  //   return (
+  //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //       <ActivityIndicator size={'large'} />
+  //     </View>
+  //   )
 
   return (
     <ScrollView

@@ -255,6 +255,158 @@ export class UserService {
     return token;
   }
 
+  async confirmarCambioEmail(tokenConfirmacion: string) {
+    // Busca al usuario por el token de confirmación
+    const usuario = await this.userRepository.findOneBy({
+      tokenConfirmacion
+    });
+
+    // Verifica si el token es válido
+    if (!usuario) {
+      throw new Error('Token de confirmación no válido o expirado');
+    }
+
+    // Asigna el nuevo correo y elimina el token de confirmación
+    usuario.email = usuario.emailTemporal;
+    usuario.emailTemporal = null;
+    usuario.tokenConfirmacion = null;
+
+    // Guarda el usuario con el nuevo correo
+    await this.userRepository.save(usuario);
+
+    return `
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px 0px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+          }
+          h1 {
+            color: #4CAF50;
+          }
+          p {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+          }
+               .header {
+            background-color: #000;
+            height: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          }
+          .header img {
+            display: flex;
+            margin: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+          <img src="/assets/image.png" class='iconImg' alt="Logo"/>
+        </div>
+          <h1>¡Confirmación Exitosa!</h1>
+          <p>Tu correo electrónico ha sido actualizado correctamente.</p>
+        </div>
+      </body>
+      </html>
+    `;
+  }
+
+  async solicitarCambioEmail(usuarioId: string, nuevoEmail: string) {
+    const usuario = await this.userRepository.findOneBy({ id: usuarioId });
+
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const existeEmail = await this.userRepository.findOneBy({
+      email: nuevoEmail
+    });
+    if (existeEmail) {
+      throw new Error('Este correo ya está en uso por otro usuario');
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    usuario.tokenConfirmacion = token;
+    usuario.emailTemporal = nuevoEmail;
+
+    await this.userRepository.save(usuario);
+
+    // Genera la URL para confirmar el cambio de correo electrónico usando una ruta interna
+    const facebookIcon = join(__dirname, '..', '..', 'assets', 'image.png');
+    const mailOptions = {
+      from: 'sportsmatchdigital.app@gmail.com',
+      to: usuario.email,
+      subject: `Cambio de E-mail`,
+      attachments: [
+        {
+          filename: 'image.png',
+          path: facebookIcon,
+          cid: 'sportSpot'
+        }
+      ],
+      html: `
+        <html>
+          <head>
+            <style>
+             .header {
+               background-color: #000;
+               padding: 20px;
+               text-align: center;
+             }
+             .iconImg {
+               max-width: 200px;
+               max-height: 200px;
+               display: block;
+             }
+           </style>
+          </head>
+          <body>
+            <div class="header">
+              <img src="cid:sportSpot" class='iconImg'/>
+            </div>
+            <h1>Verifica tu nuevo email</h1>
+            <p>Para verificar tu nuevo email ${nuevoEmail}, haga clic en el siguiente enlace:</p>
+            <a href="http://163.172.172.81:3000/api/user/confirmar-cambio-email?token=${token}">Aceptar</a>
+          </body>
+        </html>
+      `
+    };
+
+    // Aquí iría tu servicio de envío de correos
+    this.transporter.sendMail(mailOptions);
+
+    return { message: 'Correo de confirmación enviado' };
+  }
+
   async enviarCorreoRecuperacion(usuario: UserEntity, token: string) {
     const facebookIcon = join(__dirname, '..', '..', 'assets', 'image.png');
 
@@ -415,27 +567,6 @@ export class UserService {
   async getSuscription(id: string): Promise<any> {
     try {
       const sus = await this.stripe.subscriptions.retrieve(id);
-      // const customer = await this.stripe.customers.create({
-      //   email,
-      //   name,
-      //   shipping: {
-      //     address: {
-      //       city: 'Brothers',
-      //       country: 'US',
-      //       line1: '27 Fredrick Ave',
-      //       postal_code: '97712',
-      //       state: 'CA'
-      //     },
-      //     name
-      //   },
-      //   address: {
-      //     city: 'Brothers',
-      //     country: 'US',
-      //     line1: '27 Fredrick Ave',
-      //     postal_code: '97712',
-      //     state: 'CA'
-      //   }
-      // });
       return sus;
     } catch (error) {
       throw new Error('Error creating customer');
@@ -606,7 +737,7 @@ export class UserService {
           message: 'Failed to create new user profile'
         });
       }
-      await this.enviarCorreoConfirmacion(newProfile);
+      // await this.enviarCorreoConfirmacion(newProfile);
       // Enviar notificación de registro por correo electrónico
       // if (newProfile.email) {
       //   await this.sendMailService.sendRegistrationNotification(newProfile.email);
@@ -772,14 +903,14 @@ export class UserService {
           'notifications',
           'matches',
           'offers',
-          'chatsAsUserA',
-          'chatsAsUserB',
+          // 'chatsAsUserA',
+          // 'chatsAsUserB',
           'club',
-          'followers',
-          'followingUsers',
-          'sportman', // Relación con sportman
-          'chatsAsUserA.messages',
-          'chatsAsUserB.messages'
+          // 'followers',
+          // 'followingUsers',
+          'sportman' // Relación con sportman
+          // 'chatsAsUserA.messages',
+          // 'chatsAsUserB.messages'
         ]
       });
 
@@ -790,51 +921,13 @@ export class UserService {
         });
       }
 
-      // Eliminar los mensajes relacionados a los chats del usuario
-      for (const chatA of user.chatsAsUserA) {
-        await queryRunner.manager.remove(chatA.messages);
-      }
-      for (const chatB of user.chatsAsUserB) {
-        await queryRunner.manager.remove(chatB.messages);
-      }
-
-      // Eliminar relaciones con otras entidades
-      await queryRunner.manager.remove(user.posts);
-      await queryRunner.manager.remove(user.comments);
-      await queryRunner.manager.remove(user.likes);
-      await queryRunner.manager.remove(user.notifications);
-      await queryRunner.manager.remove(user.matches);
-      await queryRunner.manager.remove(user.offers);
-      await queryRunner.manager.remove(user.chatsAsUserA);
-      await queryRunner.manager.remove(user.chatsAsUserB);
-
-      // Eliminar la relación con el sportman si existe
-      if (user.sportman) {
-        await queryRunner.manager.remove(user.sportman);
-      }
-      if (user.club) {
-        await queryRunner.manager.remove(user.club);
-      }
-
-      // Eliminar relaciones de seguimiento entre usuarios
-      await queryRunner.manager
-        .createQueryBuilder()
-        .relation(UserEntity, 'followers')
-        .of(user)
-        .remove(user.followers);
-
-      await queryRunner.manager
-        .createQueryBuilder()
-        .relation(UserEntity, 'followingUsers')
-        .of(user)
-        .remove(user.followingUsers);
-
-      // Finalmente, eliminar el usuario
+      // Finalmente, eliminar el usuario (con todo en cascada)
       await queryRunner.manager.remove(user);
 
       // Confirmar la transacción
       await queryRunner.commitTransaction();
     } catch (error) {
+      console.log(error, 'error');
       // En caso de error, revertir la transacción
       await queryRunner.rollbackTransaction();
       throw ErrorManager.createSignatureError(error.message);
@@ -866,7 +959,6 @@ export class UserService {
           'matches',
           'matches.club',
           'matches.club.user',
-
           'followingUsers',
           'offers'
         ]

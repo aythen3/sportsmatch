@@ -87,7 +87,7 @@ const CerrarSesin = () => {
         >
           <View style={styles.texto}>
             <Text style={styles.estsSeguroQueContainer}>
-              <Text style={styles.estsSeguroQue}>{`Estás seguro que 
+              <Text style={styles.estsSeguroQue}>{`¿Estás seguro que 
 quieres `}</Text>
               <Text style={styles.cerrarTypo}>cerrar</Text>
               <Text style={styles.estsSeguroQue}> la sesión?</Text>

@@ -61,6 +61,9 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   push_token: string;
 
+  @Column({ nullable: true, default: null })
+  emailTemporal: string | null; // Almacena el nuevo email temporalmente
+
   @Column({ type: 'simple-array', nullable: true })
   following: string[] | null;
 
@@ -76,7 +79,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @OneToOne(() => ClubEntity, { nullable: true ,onDelete:'CASCADE'})
+  @OneToOne(() => ClubEntity, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn()
   club: ClubEntity | null;
 
@@ -89,21 +92,25 @@ export class UserEntity extends BaseEntity {
   @Column({ default: null, nullable: true })
   tokenRecuperacion: string;
 
-  @OneToOne(() => SportmanEntity, { nullable: true,onDelete:'CASCADE' })
+  @OneToOne(() => SportmanEntity, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn()
   sportman: SportmanEntity | null;
 
-  @OneToMany(() => PostEntity, (post) => post.author,{onDelete:'CASCADE'})
+  @OneToMany(() => PostEntity, (post) => post.author, { onDelete: 'CASCADE' })
   posts: PostEntity[];
 
-  @OneToMany(() => CommentEntity, (comment) => comment.author,{onDelete:'CASCADE'})
+  @OneToMany(() => CommentEntity, (comment) => comment.author, {
+    onDelete: 'CASCADE'
+  })
   comments: CommentEntity[];
 
-  @OneToMany(() => LikeEntity, (like) => like.author,{onDelete:'CASCADE'})
+  @OneToMany(() => LikeEntity, (like) => like.author, { onDelete: 'CASCADE' })
   likes: LikeEntity[];
 
   // Relación de seguimiento de usuarios
-  @ManyToMany(() => UserEntity, (user) => user.followers,{onDelete:'CASCADE'})
+  @ManyToMany(() => UserEntity, (user) => user.followers, {
+    onDelete: 'CASCADE'
+  })
   @JoinTable({
     name: 'user_follows', // Nombre de la tabla intermedia
     joinColumn: { name: 'followerId', referencedColumnName: 'id' },
@@ -111,26 +118,31 @@ export class UserEntity extends BaseEntity {
   })
   followingUsers: UserEntity[];
 
-  @ManyToMany(() => UserEntity, (user) => user.followingUsers,{onDelete:'CASCADE'})
+  @ManyToMany(() => UserEntity, (user) => user.followingUsers, {
+    onDelete: 'CASCADE'
+  })
   followers: UserEntity[];
 
-  @OneToMany(() => NotificationEntity, (notification) => notification.user,{onDelete:'CASCADE'})
+  @OneToMany(() => NotificationEntity, (notification) => notification.user, {
+    onDelete: 'CASCADE'
+  })
   notifications: NotificationEntity[];
 
   @ManyToMany(() => OfferEntity, (offer) => offer.usersInscriptions, {
-    nullable: true,onDelete:'CASCADE'
+    nullable: true,
+    onDelete: 'CASCADE'
   })
   offers: OfferEntity[];
 
   // Relación con MatchEntity
-  @OneToMany(() => MatchEntity, (match) => match.user,{onDelete:'CASCADE'})
-  matches: MatchEntity[]
+  @OneToMany(() => MatchEntity, (match) => match.user, { onDelete: 'CASCADE' })
+  matches: MatchEntity[];
 
   // Relación con los chats donde el usuario es 'userA'
-  @OneToMany(() => ChatEntity, (chat) => chat.userA,{onDelete:'CASCADE'})
+  @OneToMany(() => ChatEntity, (chat) => chat.userA, { onDelete: 'CASCADE' })
   chatsAsUserA: ChatEntity[];
 
   // Relación con los chats donde el usuario es 'userB'
-  @OneToMany(() => ChatEntity, (chat) => chat.userB,{onDelete:'CASCADE'})
+  @OneToMany(() => ChatEntity, (chat) => chat.userB, { onDelete: 'CASCADE' })
   chatsAsUserB: ChatEntity[];
 }

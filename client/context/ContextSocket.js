@@ -52,6 +52,22 @@ export const SocketProvider = ({ children }) => {
     dispatch(updateMessages(msg))
   })
 
+  socket.on('messageRead', (data) => {
+    const { messageId } = data
+
+    // Actualiza la UI para reflejar que el mensaje ha sido leído
+    // updateMessageAsRead(messageId) // Implementa esta función para actualizar el estado en tu UI
+  })
+
+  // Manejar la respuesta del servidor (opcional)
+  socket.on('messagesMarkedAsRead', (messageIds) => {
+    // Actualiza el estado de los mensajes en tu UI
+    messageIds.forEach((id) => {
+      // Implementa la lógica para marcar el mensaje como leído en la UI
+      // markMessageAsReadInUI(id)
+    })
+  })
+
   //   socket.on('message-chat', (msg) => {
   //     console.log('New chat message:', msg)
   //     dispatch(updateChatMessages(msg)).then(() => {

@@ -80,19 +80,65 @@ export class ChatGateway
       chat
     );
 
-    // // // Asegurarse de que el cliente esté en la sala adecuada (chat.id)
-    // if (!client.rooms.has(chat.id)) {
-    //   client.join(chat.id);
-    // }
-    // if (!client.rooms.has(data.receiver)) {
-    //   client.join(data.receiver);
-    // }
-
     console.log('emitiendo mensaje a ', chat.id);
     client.emit('message-server', newMessage); // Emitir al remitente
     client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
     // client.emit('message-server', newMessage);
     return newMessage;
+  }
+
+  @SubscribeMessage('markAsRead')
+  async handleMarkAsRead(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { messageId: string; userId: string }
+  ) {
+    // Busca el mensaje por su ID
+    const message = await this.messageService.findMessageById(data.messageId);
+
+    // Verifica que el mensaje existe y que el usuario es el receptor
+    if (!message || message.receiverId !== data.userId) {
+      throw new Error('Mensaje no encontrado o usuario no autorizado');
+    }
+
+    // Marca el mensaje como leído
+    message.isReaded = true;
+    await this.messageService.updateMessage(message); // Método para actualizar el mensaje en la DB
+
+    // Emitir un evento a todos los clientes en la sala para que actualicen la interfaz
+    client.to(message.room).emit('messageRead', { messageId: message.id });
+
+    console.log(`Mensaje ${message.id} marcado como leído por ${data.userId}`);
+    return { success: true };
+  }
+
+  @SubscribeMessage('markMessagesAsRead')
+  async handleMarkMessagesAsRead(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { chatId: string; userId: string }
+  ) {
+    // Busca los mensajes en el chat que aún no han sido leídos por el usuario
+    const messages = await this.messageService.findUnreadMessages(data.userId);
+
+    if (!messages.length) {
+      // No hay mensajes no leídos
+      return;
+    }
+
+    // Marca todos los mensajes como leídos
+    for (const message of messages) {
+      message.isReaded = true;
+      await this.messageService.updateMessage(message);
+    }
+
+    // Emitir un evento a todos los clientes en la sala para que actualicen la interfaz
+    client.to(data.chatId).emit(
+      'messagesMarkedAsRead',
+      messages.map((m) => m.id)
+    );
+
+    console.log(
+      `Mensajes marcados como leídos en el chat ${data.chatId} por ${data.userId}`
+    );
   }
 
   @SubscribeMessage('joinGroup')

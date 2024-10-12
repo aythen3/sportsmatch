@@ -314,6 +314,9 @@ const NavBarInferior2 = () => {
         options={{
           headerShown: false
         }}
+        // component={
+        //   user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
+        // }
         component={
           user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
         }

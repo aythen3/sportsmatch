@@ -54,7 +54,8 @@ function Carousel({
     const { position } = event.nativeEvent
     setCurrentPage(position)
   }
-  const { setSelectedPost, selectedPost, generateLowResUrl } =
+
+  const { setSelectedPost, selectedPost, generateLowResUrl, scalableFontSize } =
     useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
   const { findedLike } = useSelector((state) => state.post)
@@ -463,7 +464,7 @@ function Carousel({
       </View>
       <PagerView
         onPageSelected={handlePageSelected}
-        style={styles.postContainer}
+        style={{ ...styles.postContainer, height: scalableFontSize(300) }}
         initialPage={0}
       >
         {image.map((e, i) => (
@@ -475,7 +476,13 @@ function Carousel({
               }}
             >
               <View
-                style={{ width: '100%', height: '100%', position: 'relative' }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'relative',
+                  borderRadius: 5,
+                  overflow: 'hidden'
+                }}
               >
                 {doubleTapHeart && liked && (
                   <TouchableOpacity
@@ -492,7 +499,7 @@ function Carousel({
                   </TouchableOpacity>
                 )}
 
-                <Thumbnail play={true} url={e} />
+                <Thumbnail post={true} play={true} url={e} />
               </View>
             </DoubleTap>
           </View>
@@ -707,15 +714,14 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO,
     fontSize: FontSize.t1TextSMALL_size
   },
-  container: {
-    marginTop: 15,
-    borderRadius: Border.br_81xl,
-    maxWidth: '55%',
-    justifyContent: 'center',
-    height: 28,
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
+  // container: {
+  //   borderRadius: Border.br_81xl,
+  //   maxWidth: '55%',
+  //   justifyContent: 'center',
+  //   height: 28,
+  //   alignItems: 'center',
+  //   flexDirection: 'row'
+  // },
   gradient: {
     width: '100%',
     height: 500,
@@ -753,7 +759,8 @@ const styles = StyleSheet.create({
     fontSize: FontSize.t1TextSMALL_size
   },
   container: {
-    width: '100%'
+    width: '100%',
+    flex: 1
   },
   topContainer: {
     flexDirection: 'row',
