@@ -58,6 +58,8 @@ const HeaderPerfil = ({
   const { isSportman, user, allUsers, mainColor } = useSelector(
     (state) => state.users
   )
+  const { scalableFontSize } = useContext(Context)
+
   const [clubOffers, setClubOffers] = useState([])
   const { allMatchs } = useSelector((state) => state.matchs)
   const { club } = useSelector((state) => state.clubs)
@@ -427,7 +429,7 @@ const HeaderPerfil = ({
           {!isSportman ? (
             <Pressable
               onPress={() => {
-                if (sportman?.type == 'invitado') return
+                if (sportman?.type === 'invitado') return
 
                 setLiked(!liked)
 
@@ -548,12 +550,14 @@ const HeaderPerfil = ({
           {isSportman && external && (
             <TouchableOpacity
               onPress={() => {
+                console.log(data?.author, 'user')
                 if (sportman?.type == 'invitado') return
 
                 navigation.navigate('ChatAbierto1', {
                   receiverId: data?.author?.id,
                   receiverName: data.author.nickname,
-                  profilePic: avatar
+                  profilePic: avatar,
+                  user: data?.author?.sportman || data?.author?.club
                 })
               }}
               style={styles.leftButton}
@@ -569,10 +573,9 @@ const HeaderPerfil = ({
                 flexDirection: 'row',
                 backgroundColor: colors.moreOpaque,
                 borderRadius: Border.br_81xl,
-                height: 35,
-                width: '47%',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                flex: 1
               }}
             >
               <Text
@@ -608,7 +611,7 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            !user.user.club.matches.find(
+            !user?.user?.club?.matches?.find(
               (match) => match?.user?.id === data?.author?.id
             ) ? (
             <Pressable
@@ -667,10 +670,10 @@ const HeaderPerfil = ({
                 flexDirection: 'row',
                 backgroundColor: colors.lessOpaque,
                 borderRadius: Border.br_81xl,
-                height: 35,
-                width: '47%',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingVertical: '2%',
+                flex: 1
               }}
             >
               <Text
@@ -678,9 +681,9 @@ const HeaderPerfil = ({
                   width: '100%',
                   fontSize: 14,
                   textAlign: 'center',
-                  marginLeft: '10%',
+
+                  paddingLeft: '20%',
                   color: colors.lessOpaque,
-                  fontSize: FontSize.t2TextSTANDARD_size,
                   fontFamily: FontFamily.t4TEXTMICRO,
                   fontWeight: '700'
                 }}
@@ -707,7 +710,7 @@ const HeaderPerfil = ({
               </View>
             </Pressable>
           ) : !isSportman &&
-            user.user.club.matches.find((match) => {
+            user?.user?.club?.matches?.find((match) => {
               console.log(match?.user?.id, data?.author?.id, 'IDDDDDDDDDDD')
               if (
                 match?.user?.id === data?.author?.id &&
@@ -722,7 +725,8 @@ const HeaderPerfil = ({
                   receiverId: data?.author?.id,
                   receiverName: data?.author?.nickname,
                   profilePic: avatar,
-                  sportman: data?.author?.sportman?.id
+                  sportman: data?.author?.sportman?.id,
+                  user: data?.author?.sportman || data?.author?.club
                 })
               }
               style={styles.leftButton}
@@ -743,10 +747,9 @@ const HeaderPerfil = ({
                   flexDirection: 'row',
                   backgroundColor: colors.moreOpaque,
                   borderRadius: Border.br_81xl,
-                  height: 35,
-                  width: '47%',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  flex: 1
                 }}
               >
                 <Text
@@ -795,10 +798,12 @@ const HeaderPerfil = ({
                 profilePic: avatar
               })
 
-              navigation.navigate('ChatAbierto1', {
-                receiverId: data?.author?.club?.user?.id,
+              navigation.push('ChatAbierto1', {
+                receiverId: data?.author?.id,
                 receiverName: data.author.nickname,
-                profilePic: avatar
+                profilePic: avatar,
+                user: data.author.club || data.author.sportman,
+                usr: data.author
               })
             }}
             style={{
@@ -833,7 +838,7 @@ const HeaderPerfil = ({
           <View
             style={{
               borderWidth: 4,
-              gap: 9,
+              gap: 5,
               backgroundColor: '#1D1D1D',
               borderColor: '#252525',
               alignItems: 'center',
@@ -852,9 +857,7 @@ const HeaderPerfil = ({
             <Text
               style={{
                 color: mainColor,
-                fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                fontSize: scalableFontSize(10)
               }}
             >
               Fundación
@@ -863,7 +866,7 @@ const HeaderPerfil = ({
           <View
             style={{
               borderWidth: 4,
-              gap: 9,
+              gap: 5,
               backgroundColor: '#1D1D1D',
               borderColor: '#252525',
               alignItems: 'center',
@@ -882,9 +885,7 @@ const HeaderPerfil = ({
             <Text
               style={{
                 color: mainColor,
-                fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                fontSize: scalableFontSize(10)
               }}
             >
               Aforo
@@ -893,7 +894,7 @@ const HeaderPerfil = ({
           <View
             style={{
               borderWidth: 4,
-              gap: 9,
+              gap: 5,
               backgroundColor: '#1D1D1D',
               borderColor: '#252525',
               alignItems: 'center',
@@ -912,9 +913,7 @@ const HeaderPerfil = ({
             <Text
               style={{
                 color: mainColor,
-                fontSize: 12,
-                position: 'absolute',
-                bottom: 15
+                fontSize: scalableFontSize(10)
               }}
             >
               Nº ofertas
@@ -944,8 +943,7 @@ const HeaderPerfil = ({
               flexDirection: 'row',
               backgroundColor: '#fff',
               borderRadius: Border.br_81xl,
-              height: 35,
-              width: '47%',
+              flex: 1,
               justifyContent: 'center',
               alignItems: 'center'
             }}
@@ -974,7 +972,6 @@ const HeaderPerfil = ({
         <View
           style={{
             width: '95%',
-            height: 50,
             alignSelf: 'center',
             justifyContent: 'space-around',
             borderRadius: 5,
@@ -1014,13 +1011,12 @@ const HeaderPerfil = ({
           // }}
           style={{
             width: '95%',
-            height: 50,
+            paddingHorizontal: '4%',
             alignSelf: 'center',
             justifyContent: 'space-around',
             borderRadius: 5,
             backgroundColor: Color.bLACK3SPORTSMATCH,
-            marginTop: 20,
-            paddingHorizontal: 15
+            marginTop: 20
           }}
         >
           <Text
@@ -1044,8 +1040,9 @@ const HeaderPerfil = ({
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: '95%',
+            width: '100%',
             alignSelf: 'center',
+            paddingHorizontal: '4%',
             marginTop: 10
           }}
         >
@@ -1085,7 +1082,7 @@ const HeaderPerfil = ({
               <Text
                 style={{
                   color: mainColor,
-                  fontSize: 12,
+                  fontSize: scalableFontSize(10),
                   textAlign: 'center'
                 }}
               >
@@ -1129,7 +1126,7 @@ const HeaderPerfil = ({
               <Text
                 style={{
                   color: mainColor,
-                  fontSize: 12,
+                  fontSize: scalableFontSize(10),
                   textAlign: 'center'
                 }}
               >
@@ -1174,7 +1171,7 @@ const HeaderPerfil = ({
               <Text
                 style={{
                   color: mainColor,
-                  fontSize: 12,
+                  fontSize: scalableFontSize(10),
                   textAlign: 'center'
                 }}
               >
@@ -1324,7 +1321,9 @@ const styles = StyleSheet.create({
   groupContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 10
+    marginTop: 10,
+    paddingHorizontal: '4%',
+    gap: 10
   },
   groupIcon: {
     marginRight: 1,
@@ -1395,14 +1394,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: Color.colorDimgray_100,
     borderRadius: Border.br_81xl,
-    height: 35,
-    width: '47%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1,
+    paddingVertical: '2%'
+    // maxWidth: '40%'
   },
   numeroText: {
     fontSize: FontSize.h3TitleMEDIUM_size,
-    lineHeight: 22,
+
     color: Color.wHITESPORTSMATCH
   }
 })

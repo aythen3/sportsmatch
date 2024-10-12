@@ -46,6 +46,8 @@ import ScreenInicio from './screens/ScreenInicio'
 import ScreenPrincipal from './screens/ScreenPrincipal'
 import Post from './screens/Perfil/EditarPerfil/Post'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import reactotron from './ReactotronConfig'
+import { SocketProvider } from './context/ContextSocket'
 
 const Stack = createNativeStackNavigator()
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1'
@@ -79,7 +81,7 @@ const App = () => {
   // }
 
   // React.useEffect(() => {
-  //   restoreState()
+  //   reactotron.clear()
   // }, [])
 
   // if (!isReady) {
@@ -120,7 +122,7 @@ const App = () => {
   }
   // ======================= CHAT RELATED STUFF ============================
 
-  
+   /* eslint-enable */
   return (
     <SafeAreaView
       style={{
@@ -129,16 +131,17 @@ const App = () => {
       }}
     >
       <ToastProvider>
-        <StripeProvider
+        <StripeProvider 
           publishableKey="pk_test_51OocYQGmE60O5ob7ydu8u1BLMhlWf9F5C6TCuSu75y47X5yBRO8wcbIssEjFc95AferGwyiHNkNGwT25ywIoZahB009vDgPuYd"
           urlScheme="com.android.app" // required for 3D Secure and bank redirects
           merchantIdentifier="merchant.com.app" // required for Apple Pay
         >
         <StatusBar translucent={true} backgroundColor={'transparent'} />
 
-          <Provider store={store}>
-            <ContextProvider>
-              <NavigationContainer
+          <Provider store={store} >
+            <ContextProvider  >
+              <SocketProvider  >
+              <NavigationContainer  
       //          initialState={initialState}
       // onStateChange={(state) =>
       //   AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
@@ -146,7 +149,8 @@ const App = () => {
               theme={{colors:{background:"black"}}} >
                 {true ? (
                  <>
-                  <Stack.Navigator
+                  <Stack.Navigator 
+
                   initialRouteName="MainTabs"
                   
                   
@@ -177,16 +181,17 @@ const App = () => {
                       //      route.name !== 'ChatAbierto1'
                           
                       // )
+                      
                     })}
                   >       
-                      <Stack.Screen
-                    
+                      <Stack.Screen                    
                       name="ScreenInicio"
                       component={ScreenInicio}
                       options={{ headerShown: false }}
                       
                     />
                       <Stack.Screen
+                      
                       name="ScreenPrincipal"
                       component={ScreenPrincipal}
                       options={{ headerShown: false }}
@@ -198,6 +203,7 @@ const App = () => {
                 ) : null}
                 {/* {isFooterShow && <NavBarInferior2 />} */}
               </NavigationContainer>
+              </SocketProvider>
             </ContextProvider>
           </Provider>
         </StripeProvider>

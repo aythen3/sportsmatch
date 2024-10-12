@@ -27,7 +27,6 @@ const NotificacinMatch = ({ onClose, data }) => {
         borderRadius: Border.br_mini,
         backgroundColor: mainColor,
         paddingVertical: 35,
-        paddingTop: 80,
         width: '100%'
       }}
     >
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   hanTypo: {
-    lineHeight: 17,
     fontSize: FontSize.t1TextSMALL_size,
     fontFamily: FontFamily.t4TEXTMICRO
   },
@@ -269,12 +267,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 17
   },
-  botonesLayout: {
-    height: 61
-  },
+  botonesLayout: {},
   aceptarFlexBox: {
     paddingVertical: 7,
-    paddingHorizontal: Padding.p_91xl,
+    width: '100%',
     borderRadius: Border.br_81xl,
     alignSelf: 'stretch',
     justifyContent: 'center',

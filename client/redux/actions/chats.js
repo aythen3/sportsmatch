@@ -36,8 +36,44 @@ export const getChatHistory = createAsyncThunk(
   }
 )
 
+export const getUserChat = createAsyncThunk(
+  'getUserChat/chats',
+  async ({ userA, userB }) => {
+    console.log('eee3', userA, userB)
+    try {
+      const data = await axiosInstance.get(
+        `/chat/between-users/${userA}/${userB}`
+      )
+      return data.data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+export const getUserChats = createAsyncThunk(
+  'getUserChats/chats',
+  async (id) => {
+    try {
+      const data = await axiosInstance.get(`/chat/user/${id}/chats`)
+      return data.data
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+
 export const updateMessages = createAsyncThunk(
   'updateMessages/chats',
+  async (msg) => {
+    try {
+      return msg
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+)
+export const updateChatMessages = createAsyncThunk(
+  'updateChatMessages/chats',
   async (msg) => {
     try {
       return msg

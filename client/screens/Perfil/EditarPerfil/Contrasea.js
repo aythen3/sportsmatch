@@ -112,14 +112,16 @@ const Contrasea = () => {
 
       <View>
         <Input
+          testID="currentPassword"
           state={password}
           setState={setPassword}
           type={'password'}
           passView={true}
           title="Contraseña"
-          placeholderText="*****"
+          placeholderText="****"
         />
         <Input
+          testID="newPassword"
           state={newPassword}
           setState={setNewPassword}
           type={'newPassword'}
@@ -129,11 +131,12 @@ const Contrasea = () => {
         />
         <Input
           state={repeatNewPassword}
+          testID="confirmPassword"
           setState={setRepeatNewPassword}
           type={'repeatNewPassword'}
           passView={true}
           title="Repetir nueva contraseña"
-          placeholderText="*****"
+          placeholderText="******"
         />
         {/* Mostrar el error si existe */}
         {passwordError ? (

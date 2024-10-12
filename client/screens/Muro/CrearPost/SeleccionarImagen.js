@@ -7,7 +7,9 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
-  Modal
+  Modal,
+  FlatList,
+  ActivityIndicator
 } from 'react-native'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
@@ -39,54 +41,103 @@ const SeleccionarImagen = () => {
   const [album, setAlbum] = useState([])
   const [albumData, setAlbumData] = useState([])
   const [editorVisible, setEditorVisible] = useState(false)
-  const [selectedAlbum, setSelectedAlbum] = useState({ title: 'Galería' })
+  const [selectedAlbum, setSelectedAlbum] = useState({ title: 'Cámara' })
   const [rotationAngle, setRotationAngle] = useState(0)
   const [showAlbum, setShowAlbum] = useState(false)
   const [videoError, setVideoError] = useState(false)
-
+  const [cursor, setCursor] = useState(null) // Almacenar el cursor
   const [imagenes, setImagenes] = useState([])
   const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImageEditor, setSelectedImageEditor] = useState(null)
+
   const [selectedPicture, setSelectedPicture] = useState()
+  const [paginaActual, setPaginaActual] = useState(1)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   useEffect(() => {
-    obtenerImagenesDeGaleria()
+    obtenerAlbums()
   }, [])
 
-  const obtenerImagenesDeGaleria = async () => {
+  const obtenerAlbums = async () => {
+    const { status } = await MediaLibrary.requestPermissionsAsync()
+    if (status !== 'granted') {
+      console.error('Permiso denegado para acceder a la galería de imágenes.')
+      return
+    }
+  }
+
+  const obtenerImagenesDeGaleria = async (pagina = 1, cantidad = 20) => {
+    setIsLoadingMore(true) // Mostrar el loade
     const { status } = await MediaLibrary.requestPermissionsAsync()
     if (status !== 'granted') {
       console.error('Permiso denegado para acceder a la galería de imágenes.')
       return
     }
 
-    const assets = await MediaLibrary.getAlbumsAsync({
+    const albms = await MediaLibrary.getAlbumsAsync({
       includeSmartAlbums: true
     })
-    console.log(assets, 'assetss')
-    const arr = []
-    const arr2 = []
-    assets.map((e) => arr.push(e.title))
-    assets.map((e) => arr2.push(e))
+    const arr = albms.map((e) => e.title)
     setAlbum(arr)
-    setAlbumData(arr2)
-  }
-  const obtenerImagenesDeGalerias = async () => {
-    const { status } = await MediaLibrary.requestPermissionsAsync()
-    if (status !== 'granted') {
-      console.error('Permiso denegado para acceder a la galería de imágenes.')
-      return
-    }
-    const selAlbum = selectedAlbum === 'Cámara' ? 'Camera' : selectedAlbum
-    const filtro = albumData.filter((e) => e.title === selAlbum)
+    setAlbumData(albms)
 
-    const assets = await MediaLibrary.getAssetsAsync({
-      album: filtro[0]?.title === 'Camera' ? filtro[0] : null,
-      mediaType: ['photo', 'video']
+    let filtro = null
+
+    // Filtrar por álbum según la selección
+    if (selectedAlbum.title === 'Cámara') {
+      filtro = albms.find((e) => e.title === 'Camera')
+    } else {
+      // Si se selecciona "Galería", no usamos filtro (traer todas las imágenes)
+      filtro = null
+    }
+
+    // Reiniciar el estado de imágenes y cursor al cambiar de álbum
+    if (pagina === 1) {
+      setImagenes([]) // Vaciamos las imágenes anteriores
+      await setCursor(null) // Reiniciamos el cursor
+    }
+
+    let assets
+    // Obtener todas las imágenes y videos, ordenados por fecha de creación
+    assets = await MediaLibrary.getAssetsAsync({
+      album: filtro ? filtro.id : null, // Usar el id del álbum o null
+      mediaType: ['photo', 'video'], // Traer fotos y videos
+      first: 40, // Cargar la primera "cantidad" de imágenes
+      after: pagina === 1 ? null : cursor, // Desplazar para cargar la siguiente página
+      sortBy: [MediaLibrary.SortBy.creationTime] // Ordenar por fecha de creación
     })
-    const arr = []
-    console.log('assets', assets.assets)
+
+    // Extraer las imágenes del resultado
     const imagesArray = assets?.assets ?? []
-    setImagenes(imagesArray)
+
+    // Actualizar las imágenes en el estado
+    setIsLoadingMore(false) // Mostrar el loade
+    setImagenes((prevImagenes) =>
+      pagina === 1 ? imagesArray : [...prevImagenes, ...imagesArray]
+    )
+
+    // Actualizar el cursor y la página actual para continuar la paginación
+    setCursor(assets.endCursor)
+    setPaginaActual(pagina)
+    console.log(imagenes, 'imagenes')
+    if (pagina === 1) {
+      setSelectedImage(imagesArray[0])
+    }
+  }
+  useEffect(() => {
+    if (selectedAlbum) {
+      obtenerImagenesDeGaleria()
+    }
+  }, [selectedAlbum])
+
+  const handleSeleccionarImagen = async (imagen) => {
+    setSelectedImageEditor(imagen)
+    if (imagen.mediaType !== 'video') {
+      launchEditor(imagen.uri)
+    } else {
+      console.log(imagen, 'Video seleccionado')
+      setSelectedImage(imagen)
+    }
   }
 
   const _rotate90andFlip = async () => {
@@ -99,25 +150,7 @@ const SeleccionarImagen = () => {
     setRotationAngle((rotationAngle + 90) % 360) // Actualiza el ángulo de rotación
   }
 
-  useEffect(() => {
-    if (selectedAlbum !== '') {
-      obtenerImagenesDeGalerias()
-    }
-  }, [selectedAlbum])
-
-  const handleSeleccionarImagen = async (imagen) => {
-    setSelectedImage(imagen)
-    if (imagen.mediaType !== 'video') {
-      launchEditor(imagen.uri)
-    } else {
-      console.log(imagen, 'imgggggggggggggg')
-      return setSelectedImage(imagen)
-    }
-  }
-
   const launchEditor = (uri) => {
-    // Then set the image uri
-    // And set the image editor to be visible
     setEditorVisible(true)
   }
   const [hasPermission, setHasPermission] = useState(null)
@@ -134,7 +167,7 @@ const SeleccionarImagen = () => {
   }, [])
 
   const changePictureMode = async () => {
-    setFacing((prev) => (prev == 'back' ? 'front' : 'back'))
+    setFacing((prev) => (prev === 'back' ? 'front' : 'back'))
   }
 
   useEffect(() => {
@@ -142,20 +175,6 @@ const SeleccionarImagen = () => {
   }, [selectedImage])
 
   const [orientation, setOrientation] = useState('portrait')
-
-  // useEffect(() => {
-  //   const subscription = DeviceMotion.addListener((deviceMotionData) => {
-  //     const { rotation } = deviceMotionData
-  //     if (rotation.beta > 45 && rotation.beta < 135) {
-  //       setOrientation('landscape')
-  //     } else if (rotation.beta < -45 && rotation.beta > -135) {
-  //       setOrientation('landscape')
-  //     } else {
-  //       setOrientation('portrait')
-  //     }
-  //   })
-  //   return () => subscription.remove()
-  // }, [])
 
   const takePicture = async () => {
     if (cameraReff?.current) {
@@ -169,13 +188,6 @@ const SeleccionarImagen = () => {
 
       setShowCamera(false)
       launchEditor(photo.uri)
-      // if (showSelection) {
-      //   const exist = multiSelect.find((png) => png.id === photo.id)
-      //   if (!exist) {
-      //     setMultiSelect([photo, ...multiSelect])
-      //   }
-      // }
-      // You can handle the taken photo here, such as displaying it or saving it.
     }
   }
 
@@ -188,82 +200,53 @@ const SeleccionarImagen = () => {
     }
   }
 
-  const renderizarImagenes = () => {
-    return (
-      <ScrollView
-        style={{ height: '100%' }}
-        keyboardShouldPersistTaps={'always'}
-      >
+  const renderItem = ({ item: imagen, index }) => (
+    <TouchableOpacity
+      key={index}
+      onPress={() => {
+        if (showSelection) {
+          handleSelect(imagen)
+        } else {
+          handleSeleccionarImagen(imagen)
+        }
+      }}
+      style={{
+        flex: 1 / 3, // Cada imagen ocupará un tercio del ancho disponible
+        aspectRatio: 1, // Para mantener una relación de aspecto cuadrada,
+        margin: 2
+      }}
+      onLongPress={() => handleSelect(imagen)}
+    >
+      {multiSelect.find((img) => imagen.id === img.id) && (
         <View
           style={{
-            gap: 8,
-            paddingBottom: 8,
-            overflow: 'hidden',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start'
+            width: 20,
+            height: 20,
+            backgroundColor: mainColor,
+            borderRadius: 100,
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 800
           }}
         >
-          {imagenes.map((imagen, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                if (showSelection) {
-                  handleSelect(imagen)
-                } else {
-                  handleSeleccionarImagen(imagen)
-                }
-              }}
-              onLongPress={() => handleSelect(imagen)}
-            >
-              {multiSelect.find((img, i) => imagen.id === img.id) && (
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: mainColor,
-                    borderRadius: 100,
-                    position: 'absolute',
-                    top: 10,
-                    right: 10,
-                    zIndex: 800
-                  }}
-                >
-                  <Text style={{ color: 'white', textAlign: 'center' }}>
-                    {multiSelect.indexOf(imagen) + 1}
-                  </Text>
-                </View>
-              )}
-              <>
-                {imagen.mediaType === 'photo' ? (
-                  <Image
-                    source={{ uri: imagen.uri }}
-                    style={{
-                      width: (Dimensions.get('window').width * 0.9 - 20) / 3,
-                      height: (Dimensions.get('window').width * 0.9 + 25) / 3,
-                      borderRadius: 4
-                    }}
-                  />
-                ) : (
-                  <Image
-                    source={{ uri: imagen.uri }}
-                    style={{
-                      width: (Dimensions.get('window').width * 0.9 - 20) / 3,
-                      height: (Dimensions.get('window').width * 0.9 + 25) / 3,
-                      borderRadius: 4
-                    }}
-                    isMuted
-                    useNativeControls={false}
-                    resizeMode="cover"
-                  />
-                )}
-              </>
-            </TouchableOpacity>
-          ))}
+          <Text style={{ color: 'white', textAlign: 'center' }}>
+            {multiSelect.indexOf(imagen) + 1}
+          </Text>
         </View>
-      </ScrollView>
-    )
-  }
+      )}
+      <Image
+        source={{ uri: imagen.uri }}
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: 4
+        }}
+        contentFit="cover"
+      />
+    </TouchableOpacity>
+  )
+
   if (!showCamera) {
     return (
       <SafeAreaView style={styles.crearHighlight}>
@@ -397,10 +380,10 @@ const SeleccionarImagen = () => {
                       <Video
                         style={styles.codeBlockPersonaEnCanch}
                         contentFit="cover"
-                        isMuted
                         isLooping
                         shouldPlay
-                        useNativeControls={false}
+                        isMuted={false}
+                        useNativeControls={true}
                         resizeMode="cover"
                         source={{ uri: selectedImage?.uri }}
                       />
@@ -503,7 +486,9 @@ const SeleccionarImagen = () => {
               {showAlbum && (
                 <ScrollableModal
                   closeModal={() => setShowAlbum(false)}
-                  onSelectItem={setSelectedAlbum}
+                  onSelectItem={(e) => {
+                    setSelectedAlbum({ title: e })
+                  }}
                   options={['Cámara', 'Galería']}
                   visible={showAlbum}
                 ></ScrollableModal>
@@ -561,7 +546,34 @@ const SeleccionarImagen = () => {
               )}
             </View>
 
-            {renderizarImagenes()}
+            {imagenes.length === 0 ? (
+              <ActivityIndicator size="large" color={mainColor} />
+            ) : (
+              // Renderizar imágenes
+              <FlatList
+                data={imagenes}
+                keyExtractor={(item) => item.id.toString()} // Asegúrate de usar un ID único
+                renderItem={renderItem}
+                contentContainerStyle={{}}
+                numColumns={3} // Tres columnas para las imágenes
+                initialNumToRender={20} // Renderiza 20 imágenes inicialmente para mejorar el rendimiento
+                maxToRenderPerBatch={10} // Controla cuántas imágenes cargar por lotes
+                windowSize={10} // Ajusta la cantidad de elementos que mantiene en la vista
+                onEndReachedThreshold={0} // Ajusta cuándo se activa la carga
+                onEndReached={() => {
+                  if (cursor && !isLoadingMore) {
+                    obtenerImagenesDeGaleria(paginaActual + 1)
+                  }
+                }}
+                // ListFooterComponent={
+                //   isLoadingMore && !cursor ? (
+                //     <View style={{ paddingVertical: '2%' }}>
+                //       <ActivityIndicator color={mainColor} size={'small'} />
+                //     </View>
+                //   ) : null
+                // } //
+              />
+            )}
           </View>
         )}
         <ImageEditor
@@ -589,7 +601,7 @@ const SeleccionarImagen = () => {
           isVisible={editorVisible}
           onEditingCancel={() => setEditorVisible(false)}
           onCloseEditor={() => setEditorVisible(false)}
-          imageUri={selectedImage?.uri}
+          imageUri={selectedImageEditor?.uri}
           fixedCropAspectRatio={1 / 1}
           minimumCropDimensions={{
             width: 100,

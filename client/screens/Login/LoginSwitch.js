@@ -519,20 +519,18 @@ const LoginSwitch = () => {
     }
   }
 
-  if (loading)
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    )
+  // if (loading)
+  //   return (
+  //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //       <ActivityIndicator size={'large'} />
+  //     </View>
+  //   )
 
   return (
-    <View
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
       style={{
-        backgroundColor: 'black',
-        flex: 1,
-        justifyContent: 'space-between',
-        width: Dimensions.get('screen').width
+        flex: 1
       }}
     >
       <HomeGif></HomeGif>
@@ -550,10 +548,8 @@ const LoginSwitch = () => {
       />
       <View
         style={{
-          backgroundColor: 'transparent',
           flex: 1,
-          justifyContent: 'center',
-          width: '100%'
+          justifyContent: 'center'
         }}
       >
         <View
@@ -720,16 +716,15 @@ const LoginSwitch = () => {
                           style={styles.loremIpsumParent}
                         >
                           <View style={styles.loremIpsum2}>
+                            <Image
+                              style={[styles.groupItem, styles.groupPosition1]}
+                              contentFit="contain"
+                              source={require('../../assets/group-236.png')}
+                            />
                             <Text style={[styles.aceptar, styles.aceptarTypo]}>
                               Continua con Google
                             </Text>
                           </View>
-
-                          <Image
-                            style={[styles.groupItem, styles.groupPosition1]}
-                            contentFit="contain"
-                            source={require('../../assets/group-236.png')}
-                          />
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -740,15 +735,15 @@ const LoginSwitch = () => {
                           style={styles.loremIpsumGroup}
                         >
                           <View style={styles.loremIpsum2}>
+                            <Image
+                              style={[styles.groupIcon, styles.groupPosition]}
+                              contentFit="contain"
+                              source={require('../../assets/instagramlogo2.png')}
+                            />
                             <Text style={[styles.aceptar, styles.aceptarTypo]}>
                               Continua con Instagram
                             </Text>
                           </View>
-                          <Image
-                            style={[styles.groupIcon, styles.groupPosition]}
-                            contentFit="contain"
-                            source={require('../../assets/instagramlogo2.png')}
-                          />
                         </TouchableOpacity>
                         {Platform.OS === 'ios' && (
                           <AppleAuthentication.AppleAuthenticationButton
@@ -873,7 +868,7 @@ const LoginSwitch = () => {
         {/* Al continuar, aceptas automáticamente nuestras Condiciones, {'\n'}
         Polítíca de privacidad y Polítíca de cookies */}
       </Text>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -892,18 +887,12 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.t4TEXTMICRO
   },
   groupPosition1: {
-    left: '3.89%',
-    bottom: '76%',
-    maxHeight: '100%',
-    maxWidth: '100%',
-    overflow: 'hidden'
+    position: 'absolute',
+    left: '5%'
   },
   groupPosition: {
-    left: '3.61%',
-    bottom: '76%',
-    maxHeight: '100%',
-    maxWidth: '100%',
-    overflow: 'hidden'
+    position: 'absolute',
+    left: 20
   },
 
   wrapper: {
@@ -964,7 +953,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     width: Dimensions.get('screen').width / 2.2,
-    height: 140,
     // left: 0,
     flexDirection: 'column',
     alignItems: 'center',
@@ -1010,12 +998,11 @@ const styles = StyleSheet.create({
   },
 
   groupItem: {
-    height: '50%',
-    width: '6.1%'
+    height: 20,
+    width: 20
   },
   loremIpsumParent: {
-    width: '100%',
-    height: 45
+    width: '100%'
   },
   groupInner: {
     height: '57%',
@@ -1023,12 +1010,11 @@ const styles = StyleSheet.create({
   },
   loremIpsumGroup: {
     marginTop: 10,
-    width: '100%',
-    height: 45
+    width: '100%'
   },
   groupIcon: {
-    height: '56%',
-    width: '7.18%'
+    height: 20,
+    width: 20
   },
   oContnuarCon: {
     fontSize: FontSize.t1TextSMALL_size,
@@ -1106,12 +1092,14 @@ const styles = StyleSheet.create({
   jugador: {
     fontSize: scalableFontSize(14),
     color: '#1FD430',
-    marginRight: 5
+    marginRight: 5,
+    textAlign: 'center'
   },
   jugador2: {
     fontSize: scalableFontSize(14),
     color: 'white',
-    marginRight: 5
+    marginRight: 5,
+    textAlign: 'center'
   },
   clubScouting: {
     color: '#999999',

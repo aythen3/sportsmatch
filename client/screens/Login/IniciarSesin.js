@@ -161,7 +161,10 @@ const IniciarSesin = ({ route }) => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <ScrollView style={{ ...styles.iniciarSesin }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ ...styles.iniciarSesin }}
+    >
       {isFocused && (
         <StatusBar barStyle={'light-content'} backgroundColor="#000" />
       )}
@@ -170,20 +173,9 @@ const IniciarSesin = ({ route }) => {
 
       <View
         style={{
-          ...styles.contenido,
-          height: height - StatusBar.currentHeight
+          ...styles.contenido
         }}
       >
-        <View style={styles.botonAtrasFrame}>
-          <Image
-            style={styles.simboloIcon}
-            contentFit="cover"
-            source={require('../../assets/coolicon3.png')}
-          />
-          <Pressable style={styles.atrs} onPress={() => navigation.goBack()}>
-            <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
-          </Pressable>
-        </View>
         <View style={styles.formulariotextoLegal}>
           <View style={styles.formulario}>
             <View style={styles.formularioFrame}>
@@ -197,6 +189,19 @@ const IniciarSesin = ({ route }) => {
                   alignItems: 'center'
                 }}
               >
+                <View style={styles.botonAtrasFrame}>
+                  <Image
+                    style={styles.simboloIcon}
+                    contentFit="cover"
+                    source={require('../../assets/coolicon3.png')}
+                  />
+                  <Pressable
+                    style={styles.atrs}
+                    onPress={() => navigation.goBack()}
+                  >
+                    <Text style={[styles.atrs1, styles.timeTypo]}>Atrás</Text>
+                  </Pressable>
+                </View>
                 <View style={styles.titularcampos}>
                   <Text style={styles.titular}>Inicia sesión</Text>
                   <View style={styles.campos}>
@@ -413,8 +418,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Padding.p_xl,
     alignItems: 'center',
     flexDirection: 'row',
-    position: 'absolute',
-    top: '15%'
+    alignSelf: 'flex-start',
+    marginBottom: '10%'
   },
   titular: {
     fontSize: FontSize.h1TitleHUGE_size,

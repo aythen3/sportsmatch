@@ -62,15 +62,10 @@ const OfertasEmitidas = () => {
     setModalVisible(true)
   }
 
-  useEffect(() => {
-    console.log(
-      'ALL CLUB OFFERS:',
-      offers.filter((offer) => offer.club.id === club.id)
-    )
-  }, [])
+  useEffect(() => {}, [])
 
   const total = offers
-    .filter((offer) => offer.club.id === club.id)
+    .filter((offer) => offer?.club?.id === club?.id)
     .filter((offer, i) => offer?.prop2?.price && offer?.prop2?.price)
   const finalNumber = total.map((c) => c?.prop2?.price)
   const totalNumber = finalNumber.reduce((a, b) => a + b, 0)
@@ -83,10 +78,7 @@ const OfertasEmitidas = () => {
         <Pressable
           style={styles.header}
           onPress={() => {
-            return navigation.reset({
-              index: 0,
-              routes: [{ name: 'ScreenPrincipal' }]
-            })
+            navigation.navigate('SiguiendoJugadores1')
           }}
         >
           <BackArrowSVG />
@@ -540,6 +532,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 10,
     gap: 15
   },
   titular: {
@@ -561,8 +554,8 @@ const styles = StyleSheet.create({
   },
   addText: {
     color: Color.wHITESPORTSMATCH,
-    fontSize: 26,
-    bottom: 2
+    height: '100%',
+    textAlignVertical: 'center'
   },
   touchableImg: {
     width: 24,

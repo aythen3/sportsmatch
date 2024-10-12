@@ -7,23 +7,34 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'match' })
 export class MatchEntity extends BaseEntity {
-  @ManyToMany(() => SportmanEntity, (sportman) => sportman.matches)
+  @ManyToMany(() => SportmanEntity, (sportman) => sportman.matches, {
+    onDelete: 'CASCADE'
+  })
   @JoinTable()
   sportmenId: SportmanEntity[];
 
-  @ManyToMany(() => ClubEntity, (club) => club.matches)
+  @ManyToMany(() => ClubEntity, (club) => club.matches, { onDelete: 'CASCADE' })
   @JoinTable()
   clubId: SportmanEntity[];
 
-  @ManyToOne(() => OfferEntity, (offer) => offer.match, { nullable: true })
+  @ManyToOne(() => OfferEntity, (offer) => offer.match, {
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
   offerId: OfferEntity;
 
   // Relación con ClubEntity
-  @ManyToOne(() => ClubEntity, (club) => club.matches, { nullable: false })
+  @ManyToOne(() => ClubEntity, (club) => club.matches, {
+    nullable: false,
+    onDelete: 'CASCADE'
+  })
   club: ClubEntity;
 
   // Relación con UserEntity
-  @ManyToOne(() => UserEntity, (user) => user.matches, { nullable: false })
+  @ManyToOne(() => UserEntity, (user) => user.matches, {
+    nullable: false,
+    onDelete: 'CASCADE'
+  })
   user: UserEntity;
 
   @Column({ nullable: true })

@@ -8,13 +8,12 @@ export class CommentEntity extends BaseEntity {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.comments)
+  @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
   author: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
   post: PostEntity;
   comment: Promise<UserEntity>;
-
 
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })

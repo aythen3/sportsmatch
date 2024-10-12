@@ -59,41 +59,45 @@ const EliminarCuenta = () => {
           <View style={styles.texto}>
             <Text style={styles.estsSeguroQueContainer}>
               <Text style={styles.estsSeguroQue}>
-                Estas seguro que quieres eliminar definitivamente tu cuenta de
+                ¿Estás seguro que quieres eliminar definitivamente tu cuenta de
                 SpotsMatch?
               </Text>
             </Text>
             <TouchableOpacity
               onPress={async () => {
-                axiosInstance
-                  .delete(`user/${user?.user?.id}`)
-                  .then(async () => {
-                    console.log('setting userswithmessages to []...')
-                    setUsersWithMessages([])
-                    await AsyncStorage.removeItem('userAuth')
-                    await AsyncStorage.removeItem('googleAuth')
-                    await AsyncStorage.removeItem('facebookAuth')
-                    await AsyncStorage.removeItem('appleUserAuth')
-                    await AsyncStorage.removeItem('@user')
-                    await dispatch(cleanSportman())
-                    await dispatch(cleanUser())
-                    await dispatch(cleanPost())
-                    await dispatch(cleanClub())
-                    await dispatch(resetChatsSlices())
-                    await dispatch(resetCommentsSlices())
-                    await dispatch(resetMatchsSlices())
-                    await dispatch(resetMuroSlices())
-                    await dispatch(resetNotificationsSlices())
-                    await dispatch(cleanOffers())
-                    await dispatch(cleanPosition())
-                    await dispatch(cleanSports())
-                    await firebaseLogout()
-                    navigation.reset({
-                      index: 0,
-                      history: false,
-                      routes: [{ name: 'ScreenInicio' }]
+                console.log('eeeeeeeeeeeeeeeaaaaaaa')
+                try {
+                  await axiosInstance
+                    .delete(`user/${user?.user?.id}`)
+                    .then(async (e) => {
+                      setUsersWithMessages([])
+                      await AsyncStorage.removeItem('userAuth')
+                      await AsyncStorage.removeItem('googleAuth')
+                      await AsyncStorage.removeItem('facebookAuth')
+                      await AsyncStorage.removeItem('appleUserAuth')
+                      await AsyncStorage.removeItem('@user')
+                      await dispatch(cleanSportman())
+                      await dispatch(cleanUser())
+                      await dispatch(cleanPost())
+                      await dispatch(cleanClub())
+                      await dispatch(resetChatsSlices())
+                      await dispatch(resetCommentsSlices())
+                      await dispatch(resetMatchsSlices())
+                      await dispatch(resetMuroSlices())
+                      await dispatch(resetNotificationsSlices())
+                      await dispatch(cleanOffers())
+                      await dispatch(cleanPosition())
+                      await dispatch(cleanSports())
+                      await firebaseLogout()
+                      navigation.reset({
+                        index: 0,
+                        history: false,
+                        routes: [{ name: 'ScreenInicio' }]
+                      })
                     })
-                  })
+                } catch (error) {
+                  console.log(error, 'aaaaaaaaaaaa')
+                }
               }}
               style={styles.boton}
             >
@@ -160,7 +164,8 @@ const styles = StyleSheet.create({
   estsSeguroQueContainer: {
     textAlign: 'center',
     color: Color.wHITESPORTSMATCH,
-    fontSize: FontSize.h3TitleMEDIUM_size
+    fontSize: FontSize.h3TitleMEDIUM_size,
+    paddingHorizontal: '5%'
   },
   aceptar: {
     fontSize: FontSize.button_size,
@@ -169,20 +174,20 @@ const styles = StyleSheet.create({
   },
   loremIpsum: {
     borderRadius: Border.br_81xl,
-    paddingHorizontal: Padding.p_81xl,
     paddingVertical: Padding.p_3xs,
     backgroundColor: Color.wHITESPORTSMATCH,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%'
   },
   boton: {
     flexDirection: 'row',
-    marginTop: 60
+    marginTop: 60,
+    padding: '4%'
   },
   texto: {
     // height: 398,
-
     alignItems: 'center'
   },
   cabezera: {

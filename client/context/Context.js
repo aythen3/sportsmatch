@@ -4,7 +4,11 @@ import * as ImagePicker from 'expo-image-picker'
 import io from 'socket.io-client'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../redux/actions/users'
-import { updateMessages } from '../redux/actions/chats'
+import {
+  getUserChats,
+  updateChatMessages,
+  updateMessages
+} from '../redux/actions/chats'
 import axiosInstance from '../utils/apiBackend'
 import { registerForPushNotificationsAsync } from '../utils/pushService'
 import { Dimensions } from 'react-native'
@@ -364,66 +368,78 @@ export const ContextProvider = ({ children }) => {
 
   const [socket, setSocket] = useState(null)
 
-  const newSocket = io(
-    // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
-    // 'http://163.172.172.81:3010',
-    'http://192.168.0.82:3010',
+  // useEffect(() => {
+  //   const newSocket = io(
+  //     // 'http://cda3a8c0-e981-4f8d-808f-a9a389c5174e.pub.instances.scw.cloud:3010',
+  //     // 'http://163.172.172.81:3010',
+  //     'http://192.168.0.77:3010',
 
-    {
-      transports: ['websocket'],
-      query: {
-        userId: user?.user?.id // Enviar userId al conectar
-      }
-    }
-  )
+  //     {
+  //       transports: ['websocket'],
+  //       query: {
+  //         userId: user?.user?.id // Enviar userId al conectar
+  //       }
+  //     }
+  //   )
+  //   newSocket.on('connect', () => {
+  //     console.log('Connected to server')
 
-  newSocket.on('disconnect', () => {
-    setRoomId()
-  })
+  //     // newSocket.emit('joinGroup', { room: user?.user?.id })
+  //   })
+  //   // newSocket.on('message-chat', (msg) => {
+  //   //   console.log('New message CHATTTTTTTTTTTTTTTTTTTTTTTT:', msg)
+  //   //   dispatch(updateChatMessages(msg)).then(() => {
+  //   //     // dispatch(getUserChats(user.user.id))
+  //   //     // dispatch(setAllConversationMessagesToRead())
+  //   //   })
 
-  newSocket.on('error', (error) => {
-    console.log('ERROR FROM SOCKET', error)
-  })
+  //   //   // getUsersMessages()
+  //   // })
+  //   // newSocket.on('message-server', (msg) => {
+  //   //   console.log('New message:', msg)
+  //   //   dispatch(updateMessages(msg)).then(() => {
+  //   //     // dispatch(getUserChats(user.user.id))
+  //   //     // dispatch(setAllConversationMessagesToRead())
+  //   //   })
+  //   // })
+  //   newSocket.on('disconnect', () => {
+  //     setRoomId()
+  //   })
 
-  newSocket.on('hola', (data) => {
-    console.log(data, 'anad')
-  })
-  newSocket.on('notification', (data) => {
-    console.log(data, '22222222222222')
-    dispatch(getNotificationsByUserId(user?.user?.id))
-  })
+  //   newSocket.on('error', (error) => {
+  //     console.log('ERROR FROM SOCKET', error)
+  //   })
 
-  newSocket.on('readMessages', (room) => {
-    console.log(room, '11111111111111111111111111')
-    getUsersMessages()
-  })
+  //   newSocket.on('notification', (data) => {
+  //     console.log(data, '22222222222222')
+  //     dispatch(getNotificationsByUserId(user?.user?.id))
+  //   })
 
-  newSocket.on('joinedRoom', (room) => {
-    setRoomId(room)
-  })
+  //   newSocket.on('readMessages', (room) => {
+  //     console.log(room, '11111111111111111111111111')
+  //     // getUsersMessages()
+  //   })
 
-  newSocket.on('leaveRoom', (room) => {
-    // console.log('Leaving room: ', room)
-    setRoomId()
-  })
+  //   newSocket.on('joinedRoom', (room) => {
+  //     setRoomId(room)
+  //   })
 
-  newSocket.on('message-server', (msg) => {
-    // console.log('New message:', msg)
-    dispatch(updateMessages(msg)).then(() => {
-      dispatch(setAllConversationMessagesToRead())
-    })
+  //   newSocket.on('leaveRoom', (room) => {
+  //     console.log('Leaving room: ', room)
+  //     setRoomId()
+  //   })
+  //   const leaveRoom = (room) => {
+  //     console.log('leaveroom', room)
+  //     newSocket.emit('leaveRoom', { room: room })
+  //   }
+  //   // const joinRoom = (room) => {
+  //   //   newSocket.emit('joinGroup', { room: room })
+  //   // }
 
-    // getUsersMessages()
-  })
-
-  useEffect(() => {
-    setSocket(newSocket)
-    newSocket.on('connect', () => {
-      console.log('Connected to server')
-
-      newSocket.emit('joinGroup', { room: user?.user?.id })
-    })
-  }, [user?.user?.id])
+  //   return () => {
+  //     leaveRoom(user?.user?.id)
+  //   }
+  // }, [user?.user?.id])
 
   const disconnectFromSocket = () => {
     if (socket) {
@@ -431,19 +447,18 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  const joinRoom = (sender, receiver) => {
-    socket.emit('joinRoom', { sender, receiver })
-  }
-
-  const leaveRoom = (sender, receiver) => {
-    socket.emit('leaveRoom', { sender, receiver })
-  }
-
   const sendMessage = (message, sender, receiver) => {
-    socket.emit('message', { message, sender, receiver })
+    console.log('=============SENDING MESSAGE=============')
+    console.log('sending message', {
+      message,
+      sender,
+      receiver
+    })
+    // newSocket.emit('message', { message, sender, receiver })
   }
+
   const emitToUser = (usuarioId, evento, data) => {
-    socket.emit('emitToUser', { usuarioId, evento, data })
+    // newSocket.emit('emitToUser', { usuarioId, evento, data })
   }
 
   const getClubMatches = () => {
@@ -474,53 +489,53 @@ export const ContextProvider = ({ children }) => {
   const [notReaded, setNotReaded] = useState(0)
   const [notReadedMessages, setNotReadedMessages] = useState()
 
-  const getUsersMessages = async () => {
-    const { data } = await axiosInstance.post('chat/chats', {
-      userId
-    })
-    // console.log('DATA', data)
-    const convs = Object.keys(data)
-    const notReadedConvMessages = convs
-      .map((conv) =>
-        data[conv].filter(
-          (message) => message.senderId !== userId && message.isReaded === false
-        )
-      )
-      .flat()
-    setNotReadedMessages(notReadedConvMessages)
-    const notReaded = convs
-      .map(
-        (conv) =>
-          data[conv].filter(
-            (message) =>
-              message.senderId !== userId &&
-              message.isReaded === false &&
-              !user?.user?.banned?.includes(message?.senderId)
-          ).length
-      )
-      .reduce((acc, curr) => acc + curr, 0)
-    setNotReaded(notReaded)
-    if (Object.keys(data).length > 0) {
-      const finalInfo = Object.keys(data).map((key) => {
-        const otherUserId = key
-          .split('_')
-          .filter((singleId) => singleId !== userId)[0]
-        const userData = allUsers.filter((user) => user.id === otherUserId)[0]
-        const lastMessage = data[key].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        )[0]
-        return { room: key, ...userData, lastMessage }
-      })
-      // console.log('Setting users with messages to: ', finalInfo)
-      setUsersWithMessages(
-        finalInfo.sort(
-          (a, b) =>
-            new Date(b.lastMessage.createdAt) -
-            new Date(a.lastMessage.createdAt)
-        )
-      )
-    }
-  }
+  // const getUsersMessages = async () => {
+  //   const { data } = await axiosInstance.post('chat/chats', {
+  //     userId
+  //   })
+  //   // console.log('DATA', data)
+  //   const convs = Object.keys(data)
+  //   const notReadedConvMessages = convs
+  //     .map((conv) =>
+  //       data[conv].filter(
+  //         (message) => message.senderId !== userId && message.isReaded === false
+  //       )
+  //     )
+  //     .flat()
+  //   setNotReadedMessages(notReadedConvMessages)
+  //   const notReaded = convs
+  //     .map(
+  //       (conv) =>
+  //         data[conv].filter(
+  //           (message) =>
+  //             message.senderId !== userId &&
+  //             message.isReaded === false &&
+  //             !user?.user?.banned?.includes(message?.senderId)
+  //         ).length
+  //     )
+  //     .reduce((acc, curr) => acc + curr, 0)
+  //   setNotReaded(notReaded)
+  //   if (Object.keys(data).length > 0) {
+  //     const finalInfo = Object.keys(data).map((key) => {
+  //       const otherUserId = key
+  //         .split('_')
+  //         .filter((singleId) => singleId !== userId)[0]
+  //       const userData = allUsers.filter((user) => user.id === otherUserId)[0]
+  //       const lastMessage = data[key].sort(
+  //         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //       )[0]
+  //       return { room: key, ...userData, lastMessage }
+  //     })
+  //     // console.log('Setting users with messages to: ', finalInfo)
+  //     setUsersWithMessages(
+  //       finalInfo.sort(
+  //         (a, b) =>
+  //           new Date(b.lastMessage.createdAt) -
+  //           new Date(a.lastMessage.createdAt)
+  //       )
+  //     )
+  //   }
+  // }
 
   const scalableFontSize = (fontSize) => {
     const { width } = Dimensions.get('window')
@@ -553,7 +568,7 @@ export const ContextProvider = ({ children }) => {
         notReaded,
         generateLowResUrl,
         setNotReaded,
-        getUsersMessages,
+        // getUsersMessages,
         setUsersWithMessages,
         usersWithMessages,
         pickImage,
@@ -570,7 +585,6 @@ export const ContextProvider = ({ children }) => {
         provisoryCoverImage,
         setProvisoryCoverImage,
         getUserAge,
-        joinRoom,
         disconnectFromSocket,
         sendMessage,
         roomId,
@@ -582,7 +596,7 @@ export const ContextProvider = ({ children }) => {
         transformHttpToHttps,
         selectedPost,
         setSelectedPost,
-        leaveRoom,
+        // leaveRoom,
         getTimeFromDate,
         activeIcon,
         setActiveIcon,

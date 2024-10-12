@@ -39,12 +39,9 @@ const NavBarInferior2 = () => {
     // Establece el color marrón de la barra de navegación nativa
     NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
   }, [])
-  const {
-    generateLowResUrl,
-    setActiveIcon,
-    notReaded
-    // user
-  } = useContext(Context)
+  const { generateLowResUrl, setActiveIcon, notReaded, scalableFontSize } =
+    useContext(Context)
+
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [sportColor, setSportColor] = useState('#E1451E')
@@ -137,7 +134,12 @@ const NavBarInferior2 = () => {
                       justifyContent: 'center'
                     }}
                   >
-                    <Text style={{ color: '#fff', fontSize: 28, bottom: 2 }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlignVertical: 'center'
+                      }}
+                    >
                       +
                     </Text>
                   </View>
@@ -269,6 +271,11 @@ const NavBarInferior2 = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="ClubProfile"
+              component={ClubProfile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="Post"
               component={Post}
               options={{ headerShown: false }}
@@ -307,6 +314,9 @@ const NavBarInferior2 = () => {
         options={{
           headerShown: false
         }}
+        // component={
+        //   user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
+        // }
         component={
           user?.user?.type !== 'club' ? SeleccionarImagen : ConfigurarAnuncio
         }
@@ -319,6 +329,7 @@ const NavBarInferior2 = () => {
             userNotifications.filter((n) => !n.read).length > 0 &&
             userNotifications.filter((n) => !n.read).length,
           tabBarBadgeStyle: {
+            color: 'white',
             backgroundColor:
               userNotifications.filter((n) => !n.read).length > 0
                 ? mainColor
@@ -416,7 +427,7 @@ const NavBarInferior = () => {
     activeIcon,
     generateLowResUrl,
     setActiveIcon,
-    getUsersMessages,
+    // getUsersMessages,
     notReaded
   } = useContext(Context)
   const navigation = useNavigation()
@@ -429,7 +440,7 @@ const NavBarInferior = () => {
   const userId = user?.user?.id
 
   useEffect(() => {
-    getUsersMessages()
+    // getUsersMessages()
     if (Object.keys(sportman).length === 0) {
       dispatch(getSportman(user?.user?.sportman?.id))
     }
@@ -494,7 +505,6 @@ const NavBarInferior = () => {
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          getUsersMessages()
           if (user.user.type == 'club') {
             dispatch(getNotificationsByUserId(user.user.club.id))
           } else {

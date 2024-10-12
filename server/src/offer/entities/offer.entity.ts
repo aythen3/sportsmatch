@@ -59,10 +59,16 @@ export class OfferEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @OneToMany(() => MatchEntity, (match) => match.offerId, { nullable: true })
+  @OneToMany(() => MatchEntity, (match) => match.offerId, {
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
   match: MatchEntity[];
 
-  @ManyToOne(() => ClubEntity, (club) => club.offers, { nullable: true })
+  @ManyToOne(() => ClubEntity, (club) => club.offers, {
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
   club?: ClubEntity;
 
   @Column({ type: 'simple-array', nullable: true })
@@ -70,7 +76,10 @@ export class OfferEntity extends BaseEntity {
   inscriptions: string[];
 
   // Relación con los usuarios inscritos
-  @ManyToMany(() => UserEntity, (user) => user.offers, { nullable: true })
+  @ManyToMany(() => UserEntity, (user) => user.offers, {
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
   @JoinTable() // Necesario para la relación bidireccional
   usersInscriptions: UserEntity[];
 }

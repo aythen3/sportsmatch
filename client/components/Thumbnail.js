@@ -5,14 +5,15 @@ import { useSelector } from 'react-redux'
 import { Video } from 'expo-av'
 import * as VideoThumbnails from 'expo-video-thumbnails'
 
-const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
+const Thumbnail = ({ url, notUrl, styles, play, isMini, post }) => {
   const video = useRef(null)
   const [status, setStatus] = useState({})
   const { mainColor } = useSelector((state) => state.users)
-  const { generateLowResUrl } = useContext(Context)
+  const { generateLowResUrl, scalableFontSize } = useContext(Context)
   const [originalImageLoaded, setOriginalImageLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [thumbnailUri, setThumbnailUri] = useState(null)
+
   const handleLoad = () => {
     setOriginalImageLoaded(true)
   }
@@ -69,7 +70,7 @@ const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
       }
     >
       {isVideo && !isMini ? (
-        <View>
+        <View style={{ flex: 1 }}>
           <Video
             useNativeControls
             onPlaybackStatusUpdate={(status) => setStatus(() => status)}
@@ -95,8 +96,12 @@ const Thumbnail = ({ url, notUrl, styles, play, isMini }) => {
       ) : (
         <Image
           source={{ uri: isVideo ? thumbnailUri : imageUrl }}
-          style={{ width: '100%', height: '100%' }}
-          resizeMode="cover"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: post ? 'cover' : 'cover',
+            borderRadius: 5
+          }}
           onLoad={handleLoad}
           onError={handleLoadError}
         />

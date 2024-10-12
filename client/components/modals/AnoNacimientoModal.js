@@ -18,7 +18,6 @@ const años = Array.from(
 )
 
 const AnoNacimientoModal = ({ visible, closeModal, onSelectAñoNacimiento }) => {
-
   return (
     <Modal
       animationType="slide"

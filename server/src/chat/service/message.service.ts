@@ -157,4 +157,21 @@ export class MessageService {
     // Guarda los cambios en la base de datos
     await this.messageRepository.save(mensajes);
   }
+
+  async findMessageById(messageId: string): Promise<MessageEntity> {
+    return this.messageRepository.findOneBy({ id: messageId });
+  }
+
+  async updateMessage(message: MessageEntity): Promise<MessageEntity> {
+    return this.messageRepository.save(message);
+  }
+
+  async findUnreadMessages(userId: string): Promise<MessageEntity[]> {
+    return this.messageRepository.find({
+      where: {
+        receiverId: userId,
+        isReaded: false
+      }
+    });
+  }
 }

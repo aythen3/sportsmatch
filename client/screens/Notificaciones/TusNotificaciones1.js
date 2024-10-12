@@ -25,6 +25,7 @@ import {
 } from '../../redux/actions/notifications'
 import { ActivityIndicator } from 'react-native-paper'
 import { getAllMatchs, getUserMatchs } from '../../redux/actions/matchs'
+import { getUserChats } from '../../redux/actions/chats'
 
 const TusNotificaciones1 = () => {
   const [loading, setLoading] = useState(true)
@@ -37,10 +38,14 @@ const TusNotificaciones1 = () => {
     (state) => state.notifications
   )
 
-  const { allMessages } = useSelector((state) => state.chats)
+  const { allMessages, userChats: uChats } = useSelector((state) => state.chats)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
-  const { getUsersMessages, usersWithMessages, setActiveIcon } =
-    useContext(Context)
+  const { usersWithMessages, setActiveIcon } = useContext(Context)
+  const [userChats, setUserChats] = useState(true)
+
+  useEffect(() => {
+    setUserChats(uChats)
+  }, [uChats])
 
   const userId = user?.user?.id
 
@@ -68,11 +73,10 @@ const TusNotificaciones1 = () => {
     .sort(sortUsers)
 
   useEffect(() => {
-    getUsersMessages()
-  }, [allMessages])
+    dispatch(getUserChats(user?.user?.id))
+  }, [])
 
   useEffect(() => {
-    getUsersMessages()
     if (user.user.type === 'club') {
       dispatch(getNotificationsByUserId(user?.user?.club?.id))
     } else {
@@ -141,12 +145,12 @@ const TusNotificaciones1 = () => {
             style={{ width: '50%', height: 40 }}
             onPress={() => {
               console.log('marking...')
-              dispatch(markAllUserNotificationsAsRead(user.user.id)).then(
+              dispatch(markAllUserNotificationsAsRead(user?.user?.id)).then(
                 (res) => {
                   if (user.user.type === 'club') {
-                    dispatch(getNotificationsByUserId(user.user.id))
+                    dispatch(getNotificationsByUserId(user?.user?.id))
                   } else {
-                    dispatch(getNotificationsByUserId(user.user.id))
+                    dispatch(getNotificationsByUserId(user?.user?.id))
                   }
                 }
               )
@@ -171,7 +175,7 @@ const TusNotificaciones1 = () => {
               userNotifications
                 ?.filter((notification) => {
                   if (user?.user?.type === 'club') {
-                    notification.receiverId === user.user.club.id
+                    notification?.receiverId === user?.user?.club?.id
                     return true
                   } else if (notification.receiverId === userId) {
                     return true
@@ -196,12 +200,12 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+          <ScrollView   contentContainerStyle={{ paddingBottom: 100 }}>
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((notification) => (
-                  <Notifications key={notification.id} data={notification} />
+                  <Notifications key={notification?.id} data={notification} />
                 ))
             ) : (
               <View
@@ -267,7 +271,7 @@ const TusNotificaciones1 = () => {
                   paddingHorizontal: 14
                 }}
               >
-                {value === '' && usersWithMessages.length === 0 ? (
+                {value === '' && userChats.length === 0 ? (
                   <View style={{ width: '100%', alignItems: 'center' }}>
                     <Text
                       style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}
@@ -277,7 +281,12 @@ const TusNotificaciones1 = () => {
                   </View>
                 ) : (
                   value === '' &&
-                  usersWithMessages?.map((userr, index) => {
+                  userChats?.map((chat, index) => {
+                    const userr =
+                      chat?.userA?.id === user?.user?.id
+                        ? chat?.userB
+                        : chat?.userA
+                    const usuario = userr?.club ? userr?.club : userr?.sportman
                     if (
                       !userr.isDelete &&
                       !user?.user?.banned?.includes(userr?.id)
@@ -287,14 +296,21 @@ const TusNotificaciones1 = () => {
                           value={value}
                           setValue={setValue}
                           key={index + 999}
-                          name={userr.nickname}
-                          sportmanId={userr.sportman?.id}
+                          name={
+                            userr?.sportman?.info?.nickname ||
+                            userr?.club?.name ||
+                            userr?.nickname
+                          }
+                          usuario={usuario}
+                          usr={userr}
+                          sportmanId={userr?.sportman?.id}
                           profilePic={
                             userr?.type === 'club'
                               ? userr?.club?.img_perfil
                               : userr?.sportman?.info?.img_perfil
                           }
-                          selectedUserId={userr.id}
+                          selectedUserId={userr?.id}
+                          chat={chat}
                           // applicant={applicants?.includes(user.sportman?.id)}
                         />
                       )
@@ -304,6 +320,9 @@ const TusNotificaciones1 = () => {
                 {value !== '' && filteredUsers.length > 0
                   ? filteredUsers.map((userr, index) => {
                       console.log(user, 'user ')
+                      const usuario = userr?.club
+                        ? userr?.club
+                        : userr?.sportman
                       if (
                         !userr.isDelete &&
                         !user?.user?.banned?.includes(userr?.id)
@@ -315,12 +334,15 @@ const TusNotificaciones1 = () => {
                             key={index + 99999}
                             name={userr.nickname}
                             sportmanId={userr.sportman?.id}
+                            usuario={usuario}
+                            usr={userr}
+                            user={userr?.club ? userr?.club : userr?.user}
                             profilePic={
                               userr?.type === 'club'
                                 ? userr?.club?.img_perfil
                                 : userr?.sportman?.info?.img_perfil
                             }
-                            selectedUserId={userr.id}
+                            selectedUserId={userr?.id}
                             // applicant={applicants?.includes(user.sportman?.id)}
                           />
                         )

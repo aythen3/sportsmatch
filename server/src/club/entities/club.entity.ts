@@ -44,7 +44,7 @@ export class ClubEntity extends BaseEntity {
   @Column({ nullable: true })
   img_front?: string;
 
-  @OneToOne(() => UserEntity)
+  @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: UserEntity;
 
@@ -53,7 +53,10 @@ export class ClubEntity extends BaseEntity {
   // })
   // sportman?: SportmanEntity[];
 
-  @OneToMany(() => OfferEntity, (offer) => offer.club, { nullable: true })
+  @OneToMany(() => OfferEntity, (offer) => offer.club, {
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
   offers?: OfferEntity[];
 
   // @OneToMany(() => PositionEntity, (position) => position.club, {
@@ -61,7 +64,7 @@ export class ClubEntity extends BaseEntity {
   // })
   // positions?: PositionEntity[];
   // Relación con MatchEntity
-  @OneToMany(() => MatchEntity, (match) => match.club)
+  @OneToMany(() => MatchEntity, (match) => match.club, { onDelete: 'CASCADE' })
   matches: MatchEntity[];
 
   // @OneToMany(() => SportEntity, (sport) => sport.club, {

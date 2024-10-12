@@ -21,14 +21,20 @@ export class ChatEntity {
   updatedAt: Date;
 
   // Relación con el usuario A
-  @ManyToOne(() => UserEntity, (user) => user.chatsAsUserA)
+  @ManyToOne(() => UserEntity, (user) => user.chatsAsUserA, {
+    onDelete: 'CASCADE'
+  })
   userA: UserEntity;
 
   // Relación con el usuario B
-  @ManyToOne(() => UserEntity, (user) => user.chatsAsUserB)
+  @ManyToOne(() => UserEntity, (user) => user.chatsAsUserB, {
+    onDelete: 'CASCADE'
+  })
   userB: UserEntity;
 
   // Relación con los mensajes
-  @OneToMany(() => MessageEntity, (message) => message.chat)
+  @OneToMany(() => MessageEntity, (message) => message.chat, {
+    onDelete: 'CASCADE'
+  })
   messages: MessageEntity[];
 }

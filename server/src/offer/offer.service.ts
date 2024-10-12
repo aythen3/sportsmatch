@@ -8,6 +8,7 @@ import { ClubService } from 'src/club/club.service';
 import { ErrorManager } from 'src/utils/error.manager';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ClubEntity } from 'src/club/entities/club.entity';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class OfferService {
@@ -18,7 +19,8 @@ export class OfferService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(ClubEntity)
     private readonly clubRepository: Repository<ClubEntity>,
-    private readonly clubService: ClubService
+    private readonly clubService: ClubService,
+    private readonly notificationService: NotificationService
   ) {}
 
   /**
@@ -212,7 +214,7 @@ export class OfferService {
       // Buscar la oferta con la relación de usuarios inscritos
       const offer = await this.offerRepository.findOne({
         where: { id: offerId },
-        relations: ['usersInscriptions'] // Asegurarse de incluir la relación
+        relations: ['usersInscriptions', 'club.user'] // Asegurarse de incluir la relación
       });
 
       if (!offer) {
@@ -242,6 +244,14 @@ export class OfferService {
 
       // Guardar la oferta con el usuario agregado
       await this.offerRepository.save(offer);
+      await this.notificationService.createService({
+        title: 'Inscripción',
+        message: `se ha inscripto a tu oferta`,
+        senderId: userId,
+        receiverId: offer.club.user.id,
+        type: 'inscripcion',
+        readed: false
+      });
 
       console.log('Inscripción exitosa');
     } catch (error) {

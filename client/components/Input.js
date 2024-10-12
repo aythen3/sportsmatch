@@ -25,7 +25,8 @@ function Input({
   disable,
   emailcheked,
   isEmailValid,
-  passView
+  passView,
+  testId
 }) {
   const [passview2, setPassview2] = useState(true)
 
@@ -51,6 +52,7 @@ function Input({
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
+            testID={testId}
             editable={disable ? false : true}
             multiline={isMultiLine}
             placeholder={placeholderText}
@@ -86,6 +88,7 @@ function Input({
             }
             keyboardType={keyboardType === 'numeric' ? 'numeric' : 'default'}
             maxLength={maxLength ? maxLength : 40}
+            id="Repetir nueva contraseña"
           />
           {passView && (
             <TouchableOpacity

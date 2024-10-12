@@ -231,8 +231,8 @@ const InscritosAMisOfertas = () => {
                                 ? colors.moreOpaque
                                 : colors.lessOpaque,
                               borderRadius: Border.br_81xl,
-                              height: 25,
-                              width: 90,
+                              height: 35,
+                              width: 100,
                               justifyContent: 'center',
                               alignItems: 'center'
                             }}
@@ -310,8 +310,8 @@ const InscritosAMisOfertas = () => {
                             </Text>
                             <View
                               style={{
-                                width: 30,
-                                height: 30,
+                                width: 40,
+                                height: 40,
                                 borderRadius: 100,
                                 justifyContent: 'center',
                                 alignItems: 'center',

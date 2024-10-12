@@ -74,7 +74,7 @@ const MisOfertas = () => {
           <Text style={[styles.pvot1, styles.pvot1Typo]}>Pívot</Text>
           <Text style={[styles.maresme, styles.pvot1Typo]}>Maresme</Text>
           <Text style={[styles.posicin1, styles.comarcaLayout]}>Posición</Text>
-          <Text style={[styles.comarca, styles.comarcaLayout]}>Comarca</Text>
+          <Text style={[styles.comarca, styles.comarcaLayout]}>Ubicación</Text>
         </View>
         <View style={[styles.component17Item, styles.itemBg]} />
         <View style={[styles.aceptarWrapper, styles.aceptarLayout1]}>

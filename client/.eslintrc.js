@@ -4,5 +4,13 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['warn', { endOfLine: 'auto' }]
-  }
+  },
+  overrides: [
+    {
+      files: ['tests/**/*'],
+      env: {
+        jest: true
+      }
+    }
+  ]
 }

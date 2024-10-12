@@ -31,15 +31,19 @@ export class PostEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @ManyToOne(() => UserEntity, (user) => user.posts)
+  @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
   author: UserEntity;
 
   @Column()
   authorType: string; // sportMan o club
 
-  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  @OneToMany(() => CommentEntity, (comment) => comment.post, {
+    onDelete: 'CASCADE'
+  })
   comments: CommentEntity[];
 
-  @OneToMany(() => NotificationEntity, (notification) => notification.post)
+  @OneToMany(() => NotificationEntity, (notification) => notification.post, {
+    onDelete: 'CASCADE'
+  })
   notifications: NotificationEntity[];
 }

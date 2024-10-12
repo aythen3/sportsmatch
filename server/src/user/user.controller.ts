@@ -154,6 +154,20 @@ export class UserController {
     }
   }
 
+  @Post('solicitar-cambio-email')
+  async solicitarCambioEmail(
+    @Body('usuarioId') usuarioId: string,
+    @Body('nuevoEmail') nuevoEmail: string
+  ) {
+    return this.userService.solicitarCambioEmail(usuarioId, nuevoEmail);
+  }
+
+  // Ruta para confirmar el cambio de email
+  @Get('confirmar-cambio-email')
+  async confirmarCambioEmail(@Query('token') tokenConfirmacion: string) {
+    return this.userService.confirmarCambioEmail(tokenConfirmacion);
+  }
+
   @Post('recuperar-contrasena')
   async recuperarContrasena(@Body('email') email: string) {
     const usuario = await this.userService.findByEmail(email);

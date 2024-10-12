@@ -685,7 +685,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   contenido: {
-    gap: 25
+    gap: 25,
+    paddingBottom: '6%'
   },
   configurarAnuncio: {
     flex: 1,

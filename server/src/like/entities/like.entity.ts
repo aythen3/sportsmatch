@@ -5,10 +5,10 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'like' })
 export class LikeEntity extends BaseEntity {
-  @ManyToOne(() => UserEntity, (user) => user.likes)
+  @ManyToOne(() => UserEntity, (user) => user.likes, { onDelete: 'CASCADE' })
   author: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.likes)
+  @ManyToOne(() => PostEntity, (post) => post.likes, { onDelete: 'CASCADE' })
   post: PostEntity;
   // Propiedades flexibles
   @Column({ type: 'json', nullable: true })

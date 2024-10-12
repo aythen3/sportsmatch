@@ -43,6 +43,6 @@ export class MessageEntity extends BaseEntity {
   @Column({ type: 'simple-array', nullable: true })
   prop4: string[] | null;
 
-  @ManyToOne(() => ChatEntity, (chat) => chat.messages)
+  @ManyToOne(() => ChatEntity, (chat) => chat.messages, { onDelete: 'CASCADE' })
   chat: ChatEntity; // Relación con el chat
 }

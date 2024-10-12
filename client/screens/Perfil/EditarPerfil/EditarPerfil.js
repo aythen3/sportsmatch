@@ -95,8 +95,6 @@ const EditarPerfil = () => {
             style={{
               color: mainColor,
               marginTop: 10,
-              height: 23,
-              width: 360,
               fontSize: FontSize.t2TextSTANDARD_size,
               textAlign: 'left',
               fontFamily: FontFamily.t4TEXTMICRO
@@ -118,8 +116,6 @@ const styles = StyleSheet.create({
     top: 0
   },
   eliminarCuentaTypo: {
-    height: 23,
-    width: 360,
     fontSize: FontSize.t2TextSTANDARD_size,
     textAlign: 'left',
     fontFamily: FontFamily.t4TEXTMICRO
@@ -170,8 +166,7 @@ const styles = StyleSheet.create({
   },
   detallesDelUsuario: {
     marginTop: 10,
-    color: Color.wHITESPORTSMATCH,
-    height: 23
+    color: Color.wHITESPORTSMATCH
   },
   eliminarCuenta: {
     color: '#e74235',

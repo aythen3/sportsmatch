@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -6,11 +6,12 @@ import { FontFamily, FontSize, Border, Color, Padding } from '../GlobalStyles'
 import CircularStat from '../components/svg/CircularStatSVG'
 import BarStatSVG from '../components/svg/BarStatSVG'
 import { opciones_skills } from '../utils/SkillUserLocal'
+import { Context } from '../context/Context'
 
 const FeedStats = () => {
   const navigation = useNavigation()
   const [selectedOptions, setSelectedOptions] = useState([])
-
+  const { scalableFontSize } = useContext(Context)
   const { user, mainColor } = useSelector((state) => state.users)
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const FeedStats = () => {
 
   const sportman = user?.user?.sportman
 
-  if (user && sportman)
+  if (user)
     return (
       <ScrollView
         keyboardShouldPersistTaps={'always'}
@@ -91,17 +92,12 @@ const FeedStats = () => {
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-
-                    height: (Dimensions.get('screen').width * 0.45) / 3,
                     zIndex: 1
                   }}
                 >
                   <Text
                     style={{
-                      lineHeight: 40,
                       fontSize: FontSize.h2TITLEBIG_size,
-                      alignSelf: 'stretch',
-                      flex: 1,
                       color: mainColor,
                       fontWeight: '500',
                       textAlign: 'center',
@@ -110,7 +106,15 @@ const FeedStats = () => {
                   >
                     {sportman?.info?.attack || 0}
                   </Text>
-                  <Text style={[styles.ataque, styles.ataqueClr]}>Ataque</Text>
+                  <Text
+                    style={[
+                      styles.ataque,
+                      styles.ataqueClr,
+                      { fontSize: scalableFontSize(10) }
+                    ]}
+                  >
+                    Ataque
+                  </Text>
                 </View>
               </View>
               <View
@@ -121,7 +125,9 @@ const FeedStats = () => {
                   alignItems: 'center'
                 }}
               >
-                <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                <View
+                  style={{ position: 'absolute', top: 0, left: 0, padding: 2 }}
+                >
                   <CircularStat
                     color={mainColor}
                     value={sportman?.info?.defense || 0}
@@ -130,9 +136,7 @@ const FeedStats = () => {
                 <View
                   style={{
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: (Dimensions.get('screen').width * 0.45) / 3,
-                    zIndex: 1
+                    alignItems: 'center'
                   }}
                 >
                   <Text
@@ -144,7 +148,15 @@ const FeedStats = () => {
                   >
                     {sportman?.info?.defense || 0}
                   </Text>
-                  <Text style={[styles.ataque, styles.ataqueClr]}>Defensa</Text>
+                  <Text
+                    style={[
+                      styles.ataque,
+                      styles.ataqueClr,
+                      { fontSize: scalableFontSize(10) }
+                    ]}
+                  >
+                    Defensa
+                  </Text>
                 </View>
               </View>
               <View
@@ -178,7 +190,13 @@ const FeedStats = () => {
                   >
                     {sportman?.info?.speed || 0}
                   </Text>
-                  <Text style={[styles.ataque, styles.ataqueClr]}>
+                  <Text
+                    style={[
+                      styles.ataque,
+                      styles.ataqueClr,
+                      { fontSize: scalableFontSize(10) }
+                    ]}
+                  >
                     Velocidad
                   </Text>
                 </View>
@@ -390,8 +408,6 @@ const FeedStats = () => {
           <View style={{ width: '95%', paddingVertical: 30 }}>
             <Text
               style={{
-                lineHeight: 30,
-                height: 25,
                 fontSize: FontSize.h2TITLEBIG_size,
                 alignSelf: 'stretch',
                 fontWeight: '500',
@@ -464,15 +480,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   text1: {
-    lineHeight: 40,
     fontSize: FontSize.h2TITLEBIG_size,
-    alignSelf: 'stretch',
-    flex: 1
+    alignSelf: 'stretch'
   },
   ataque: {
-    marginTop: 9,
+    marginTop: '1%',
     width: 109,
-    lineHeight: 14,
     fontSize: FontSize.t4TEXTMICRO_size,
     textAlign: 'center'
   },

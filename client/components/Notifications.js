@@ -95,6 +95,13 @@ const Notifications = ({ data }) => {
           console.log('entra22')
           return setDetails(true)
         }
+        if (data.title === 'Inscripción') {
+          console.log('entra22')
+          return navigation.navigate('PerfilFeedVisualitzaciJug', {
+            author: data.user
+          })
+          // return setDetails(true)
+        }
         if (data.title === 'Follow' && data.user.type === 'sportman') {
           navigation.navigate('PerfilFeedVisualitzaciJug', {
             author: data.user
@@ -219,64 +226,61 @@ const Notifications = ({ data }) => {
               {getTimeFromDate(data.createdAt)}
             </Text>
             {data.title === 'Inscripción' &&
-              clubMatches.filter((match) => {
-                if (match?.prop1?.sportManData?.userId === data.prop1.userId) {
+              user?.user?.club?.matches?.filter((match) => {
+                if (match?.user.id === data.user.id) {
                   return true
                 }
                 return false
               }).length === 0 && (
                 <TouchableOpacity
                   onPress={() => {
-                    console.log('sendind match to', data.prop1.userId)
                     dispatch(
                       sendMatch({
-                        sportmanId: data.prop1.userData?.user?.sportman.id,
+                        userId: data?.user?.id,
                         clubId: user?.user?.club?.id,
-                        status: 'success',
-                        prop1: {
-                          clubId: user?.user?.club?.id,
-                          sportmanId: data.prop1.userData?.user?.sportman.id,
-                          sportManData: {
-                            userId: data.prop1.userId,
-                            profilePic:
-                              data.prop1.userData?.user?.sportman.info
-                                .img_perfil,
-                            name: data.prop1.userData?.user?.sportman.info
-                              .nickname
-                          },
-                          clubData: {
-                            userId: user?.user?.id,
-                            name: user?.user?.nickname,
-                            profilePic: user?.user?.club?.img_perfil
-                          }
-                        }
+                        status: 'pending'
+                        // prop1: {
+                        //   clubId: user?.user?.club?.id,
+                        //   sportmanId: data.prop1.userData?.user?.sportman.id,
+                        //   sportManData: {
+                        //     userId: data.prop1.userId,
+                        //     profilePic:
+                        //       data.prop1.userData?.user?.sportman.info
+                        //         .img_perfil,
+                        //     name: data.prop1.userData?.user?.sportman.info
+                        //       .nickname
+                        //   },
+                        //   clubData: {
+                        //     userId: user?.user?.id,
+                        //     name: user?.user?.nickname,
+                        //     profilePic: user?.user?.club?.img_perfil
+                        //   }
+                        // }
                       })
-                    )
-                      .then((res) => {
-                        console.log('response from send match', data)
-                        dispatch(
-                          sendNotification({
-                            title: 'Match',
-                            message: 'Has hecho match!',
-                            recipientId: data.prop1.userId,
-                            date: new Date(),
-                            read: false,
-                            prop1: {
-                              matchId: res?.payload?.id,
-                              clubData: {
-                                name: user?.user?.nickname,
-                                userId: user?.user?.id,
-                                ...user?.user?.club
-                              }
-                            },
-                            prop2: {
-                              rol: 'user'
-                            }
-                          })
-                        )
-                      })
-                      .then((data) => dispatch(getAllMatchs()))
-                      .then((data) => getClubMatches())
+                    ).then((res) => {
+                      dispatch(getUserData(user?.user?.id))
+                      // console.log('response from send match', data)
+                      // dispatch(
+                      //   sendNotification({
+                      //     title: 'Match',
+                      //     message: 'Has hecho match!',
+                      //     recipientId: data.prop1.userId,
+                      //     date: new Date(),
+                      //     read: false,
+                      //     prop1: {
+                      //       matchId: res?.payload?.id,
+                      //       clubData: {
+                      //         name: user?.user?.nickname,
+                      //         userId: user?.user?.id,
+                      //         ...user?.user?.club
+                      //       }
+                      //     },
+                      //     prop2: {
+                      //       rol: 'user'
+                      //     }
+                      //   })
+                      // )
+                    })
                   }}
                   style={{
                     flexDirection: 'row',

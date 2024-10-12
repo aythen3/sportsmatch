@@ -23,9 +23,9 @@ const ScreenInicio = () => {
         }}
       >
         <Stack.Screen name="PantallaInicio" component={PantallaInicio} />
+        <Stack.Screen name="stepsClub" component={StepsClub} />
         <Stack.Screen name="LoginSwitch" component={LoginSwitch} />
         <Stack.Screen name="IniciarSesin" component={IniciarSesin} />
-        <Stack.Screen name="stepsClub" component={StepsClub} />
         <Stack.Screen name="Registrarse" component={Registrarse} />
         <Stack.Screen name="Paso1" component={Paso1} />
         <Stack.Screen name="Paso3Profesional" component={Paso3Profesional} />
