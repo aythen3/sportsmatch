@@ -49,17 +49,17 @@ const Chat = ({ text, isMy, read, hour }) => {
         >
           {hour}
         </Text>
-        {read ? (
+        {read && isMy ? (
           <Image
             style={{ width: 17, height: 17 }}
             source={require('../assets/readed.png')}
           />
-        ) : (
+        ) : !read && isMy ? (
           <Image
             style={{ width: 17, height: 17 }}
             source={require('../assets/notReaded.png')}
           />
-        )}
+        ) : null}
       </View>
     </View>
   )

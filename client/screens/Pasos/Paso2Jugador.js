@@ -8,12 +8,12 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
     setSelectedSport(sport)
   }
   const sports = [
-    { name: 'Hockey' },
-    { name: 'Fútbol Sala' },
-    { name: 'Baloncesto' },
-    { name: 'Fútbol' },
-    { name: 'Voley' },
-    { name: 'Handball' }
+    { name: 'Hockey', id: 1 },
+    { name: 'Fútbol Sala', id: 2 },
+    { name: 'Baloncesto', id: 3 },
+    { name: 'Fútbol', id: 4 },
+    { name: 'Voley', id: 5 },
+    { name: 'Handball', id: 6 }
   ]
 
   return (

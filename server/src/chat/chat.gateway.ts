@@ -37,7 +37,7 @@ export class ChatGateway
       this.connectedUsers.set(userId.toLocaleString(), client.id);
       // client.join(userId); // Unir al usuario a su sala personal para notificaciones generales
       console.log(`Usuario conectado: ${userId}`);
-      console.log('userssss', this.connectedUsers);
+      // console.log('userssss', this.connectedUsers);
     }
   }
 
@@ -82,7 +82,18 @@ export class ChatGateway
 
     console.log('emitiendo mensaje a ', chat.id);
     client.emit('message-server', newMessage); // Emitir al remitente
+
     client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
+    // client
+    //   .to(data.receiver)
+    //   .emit('message-server', {
+    //     chat: chat.id,
+    //     message: {
+    //       sender: newMessage.senderId,
+    //       receiver: newMessage.receiverId,
+    //       message: newMessage.message
+    //     }
+    //   }); // Emitir solo una vez a la sala
     // client.emit('message-server', newMessage);
     return newMessage;
   }
@@ -121,6 +132,7 @@ export class ChatGateway
 
     if (!messages.length) {
       // No hay mensajes no leídos
+      console.log('no hay nada');
       return;
     }
 
@@ -129,6 +141,8 @@ export class ChatGateway
       message.isReaded = true;
       await this.messageService.updateMessage(message);
     }
+
+    console.log('EMITIENDOOOO');
 
     // Emitir un evento a todos los clientes en la sala para que actualicen la interfaz
     client.to(data.chatId).emit(
@@ -162,7 +176,7 @@ export class ChatGateway
 
   @SubscribeMessage('leaveRoom')
   handleRoomLeave(client: Socket, data: { room: string }) {
-    console.log('leaveRoom', data, client);
+    // console.log('leaveRoom', data, client);
     client.leave(data.room);
     client.emit('leaveRoom', data.room);
   }

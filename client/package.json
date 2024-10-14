@@ -104,7 +104,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
-    "@testing-library/react-native": "^12.7.2",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.0.0",

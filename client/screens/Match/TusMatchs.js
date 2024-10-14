@@ -29,6 +29,7 @@ import {
 import axiosInstance from '../../utils/apiBackend'
 import { Context } from '../../context/Context'
 import TusMatchsDetalle1 from '../TusMatchsDetalle1'
+import { getUserData } from '../../redux/actions/users'
 
 const TusMatchs = () => {
   const [matchsData, setMatchsData] = useState([])
@@ -54,12 +55,12 @@ const TusMatchs = () => {
   console.log('maincolor', mainColor)
   const imageSource = images[mainColor] || images['#E1451E']
   useEffect(() => {
-    if (user?.user?.type !== 'club') {
-      dispatch(getUserMatchs(user?.user?.sportman?.id))
-    }
-    if (user?.user?.type === 'club') {
-      dispatch(getClubMatchs(user?.user?.club.id))
-    }
+    // if (user?.user?.type !== 'club') {
+    //   dispatch(getUserMatchs(user?.user?.sportman?.id))
+    // }
+    // if (user?.user?.type === 'club') {
+    //   dispatch(getClubMatchs(user?.user?.club.id))
+    // }
     console.log(
       'clubmatches',
       clubMatches
@@ -93,13 +94,9 @@ const TusMatchs = () => {
   //   getOfferData(data?.offer?.id)
   // }
 
-  // useEffect(() => {
-  //   if (userMatches?.length > 0) {
-  //     userMatches.forEach((match) => {
-  //       getMatchData(match?.id)
-  //     })
-  //   }
-  // }, [])
+  useEffect(() => {
+    dispatch(getUserData(user?.user?.id))
+  }, [])
 
   console.log(userMatches, clubMatches, 'MATCHES')
 

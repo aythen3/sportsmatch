@@ -21,6 +21,7 @@ import {
   opciones_skills,
   categorias_deporte
 } from '../utils/SkillUserLocal'
+import { getUserData } from '../redux/actions/users'
 
 const SkillSeleccion = ({
   editable,
@@ -32,6 +33,7 @@ const SkillSeleccion = ({
   setSelectPosition
 }) => {
   const { sportman } = useSelector((state) => state.sportman)
+  const { user } = useSelector((state) => state.users)
 
   const [categoryTop, setCategoryTop] = useState(0)
   const [positionTop, setPositionTop] = useState(0)
@@ -158,7 +160,9 @@ const SkillSeleccion = ({
       newData: editData
     }
 
-    dispatch(updateSportman(body))
+    dispatch(updateSportman(body)).then(() => {
+      dispatch(getUserData(user?.user?.id))
+    })
   }
 
   const selectores = () => {
@@ -402,44 +406,46 @@ const SkillSeleccion = ({
         </View>
 
         {selectedOptions.length > 0 &&
-          selectedOptions.map((opt, i) => (
-            <View key={i} style={styles.formularioCategoria}>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
-                <Text style={styles.atributo}>{opt}</Text>
-                <Text
-                  style={{ ...styles.atributo, fontSize: 10, color: 'gray' }}
+          selectedOptions.map((opt, i) => {
+            return (
+              <View key={i} style={styles.formularioCategoria}>
+                <View
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}
                 >
-                  Valor entre 0 y 100
-                </Text>
+                  <Text style={styles.atributo}>{opt}</Text>
+                  <Text
+                    style={{ ...styles.atributo, fontSize: 10, color: 'gray' }}
+                  >
+                    Valor entre 0 y 100
+                  </Text>
+                </View>
+                <View style={styles.rectanguloBorder}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder={
+                      sportman?.info?.[`prop${i + 1}`]?.toString() || '0 - 100'
+                    }
+                    placeholderTextColor={'#999'}
+                    keyboardType={'numeric'}
+                    value={
+                      data?.[`prop${i + 1}`] !== undefined
+                        ? String(data?.[`prop${i + 1}`])
+                        : editData?.[`prop${i + 1}`]
+                          ? editData?.[`prop${i + 1}`]
+                          : ''
+                    }
+                    onChangeText={(value) => handleData(`prop${i + 1}`, value)}
+                    maxLength={3}
+                  />
+                </View>
               </View>
-              <View style={styles.rectanguloBorder}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder={
-                    sportman?.info?.[`prop${i + 1}`]?.toString() || '0 - 100'
-                  }
-                  placeholderTextColor={'#999'}
-                  keyboardType={'numeric'}
-                  value={
-                    data?.[`prop${i + 1}`] !== undefined
-                      ? String(data?.[`prop${i + 1}`])
-                      : editData?.[`prop${i + 1}`]
-                        ? editData?.[`prop${i + 1}`]
-                        : ''
-                  }
-                  onChangeText={(value) => handleData(`prop${i + 1}`, value)}
-                  maxLength={3}
-                />
-              </View>
-            </View>
-          ))}
+            )
+          })}
       </View>
       {editable && (
         <View style={styles.buttonContainer}>

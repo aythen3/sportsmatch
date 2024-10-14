@@ -4,6 +4,7 @@ import {
   getUserChat,
   getUserChats,
   updateChatMessages,
+  updateChats,
   updateMessages
 } from '../actions/chats'
 
@@ -24,11 +25,15 @@ const clubSlices = createSlice({
     setAllMessages: (state, action) => {
       state.allMessages = action.payload
     },
+    setAllChats: (state, action) => {
+      state.userChats = action.payload
+    },
     setAllConversationMessagesToRead: (state, action) => {
       const allToReaded = state.allMessages.map((message) => ({
         ...message,
         isReaded: true
       }))
+      state.allMessages = allToReaded
     }
   },
   extraReducers: (builder) => {
@@ -58,20 +63,37 @@ const clubSlices = createSlice({
         state.loading = false
         state.error = true
       })
-      // Update allMessages
-      // .addCase(updateMessages.pending, (state) => {
-      //   state.loading = true
-      //   state.error = false
-      // })
-      // .addCase(updateMessages.fulfilled, (state, action) => {
-      //   state.loading = false
-      //   state.allMessages = [action.payload, ...state.allMessages]
-      //   state.error = false
-      // })
-      // .addCase(updateMessages.rejected, (state) => {
-      //   state.loading = false
-      //   state.error = true
-      // })
+      // Update updateChats
+      .addCase(updateChats.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateChats.fulfilled, (state, action) => {
+        state.loading = false
+        const chats = [...state.userChats]
+        const updatedChats = chats.map((chat) => {
+          if (chat?.id === action?.payload?.chat) {
+            // Asegúrate de no sobrescribir accidentalmente los mensajes antiguos
+            const existingMessages = chat.messages || []
+            const newMessages = [...existingMessages, action?.payload?.message] // Agregamos el nuevo mensaje
+
+            return {
+              ...chat,
+              messages: newMessages // Actualizamos solo los mensajes
+            }
+          } else {
+            return chat // Devolvemos el chat sin cambios si no coincide
+          }
+        })
+
+        console.log('New message from server:', action.payload, updatedChats)
+        state.userChats = updatedChats
+        state.error = false
+      })
+      .addCase(updateChats.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
       .addCase(getUserChat.pending, (state) => {
         state.loading = true
         state.error = false
@@ -203,7 +225,8 @@ const clubSlices = createSlice({
 export const {
   setAllMessages,
   setAllConversationMessagesToRead,
-  resetChatsSlices
+  resetChatsSlices,
+  setAllChats
 } = clubSlices.actions
 
 export default clubSlices.reducer

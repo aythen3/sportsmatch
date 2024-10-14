@@ -135,7 +135,6 @@ const MiSuscripcin = () => {
         return 'Unknown plan'
     }
   }
-
   useEffect(() => {
     const getinfo = async (planId) => {
       const res = await axiosInstance.get(`user/subscription/${planId}`)
@@ -144,7 +143,6 @@ const MiSuscripcin = () => {
 
     if (user?.user?.planId) {
       getinfo(user.user.planId).then((subscription) => {
-        console.log(subscription, 'susss')
         const currentDate = new Date(subscription.current_period_end * 1000)
         const interval = subscription.plan.interval
         const intervalCount = subscription.plan.interval_count
@@ -180,43 +178,57 @@ const MiSuscripcin = () => {
     if (user?.user?.prop1?.plans) {
       const plans = user.user.prop1.plans
       const planPromises = plans.map((plan) => getinfo(plan))
-      Promise.all(planPromises).then((plansInfo) => {
-        const plansData = plansInfo.map((subscription, index) => {
-          const currentDate = new Date(subscription.current_period_end * 1000)
-          const interval = subscription.plan.interval
-          const intervalCount = subscription.plan.interval_count
 
-          if (interval === 'month') {
-            currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
-          } else if (interval === 'year') {
-            currentDate.setFullYear(
-              currentDate.getFullYear() + (intervalCount - 1)
-            )
+      Promise.all(planPromises).then((plansInfo) => {
+        const plansByType = {}
+
+        plansInfo.forEach((subscription) => {
+          const planName = getPlanName(subscription.plan.id)
+
+          if (!plansByType[planName]) {
+            plansByType[planName] = {
+              totalMonths: 0,
+              totalYears: 0,
+              expirationDate: new Date(subscription.current_period_end * 1000)
+            }
           }
 
-          const nextPaymentDate = currentDate.getTime() / 1000
-          const nextPaymentDate2 = new Date(nextPaymentDate * 1000)
+          const currentPlan = plansByType[planName]
+          if (subscription.plan.interval === 'month') {
+            currentPlan.totalMonths += subscription.plan.interval_count
+            currentPlan.expirationDate.setMonth(
+              currentPlan.expirationDate.getMonth() +
+                subscription.plan.interval_count
+            )
+          } else if (subscription.plan.interval === 'year') {
+            currentPlan.totalYears += subscription.plan.interval_count
+            currentPlan.expirationDate.setFullYear(
+              currentPlan.expirationDate.getFullYear() +
+                subscription.plan.interval_count
+            )
+          }
+        })
 
+        const updatedPlansData = Object.keys(plansByType).map((planName) => {
+          const { expirationDate } = plansByType[planName]
           const options = {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
           }
 
-          const formattedDate = nextPaymentDate2
+          const formattedDate = expirationDate
             .toLocaleDateString('es-AR', options)
             .replace(/-/g, '/')
 
           return {
-            planId: plans[index],
-            subs: subscription.plan.id,
-            expirationDate: formattedDate,
-            status: subscription.status,
-            planName: getPlanName(subscription.plan.id)
+            planName,
+            expirationDate: formattedDate
           }
         })
-        setPlansData(plansData)
-        console.log(plansData, 'plansss')
+
+        setPlansData(updatedPlansData)
+        console.log(updatedPlansData, 'plansData actualizados')
       })
     }
   }, [user?.user?.planId])
@@ -267,34 +279,30 @@ const MiSuscripcin = () => {
               </Text>
             )} */}
             {plansData &&
-              plansData.map((plan, i) => {
-                if (plan.planId !== user.user.planId) {
-                  return (
-                    <View>
-                      <Text
-                        style={[
-                          styles.esteEsTu,
-                          styles.esteEsTuFlexBox,
-                          { color: 'gray', marginTop: 5 }
-                        ]}
-                      >
-                        {plan.planName}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.esteEsTu,
-                          styles.esteEsTuFlexBox,
-                          { color: 'gray', marginTop: 5 }
-                        ]}
-                      >
-                        expira el {plan.expirationDate.slice(0, 2)} de{' '}
-                        {mesesDelAño[plan.expirationDate.slice(3, 5) - 1]} de{' '}
-                        {plan.expirationDate.slice(6, 10)}
-                      </Text>
-                    </View>
-                  )
-                }
-              })}
+              plansData.map((plan, i) => (
+                <View key={i}>
+                  <Text
+                    style={[
+                      styles.esteEsTu,
+                      styles.esteEsTuFlexBox,
+                      { color: 'gray', marginTop: 5 }
+                    ]}
+                  >
+                    {plan.planName}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.esteEsTu,
+                      styles.esteEsTuFlexBox,
+                      { color: 'gray', marginTop: 5 }
+                    ]}
+                  >
+                    expira el {plan.expirationDate.slice(0, 2)} de{' '}
+                    {mesesDelAño[plan.expirationDate.slice(3, 5) - 1]} de{' '}
+                    {plan.expirationDate.slice(6, 10)}
+                  </Text>
+                </View>
+              ))}
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Este es tu plan actual
             </Text>

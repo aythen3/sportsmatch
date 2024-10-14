@@ -94,8 +94,8 @@ const App = () => {
       shouldSetBadge: false
     })
   })
- /* eslint-disable */
-  let [fontsLoaded,error] = useFonts({
+  /* eslint-disable */
+  let [fontsLoaded, error] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,
     Poppins_200ExtraLight,
@@ -113,16 +113,15 @@ const App = () => {
     Poppins_800ExtraBold,
     Poppins_800ExtraBold_Italic,
     Poppins_900Black,
-    Poppins_900Black_Italic,
-  });
-
+    Poppins_900Black_Italic
+  })
 
   if (!fontsLoaded && !error) {
     return null
   }
   // ======================= CHAT RELATED STUFF ============================
 
-   /* eslint-enable */
+  /* eslint-enable */
   return (
     <SafeAreaView
       style={{
@@ -131,78 +130,69 @@ const App = () => {
       }}
     >
       <ToastProvider>
-        <StripeProvider 
+        <StripeProvider
           publishableKey="pk_test_51OocYQGmE60O5ob7ydu8u1BLMhlWf9F5C6TCuSu75y47X5yBRO8wcbIssEjFc95AferGwyiHNkNGwT25ywIoZahB009vDgPuYd"
           urlScheme="com.android.app" // required for 3D Secure and bank redirects
           merchantIdentifier="merchant.com.app" // required for Apple Pay
         >
-        <StatusBar translucent={true} backgroundColor={'transparent'} />
+          <StatusBar translucent={true} backgroundColor={'transparent'} />
 
-          <Provider store={store} >
-            <ContextProvider  >
-              <SocketProvider  >
-              <NavigationContainer  
-      //          initialState={initialState}
-      // onStateChange={(state) =>
-      //   AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-      // }
-              theme={{colors:{background:"black"}}} >
-                {true ? (
-                 <>
-                  <Stack.Navigator 
+          <Provider store={store}>
+            <ContextProvider>
+              <SocketProvider>
+                <NavigationContainer
+                  //          initialState={initialState}
+                  // onStateChange={(state) =>
+                  //   AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+                  // }
+                  theme={{ colors: { background: 'black' } }}
+                >
+                  {true ? (
+                    <>
+                      <Stack.Navigator
+                        initialRouteName="MainTabs"
+                        screenOptions={({ route }) => ({
+                          cardOverlayEnabled: false,
+                          cardStyle: { backgroundColor: 'red' },
+                          statusBarTranslucent: true,
+                          headerShown: false,
 
-                  initialRouteName="MainTabs"
-                  
-                  
-                    screenOptions={({ route }) => ({
-                      cardOverlayEnabled:false,
-                      cardStyle:{backgroundColor:"red"},
-                      statusBarTranslucent:true,
-                      headerShown: false,
-                      
-                        animationEnabled: false,
-    gestureEnabled: false,  // Desactivar gestos de navegación
+                          animationEnabled: false,
+                          gestureEnabled: false // Desactivar gestos de navegación
 
-                      
-                      
-                      // footerShown: setIsFooterShow(
-                      //   route.name !== 'PantallaInicio' &&
-                      //     route.name !== 'LoginSwitch' &&
-                      //     route.name !== 'IniciarSesin' &&
-                      //     route.name !== 'stepsClub' &&
-                      //     route.name !== 'Registrarse' &&
-                      //     route.name !== 'Paso1' &&
-                      //     route.name !== 'Paso3Profesional' &&
-                      //     route.name !== 'Paso4Jugador' &&
-                      //     route.name !== 'Paso4Profesional' &&
-                      //     route.name !== 'stepsJugador' &&
-                      //     route.name !== 'PostPromocion' &&
-                      //     route.name !== 'RecuperarContra' && 
-                      //      route.name !== 'ChatAbierto1'
-                          
-                      // )
-                      
-                    })}
-                  >       
-                      <Stack.Screen                    
-                      name="ScreenInicio"
-                      component={ScreenInicio}
-                      options={{ headerShown: false }}
-                      
-                    />
-                      <Stack.Screen
-                      
-                      name="ScreenPrincipal"
-                      component={ScreenPrincipal}
-                      options={{ headerShown: false }}
-                    />
-                  
-        
-                  </Stack.Navigator>
-                 </>
-                ) : null}
-                {/* {isFooterShow && <NavBarInferior2 />} */}
-              </NavigationContainer>
+                          // footerShown: setIsFooterShow(
+                          //   route.name !== 'PantallaInicio' &&
+                          //     route.name !== 'LoginSwitch' &&
+                          //     route.name !== 'IniciarSesin' &&
+                          //     route.name !== 'stepsClub' &&
+                          //     route.name !== 'Registrarse' &&
+                          //     route.name !== 'Paso1' &&
+                          //     route.name !== 'Paso3Profesional' &&
+                          //     route.name !== 'Paso4Jugador' &&
+                          //     route.name !== 'Paso4Profesional' &&
+                          //     route.name !== 'stepsJugador' &&
+                          //     route.name !== 'PostPromocion' &&
+                          //     route.name !== 'RecuperarContra' &&
+                          //      route.name !== 'ChatAbierto1'
+
+                          // )
+                        })}
+                      >
+                        <Stack.Screen
+                          name="ScreenInicio"
+                          component={ScreenInicio}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="ScreenPrincipal"
+                          component={ScreenPrincipal}
+                          options={{ headerShown: false }}
+                        />
+                      </Stack.Navigator>
+                    </>
+                  ) : null}
+                  {/* {isFooterShow && <NavBarInferior2 />} */}
+                </NavigationContainer>
               </SocketProvider>
             </ContextProvider>
           </Provider>

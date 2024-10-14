@@ -264,7 +264,7 @@ const ExplorarClubs = () => {
                     borderRadius: 50,
                     backgroundColor: 'gray' // Color de fondo por defecto
                   }}
-                  source={{ uri: user.info.img_perfil }}
+                  source={{ uri: user?.info.img_perfil }}
                 />
               ) : (
                 <Image

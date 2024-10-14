@@ -69,7 +69,7 @@ const Thumbnail = ({ url, notUrl, styles, play, isMini, post }) => {
             }
       }
     >
-      {isVideo && !isMini ? (
+      {isVideo ? (
         <View style={{ flex: 1 }}>
           <Video
             useNativeControls
@@ -95,7 +95,7 @@ const Thumbnail = ({ url, notUrl, styles, play, isMini, post }) => {
         </View>
       ) : (
         <Image
-          source={{ uri: isVideo ? thumbnailUri : imageUrl }}
+          source={{ uri: isVideo ? thumbnailUri : imageUrl || '' }}
           style={{
             width: '100%',
             height: '100%',

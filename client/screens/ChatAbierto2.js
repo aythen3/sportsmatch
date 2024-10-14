@@ -48,7 +48,8 @@ import * as NavigationBar from 'expo-navigation-bar'
 import { useSocket } from '../context/ContextSocket'
 
 const ChatAbierto2 = () => {
-  const { sendMessage, joinRoom, leaveRoom, socket } = useSocket()
+  const { sendMessage, joinRoom, leaveRoom, socket, openConversation } =
+    useSocket()
   const [usuario, setUsuario] = useState({})
 
   const { user, allUsers, mainColor, isSportman } = useSelector(
@@ -92,18 +93,13 @@ const ChatAbierto2 = () => {
     }
     return () => {
       dispatch(setShowNavbar(true))
+      // dispatch(getUserChats(user?.user?.id))
+
       NavigationBar.setBackgroundColorAsync(Color.bLACK2SPORTMATCH)
     }
   }, [])
 
   // Función que se llama al abrir la conversación
-  const openConversation = (chatId, userId) => {
-    // Aquí podrías emitir un evento para marcar como leído
-    socket.emit('markMessagesAsRead', { chatId, userId })
-
-    // Cargar los mensajes de la conversación
-    loadMessages(chatId)
-  }
 
   useEffect(() => {
     setMessages(route?.params?.chat?.messages)
@@ -206,8 +202,9 @@ const ChatAbierto2 = () => {
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           )
 
-          dispatch(setAllMessages(sortedMessages))
           joinRoom(roomId)
+          dispatch(setAllMessages(sortedMessages))
+          openConversation(chat?.id, route?.params?.receiverId)
 
           // joinRoom(e?.payload?.data?.id)
         } catch (error) {
@@ -220,26 +217,9 @@ const ChatAbierto2 = () => {
       console.log('saliendo de', roomId)
       leaveRoom(roomId)
       dispatch(emptyAllMessages())
-      dispatch(getUserChats(user?.user?.id))
+      // dispatch(getUserChats(user?.user?.id))
     }
   }, [])
-
-  // useEffect(() => {
-  // }, [chat])
-
-  // useEffect(() => {
-  //   joinRoom(user?.user?.id, route?.params?.receiverId)
-  //   dispatch(
-  //     getChatHistory({
-  //       sender: user?.user?.id,
-  //       receiver: route?.params?.receiverId
-  //     })
-  //   )
-  //   return () => {
-  //     dispatch(emptyAllMessages())
-  //     leaveRoom(user?.user?.id, route.params.receiverId)
-  //   }
-  // }, [])
 
   // const setAllToRead = async () => {
   //   console.log('on setAllToRead')
@@ -273,80 +253,28 @@ const ChatAbierto2 = () => {
   //   }
   // }, [allMessages])
 
-  // useEffect(() => {
-  //   setTimeout(() => setLoading(false), 100)
-  // }, [])
-
   const handleFollow = () => {
     setShowOptionsModal(false)
-    // let actualUser = _.cloneDeep(user)
-    // const actualFollowers =
-    //   allUsers.filter((user) => user?.id === selectedUserDetails?.id)[0]
-    //     .followers || []
-    // const newFollowers = actualFollowers.includes(user?.user?.id)
-    //   ? actualFollowers.filter((follower) => follower !== user?.user?.id)
-    //   : [...actualFollowers, user?.user?.id]
-
-    // const newFollowingArray = userFollowing?.includes(selectedUserDetails?.id)
-    //   ? userFollowing.filter((followed) => followed !== selectedUserDetails?.id)
-    //   : [...userFollowing, selectedUserDetails?.id]
-    // actualUser.user.following = newFollowingArray
-
-    // dispatch(
-    //   updateUserData({
-    //     id: selectedUserDetails?.id,
-    //     body: { followers: newFollowers }
-    //   })
-    // )
-    //   .then((data) => {
-    //     dispatch(
-    //       updateUserData({
-    //         id: user?.user?.id,
-    //         body: { following: newFollowingArray }
-    //       })
-    //     )
-    //   })
-    //   .then((response) => {
-    //     if (newFollowers.includes(user?.user?.id)) {
-    //       dispatch(
-    //         sendNotification({
-    //           title: 'Follow',
-    //           message: `${user.user.nickname} ha comenzado a seguirte`,
-    //           recipientId: selectedUserDetails?.id,
-    //           date: new Date(),
-    //           read: false,
-    //           prop1: {
-    //             userId: user?.user?.id,
-    //             userData: {
-    //               ...user
-    //             }
-    //           }
-    //         })
-    //       )
-    //     }
-    //     dispatch(getAllUsers())
-    //     dispatch(updateUser(actualUser))
-    //   })
     return
   }
 
-  const handleRemoveChat = async () => {
-    setShowDeletePopUp(false)
-    const body = {
-      senderId: user?.user?.id.toString(),
-      receiverId: route?.params?.receiverId?.toString(),
-      room: roomId.toString()
-    }
-    await axiosInstance.post('chat/deleteAllMessageChat', body).then((r) => {
-      dispatch(
-        getChatHistory({
-          sender: user?.user?.id,
-          receiver: route?.params?.receiverId
-        })
-      )
-      console.log(r, 'ressssssss')
-    })
-  }
+  // const handleRemoveChat = async () => {
+  //   setShowDeletePopUp(false)
+  //   const body = {
+  //     senderId: user?.user?.id.toString(),
+  //     receiverId: route?.params?.receiverId?.toString(),
+  //     room: roomId.toString()
+  //   }
+  //   await axiosInstance.post('chat/deleteAllMessageChat', body).then((r) => {
+  //     dispatch(
+  //       getChatHistory({
+  //         sender: user?.user?.id,
+  //         receiver: route?.params?.receiverId
+  //       })
+  //     )
+  //     console.log(r, 'ressssssss')
+  //   })
+  // }
 
   if (true) {
     return (
@@ -545,6 +473,7 @@ const ChatAbierto2 = () => {
             <Pressable
               onPress={() => {
                 navigation.goBack()
+                leaveRoom(chat?.id)
               }}
             >
               <Image

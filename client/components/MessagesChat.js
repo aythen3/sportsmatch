@@ -19,6 +19,7 @@ import { updateOffer } from '../redux/actions/offers'
 import { sendNotification } from '../redux/actions/notifications'
 import { getColorsWithOpacity } from '../utils/colorUtils'
 import { setShowNavbar } from '../redux/slices/users.slices'
+import { setAllMessages } from '../redux/slices/chats.slices'
 
 const MessagesChat = ({
   name,
@@ -48,7 +49,7 @@ const MessagesChat = ({
   } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState(
-    chat?.messages ? [...chat?.messages] : []
+    chat?.messages.length > 0 ? [...chat?.messages] : []
   )
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
@@ -59,29 +60,15 @@ const MessagesChat = ({
   const lessOpacity = 0.4 // 40% opacity
   const colors = getColorsWithOpacity(mainColor, moreOpacity, lessOpacity)
 
-  const getChatMessages = async () => {
-    console.log('====SETTING CONV MESSAGES TO', chat.messages)
-    setConvMessages(chat.messages)
-  }
-  // console.log('NOT READED MESSAGES LENGTH=====', notReaded)
-  // console.log('NOTREADEDMESSAGES========', notReadedMessages)
-  // useEffect(() => {
-  //   getChatMessages()
-  // }, [usersWithMessages, value])
-
   useEffect(() => {
     setLoading(true)
-    // console.log('CLEAN USEEFFECT GETCHAT')
-    // getChatMessages()
   }, [])
 
   const getLastMessage = (messages) => {
     try {
-      console.log('aca intento', messages)
       const received = messages[0].senderId === user.user.id
       const length = chat.messages.length - 1
       const last = chat.messages[length]
-      console.log(last, 'LASTTTTTTTT', chat.messages.length)
 
       setLastMessage({ message: last, received })
       setLoading(false)
@@ -103,40 +90,9 @@ const MessagesChat = ({
     }
   }, [convMessages, userChats])
 
-  // useEffect(() => {
-  //   console.log(
-  //     name,
-  //     'INSCRIPT?',
-  //     offers.filter(
-  //       (offer) => offer.inscriptions && offer.inscriptions.includes(sportmanId)
-  //     )
-  //   )
-  //   console.log(
-  //     'TIENE QUE PODER MATCHEAR? =========',
-  //     user?.user?.type === 'club' &&
-  //       clubMatches?.filter(
-  //         (match) =>
-  //           match?.prop1?.sportmanId === sportmanId &&
-  //           match.status === 'success'
-  //       )?.length === 0 &&
-  //       offers.filter(
-  //         (offer) =>
-  //           offer.inscriptions &&
-  //           offer.inscriptions.includes(sportmanId) &&
-  //           offer.club.id === club.id
-  //       ).length > 0
-  //   )
-  // }, [])
+  //proceso de como se reciben los mensajes se saca el token cuando entra a la sala de chat y vuelve cuando abandona
 
-  useEffect(() => {
-    // lastMessage &&
-    //   console.log(
-    //     '==LAST MESSAGE FROM ',
-    //     name,
-    //     ':',
-    //     lastMessage.message.message
-    //   )
-  }, [lastMessage])
+  useEffect(() => {}, [lastMessage])
 
   if (loading === true || lastMessage === null) return null
   // if (!lastMessage) return null
@@ -153,6 +109,11 @@ const MessagesChat = ({
         onPress={() => {
           setValue('')
           dispatch(setShowNavbar(false))
+          const sort = [...chat?.messages] || []
+          const ord = sort?.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+          dispatch(setAllMessages(ord))
           navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
@@ -215,47 +176,6 @@ const MessagesChat = ({
           </View>
         </View>
 
-        {/* {user?.user?.type === 'club' &&
-          clubMatches?.filter(
-            (match) =>
-              match?.prop1?.sportmanId === sportmanId &&
-              match.status === 'pending'
-          )?.length === 0 && (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 5
-              }}
-            >
-              {clubMatches?.filter(
-                (match) =>
-                  match?.prop1?.sportmanId === sportmanId &&
-                  match.status === 'success'
-              )?.length > 0 && (
-                <View
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: 100,
-                    backgroundColor: mainColor
-                  }}
-                />
-              )}
-              <Text
-                style={{
-                  color: Color.gREY2SPORTSMATCH,
-                  fontSize: FontSize.t1TextSMALL_size,
-                  fontFamily: FontFamily.t4TEXTMICRO
-                }}
-              >
-                {lastMessage
-                  ? getTimeFromDate(lastMessage?.message?.createdAt)
-                  : ''}
-              </Text>
-            </View>
-          )} */}
         {
           <View
             style={{
@@ -296,7 +216,7 @@ const MessagesChat = ({
               match?.prop1?.sportmanId === sportmanId &&
               match.status === 'success'
           )?.length === 0 &&
-          offers.filter(
+          [...offers].filter(
             (offer) =>
               offer.inscriptions &&
               offer.inscriptions.includes(sportmanId) &&
@@ -304,12 +224,12 @@ const MessagesChat = ({
           ).length > 0 && (
             <TouchableOpacity
               onPress={() => {
-                const currentOffer = offers.filter(
+                const currentOffer = [...offers].filter(
                   (offer) =>
                     offer.inscriptions &&
                     offer.inscriptions.includes(sportmanId)
                 )[0]
-                const offerId = offers.filter(
+                const offerId = [...offers].filter(
                   (offer) =>
                     offer.inscriptions &&
                     offer.inscriptions.includes(sportmanId)
@@ -318,10 +238,10 @@ const MessagesChat = ({
                   (applicant) => applicant !== sportmanId
                 )
 
-                const actualMatches = currentOffer.matches || []
+                const actualMatches = [...currentOffer.matches] || []
                 const newMatchs = [...actualMatches, sportmanId]
 
-                const sportmanUser = allUsers.filter(
+                const sportmanUser = [...allUsers].filter(
                   (user) => user?.sportman?.id === sportmanId
                 )[0]
 

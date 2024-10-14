@@ -335,7 +335,7 @@ const GoldSuscription = ({
             <Text style={styles.ofertasTypo}>{'Seleccionar plan Anual'}</Text>
           </TouchableOpacity>
         )}
-        {suscription === 'PRO (Mensual)' && (
+        {suscription === 'PRO' && (
           <TouchableOpacity
             onPress={handleGetGoldAnual}
             style={{

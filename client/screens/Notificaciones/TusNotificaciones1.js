@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 import Notifications from '../../components/Notifications'
 import MessagesChat from '../../components/MessagesChat'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { getAllUsers } from '../../redux/actions/users'
 import { useDispatch } from 'react-redux'
 import { Context } from '../../context/Context'
@@ -41,7 +41,7 @@ const TusNotificaciones1 = () => {
   const { allMessages, userChats: uChats } = useSelector((state) => state.chats)
   const { user, allUsers, mainColor } = useSelector((state) => state.users)
   const { usersWithMessages, setActiveIcon } = useContext(Context)
-  const [userChats, setUserChats] = useState(true)
+  const [userChats, setUserChats] = useState([...uChats])
 
   useEffect(() => {
     setUserChats(uChats)
@@ -66,24 +66,22 @@ const TusNotificaciones1 = () => {
     }
   }
 
-  const filteredUsers = allUsers
+  const filteredUsers = [...allUsers]
     ?.filter((user) =>
       user?.nickname?.toLowerCase()?.includes(value?.toLowerCase())
     )
     .sort(sortUsers)
 
-  useEffect(() => {
-    dispatch(getUserChats(user?.user?.id))
-  }, [])
-
-  useEffect(() => {
-    if (user.user.type === 'club') {
-      dispatch(getNotificationsByUserId(user?.user?.club?.id))
-    } else {
-      dispatch(getNotificationsByUserId(user?.user?.id))
-    }
-  }, [])
-  // console.log('userNotifications', userNotifications)
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getUserChats(user?.user?.id))
+      if (user.user.type === 'club') {
+        dispatch(getNotificationsByUserId(user?.user?.club?.id))
+      } else {
+        dispatch(getNotificationsByUserId(user?.user?.id))
+      }
+    }, [user])
+  )
   // ================ NOTIFICATIONS/OFFERS =====================
 
   useEffect(() => {
@@ -200,7 +198,7 @@ const TusNotificaciones1 = () => {
         </View>
 
         {selectedComponent === 'notifications' && (
-          <ScrollView   contentContainerStyle={{ paddingBottom: 100 }}>
+          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
             {userNotifications.length > 0 ? (
               [...userNotifications]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
