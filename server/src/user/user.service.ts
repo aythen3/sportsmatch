@@ -265,6 +265,48 @@ export class UserService {
     if (!usuario) {
       throw new Error('Token de confirmación no válido o expirado');
     }
+    const sportspotLogo = join(__dirname, '..', '..', 'assets', 'image.png');
+
+    const mailOptions = {
+      from: 'sportsmatchdigital.app@gmail.com',
+      to: usuario.emailTemporal,
+      subject: `Bienvenido a SportsMatch`,
+      attachments: [
+        {
+          filename: 'image.png',
+          path: sportspotLogo,
+          cid: 'sportSpot'
+        }
+      ],
+      html: `
+        <html>
+          <head>
+            <style>
+             .header {
+               background-color: #000;
+               padding: 20px;
+               text-align: center;
+             }
+             .iconImg {
+               max-width: 100px;
+               max-height: 100px;
+               margin: auto;
+               display: block;
+             }
+           </style>
+          </head>
+          <body>
+            <div class="header">
+              <img src="cid:sportSpot" class='iconImg'/>
+            </div>
+            <h1>Bienvenido a SportsMatch</h1>
+            <p>Tu email fue verificado correctamente.</p>
+            
+          </body>
+        </html>
+      `
+    };
+    await this.transporter.sendMail(mailOptions);
 
     // Asigna el nuevo correo y elimina el token de confirmación
     usuario.email = usuario.emailTemporal;

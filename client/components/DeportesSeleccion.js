@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useDispatch } from 'react-redux'
 import { getSportById } from '../redux/actions/sports'
+import { Context } from '../context/Context'
 
 const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
   const dispatch = useDispatch()
@@ -17,11 +18,22 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
     onSelect(sport)
     dispatch(getSportById(sport.id))
   }
+  const { scalableFontSize } = useContext(Context)
 
   return (
     <View style={styles.frameParent}>
-      <TouchableOpacity onPress={handlePress}>
-        <View>
+      <TouchableOpacity
+        style={{ width: '100%', height: '100%' }}
+        onPress={handlePress}
+      >
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            height: '100%'
+          }}
+        >
           {sport?.name === 'Fútbol' && (
             <Image
               style={styles.frameChild}
@@ -88,7 +100,7 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
               }
             />
           )}
-          <Text style={styles.ftbolTypo}>
+          <Text style={{ ...styles.ftbolTypo, fontSize: scalableFontSize(12) }}>
             {sport?.name === 'Baloncesto'
               ? 'Baloncesto'
               : sport?.name === 'Fútbol de salón'
@@ -107,11 +119,14 @@ const DeportesSeleccion = ({ sport, selectedSport, onSelect }) => {
 
 const styles = StyleSheet.create({
   frameParent: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexBasis: '48%', // Ocupa el 48% del ancho del contenedor padre
+    height: '32%'
   },
   frameChild: {
-    height: 160,
-    width: Dimensions.get('screen').width / 2.6
+    width: '80%', // Ocupa el 80% del ancho disponible,
+    height: '80%'
   },
   ftbolTypo: {
     marginTop: 7,

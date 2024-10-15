@@ -55,7 +55,7 @@ const Post = () => {
             setShowDeletePostModal={setShowDeletePostModalFromProfile}
             showDeletePostModal={showDeletePostModalFromProfile}
             key={item.id}
-            name={item?.author?.nickname}
+            name={item?.author?.sportman?.info?.nickname}
             description={item.description}
             imgPerfil={
               item?.author?.sportman

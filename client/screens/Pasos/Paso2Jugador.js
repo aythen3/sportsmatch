@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import DeportesSeleccion from '../../components/DeportesSeleccion'
 import { useSelector } from 'react-redux'
 
@@ -17,83 +17,31 @@ const Paso2Jugador = ({ selectedSport, setSelectedSport }) => {
   ]
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        paddingHorizontal: 20,
-        gap: 15
-      }}
-    >
-      {sports.map(
-        (sport) =>
-          sport.name === 'Fútbol' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
-      {sports.map(
-        (sport) =>
-          sport.name === 'Fútbol Sala' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
-      {sports.map(
-        (sport) =>
-          sport.name === 'Baloncesto' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
-      {sports.map(
-        (sport) =>
-          sport.name === 'Hockey' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
-      {sports.map(
-        (sport) =>
-          sport.name === 'Handball' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
-      {sports.map(
-        (sport) =>
-          sport.name === 'Voley' && (
-            <DeportesSeleccion
-              key={sport.id}
-              sport={sport}
-              selectedSport={selectedSport}
-              onSelect={handleSportSelection}
-            />
-          )
-      )}
+    <View style={styles.container}>
+      {sports.map((sport) => (
+        <DeportesSeleccion
+          key={sport.id}
+          sport={sport}
+          selectedSport={selectedSport}
+          onSelect={handleSportSelection}
+        />
+      ))}
     </View>
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around', // Espacio entre los elementos
 
+    paddingHorizontal: 20,
+    gap: 8,
+    flex: 1
+  },
+  deporteItem: {
+    marginBottom: 15, // Margen inferior para separar las filas
+    flexShrink: 0 // Evita que los elementos se encogen
+  }
+})
 export default Paso2Jugador

@@ -382,7 +382,9 @@ function Carousel({
                 : require('../assets/whiteSport.png')
             }
           />
-          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.nameText}>
+            {data?.author?.sportman?.info?.nickname}
+          </Text>
         </Pressable>
 
         {authorId === user?.user?.id ? (

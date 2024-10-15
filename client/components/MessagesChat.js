@@ -171,7 +171,7 @@ const MessagesChat = ({
                 ? lastMessage?.message?.message?.length >= 22
                   ? lastMessage?.message?.message.slice(0, 22).concat('...')
                   : lastMessage?.message?.message
-                : 'Inicia una conversacion!'}
+                : '¡Inicia una conversacion!'}
             </Text>
           </View>
         </View>

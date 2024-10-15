@@ -287,7 +287,7 @@ const GoldSuscriptionClub = ({
         {deletePlan && (
           <View style={{ paddingTop: 20, width: '100%' }}>
             <Text style={{ textAlign: 'center' }}>
-              Seguro quieres cancelar?
+              ¿Seguro quieres cancelar?
             </Text>
             <TouchableOpacity
               onPress={() => setDeletePlan(false)}

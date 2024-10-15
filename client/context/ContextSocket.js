@@ -9,9 +9,9 @@ import {
 import { setAllChats, setAllMessages } from '../redux/slices/chats.slices'
 
 // Crear el contexto del socket
-let socket
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
+let socket
 export const SocketProvider = ({ children }) => {
   const { user } = useSelector((state) => state.users)
   const { allMessages, userChats } = useSelector((state) => state.chats)
@@ -56,7 +56,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.on('message-server', (msg) => {
       console.log(msg, 'mmmmmmmmmmmmmmmm')
-      dispatch(updateMessages(msg.message))
+      dispatch(updateMessages(msg))
       // if (msg.chat) {
       //   dispatch(updateChats(msg))
       // }

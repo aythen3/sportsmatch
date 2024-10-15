@@ -372,25 +372,45 @@ const Paso1 = () => {
         dispatch(clearUser())
         dispatch(cleanSportman())
         navigation.navigate('LoginSwitch')
-        return true
+        return true // Indica que hemos manejado el evento
       }
       if (stepsProfesional > 0) {
         setStepsProfesional((prev) => prev - 1)
-        return true
+        return true // Indica que hemos manejado el evento
       }
       if (stepsSportman > 0) {
         setStepsSportman((prev) => prev - 1)
-        return true
+        return true // Indica que hemos manejado el evento
       } else {
         setSportman(false)
         setProfesional(false)
         setInvitado(false)
+        return true // Indica que hemos manejado el evento
       }
-      return true
     } else {
       navigation.goBack()
+      return true // Indica que hemos manejado el evento
     }
   }
+
+  // Manejar el botón de retroceso
+  const handleBackPress = async () => {
+    const shouldExit = await handleBackSteps()
+    return shouldExit // Devolver el resultado de handleBackSteps
+  }
+
+  useEffect(() => {
+    // Suscribirse al evento de retroceso
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress
+    )
+
+    // Limpiar el evento al desmontar el componente
+    return () => {
+      backHandler.remove()
+    }
+  }, [loged, sportman, profesional, invitado, stepsProfesional, stepsSportman])
 
   return (
     <SafeAreaView
@@ -399,7 +419,7 @@ const Paso1 = () => {
         width: width,
         flex: 1,
         paddingHorizontal: 0,
-        paddingTop: 20,
+        paddingTop: 50,
         backgroundColor: Color.bLACK1SPORTSMATCH
       }}
     >
@@ -535,7 +555,7 @@ const Paso1 = () => {
         contentContainerStyle={{
           justifyContent: 'space-between',
           paddingTop: '6%',
-          flex: !sportman && !profesional ? 1 : null
+          flex: 1
         }}
         style={{
           flex: 1

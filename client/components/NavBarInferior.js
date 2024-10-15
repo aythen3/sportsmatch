@@ -22,7 +22,7 @@ import PerfilDatosPropioClub from '../screens/PerfilDatosPropioClub'
 import ConfigurarAnuncio from '../screens/Ofertas/ConfigurarAnuncio'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import EditarPerfil from '../screens/Perfil/EditarPerfil/EditarPerfil'
-import TodasLasOfertas from '../screens/TodasLasOfertas'
+import TodasLasOfertas from '../screens/Ofertas/TodasLasOfertas'
 import OfertasEmitidas from '../screens/Ofertas/OfertasEmitidas'
 import TusMatchs from '../screens/Match/TusMatchs'
 import PerfilFeedVisualitzaciJug from '../screens/PerfilFeedVisualitzaciJug'
@@ -134,14 +134,10 @@ const NavBarInferior2 = () => {
                       justifyContent: 'center'
                     }}
                   >
-                    <Text
-                      style={{
-                        color: '#fff',
-                        textAlignVertical: 'center'
-                      }}
-                    >
-                      +
-                    </Text>
+                    <Image
+                      style={{ width: '50%', height: '50%' }}
+                      source={require('../assets/btnmas2.png')}
+                    ></Image>
                   </View>
                 </View>
               )

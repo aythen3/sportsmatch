@@ -274,7 +274,7 @@ const TusNotificaciones1 = () => {
                     <Text
                       style={{ fontSize: 14, fontWeight: 400, color: '#fff' }}
                     >
-                      Inicia una conversación!
+                      ¡Inicia una conversación!
                     </Text>
                   </View>
                 ) : (

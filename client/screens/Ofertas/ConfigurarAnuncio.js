@@ -141,6 +141,36 @@ const ConfigurarAnuncio = () => {
     'Fisioterapeuta',
     'Nutricionista'
   ]
+  const allPositions2 = [
+    'Portero',
+    'Lateral',
+    'Central',
+    'Mediocentro',
+    'Interior',
+    'Extremo',
+    'Mediapunta',
+    'Delantero centro',
+    'Base',
+    'Escolta',
+    'Alero',
+    'Ala-pivot',
+    'Pivot',
+    'Cierre',
+    'Ala',
+    'Pivot',
+    'Jugador',
+    'Altura',
+    'Recepción',
+    'Servicio',
+    'Salto',
+    'Central',
+    'Ala derecha',
+    'Ala izquierda',
+    'Pivot',
+    'Extremo derecho',
+    'Extremo izquierdo'
+  ]
+
   const roles = ['Deportista', 'Profesional']
 
   const remunerationData = ['Si', 'No']
@@ -268,19 +298,33 @@ const ConfigurarAnuncio = () => {
               <Text style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>
                 Posición
               </Text>
-              <View style={{ width: '100%' }}>
-                <TextInput
-                  value={selectedPosition || offerData?.posit}
-                  placeholderTextColor={'#fff'}
-                  placeholder={
-                    selectedPosition ||
-                    offerData?.posit ||
-                    'Indique una posición'
-                  }
-                  onChangeText={(text) => setSelectedPosition(text)}
-                  style={{ ...styles.containerBox, paddingHorizontal: 18 }}
-                ></TextInput>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowPositionModal(true)
+                }}
+                style={{ zIndex: 8000, ...styles.containerBox }}
+              >
+                <Text style={styles.inputText}>
+                  {!selectedPosition && !offerData && 'Indique una posición'}
+                  {selectedPosition === '' && offerData?.prop4}
+                  {selectedPosition}
+                </Text>
+                <Entypo
+                  style={{ color: '#fff', marginRight: 15 }}
+                  name={showPositionModal ? 'chevron-up' : 'chevron-down'}
+                  color="#fff"
+                  size={18}
+                />
+
+                {showPositionModal && (
+                  <ScrollableModal
+                    visible={showPositionModal}
+                    closeModal={() => setShowPositionModal(false)}
+                    onSelectItem={setSelectedPosition}
+                    options={allPositions2}
+                  />
+                )}
+              </TouchableOpacity>
             </View>
           ) : (
             <View style={{ width: '100%', gap: 8 }}>
@@ -331,9 +375,7 @@ const ConfigurarAnuncio = () => {
                   {!selectedGender &&
                     !offerData?.sexo &&
                     'Selecciona un género'}
-                  {selectedGender === '' &&
-                    offerData?.sexo &&
-                    (offerData.sexo === 'Male' ? 'Hombre' : 'Mujer')}
+                  {selectedGender === '' && offerData?.sexo}
                   {selectedGender}
                 </Text>
                 <Entypo
@@ -502,10 +544,7 @@ const ConfigurarAnuncio = () => {
                     fromOffer: true,
                     oferta: {
                       offerData: {
-                        sexo:
-                          (selectedGender === 'Hombre' && 'Male') ||
-                          (selectedGender === 'Mujer' && 'Female') ||
-                          (selectedGender === '' && 'Otro'),
+                        sexo: selectedGender || 'Otro',
                         category: selectedCategory,
                         urgency: selectedPriority,
                         prop1: retribucion,
@@ -548,10 +587,7 @@ const ConfigurarAnuncio = () => {
                 if (!editOffer) {
                   const data = {
                     offerData: {
-                      sexo:
-                        (selectedGender === 'Hombre' && 'Male') ||
-                        (selectedGender === 'Mujer' && 'Female') ||
-                        (selectedGender === '' && 'Otro'),
+                      sexo: selectedGender || 'Otro',
 
                       category: selectedCategory,
                       urgency: selectedPriority,
@@ -596,9 +632,7 @@ const ConfigurarAnuncio = () => {
                 } else {
                   const data = {
                     ...(selectedGender && {
-                      sexo:
-                        (selectedGender === 'Hombre' && 'Male') ||
-                        (selectedGender === 'Mujer' && 'Female')
+                      sexo: selectedGender || 'Otro'
                     }),
                     ...(selectedCategory && { category: selectedCategory }),
                     ...(selectedPriority && { urgency: selectedPriority }),

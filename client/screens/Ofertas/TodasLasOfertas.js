@@ -14,33 +14,39 @@ import {
 } from 'react-native'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
-import { Color, Border, FontSize, FontFamily, Padding } from '../GlobalStyles'
-import CardInfoOffers from '../components/CardInfoOffers'
-import FiltersHome from '../components/FiltersHome'
-import MonetizarOfertaPRO from './MonetizarOfertaPRO'
-import FiltersSportman from '../components/FiltersSportman'
+import {
+  Color,
+  Border,
+  FontSize,
+  FontFamily,
+  Padding
+} from '../../GlobalStyles'
+import CardInfoOffers from '../../components/CardInfoOffers'
+import FiltersHome from '../../components/FiltersHome'
+import MonetizarOfertaPRO from '../MonetizarOfertaPRO'
+import FiltersSportman from '../../components/FiltersSportman'
 import { useSelector, useDispatch } from 'react-redux'
-import { sendMatch } from '../redux/actions/matchs'
+import { sendMatch } from '../../redux/actions/matchs'
 import {
   deleteSignToOffer,
   getAllOffers,
   signToOffer
-} from '../redux/actions/offers'
-import { Context } from '../context/Context'
-import { updateUser } from '../redux/slices/users.slices'
+} from '../../redux/actions/offers'
+import { Context } from '../../context/Context'
+import { updateUser } from '../../redux/slices/users.slices'
 import {
   getAllUsers,
   getUserData,
   login,
   updateUserData
-} from '../redux/actions/users'
+} from '../../redux/actions/users'
 import { FontAwesome } from '@expo/vector-icons'
 import { useStripe, PaymentSheetError } from '@stripe/stripe-react-native'
-import axiosInstance from '../utils/apiBackend'
-import CustomHeaderBack from '../components/CustomHeaderBack'
-import { sendNotification } from '../redux/actions/notifications'
+import axiosInstance from '../../utils/apiBackend'
+import CustomHeaderBack from '../../components/CustomHeaderBack'
+import { sendNotification } from '../../redux/actions/notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { updateOffers } from '../redux/slices/offers.slices'
+import { updateOffers } from '../../redux/slices/offers.slices'
 import PagerView from 'react-native-pager-view'
 import { PageIndicator } from 'react-native-page-indicator'
 import { Platform } from 'react-native'
@@ -436,7 +442,8 @@ const TodasLasOfertas = () => {
               if (
                 off.province.toLowerCase().includes(search.toLowerCase()) ||
                 off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                off.category.toLowerCase().includes(search.toLowerCase())
+                off.category.toLowerCase().includes(search.toLowerCase()) ||
+                off.sexo.toLowerCase().includes(search.toLowerCase())
               ) {
                 return true
               } else {
@@ -506,7 +513,13 @@ const TodasLasOfertas = () => {
                         off.province
                           .toLowerCase()
                           .includes(search.toLowerCase()) ||
-                        off.posit.toLowerCase().includes(search.toLowerCase())
+                        off.posit
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        off.category
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        off.sexo.toLowerCase().includes(search.toLowerCase())
                       ) {
                         return true
                       } else {
@@ -893,6 +906,12 @@ const TodasLasOfertas = () => {
                               .includes(search.toLowerCase()) ||
                             off.posit
                               .toLowerCase()
+                              .includes(search.toLowerCase()) ||
+                            off.category
+                              .toLowerCase()
+                              .includes(search.toLowerCase()) ||
+                            off.sexo
+                              .toLowerCase()
                               .includes(search.toLowerCase())
                           ) {
                             return true
@@ -955,7 +974,11 @@ const TodasLasOfertas = () => {
                       off.province
                         .toLowerCase()
                         .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase())
+                      off.posit.toLowerCase().includes(search.toLowerCase()) ||
+                      off.category
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      off.sexo.toLowerCase().includes(search.toLowerCase())
                     ) {
                       return true
                     } else {
@@ -1051,7 +1074,8 @@ const TodasLasOfertas = () => {
               if (
                 off.province.toLowerCase().includes(search.toLowerCase()) ||
                 off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                off.category.toLowerCase().includes(search.toLowerCase())
+                off.category.toLowerCase().includes(search.toLowerCase()) ||
+                off.sexo.toLowerCase().includes(search.toLowerCase())
               ) {
                 return true
               } else {
@@ -1083,7 +1107,10 @@ const TodasLasOfertas = () => {
                         .toLowerCase()
                         .includes(search.toLowerCase()) ||
                       off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase())
+                      off.category
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      off.sexo.toLowerCase().includes(search.toLowerCase())
                     ) {
                       return true
                     } else {
@@ -1341,7 +1368,13 @@ const TodasLasOfertas = () => {
                           off.province
                             .toLowerCase()
                             .includes(search.toLowerCase()) ||
-                          off.posit.toLowerCase().includes(search.toLowerCase())
+                          off.posit
+                            .toLowerCase()
+                            .includes(search.toLowerCase()) ||
+                          off.category
+                            .toLowerCase()
+                            .includes(search.toLowerCase()) ||
+                          off.sexo.toLowerCase().includes(search.toLowerCase())
                         ) {
                           return true
                         } else {

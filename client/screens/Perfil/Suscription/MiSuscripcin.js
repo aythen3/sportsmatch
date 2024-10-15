@@ -135,6 +135,7 @@ const MiSuscripcin = () => {
         return 'Unknown plan'
     }
   }
+
   useEffect(() => {
     const getinfo = async (planId) => {
       const res = await axiosInstance.get(`user/subscription/${planId}`)
@@ -147,31 +148,25 @@ const MiSuscripcin = () => {
         const interval = subscription.plan.interval
         const intervalCount = subscription.plan.interval_count
 
+        // Calcula la fecha de la siguiente expiración
+        const nextExpirationDate = new Date(currentDate)
         if (interval === 'month') {
-          currentDate.setMonth(currentDate.getMonth() + (intervalCount - 1))
-          setPlanInterval(getPlanName(subscription.plan.id))
+          nextExpirationDate.setMonth(
+            nextExpirationDate.getMonth() + intervalCount
+          )
         } else if (interval === 'year') {
-          setPlanInterval(getPlanName(subscription.plan.id))
-
-          currentDate.setFullYear(
-            currentDate.getFullYear() + (intervalCount - 1)
+          nextExpirationDate.setFullYear(
+            nextExpirationDate.getFullYear() + intervalCount
           )
         }
 
-        const nextPaymentDate = currentDate.getTime() / 1000
-        const nextPaymentDate2 = new Date(nextPaymentDate * 1000)
-
-        const options = {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }
-
-        const formattedDate = nextPaymentDate2
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+        const formattedDate = nextExpirationDate
           .toLocaleDateString('es-AR', options)
           .replace(/-/g, '/')
+
         setNextPayment(formattedDate)
-        console.log(formattedDate, 'payment')
+        setPlanInterval(getPlanName(subscription.plan.id))
       })
     }
 
@@ -194,36 +189,45 @@ const MiSuscripcin = () => {
           }
 
           const currentPlan = plansByType[planName]
+          // Acumula los intervalos de tiempo
           if (subscription.plan.interval === 'month') {
             currentPlan.totalMonths += subscription.plan.interval_count
-            currentPlan.expirationDate.setMonth(
-              currentPlan.expirationDate.getMonth() +
-                subscription.plan.interval_count
-            )
           } else if (subscription.plan.interval === 'year') {
             currentPlan.totalYears += subscription.plan.interval_count
-            currentPlan.expirationDate.setFullYear(
-              currentPlan.expirationDate.getFullYear() +
-                subscription.plan.interval_count
-            )
           }
         })
 
+        // Calcular la fecha de expiración total para cada plan
         const updatedPlansData = Object.keys(plansByType).map((planName) => {
-          const { expirationDate } = plansByType[planName]
+          const { expirationDate, totalMonths, totalYears } =
+            plansByType[planName]
+
+          // Copiar la fecha de expiración inicial para evitar mutaciones
+          const totalExpirationDate = new Date(expirationDate)
+
+          // Ajustar la fecha de expiración total
+          totalExpirationDate.setMonth(
+            totalExpirationDate.getMonth() + totalMonths
+          )
+          totalExpirationDate.setFullYear(
+            totalExpirationDate.getFullYear() + totalYears
+          )
+
           const options = {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
           }
 
-          const formattedDate = expirationDate
+          const formattedDate = totalExpirationDate
             .toLocaleDateString('es-AR', options)
             .replace(/-/g, '/')
 
           return {
             planName,
-            expirationDate: formattedDate
+            expirationDate: formattedDate,
+            totalMonths,
+            totalYears
           }
         })
 
@@ -279,30 +283,49 @@ const MiSuscripcin = () => {
               </Text>
             )} */}
             {plansData &&
-              plansData.map((plan, i) => (
-                <View key={i}>
-                  <Text
-                    style={[
-                      styles.esteEsTu,
-                      styles.esteEsTuFlexBox,
-                      { color: 'gray', marginTop: 5 }
-                    ]}
-                  >
-                    {plan.planName}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.esteEsTu,
-                      styles.esteEsTuFlexBox,
-                      { color: 'gray', marginTop: 5 }
-                    ]}
-                  >
-                    expira el {plan.expirationDate.slice(0, 2)} de{' '}
-                    {mesesDelAño[plan.expirationDate.slice(3, 5) - 1]} de{' '}
-                    {plan.expirationDate.slice(6, 10)}
-                  </Text>
-                </View>
-              ))}
+              plansData.map((plan, i) => {
+                // Obtenemos el mes, día y año de la fecha
+                const day = plan.expirationDate.slice(0, 2)
+                const originalMonthIndex = plan.expirationDate.slice(3, 5) - 1 // Índice del mes
+                const year = plan.expirationDate.slice(6, 10)
+
+                // Verificamos si el plan contiene "Anual"
+                const isAnualPlan = plan.planName.includes('Anual')
+
+                // Si no es un plan Anual, restamos 1 al mes
+                const adjustedMonthIndex = isAnualPlan
+                  ? originalMonthIndex
+                  : originalMonthIndex - 1
+
+                // Verificación para evitar valores negativos en el mes (enero -> diciembre)
+                const finalMonthIndex =
+                  adjustedMonthIndex < 0 ? 11 : adjustedMonthIndex
+
+                return (
+                  <View key={i}>
+                    <Text
+                      style={[
+                        styles.esteEsTu,
+                        styles.esteEsTuFlexBox,
+                        { color: 'gray', marginTop: 5 }
+                      ]}
+                    >
+                      {plan.planName}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.esteEsTu,
+                        styles.esteEsTuFlexBox,
+                        { color: 'gray', marginTop: 5 }
+                      ]}
+                    >
+                      expira el {day} de {mesesDelAño[finalMonthIndex]} de{' '}
+                      {year}
+                    </Text>
+                  </View>
+                )
+              })}
+
             <Text style={[styles.esteEsTu, styles.esteEsTuFlexBox]}>
               Este es tu plan actual
             </Text>

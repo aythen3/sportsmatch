@@ -95,8 +95,8 @@ export const ContextProvider = ({ children }) => {
       const profileImageForm = new FormData()
       profileImageForm.append('file', profileImageData)
       profileImageForm.append('upload_preset', 'cfbb_profile_pictures')
-      profileImageForm.append('cloud_name', 'der45x19c')
-      const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
+      profileImageForm.append('cloud_name', 'dreoq8lcy')
+      const uploadUrl = `https://api.cloudinary.com/v1_1/dreoq8lcy/${uploadPath}`
 
       const res = await fetch(uploadUrl, {
         method: 'post',
@@ -241,10 +241,10 @@ export const ContextProvider = ({ children }) => {
         const form = new FormData()
         form.append('file', fileData)
         form.append('upload_preset', 'cfbb_profile_pictures')
-        form.append('cloud_name', 'der45x19c')
+        form.append('cloud_name', 'dreoq8lcy')
 
         // Construir la URL en función del tipo de archivo
-        const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
+        const uploadUrl = `https://api.cloudinary.com/v1_1/dreoq8lcy/${uploadPath}`
 
         const res = await fetch(uploadUrl, {
           method: 'post',
@@ -252,7 +252,7 @@ export const ContextProvider = ({ children }) => {
         })
         const data = await res.json()
         const uploadedUrl = transformHttpToHttps(data.url)
-
+        console.log(res, 'Res')
         if (source === 'profile') {
           setProfileImage(uploadedUrl)
         } else {
@@ -281,9 +281,9 @@ export const ContextProvider = ({ children }) => {
           const form = new FormData()
           form.append('file', fileData)
           form.append('upload_preset', 'cfbb_profile_pictures')
-          form.append('cloud_name', 'der45x19c')
+          form.append('cloud_name', 'dreoq8lcy')
 
-          const uploadUrl = `https://api.cloudinary.com/v1_1/der45x19c/${uploadPath}`
+          const uploadUrl = `https://api.cloudinary.com/v1_1/dreoq8lcy/${uploadPath}`
 
           const res = await fetch(uploadUrl, {
             method: 'post',
@@ -546,7 +546,7 @@ export const ContextProvider = ({ children }) => {
   const generateLowResUrl = (imageUrl, quality) => {
     const imgQuality = quality || 80
     const baseUrl = 'https://res.cloudinary.com'
-    const cloudName = 'der45x19c'
+    const cloudName = 'dreoq8lcy'
 
     if (!imageUrl?.startsWith(baseUrl)) {
       return imageUrl

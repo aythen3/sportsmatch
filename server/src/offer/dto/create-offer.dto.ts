@@ -18,8 +18,9 @@ enum Sexo {
 }
 
 class OfferData {
-  @IsEnum(Sexo)
-  sexo: Sexo;
+  @IsString()
+  @IsOptional()
+  sexo: string;
 
   @IsString()
   category: string;

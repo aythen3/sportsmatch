@@ -14,10 +14,6 @@ import {
 
 @Entity({ name: 'offer' })
 export class OfferEntity extends BaseEntity {
-  @Column({
-    type: 'enum',
-    enum: ['Male', 'Female', 'Otro']
-  })
   @Column({ nullable: true })
   posit: string | null;
 
