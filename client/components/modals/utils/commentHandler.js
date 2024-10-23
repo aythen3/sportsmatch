@@ -22,7 +22,7 @@ export const handleSubmit = async ({
     id: postId,
     type: user.user.type
   }
-  await dispatch(createComment(data))
+  await dispatch(createComment(data)).then((e) => console.log(e, 'resss'))
   await dispatch(
     sendNotification({
       title: 'Nuevo comentario',

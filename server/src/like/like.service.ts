@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostService } from 'src/post/post.service';
 import { ErrorManager } from 'src/utils/error.manager';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class LikeService {
@@ -12,25 +13,37 @@ export class LikeService {
     @InjectRepository(LikeEntity)
     private readonly likeRepository: Repository<LikeEntity>,
 
-    private readonly postService: PostService
+    private readonly postService: PostService,
+    private readonly notificationService: NotificationService
   ) {}
   public async create(createLikeDto: any) {
     try {
       const { post, author } = createLikeDto;
       // Verificar si ya existe un like con el autor y el post especificados
       const existingLike = await this.findExisten(post, author);
+      const postt = await this.postService.findOne(post);
 
       if (existingLike) {
         // Si existe un like, eliminarlo y devolver todos menos el eliminado
         await this.likeRepository.remove(existingLike);
         await this.postService.updatePostLikeCount(post, -1);
         const likes = await this.likeRepository.find();
+
         return likes.filter((like) => like.id !== existingLike.id);
       } else {
         // Si no existe un like, crear uno nuevo y devolver todos incluido el recién creado
         await this.likeRepository.save(createLikeDto);
         await this.postService.updatePostLikeCount(post, 1);
         const likes = await this.likeRepository.find();
+        await this.notificationService.createService({
+          title: 'Like',
+          message: `la ha gustado tu publicación`,
+          senderId: author,
+          receiverId: postt.author.id,
+          type: 'like',
+          readed: false
+        });
+
         return likes;
       }
     } catch (error) {

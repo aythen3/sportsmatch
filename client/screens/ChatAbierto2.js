@@ -65,7 +65,7 @@ const ChatAbierto2 = () => {
   const [message, setMessage] = useState()
   const { allMessages } = useSelector((state) => state.chats)
   const [messages, setMessages] = useState(
-    route?.params?.chat?.messages ? [...route?.params?.chat?.messages] : []
+    route?.params?.chat?.messages ? route?.params?.chat?.messages : []
   )
   const [chat, setChat] = useState({})
   const [showInput, setShowInput] = useState(false)
@@ -328,11 +328,11 @@ const ChatAbierto2 = () => {
                       setShowOptionsModal(false)
                       if (route?.params?.usr?.type === 'club') {
                         navigation.navigate('ClubProfile', {
-                          author: route.params.usr
+                          author: route?.params?.usr
                         })
                       } else {
                         navigation.navigate('PerfilFeedVisualitzaciJug', {
-                          author: route.params.usr
+                          author: route?.params?.usr
                         })
                       }
                     }}
@@ -437,7 +437,7 @@ const ChatAbierto2 = () => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={handleRemoveChat}
+                      // onPress={handleRemoveChat}
                       style={{
                         borderRadius: 5,
                         height: 33,

@@ -84,16 +84,10 @@ export class ChatGateway
     client.emit('message-server', newMessage); // Emitir al remitente
 
     client.to(chat.id).emit('message-server', newMessage); // Emitir solo una vez a la sala
-    // client
-    //   .to(data.receiver)
-    //   .emit('message-server', {
-    //     chat: chat.id,
-    //     message: {
-    //       sender: newMessage.senderId,
-    //       receiver: newMessage.receiverId,
-    //       message: newMessage.message
-    //     }
-    //   }); // Emitir solo una vez a la sala
+    client.to(data.receiver).emit('message-server', {
+      chat: chat.id,
+      message: newMessage
+    }); // Emitir solo una vez a la sala
     // client.emit('message-server', newMessage);
     return newMessage;
   }

@@ -869,12 +869,10 @@ export class UserService {
           'club.matches',
           'club.matches.user',
           'club.matches.user.sportman',
-
           'club.offers.usersInscriptions',
           'club.offers.usersInscriptions.sportman',
           'matches.club',
           'matches.club.user',
-
           'matches',
           'followingUsers',
           'offers'

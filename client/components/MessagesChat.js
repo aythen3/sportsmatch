@@ -49,7 +49,7 @@ const MessagesChat = ({
   } = useContext(Context)
   const navigation = useNavigation()
   const [convMessages, setConvMessages] = useState(
-    chat?.messages.length > 0 ? [...chat?.messages] : []
+    chat?.messages?.length > 0 ? [...chat?.messages] : []
   )
   const [lastMessage, setLastMessage] = useState()
   const [loading, setLoading] = useState(true)
@@ -94,6 +94,8 @@ const MessagesChat = ({
 
   useEffect(() => {}, [lastMessage])
 
+  const sort = chat?.messages ? [...chat?.messages] : []
+
   if (loading === true || lastMessage === null) return null
   // if (!lastMessage) return null
   return (
@@ -109,12 +111,11 @@ const MessagesChat = ({
         onPress={() => {
           setValue('')
           dispatch(setShowNavbar(false))
-          const sort = [...chat?.messages] || []
           const ord = sort?.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           )
           dispatch(setAllMessages(ord))
-          navigation.navigate('ChatAbierto1', {
+          return navigation.navigate('ChatAbierto1', {
             receiverId: selectedUserId,
             receiverName: name,
             sportman: sportmanId,
@@ -161,7 +162,7 @@ const MessagesChat = ({
             </Text>
             <Text
               style={{
-                fontWeight: lastMessage?.message?.isReaded ? '500' : '40',
+                fontWeight: lastMessage?.message?.isReaded ? '400' : '700',
                 color: Color.wHITESPORTSMATCH,
                 fontSize: FontSize.t1TextSMALL_size,
                 fontFamily: FontFamily.t4TEXTMICRO
@@ -221,7 +222,7 @@ const MessagesChat = ({
               offer.inscriptions &&
               offer.inscriptions.includes(sportmanId) &&
               offer.club.id === club.id
-          ).length > 0 && (
+          )?.length > 0 && (
             <TouchableOpacity
               onPress={() => {
                 const currentOffer = [...offers].filter(

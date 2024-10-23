@@ -7,6 +7,7 @@ import {
   updateChats
 } from '../redux/actions/chats'
 import { setAllChats, setAllMessages } from '../redux/slices/chats.slices'
+import { getNotificationsByUserId } from '../redux/actions/notifications'
 
 // Crear el contexto del socket
 const SocketContext = createContext()
@@ -54,12 +55,17 @@ export const SocketProvider = ({ children }) => {
       setRoomId(room)
     })
 
-    socket.on('message-server', (msg) => {
+    socket.on('message-server', async (msg) => {
       console.log(msg, 'mmmmmmmmmmmmmmmm')
       dispatch(updateMessages(msg))
-      // if (msg.chat) {
-      //   dispatch(updateChats(msg))
-      // }
+      if (msg.chat) {
+        dispatch(updateChats(msg))
+      }
+    })
+
+    socket.on('notification', (data) => {
+      console.log(data, '22222222222222')
+      dispatch(getNotificationsByUserId(user?.user?.id))
     })
 
     socket.on('messageRead', (data) => {
@@ -96,7 +102,7 @@ export const SocketProvider = ({ children }) => {
     //   })
 
     return () => {}
-  }, [user?.user?.id])
+  }, [user])
 
   const sendMessage = (message, sender, receiver) => {
     if (socket) {

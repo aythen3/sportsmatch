@@ -268,8 +268,10 @@ const TodasLasOfertas = () => {
       .filter((off) => {
         if (search.length > 0) {
           if (
-            off.province.toLowerCase().includes(search.toLowerCase()) ||
-            off.posit.toLowerCase().includes(search.toLowerCase())
+            off?.province?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.posit?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.category?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
           ) {
             return true
           } else {
@@ -309,8 +311,10 @@ const TodasLasOfertas = () => {
       .filter((off) => {
         if (search.length > 0) {
           if (
-            off.province.toLowerCase().includes(search.toLowerCase()) ||
-            off.posit.toLowerCase().includes(search.toLowerCase())
+            off?.province?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.posit?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.category?.toLowerCase()?.includes(search?.toLowerCase()) ||
+            off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
           ) {
             return true
           } else {
@@ -350,14 +354,63 @@ const TodasLasOfertas = () => {
     setCantPage2(cant2.length)
     // console.log('offers changed on alloffers', offers)
   }, [offers])
+  const filteredOffers = offer
+    .filter((offer) => !offer.paused)
+    .filter((offer) => {
+      const alreadyJoined = user?.user?.offers?.find((of) => of.id === offer.id)
+      return !alreadyJoined
+    })
+    .slice(
+      0,
+      user?.user?.plan === 'pro' ||
+        user?.user?.plan === 'star' ||
+        user?.user?.prop1?.plans
+        ? 1000
+        : 20
+    )
+    .filter((off) => {
+      if (search.length > 0) {
+        return (
+          off?.province?.toLowerCase()?.includes(search?.toLowerCase()) ||
+          off?.posit?.toLowerCase()?.includes(search?.toLowerCase()) ||
+          off?.category?.toLowerCase()?.includes(search?.toLowerCase()) ||
+          off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
+        )
+      }
+      return true
+    })
+    .sort((a, b) => {
+      const first = a.inscriptions?.length || 0
+      const second = b.inscriptions?.length || 0
+      return byRelevance ? second - first : first - second
+    })
+  const MAX_VISIBLE_POINTS = 25 // Máximo de puntos visibles
+  // Función para calcular los puntos visibles
+  // Función para calcular los puntos visibles
+  const getVisiblePoints = () => {
+    const totalOffers = filteredOffers.length
 
-  // console.log(
-  //   'O============OOFFERS',
-  //   offers.map((off) => {
-  //     return `${off?.inscriptions?.length || 0} ${off?.posit}`
-  //   })
-  // )
+    // Si hay menos de MAX_VISIBLE_POINTS ofertas, mostramos todos los puntos
+    if (totalOffers <= MAX_VISIBLE_POINTS) {
+      return [...Array(totalOffers).keys()]
+    }
 
+    let start, end
+
+    // Ajustamos el rango de páginas visibles
+    if (currentPage <= Math.floor(MAX_VISIBLE_POINTS / 2)) {
+      start = 0
+      end = MAX_VISIBLE_POINTS
+    } else if (currentPage >= totalOffers - Math.ceil(MAX_VISIBLE_POINTS / 2)) {
+      end = totalOffers
+      start = end - MAX_VISIBLE_POINTS
+    } else {
+      start = currentPage - Math.floor(MAX_VISIBLE_POINTS / 2)
+      end = start + MAX_VISIBLE_POINTS
+    }
+
+    return [...Array(end - start).keys()].map((i) => i + start)
+  }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }} // Asegúrate de que el KeyboardAvoidingView ocupe todo el espacio
@@ -440,10 +493,10 @@ const TodasLasOfertas = () => {
           .filter((off) => {
             if (search.length > 0) {
               if (
-                off.province.toLowerCase().includes(search.toLowerCase()) ||
-                off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                off.category.toLowerCase().includes(search.toLowerCase()) ||
-                off.sexo.toLowerCase().includes(search.toLowerCase())
+                off?.province?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.posit?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.category?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
               ) {
                 return true
               } else {
@@ -510,16 +563,18 @@ const TodasLasOfertas = () => {
                   .filter((off) => {
                     if (search.length > 0) {
                       if (
-                        off.province
-                          .toLowerCase()
-                          .includes(search.toLowerCase()) ||
-                        off.posit
-                          .toLowerCase()
-                          .includes(search.toLowerCase()) ||
-                        off.category
-                          .toLowerCase()
-                          .includes(search.toLowerCase()) ||
-                        off.sexo.toLowerCase().includes(search.toLowerCase())
+                        off?.province
+                          ?.toLowerCase()
+                          ?.includes(search?.toLowerCase()) ||
+                        off?.posit
+                          ?.toLowerCase()
+                          ?.includes(search?.toLowerCase()) ||
+                        off?.category
+                          ?.toLowerCase()
+                          ?.includes(search?.toLowerCase()) ||
+                        off?.sexo
+                          ?.toLowerCase()
+                          ?.includes(search?.toLowerCase())
                       ) {
                         return true
                       } else {
@@ -858,111 +913,22 @@ const TodasLasOfertas = () => {
                     justifyContent: 'center',
                     marginTop: 15,
                     marginBottom: '6%',
-
                     marginHorizontal: '10%'
                   }}
                 >
-                  <ScrollView
-                    horizontal={true}
-                    style={{ width: '100%', flex: 1 }}
-                    contentContainerStyle={{
-                      width: cantPage1 > 20 ? '' : '100%',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignContent: 'center'
-                    }}
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {offer
-                      .filter((offer) => offer.paused === false)
-                      .filter((offer) => {
-                        // const filteredUserMatches = userMatches.filter(
-                        //   (match) => match.offerId && match.offerId !== offer.id
-                        // )
-                        const alreadyJoined = user?.user?.offers?.find(
-                          (of) => of.id === offer.id
-                        )
-                        // if (filteredUserMatches.length > 0) {
-                        //   return false
-                        // }
-                        if (alreadyJoined) {
-                          return false
-                        }
-                        return true
-                      })
-                      .slice(
-                        0,
-                        user?.user?.plan === 'pro' ||
-                          user?.user?.plan === 'star'
-                          ? 1000
-                          : 20
-                      )
-                      .filter((offer) => offer.paused === false)
-                      .filter((off) => {
-                        if (search.length > 0) {
-                          if (
-                            off.province
-                              .toLowerCase()
-                              .includes(search.toLowerCase()) ||
-                            off.posit
-                              .toLowerCase()
-                              .includes(search.toLowerCase()) ||
-                            off.category
-                              .toLowerCase()
-                              .includes(search.toLowerCase()) ||
-                            off.sexo
-                              .toLowerCase()
-                              .includes(search.toLowerCase())
-                          ) {
-                            return true
-                          } else {
-                            return false
-                          }
-                        } else {
-                          return true
-                        }
-                      })
-                      .filter((offer) => {
-                        // const filteredUserMatches = userMatches.filter(
-                        //   (match) => match.offerId && match.offerId !== offer.id
-                        // )
-                        const alreadyJoined = user?.user?.offers?.find(
-                          (of) => of.id === offer.id
-                        )
-                        // if (filteredUserMatches.length > 0) {
-                        //   return false
-                        // }
-                        if (alreadyJoined) {
-                          return false
-                        }
-                        return true
-                      })
-                      .slice(
-                        0,
-                        user?.user?.plan === 'pro' ||
-                          user?.user?.plan === 'star'
-                          ? 1000
-                          : 20
-                      )
-                      .sort((a, b) => {
-                        const first = a.inscriptions?.length || 0
-                        const second = b.inscriptions?.length || 0
-                        return byRelevance ? second - first : first - second
-                      })
-                      .map((_, index) => (
-                        <View
-                          key={index}
-                          style={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: 4,
-                            marginHorizontal: 2,
-                            backgroundColor:
-                              index === currentPage ? mainColor : 'gray'
-                          }}
-                        />
-                      ))}
-                  </ScrollView>
+                  {getVisiblePoints().map((pageIndex) => (
+                    <View
+                      key={pageIndex}
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: 4,
+                        marginHorizontal: 2,
+                        backgroundColor:
+                          pageIndex === currentPage ? '#007AFF' : 'gray'
+                      }}
+                    />
+                  ))}
                 </View>
               </View>
             )}
@@ -971,14 +937,16 @@ const TodasLasOfertas = () => {
                 .filter((off) => {
                   if (search.length > 0) {
                     if (
-                      off.province
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                      off.category
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.sexo.toLowerCase().includes(search.toLowerCase())
+                      off?.province
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.posit
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.category
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
                     ) {
                       return true
                     } else {
@@ -1072,10 +1040,10 @@ const TodasLasOfertas = () => {
           .filter((off) => {
             if (search.length > 0) {
               if (
-                off.province.toLowerCase().includes(search.toLowerCase()) ||
-                off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                off.category.toLowerCase().includes(search.toLowerCase()) ||
-                off.sexo.toLowerCase().includes(search.toLowerCase())
+                off?.province?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.posit?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.category?.toLowerCase()?.includes(search?.toLowerCase()) ||
+                off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
               ) {
                 return true
               } else {
@@ -1103,14 +1071,16 @@ const TodasLasOfertas = () => {
                 .filter((off) => {
                   if (search.length > 0) {
                     if (
-                      off.province
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.posit.toLowerCase().includes(search.toLowerCase()) ||
-                      off.category
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      off.sexo.toLowerCase().includes(search.toLowerCase())
+                      off?.province
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.posit
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.category
+                        ?.toLowerCase()
+                        ?.includes(search?.toLowerCase()) ||
+                      off?.sexo?.toLowerCase()?.includes(search?.toLowerCase())
                     ) {
                       return true
                     } else {
@@ -1365,16 +1335,18 @@ const TodasLasOfertas = () => {
                     .filter((off) => {
                       if (search.length > 0) {
                         if (
-                          off.province
-                            .toLowerCase()
-                            .includes(search.toLowerCase()) ||
-                          off.posit
-                            .toLowerCase()
-                            .includes(search.toLowerCase()) ||
-                          off.category
-                            .toLowerCase()
-                            .includes(search.toLowerCase()) ||
-                          off.sexo.toLowerCase().includes(search.toLowerCase())
+                          off?.province
+                            ?.toLowerCase()
+                            ?.includes(search?.toLowerCase()) ||
+                          off?.posit
+                            ?.toLowerCase()
+                            ?.includes(search?.toLowerCase()) ||
+                          off?.category
+                            ?.toLowerCase()
+                            ?.includes(search?.toLowerCase()) ||
+                          off?.sexo
+                            ?.toLowerCase()
+                            ?.includes(search?.toLowerCase())
                         ) {
                           return true
                         } else {
@@ -1396,8 +1368,7 @@ const TodasLasOfertas = () => {
                             index === currentPage ? mainColor : 'gray'
                         }}
                       />
-                    ))
-                    .slice(0, 15)}
+                    ))}
                 </ScrollView>
               </View>
             )}

@@ -50,9 +50,12 @@ export class PostService {
   public async create(createPostDto: CreatePostDto) {
     try {
       const user = await this.userRepository.findOne({
-        where: { id: createPostDto.userId },
+        where: { id: createPostDto.userId }
       });
-      const post = await this.postRepository.save({...createPostDto,author:user});
+      const post = await this.postRepository.save({
+        ...createPostDto,
+        author: user
+      });
       // Si no se pudo crear el nuevo position, lanzar una excepción
       if (!post) {
         throw new ErrorManager({
@@ -103,7 +106,13 @@ export class PostService {
     try {
       const post = await this.postRepository
         .createQueryBuilder('post')
-        .where({ id })
+        // Relación con el autor (user)
+        .leftJoinAndSelect('post.author', 'author')
+        // Relación del autor con el club
+        .leftJoinAndSelect('author.club', 'club')
+        // Relación del autor con el deportista (sportman)
+        .leftJoinAndSelect('author.sportman', 'sportman')
+        .where('post.id = :id', { id })
         .getOne();
 
       if (!post) {
@@ -112,6 +121,7 @@ export class PostService {
           message: `Post id: ${id} not found`
         });
       }
+
       return post;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);

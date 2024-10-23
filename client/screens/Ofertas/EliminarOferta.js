@@ -43,7 +43,9 @@ const EliminarOferta = () => {
   const offerIncriptions = filteredOffer[0]?.inscriptions || []
 
   const handleDelete = async () => {
-    await dispatch(deleteOffer(route.params.offerId))
+    await dispatch(deleteOffer(route.params.offerId)).then((e) => {
+      console.log(e, 'delete')
+    })
     await dispatch(getAllOffers())
     navigation.goBack()
   }

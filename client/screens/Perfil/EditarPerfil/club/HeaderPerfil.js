@@ -240,24 +240,26 @@ const HeaderPerfil = ({
             url={front}
           />
         )}
-        <TouchableOpacity
-          onPress={(event) => {
-            handlePostClick(event)
-          }}
-          style={{
-            position: 'absolute',
-            top: 25,
-            right: 10,
-            width: 24,
-            height: 20,
-            alignItems: 'center'
-          }}
-        >
-          <Image
-            style={{ width: 5, height: '100%', objectFit: 'fill' }}
-            source={require('../../../../assets/frame-957.png')}
-          />
-        </TouchableOpacity>
+        {external && (
+          <TouchableOpacity
+            onPress={(event) => {
+              handlePostClick(event)
+            }}
+            style={{
+              position: 'absolute',
+              top: 25,
+              right: 10,
+              width: 24,
+              height: 20,
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              style={{ width: 5, height: '100%', objectFit: 'fill' }}
+              source={require('../../../../assets/frame-957.png')}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View
         style={{

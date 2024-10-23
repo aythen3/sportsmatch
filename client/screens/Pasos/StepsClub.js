@@ -65,21 +65,31 @@ const StepsClub = () => {
     description: ''
   })
 
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     // Despacha tu acción de Redux aquí
+  //     dispatch(clearUser())
+  //     navigation.goBack()
+  //     return true // Indica que el evento fue manejado
+  //   }
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction
+  //   )
+
+  //   return () => backHandler.remove() // Remueve el listener al desmontar el componente
+  // }, [dispatch])
+
   useEffect(() => {
-    const backAction = () => {
-      // Despacha tu acción de Redux aquí
-      dispatch(clearUser())
-      navigation.goBack()
-      return true // Indica que el evento fue manejado
+    // Suscribirse al evento de retroceso
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', back)
+
+    // Limpiar el evento al desmontar el componente
+    return () => {
+      backHandler.remove()
     }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
-    return () => backHandler.remove() // Remueve el listener al desmontar el componente
-  }, [dispatch])
+  }, [stepsIndex])
 
   useEffect(() => {
     const color = setColor(sportS.name)
@@ -222,7 +232,12 @@ const StepsClub = () => {
         )
       case 2:
         return (
-          <View style={{ paddingVertical: 20 }}>
+          <View
+            style={{
+              paddingVertical: 20,
+              flex: 1
+            }}
+          >
             <Paso2Jugador selectedSport={sportS} setSelectedSport={setSportS} />
           </View>
         )
@@ -254,8 +269,14 @@ const StepsClub = () => {
   }
 
   const back = async () => {
-    await dispatch(clearUser())
-    navigation.goBack()
+    if (stepsIndex === 1) {
+      await dispatch(clearUser())
+      navigation.goBack()
+      return true
+    } else {
+      setstepsIndex((prev) => prev - 1)
+      return true
+    }
   }
 
   return (
@@ -265,7 +286,7 @@ const StepsClub = () => {
         height: height,
         width: width,
         flex: 1,
-        paddingTop: 20
+        paddingTop: 50
       }}
     >
       {stepsIndex == 1 && (
@@ -292,11 +313,7 @@ const StepsClub = () => {
           contentFit="cover"
           source={require('../../assets/coolicon.png')}
         />
-        <Pressable
-          onPress={() =>
-            stepsIndex === 1 ? back() : setstepsIndex((prev) => prev - 1)
-          }
-        >
+        <Pressable onPress={() => back()}>
           <Text style={[styles.atrs, styles.atrsTypo]}>Atrás</Text>
         </Pressable>
       </View>
@@ -322,7 +339,7 @@ const StepsClub = () => {
         }}
         contentContainerStyle={{
           paddingBottom: 20,
-          flex: stepsIndex === 1 ? 1 : null
+          flex: stepsIndex === 2 ? 1 : stepsIndex === 1 ? 1 : null
         }}
       >
         {ViewComponent(stepsIndex)}

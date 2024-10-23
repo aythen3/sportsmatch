@@ -118,8 +118,9 @@ const SiguiendoJugadores = () => {
       const sortedPosts = [...allPosts]
         .filter(
           (post) =>
-            user?.user?.following?.includes(post?.author?.id) ||
-            user?.user?.id === post?.author?.id
+            user?.user?.followingUsers?.find(
+              (e) => post?.author?.id === e?.id
+            ) || user?.user?.id === post?.author?.id
         )
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       setFilteredPosts(sortedPosts)

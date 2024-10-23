@@ -251,6 +251,7 @@ export const ContextProvider = ({ children }) => {
           body: form
         })
         const data = await res.json()
+        console.log('asdasdas', data)
         const uploadedUrl = transformHttpToHttps(data.url)
         console.log(res, 'Res')
         if (source === 'profile') {
@@ -303,6 +304,7 @@ export const ContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.log('Error uploading file:', error)
+      setPickImageLoading(false)
     } finally {
       console.log('setting image loader to FALSE')
       setPickImageLoading(false)

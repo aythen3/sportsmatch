@@ -177,17 +177,22 @@ const SeleccionarImagen = () => {
   const [orientation, setOrientation] = useState('portrait')
 
   const takePicture = async () => {
-    if (cameraReff?.current) {
-      const photo = await cameraReff.current.takePictureAsync({
-        orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
-      })
-      pickImage('a', photo.uri)
-      setSelectedImage(photo)
-      console.log(photo, 'photo')
-      // pickImageFromCamera(selectedPicture, photo.uri);
+    try {
+      if (cameraReff?.current) {
+        const photo = await cameraReff.current.takePictureAsync({
+          orientation: orientation === 'landscape' ? 'landscape' : 'portrait'
+        })
+        pickImage('a', photo.uri)
+        setSelectedImageEditor(photo)
 
-      setShowCamera(false)
-      launchEditor(photo.uri)
+        console.log(photo, 'photo')
+        // pickImageFromCamera(selectedPicture, photo.uri);
+
+        setShowCamera(false)
+        launchEditor(photo)
+      }
+    } catch (error) {
+      console.log('error', error)
     }
   }
 

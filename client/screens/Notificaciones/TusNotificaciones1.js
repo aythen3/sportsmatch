@@ -315,9 +315,10 @@ const TusNotificaciones1 = () => {
                     }
                   })
                 )}
-                {value !== '' && filteredUsers.length > 0
+                {value !== '' && filteredUsers?.length > 0
                   ? filteredUsers.map((userr, index) => {
-                      console.log(user, 'user ')
+                      console.log(userr, 'user22222222222 ')
+
                       const usuario = userr?.club
                         ? userr?.club
                         : userr?.sportman
@@ -331,16 +332,18 @@ const TusNotificaciones1 = () => {
                             setValue={setValue}
                             key={index + 99999}
                             name={userr.nickname}
-                            sportmanId={userr.sportman?.id}
+                            sportmanId={userr?.sportman?.id}
                             usuario={usuario}
                             usr={userr}
-                            user={userr?.club ? userr?.club : userr?.user}
+                            user={userr?.user ? userr?.user : userr?.user}
                             profilePic={
                               userr?.type === 'club'
                                 ? userr?.club?.img_perfil
                                 : userr?.sportman?.info?.img_perfil
                             }
                             selectedUserId={userr?.id}
+                            chat={{ id: '1' }}
+
                             // applicant={applicants?.includes(user.sportman?.id)}
                           />
                         )

@@ -7,6 +7,7 @@ import { PostEntity } from 'src/post/entities/post.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { LikeEntity } from './entities/like.entity';
 import { PostService } from 'src/post/post.service';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { PostService } from 'src/post/post.service';
       PostEntity,
       CommentEntity,
       LikeEntity
-    ])
+    ]),
+    NotificationModule
   ],
   controllers: [LikeController],
   providers: [LikeService, PostService]

@@ -138,8 +138,8 @@ const App = () => {
           <StatusBar translucent={true} backgroundColor={'transparent'} />
 
           <Provider store={store}>
-            <ContextProvider>
-              <SocketProvider>
+            <SocketProvider>
+              <ContextProvider>
                 <NavigationContainer
                   //          initialState={initialState}
                   // onStateChange={(state) =>
@@ -193,8 +193,8 @@ const App = () => {
                   ) : null}
                   {/* {isFooterShow && <NavBarInferior2 />} */}
                 </NavigationContainer>
-              </SocketProvider>
-            </ContextProvider>
+              </ContextProvider>
+            </SocketProvider>
           </Provider>
         </StripeProvider>
       </ToastProvider>
